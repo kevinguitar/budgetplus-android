@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "919948371655",
+    "project_id": "moneybook-a2193",
+    "storage_bucket": "moneybook-a2193.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919948371655:android:b3788099db91ee1dbd40e2",
+        "android_client_info": {
+          "package_name": "com.kevingt.moneybook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHaWG9WKberugWYccA1E1CZexAYBf6IEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

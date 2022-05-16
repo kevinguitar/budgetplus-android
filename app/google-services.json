@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "919948371655",
+    "firebase_url": "https://moneybook-a2193-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "moneybook-a2193",
     "storage_bucket": "moneybook-a2193.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:919948371655:android:b3788099db91ee1dbd40e2",
+        "mobilesdk_app_id": "1:919948371655:android:e2433c7523792891bd40e2",
         "android_client_info": {
-          "package_name": "com.kevingt.moneybook"
+          "package_name": "com.kevingt.moneybook.debug"
         }
       },
       "oauth_client": [

@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -21,8 +24,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,11 +52,12 @@ android {
     }
 }
 
-ext {
-    // https://developer.android.com/jetpack/androidx/releases/compose-ui
-    compose_ui_version = '1.2.0-beta01'
+kapt {
+    correctErrorTypes true
+}
 
-    // https://dagger.dev/hilt/gradle-setup
+ext {
+    compose_ui_version = '1.2.0-beta01'
     dagger_hilt_version = '2.42'
 }
 
@@ -61,6 +68,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 
     // Jetpack Compose
+    // https://developer.android.com/jetpack/androidx/releases/compose-ui
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.compose.material:material:$compose_ui_version"
     implementation "androidx.compose.ui:ui:$compose_ui_version"
@@ -69,13 +77,19 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     // Dagger Hilt
+    // https://dagger.dev/hilt/gradle-setup
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
-    annotationProcessor "com.google.dagger:hilt-compiler:$dagger_hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$dagger_hilt_version"
 
     // Firebase
+    // https://firebase.google.com/support/release-notes/android
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Utils
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

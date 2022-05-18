@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Facebook sdk-->
+    <string name="facebook_app_id">870843223714646</string>
+    <string name="fb_login_protocol_scheme">fb870843223714646</string>
+    <string name="facebook_client_token">520f3389ef9fb759aea83e2d44d17320</string>
+
+    <!-- Google sdk-->
     <string name="google_cloud_client_id">554451962439-f3i6uegmsqo408e1dk761slvrnr9os1j.apps.googleusercontent.com</string>
+
 </resources>

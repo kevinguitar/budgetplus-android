@@ -10,10 +10,17 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -32,6 +39,20 @@ class AuthActivity : ComponentActivity() {
 
     private val oneTapClient: SignInClient by lazy { Identity.getSignInClient(this) }
     private val auth: FirebaseAuth by lazy { Firebase.auth }
+
+    private val callbackManager = CallbackManager.Factory.create()
+
+    private val callback = object : FacebookCallback<LoginResult> {
+        override fun onSuccess(result: LoginResult) {
+            handleFacebookAccessToken(result.accessToken)
+        }
+
+        override fun onCancel() = Timber.w("Facebook sign-in canceled")
+
+        override fun onError(error: FacebookException) {
+            Timber.e(error, "Facebook sign-in failed")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +73,9 @@ class AuthActivity : ComponentActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
             REQ_ONE_TAP -> {
@@ -81,7 +105,33 @@ class AuthActivity : ComponentActivity() {
     }
 
     private fun signInWithFacebook() {
+        LoginManager.getInstance().registerCallback(callbackManager, callback)
+        LoginManager.getInstance().logInWithReadPermissions(
+                this,
+                listOf("email", "public_profile")
+            )
+    }
 
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Toast.makeText(
+                        this, "Authentication success.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val user = auth.currentUser
+                } else {
+                    Timber.e(task.exception)
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        this, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     private fun signInWithGoogle() {

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Co-spending Tracker</string>
+
+    <string name="fallback_error_message">出錯了，稍後再試</string>
 </resources>

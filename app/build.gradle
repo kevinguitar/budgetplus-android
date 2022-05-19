@@ -93,6 +93,7 @@ dependencies {
 
     // Utils
     implementation 'com.jakewharton.timber:timber:5.0.1'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

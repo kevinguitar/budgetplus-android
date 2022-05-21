@@ -44,7 +44,7 @@ class AuthViewModel @Inject constructor(
             handleFacebookAccessToken(result.accessToken)
         }
 
-        override fun onCancel() = Timber.w("Facebook sign-in canceled")
+        override fun onCancel() = Timber.d("Facebook sign-in canceled")
 
         override fun onError(error: FacebookException) {
             Timber.e(error, "Facebook sign-in failed")

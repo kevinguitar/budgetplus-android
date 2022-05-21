@@ -18,7 +18,7 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".book.BookActivity"
             android:exported="true"></activity>
 
         <activity

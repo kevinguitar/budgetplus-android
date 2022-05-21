@@ -1,4 +1,4 @@
-package com.kevingt.moneybook
+package com.kevingt.moneybook.book
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import com.kevingt.moneybook.auth.ui.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class BookActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

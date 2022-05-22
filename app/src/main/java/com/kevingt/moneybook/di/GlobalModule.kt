@@ -5,6 +5,8 @@ import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.auth.AuthManagerImpl
 import com.kevingt.moneybook.data.local.AppPreference
 import com.kevingt.moneybook.data.local.Preference
+import com.kevingt.moneybook.data.remote.BookRepo
+import com.kevingt.moneybook.data.remote.BookRepoImpl
 import com.kevingt.moneybook.utils.AppCoroutineScope
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.Toaster
@@ -28,6 +30,9 @@ interface GlobalModule {
 
     @Binds
     fun providePreference(impl: AppPreference): Preference
+
+    @Binds
+    fun provideBookRepo(impl: BookRepoImpl): BookRepo
 
     companion object {
 

@@ -8,10 +8,13 @@ import com.kevingt.moneybook.data.remote.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface AuthManager {
 
     val userState: StateFlow<User?>
+
+    fun requireUserId(): String
 
     fun setUser(user: User?)
 
@@ -19,6 +22,7 @@ interface AuthManager {
 
 }
 
+@Singleton
 class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
 ) : AuthManager {
@@ -27,6 +31,10 @@ class AuthManagerImpl @Inject constructor(
 
     private val _userState = MutableStateFlow(currentUser)
     override val userState: StateFlow<User?> get() = _userState
+
+    override fun requireUserId(): String {
+        return requireNotNull(userState.value?.id) { "User id is null" }
+    }
 
     override fun setUser(user: User?) {
         _userState.value = user

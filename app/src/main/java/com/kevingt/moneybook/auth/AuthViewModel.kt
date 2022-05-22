@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -22,26 +23,26 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.R
+import com.kevingt.moneybook.book.BookActivity
+import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.User
+import com.kevingt.moneybook.utils.NavigationFlow
 import com.kevingt.moneybook.utils.NavigationInfo
 import com.kevingt.moneybook.utils.Toaster
 import com.kevingt.moneybook.welcome.WelcomeActivity
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
     private val authManager: AuthManager,
+    private val bookRepo: BookRepo,
     private val toaster: Toaster,
     @ActivityContext private val context: Context,
 ) {
 
-    val navigationFlow = MutableSharedFlow<NavigationInfo>(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
+    val navigation = NavigationFlow()
 
     private val activity = context as ComponentActivity
     private val auth: FirebaseAuth by lazy { Firebase.auth }
@@ -114,7 +115,6 @@ class AuthViewModel @Inject constructor(
                 val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
                 auth.signInWithCredential(firebaseCredential)
                     .addOnCompleteListener(activity, ::onLoginCompleted)
-
             } catch (e: ApiException) {
                 toaster.showError(e)
             }
@@ -133,15 +133,26 @@ class AuthViewModel @Inject constructor(
                 )
             )
             toaster.showMessage("Login success.")
-
-            val navInfo = NavigationInfo(
-                destination = WelcomeActivity::class,
-                finishCurrent = true
-            )
-            navigationFlow.tryEmit(navInfo)
+            checkBookAvailability()
         } else {
             val e = task.exception ?: IllegalStateException("Unable to login")
             toaster.showError(e)
+        }
+    }
+
+    private fun checkBookAvailability() {
+        activity.lifecycleScope.launch {
+            val navInfo = try {
+                if (bookRepo.checkUserHasBook()) {
+                    NavigationInfo(destination = BookActivity::class)
+                } else {
+                    NavigationInfo(destination = WelcomeActivity::class)
+                }
+            } catch (e: Exception) {
+                toaster.showError(e)
+                NavigationInfo(destination = WelcomeActivity::class)
+            }
+            navigation.tryEmit(navInfo)
         }
     }
 

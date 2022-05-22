@@ -5,7 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Book(
-    val id: String = "",
+    val name: String = "",
     val users: List<String> = emptyList(),
-    val categories: List<String> = emptyList(),
+    val expenseCategories: List<String> = emptyList(),
+    val incomeCategories: List<String> = emptyList(),
 ) : Parcelable

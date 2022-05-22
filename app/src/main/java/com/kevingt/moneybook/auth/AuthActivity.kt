@@ -1,9 +1,10 @@
-package com.kevingt.moneybook.auth.ui
+package com.kevingt.moneybook.auth
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.kevingt.moneybook.auth.ui.AuthBinding
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
 }
@@ -58,6 +59,7 @@ kapt {
 
 ext {
     compose_ui_version = '1.2.0-beta01'
+    nav_version = '2.4.2'
     dagger_hilt_version = '2.42'
 }
 
@@ -75,6 +77,12 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+
+    // Navigation
+    // https://developer.android.com/jetpack/androidx/releases/navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // Dagger Hilt
     // https://dagger.dev/hilt/gradle-setup

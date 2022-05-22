@@ -1,4 +1,4 @@
-package com.kevingt.moneybook.auth.ui
+package com.kevingt.moneybook.auth
 
 import android.content.Context
 import android.content.Intent
@@ -22,9 +22,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.R
-import com.kevingt.moneybook.auth.AuthManager
+import com.kevingt.moneybook.data.remote.User
+import com.kevingt.moneybook.utils.NavigationInfo
 import com.kevingt.moneybook.utils.Toaster
+import com.kevingt.moneybook.welcome.WelcomeActivity
 import dagger.hilt.android.qualifiers.ActivityContext
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,6 +37,11 @@ class AuthViewModel @Inject constructor(
     private val toaster: Toaster,
     @ActivityContext private val context: Context,
 ) {
+
+    val navigationFlow = MutableSharedFlow<NavigationInfo>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val activity = context as ComponentActivity
     private val auth: FirebaseAuth by lazy { Firebase.auth }
@@ -115,9 +124,21 @@ class AuthViewModel @Inject constructor(
     private fun onLoginCompleted(task: Task<AuthResult>) {
         val user = auth.currentUser
         if (task.isSuccessful && user != null) {
-            authManager.setUser(user)
+            authManager.setUser(
+                User(
+                    id = user.uid,
+                    name = user.displayName,
+                    email = user.email,
+                    photoUrl = user.photoUrl?.toString()
+                )
+            )
             toaster.showMessage("Login success.")
-            //TODO: navigate
+
+            val navInfo = NavigationInfo(
+                destination = WelcomeActivity::class,
+                finishCurrent = true
+            )
+            navigationFlow.tryEmit(navInfo)
         } else {
             val e = task.exception ?: IllegalStateException("Unable to login")
             toaster.showError(e)

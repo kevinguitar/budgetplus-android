@@ -20,7 +20,8 @@
         <activity
             android:name=".book.BookActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/ComposeActivityStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,8 +41,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".auth.AuthActivity" />
-        <activity android:name=".welcome.WelcomeActivity" />
+        <activity
+            android:name=".auth.AuthActivity"
+            android:theme="@style/ComposeActivityStyle" />
+
+        <activity
+            android:name=".welcome.WelcomeActivity"
+            android:theme="@style/ComposeActivityStyle" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

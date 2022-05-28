@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/java/com/kevingt/moneybook/book/record/DatePicker.kt" value="0.2852664576802508" />
+        <entry key="app/src/main/java/com/kevingt/moneybook/book/record/RecordTypeTab.kt" value="0.25277777777777777" />
+        <entry key="app/src/main/java/com/kevingt/moneybook/ui/TopBar.kt" value="0.25277777777777777" />
         <entry key="app/src/main/java/com/kevingt/moneybook/welcome/WelcomeBinding.kt" value="0.35454545454545455" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1365" />
       </map>
     </option>
   </component>

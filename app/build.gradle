@@ -34,6 +34,8 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled = true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -58,7 +60,7 @@ kapt {
 }
 
 ext {
-    compose_ui_version = '1.2.0-beta01'
+    compose_ui_version = '1.2.0-beta02'
     nav_version = '2.4.2'
     dagger_hilt_version = '2.42'
 }
@@ -77,12 +79,14 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    // Compose UI utils
+    // https://google.github.io/accompanist/flowlayout/
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.9-beta"
 
     // Navigation
     // https://developer.android.com/jetpack/androidx/releases/navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     // Dagger Hilt
     // https://dagger.dev/hilt/gradle-setup
@@ -102,6 +106,7 @@ dependencies {
     // Utils
     implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'com.google.code.gson:gson:2.9.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

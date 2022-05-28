@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
@@ -24,6 +25,7 @@ fun RecordInfo() {
     val viewModel = hiltViewModel<RecordViewModel>()
 
     val date by viewModel.date.collectAsState()
+    val name by viewModel.name.collectAsState()
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
 
@@ -31,6 +33,8 @@ fun RecordInfo() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(16.dp)
     ) {
+
+        RecordTypeTab()
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -45,7 +49,9 @@ fun RecordInfo() {
 
         CategoriesGrid()
 
+        TextField(value = name, onValueChange = viewModel::setName)
 
+        Calculator()
     }
 
     if (showDatePicker) {

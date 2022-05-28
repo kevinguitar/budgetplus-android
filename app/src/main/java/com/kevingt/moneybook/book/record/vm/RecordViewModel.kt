@@ -25,6 +25,15 @@ class RecordViewModel @Inject constructor(
     private val _category = MutableStateFlow<String?>(null)
     val category: StateFlow<String?> = _category.asStateFlow()
 
+    private val _name = MutableStateFlow("")
+    val name: StateFlow<String> = _name.asStateFlow()
+
+    private val _priceText = MutableStateFlow("")
+    val priceText: StateFlow<String> = _priceText.asStateFlow()
+
+    private val _price = MutableStateFlow(0.0)
+    val price: StateFlow<Double> = _price.asStateFlow()
+
     val expenseCategories = bookRepo.bookState
         .map { it?.expenseCategories.orEmpty() }
 
@@ -41,5 +50,13 @@ class RecordViewModel @Inject constructor(
 
     fun setCategory(category: String) {
         _category.value = category
+    }
+
+    fun setName(name: String) {
+        _name.value = name
+    }
+
+    fun setPriceText(priceText: String) {
+        _priceText.value = priceText
     }
 }

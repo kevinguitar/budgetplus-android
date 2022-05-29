@@ -13,11 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kevingt.moneybook.utils.shortFormatted
 import java.time.LocalDate
 
 @Composable
-fun OverviewScreen() {
+fun OverviewScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<OverviewViewModel>()
 

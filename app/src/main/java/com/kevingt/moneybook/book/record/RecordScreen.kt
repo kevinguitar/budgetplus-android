@@ -19,7 +19,7 @@ fun RecordScreen(navController: NavController) {
 
         TopBar(title = "Record ${type.name}")
 
-        RecordInfo()
+        RecordInfo(navController = navController)
 
     }
 }

@@ -1,13 +1,20 @@
 package com.kevingt.moneybook.book.record
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -15,13 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.RecordType
 
 @Composable
-fun CategoriesGrid() {
+fun CategoriesGrid(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
@@ -49,6 +58,9 @@ fun CategoriesGrid() {
             }
         }
 
+        EditCategoriesCard {
+            navController.navigate(route = "${AddDest.EditCategory.route}?type=$type")
+        }
     }
 }
 
@@ -76,7 +88,42 @@ fun CategoryCard(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun EditCategoriesCard(onClick: () -> Unit) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        backgroundColor = Color.White,
+        onClick = onClick
+    ) {
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = "Edit Categories",
+                modifier = Modifier.size(16.dp)
+            )
+
+            Text(
+                text = "Edit",
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun CategoryCard_Preview() =
-    CategoryCard(category = "Food", isSelected = false, onClick = {})
+    CategoryCard(category = "Food", isSelected = true, onClick = {})
+
+@Preview
+@Composable
+private fun EditCategoriesCard_Preview() = EditCategoriesCard(onClick = {})

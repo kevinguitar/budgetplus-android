@@ -17,11 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.utils.longFormatted
 
 @Composable
-fun RecordInfo() {
+fun RecordInfo(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
@@ -48,7 +49,7 @@ fun RecordInfo() {
             Text(text = date.longFormatted)
         }
 
-        CategoriesGrid()
+        CategoriesGrid(navController = navController)
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

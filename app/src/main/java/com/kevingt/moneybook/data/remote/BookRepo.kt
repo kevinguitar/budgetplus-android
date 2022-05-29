@@ -32,6 +32,10 @@ interface BookRepo {
 
     suspend fun createBook(name: String)
 
+    fun addCategory(type: RecordType, category: String)
+
+    fun editCategory(type: RecordType, oldCategory: String, newCategory: String)
+
 }
 
 @Singleton
@@ -102,6 +106,49 @@ class BookRepoImpl @Inject constructor(
         )
         val doc = booksDb.add(newBook).await()
         observeBook(doc.id)
+    }
+
+    override fun addCategory(type: RecordType, category: String) {
+        val bookId = bookIdState.value ?: return
+        val book = bookState.value ?: return
+        val newCategories = when (type) {
+            RecordType.Expense -> book.expenseCategories
+            RecordType.Income -> book.incomeCategories
+        }
+            .toMutableList()
+            .apply { add(category) }
+
+        booksDb.document(bookId)
+            .update(
+                when (type) {
+                    RecordType.Expense -> "expenseCategories"
+                    RecordType.Income -> "incomeCategories"
+                },
+                newCategories
+            )
+    }
+
+    override fun editCategory(type: RecordType, oldCategory: String, newCategory: String) {
+        val bookId = bookIdState.value ?: return
+        val book = bookState.value ?: return
+        val categories = when (type) {
+            RecordType.Expense -> book.expenseCategories
+            RecordType.Income -> book.incomeCategories
+        }.toMutableList()
+
+        val index = categories.indexOf(oldCategory)
+        if (index == -1) return
+
+        categories[index] = newCategory
+
+        booksDb.document(bookId)
+            .update(
+                when (type) {
+                    RecordType.Expense -> "expenseCategories"
+                    RecordType.Income -> "incomeCategories"
+                },
+                categories
+            )
     }
 
     private var bookRegistration: ListenerRegistration? = null

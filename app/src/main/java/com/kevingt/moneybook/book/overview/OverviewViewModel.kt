@@ -7,8 +7,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
-    recordRepo: RecordRepo,
+    private val recordRepo: RecordRepo,
 ) : ViewModel() {
 
     val records = recordRepo.recordsState
+
+    fun deleteRecord(id: String) {
+        recordRepo.deleteRecord(recordId = id)
+    }
 }

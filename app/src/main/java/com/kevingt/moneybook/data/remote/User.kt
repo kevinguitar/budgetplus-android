@@ -5,8 +5,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User(
-    val id: String,
-    val name: String?,
-    val email: String?,
-    val photoUrl: String?,
+    val id: String = "",
+    val name: String? = null,
+    val email: String? = null,
+    val photoUrl: String? = null,
 ) : Parcelable
+
+@Parcelize
+data class Author(
+    val id: String = "",
+    val name: String? = null,
+) : Parcelable
+
+fun User.toAuthor() = Author(id = id, name = name)

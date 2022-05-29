@@ -2,7 +2,7 @@ package com.kevingt.moneybook.data.remote
 
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObjects
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.utils.AppScope
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +19,8 @@ interface RecordRepo {
     val recordsState: StateFlow<List<Record>?>
 
     fun createRecord(record: Record)
+
+    fun deleteRecord(recordId: String)
 
 }
 
@@ -46,6 +48,10 @@ class RecordRepoImpl @Inject constructor(
         recordsDb.add(record)
     }
 
+    override fun deleteRecord(recordId: String) {
+        recordsDb.document(recordId).delete()
+    }
+
     private var recordsRegistration: ListenerRegistration? = null
 
     private fun observeRecords(bookId: String?) {
@@ -64,7 +70,9 @@ class RecordRepoImpl @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                _recordsState.value = snapshot.toObjects()
+                _recordsState.value = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject<Record>()?.copy(id = doc.id)
+                }
             }
     }
 }

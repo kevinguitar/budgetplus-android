@@ -73,7 +73,8 @@ fun EditCategoryScreen(
         EditCategoryDialog(
             mode = dialogMode,
             onConfirm = { name -> viewModel.onCategoryEdited(dialogMode, type, name) },
-            onDismiss = { editDialogMode = null }
+            onDismiss = { editDialogMode = null },
+            onDelete = { viewModel.deleteCategory(dialogMode, type) }
         )
     }
 }

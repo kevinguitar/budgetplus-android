@@ -3,6 +3,7 @@ package com.kevingt.moneybook.book.category
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -33,6 +34,7 @@ fun EditCategoryDialog(
     mode: CategoryEditMode,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
+    onDelete: () -> Unit
 ) {
 
     val currentName = (mode as? CategoryEditMode.Rename)?.currentName
@@ -52,19 +54,33 @@ fun EditCategoryDialog(
 
             TextField(value = name, onValueChange = { name = it })
 
-            Button(
-                onClick = {
-                    onConfirm(name)
-                    onDismiss()
-                },
-                enabled = name.isNotBlank() && name != currentName,
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                val text = when (mode) {
-                    CategoryEditMode.Add -> "Add"
-                    is CategoryEditMode.Rename -> "Rename"
+
+                if (mode is CategoryEditMode.Rename) {
+                    Button(onClick = {
+                        onDelete()
+                        onDismiss()
+                    }) {
+                        Text(text = "Delete")
+                    }
                 }
-                Text(text = text)
+
+                Button(
+                    onClick = {
+                        onConfirm(name)
+                        onDismiss()
+                    },
+                    enabled = name.isNotBlank() && name != currentName,
+                ) {
+                    val text = when (mode) {
+                        CategoryEditMode.Add -> "Add"
+                        is CategoryEditMode.Rename -> "Rename"
+                    }
+                    Text(text = text)
+                }
             }
         }
     }
@@ -75,5 +91,6 @@ fun EditCategoryDialog(
 private fun EditCategoryDialog() = EditCategoryDialog(
     mode = CategoryEditMode.Rename("My Awesome Category"),
     onConfirm = {},
-    onDismiss = {}
+    onDismiss = {},
+    onDelete = {}
 )

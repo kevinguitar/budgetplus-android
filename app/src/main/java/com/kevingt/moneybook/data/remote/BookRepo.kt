@@ -32,9 +32,14 @@ interface BookRepo {
 
     suspend fun createBook(name: String)
 
+    /**
+     *  Categories
+     */
     fun addCategory(type: RecordType, category: String)
 
     fun editCategory(type: RecordType, oldCategory: String, newCategory: String)
+
+    fun deleteCategory(type: RecordType, name: String)
 
 }
 
@@ -76,11 +81,13 @@ class BookRepoImpl @Inject constructor(
 
     override suspend fun handlePendingJoinRequest() {
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
-        val userId = authManager.requireUserId()
+        val user = requireNotNull(authManager.userState.value) { "User is null" }
+        val author = user.toAuthor()
+
         val book = booksDb.document(bookId).get().requireValue<Book>()
-        val newUsers = book.users.toMutableList()
-        if (userId !in newUsers) {
-            newUsers.add(userId)
+        val newUsers = book.author.toMutableList()
+        if (author !in newUsers) {
+            newUsers.add(author)
         }
 
         booksDb.document(bookId)
@@ -97,10 +104,10 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun createBook(name: String) {
-        val userId = authManager.requireUserId()
+        val user = requireNotNull(authManager.userState.value) { "User is null" }
         val newBook = Book(
             name = name,
-            users = listOf(userId),
+            author = listOf(user.toAuthor()),
             expenseCategories = listOf("Food", "Daily", "Transport"),
             incomeCategories = listOf("Salary")
         )
@@ -109,7 +116,6 @@ class BookRepoImpl @Inject constructor(
     }
 
     override fun addCategory(type: RecordType, category: String) {
-        val bookId = bookIdState.value ?: return
         val book = bookState.value ?: return
         val newCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
@@ -118,29 +124,38 @@ class BookRepoImpl @Inject constructor(
             .toMutableList()
             .apply { add(category) }
 
-        booksDb.document(bookId)
-            .update(
-                when (type) {
-                    RecordType.Expense -> "expenseCategories"
-                    RecordType.Income -> "incomeCategories"
-                },
-                newCategories
-            )
+        updateCategories(type, newCategories)
     }
 
     override fun editCategory(type: RecordType, oldCategory: String, newCategory: String) {
-        val bookId = bookIdState.value ?: return
         val book = bookState.value ?: return
-        val categories = when (type) {
+        val newCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
             RecordType.Income -> book.incomeCategories
         }.toMutableList()
 
-        val index = categories.indexOf(oldCategory)
+        val index = newCategories.indexOf(oldCategory)
         if (index == -1) return
 
-        categories[index] = newCategory
+        newCategories[index] = newCategory
 
+        updateCategories(type, newCategories)
+    }
+
+    override fun deleteCategory(type: RecordType, name: String) {
+        val book = bookState.value ?: return
+        val newCategories = when (type) {
+            RecordType.Expense -> book.expenseCategories
+            RecordType.Income -> book.incomeCategories
+        }
+            .toMutableList()
+            .apply { remove(name) }
+
+        updateCategories(type, newCategories)
+    }
+
+    private fun updateCategories(type: RecordType, categories: List<String>) {
+        val bookId = bookIdState.value ?: return
         booksDb.document(bookId)
             .update(
                 when (type) {

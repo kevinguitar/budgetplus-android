@@ -24,4 +24,9 @@ class EditCategoryViewModel @Inject constructor(
             is CategoryEditMode.Rename -> bookRepo.editCategory(type, mode.currentName, name)
         }
     }
+
+    fun deleteCategory(mode: CategoryEditMode, type: RecordType) {
+        val name = (mode as? CategoryEditMode.Rename)?.currentName ?: return
+        bookRepo.deleteCategory(type, name)
+    }
 }

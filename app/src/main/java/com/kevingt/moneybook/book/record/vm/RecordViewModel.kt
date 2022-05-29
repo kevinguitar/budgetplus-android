@@ -3,10 +3,8 @@ package com.kevingt.moneybook.book.record.vm
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.kevingt.moneybook.data.remote.BookRepo
-import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.data.remote.RecordRepo
-import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.auth.AuthManager
+import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +19,7 @@ class RecordViewModel @Inject constructor(
     val calculator: CalculatorViewModel,
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
+    private val authManager: AuthManager,
     private val toaster: Toaster,
 ) : ViewModel() {
 
@@ -93,7 +92,8 @@ class RecordViewModel @Inject constructor(
             date = date.value.toEpochDay(),
             category = category,
             name = name.value,
-            price = calculator.price.value
+            price = calculator.price.value,
+            author = authManager.userState.value?.toAuthor()
         )
         recordRepo.createRecord(record)
 

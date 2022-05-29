@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TopBar(
     title: String,
-    navigateBack: (() -> Unit)? = null
+    navigateBack: (() -> Unit)? = null,
+    menuItem: @Composable (() -> Unit)? = null,
 ) {
 
     Row(
@@ -47,8 +48,13 @@ fun TopBar(
         Text(
             text = title,
             style = MaterialTheme.typography.h5,
-            color = Color.White
+            color = Color.White,
+            modifier = Modifier.weight(1F)
         )
+
+        if (menuItem != null) {
+            menuItem()
+        }
     }
 }
 

@@ -62,7 +62,8 @@ fun Calculator(viewModel: CalculatorViewModel) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            userScrollEnabled = false
         ) {
             items(CalculatorButton.values()) { btn ->
                 CalculatorBtn(button = btn) { viewModel.onInput(btn) }

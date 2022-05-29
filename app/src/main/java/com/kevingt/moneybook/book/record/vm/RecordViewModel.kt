@@ -1,5 +1,7 @@
 package com.kevingt.moneybook.book.record.vm
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
@@ -34,6 +36,9 @@ class RecordViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name: StateFlow<String> = _name.asStateFlow()
 
+    val bookName = bookRepo.bookState
+        .map { it?.name }
+
     val expenseCategories = bookRepo.bookState
         .map { it?.expenseCategories.orEmpty() }
 
@@ -54,6 +59,17 @@ class RecordViewModel @Inject constructor(
 
     fun setName(name: String) {
         _name.value = name
+    }
+
+    fun shareJoinLink(context: Context) {
+        val bookId = bookRepo.bookIdState.value ?: return
+        val joinLink = "https://moneybook.cchi.tw/join/$bookId"
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "Click the link to track expenses together!\n$joinLink")
+        }
+        context.startActivity(Intent.createChooser(intent, "Invite"))
     }
 
     fun record() {

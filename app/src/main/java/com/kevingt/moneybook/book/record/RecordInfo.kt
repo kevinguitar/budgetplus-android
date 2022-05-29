@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
-import com.kevingt.moneybook.utils.formatted
+import com.kevingt.moneybook.utils.longFormatted
 
 @Composable
 fun RecordInfo() {
@@ -45,7 +45,7 @@ fun RecordInfo() {
 
             Icon(Icons.Filled.DateRange, contentDescription = "date")
 
-            Text(text = date.formatted)
+            Text(text = date.longFormatted)
         }
 
         CategoriesGrid()

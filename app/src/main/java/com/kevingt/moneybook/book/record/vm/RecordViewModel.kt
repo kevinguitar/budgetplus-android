@@ -3,6 +3,7 @@ package com.kevingt.moneybook.book.record.vm
 import androidx.lifecycle.ViewModel
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
+import com.kevingt.moneybook.data.remote.RecordRepo
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(
     val calculator: CalculatorViewModel,
     private val bookRepo: BookRepo,
+    private val recordRepo: RecordRepo,
     private val toaster: Toaster,
 ) : ViewModel() {
 
@@ -77,7 +79,7 @@ class RecordViewModel @Inject constructor(
             name = name.value,
             price = calculator.price.value
         )
-        bookRepo.createRecord(record)
+        recordRepo.createRecord(record)
 
         toaster.showMessage("Record created")
         resetScreen()

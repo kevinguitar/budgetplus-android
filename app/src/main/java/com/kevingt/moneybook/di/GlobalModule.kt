@@ -7,6 +7,8 @@ import com.kevingt.moneybook.data.local.AppPreference
 import com.kevingt.moneybook.data.local.Preference
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.BookRepoImpl
+import com.kevingt.moneybook.data.remote.RecordRepo
+import com.kevingt.moneybook.data.remote.RecordRepoImpl
 import com.kevingt.moneybook.utils.AppCoroutineScope
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.Toaster
@@ -33,6 +35,9 @@ interface GlobalModule {
 
     @Binds
     fun provideBookRepo(impl: BookRepoImpl): BookRepo
+
+    @Binds
+    fun provideRecordRepo(impl: RecordRepoImpl): RecordRepo
 
     companion object {
 

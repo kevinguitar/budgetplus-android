@@ -9,9 +9,9 @@ enum class RecordType {
 
 @Parcelize
 data class Record(
-    val type: RecordType,
-    val date: Long,
-    val category: String,
-    val name: String,
-    val price: Double
+    val type: RecordType = RecordType.Expense,
+    val date: Long = 0,
+    val category: String = "",
+    val name: String = "",
+    val price: Double = 0.0
 ) : Parcelable

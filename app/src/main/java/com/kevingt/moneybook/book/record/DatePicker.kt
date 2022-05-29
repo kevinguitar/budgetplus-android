@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import com.kevingt.moneybook.utils.formatted
+import com.kevingt.moneybook.utils.longFormatted
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
@@ -50,7 +50,7 @@ fun DatePicker(
             Spacer(modifier = Modifier.size(16.dp))
 
             Text(
-                text = currentDate.formatted,
+                text = currentDate.longFormatted,
                 style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.onPrimary
             )

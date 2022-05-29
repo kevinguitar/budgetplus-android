@@ -32,6 +32,11 @@ interface BookRepo {
 
     suspend fun createBook(name: String)
 
+    /**
+     *  Records operations
+     */
+    fun createRecord(record: Record)
+
 }
 
 @Singleton
@@ -56,6 +61,11 @@ class BookRepoImpl @Inject constructor(
     private val pendingJoinId = MutableStateFlow<String?>(null)
 
     private val booksDb = Firebase.firestore.collection("books")
+
+    private val recordsDb
+        get() = booksDb
+            .document(requireNotNull(bookIdState.value) { "Book id is null" })
+            .collection("records")
 
     init {
         authManager.userState
@@ -102,6 +112,10 @@ class BookRepoImpl @Inject constructor(
         )
         val doc = booksDb.add(newBook).await()
         observeBook(doc.id)
+    }
+
+    override fun createRecord(record: Record) {
+        recordsDb.add(record)
     }
 
     private var bookRegistration: ListenerRegistration? = null

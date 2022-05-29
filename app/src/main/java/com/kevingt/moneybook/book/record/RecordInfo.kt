@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -49,9 +50,24 @@ fun RecordInfo() {
 
         CategoriesGrid()
 
-        TextField(value = name, onValueChange = viewModel::setName)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
 
-        Calculator()
+            Text(text = "Description:")
+
+            TextField(value = name, onValueChange = viewModel::setName)
+        }
+
+        Calculator(viewModel = viewModel.calculator)
+
+        Button(
+            onClick = { viewModel.record() },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text(text = "Add")
+        }
     }
 
     if (showDatePicker) {

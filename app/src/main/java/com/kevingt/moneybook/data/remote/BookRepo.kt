@@ -12,7 +12,10 @@ import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
 import com.kevingt.moneybook.utils.requireValue
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -68,9 +71,7 @@ class BookRepoImpl @Inject constructor(
 
     init {
         authManager.userState
-            .map { it?.id }
-            .distinctUntilChanged()
-            .onEach(::onUserIdChanged)
+            .onEach(::onUserChanged)
             .launchIn(appScope)
     }
 
@@ -85,7 +86,7 @@ class BookRepoImpl @Inject constructor(
         val author = user.toAuthor()
 
         val book = booksDb.document(bookId).get().requireValue<Book>()
-        val newUsers = book.author.toMutableList()
+        val newUsers = book.authors.toMutableList()
         if (author !in newUsers) {
             newUsers.add(author)
         }
@@ -99,15 +100,15 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun checkUserHasBook(): Boolean {
-        val userId = authManager.requireUserId()
-        return getBookId(userId) != null
+        val user = authManager.requireUser()
+        return getBookId(user.toAuthor()) != null
     }
 
     override suspend fun createBook(name: String) {
         val user = requireNotNull(authManager.userState.value) { "User is null" }
         val newBook = Book(
             name = name,
-            author = listOf(user.toAuthor()),
+            authors = listOf(user.toAuthor()),
             expenseCategories = listOf("Food", "Daily", "Transport"),
             incomeCategories = listOf("Salary")
         )
@@ -168,13 +169,13 @@ class BookRepoImpl @Inject constructor(
 
     private var bookRegistration: ListenerRegistration? = null
 
-    private suspend fun onUserIdChanged(userId: String?) {
-        if (userId == null) {
+    private suspend fun onUserChanged(user: User?) {
+        if (user == null) {
             setBookId(null)
             setBook(null)
             bookRegistration?.remove()
         } else {
-            val bookId = getBookId(userId) ?: return
+            val bookId = getBookId(user.toAuthor()) ?: return
             observeBook(bookId)
         }
     }
@@ -199,8 +200,8 @@ class BookRepoImpl @Inject constructor(
             }
     }
 
-    private suspend fun getBookId(userId: String): String? {
-        val snapshot = booksDb.whereArrayContains("users", userId).get().await()
+    private suspend fun getBookId(author: Author): String? {
+        val snapshot = booksDb.whereArrayContains("authors", author).get().await()
         return snapshot.firstOrNull()?.id
     }
 

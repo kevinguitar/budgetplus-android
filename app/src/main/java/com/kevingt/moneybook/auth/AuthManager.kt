@@ -14,7 +14,7 @@ interface AuthManager {
 
     val userState: StateFlow<User?>
 
-    fun requireUserId(): String
+    fun requireUser(): User
 
     fun setUser(user: User?)
 
@@ -32,8 +32,8 @@ class AuthManagerImpl @Inject constructor(
     private val _userState = MutableStateFlow(currentUser)
     override val userState: StateFlow<User?> get() = _userState
 
-    override fun requireUserId(): String {
-        return requireNotNull(userState.value?.id) { "User id is null" }
+    override fun requireUser(): User {
+        return requireNotNull(userState.value) { "User is null." }
     }
 
     override fun setUser(user: User?) {

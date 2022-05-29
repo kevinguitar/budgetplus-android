@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/java/com/kevingt/moneybook/book/category/EditCategoryDialog.kt" value="0.3997668997668998" />
+        <entry key="app/src/main/java/com/kevingt/moneybook/book/overview/OverviewScreen.kt" value="0.375" />
         <entry key="app/src/main/java/com/kevingt/moneybook/book/record/Calculator.kt" value="0.335" />
         <entry key="app/src/main/java/com/kevingt/moneybook/book/record/DatePicker.kt" value="0.2852664576802508" />
         <entry key="app/src/main/java/com/kevingt/moneybook/book/record/RecordTypeTab.kt" value="0.25277777777777777" />

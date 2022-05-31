@@ -21,7 +21,8 @@
             android:name=".book.BookActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/ComposeActivityStyle">
+            android:theme="@style/ComposeActivityStyle"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

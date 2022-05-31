@@ -51,15 +51,11 @@ fun EditCategoryScreen(
         ) {
 
             when (type) {
-                RecordType.Expense -> expenseCategories.forEach { item ->
-                    CategoryCard(category = item, isSelected = false) {
-                        editDialogMode = CategoryEditMode.Rename(item)
-                    }
-                }
-                RecordType.Income -> incomeCategories.forEach { item ->
-                    CategoryCard(category = item, isSelected = false) {
-                        editDialogMode = CategoryEditMode.Rename(item)
-                    }
+                RecordType.Expense -> expenseCategories
+                RecordType.Income -> incomeCategories
+            }.forEach { item ->
+                CategoryCard(category = item, isSelected = false) {
+                    editDialogMode = CategoryEditMode.Rename(item)
                 }
             }
 

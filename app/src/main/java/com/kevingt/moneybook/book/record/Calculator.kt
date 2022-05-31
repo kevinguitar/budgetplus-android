@@ -2,9 +2,6 @@ package com.kevingt.moneybook.book.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -59,15 +56,20 @@ fun Calculator(viewModel: CalculatorViewModel) {
             }
         }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(4),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            userScrollEnabled = false
-        ) {
-            items(CalculatorButton.values()) { btn ->
-                CalculatorBtn(button = btn) { viewModel.onInput(btn) }
-            }
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            CalculatorButton.values().toList()
+                .chunked(4)
+                .forEach { btnCol ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        btnCol.forEach { btn ->
+                            CalculatorBtn(
+                                button = btn,
+                                modifier = Modifier.weight(1F),
+                                onClick = { viewModel.onInput(btn) }
+                            )
+                        }
+                    }
+                }
         }
     }
 }
@@ -75,12 +77,13 @@ fun Calculator(viewModel: CalculatorViewModel) {
 @Composable
 private fun CalculatorBtn(
     button: CalculatorButton,
+    modifier: Modifier,
     onClick: () -> Unit
 ) {
 
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .height(48.dp)
             .background(
                 color = Color.LightGray,

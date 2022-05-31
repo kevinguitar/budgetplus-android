@@ -1,8 +1,12 @@
 package com.kevingt.moneybook.book
 
 import android.os.Bundle
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
@@ -11,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
@@ -78,7 +83,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 @Composable
 fun BottomNav(navController: NavController) {
 
-    BottomNavigation {
+    BottomNavigation(modifier = Modifier.height(48.dp)) {
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentHierarchy = navBackStackEntry?.destination?.hierarchy
@@ -87,14 +92,12 @@ fun BottomNav(navController: NavController) {
             selected = currentHierarchy?.any { it.route == BookTab.Add.route } == true,
             onClick = { navController.navigate(BookTab.Add.route) },
             icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-            label = { Text(text = "Record") }
         )
 
         BottomNavigationItem(
             selected = currentHierarchy?.any { it.route == BookTab.Overview.route } == true,
             onClick = { navController.navigate(BookTab.Overview.route) },
             icon = { Icon(Icons.Filled.List, contentDescription = null) },
-            label = { Text(text = "Overview") }
         )
     }
 }

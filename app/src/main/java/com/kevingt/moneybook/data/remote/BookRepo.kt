@@ -69,6 +69,8 @@ class BookRepoImpl @Inject constructor(
 
     private val booksDb = Firebase.firestore.collection("books")
 
+    private val authorsField get() = "authors"
+
     init {
         authManager.userState
             .onEach(::onUserChanged)
@@ -86,13 +88,13 @@ class BookRepoImpl @Inject constructor(
         val author = user.toAuthor()
 
         val book = booksDb.document(bookId).get().requireValue<Book>()
-        val newUsers = book.authors.toMutableList()
-        if (author !in newUsers) {
-            newUsers.add(author)
+        val newAuthors = book.authors.toMutableList()
+        if (author !in newAuthors) {
+            newAuthors.add(author)
         }
 
         booksDb.document(bookId)
-            .update("users", newUsers)
+            .update(authorsField, newAuthors)
             .await()
 
         pendingJoinId.value = null
@@ -201,7 +203,7 @@ class BookRepoImpl @Inject constructor(
     }
 
     private suspend fun getBookId(author: Author): String? {
-        val snapshot = booksDb.whereArrayContains("authors", author).get().await()
+        val snapshot = booksDb.whereArrayContains(authorsField, author).get().await()
         return snapshot.firstOrNull()?.id
     }
 

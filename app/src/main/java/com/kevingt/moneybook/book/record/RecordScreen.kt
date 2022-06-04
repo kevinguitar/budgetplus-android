@@ -21,7 +21,7 @@ fun RecordScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
-    val bookName by viewModel.bookName.collectAsState(initial = null)
+    val bookName by viewModel.bookName.collectAsState()
     val context = LocalContext.current
 
     Column {

@@ -1,4 +1,4 @@
-package com.kevingt.moneybook.book.record
+package com.kevingt.moneybook.ui
 
 import android.widget.CalendarView
 import androidx.compose.foundation.background
@@ -23,12 +23,13 @@ import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun DatePicker(
+fun DatePickerDialog(
+    date: LocalDate = LocalDate.now(),
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit
 ) {
 
-    var currentDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
+    var currentDate by rememberSaveable { mutableStateOf(date) }
 
     Dialog(onDismissRequest = onDismiss) {
 
@@ -93,7 +94,7 @@ fun DatePicker(
 
 // https://stackoverflow.com/questions/60417233/jetpack-compose-date-time-picker
 @Composable
-fun CustomCalendarView(
+private fun CustomCalendarView(
     date: LocalDate,
     onDateSelected: (LocalDate) -> Unit
 ) {

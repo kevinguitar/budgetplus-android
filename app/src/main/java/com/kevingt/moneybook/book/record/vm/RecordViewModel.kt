@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
+import com.kevingt.moneybook.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -36,13 +36,13 @@ class RecordViewModel @Inject constructor(
     val name: StateFlow<String> = _name.asStateFlow()
 
     val bookName = bookRepo.bookState
-        .map { it?.name }
+        .mapState { it?.name }
 
     val expenseCategories = bookRepo.bookState
-        .map { it?.expenseCategories.orEmpty() }
+        .mapState { it?.expenseCategories.orEmpty() }
 
     val incomeCategories = bookRepo.bookState
-        .map { it?.incomeCategories.orEmpty() }
+        .mapState { it?.incomeCategories.orEmpty() }
 
     fun setType(type: RecordType) {
         _type.value = type

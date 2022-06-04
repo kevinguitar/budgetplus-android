@@ -34,8 +34,8 @@ fun EditCategoryScreen(
 
     var editDialogMode by rememberSaveable { mutableStateOf<CategoryEditMode?>(null) }
 
-    val expenseCategories by viewModel.expenseCategories.collectAsState(initial = emptyList())
-    val incomeCategories by viewModel.incomeCategories.collectAsState(initial = emptyList())
+    val expenseCategories by viewModel.expenseCategories.collectAsState()
+    val incomeCategories by viewModel.incomeCategories.collectAsState()
 
     Column {
 

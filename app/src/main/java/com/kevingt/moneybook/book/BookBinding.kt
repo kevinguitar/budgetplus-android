@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kevingt.moneybook.book.category.EditCategoryScreen
+import com.kevingt.moneybook.book.details.DetailsScreen
 import com.kevingt.moneybook.book.overview.OverviewScreen
 import com.kevingt.moneybook.book.record.RecordScreen
 import com.kevingt.moneybook.data.remote.RecordType
@@ -75,8 +76,9 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 }
 
 fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
-    navigation(startDestination = OverviewDest.One.route, route = BookTab.Overview.route) {
-        composable(OverviewDest.One.route) { OverviewScreen(navController = navController) }
+    navigation(startDestination = HistoryDest.Overview.route, route = BookTab.Overview.route) {
+        composable(HistoryDest.Overview.route) { OverviewScreen(navController = navController) }
+        composable(HistoryDest.Details.route) { DetailsScreen(navController = navController) }
     }
 }
 

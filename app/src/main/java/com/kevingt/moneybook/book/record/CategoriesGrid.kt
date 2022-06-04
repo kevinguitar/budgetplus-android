@@ -37,8 +37,8 @@ fun CategoriesGrid(navController: NavController) {
     val type by viewModel.type.collectAsState()
     val category by viewModel.category.collectAsState()
 
-    val expenseCategories by viewModel.expenseCategories.collectAsState(initial = emptyList())
-    val incomeCategories by viewModel.incomeCategories.collectAsState(initial = emptyList())
+    val expenseCategories by viewModel.expenseCategories.collectAsState()
+    val incomeCategories by viewModel.incomeCategories.collectAsState()
 
     FlowRow(
         mainAxisSize = SizeMode.Expand,

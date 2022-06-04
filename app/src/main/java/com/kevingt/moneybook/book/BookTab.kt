@@ -12,8 +12,8 @@ enum class AddDest {
     val route get() = name
 }
 
-enum class OverviewDest {
-    One;
+enum class HistoryDest {
+    Overview, Details;
 
     val route get() = name
 }

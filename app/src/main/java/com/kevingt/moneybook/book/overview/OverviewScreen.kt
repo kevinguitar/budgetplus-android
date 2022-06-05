@@ -4,90 +4,87 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.kevingt.moneybook.data.remote.Author
+import com.kevingt.moneybook.book.HistoryDest
+import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.RecordTypeTab
 import com.kevingt.moneybook.ui.TopBar
-import com.kevingt.moneybook.utils.shortFormatted
-import java.time.LocalDate
+import com.kevingt.moneybook.utils.dollar
 
 @Composable
-fun OverviewScreen(navController: NavController) {
+fun OverviewScreen(
+    navController: NavController,
+    viewModel: OverviewViewModel
+) {
 
-    val viewModel = hiltViewModel<OverviewViewModel>()
-
+    val type by viewModel.type.collectAsState()
     val records by viewModel.records.collectAsState()
+    val recordGroups by viewModel.recordGroups.collectAsState()
 
     Column {
 
         TopBar(title = "Overview")
 
+        RecordTypeTab(
+            selected = type,
+            onTypeSelected = viewModel::setRecordType
+        )
+
+        TimePeriodSelector(viewModel)
+
+        Text(
+            text = "Total ${records.orEmpty().sumOf { it.price }.dollar}",
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp)
+        )
+
         LazyColumn(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            items(records.orEmpty()) { item ->
-                RecordCard(item = item, onDelete = viewModel::deleteRecord)
+
+            items(recordGroups.keys.toList()) { key ->
+                RecordGroup(
+                    category = key,
+                    records = recordGroups[key].orEmpty(),
+                    onClick = {
+                        navController.navigate(
+                            route = "${HistoryDest.Details.route}?category=$key"
+                        )
+                    }
+                )
             }
         }
+
     }
 }
 
 @Composable
-fun RecordCard(
-    item: Record,
-    onDelete: (String) -> Unit
+fun RecordGroup(
+    category: String,
+    records: List<Record>,
+    onClick: () -> Unit
 ) {
+
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .clickable(onClick = onClick)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = LocalDate.ofEpochDay(item.date).shortFormatted)
-            Text(text = item.category)
-        }
-        Text(
-            text = item.name,
-            style = MaterialTheme.typography.subtitle1,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.weight(1F)
-        )
-        Text(text = item.price.toString())
-        Text(text = item.author?.name.orEmpty())
-        Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = "Delete",
-            modifier = Modifier.clickable { onDelete(item.id) }
-        )
+        Text(text = category, modifier = Modifier.weight(1F))
+        Text(text = records.sumOf { it.price }.dollar)
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun RecordCard_Preview() = RecordCard(
-    item = Record(
-        type = RecordType.Income,
-        date = LocalDate.now().toEpochDay(),
-        category = "Food",
-        name = "Fancy Restaurant",
-        price = 453.93,
-        author = Author(id = "", name = "Kevin")
-    ),
-    onDelete = {}
-)

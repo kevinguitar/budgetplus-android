@@ -36,9 +36,7 @@ fun RecordInfo(navController: NavController) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(all = 16.dp)
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
@@ -49,7 +47,8 @@ fun RecordInfo(navController: NavController) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
 
             Text(text = "Description:")

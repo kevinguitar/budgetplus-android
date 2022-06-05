@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun DatePickerDialog(
     date: LocalDate = LocalDate.now(),
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -58,6 +60,8 @@ fun DatePickerDialog(
 
             CustomCalendarView(
                 date = currentDate,
+                minDate = minDate,
+                maxDate = maxDate,
                 onDateSelected = { currentDate = it }
             )
 
@@ -96,6 +100,8 @@ fun DatePickerDialog(
 @Composable
 private fun CustomCalendarView(
     date: LocalDate,
+    minDate: LocalDate?,
+    maxDate: LocalDate?,
     onDateSelected: (LocalDate) -> Unit
 ) {
     AndroidView(
@@ -103,6 +109,15 @@ private fun CustomCalendarView(
         factory = { context -> CalendarView(context) },
         update = { view ->
             view.date = date.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+
+            if (minDate != null) {
+                view.minDate = minDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+            }
+
+            if (maxDate != null) {
+                view.maxDate = maxDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+            }
+
             view.setOnDateChangeListener { _, year, month, dayOfMonth ->
                 onDateSelected(
                     LocalDate.now()

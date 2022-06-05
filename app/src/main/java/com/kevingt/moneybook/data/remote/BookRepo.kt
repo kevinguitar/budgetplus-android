@@ -7,7 +7,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.local.PreferenceHolder
-import com.kevingt.moneybook.data.local.bindObject
+import com.kevingt.moneybook.data.local.bindObjectOptional
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
 import com.kevingt.moneybook.utils.requireValue
@@ -54,7 +54,7 @@ class BookRepoImpl @Inject constructor(
 ) : BookRepo {
 
     private var currentBookId by preferenceHolder.bindString(null)
-    private var currentBook by preferenceHolder.bindObject<Book>(null)
+    private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
 
     private val _bookIdState = MutableStateFlow(currentBookId)
     override val bookIdState: StateFlow<String?> get() = _bookIdState

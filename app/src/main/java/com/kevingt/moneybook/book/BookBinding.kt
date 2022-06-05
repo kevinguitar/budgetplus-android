@@ -13,9 +13,11 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
@@ -25,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kevingt.moneybook.book.category.EditCategoryScreen
 import com.kevingt.moneybook.book.details.DetailsScreen
 import com.kevingt.moneybook.book.overview.OverviewScreen
+import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.record.RecordScreen
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.consumeEach
@@ -76,9 +79,29 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 }
 
 fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
-    navigation(startDestination = HistoryDest.Overview.route, route = BookTab.Overview.route) {
-        composable(HistoryDest.Overview.route) { OverviewScreen(navController = navController) }
-        composable(HistoryDest.Details.route) { DetailsScreen(navController = navController) }
+    navigation(startDestination = HistoryDest.Overview.route, route = BookTab.History.route) {
+        composable(HistoryDest.Overview.route) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(BookTab.History.route)
+            }
+            val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
+            OverviewScreen(navController = navController, viewModel)
+        }
+        composable(
+            route = "${HistoryDest.Details.route}?category={category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val args = backStackEntry.arguments ?: Bundle.EMPTY
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(BookTab.History.route)
+            }
+            val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
+            DetailsScreen(
+                navController = navController,
+                viewModel = viewModel,
+                category = args.getString("category")
+            )
+        }
     }
 }
 
@@ -97,8 +120,8 @@ fun BottomNav(navController: NavController) {
         )
 
         BottomNavigationItem(
-            selected = currentHierarchy?.any { it.route == BookTab.Overview.route } == true,
-            onClick = { navController.navigate(BookTab.Overview.route) },
+            selected = currentHierarchy?.any { it.route == BookTab.History.route } == true,
+            onClick = { navController.navigate(BookTab.History.route) },
             icon = { Icon(Icons.Filled.List, contentDescription = null) },
         )
     }

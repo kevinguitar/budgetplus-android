@@ -68,3 +68,29 @@ class ParcelablePreferenceDelegate<T : Any?>(
         }
     }
 }
+
+class NonNullParcelablePreferenceDelegate<T : Any>(
+    private val default: T,
+    private val clazz: Class<T>,
+    private val preference: Preference,
+    private val gson: Gson,
+) {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        val json = preference.pref.getString(property.name, null) ?: return default
+        return try {
+            gson.fromJson(json, clazz)
+        } catch (e: Exception) {
+            Timber.e(e)
+            default
+        }
+    }
+
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        try {
+            val json = gson.toJson(value)
+            preference.editor.putString(property.name, json).apply()
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+    }
+}

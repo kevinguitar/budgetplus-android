@@ -41,7 +41,7 @@ fun EditCategoryScreen(
 
         TopBar(
             title = "Edit Category",
-            navigateBack = { navController.popBackStack() }
+            navigateBack = { navController.navigateUp() }
         )
 
         FlowRow(

@@ -1,7 +1,7 @@
 package com.kevingt.moneybook.book
 
 enum class BookTab {
-    Add, Overview;
+    Add, History;
 
     val route get() = name
 }

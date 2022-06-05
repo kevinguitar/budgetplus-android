@@ -23,5 +23,8 @@ class PreferenceHolder @Inject constructor(
     }
 }
 
-inline fun <reified T : Any?> PreferenceHolder.bindObject(default: T? = null) =
+inline fun <reified T : Any?> PreferenceHolder.bindObjectOptional(default: T? = null) =
     ParcelablePreferenceDelegate(default, T::class.java, preference, gson)
+
+inline fun <reified T : Any> PreferenceHolder.bindObject(default: T) =
+    NonNullParcelablePreferenceDelegate(default, T::class.java, preference, gson)

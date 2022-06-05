@@ -42,7 +42,8 @@ fun CategoriesGrid(navController: NavController) {
 
     FlowRow(
         mainAxisSize = SizeMode.Expand,
-        mainAxisSpacing = 8.dp
+        mainAxisSpacing = 8.dp,
+        modifier = Modifier.padding(horizontal = 16.dp)
     ) {
 
         when (type) {

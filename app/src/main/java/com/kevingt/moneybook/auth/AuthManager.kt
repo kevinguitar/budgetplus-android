@@ -3,7 +3,7 @@ package com.kevingt.moneybook.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.data.local.PreferenceHolder
-import com.kevingt.moneybook.data.local.bindObject
+import com.kevingt.moneybook.data.local.bindObjectOptional
 import com.kevingt.moneybook.data.remote.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +27,7 @@ class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
 ) : AuthManager {
 
-    private var currentUser by preferenceHolder.bindObject<User>()
+    private var currentUser by preferenceHolder.bindObjectOptional<User>()
 
     private val _userState = MutableStateFlow(currentUser)
     override val userState: StateFlow<User?> get() = _userState

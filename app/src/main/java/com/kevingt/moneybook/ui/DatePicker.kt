@@ -3,6 +3,7 @@ package com.kevingt.moneybook.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -23,7 +24,9 @@ fun DatePicker(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .clickable(onClick = onClick)
     ) {
 
         Icon(Icons.Filled.DateRange, contentDescription = "date")

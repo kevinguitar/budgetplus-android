@@ -30,7 +30,10 @@ fun Calculator(viewModel: CalculatorViewModel) {
 
     val priceText by viewModel.priceText.collectAsState()
 
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 

@@ -1,11 +1,12 @@
 package com.kevingt.moneybook.book.record.vm
 
 import com.kevingt.moneybook.book.record.CalculatorButton
+import com.kevingt.moneybook.utils.priceText
+import com.kevingt.moneybook.utils.roundUpPrice
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.math.RoundingMode
 import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor() {
@@ -47,14 +48,9 @@ class CalculatorViewModel @Inject constructor() {
         }
 
         val rawResult: Double = expression.evaluate()
-        val result = rawResult
-            .toBigDecimal()
-            .setScale(2, RoundingMode.HALF_UP)
 
-        _price.value = result.toDouble()
-        _priceText.value = result
-            .stripTrailingZeros()
-            .toPlainString()
+        _price.value = rawResult.roundUpPrice
+        _priceText.value = rawResult.priceText
     }
 
     fun clearPrice() {

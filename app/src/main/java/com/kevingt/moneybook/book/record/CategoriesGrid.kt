@@ -60,7 +60,7 @@ fun CategoriesGrid(navController: NavController) {
         }
 
         EditCategoriesCard {
-            navController.navigate(route = "${AddDest.EditCategory.route}?type=$type")
+            navController.navigate(route = "${AddDest.EditCategory.route}/$type")
         }
     }
 }

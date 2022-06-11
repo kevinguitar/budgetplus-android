@@ -6,33 +6,38 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
+import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.ui.DatePicker
 import com.kevingt.moneybook.ui.DatePickerDialog
 import com.kevingt.moneybook.ui.RecordTypeTab
 
 @Composable
-fun RecordInfo(navController: NavController) {
+fun RecordInfo(
+    navController: NavController,
+    record: Record?
+) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
+
+    if (record != null) {
+        viewModel.setEditMode(record)
+    }
 
     val type by viewModel.type.collectAsState()
     val date by viewModel.date.collectAsState()
     val name by viewModel.name.collectAsState()
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
-    val focusManager = LocalFocusManager.current
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -58,15 +63,7 @@ fun RecordInfo(navController: NavController) {
 
         Calculator(viewModel = viewModel.calculator)
 
-        Button(
-            onClick = {
-                viewModel.record()
-                focusManager.clearFocus()
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = "Add")
-        }
+        RecordActions(navController = navController)
     }
 
     if (showDatePicker) {

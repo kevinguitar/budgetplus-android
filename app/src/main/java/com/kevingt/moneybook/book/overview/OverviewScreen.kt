@@ -59,9 +59,7 @@ fun OverviewScreen(
                     category = key,
                     records = recordGroups[key].orEmpty(),
                     onClick = {
-                        navController.navigate(
-                            route = "${HistoryDest.Details.route}?category=$key"
-                        )
+                        navController.navigate(route = "${HistoryDest.Details.route}/$key")
                     }
                 )
             }

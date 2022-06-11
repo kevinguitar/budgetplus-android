@@ -3,14 +3,13 @@ package com.kevingt.moneybook.book.record.vm
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
 import com.kevingt.moneybook.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -22,6 +21,9 @@ class RecordViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val toaster: Toaster,
 ) : ViewModel() {
+
+    private val _mode = MutableStateFlow<RecordMode>(RecordMode.Add)
+    val isEditing: StateFlow<Boolean> = _mode.mapState { it is RecordMode.Edit }
 
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
@@ -43,6 +45,25 @@ class RecordViewModel @Inject constructor(
 
     val incomeCategories = bookRepo.bookState
         .mapState { it?.incomeCategories.orEmpty() }
+
+    init {
+        _mode
+            .filterIsInstance<RecordMode.Edit>()
+            .onEach { mode ->
+                with(mode.record) {
+                    setType(type)
+                    setDate(LocalDate.ofEpochDay(date))
+                    setCategory(category)
+                    setName(name)
+                    calculator.editPrice(price)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun setEditMode(record: Record) {
+        _mode.value = RecordMode.Edit(record)
+    }
 
     fun setType(type: RecordType) {
         _type.value = type
@@ -95,9 +116,24 @@ class RecordViewModel @Inject constructor(
             price = calculator.price.value,
             author = authManager.userState.value?.toAuthor()
         )
-        recordRepo.createRecord(record)
 
-        toaster.showMessage("Record created")
+        val recordId = (_mode.value as? RecordMode.Edit)?.record?.id
+        if (recordId == null) {
+            recordRepo.createRecord(record)
+            toaster.showMessage("Record created")
+        } else {
+            recordRepo.editRecord(recordId, record)
+            toaster.showMessage("Record edited")
+        }
+
+        resetScreen()
+    }
+
+    fun deleteRecord() {
+        val recordId = (_mode.value as RecordMode.Edit).record.id
+        recordRepo.deleteRecord(recordId)
+
+        toaster.showMessage("Record deleted")
         resetScreen()
     }
 

@@ -8,7 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,11 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.TopBar
+import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.dollar
 import com.kevingt.moneybook.utils.shortFormatted
 import java.time.LocalDate
@@ -52,7 +54,10 @@ fun DetailsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(records) { item ->
-                RecordCard(item = item, onEdit = { viewModel.deleteRecord(item.id) })
+                RecordCard(item = item) {
+                    navController.currentBackStackEntry?.arguments?.putParcelable(ARG_EDIT_RECORD, item)
+                    navController.navigate(AddDest.Record.route)
+                }
             }
         }
     }
@@ -79,7 +84,7 @@ fun RecordCard(
         Text(text = item.price.dollar)
         Text(text = item.author?.name.orEmpty())
         Icon(
-            imageVector = Icons.Filled.Delete,
+            imageVector = Icons.Filled.Edit,
             contentDescription = "Edit",
             modifier = Modifier.clickable(onClick = onEdit)
         )

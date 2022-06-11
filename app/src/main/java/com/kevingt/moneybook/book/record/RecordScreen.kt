@@ -14,10 +14,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
+import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.ui.TopBar
 
 @Composable
-fun RecordScreen(navController: NavController) {
+fun RecordScreen(
+    navController: NavController,
+    record: Record?
+) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
@@ -38,7 +42,10 @@ fun RecordScreen(navController: NavController) {
             }
         )
 
-        RecordInfo(navController = navController)
+        RecordInfo(
+            navController = navController,
+            record = record
+        )
 
     }
 }

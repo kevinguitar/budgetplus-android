@@ -59,10 +59,6 @@ class OverviewViewModel @Inject constructor(
         observeRecords()
     }
 
-    fun deleteRecord(recordId: String) {
-        recordRepo.deleteRecord(recordId)
-    }
-
     private var recordsRegistration: ListenerRegistration? = null
 
     private fun observeRecords() {

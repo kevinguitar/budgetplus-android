@@ -39,6 +39,7 @@ fun Calculator(viewModel: CalculatorViewModel) {
 
             Text(
                 text = priceText,
+                textAlign = TextAlign.End,
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
                     .weight(1F)
@@ -47,7 +48,7 @@ fun Calculator(viewModel: CalculatorViewModel) {
                         color = Color.LightGray,
                         shape = RoundedCornerShape(8.dp)
                     )
-                    .padding(all = 8.dp)
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
             )
 
             Button(onClick = { viewModel.clearPrice() }) {

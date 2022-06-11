@@ -9,6 +9,8 @@ interface RecordRepo {
 
     fun createRecord(record: Record)
 
+    fun editRecord(recordId: String, record: Record)
+
     fun deleteRecord(recordId: String)
 
 }
@@ -25,6 +27,10 @@ class RecordRepoImpl @Inject constructor(
 
     override fun createRecord(record: Record) {
         recordsDb.add(record)
+    }
+
+    override fun editRecord(recordId: String, record: Record) {
+        recordsDb.document(recordId).set(record)
     }
 
     override fun deleteRecord(recordId: String) {

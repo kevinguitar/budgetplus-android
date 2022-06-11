@@ -37,6 +37,11 @@ class CalculatorViewModel @Inject constructor() {
         }
     }
 
+    fun editPrice(price: Double) {
+        _priceText.value = price.priceText
+        _price.value = price
+    }
+
     fun evaluate() {
         val text = priceText.value
             .replace('×', '*')

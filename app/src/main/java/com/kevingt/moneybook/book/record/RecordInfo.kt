@@ -17,8 +17,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.ui.DatePicker
 import com.kevingt.moneybook.ui.DatePickerDialog
+import com.kevingt.moneybook.ui.DatePickerLabel
 import com.kevingt.moneybook.ui.RecordTypeTab
 
 @Composable
@@ -46,7 +46,7 @@ fun RecordInfo(
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
 
-        DatePicker(date = date, onClick = { showDatePicker = true })
+        DatePickerLabel(date = date, onClick = { showDatePicker = true })
 
         CategoriesGrid(navController = navController)
 
@@ -69,6 +69,7 @@ fun RecordInfo(
     if (showDatePicker) {
 
         DatePickerDialog(
+            date = date,
             onDatePicked = viewModel::setDate,
             onDismiss = { showDatePicker = false }
         )

@@ -1,8 +1,11 @@
 package com.kevingt.moneybook.ui
 
-import android.widget.CalendarView
+import android.widget.DatePicker
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -18,13 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import com.kevingt.moneybook.utils.longFormatted
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun DatePickerDialog(
-    date: LocalDate = LocalDate.now(),
+    date: LocalDate,
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     onDatePicked: (LocalDate) -> Unit,
@@ -44,21 +46,7 @@ fun DatePickerDialog(
                 )
         ) {
 
-            Text(
-                text = "Select Date",
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onPrimary
-            )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Text(
-                text = currentDate.longFormatted,
-                style = MaterialTheme.typography.h4,
-                color = MaterialTheme.colors.onPrimary
-            )
-
-            CustomCalendarView(
+            CustomDatePicker(
                 date = currentDate,
                 minDate = minDate,
                 maxDate = maxDate,
@@ -96,9 +84,8 @@ fun DatePickerDialog(
     }
 }
 
-// https://stackoverflow.com/questions/60417233/jetpack-compose-date-time-picker
 @Composable
-private fun CustomCalendarView(
+private fun CustomDatePicker(
     date: LocalDate,
     minDate: LocalDate?,
     maxDate: LocalDate?,
@@ -106,9 +93,20 @@ private fun CustomCalendarView(
 ) {
     AndroidView(
         modifier = Modifier.wrapContentSize(),
-        factory = { context -> CalendarView(context) },
+        factory = { context -> DatePicker(context) },
         update = { view ->
-            view.date = date.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+            view.init(
+                /* year = */ date.year,
+                /* monthOfYear = */ date.monthValue - 1,
+                /* dayOfMonth = */ date.dayOfMonth
+            ) { _, year, monthOfYear, dayOfMonth ->
+                onDateSelected(
+                    LocalDate.now()
+                        .withMonth(monthOfYear + 1)
+                        .withYear(year)
+                        .withDayOfMonth(dayOfMonth)
+                )
+            }
 
             if (minDate != null) {
                 view.minDate = minDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
@@ -116,15 +114,6 @@ private fun CustomCalendarView(
 
             if (maxDate != null) {
                 view.maxDate = maxDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
-            }
-
-            view.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                onDateSelected(
-                    LocalDate.now()
-                        .withMonth(month + 1)
-                        .withYear(year)
-                        .withDayOfMonth(dayOfMonth)
-                )
             }
         }
     )

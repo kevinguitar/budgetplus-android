@@ -16,7 +16,7 @@ import com.kevingt.moneybook.utils.longFormatted
 import java.time.LocalDate
 
 @Composable
-fun DatePicker(
+fun DatePickerLabel(
     date: LocalDate,
     onClick: () -> Unit
 ) {

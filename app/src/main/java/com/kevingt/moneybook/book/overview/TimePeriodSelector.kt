@@ -17,8 +17,8 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.overview.vm.TimePeriod
-import com.kevingt.moneybook.ui.DatePicker
 import com.kevingt.moneybook.ui.DatePickerDialog
+import com.kevingt.moneybook.ui.DatePickerLabel
 
 @Composable
 fun TimePeriodSelector(viewModel: OverviewViewModel) {
@@ -33,8 +33,8 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
     Row(
         modifier = Modifier.padding(top = 16.dp)
     ) {
-        DatePicker(date = fromDate, onClick = { showFromDatePicker = true })
-        DatePicker(date = untilDate, onClick = { showUntilDatePicker = true })
+        DatePickerLabel(date = fromDate, onClick = { showFromDatePicker = true })
+        DatePickerLabel(date = untilDate, onClick = { showUntilDatePicker = true })
     }
 
     FlowRow(

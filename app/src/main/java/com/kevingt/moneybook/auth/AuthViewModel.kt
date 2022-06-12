@@ -25,7 +25,6 @@ import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.BookActivity
 import com.kevingt.moneybook.data.remote.BookRepo
-import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.utils.NavigationFlow
 import com.kevingt.moneybook.utils.NavigationInfo
 import com.kevingt.moneybook.utils.Toaster
@@ -36,7 +35,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
-    private val authManager: AuthManager,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     @ActivityContext private val context: Context,
@@ -122,16 +120,7 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun onLoginCompleted(task: Task<AuthResult>) {
-        val user = auth.currentUser
-        if (task.isSuccessful && user != null) {
-            authManager.setUser(
-                User(
-                    id = user.uid,
-                    name = user.displayName,
-                    email = user.email,
-                    photoUrl = user.photoUrl?.toString()
-                )
-            )
+        if (task.isSuccessful) {
             toaster.showMessage("Login success.")
             checkBookAvailability()
         } else {

@@ -1,13 +1,15 @@
 package com.kevingt.moneybook.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +22,8 @@ import androidx.compose.ui.unit.dp
 fun TopBar(
     title: String,
     navigateBack: (() -> Unit)? = null,
-    menuItem: @Composable (() -> Unit)? = null,
+    menuActions: List<MenuAction>? = null,
+    dropdownMenu: @Composable (() -> Unit)? = null
 ) {
 
     Row(
@@ -29,20 +32,17 @@ fun TopBar(
             .height(56.dp)
             .fillMaxWidth()
             .background(MaterialTheme.colors.primary)
-            .padding(horizontal = 16.dp)
     ) {
 
         if (navigateBack != null) {
-
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable { navigateBack() }
-            )
-
+            IconButton(onClick = navigateBack) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
+            }
+        } else {
             Spacer(modifier = Modifier.width(16.dp))
         }
 
@@ -54,8 +54,18 @@ fun TopBar(
             modifier = Modifier.weight(1F)
         )
 
-        if (menuItem != null) {
-            menuItem()
+        menuActions?.forEach { action ->
+            IconButton(onClick = action.onClick) {
+                Icon(
+                    imageVector = action.icon,
+                    contentDescription = action.description,
+                    tint = Color.White,
+                )
+            }
+        }
+
+        if (dropdownMenu != null) {
+            dropdownMenu()
         }
     }
 }
@@ -66,4 +76,11 @@ private fun TopBar_Preview() = TopBar(title = "Money Book")
 
 @Preview
 @Composable
-private fun TopBarWithBack_Preview() = TopBar(title = "Money Book", navigateBack = {})
+private fun TopBarWithBack_Preview() = TopBar(
+    title = "Money Book",
+    navigateBack = {},
+    menuActions = listOf(
+        MenuAction(Icons.Filled.Edit, "") {},
+        MenuAction(Icons.Filled.Delete, "") {},
+    )
+)

@@ -35,6 +35,8 @@ interface BookRepo {
 
     suspend fun createBook(name: String)
 
+    suspend fun renameBook(newName: String)
+
     /**
      *  Categories
      */
@@ -84,13 +86,12 @@ class BookRepoImpl @Inject constructor(
 
     override suspend fun handlePendingJoinRequest() {
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
-        val user = requireNotNull(authManager.userState.value) { "User is null" }
-        val author = user.toAuthor()
+        val userId = authManager.requireUserId()
 
         val book = booksDb.document(bookId).get().requireValue<Book>()
         val newAuthors = book.authors.toMutableList()
-        if (author !in newAuthors) {
-            newAuthors.add(author)
+        if (userId !in newAuthors) {
+            newAuthors.add(userId)
         }
 
         booksDb.document(bookId)
@@ -102,20 +103,26 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun checkUserHasBook(): Boolean {
-        val user = authManager.requireUser()
-        return getBookId(user.toAuthor()) != null
+        val userId = authManager.requireUserId()
+        return getBookId(userId) != null
     }
 
     override suspend fun createBook(name: String) {
-        val user = requireNotNull(authManager.userState.value) { "User is null" }
+        val userId = authManager.requireUserId()
         val newBook = Book(
             name = name,
-            authors = listOf(user.toAuthor()),
+            ownerId = userId,
+            authors = listOf(userId),
             expenseCategories = listOf("Food", "Daily", "Transport"),
             incomeCategories = listOf("Salary")
         )
         val doc = booksDb.add(newBook).await()
         observeBook(doc.id)
+    }
+
+    override suspend fun renameBook(newName: String) {
+        val bookId = requireNotNull(bookIdState.value) { "Book id is null." }
+        booksDb.document(bookId).update("name", newName).await()
     }
 
     override fun addCategory(type: RecordType, category: String) {
@@ -177,7 +184,7 @@ class BookRepoImpl @Inject constructor(
             setBook(null)
             bookRegistration?.remove()
         } else {
-            val bookId = getBookId(user.toAuthor()) ?: return
+            val bookId = getBookId(user.id) ?: return
             observeBook(bookId)
         }
     }
@@ -202,8 +209,8 @@ class BookRepoImpl @Inject constructor(
             }
     }
 
-    private suspend fun getBookId(author: Author): String? {
-        val snapshot = booksDb.whereArrayContains(authorsField, author).get().await()
+    private suspend fun getBookId(userId: String): String? {
+        val snapshot = booksDb.whereArrayContains(authorsField, userId).get().await()
         return snapshot.firstOrNull()?.id
     }
 

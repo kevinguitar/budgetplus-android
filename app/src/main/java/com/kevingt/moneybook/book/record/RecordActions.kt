@@ -52,6 +52,7 @@ fun RecordActions(
 
             if (isEditing) {
                 Button(
+                    //TODO: Are you sure dialog
                     onClick = {
                         viewModel.deleteRecord()
                         focusManager.clearFocus()

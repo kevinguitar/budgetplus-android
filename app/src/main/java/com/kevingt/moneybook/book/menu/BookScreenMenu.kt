@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kevingt.moneybook.book.member.MembersDialog
 import com.kevingt.moneybook.book.menu.vm.BookMenuViewModel
 import com.kevingt.moneybook.ui.InputDialog
 import com.kevingt.moneybook.utils.consumeEach
@@ -35,6 +36,7 @@ fun BookScreenMenu() {
     var isMenuExpanded by remember { mutableStateOf(false) }
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
+    var isMembersDialogShown by remember { mutableStateOf(false) }
 
     Box {
         IconButton(onClick = { isMenuExpanded = true }) {
@@ -62,7 +64,8 @@ fun BookScreenMenu() {
             }
 
             DropdownItem(name = "View Members") {
-
+                isMembersDialogShown = true
+                isMenuExpanded = false
             }
 
             DropdownItem(name = "Create New Book") {
@@ -80,7 +83,7 @@ fun BookScreenMenu() {
                 isDangerous = true
             ) {
                 viewModel.deleteOrLeave()
-                //TODO: show confirm dialog
+                //TODO: Are you sure dialog
             }
         }
     }
@@ -100,6 +103,12 @@ fun BookScreenMenu() {
             buttonText = "Rename",
             onButtonClicked = viewModel::renameBook,
             onDismiss = { isRenameBookDialogShown = false }
+        )
+    }
+
+    if (isMembersDialogShown) {
+        MembersDialog(
+            onDismiss = { isMembersDialogShown = false }
         )
     }
 }

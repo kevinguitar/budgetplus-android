@@ -31,6 +31,8 @@ interface BookRepo {
 
     suspend fun handlePendingJoinRequest()
 
+    suspend fun removeMember(userId: String)
+
     suspend fun checkUserHasBook(): Boolean
 
     suspend fun createBook(name: String)
@@ -100,6 +102,19 @@ class BookRepoImpl @Inject constructor(
 
         pendingJoinId.value = null
         observeBook(bookId)
+    }
+
+    override suspend fun removeMember(userId: String) {
+        val bookId = requireNotNull(bookIdState.value) { "Book id is null." }
+        val book = booksDb.document(bookId).get().requireValue<Book>()
+        val newAuthors = book.authors.toMutableList()
+        if (userId in newAuthors) {
+            newAuthors.remove(userId)
+        }
+
+        booksDb.document(bookId)
+            .update(authorsField, newAuthors)
+            .await()
     }
 
     override suspend fun checkUserHasBook(): Boolean {

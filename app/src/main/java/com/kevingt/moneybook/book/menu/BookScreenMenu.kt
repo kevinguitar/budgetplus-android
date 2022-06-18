@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.book.member.MembersDialog
 import com.kevingt.moneybook.book.menu.vm.BookMenuViewModel
+import com.kevingt.moneybook.ui.ConfirmDialog
 import com.kevingt.moneybook.ui.InputDialog
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
@@ -37,6 +38,7 @@ fun BookScreenMenu() {
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
     var isMembersDialogShown by remember { mutableStateOf(false) }
+    var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Box {
         IconButton(onClick = { isMenuExpanded = true }) {
@@ -82,8 +84,7 @@ fun BookScreenMenu() {
                 name = if (isBookOwner) "Delete" else "Leave",
                 isDangerous = true
             ) {
-                viewModel.deleteOrLeave()
-                //TODO: Are you sure dialog
+                isDeleteOrLeaveDialogShown = true
             }
         }
     }
@@ -109,6 +110,17 @@ fun BookScreenMenu() {
     if (isMembersDialogShown) {
         MembersDialog(
             onDismiss = { isMembersDialogShown = false }
+        )
+    }
+
+    if (isDeleteOrLeaveDialogShown) {
+        ConfirmDialog(
+            message = """
+                Are you sure you want to ${if (isBookOwner) "delete" else "leave"} 
+                ${viewModel.currentBookName}?
+            """.trimIndent(),
+            onConfirm = { viewModel.deleteOrLeave() },
+            onDismiss = { isDeleteOrLeaveDialogShown = false }
         )
     }
 }

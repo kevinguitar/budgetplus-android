@@ -12,9 +12,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.kevingt.moneybook.data.remote.User
+import com.kevingt.moneybook.ui.ConfirmDialog
 
 @Composable
 fun MembersDialog(
@@ -38,6 +37,8 @@ fun MembersDialog(
 
     val members by viewModel.bookMembers.collectAsState()
     val isBookOwner by viewModel.isBookOwner.collectAsState()
+
+    var removeMember by remember { mutableStateOf<User?>(null) }
 
     Dialog(onDismissRequest = onDismiss) {
 
@@ -60,13 +61,22 @@ fun MembersDialog(
                             member = member,
                             myUserId = viewModel.userId,
                             isBookOwner = isBookOwner,
-                            //TODO: Are you sure dialog
-                            removeUser = { viewModel.removeMember(member.id) }
+                            removeUser = { removeMember = member }
                         )
                     }
                 }
             }
         }
+    }
+
+    val member = removeMember
+    if (member != null) {
+
+        ConfirmDialog(
+            message = "Are you sure you want to remove ${member.name} from ${viewModel.bookName}?",
+            onConfirm = { viewModel.removeMember(member.id) },
+            onDismiss = { removeMember = null }
+        )
     }
 }
 

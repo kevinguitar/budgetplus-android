@@ -31,6 +31,8 @@ class MembersViewModel @Inject constructor(
 
     val userId get() = authManager.requireUserId()
 
+    val bookName get() = bookRepo.bookState.value?.name
+
     val isBookOwner = bookRepo.bookState.mapState { it?.ownerId == userId }
 
     init {

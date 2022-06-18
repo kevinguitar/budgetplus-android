@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -16,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
+import com.kevingt.moneybook.ui.ConfirmDialog
 
 @Composable
 fun RecordActions(
@@ -26,6 +25,8 @@ fun RecordActions(
     val isEditing by viewModel.isEditing.collectAsState()
 
     val focusManager = LocalFocusManager.current
+
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -52,16 +53,24 @@ fun RecordActions(
 
             if (isEditing) {
                 Button(
-                    //TODO: Are you sure dialog
-                    onClick = {
-                        viewModel.deleteRecord()
-                        focusManager.clearFocus()
-                        navController.popBackStack()
-                    },
+                    onClick = { showDeleteConfirmationDialog = true },
                 ) {
                     Text(text = "Delete")
                 }
             }
         }
+    }
+
+    if (showDeleteConfirmationDialog) {
+
+        ConfirmDialog(
+            message = "Are you sure you want to delete the record?",
+            onConfirm = {
+                viewModel.deleteRecord()
+                focusManager.clearFocus()
+                navController.popBackStack()
+            },
+            onDismiss = { showDeleteConfirmationDialog = false }
+        )
     }
 }

@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -24,7 +22,6 @@ fun RecordScreen(
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
-    val bookName by viewModel.bookName.collectAsState()
     val context = LocalContext.current
 
     Column {
@@ -32,7 +29,8 @@ fun RecordScreen(
         Box {
 
             TopBar(
-                title = bookName.orEmpty(),
+                title = null,
+                titleContent = { BookSelector() },
                 menuActions = listOf(MenuAction(
                     icon = Icons.Filled.Share,
                     description = "Share",

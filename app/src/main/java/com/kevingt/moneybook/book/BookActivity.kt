@@ -30,7 +30,7 @@ class BookActivity : ComponentActivity() {
 
         val destination = when {
             authManager.userState.value == null -> AuthActivity::class.java
-            bookRepo.bookIdState.value == null -> WelcomeActivity::class.java
+            bookRepo.currentBookId == null -> WelcomeActivity::class.java
             else -> null
         }
 
@@ -42,5 +42,15 @@ class BookActivity : ComponentActivity() {
         setContent {
             BookBinding(viewModel = viewModel)
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        viewModel.handleIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.handleJoinRequest()
     }
 }

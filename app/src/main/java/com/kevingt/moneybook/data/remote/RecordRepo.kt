@@ -22,7 +22,7 @@ class RecordRepoImpl @Inject constructor(
 
     private val recordsDb
         get() = Firebase.firestore.collection("books")
-            .document(requireNotNull(bookRepo.bookIdState.value) { "Book id is null" })
+            .document(requireNotNull(bookRepo.currentBookId) { "Book id is null" })
             .collection("records")
 
     override fun createRecord(record: Record) {

@@ -37,9 +37,6 @@ class RecordViewModel @Inject constructor(
     private val _name = MutableStateFlow("")
     val name: StateFlow<String> = _name.asStateFlow()
 
-    val bookName = bookRepo.bookState
-        .mapState { it?.name }
-
     val expenseCategories = bookRepo.bookState
         .mapState { it?.expenseCategories.orEmpty() }
 
@@ -82,7 +79,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun shareJoinLink(context: Context) {
-        val bookId = bookRepo.bookIdState.value ?: return
+        val bookId = bookRepo.currentBookId ?: return
         val joinLink = "https://moneybook.cchi.tw/join/$bookId"
 
         val intent = Intent(Intent.ACTION_SEND).apply {

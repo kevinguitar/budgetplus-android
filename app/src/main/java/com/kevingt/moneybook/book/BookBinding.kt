@@ -8,9 +8,11 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
@@ -29,11 +31,20 @@ import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.ARG_CATEGORY
 import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.ARG_TYPE
+import com.kevingt.moneybook.utils.consumeEach
+import kotlinx.coroutines.flow.launchIn
 
 @Composable
 fun BookBinding(viewModel: BookViewModel) {
 
     val navController = rememberNavController()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel) {
+        viewModel.navigation
+            .consumeEach(context)
+            .launchIn(this)
+    }
 
     Scaffold(
         bottomBar = { BottomNav(navController) }
@@ -77,6 +88,7 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
 fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
     navigation(startDestination = HistoryDest.Overview.route, route = BookTab.History.route) {
+
         composable(HistoryDest.Overview.route) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 navController.getBackStackEntry(BookTab.History.route)
@@ -84,6 +96,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
             val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
             OverviewScreen(navController = navController, viewModel)
         }
+
         composable(
             route = "${HistoryDest.Details.route}/{$ARG_CATEGORY}",
             arguments = listOf(navArgument(ARG_CATEGORY) { type = NavType.StringType })

@@ -38,6 +38,7 @@ fun BookScreenMenu() {
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
     var isMembersDialogShown by remember { mutableStateOf(false) }
+    var isBookCreationDialogShown by remember { mutableStateOf(false) }
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Box {
@@ -71,7 +72,8 @@ fun BookScreenMenu() {
             }
 
             DropdownItem(name = "Create New Book") {
-
+                isBookCreationDialogShown = true
+                isMenuExpanded = false
             }
 
             DropdownItem(name = "Logout") {
@@ -85,6 +87,7 @@ fun BookScreenMenu() {
                 isDangerous = true
             ) {
                 isDeleteOrLeaveDialogShown = true
+                isMenuExpanded = false
             }
         }
     }
@@ -110,6 +113,14 @@ fun BookScreenMenu() {
     if (isMembersDialogShown) {
         MembersDialog(
             onDismiss = { isMembersDialogShown = false }
+        )
+    }
+
+    if (isBookCreationDialogShown) {
+        InputDialog(
+            buttonText = "Create",
+            onButtonClicked = viewModel::createBook,
+            onDismiss = { isBookCreationDialogShown = false }
         )
     }
 

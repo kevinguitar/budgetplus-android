@@ -65,7 +65,7 @@ class OverviewViewModel @Inject constructor(
         recordsRegistration?.remove()
         recordsRegistration = Firebase.firestore
             .collection("books")
-            .document(requireNotNull(bookRepo.bookIdState.value) { "Book id is null" })
+            .document(requireNotNull(bookRepo.currentBookId) { "Book id is null" })
             .collection("records")
             .whereEqualTo("type", type.value)
             .whereGreaterThanOrEqualTo("date", fromDate.value.toEpochDay())

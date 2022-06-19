@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TopBar(
-    title: String,
+    title: String?,
+    titleContent: @Composable (() -> Unit)? = null,
     navigateBack: (() -> Unit)? = null,
     menuActions: List<MenuAction>? = null,
     dropdownMenu: @Composable (() -> Unit)? = null
@@ -46,13 +47,20 @@ fun TopBar(
             Spacer(modifier = Modifier.width(16.dp))
         }
 
-        Text(
-            text = title,
-            style = MaterialTheme.typography.h5,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White,
-            modifier = Modifier.weight(1F)
-        )
+        when {
+            title != null -> Text(
+                text = title,
+                style = MaterialTheme.typography.h5,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                modifier = Modifier.weight(1F)
+            )
+            titleContent != null -> Box(
+                modifier = Modifier.weight(1F),
+            ) {
+                titleContent()
+            }
+        }
 
         menuActions?.forEach { action ->
             IconButton(onClick = action.onClick) {

@@ -2,6 +2,7 @@ package com.kevingt.moneybook.data.remote
 
 import android.net.Uri
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -22,8 +23,10 @@ import javax.inject.Singleton
 
 interface BookRepo {
 
-    val bookIdState: StateFlow<String?>
     val bookState: StateFlow<Book?>
+    val booksState: StateFlow<List<Book>?>
+
+    val currentBookId: String?
 
     val hasPendingJoinRequest: Boolean
 
@@ -38,6 +41,10 @@ interface BookRepo {
     suspend fun createBook(name: String)
 
     suspend fun renameBook(newName: String)
+
+    suspend fun leaveOrDeleteBook()
+
+    fun selectBook(book: Book)
 
     /**
      *  Categories
@@ -57,14 +64,16 @@ class BookRepoImpl @Inject constructor(
     @AppScope appScope: CoroutineScope,
 ) : BookRepo {
 
-    private var currentBookId by preferenceHolder.bindString(null)
     private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
-
-    private val _bookIdState = MutableStateFlow(currentBookId)
-    override val bookIdState: StateFlow<String?> get() = _bookIdState
 
     private val _bookState = MutableStateFlow(currentBook)
     override val bookState: StateFlow<Book?> get() = _bookState
+
+    private val _booksState = MutableStateFlow<List<Book>?>(null)
+    override val booksState: StateFlow<List<Book>?> get() = _booksState
+
+    override val currentBookId: String? get() = bookState.value?.id
+    private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
 
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null
@@ -74,6 +83,8 @@ class BookRepoImpl @Inject constructor(
     private val booksDb = Firebase.firestore.collection("books")
 
     private val authorsField get() = "authors"
+    private val createdOnField get() = "createdOn"
+    private val archivedField get() = "archived"
 
     init {
         authManager.userState
@@ -90,36 +101,40 @@ class BookRepoImpl @Inject constructor(
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
         val userId = authManager.requireUserId()
 
-        val book = booksDb.document(bookId).get().requireValue<Book>()
+        val book = booksDb.document(bookId).get().requireValue<Book>().copy(id = bookId)
         val newAuthors = book.authors.toMutableList()
         if (userId !in newAuthors) {
             newAuthors.add(userId)
         }
 
+        setBook(book)
         booksDb.document(bookId)
             .update(authorsField, newAuthors)
             .await()
 
         pendingJoinId.value = null
-        observeBook(bookId)
     }
 
     override suspend fun removeMember(userId: String) {
-        val bookId = requireNotNull(bookIdState.value) { "Book id is null." }
-        val book = booksDb.document(bookId).get().requireValue<Book>()
+        val book = booksDb.document(requireBookId).get().requireValue<Book>()
         val newAuthors = book.authors.toMutableList()
         if (userId in newAuthors) {
             newAuthors.remove(userId)
         }
 
-        booksDb.document(bookId)
+        booksDb.document(requireBookId)
             .update(authorsField, newAuthors)
             .await()
     }
 
     override suspend fun checkUserHasBook(): Boolean {
         val userId = authManager.requireUserId()
-        return getBookId(userId) != null
+        val books = booksDb
+            .whereArrayContains(authorsField, userId)
+            .whereEqualTo(archivedField, false)
+            .get()
+            .await()
+        return !books.isEmpty
     }
 
     override suspend fun createBook(name: String) {
@@ -132,14 +147,88 @@ class BookRepoImpl @Inject constructor(
             incomeCategories = listOf("Salary")
         )
         val doc = booksDb.add(newBook).await()
-        observeBook(doc.id)
+        setBook(newBook.copy(id = doc.id))
     }
 
     override suspend fun renameBook(newName: String) {
-        val bookId = requireNotNull(bookIdState.value) { "Book id is null." }
-        booksDb.document(bookId).update("name", newName).await()
+        booksDb.document(requireBookId).update("name", newName).await()
     }
 
+    override suspend fun leaveOrDeleteBook() {
+        val book = bookState.value ?: return
+        if (book.ownerId == authManager.requireUserId()) {
+            booksDb.document(book.id)
+                .update(archivedField, true)
+                .await()
+        } else {
+            val authorsWithoutMe = book.authors.toMutableList()
+            authorsWithoutMe.remove(authManager.requireUserId())
+
+            booksDb.document(book.id)
+                .update(authorsField, authorsWithoutMe)
+                .await()
+        }
+    }
+
+    override fun selectBook(book: Book) {
+        setBook(book)
+    }
+
+    private var bookRegistration: ListenerRegistration? = null
+
+    private fun onUserChanged(user: User?) {
+        if (user == null) {
+            _booksState.value = null
+            bookRegistration?.remove()
+        } else {
+            observeBooks(user.id)
+        }
+    }
+
+    private fun observeBooks(userId: String) {
+        bookRegistration?.remove()
+        bookRegistration = booksDb
+            .whereArrayContains(authorsField, userId)
+            .whereEqualTo(archivedField, false)
+            .orderBy(createdOnField, Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Timber.e(e, "Listen failed.")
+                    return@addSnapshotListener
+                }
+
+                if (snapshot == null) {
+                    Timber.d("BookRepo: Snapshot is empty")
+                    return@addSnapshotListener
+                }
+
+                val books = snapshot.map { doc -> doc.toObject<Book>().copy(id = doc.id) }
+                _booksState.value = books
+
+                if (books.isEmpty()) {
+                    setBook(null)
+                    return@addSnapshotListener
+                }
+
+                val bookId = currentBookId
+                val index = books.indexOfFirst { it.id == bookId }
+                if (bookId == null || index == -1) {
+                    setBook(books.last())
+                } else {
+                    setBook(books[index])
+                }
+            }
+    }
+
+    private fun setBook(book: Book?) {
+        _bookState.value = book
+        currentBook = book
+    }
+
+
+    /**
+     *  Categories
+     */
     override fun addCategory(type: RecordType, category: String) {
         val book = bookState.value ?: return
         val newCategories = when (type) {
@@ -180,8 +269,7 @@ class BookRepoImpl @Inject constructor(
     }
 
     private fun updateCategories(type: RecordType, categories: List<String>) {
-        val bookId = bookIdState.value ?: return
-        booksDb.document(bookId)
+        booksDb.document(requireBookId)
             .update(
                 when (type) {
                     RecordType.Expense -> "expenseCategories"
@@ -189,53 +277,5 @@ class BookRepoImpl @Inject constructor(
                 },
                 categories
             )
-    }
-
-    private var bookRegistration: ListenerRegistration? = null
-
-    private suspend fun onUserChanged(user: User?) {
-        if (user == null) {
-            setBookId(null)
-            setBook(null)
-            bookRegistration?.remove()
-        } else {
-            val bookId = getBookId(user.id) ?: return
-            observeBook(bookId)
-        }
-    }
-
-    private fun observeBook(bookId: String) {
-        setBookId(bookId)
-
-        bookRegistration?.remove()
-        bookRegistration = booksDb.document(bookId)
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Timber.e(e, "Listen failed.")
-                    return@addSnapshotListener
-                }
-
-                if (snapshot == null) {
-                    Timber.d("BookRepo: Snapshot is empty")
-                    return@addSnapshotListener
-                }
-
-                setBook(snapshot.toObject<Book>())
-            }
-    }
-
-    private suspend fun getBookId(userId: String): String? {
-        val snapshot = booksDb.whereArrayContains(authorsField, userId).get().await()
-        return snapshot.firstOrNull()?.id
-    }
-
-    private fun setBookId(bookId: String?) {
-        _bookIdState.value = bookId
-        currentBookId = bookId
-    }
-
-    private fun setBook(book: Book?) {
-        _bookState.value = book
-        currentBook = book
     }
 }

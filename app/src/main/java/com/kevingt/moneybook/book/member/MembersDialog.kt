@@ -33,7 +33,9 @@ fun MembersDialog(
     onDismiss: () -> Unit
 ) {
 
+    //TODO: We should generate new instance of VM on every call
     val viewModel = hiltViewModel<MembersViewModel>()
+    viewModel.loadMembers()
 
     val members by viewModel.bookMembers.collectAsState()
     val isBookOwner by viewModel.isBookOwner.collectAsState()

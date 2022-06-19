@@ -56,14 +56,30 @@ class BookMenuViewModel @Inject constructor(
         }
     }
 
+    fun createBook(name: String) {
+        viewModelScope.launch {
+            try {
+                bookRepo.createBook(name)
+            } catch (e: Exception) {
+                toaster.showError(e)
+            }
+        }
+    }
+
+    fun deleteOrLeave() {
+        viewModelScope.launch {
+            try {
+                bookRepo.leaveOrDeleteBook()
+            } catch (e: Exception) {
+                toaster.showError(e)
+            }
+        }
+    }
+
     fun logout() {
         authManager.logout()
 
         val navInfo = NavigationInfo(destination = AuthActivity::class)
         navigation.tryEmit(navInfo)
-    }
-
-    fun deleteOrLeave() {
-
     }
 }

@@ -35,9 +35,9 @@ class MembersViewModel @Inject constructor(
 
     val isBookOwner = bookRepo.bookState.mapState { it?.ownerId == userId }
 
-    init {
-        loadMembers()
-    }
+//    init {
+//        loadMembers()
+//    }
 
     fun removeMember(userId: String) {
         viewModelScope.launch {
@@ -50,7 +50,7 @@ class MembersViewModel @Inject constructor(
         }
     }
 
-    private fun loadMembers() {
+    fun loadMembers() {
         val authors = bookRepo.bookState.value?.authors
         if (authors != null) {
             viewModelScope.launch {

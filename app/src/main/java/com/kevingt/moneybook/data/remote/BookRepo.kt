@@ -1,17 +1,20 @@
 package com.kevingt.moneybook.data.remote
 
+import android.content.Context
 import android.net.Uri
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.local.bindObjectOptional
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
 import com.kevingt.moneybook.utils.requireValue
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -62,6 +65,7 @@ class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     preferenceHolder: PreferenceHolder,
     @AppScope appScope: CoroutineScope,
+    @ApplicationContext private val context: Context,
 ) : BookRepo {
 
     private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
@@ -139,12 +143,14 @@ class BookRepoImpl @Inject constructor(
 
     override suspend fun createBook(name: String) {
         val userId = authManager.requireUserId()
+        val expenses = context.resources.getStringArray(R.array.default_expense_categories)
+        val incomes = context.resources.getStringArray(R.array.default_income_categories)
         val newBook = Book(
             name = name,
             ownerId = userId,
             authors = listOf(userId),
-            expenseCategories = listOf("Food", "Daily", "Transport"),
-            incomeCategories = listOf("Salary")
+            expenseCategories = expenses.toList(),
+            incomeCategories = incomes.toList()
         )
         val doc = booksDb.add(newBook).await()
         setBook(newBook.copy(id = doc.id))

@@ -7,7 +7,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -27,8 +26,8 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
     val fromDate by viewModel.fromDate.collectAsState()
     val untilDate by viewModel.untilDate.collectAsState()
 
-    var showFromDatePicker by rememberSaveable { mutableStateOf(false) }
-    var showUntilDatePicker by rememberSaveable { mutableStateOf(false) }
+    var showFromDatePicker by remember { mutableStateOf(false) }
+    var showUntilDatePicker by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier.padding(top = 16.dp)

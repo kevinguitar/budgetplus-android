@@ -44,7 +44,6 @@ fun EditCategoryDialog(
 
     val currentName = (mode as? CategoryEditMode.Rename)?.currentName.orEmpty()
 
-    // rememberSaveable(saver = TextFieldValue.Saver) doesn't work for some reason.
     var name by remember {
         mutableStateOf(
             TextFieldValue(

@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,7 +31,7 @@ fun EditCategoryScreen(
 
     val viewModel = hiltViewModel<EditCategoryViewModel>()
 
-    var editDialogMode by rememberSaveable { mutableStateOf<CategoryEditMode?>(null) }
+    var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
 
     val expenseCategories by viewModel.expenseCategories.collectAsState()
     val incomeCategories by viewModel.incomeCategories.collectAsState()

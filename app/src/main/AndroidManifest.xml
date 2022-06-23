@@ -19,6 +19,7 @@
 
         <activity
             android:name=".book.BookActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|density|screenSize|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/ComposeActivityStyle"
@@ -44,10 +45,12 @@
 
         <activity
             android:name=".auth.AuthActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|density|screenSize|smallestScreenSize"
             android:theme="@style/ComposeActivityStyle" />
 
         <activity
             android:name=".welcome.WelcomeActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|density|screenSize|smallestScreenSize"
             android:theme="@style/ComposeActivityStyle" />
 
         <meta-data

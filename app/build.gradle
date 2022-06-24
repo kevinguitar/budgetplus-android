@@ -60,7 +60,7 @@ kapt {
 }
 
 ext {
-    compose_ui_version = '1.2.0-beta03'
+    compose_ui_version = '1.2.0-rc02'
     nav_version = '2.4.2'
     dagger_hilt_version = '2.42'
 }

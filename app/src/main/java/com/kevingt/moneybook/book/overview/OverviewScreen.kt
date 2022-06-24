@@ -27,7 +27,7 @@ fun OverviewScreen(
 ) {
 
     val type by viewModel.type.collectAsState()
-    val records by viewModel.records.collectAsState()
+    val totalPrice by viewModel.totalPrice.collectAsState()
     val recordGroups by viewModel.recordGroups.collectAsState()
 
     Column {
@@ -42,7 +42,7 @@ fun OverviewScreen(
         TimePeriodSelector(viewModel)
 
         Text(
-            text = "Total ${records.orEmpty().sumOf { it.price }.dollar}",
+            text = "Total ${totalPrice.dollar}",
             style = MaterialTheme.typography.h6,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

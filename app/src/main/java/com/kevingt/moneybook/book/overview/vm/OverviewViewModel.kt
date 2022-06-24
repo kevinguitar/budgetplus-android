@@ -1,6 +1,7 @@
 package com.kevingt.moneybook.book.overview.vm
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -8,20 +9,16 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.data.remote.RecordRepo
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
-    private val recordRepo: RecordRepo
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -34,16 +31,35 @@ class OverviewViewModel @Inject constructor(
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
 
-    private val _records = MutableStateFlow<Sequence<Record>?>(null)
-    val records: StateFlow<Sequence<Record>?> = _records.asStateFlow()
+    private val records = MutableStateFlow<Sequence<Record>?>(null)
 
-    val recordGroups = records.mapState { records ->
-        records.orEmpty()
+    val totalPrice = records.mapState { record ->
+        record.orEmpty().sumOf { it.price }
+    }
+
+    val recordGroups = combine(
+        records.filterNotNull(),
+        bookRepo.bookState.filterNotNull(),
+        type,
+    ) { records, book, type ->
+        val recordsGroup = records
             .groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
             .toMap()
+            .toMutableMap()
+
+        // Put the empty categories at the end
+        when (type) {
+            RecordType.Expense -> book.expenseCategories
+            RecordType.Income -> book.incomeCategories
+        }.forEach { category ->
+            recordsGroup.putIfAbsent(category, emptyList())
+        }
+
+        recordsGroup.toMap()
     }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
     init {
         observeRecords()
@@ -78,7 +94,7 @@ class OverviewViewModel @Inject constructor(
                 }
 
                 if (snapshot != null) {
-                    _records.value = snapshot.documents
+                    records.value = snapshot.documents
                         .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
                         .asSequence()
                 }

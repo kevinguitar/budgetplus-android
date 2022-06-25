@@ -9,9 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.member.MembersDialog
 import com.kevingt.moneybook.book.menu.vm.BookMenuViewModel
 import com.kevingt.moneybook.ui.ConfirmDialog
@@ -45,7 +47,7 @@ fun BookScreenMenu() {
         IconButton(onClick = { isMenuExpanded = true }) {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
-                contentDescription = "Menu",
+                contentDescription = stringResource(id = R.string.menu_open),
                 tint = Color.White
             )
         }
@@ -56,34 +58,34 @@ fun BookScreenMenu() {
             offset = DpOffset(x = 4.dp, y = 0.dp)
         ) {
 
-            DropdownItem(name = "Rename My User") {
+            DropdownItem(name = stringResource(id = R.string.menu_rename_user)) {
                 isRenameUserDialogShown = true
                 isMenuExpanded = false
             }
 
-            DropdownItem(name = "Rename Book") {
+            DropdownItem(name = stringResource(id = R.string.menu_rename_book)) {
                 isRenameBookDialogShown = true
                 isMenuExpanded = false
             }
 
-            DropdownItem(name = "View Members") {
+            DropdownItem(name = stringResource(id = R.string.menu_view_members)) {
                 isMembersDialogShown = true
                 isMenuExpanded = false
             }
 
-            DropdownItem(name = "Create New Book") {
+            DropdownItem(name = stringResource(id = R.string.menu_create_book)) {
                 isBookCreationDialogShown = true
                 isMenuExpanded = false
             }
 
-            DropdownItem(name = "Logout") {
+            DropdownItem(name = stringResource(id = R.string.menu_logout)) {
                 viewModel.logout()
             }
 
             Divider(modifier = Modifier.padding(vertical = 2.dp))
 
             DropdownItem(
-                name = if (isBookOwner) "Delete" else "Leave",
+                name = stringResource(id = if (isBookOwner) R.string.cta_delete else R.string.cta_leave),
                 isDangerous = true
             ) {
                 isDeleteOrLeaveDialogShown = true
@@ -95,7 +97,7 @@ fun BookScreenMenu() {
     if (isRenameUserDialogShown) {
         InputDialog(
             currentInput = viewModel.currentUsername,
-            buttonText = "Rename",
+            buttonText = stringResource(id = R.string.cta_rename),
             onButtonClicked = viewModel::renameUser,
             onDismiss = { isRenameUserDialogShown = false }
         )
@@ -104,7 +106,7 @@ fun BookScreenMenu() {
     if (isRenameBookDialogShown) {
         InputDialog(
             currentInput = viewModel.currentBookName,
-            buttonText = "Rename",
+            buttonText = stringResource(id = R.string.cta_rename),
             onButtonClicked = viewModel::renameBook,
             onDismiss = { isRenameBookDialogShown = false }
         )
@@ -118,7 +120,7 @@ fun BookScreenMenu() {
 
     if (isBookCreationDialogShown) {
         InputDialog(
-            buttonText = "Create",
+            buttonText = stringResource(id = R.string.cta_create),
             onButtonClicked = viewModel::createBook,
             onDismiss = { isBookCreationDialogShown = false }
         )
@@ -126,10 +128,10 @@ fun BookScreenMenu() {
 
     if (isDeleteOrLeaveDialogShown) {
         ConfirmDialog(
-            message = """
-                Are you sure you want to ${if (isBookOwner) "delete" else "leave"} 
-                ${viewModel.currentBookName}?
-            """.trimIndent(),
+            message = stringResource(
+                id = if (isBookOwner) R.string.menu_confirm_delete else R.string.menu_confirm_leave,
+                viewModel.currentBookName.orEmpty()
+            ),
             onConfirm = { viewModel.deleteOrLeave() },
             onDismiss = { isDeleteOrLeaveDialogShown = false }
         )

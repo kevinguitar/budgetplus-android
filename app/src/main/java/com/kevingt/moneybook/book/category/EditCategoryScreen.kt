@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.CategoryCard
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.TopBar
@@ -39,7 +41,7 @@ fun EditCategoryScreen(
     Column {
 
         TopBar(
-            title = "Edit Category",
+            title = stringResource(id = R.string.category_edit_title),
             navigateBack = { navController.navigateUp() }
         )
 
@@ -91,12 +93,12 @@ private fun AddCategoryCard(onClick: () -> Unit) {
 
             Icon(
                 imageVector = Icons.Filled.Add,
-                contentDescription = "Add Category",
+                contentDescription = stringResource(id = R.string.cta_add),
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = "Add",
+                text = stringResource(id = R.string.cta_add),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,

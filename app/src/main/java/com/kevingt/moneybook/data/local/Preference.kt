@@ -2,7 +2,6 @@ package com.kevingt.moneybook.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.kevingt.moneybook.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,7 +21,7 @@ class AppPreference @Inject constructor(
 ) : Preference {
 
     override val pref: SharedPreferences = context.getSharedPreferences(
-        context.getString(R.string.app_name),
+        "app_preference",
         Context.MODE_PRIVATE
     )
 

@@ -121,7 +121,8 @@ class AuthViewModel @Inject constructor(
 
     private fun onLoginCompleted(task: Task<AuthResult>) {
         if (task.isSuccessful) {
-            toaster.showMessage("Login success.")
+            val message = context.getString(R.string.auth_success, task.result.user?.displayName)
+            toaster.showMessage(message)
             checkBookAvailability()
         } else {
             val e = task.exception ?: IllegalStateException("Unable to login")

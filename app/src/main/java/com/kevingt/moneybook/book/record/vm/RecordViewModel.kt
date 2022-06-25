@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
@@ -84,9 +85,9 @@ class RecordViewModel @Inject constructor(
 
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "Click the link to track expenses together!\n$joinLink")
+            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.menu_share_book, joinLink))
         }
-        context.startActivity(Intent.createChooser(intent, "Invite"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))
     }
 
     fun record() {
@@ -96,12 +97,12 @@ class RecordViewModel @Inject constructor(
         val price = calculator.price.value
 
         if (category == null) {
-            toaster.showMessage("Please choose a category")
+            toaster.showMessage(R.string.record_empty_category)
             return
         }
 
         if (price == 0.0) {
-            toaster.showMessage("Price can't be 0")
+            toaster.showMessage(R.string.record_empty_price)
             return
         }
 
@@ -117,10 +118,10 @@ class RecordViewModel @Inject constructor(
         val recordId = (_mode.value as? RecordMode.Edit)?.record?.id
         if (recordId == null) {
             recordRepo.createRecord(record)
-            toaster.showMessage("Record created")
+            toaster.showMessage(R.string.record_created)
         } else {
             recordRepo.editRecord(recordId, record)
-            toaster.showMessage("Record edited")
+            toaster.showMessage(R.string.record_edited)
         }
 
         resetScreen()
@@ -130,7 +131,7 @@ class RecordViewModel @Inject constructor(
         val recordId = (_mode.value as RecordMode.Edit).record.id
         recordRepo.deleteRecord(recordId)
 
-        toaster.showMessage("Record deleted")
+        toaster.showMessage(R.string.record_deleted)
         resetScreen()
     }
 

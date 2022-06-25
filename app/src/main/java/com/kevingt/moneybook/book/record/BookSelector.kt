@@ -11,8 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.BookSelectorViewModel
 
 @Composable
@@ -41,7 +43,7 @@ fun BookSelector() {
                 IconButton(onClick = { isSelectorShown = true }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowDropDown,
-                        contentDescription = "Select book",
+                        contentDescription = stringResource(id = R.string.book_selection),
                         tint = Color.White
                     )
                 }

@@ -1,9 +1,29 @@
 <resources>
     <string name="app_name">Co-spending Tracker</string>
 
-    <string name="fallback_error_message">Something went wrong, please try again later.</string>
+    <!-- Auth -->
+    <string name="auth_facebook">Facebook</string>
+    <string name="auth_google">Google</string>
+    <string name="auth_success">Welcome, %s!</string>
 
-    <!-- Default categories -->
+    <!-- Record -->
+    <string name="record_description">Description:</string>
+    <string name="record_expense">Expense</string>
+    <string name="record_income">Income</string>
+    <string name="record_empty_category">Please choose a category</string>
+    <string name="record_empty_price">Price can\'t be 0</string>
+    <string name="record_created">Record created</string>
+    <string name="record_edited">Record edited</string>
+    <string name="record_deleted">Record deleted</string>
+    <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
+
+    <!-- Book -->
+    <string name="book_selection">Select book</string>
+    <string name="book_create_success">Your book %s is created!</string>
+    <string name="book_join_success">You have joined %s successfully!</string>
+
+    <!-- Category -->
+    <string name="category_edit_title">Edit Categories</string>
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
     <string name="category_transport">Transport</string>
@@ -21,4 +41,43 @@
     <string name="category_bonus">Bonus</string>
     <string name="category_rebate">Rebate</string>
     <string name="category_other">Other</string>
+
+    <!-- Members -->
+    <string name="members_title">Members</string>
+    <string name="members_confirm_remove">Are you sure you want to remove %s from %s?</string>
+
+    <!-- Menu -->
+    <string name="menu_share_book">Click the link to track expenses together!\n%s</string>
+    <string name="menu_open">Open Menu</string>
+    <string name="menu_rename_user">Rename User</string>
+    <string name="menu_rename_book">Rename Book</string>
+    <string name="menu_view_members">View Members</string>
+    <string name="menu_create_book">Create New Book</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_confirm_delete">Are you sure you want to delete %s?</string>
+    <string name="menu_confirm_leave">Are you sure you want to leave %s?</string>
+
+    <!-- Overview -->
+    <string name="overview_title">Overview</string>
+    <string name="overview_total_price">Total $%s</string>
+    <string name="overview_period_day">Today</string>
+    <string name="overview_period_week">Week</string>
+    <string name="overview_period_month">Month</string>
+    <string name="overview_period_last_month">Last Month</string>
+
+    <!-- General -->
+    <string name="cta_add">Add</string>
+    <string name="cta_create">Create</string>
+    <string name="cta_rename">Rename</string>
+    <string name="cta_invite">Invite</string>
+    <string name="cta_edit">Edit</string>
+    <string name="cta_save">Save</string>
+    <string name="cta_share">Share</string>
+    <string name="cta_confirm">Confirm</string>
+    <string name="cta_cancel">Cancel</string>
+    <string name="cta_back">Back</string>
+    <string name="cta_leave">Leave</string>
+    <string name="cta_delete">Delete</string>
+    <string name="select_date">Select Date</string>
+    <string name="fallback_error_message">Something went wrong, please try again later.</string>
 </resources>

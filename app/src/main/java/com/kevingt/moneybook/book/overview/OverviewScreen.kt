@@ -11,8 +11,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.HistoryDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Record
@@ -32,7 +34,7 @@ fun OverviewScreen(
 
     Column {
 
-        TopBar(title = "Overview")
+        TopBar(title = stringResource(id = R.string.overview_title))
 
         RecordTypeTab(
             selected = type,
@@ -42,7 +44,7 @@ fun OverviewScreen(
         TimePeriodSelector(viewModel)
 
         Text(
-            text = "Total ${totalPrice.dollar}",
+            text = stringResource(id = R.string.overview_total_price, totalPrice),
             style = MaterialTheme.typography.h6,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

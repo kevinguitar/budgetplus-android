@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthViewModel
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
@@ -35,11 +37,11 @@ fun AuthBinding(viewModel: AuthViewModel) {
             .background(Color.White)
     ) {
         Button(onClick = { viewModel.signInWithFacebook() }) {
-            Text(text = "Facebook")
+            Text(text = stringResource(id = R.string.auth_facebook))
         }
 
         Button(onClick = { viewModel.signInWithGoogle() }) {
-            Text(text = "Google")
+            Text(text = stringResource(id = R.string.auth_google))
         }
     }
 }

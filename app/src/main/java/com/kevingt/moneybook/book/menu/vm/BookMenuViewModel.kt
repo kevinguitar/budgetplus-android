@@ -1,7 +1,9 @@
 package com.kevingt.moneybook.book.menu.vm
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthActivity
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.BookRepo
@@ -9,6 +11,7 @@ import com.kevingt.moneybook.utils.NavigationFlow
 import com.kevingt.moneybook.utils.NavigationInfo
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -19,7 +22,8 @@ import javax.inject.Inject
 class BookMenuViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
-    private val toaster: Toaster
+    private val toaster: Toaster,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -60,6 +64,7 @@ class BookMenuViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name)
+                toaster.showMessage(context.getString(R.string.book_create_success, name))
             } catch (e: Exception) {
                 toaster.showError(e)
             }

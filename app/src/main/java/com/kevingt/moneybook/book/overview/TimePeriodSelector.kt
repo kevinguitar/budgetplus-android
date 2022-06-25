@@ -9,11 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.overview.vm.TimePeriod
 import com.kevingt.moneybook.ui.DatePickerDialog
@@ -105,16 +107,16 @@ private fun TimePeriodPill(
         onClick = onClick
     ) {
 
-        val title = when (timePeriod) {
-            is TimePeriod.Today -> "Today"
-            is TimePeriod.Week -> "Week"
-            is TimePeriod.Month -> "Month"
-            is TimePeriod.LastMonth -> "Last Month"
+        val titleRes = when (timePeriod) {
+            is TimePeriod.Today -> R.string.overview_period_day
+            is TimePeriod.Week -> R.string.overview_period_week
+            is TimePeriod.Month -> R.string.overview_period_month
+            is TimePeriod.LastMonth -> R.string.overview_period_last_month
             is TimePeriod.Custom -> error("Custom period doesn't shown in pill.")
         }
 
         Text(
-            text = title,
+            text = stringResource(id = titleRes),
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,

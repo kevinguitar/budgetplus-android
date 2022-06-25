@@ -14,9 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
+import com.kevingt.moneybook.R
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
@@ -56,7 +58,7 @@ fun DatePickerDialog(
             ) {
                 TextButton(onClick = onDismiss) {
                     Text(
-                        text = "Cancel",
+                        text = stringResource(id = R.string.cta_cancel),
                         style = MaterialTheme.typography.button,
                         color = MaterialTheme.colors.onPrimary
                     )
@@ -69,7 +71,7 @@ fun DatePickerDialog(
                     }
                 ) {
                     Text(
-                        text = "OK",
+                        text = stringResource(id = R.string.cta_confirm),
                         style = MaterialTheme.typography.button,
                         color = MaterialTheme.colors.onPrimary
                     )

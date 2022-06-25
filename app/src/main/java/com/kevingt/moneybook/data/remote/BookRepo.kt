@@ -35,7 +35,10 @@ interface BookRepo {
 
     fun setPendingJoinRequest(uri: Uri)
 
-    suspend fun handlePendingJoinRequest()
+    /**
+     *  @return The book's name that the user just joined.
+     */
+    suspend fun handlePendingJoinRequest(): String
 
     suspend fun removeMember(userId: String)
 
@@ -101,7 +104,7 @@ class BookRepoImpl @Inject constructor(
         pendingJoinId.value = bookId
     }
 
-    override suspend fun handlePendingJoinRequest() {
+    override suspend fun handlePendingJoinRequest(): String {
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
         val userId = authManager.requireUserId()
 
@@ -117,6 +120,7 @@ class BookRepoImpl @Inject constructor(
             .await()
 
         pendingJoinId.value = null
+        return book.name
     }
 
     override suspend fun removeMember(userId: String) {

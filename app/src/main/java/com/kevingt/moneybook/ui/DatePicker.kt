@@ -11,7 +11,9 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.utils.longFormatted
 import java.time.LocalDate
 
@@ -29,7 +31,7 @@ fun DatePickerLabel(
             .clickable(onClick = onClick)
     ) {
 
-        Icon(Icons.Filled.DateRange, contentDescription = "date")
+        Icon(Icons.Filled.DateRange, contentDescription = stringResource(id = R.string.select_date))
 
         Text(text = date.longFormatted)
     }

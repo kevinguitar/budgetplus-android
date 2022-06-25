@@ -1,13 +1,16 @@
 package com.kevingt.moneybook.welcome
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.BookActivity
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.utils.NavigationFlow
 import com.kevingt.moneybook.utils.NavigationInfo
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,6 +18,7 @@ import javax.inject.Inject
 class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -23,7 +27,7 @@ class WelcomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name)
-                toaster.showMessage("Book created!")
+                toaster.showMessage(context.getString(R.string.book_create_success, name))
 
                 val navInfo = NavigationInfo(destination = BookActivity::class)
                 navigation.tryEmit(navInfo)
@@ -38,8 +42,8 @@ class WelcomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                bookRepo.handlePendingJoinRequest()
-                toaster.showMessage("Joined book!")
+                val bookName = bookRepo.handlePendingJoinRequest()
+                toaster.showMessage(context.getString(R.string.book_join_success, bookName))
 
                 val navInfo = NavigationInfo(destination = BookActivity::class)
                 navigation.tryEmit(navInfo)

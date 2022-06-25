@@ -6,8 +6,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.menu.BookScreenMenu
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.Record
@@ -33,7 +35,7 @@ fun RecordScreen(
                 titleContent = { BookSelector() },
                 menuActions = listOf(MenuAction(
                     icon = Icons.Filled.Share,
-                    description = "Share",
+                    description = stringResource(id = R.string.cta_share),
                     onClick = { viewModel.shareJoinLink(context) }
                 )),
                 dropdownMenu = { BookScreenMenu() }

@@ -10,9 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.ui.ConfirmDialog
 
@@ -44,18 +46,14 @@ fun RecordActions(
                     }
                 },
             ) {
-                if (isEditing) {
-                    Text(text = "Save")
-                } else {
-                    Text(text = "Add")
-                }
+                Text(text = stringResource(id = if (isEditing) R.string.cta_save else R.string.cta_add))
             }
 
             if (isEditing) {
                 Button(
                     onClick = { showDeleteConfirmationDialog = true },
                 ) {
-                    Text(text = "Delete")
+                    Text(text = stringResource(id = R.string.cta_delete))
                 }
             }
         }
@@ -64,7 +62,7 @@ fun RecordActions(
     if (showDeleteConfirmationDialog) {
 
         ConfirmDialog(
-            message = "Are you sure you want to delete the record?",
+            message = stringResource(id = R.string.record_confirm_delete),
             onConfirm = {
                 viewModel.deleteRecord()
                 focusManager.clearFocus()

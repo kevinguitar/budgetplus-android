@@ -12,7 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 
@@ -48,8 +50,11 @@ fun CreateBook(createBook: (String) -> Unit) {
             onValueChange = { value = it }
         )
 
-        Button(onClick = { createBook(value) }) {
-            Text(text = "Create")
+        Button(
+            onClick = { createBook(value) },
+            enabled = value.isNotBlank(),
+        ) {
+            Text(text = stringResource(id = R.string.cta_create))
         }
     }
 }

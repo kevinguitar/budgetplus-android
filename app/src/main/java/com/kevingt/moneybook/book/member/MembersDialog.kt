@@ -19,12 +19,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.kevingt.moneybook.R
 import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.ui.ConfirmDialog
 
@@ -52,7 +54,7 @@ fun MembersDialog(
                 .padding(16.dp)
         ) {
 
-            Text(text = "Members")
+            Text(text = stringResource(id = R.string.members_title))
 
             if (members.isEmpty()) {
                 CircularProgressIndicator()
@@ -75,7 +77,11 @@ fun MembersDialog(
     if (member != null) {
 
         ConfirmDialog(
-            message = "Are you sure you want to remove ${member.name} from ${viewModel.bookName}?",
+            message = stringResource(
+                id = R.string.members_confirm_remove,
+                member.name.orEmpty(),
+                viewModel.bookName.orEmpty()
+            ),
             onConfirm = { viewModel.removeMember(member.id) },
             onDismiss = { removeMember = null }
         )
@@ -118,7 +124,7 @@ private fun MemberCard(
             IconButton(onClick = removeUser) {
                 Icon(
                     imageVector = Icons.Filled.Close,
-                    contentDescription = "Remove member",
+                    contentDescription = stringResource(id = R.string.cta_delete),
                     tint = Color.Black,
                 )
             }

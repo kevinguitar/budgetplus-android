@@ -3,12 +3,9 @@ package com.kevingt.moneybook.book.overview.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.kevingt.moneybook.data.local.PreferenceHolder
-import com.kevingt.moneybook.data.local.bindObject
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
@@ -22,14 +19,12 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
-    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private var overviewPeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
-    private val _timePeriod = MutableStateFlow(overviewPeriod)
+    private val _timePeriod = MutableStateFlow<TimePeriod>(TimePeriod.Month)
     val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
 
     val fromDate = timePeriod.mapState { it.from }
@@ -75,7 +70,6 @@ class OverviewViewModel @Inject constructor(
     }
 
     fun setTimePeriod(timePeriod: TimePeriod) {
-        overviewPeriod = timePeriod
         _timePeriod.value = timePeriod
         observeRecords()
     }
@@ -91,7 +85,6 @@ class OverviewViewModel @Inject constructor(
             .whereEqualTo("type", type.value)
             .whereGreaterThanOrEqualTo("date", fromDate.value.toEpochDay())
             .whereLessThanOrEqualTo("date", untilDate.value.toEpochDay())
-            .orderBy("date", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Timber.e(e, "Listen failed.")

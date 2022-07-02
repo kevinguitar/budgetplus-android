@@ -37,6 +37,7 @@ interface BookRepo {
 
     /**
      *  @return The book's name that the user just joined.
+     *  @throws ExceedBooksLimitException
      */
     suspend fun handlePendingJoinRequest(): String
 
@@ -44,6 +45,9 @@ interface BookRepo {
 
     suspend fun checkUserHasBook(): Boolean
 
+    /**
+     *  @throws ExceedBooksLimitException
+     */
     suspend fun createBook(name: String)
 
     suspend fun renameBook(newName: String)
@@ -105,6 +109,7 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun handlePendingJoinRequest(): String {
+        checkBooksLimit()
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
         val userId = authManager.requireUserId()
 
@@ -121,6 +126,12 @@ class BookRepoImpl @Inject constructor(
 
         pendingJoinId.value = null
         return book.name
+    }
+
+    private fun checkBooksLimit() {
+        if (booksState.value.orEmpty().size >= BOOKS_LIMIT) {
+            throw ExceedBooksLimitException()
+        }
     }
 
     override suspend fun removeMember(userId: String) {
@@ -146,6 +157,7 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun createBook(name: String) {
+        checkBooksLimit()
         val userId = authManager.requireUserId()
         val expenses = context.resources.getStringArray(R.array.default_expense_categories)
         val incomes = context.resources.getStringArray(R.array.default_income_categories)

@@ -8,10 +8,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,6 +25,7 @@ import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.dollar
@@ -40,6 +41,8 @@ fun DetailsScreen(
 
     requireNotNull(category) { "Category must be presented to show the details." }
 
+    var sortMode by remember { mutableStateOf(RecordsSortMode.Date) }
+
     val recordGroups by viewModel.recordGroups.collectAsState()
     val records = recordGroups[category].orEmpty()
     val totalPrice = records.sumOf { it.price }.dollar
@@ -48,16 +51,37 @@ fun DetailsScreen(
 
         TopBar(
             title = "$category $totalPrice",
-            navigateBack = { navController.navigateUp() }
+            navigateBack = { navController.navigateUp() },
+            menuActions = when (sortMode) {
+                RecordsSortMode.Date -> listOf(MenuAction(
+                    icon = Icons.Filled.Star,
+                    description = stringResource(id = R.string.overview_sort_by_price),
+                    onClick = { sortMode = RecordsSortMode.Price }
+                ))
+                RecordsSortMode.Price -> listOf(MenuAction(
+                    icon = Icons.Filled.DateRange,
+                    description = stringResource(id = R.string.overview_sort_by_date),
+                    onClick = { sortMode = RecordsSortMode.Date }
+                ))
+            }
         )
+
+        val sortedRecords = when (sortMode) {
+            RecordsSortMode.Date -> records.sortedByDescending { it.date }
+            RecordsSortMode.Price -> records.sortedByDescending { it.price }
+        }
 
         LazyColumn(
             modifier = Modifier.padding(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(records) { item ->
+
+            items(sortedRecords) { item ->
                 RecordCard(item = item) {
-                    navController.currentBackStackEntry?.arguments?.putParcelable(ARG_EDIT_RECORD, item)
+                    navController.currentBackStackEntry?.arguments?.putParcelable(
+                        ARG_EDIT_RECORD,
+                        item
+                    )
                     navController.navigate(AddDest.Record.route)
                 }
             }

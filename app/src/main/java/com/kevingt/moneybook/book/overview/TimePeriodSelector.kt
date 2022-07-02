@@ -67,7 +67,11 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
                 viewModel.setTimePeriod(
                     TimePeriod.Custom(
                         fromEpoch = from.toEpochDay(),
-                        untilEpoch = untilDate.toEpochDay()
+                        untilEpoch = if (from.isAfter(untilDate)) {
+                            from.toEpochDay()
+                        } else {
+                            untilDate.toEpochDay()
+                        }
                     )
                 )
             }

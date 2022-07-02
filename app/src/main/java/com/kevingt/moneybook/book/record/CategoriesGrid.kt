@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,6 +29,7 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
 fun CategoriesGrid(navController: NavController) {
@@ -44,7 +44,7 @@ fun CategoriesGrid(navController: NavController) {
 
     FlowRow(
         mainAxisSize = SizeMode.Expand,
-        mainAxisSpacing = 8.dp,
+        mainAxisSpacing = 16.dp,
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
 
@@ -75,9 +75,13 @@ fun CategoryCard(
     onClick: () -> Unit
 ) {
 
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        backgroundColor = if (isSelected) Color.Yellow else Color.White,
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = if (isSelected) {
+            LocalAppColors.current.dark
+        } else {
+            LocalAppColors.current.primary
+        },
         onClick = onClick
     ) {
 
@@ -86,7 +90,8 @@ fun CategoryCard(
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            color = LocalAppColors.current.light,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
         )
     }
 }
@@ -94,21 +99,23 @@ fun CategoryCard(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EditCategoriesCard(onClick: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.White,
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = LocalAppColors.current.primary,
         onClick = onClick
     ) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
         ) {
 
             Icon(
                 imageVector = Icons.Filled.Edit,
                 contentDescription = stringResource(id = R.string.category_edit_title),
+                tint = LocalAppColors.current.light,
                 modifier = Modifier.size(16.dp)
             )
 
@@ -117,6 +124,7 @@ fun EditCategoriesCard(onClick: () -> Unit) {
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
+                color = LocalAppColors.current.light
             )
         }
     }

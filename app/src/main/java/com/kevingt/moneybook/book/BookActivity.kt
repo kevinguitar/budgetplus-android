@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import com.kevingt.moneybook.auth.AuthActivity
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.BookRepo
+import com.kevingt.moneybook.ui.AppTheme
 import com.kevingt.moneybook.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,7 +41,9 @@ class BookActivity : ComponentActivity() {
         }
 
         setContent {
-            BookBinding(viewModel = viewModel)
+            AppTheme {
+                BookBinding(viewModel = viewModel)
+            }
         }
     }
 

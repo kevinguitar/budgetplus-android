@@ -31,8 +31,15 @@ fun DatePickerLabel(
             .clickable(onClick = onClick)
     ) {
 
-        Icon(Icons.Filled.DateRange, contentDescription = stringResource(id = R.string.select_date))
+        Icon(
+            imageVector = Icons.Filled.DateRange,
+            contentDescription = stringResource(id = R.string.select_date),
+            tint = LocalAppColors.current.dark
+        )
 
-        Text(text = date.longFormatted)
+        Text(
+            text = date.longFormatted,
+            color = LocalAppColors.current.dark
+        )
     }
 }

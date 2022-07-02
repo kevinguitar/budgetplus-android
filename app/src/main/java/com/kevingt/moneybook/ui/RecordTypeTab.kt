@@ -1,10 +1,13 @@
 package com.kevingt.moneybook.ui
 
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,27 +21,67 @@ fun RecordTypeTab(
     onTypeSelected: (RecordType) -> Unit
 ) {
 
-    TabRow(
-        modifier = Modifier.height(56.dp),
-        selectedTabIndex = selected.ordinal
+    Row(
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
 
-        Tab(
-            selected = selected == RecordType.Expense,
+        TypePill(
+            text = stringResource(id = R.string.record_expense),
+            isSelected = selected == RecordType.Expense,
             onClick = { onTypeSelected(RecordType.Expense) }
-        ) {
-            Text(text = stringResource(id = R.string.record_expense))
-        }
+        )
 
-        Tab(
-            selected = selected == RecordType.Income,
+        Spacer(
+            modifier = Modifier
+                .size(3.dp, 24.dp)
+                .background(
+                    color = LocalAppColors.current.dark,
+                    shape = CircleShape
+                )
+        )
+
+        TypePill(
+            text = stringResource(id = R.string.record_income),
+            isSelected = selected == RecordType.Income,
             onClick = { onTypeSelected(RecordType.Income) }
-        ) {
-            Text(text = stringResource(id = R.string.record_income))
-        }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun TypePill(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
+
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = if (isSelected) {
+            LocalAppColors.current.dark
+        } else {
+            LocalAppColors.current.light
+        },
+    ) {
+
+        Text(
+            text = text,
+            color = if (isSelected) {
+                LocalAppColors.current.light
+            } else {
+                LocalAppColors.current.dark
+            },
+            modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp)
+        )
     }
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun RecordTypeTab_Preview() = RecordTypeTab(selected = RecordType.Expense) {}

@@ -7,10 +7,13 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevingt.moneybook.data.local.PreferenceHolder
+import com.kevingt.moneybook.data.local.bindObject
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.mapState
+import com.kevingt.moneybook.utils.priceText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -19,13 +22,14 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    //TODO: Consider saving the option to pref
-    private val _timePeriod = MutableStateFlow<TimePeriod>(TimePeriod.Month)
+    private var overviewPeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
+    private val _timePeriod = MutableStateFlow(overviewPeriod)
     val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
 
     val fromDate = timePeriod.mapState { it.from }
@@ -34,7 +38,7 @@ class OverviewViewModel @Inject constructor(
     private val records = MutableStateFlow<Sequence<Record>?>(null)
 
     val totalPrice = records.mapState { record ->
-        record.orEmpty().sumOf { it.price }
+        record.orEmpty().sumOf { it.price }.priceText
     }
 
     val recordGroups = combine(
@@ -71,6 +75,7 @@ class OverviewViewModel @Inject constructor(
     }
 
     fun setTimePeriod(timePeriod: TimePeriod) {
+        overviewPeriod = timePeriod
         _timePeriod.value = timePeriod
         observeRecords()
     }
@@ -99,5 +104,10 @@ class OverviewViewModel @Inject constructor(
                         .asSequence()
                 }
             }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        recordsRegistration?.remove()
     }
 }

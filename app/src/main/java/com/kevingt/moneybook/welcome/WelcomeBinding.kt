@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kevingt.moneybook.R
+import com.kevingt.moneybook.ui.AppButton
+import com.kevingt.moneybook.ui.AppTextField
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 
@@ -45,12 +45,12 @@ fun CreateBook(createBook: (String) -> Unit) {
             .background(Color.White)
     ) {
 
-        TextField(
+        AppTextField(
             value = value,
             onValueChange = { value = it }
         )
 
-        Button(
+        AppButton(
             onClick = { createBook(value) },
             enabled = value.isNotBlank(),
         ) {

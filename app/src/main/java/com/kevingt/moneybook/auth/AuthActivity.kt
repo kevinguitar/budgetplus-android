@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.kevingt.moneybook.auth.ui.AuthBinding
+import com.kevingt.moneybook.ui.AppTheme
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +20,9 @@ class AuthActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AuthBinding(viewModel = viewModel.get())
+            AppTheme {
+                AuthBinding(viewModel = viewModel.get())
+            }
         }
     }
 

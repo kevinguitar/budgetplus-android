@@ -10,6 +10,7 @@ import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
 import com.kevingt.moneybook.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class RecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _mode = MutableStateFlow<RecordMode>(RecordMode.Add)
@@ -118,7 +120,7 @@ class RecordViewModel @Inject constructor(
         val recordId = (_mode.value as? RecordMode.Edit)?.record?.id
         if (recordId == null) {
             recordRepo.createRecord(record)
-            toaster.showMessage(R.string.record_created)
+            toaster.showMessage(context.getString(R.string.record_created, category))
         } else {
             recordRepo.editRecord(recordId, record)
             toaster.showMessage(R.string.record_edited)

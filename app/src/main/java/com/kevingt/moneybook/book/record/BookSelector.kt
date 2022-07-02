@@ -1,5 +1,6 @@
 package com.kevingt.moneybook.book.record
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,12 +11,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.BookSelectorViewModel
+import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
 fun BookSelector() {
@@ -35,7 +36,7 @@ fun BookSelector() {
                 text = bookState?.name.orEmpty(),
                 style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White
+                color = LocalAppColors.current.light
             )
 
             if (booksState.orEmpty().size > 1) {
@@ -44,7 +45,7 @@ fun BookSelector() {
                     Icon(
                         imageVector = Icons.Filled.ArrowDropDown,
                         contentDescription = stringResource(id = R.string.book_selection),
-                        tint = Color.White
+                        tint = LocalAppColors.current.light
                     )
                 }
             }
@@ -53,6 +54,7 @@ fun BookSelector() {
         DropdownMenu(
             expanded = isSelectorShown,
             onDismissRequest = { isSelectorShown = false },
+            modifier = Modifier.background(color = LocalAppColors.current.light)
         ) {
 
             booksState.orEmpty().forEach { book ->
@@ -62,12 +64,16 @@ fun BookSelector() {
                     isSelectorShown = false
                 }) {
 
-                    Text(text = book.name)
+                    Text(
+                        text = book.name,
+                        color = LocalAppColors.current.primarySemiDark
+                    )
 
                     if (bookState?.id == book.id) {
                         Icon(
                             imageVector = Icons.Filled.Check,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = LocalAppColors.current.primarySemiDark
                         )
                     }
                 }

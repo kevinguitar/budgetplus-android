@@ -19,6 +19,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,9 +44,11 @@ interface GlobalModule {
 
         @Provides
         @AppScope
+        @Singleton
         fun provideAppCoroutineScope(): CoroutineScope = AppCoroutineScope
 
         @Provides
+        @Singleton
         fun provideGson(): Gson = Gson()
     }
 }

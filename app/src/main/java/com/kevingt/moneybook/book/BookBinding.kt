@@ -1,6 +1,8 @@
 package com.kevingt.moneybook.book
 
 import android.os.Bundle
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -28,6 +30,7 @@ import com.kevingt.moneybook.book.overview.OverviewScreen
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.record.RecordScreen
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.ARG_CATEGORY
 import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.ARG_TYPE
@@ -52,7 +55,10 @@ fun BookBinding(viewModel: BookViewModel) {
         NavHost(
             navController = navController,
             startDestination = BookTab.Add.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(color = LocalAppColors.current.light)
         ) {
             addTabGraph(navController)
             overviewTabGraph(navController)
@@ -118,7 +124,12 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 @Composable
 fun BottomNav(navController: NavController) {
 
-    BottomNavigation(modifier = Modifier.height(48.dp)) {
+    BottomNavigation(
+        modifier = Modifier.height(48.dp),
+        backgroundColor = LocalAppColors.current.primaryDark,
+        contentColor = LocalAppColors.current.primaryDark,
+        elevation = 0.dp
+    ) {
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -127,7 +138,13 @@ fun BottomNav(navController: NavController) {
 
             BottomNavigationItem(
                 selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
-                icon = { Icon(tab.icon, contentDescription = null) },
+                icon = {
+                    Icon(
+                        imageVector = tab.icon,
+                        contentDescription = null,
+                        tint = LocalAppColors.current.light
+                    )
+                },
                 onClick = {
                     navController.navigate(tab.route) {
                         // Pop up to the start destination of the graph to

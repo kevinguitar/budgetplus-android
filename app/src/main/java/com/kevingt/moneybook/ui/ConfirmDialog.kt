@@ -1,18 +1,13 @@
 package com.kevingt.moneybook.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.kevingt.moneybook.R
 
 @Composable
@@ -22,15 +17,13 @@ fun ConfirmDialog(
     onDismiss: () -> Unit
 ) {
 
-    Dialog(onDismissRequest = onDismiss) {
+    AppDialog(onDismissRequest = onDismiss) {
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .background(color = Color.White, shape = RoundedCornerShape(16.dp))
                 .width(280.dp)
                 .wrapContentHeight()
-                .padding(16.dp)
         ) {
 
             Text(text = message)
@@ -40,11 +33,11 @@ fun ConfirmDialog(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
 
-                Button(onClick = onDismiss) {
+                AppButton(onClick = onDismiss) {
                     Text(text = stringResource(id = R.string.cta_cancel))
                 }
 
-                Button(onClick = {
+                AppButton(onClick = {
                     onConfirm()
                     onDismiss()
                 }) {

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +33,7 @@ fun TopBar(
         modifier = Modifier
             .height(56.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colors.primary)
+            .background(color = LocalAppColors.current.primaryDark)
     ) {
 
         if (navigateBack != null) {
@@ -42,7 +41,7 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = stringResource(id = R.string.cta_back),
-                    tint = Color.White
+                    tint = LocalAppColors.current.light
                 )
             }
         } else {
@@ -54,7 +53,7 @@ fun TopBar(
                 text = title,
                 style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.SemiBold,
-                color = Color.White,
+                color = LocalAppColors.current.light,
                 modifier = Modifier.weight(1F)
             )
             titleContent != null -> Box(
@@ -69,7 +68,7 @@ fun TopBar(
                 Icon(
                     imageVector = action.icon,
                     contentDescription = action.description,
-                    tint = Color.White,
+                    tint = LocalAppColors.current.light,
                 )
             }
         }

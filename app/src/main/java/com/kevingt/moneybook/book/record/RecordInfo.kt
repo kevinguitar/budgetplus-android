@@ -5,24 +5,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.ui.DatePickerDialog
-import com.kevingt.moneybook.ui.DatePickerLabel
-import com.kevingt.moneybook.ui.RecordTypeTab
+import com.kevingt.moneybook.ui.*
 
 @Composable
 fun RecordInfo(
@@ -59,13 +54,14 @@ fun RecordInfo(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
 
-            Text(text = stringResource(id = R.string.record_description))
+            Text(
+                text = stringResource(id = R.string.record_description),
+                color = LocalAppColors.current.dark
+            )
 
-            TextField(
+            AppTextField(
                 value = name,
                 onValueChange = viewModel::setName,
-                //TODO: Extract to app-level uikit
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
             )
         }
 

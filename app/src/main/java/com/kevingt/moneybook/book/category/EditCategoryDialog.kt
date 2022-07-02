@@ -1,28 +1,24 @@
 package com.kevingt.moneybook.book.category
 
 import android.os.Parcelable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.kevingt.moneybook.R
+import com.kevingt.moneybook.ui.AppButton
+import com.kevingt.moneybook.ui.AppDialog
+import com.kevingt.moneybook.ui.AppTextField
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -62,16 +58,11 @@ fun EditCategoryDialog(
         focusRequester.requestFocus()
     }
 
-    Dialog(onDismissRequest = onDismiss) {
+    AppDialog(onDismissRequest = onDismiss) {
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .background(color = Color.White, shape = RoundedCornerShape(16.dp))
-                .padding(16.dp)
-        ) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-            TextField(
+            AppTextField(
                 value = name,
                 onValueChange = { name = it },
                 modifier = Modifier.focusRequester(focusRequester)
@@ -83,7 +74,7 @@ fun EditCategoryDialog(
             ) {
 
                 if (mode is CategoryEditMode.Rename) {
-                    Button(onClick = {
+                    AppButton(onClick = {
                         onDelete()
                         onDismiss()
                     }) {
@@ -91,7 +82,7 @@ fun EditCategoryDialog(
                     }
                 }
 
-                Button(
+                AppButton(
                     onClick = {
                         onConfirm(name.text)
                         onDismiss()

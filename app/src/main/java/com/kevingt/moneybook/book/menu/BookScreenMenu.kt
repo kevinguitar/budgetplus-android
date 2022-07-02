@@ -1,5 +1,6 @@
 package com.kevingt.moneybook.book.menu
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -7,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
@@ -18,6 +18,7 @@ import com.kevingt.moneybook.book.member.MembersDialog
 import com.kevingt.moneybook.book.menu.vm.BookMenuViewModel
 import com.kevingt.moneybook.ui.ConfirmDialog
 import com.kevingt.moneybook.ui.InputDialog
+import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 
@@ -48,14 +49,15 @@ fun BookScreenMenu() {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = stringResource(id = R.string.menu_open),
-                tint = Color.White
+                tint = LocalAppColors.current.light
             )
         }
 
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false },
-            offset = DpOffset(x = 4.dp, y = 0.dp)
+            offset = DpOffset(x = 4.dp, y = 0.dp),
+            modifier = Modifier.background(color = LocalAppColors.current.light)
         ) {
 
             DropdownItem(name = stringResource(id = R.string.menu_rename_user)) {
@@ -85,8 +87,7 @@ fun BookScreenMenu() {
             Divider(modifier = Modifier.padding(vertical = 2.dp))
 
             DropdownItem(
-                name = stringResource(id = if (isBookOwner) R.string.cta_delete else R.string.cta_leave),
-                isDangerous = true
+                name = stringResource(id = if (isBookOwner) R.string.cta_delete else R.string.cta_leave)
             ) {
                 isDeleteOrLeaveDialogShown = true
                 isMenuExpanded = false
@@ -141,14 +142,13 @@ fun BookScreenMenu() {
 @Composable
 private fun DropdownItem(
     name: String,
-    isDangerous: Boolean = false,
     onClick: () -> Unit
 ) {
 
     DropdownMenuItem(onClick = onClick) {
         Text(
             text = name,
-            color = if (isDangerous) Color.Red else Color.Unspecified
+            color = LocalAppColors.current.primarySemiDark
         )
     }
 }

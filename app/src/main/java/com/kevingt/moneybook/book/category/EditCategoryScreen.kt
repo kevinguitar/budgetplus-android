@@ -2,16 +2,15 @@ package com.kevingt.moneybook.book.category
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,6 +22,7 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.CategoryCard
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.TopBar
 
 @Composable
@@ -79,9 +79,10 @@ fun EditCategoryScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AddCategoryCard(onClick: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.White,
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = LocalAppColors.current.primary,
         onClick = onClick
     ) {
 
@@ -94,6 +95,7 @@ private fun AddCategoryCard(onClick: () -> Unit) {
             Icon(
                 imageVector = Icons.Filled.Add,
                 contentDescription = stringResource(id = R.string.cta_add),
+                tint = LocalAppColors.current.light,
                 modifier = Modifier.size(16.dp)
             )
 
@@ -102,6 +104,7 @@ private fun AddCategoryCard(onClick: () -> Unit) {
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
+                color = LocalAppColors.current.light
             )
         }
     }

@@ -1,11 +1,9 @@
 package com.kevingt.moneybook.book.member
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -22,12 +20,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.data.remote.User
+import com.kevingt.moneybook.ui.AppDialog
 import com.kevingt.moneybook.ui.ConfirmDialog
 
 @Composable
@@ -44,14 +42,11 @@ fun MembersDialog(
 
     var removeMember by remember { mutableStateOf<User?>(null) }
 
-    Dialog(onDismissRequest = onDismiss) {
+    AppDialog(onDismissRequest = onDismiss) {
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier
-                .background(color = Color.White, shape = RoundedCornerShape(16.dp))
-                .size(width = 280.dp, height = 400.dp)
-                .padding(16.dp)
+            modifier = Modifier.size(width = 280.dp, height = 400.dp)
         ) {
 
             Text(text = stringResource(id = R.string.members_title))

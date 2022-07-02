@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
+import com.kevingt.moneybook.ui.AppButton
 import com.kevingt.moneybook.ui.ConfirmDialog
 
 @Composable
@@ -37,7 +37,7 @@ fun RecordActions(
             modifier = Modifier.align(Alignment.Center)
         ) {
 
-            Button(
+            AppButton(
                 onClick = {
                     viewModel.record()
                     focusManager.clearFocus()
@@ -50,7 +50,7 @@ fun RecordActions(
             }
 
             if (isEditing) {
-                Button(
+                AppButton(
                     onClick = { showDeleteConfirmationDialog = true },
                 ) {
                     Text(text = stringResource(id = R.string.cta_delete))

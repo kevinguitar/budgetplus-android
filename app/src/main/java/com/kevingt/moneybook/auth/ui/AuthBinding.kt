@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthViewModel
+import com.kevingt.moneybook.ui.AppButton
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 
@@ -36,11 +36,11 @@ fun AuthBinding(viewModel: AuthViewModel) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Button(onClick = { viewModel.signInWithFacebook() }) {
+        AppButton(onClick = { viewModel.signInWithFacebook() }) {
             Text(text = stringResource(id = R.string.auth_facebook))
         }
 
-        Button(onClick = { viewModel.signInWithGoogle() }) {
+        AppButton(onClick = { viewModel.signInWithGoogle() }) {
             Text(text = stringResource(id = R.string.auth_google))
         }
     }

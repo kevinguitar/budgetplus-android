@@ -3,12 +3,11 @@ package com.kevingt.moneybook.book.overview
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,6 +19,7 @@ import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.overview.vm.TimePeriod
 import com.kevingt.moneybook.ui.DatePickerDialog
 import com.kevingt.moneybook.ui.DatePickerLabel
+import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
 fun TimePeriodSelector(viewModel: OverviewViewModel) {
@@ -62,7 +62,6 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
 
         DatePickerDialog(
             date = fromDate,
-            maxDate = untilDate,
             onDismiss = { showFromDatePicker = false },
             onDatePicked = { from ->
                 viewModel.setTimePeriod(
@@ -101,9 +100,13 @@ private fun TimePeriodPill(
     onClick: () -> Unit
 ) {
 
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        backgroundColor = if (isSelected) Color.Yellow else Color.White,
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = if (isSelected) {
+            LocalAppColors.current.dark
+        } else {
+            LocalAppColors.current.primary
+        },
         onClick = onClick
     ) {
 
@@ -120,6 +123,7 @@ private fun TimePeriodPill(
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
+            color = LocalAppColors.current.light,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }

@@ -71,7 +71,7 @@ fun DatePickerDialog(
                     }
                 ) {
                     Text(
-                        text = stringResource(id = R.string.cta_confirm),
+                        text = stringResource(id = R.string.cta_ok),
                         style = MaterialTheme.typography.button,
                         color = MaterialTheme.colors.onPrimary
                     )

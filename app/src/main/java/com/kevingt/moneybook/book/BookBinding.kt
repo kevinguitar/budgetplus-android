@@ -32,7 +32,6 @@ import com.kevingt.moneybook.book.record.RecordScreen
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.ARG_CATEGORY
-import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.ARG_TYPE
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
@@ -70,11 +69,7 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
     navigation(startDestination = AddDest.Record.route, route = BookTab.Add.route) {
 
         composable(route = AddDest.Record.route) {
-            RecordScreen(
-                navController = navController,
-                record = navController.previousBackStackEntry
-                    ?.arguments?.getParcelable(ARG_EDIT_RECORD)
-            )
+            RecordScreen(navController = navController)
         }
 
         composable(

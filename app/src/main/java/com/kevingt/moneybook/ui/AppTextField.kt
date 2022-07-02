@@ -23,6 +23,7 @@ fun AppTextField(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
     placeholder: @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
     singleLine: Boolean = true,
     backgroundColor: Color = LocalAppColors.current.primaryLight,
     textColor: Color = LocalAppColors.current.dark,
@@ -32,7 +33,7 @@ fun AppTextField(
     modifier = modifier,
     textStyle = textStyle,
     placeholder = placeholder,
-    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+    keyboardOptions = keyboardOptions,
     singleLine = singleLine,
     shape = RoundedCornerShape(12.dp),
     colors = AppTextFieldColors(backgroundColor, textColor)
@@ -45,6 +46,7 @@ fun AppTextField(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = TextStyle.Default,
     placeholder: @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
     singleLine: Boolean = true,
     backgroundColor: Color = LocalAppColors.current.primaryLight,
     textColor: Color = LocalAppColors.current.dark,
@@ -54,7 +56,7 @@ fun AppTextField(
     modifier = modifier,
     textStyle = textStyle,
     placeholder = placeholder,
-    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+    keyboardOptions = keyboardOptions,
     singleLine = singleLine,
     shape = RoundedCornerShape(12.dp),
     colors = AppTextFieldColors(backgroundColor, textColor)

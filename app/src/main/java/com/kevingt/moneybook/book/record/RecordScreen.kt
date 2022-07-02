@@ -12,15 +12,11 @@ import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.menu.BookScreenMenu
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
-import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
 
 @Composable
-fun RecordScreen(
-    navController: NavController,
-    record: Record?
-) {
+fun RecordScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
@@ -42,10 +38,7 @@ fun RecordScreen(
             )
         }
 
-        RecordInfo(
-            navController = navController,
-            record = record
-        )
+        RecordInfo(navController = navController)
 
     }
 }

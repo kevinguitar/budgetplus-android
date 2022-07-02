@@ -1,4 +1,4 @@
-package com.kevingt.moneybook.book.record
+package com.kevingt.moneybook.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,22 +23,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.moneybook.R
-import com.kevingt.moneybook.book.AddDest
-import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.RecordType
-import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
-fun CategoriesGrid(navController: NavController) {
+fun CategoriesGrid(
+    type: RecordType,
+    onCategorySelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    selectedCategory: String? = null,
+    actionBtn: CategoriesActionBtn? = null
+) {
 
-    val viewModel = hiltViewModel<RecordViewModel>()
-
-    val type by viewModel.type.collectAsState()
-    val category by viewModel.category.collectAsState()
+    val viewModel = hiltViewModel<CategoriesViewModel>()
 
     val expenseCategories by viewModel.expenseCategories.collectAsState()
     val incomeCategories by viewModel.incomeCategories.collectAsState()
@@ -45,24 +45,25 @@ fun CategoriesGrid(navController: NavController) {
     FlowRow(
         mainAxisSize = SizeMode.Expand,
         mainAxisSpacing = 16.dp,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
 
         when (type) {
             RecordType.Expense -> expenseCategories.forEach { item ->
-                CategoryCard(category = item, isSelected = category == item) {
-                    viewModel.setCategory(item)
+                CategoryCard(category = item, isSelected = selectedCategory == item) {
+                    onCategorySelected(item)
                 }
             }
             RecordType.Income -> incomeCategories.forEach { item ->
-                CategoryCard(category = item, isSelected = category == item) {
-                    viewModel.setCategory(item)
+                CategoryCard(category = item, isSelected = selectedCategory == item) {
+                    onCategorySelected(item)
                 }
             }
         }
 
-        EditCategoriesCard {
-            navController.navigate(route = "${AddDest.EditCategory.route}/$type")
+        if (actionBtn != null) {
+
+            CategoryAction(actionBtn = actionBtn)
         }
     }
 }
@@ -96,36 +97,66 @@ fun CategoryCard(
     }
 }
 
+sealed class CategoriesActionBtn {
+    abstract val onClick: () -> Unit
+
+    class Add(override val onClick: () -> Unit) : CategoriesActionBtn()
+    class Edit(override val onClick: () -> Unit) : CategoriesActionBtn()
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun EditCategoriesCard(onClick: () -> Unit) {
+private fun CategoryAction(
+    actionBtn: CategoriesActionBtn
+) {
 
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = LocalAppColors.current.primary,
-        onClick = onClick
+        onClick = actionBtn.onClick
     ) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
 
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = stringResource(id = R.string.category_edit_title),
-                tint = LocalAppColors.current.light,
-                modifier = Modifier.size(16.dp)
-            )
+            when (actionBtn) {
+                is CategoriesActionBtn.Add -> {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.cta_add),
+                        tint = LocalAppColors.current.light,
+                        modifier = Modifier.size(16.dp)
+                    )
 
-            Text(
-                text = stringResource(id = R.string.cta_edit),
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                color = LocalAppColors.current.light
-            )
+                    Text(
+                        text = stringResource(id = R.string.cta_add),
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        color = LocalAppColors.current.light
+                    )
+                }
+                is CategoriesActionBtn.Edit -> {
+
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(id = R.string.category_edit_title),
+                        tint = LocalAppColors.current.light,
+                        modifier = Modifier.size(16.dp)
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.cta_edit),
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        color = LocalAppColors.current.light
+                    )
+                }
+            }
         }
     }
 }
@@ -137,4 +168,4 @@ private fun CategoryCard_Preview() =
 
 @Preview
 @Composable
-private fun EditCategoriesCard_Preview() = EditCategoriesCard(onClick = {})
+private fun EditCategoriesCard_Preview() = CategoryAction(CategoriesActionBtn.Edit {})

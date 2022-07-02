@@ -20,14 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
-import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
-import com.kevingt.moneybook.utils.ARG_EDIT_RECORD
 import com.kevingt.moneybook.utils.dollar
 import com.kevingt.moneybook.utils.shortFormatted
 import java.time.LocalDate
@@ -42,6 +40,7 @@ fun DetailsScreen(
     requireNotNull(category) { "Category must be presented to show the details." }
 
     var sortMode by remember { mutableStateOf(RecordsSortMode.Date) }
+    var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     val recordGroups by viewModel.recordGroups.collectAsState()
     val records = recordGroups[category].orEmpty()
@@ -78,14 +77,19 @@ fun DetailsScreen(
 
             items(sortedRecords) { item ->
                 RecordCard(item = item) {
-                    navController.currentBackStackEntry?.arguments?.putParcelable(
-                        ARG_EDIT_RECORD,
-                        item
-                    )
-                    navController.navigate(AddDest.Record.route)
+                    editRecordDialog = item
                 }
             }
         }
+    }
+
+    val editRecord = editRecordDialog
+    if (editRecord != null) {
+
+        EditRecordDialog(
+            editRecord = editRecord,
+            onDismiss = { editRecordDialog = null }
+        )
     }
 }
 

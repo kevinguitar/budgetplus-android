@@ -1,5 +1,9 @@
 package com.kevingt.moneybook.di
 
+import android.content.Context
+import android.os.Build
+import android.os.Vibrator
+import android.os.VibratorManager
 import com.google.gson.Gson
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.auth.AuthManagerImpl
@@ -17,6 +21,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
@@ -50,5 +55,16 @@ interface GlobalModule {
         @Provides
         @Singleton
         fun provideGson(): Gson = Gson()
+
+        @Provides
+        fun provideVibrator(@ApplicationContext context: Context): Vibrator {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager)
+                    .defaultVibrator
+            } else {
+                @Suppress("DEPRECATION")
+                context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -59,11 +60,11 @@ interface BookRepo {
     /**
      *  Categories
      */
-    fun addCategory(type: RecordType, category: String)
+    suspend fun addCategory(type: RecordType, category: String)
 
-    fun editCategory(type: RecordType, oldCategory: String, newCategory: String)
+    suspend fun editCategory(type: RecordType, oldCategory: String, newCategory: String)
 
-    fun deleteCategory(type: RecordType, name: String)
+    suspend fun deleteCategory(type: RecordType, name: String)
 
 }
 
@@ -108,12 +109,18 @@ class BookRepoImpl @Inject constructor(
         pendingJoinId.value = bookId
     }
 
+    private suspend fun getLatestBook(bookId: String): Book {
+        return booksDb.document(bookId).get(Source.SERVER)
+            .requireValue<Book>()
+            .copy(id = bookId)
+    }
+
     override suspend fun handlePendingJoinRequest(): String {
         checkBooksLimit()
         val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
         val userId = authManager.requireUserId()
 
-        val book = booksDb.document(bookId).get().requireValue<Book>().copy(id = bookId)
+        val book = getLatestBook(bookId)
         val newAuthors = book.authors.toMutableList()
         if (userId !in newAuthors) {
             newAuthors.add(userId)
@@ -135,7 +142,7 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun removeMember(userId: String) {
-        val book = booksDb.document(requireBookId).get().requireValue<Book>()
+        val book = getLatestBook(requireBookId)
         val newAuthors = book.authors.toMutableList()
         if (userId in newAuthors) {
             newAuthors.remove(userId)
@@ -251,8 +258,8 @@ class BookRepoImpl @Inject constructor(
     /**
      *  Categories
      */
-    override fun addCategory(type: RecordType, category: String) {
-        val book = bookState.value ?: return
+    override suspend fun addCategory(type: RecordType, category: String) {
+        val book = getLatestBook(requireBookId)
         val newCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
             RecordType.Income -> book.incomeCategories
@@ -263,8 +270,8 @@ class BookRepoImpl @Inject constructor(
         updateCategories(type, newCategories)
     }
 
-    override fun editCategory(type: RecordType, oldCategory: String, newCategory: String) {
-        val book = bookState.value ?: return
+    override suspend fun editCategory(type: RecordType, oldCategory: String, newCategory: String) {
+        val book = getLatestBook(requireBookId)
         val newCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
             RecordType.Income -> book.incomeCategories
@@ -278,8 +285,8 @@ class BookRepoImpl @Inject constructor(
         updateCategories(type, newCategories)
     }
 
-    override fun deleteCategory(type: RecordType, name: String) {
-        val book = bookState.value ?: return
+    override suspend fun deleteCategory(type: RecordType, name: String) {
+        val book = getLatestBook(requireBookId)
         val newCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
             RecordType.Income -> book.incomeCategories

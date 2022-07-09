@@ -8,7 +8,6 @@ import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.utils.Toaster
-import com.kevingt.moneybook.utils.mapState
 import com.kevingt.moneybook.utils.requireValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -31,9 +30,8 @@ class MembersViewModel @Inject constructor(
 
     val userId get() = authManager.requireUserId()
 
+    val ownerId get() = bookRepo.bookState.value?.ownerId
     val bookName get() = bookRepo.bookState.value?.name
-
-    val isBookOwner = bookRepo.bookState.mapState { it?.ownerId == userId }
 
 //    init {
 //        loadMembers()
@@ -55,9 +53,19 @@ class MembersViewModel @Inject constructor(
         if (authors != null) {
             viewModelScope.launch {
                 try {
-                    bookMembers.value = authors
+                    val users = authors
                         .map { id -> async { getUser(id) } }
                         .awaitAll()
+                        .toMutableList()
+
+                    // Move the owner to the first of the list
+                    val owner = users.find { it.id == ownerId }
+                    if (owner != null) {
+                        users.remove(owner)
+                        users.add(0, owner)
+                    }
+
+                    bookMembers.value = users
                 } catch (e: Exception) {
                     Timber.e(e)
                 }

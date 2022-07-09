@@ -38,7 +38,6 @@ fun MembersDialog(
     viewModel.loadMembers()
 
     val members by viewModel.bookMembers.collectAsState()
-    val isBookOwner by viewModel.isBookOwner.collectAsState()
 
     var removeMember by remember { mutableStateOf<User?>(null) }
 
@@ -59,7 +58,7 @@ fun MembersDialog(
                         MemberCard(
                             member = member,
                             myUserId = viewModel.userId,
-                            isBookOwner = isBookOwner,
+                            ownerId = viewModel.ownerId,
                             removeUser = { removeMember = member }
                         )
                     }
@@ -87,7 +86,7 @@ fun MembersDialog(
 private fun MemberCard(
     member: User,
     myUserId: String,
-    isBookOwner: Boolean,
+    ownerId: String?,
     removeUser: () -> Unit
 ) {
 
@@ -114,14 +113,23 @@ private fun MemberCard(
             modifier = Modifier.weight(1F)
         )
 
-        if (isBookOwner && myUserId != member.id) {
+        when {
 
-            IconButton(onClick = removeUser) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = stringResource(id = R.string.cta_delete),
-                    tint = Color.Black,
+            member.id == ownerId -> {
+                Text(
+                    text = stringResource(id = R.string.members_owner_label)
                 )
+            }
+
+            myUserId == ownerId -> {
+
+                IconButton(onClick = removeUser) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(id = R.string.cta_delete),
+                        tint = Color.Black,
+                    )
+                }
             }
         }
     }
@@ -134,7 +142,7 @@ private fun MemberCard_Preview() = MemberCard(
         name = "Kevin Chiu",
         photoUrl = ""
     ),
-    myUserId = "",
-    isBookOwner = true,
+    myUserId = "user01",
+    ownerId = "user01",
     removeUser = { }
 )

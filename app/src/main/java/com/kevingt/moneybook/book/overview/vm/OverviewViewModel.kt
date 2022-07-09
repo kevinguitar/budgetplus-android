@@ -6,6 +6,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevingt.moneybook.data.local.PreferenceHolder
+import com.kevingt.moneybook.data.local.bindObject
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
@@ -19,12 +21,14 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private val _timePeriod = MutableStateFlow<TimePeriod>(TimePeriod.Month)
+    private var cachePeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
+    private val _timePeriod = MutableStateFlow(cachePeriod)
     val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
 
     val fromDate = timePeriod.mapState { it.from }
@@ -71,6 +75,7 @@ class OverviewViewModel @Inject constructor(
 
     fun setTimePeriod(timePeriod: TimePeriod) {
         _timePeriod.value = timePeriod
+        cachePeriod = timePeriod
         observeRecords()
     }
 

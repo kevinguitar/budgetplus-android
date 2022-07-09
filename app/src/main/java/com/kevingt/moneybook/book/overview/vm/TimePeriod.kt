@@ -1,11 +1,8 @@
 package com.kevingt.moneybook.book.overview.vm
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
-@Parcelize
-sealed class TimePeriod : Parcelable {
+sealed class TimePeriod {
 
     abstract val from: LocalDate
     abstract val until: LocalDate
@@ -56,8 +53,8 @@ sealed class TimePeriod : Parcelable {
     }
 
     data class Custom(
-        override val from: LocalDate = LocalDate.MIN,
-        override val until: LocalDate = LocalDate.MAX
+        override val from: LocalDate,
+        override val until: LocalDate
     ) : TimePeriod() {
 
         init {

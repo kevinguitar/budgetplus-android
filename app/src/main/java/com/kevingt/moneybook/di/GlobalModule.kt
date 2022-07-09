@@ -5,8 +5,11 @@ import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.auth.AuthManagerImpl
+import com.kevingt.moneybook.book.overview.vm.TimePeriod
+import com.kevingt.moneybook.book.overview.vm.TimePeriodTypeAdapter
 import com.kevingt.moneybook.data.local.AppPreference
 import com.kevingt.moneybook.data.local.Preference
 import com.kevingt.moneybook.data.remote.BookRepo
@@ -54,7 +57,9 @@ interface GlobalModule {
 
         @Provides
         @Singleton
-        fun provideGson(): Gson = Gson()
+        fun provideGson(): Gson = GsonBuilder()
+            .registerTypeHierarchyAdapter(TimePeriod::class.java, TimePeriodTypeAdapter())
+            .create()
 
         @Provides
         fun provideVibrator(@ApplicationContext context: Context): Vibrator {

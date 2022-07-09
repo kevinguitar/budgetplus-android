@@ -43,7 +43,7 @@ class BooleanPreferenceDelegate(
     }
 }
 
-class ParcelablePreferenceDelegate<T : Any?>(
+class OptionalParcelablePreferenceDelegate<T : Any?>(
     private val default: T?,
     private val clazz: Class<T>,
     private val preference: Preference,
@@ -69,7 +69,7 @@ class ParcelablePreferenceDelegate<T : Any?>(
     }
 }
 
-class NonNullParcelablePreferenceDelegate<T : Any>(
+class ParcelablePreferenceDelegate<T : Any>(
     private val default: T,
     private val clazz: Class<T>,
     private val preference: Preference,

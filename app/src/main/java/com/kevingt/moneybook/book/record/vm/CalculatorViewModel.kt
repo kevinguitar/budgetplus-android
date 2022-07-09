@@ -82,7 +82,7 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
-    private val vibrationDuration get() = 5L
+    private val vibrationDuration get() = 2L
 
     private fun vibrate() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

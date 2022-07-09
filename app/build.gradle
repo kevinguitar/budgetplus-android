@@ -7,6 +7,13 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+ext {
+    compose_ui_version = '1.2.0-rc03'
+    compose_compiler_version = '1.2.0'
+    nav_version = '2.5.0'
+    dagger_hilt_version = '2.42'
+}
+
 android {
     namespace 'com.kevingt.moneybook'
     compileSdk 32
@@ -46,7 +53,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion project.ext.compose_compiler_version
     }
     packagingOptions {
         resources {
@@ -65,26 +72,23 @@ kapt {
     correctErrorTypes true
 }
 
-ext {
-    compose_ui_version = '1.2.0-rc02'
-    nav_version = '2.4.2'
-    dagger_hilt_version = '2.42'
-}
-
 dependencies {
 
     // Android core
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
 
     // Jetpack Compose
     // https://developer.android.com/jetpack/androidx/releases/compose-ui
-    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.activity:activity-compose:1.5.0'
     implementation "androidx.compose.material:material:$compose_ui_version"
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    // Compose Compiler
+    // https://developer.android.com/jetpack/androidx/releases/compose-compiler
+    implementation "androidx.compose.compiler:compiler:$compose_compiler_version"
     // Compose UI utils
     // https://google.github.io/accompanist/flowlayout/
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.9-beta"

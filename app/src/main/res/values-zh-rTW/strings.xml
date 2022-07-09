@@ -46,7 +46,7 @@
     <!-- Members -->
     <string name="members_title">成員</string>
     <string name="members_owner_label">創建者</string>
-    <string name="members_confirm_remove">確認將 %s 從 %s 移除嗎？</string>
+    <string name="members_confirm_remove">確認將 %1$s 從 %2$s 移除嗎？</string>
 
     <!-- Menu -->
     <string name="menu_share_book">點擊以下連結一起記帳吧！\n%s</string>

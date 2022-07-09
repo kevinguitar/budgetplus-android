@@ -45,7 +45,7 @@
     <!-- Members -->
     <string name="members_title">Members</string>
     <string name="members_owner_label">Owner</string>
-    <string name="members_confirm_remove">Are you sure you want to remove %s from %s?</string>
+    <string name="members_confirm_remove">Are you sure you want to remove %1$s from %2$s?</string>
 
     <!-- Menu -->
     <string name="menu_share_book">Click the link to track expenses together!\n%s</string>

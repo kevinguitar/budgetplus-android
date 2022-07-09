@@ -66,11 +66,11 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
             onDatePicked = { from ->
                 viewModel.setTimePeriod(
                     TimePeriod.Custom(
-                        fromEpoch = from.toEpochDay(),
-                        untilEpoch = if (from.isAfter(untilDate)) {
-                            from.toEpochDay()
+                        from = from,
+                        until = if (from.isAfter(untilDate)) {
+                            from
                         } else {
-                            untilDate.toEpochDay()
+                            untilDate
                         }
                     )
                 )
@@ -85,12 +85,7 @@ fun TimePeriodSelector(viewModel: OverviewViewModel) {
             minDate = fromDate,
             onDismiss = { showUntilDatePicker = false },
             onDatePicked = { until ->
-                viewModel.setTimePeriod(
-                    TimePeriod.Custom(
-                        fromEpoch = fromDate.toEpochDay(),
-                        untilEpoch = until.toEpochDay()
-                    )
-                )
+                viewModel.setTimePeriod(TimePeriod.Custom(from = fromDate, until = until))
             }
         )
     }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.HistoryDest
@@ -21,12 +22,16 @@ import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.ui.RecordTypeTab
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
+import timber.log.Timber
 
 @Composable
 fun OverviewScreen(
     navController: NavController,
-    viewModel: OverviewViewModel
+//    viewModel: OverviewViewModel
 ) {
+
+    val viewModel = hiltViewModel<OverviewViewModel>()
+    Timber.d("Screen overview: ${viewModel.hashCode()}")
 
     val type by viewModel.type.collectAsState()
     val totalPrice by viewModel.totalPrice.collectAsState()
@@ -41,7 +46,7 @@ fun OverviewScreen(
             onTypeSelected = viewModel::setRecordType
         )
 
-        TimePeriodSelector(viewModel)
+        TimePeriodSelector()
 
         Text(
             text = stringResource(id = R.string.overview_total_price, totalPrice),

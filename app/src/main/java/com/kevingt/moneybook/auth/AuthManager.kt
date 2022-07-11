@@ -6,7 +6,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.data.local.PreferenceHolder
-import com.kevingt.moneybook.data.local.bindObjectOptional
 import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.utils.await
 import kotlinx.coroutines.flow.MutableStateFlow

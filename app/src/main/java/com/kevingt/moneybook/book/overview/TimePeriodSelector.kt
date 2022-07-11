@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.moneybook.R
@@ -22,7 +23,9 @@ import com.kevingt.moneybook.ui.DatePickerLabel
 import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
-fun TimePeriodSelector(viewModel: OverviewViewModel) {
+fun TimePeriodSelector() {
+
+    val viewModel = hiltViewModel<OverviewViewModel>()
 
     val timePeriod by viewModel.timePeriod.collectAsState()
     val fromDate by viewModel.fromDate.collectAsState()

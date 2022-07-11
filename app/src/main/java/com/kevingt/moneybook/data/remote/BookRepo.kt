@@ -11,7 +11,6 @@ import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.local.PreferenceHolder
-import com.kevingt.moneybook.data.local.bindObjectOptional
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
 import com.kevingt.moneybook.utils.requireValue

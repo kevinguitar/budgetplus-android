@@ -90,12 +90,8 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
     navigation(startDestination = HistoryDest.Overview.route, route = BookTab.History.route) {
 
-        composable(HistoryDest.Overview.route) { backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(BookTab.History.route)
-            }
-            val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
-            OverviewScreen(navController = navController, viewModel)
+        composable(HistoryDest.Overview.route) {
+            OverviewScreen(navController = navController)
         }
 
         composable(
@@ -104,8 +100,9 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
         ) { backStackEntry ->
             val args = backStackEntry.arguments ?: Bundle.EMPTY
             val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(BookTab.History.route)
+                navController.getBackStackEntry(HistoryDest.Overview.route)
             }
+            // Share the same VM instance with overview screen
             val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
             DetailsScreen(
                 navController = navController,

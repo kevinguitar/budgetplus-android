@@ -21,10 +21,11 @@ class PreferenceHolder @Inject constructor(
     fun bindBoolean(default: Boolean): BooleanPreferenceDelegate {
         return BooleanPreferenceDelegate(preference, default)
     }
+
+    inline fun <reified T : Any?> bindObjectOptional(default: T? = null) =
+        OptionalParcelablePreferenceDelegate(default, T::class.java, preference, gson)
+
+    inline fun <reified T : Any> bindObject(default: T) =
+        ParcelablePreferenceDelegate(default, T::class.java, preference, gson)
+
 }
-
-inline fun <reified T : Any?> PreferenceHolder.bindObjectOptional(default: T? = null) =
-    OptionalParcelablePreferenceDelegate(default, T::class.java, preference, gson)
-
-inline fun <reified T : Any> PreferenceHolder.bindObject(default: T) =
-    ParcelablePreferenceDelegate(default, T::class.java, preference, gson)

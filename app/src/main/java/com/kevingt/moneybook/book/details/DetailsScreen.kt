@@ -71,8 +71,7 @@ fun DetailsScreen(
         }
 
         LazyColumn(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
 
             items(sortedRecords) { item ->

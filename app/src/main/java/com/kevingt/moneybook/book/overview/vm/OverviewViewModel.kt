@@ -23,7 +23,8 @@ class OverviewViewModel @Inject constructor(
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
-    private val _type = MutableStateFlow(RecordType.Expense)
+    private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
+    private val _type = MutableStateFlow(typeCache)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
     private var cachePeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
@@ -64,11 +65,14 @@ class OverviewViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
     init {
-        observeRecords()
+        bookRepo.bookState
+            .onEach { observeRecords() }
+            .launchIn(viewModelScope)
     }
 
     fun setRecordType(type: RecordType) {
         _type.value = type
+        typeCache = type
         observeRecords()
     }
 

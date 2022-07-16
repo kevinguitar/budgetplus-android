@@ -25,13 +25,9 @@ import com.kevingt.moneybook.utils.dollar
 import timber.log.Timber
 
 @Composable
-fun OverviewScreen(
-    navController: NavController,
-//    viewModel: OverviewViewModel
-) {
+fun OverviewScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<OverviewViewModel>()
-    Timber.d("Screen overview: ${viewModel.hashCode()}")
 
     val type by viewModel.type.collectAsState()
     val totalPrice by viewModel.totalPrice.collectAsState()

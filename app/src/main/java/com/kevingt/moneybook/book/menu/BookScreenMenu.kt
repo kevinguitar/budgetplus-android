@@ -2,8 +2,9 @@ package com.kevingt.moneybook.book.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
@@ -16,9 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.member.MembersDialog
 import com.kevingt.moneybook.book.menu.vm.BookMenuViewModel
-import com.kevingt.moneybook.ui.ConfirmDialog
-import com.kevingt.moneybook.ui.InputDialog
-import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 
@@ -41,7 +40,6 @@ fun BookScreenMenu() {
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
     var isMembersDialogShown by remember { mutableStateOf(false) }
-    var isBookCreationDialogShown by remember { mutableStateOf(false) }
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Box {
@@ -75,16 +73,11 @@ fun BookScreenMenu() {
                 isMenuExpanded = false
             }
 
-            DropdownItem(name = stringResource(id = R.string.menu_create_book)) {
-                isBookCreationDialogShown = true
-                isMenuExpanded = false
-            }
-
             DropdownItem(name = stringResource(id = R.string.menu_logout)) {
                 viewModel.logout()
             }
 
-            Divider(modifier = Modifier.padding(vertical = 2.dp))
+            DropdownMenuDivider()
 
             DropdownItem(
                 name = stringResource(id = if (isBookOwner) R.string.cta_delete else R.string.cta_leave)
@@ -98,6 +91,7 @@ fun BookScreenMenu() {
     if (isRenameUserDialogShown) {
         InputDialog(
             currentInput = viewModel.currentUsername,
+            title = stringResource(id = R.string.username_title),
             buttonText = stringResource(id = R.string.cta_rename),
             onButtonClicked = viewModel::renameUser,
             onDismiss = { isRenameUserDialogShown = false }
@@ -105,8 +99,10 @@ fun BookScreenMenu() {
     }
 
     if (isRenameBookDialogShown) {
+
         InputDialog(
             currentInput = viewModel.currentBookName,
+            title = stringResource(id = R.string.book_name_title),
             buttonText = stringResource(id = R.string.cta_rename),
             onButtonClicked = viewModel::renameBook,
             onDismiss = { isRenameBookDialogShown = false }
@@ -114,20 +110,14 @@ fun BookScreenMenu() {
     }
 
     if (isMembersDialogShown) {
+
         MembersDialog(
             onDismiss = { isMembersDialogShown = false }
         )
     }
 
-    if (isBookCreationDialogShown) {
-        InputDialog(
-            buttonText = stringResource(id = R.string.cta_create),
-            onButtonClicked = viewModel::createBook,
-            onDismiss = { isBookCreationDialogShown = false }
-        )
-    }
-
     if (isDeleteOrLeaveDialogShown) {
+
         ConfirmDialog(
             message = stringResource(
                 id = if (isBookOwner) R.string.menu_confirm_delete else R.string.menu_confirm_leave,
@@ -135,20 +125,6 @@ fun BookScreenMenu() {
             ),
             onConfirm = { viewModel.deleteOrLeave() },
             onDismiss = { isDeleteOrLeaveDialogShown = false }
-        )
-    }
-}
-
-@Composable
-private fun DropdownItem(
-    name: String,
-    onClick: () -> Unit
-) {
-
-    DropdownMenuItem(onClick = onClick) {
-        Text(
-            text = name,
-            color = LocalAppColors.current.primarySemiDark
         )
     }
 }

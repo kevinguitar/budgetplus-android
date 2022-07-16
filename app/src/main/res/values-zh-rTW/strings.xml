@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">共同記帳</string>
+    <string name="app_name">極簡記帳</string>
 
     <!-- Auth -->
     <string name="auth_facebook">Facebook</string>
@@ -8,12 +8,14 @@
     <string name="auth_success">歡迎, %s!</string>
 
     <!-- Record -->
-    <string name="record_description">內容:</string>
+    <string name="record_description">內容</string>
+    <string name="record_price">金額</string>
     <string name="record_expense">支出</string>
     <string name="record_income">收入</string>
     <string name="record_empty_category">請選擇類別</string>
     <string name="record_empty_price">請輸入金額</string>
     <string name="record_created">已新增至 %s</string>
+    <string name="record_edit_title">編輯紀錄</string>
     <string name="record_edited">已儲存</string>
     <string name="record_deleted">已刪除</string>
     <string name="record_confirm_delete">確認刪除此筆紀錄嗎？</string>
@@ -24,6 +26,7 @@
     <string name="book_join_success">已加入 %s</string>
 
     <!-- Category -->
+    <string name="category_title">類別名稱</string>
     <string name="category_edit_title">編輯類別</string>
     <string name="category_food">飲食</string>
     <string name="category_daily">日常</string>
@@ -84,5 +87,7 @@
     <string name="cta_leave">離開</string>
     <string name="cta_delete">刪除</string>
     <string name="select_date">選擇日期</string>
+    <string name="username_title">使用者名稱</string>
+    <string name="book_name_title">帳本名稱</string>
     <string name="fallback_error_message">出錯了，請稍後再試</string>
 </resources>

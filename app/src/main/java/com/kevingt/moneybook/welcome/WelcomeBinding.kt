@@ -47,7 +47,8 @@ fun CreateBook(createBook: (String) -> Unit) {
 
         AppTextField(
             value = value,
-            onValueChange = { value = it }
+            onValueChange = { value = it },
+            title = stringResource(id = R.string.book_name_title),
         )
 
         AppButton(

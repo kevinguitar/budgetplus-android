@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,20 +54,9 @@ fun Calculator(viewModel: CalculatorViewModel) {
             AppTextField(
                 value = priceText,
                 onValueChange = {},
-                textStyle = TextStyle(
-                    textAlign = TextAlign.End,
-                    fontSize = 20.sp,
-                ),
+                fontSize = 20.sp,
                 enabled = false,
-                leadingIcon = {
-                    Text(
-                        text = "$",
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.h6,
-                        fontWeight = FontWeight.Bold,
-                        color = LocalAppColors.current.dark
-                    )
-                },
+                title = "$",
                 modifier = Modifier.weight(1F)
             )
 

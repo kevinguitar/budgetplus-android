@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun InputDialog(
     currentInput: String? = null,
+    title: String,
     buttonText: String,
     onButtonClicked: (String) -> Unit,
     onDismiss: () -> Unit,
@@ -44,6 +45,7 @@ fun InputDialog(
             AppTextField(
                 value = name,
                 onValueChange = { name = it },
+                title = title,
                 modifier = Modifier.focusRequester(focusRequester)
             )
 

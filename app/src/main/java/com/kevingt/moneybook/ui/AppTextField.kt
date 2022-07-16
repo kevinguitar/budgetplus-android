@@ -1,19 +1,21 @@
 package com.kevingt.moneybook.ui
 
-import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldColors
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -21,96 +23,82 @@ fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    title: String,
     enabled: Boolean = true,
-    textStyle: TextStyle = TextStyle.Default,
-    placeholder: @Composable (() -> Unit)? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
+    fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-    singleLine: Boolean = true,
-    backgroundColor: Color = LocalAppColors.current.primaryLight,
-    textColor: Color = LocalAppColors.current.dark,
-) = TextField(
-    value = value,
-    onValueChange = onValueChange,
-    modifier = modifier,
-    enabled = enabled,
-    textStyle = textStyle,
-    placeholder = placeholder,
-    leadingIcon = leadingIcon,
-    keyboardOptions = keyboardOptions,
-    singleLine = singleLine,
-    shape = RoundedCornerShape(12.dp),
-    colors = AppTextFieldColors(backgroundColor, textColor)
-)
+) = AppTextFieldInternal(modifier, title, fontSize) {
+
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        enabled = enabled,
+        modifier = Modifier.weight(1F),
+        textStyle = TextStyle(
+            color = LocalAppColors.current.dark,
+            textAlign = TextAlign.End,
+            fontSize = fontSize
+        ),
+        keyboardOptions = keyboardOptions,
+        singleLine = true,
+        cursorBrush = SolidColor(LocalAppColors.current.dark)
+    )
+}
 
 @Composable
 fun AppTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
+    title: String,
     enabled: Boolean = true,
-    textStyle: TextStyle = TextStyle.Default,
-    placeholder: @Composable (() -> Unit)? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
+    fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-    singleLine: Boolean = true,
-    backgroundColor: Color = LocalAppColors.current.primaryLight,
-    textColor: Color = LocalAppColors.current.dark,
-) = TextField(
-    value = value,
-    onValueChange = onValueChange,
-    modifier = modifier,
-    enabled = enabled,
-    textStyle = textStyle,
-    placeholder = placeholder,
-    leadingIcon = leadingIcon,
-    keyboardOptions = keyboardOptions,
-    singleLine = singleLine,
-    shape = RoundedCornerShape(12.dp),
-    colors = AppTextFieldColors(backgroundColor, textColor)
-)
+) = AppTextFieldInternal(modifier, title, fontSize) {
 
-@Immutable
-private class AppTextFieldColors(
-    private val backgroundColor: Color,
-    private val textColor: Color
-) : TextFieldColors {
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        enabled = enabled,
+        modifier = Modifier.weight(1F),
+        textStyle = TextStyle(
+            color = LocalAppColors.current.dark,
+            textAlign = TextAlign.End,
+            fontSize = fontSize
+        ),
+        keyboardOptions = keyboardOptions,
+        singleLine = true,
+        cursorBrush = SolidColor(LocalAppColors.current.dark)
+    )
+}
 
-    @Composable
-    override fun backgroundColor(enabled: Boolean): State<Color> =
-        rememberUpdatedState(backgroundColor)
+@Composable
+private fun AppTextFieldInternal(
+    modifier: Modifier,
+    title: String,
+    fontSize: TextUnit,
+    content: @Composable RowScope.() -> Unit
+) {
 
-    @Composable
-    override fun cursorColor(isError: Boolean): State<Color> =
-        rememberUpdatedState(textColor)
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .height(56.dp)
+            .background(
+                color = LocalAppColors.current.primaryLight,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(all = 12.dp)
+    ) {
 
-    @Composable
-    override fun indicatorColor(
-        enabled: Boolean,
-        isError: Boolean,
-        interactionSource: InteractionSource
-    ): State<Color> = rememberUpdatedState(Color.Unspecified)
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            fontSize = fontSize,
+            color = LocalAppColors.current.dark
+        )
 
-    @Composable
-    override fun labelColor(
-        enabled: Boolean,
-        error: Boolean,
-        interactionSource: InteractionSource
-    ): State<Color> = rememberUpdatedState(Color.Unspecified)
-
-    @Composable
-    override fun leadingIconColor(enabled: Boolean, isError: Boolean): State<Color> =
-        rememberUpdatedState(Color.Unspecified)
-
-    @Composable
-    override fun placeholderColor(enabled: Boolean): State<Color> =
-        rememberUpdatedState(textColor.copy(alpha = 0.4F))
-
-    @Composable
-    override fun textColor(enabled: Boolean): State<Color> =
-        rememberUpdatedState(textColor)
-
-    @Composable
-    override fun trailingIconColor(enabled: Boolean, isError: Boolean): State<Color> =
-        rememberUpdatedState(Color.Unspecified)
+        content()
+    }
 }

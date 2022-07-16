@@ -2,7 +2,7 @@ package com.kevingt.moneybook.book.record
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -55,22 +55,14 @@ fun RecordInfo(navController: NavController) {
             }
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-
-            Text(
-                text = stringResource(id = R.string.record_description),
-                color = LocalAppColors.current.dark
-            )
-
-            AppTextField(
-                value = name,
-                onValueChange = viewModel::setName,
-            )
-        }
+        AppTextField(
+            value = name,
+            onValueChange = viewModel::setName,
+            title = stringResource(id = R.string.record_description),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        )
 
         Calculator(viewModel = viewModel.calculator)
 

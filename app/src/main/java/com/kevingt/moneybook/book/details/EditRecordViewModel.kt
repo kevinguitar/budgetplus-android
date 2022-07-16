@@ -23,7 +23,6 @@ class EditRecordViewModel @Inject constructor(
     private val editRecord = MutableStateFlow(Record())
 
     val name = editRecord.mapState { it.name }
-    val category = editRecord.mapState { it.category }
 
     private val _priceText = MutableStateFlow("")
     val priceText: StateFlow<String> = _priceText.asStateFlow()
@@ -31,10 +30,6 @@ class EditRecordViewModel @Inject constructor(
     fun setRecord(record: Record) {
         editRecord.value = record
         _priceText.value = record.price.priceText
-    }
-
-    fun setCategory(category: String) {
-        editRecord.value = editRecord.value.copy(category = category)
     }
 
     fun setName(name: String) {

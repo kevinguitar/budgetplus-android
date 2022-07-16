@@ -3,12 +3,10 @@ package com.kevingt.moneybook.book.details
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -27,7 +25,6 @@ fun EditRecordDialog(
     viewModel.setRecord(editRecord)
 
     val name by viewModel.name.collectAsState()
-    val category by viewModel.category.collectAsState()
     val priceText by viewModel.priceText.collectAsState()
 
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
@@ -35,30 +32,29 @@ fun EditRecordDialog(
     AppDialog(onDismissRequest = onDismiss) {
 
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            CategoriesGrid(
-                type = editRecord.type,
-                onCategorySelected = viewModel::setCategory,
-                selectedCategory = category,
+            Text(
+                text = stringResource(id = R.string.record_edit_title),
+                color = LocalAppColors.current.dark
             )
 
             AppTextField(
                 value = name,
-                onValueChange = viewModel::setName
+                onValueChange = viewModel::setName,
+                title = stringResource(id = R.string.record_description)
             )
 
             AppTextField(
                 value = priceText,
                 onValueChange = viewModel::setPrice,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                title = stringResource(id = R.string.record_price)
             )
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 
                 AppButton(
                     onClick = { showDeleteConfirmationDialog = true },

@@ -1,16 +1,16 @@
 package com.kevingt.moneybook.book.details
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +24,7 @@ import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
@@ -100,24 +101,38 @@ fun RecordCard(
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = rememberRipple(color = LocalAppColors.current.dark),
+                onClick = onEdit
+            )
+            .padding(vertical = 12.dp)
     ) {
 
-        Text(text = LocalDate.ofEpochDay(item.date).shortFormatted)
+        Text(
+            text = LocalDate.ofEpochDay(item.date).shortFormatted,
+            color = LocalAppColors.current.dark,
+        )
+
         Text(
             text = item.name,
             style = MaterialTheme.typography.subtitle1,
             fontWeight = FontWeight.SemiBold,
+            color = LocalAppColors.current.dark,
             modifier = Modifier.weight(1F)
         )
-        Text(text = item.price.dollar)
-        Text(text = item.author?.name.orEmpty())
-        IconButton(onClick = onEdit) {
-            Icon(
-                imageVector = Icons.Filled.Edit,
-                contentDescription = stringResource(id = R.string.cta_edit),
-            )
-        }
+
+        Text(
+            text = item.price.dollar,
+            color = LocalAppColors.current.dark,
+        )
+
+        Text(
+            text = item.author?.name.orEmpty(),
+            color = LocalAppColors.current.dark,
+        )
     }
 }
 

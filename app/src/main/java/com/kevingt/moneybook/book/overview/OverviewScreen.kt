@@ -19,10 +19,10 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.HistoryDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Record
+import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.RecordTypeTab
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
-import timber.log.Timber
 
 @Composable
 fun OverviewScreen(navController: NavController) {
@@ -47,6 +47,7 @@ fun OverviewScreen(navController: NavController) {
         Text(
             text = stringResource(id = R.string.overview_total_price, totalPrice),
             style = MaterialTheme.typography.h6,
+            color = LocalAppColors.current.dark,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp)
@@ -85,7 +86,16 @@ fun RecordGroup(
             .height(40.dp)
             .clickable(onClick = onClick)
     ) {
-        Text(text = category, modifier = Modifier.weight(1F))
-        Text(text = records.sumOf { it.price }.dollar)
+
+        Text(
+            text = category,
+            color = LocalAppColors.current.dark,
+            modifier = Modifier.weight(1F)
+        )
+
+        Text(
+            text = records.sumOf { it.price }.dollar,
+            color = LocalAppColors.current.dark
+        )
     }
 }

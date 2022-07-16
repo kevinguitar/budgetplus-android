@@ -7,12 +7,14 @@
     <string name="auth_success">Welcome, %s!</string>
 
     <!-- Record -->
-    <string name="record_description">Description:</string>
+    <string name="record_description">Description</string>
+    <string name="record_price">Price</string>
     <string name="record_expense">Expense</string>
     <string name="record_income">Income</string>
     <string name="record_empty_category">Please choose a category</string>
     <string name="record_empty_price">Price can\'t be 0</string>
     <string name="record_created">Record added to %s</string>
+    <string name="record_edit_title">Edit Record</string>
     <string name="record_edited">Record edited</string>
     <string name="record_deleted">Record deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
@@ -23,6 +25,7 @@
     <string name="book_join_success">You have joined %s successfully!</string>
 
     <!-- Category -->
+    <string name="category_title">Category</string>
     <string name="category_edit_title">Edit Categories</string>
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
@@ -83,5 +86,7 @@
     <string name="cta_leave">Leave</string>
     <string name="cta_delete">Delete</string>
     <string name="select_date">Select Date</string>
+    <string name="username_title">User Name</string>
+    <string name="book_name_title">Book Name</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
 </resources>

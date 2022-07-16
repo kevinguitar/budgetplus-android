@@ -65,6 +65,7 @@ fun EditCategoryDialog(
             AppTextField(
                 value = name,
                 onValueChange = { name = it },
+                title = stringResource(id = R.string.category_title),
                 modifier = Modifier.focusRequester(focusRequester)
             )
 

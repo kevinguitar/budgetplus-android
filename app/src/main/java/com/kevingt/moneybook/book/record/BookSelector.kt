@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.BookSelectorViewModel
+import com.kevingt.moneybook.ui.DropdownItem
+import com.kevingt.moneybook.ui.DropdownMenuDivider
+import com.kevingt.moneybook.ui.InputDialog
 import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
@@ -33,6 +36,7 @@ fun BookSelector() {
     val hasMultipleBooks = booksState.orEmpty().size > 1
 
     var isSelectorShown by remember { mutableStateOf(false) }
+    var isBookCreationDialogShown by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxWidth()) {
 
@@ -91,7 +95,24 @@ fun BookSelector() {
                     }
                 }
             }
+
+            DropdownMenuDivider()
+
+            DropdownItem(name = stringResource(id = R.string.menu_create_book)) {
+                isBookCreationDialogShown = true
+                isSelectorShown = false
+            }
         }
 
+    }
+
+    if (isBookCreationDialogShown) {
+
+        InputDialog(
+            buttonText = stringResource(id = R.string.cta_create),
+            title = stringResource(id = R.string.book_name_title),
+            onButtonClicked = viewModel::createBook,
+            onDismiss = { isBookCreationDialogShown = false }
+        )
     }
 }

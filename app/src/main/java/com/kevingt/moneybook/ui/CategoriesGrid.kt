@@ -44,7 +44,7 @@ fun CategoriesGrid(
 
     FlowRow(
         mainAxisSize = SizeMode.Expand,
-        mainAxisSpacing = 16.dp,
+        mainAxisSpacing = 12.dp,
         modifier = modifier
     ) {
 

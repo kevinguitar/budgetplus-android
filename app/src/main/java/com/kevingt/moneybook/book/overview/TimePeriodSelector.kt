@@ -43,7 +43,7 @@ fun TimePeriodSelector() {
 
     FlowRow(
         mainAxisSize = SizeMode.Expand,
-        mainAxisSpacing = 8.dp,
+        mainAxisSpacing = 12.dp,
         modifier = Modifier.padding(16.dp)
     ) {
         setOf(

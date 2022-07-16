@@ -48,11 +48,9 @@ fun RecordInfo(navController: NavController) {
         CategoriesGrid(
             type = type,
             onCategorySelected = viewModel::setCategory,
-            selectedCategory = category,
+            onEditClicked = { navController.navigate(route = "${AddDest.EditCategory.route}/$type") },
             modifier = Modifier.padding(horizontal = 16.dp),
-            actionBtn = CategoriesActionBtn.Edit {
-                navController.navigate(route = "${AddDest.EditCategory.route}/$type")
-            }
+            selectedCategory = category
         )
 
         AppTextField(

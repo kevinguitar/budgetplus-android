@@ -56,14 +56,7 @@ interface BookRepo {
 
     fun selectBook(book: Book)
 
-    /**
-     *  Categories
-     */
-    suspend fun addCategory(type: RecordType, category: String)
-
-    suspend fun editCategory(type: RecordType, oldCategory: String, newCategory: String)
-
-    suspend fun deleteCategory(type: RecordType, name: String)
+    fun updateCategories(type: RecordType, categories: List<String>)
 
 }
 
@@ -253,50 +246,7 @@ class BookRepoImpl @Inject constructor(
         currentBook = book
     }
 
-
-    /**
-     *  Categories
-     */
-    override suspend fun addCategory(type: RecordType, category: String) {
-        val book = getLatestBook(requireBookId)
-        val newCategories = when (type) {
-            RecordType.Expense -> book.expenseCategories
-            RecordType.Income -> book.incomeCategories
-        }
-            .toMutableList()
-            .apply { add(category) }
-
-        updateCategories(type, newCategories)
-    }
-
-    override suspend fun editCategory(type: RecordType, oldCategory: String, newCategory: String) {
-        val book = getLatestBook(requireBookId)
-        val newCategories = when (type) {
-            RecordType.Expense -> book.expenseCategories
-            RecordType.Income -> book.incomeCategories
-        }.toMutableList()
-
-        val index = newCategories.indexOf(oldCategory)
-        if (index == -1) return
-
-        newCategories[index] = newCategory
-
-        updateCategories(type, newCategories)
-    }
-
-    override suspend fun deleteCategory(type: RecordType, name: String) {
-        val book = getLatestBook(requireBookId)
-        val newCategories = when (type) {
-            RecordType.Expense -> book.expenseCategories
-            RecordType.Income -> book.incomeCategories
-        }
-            .toMutableList()
-            .apply { remove(name) }
-
-        updateCategories(type, newCategories)
-    }
-
-    private fun updateCategories(type: RecordType, categories: List<String>) {
+    override fun updateCategories(type: RecordType, categories: List<String>) {
         booksDb.document(requireBookId)
             .update(
                 when (type) {

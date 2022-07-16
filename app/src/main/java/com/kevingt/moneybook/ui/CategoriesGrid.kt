@@ -10,7 +10,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,9 +31,9 @@ import com.kevingt.moneybook.data.remote.RecordType
 fun CategoriesGrid(
     type: RecordType,
     onCategorySelected: (String) -> Unit,
+    onEditClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    selectedCategory: String? = null,
-    actionBtn: CategoriesActionBtn? = null
+    selectedCategory: String? = null
 ) {
 
     val viewModel = hiltViewModel<CategoriesViewModel>()
@@ -61,10 +60,7 @@ fun CategoriesGrid(
             }
         }
 
-        if (actionBtn != null) {
-
-            CategoryAction(actionBtn = actionBtn)
-        }
+        EditCategoryButton(onEditClicked)
     }
 }
 
@@ -97,23 +93,14 @@ fun CategoryCard(
     }
 }
 
-sealed class CategoriesActionBtn {
-    abstract val onClick: () -> Unit
-
-    class Add(override val onClick: () -> Unit) : CategoriesActionBtn()
-    class Edit(override val onClick: () -> Unit) : CategoriesActionBtn()
-}
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun CategoryAction(
-    actionBtn: CategoriesActionBtn
-) {
+private fun EditCategoryButton(onClick: () -> Unit) {
 
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = LocalAppColors.current.primary,
-        onClick = actionBtn.onClick
+        onClick = onClick
     ) {
 
         Row(
@@ -122,41 +109,20 @@ private fun CategoryAction(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
 
-            when (actionBtn) {
-                is CategoriesActionBtn.Add -> {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = stringResource(id = R.string.cta_add),
-                        tint = LocalAppColors.current.light,
-                        modifier = Modifier.size(16.dp)
-                    )
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = stringResource(id = R.string.category_edit_title),
+                tint = LocalAppColors.current.light,
+                modifier = Modifier.size(16.dp)
+            )
 
-                    Text(
-                        text = stringResource(id = R.string.cta_add),
-                        textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        color = LocalAppColors.current.light
-                    )
-                }
-                is CategoriesActionBtn.Edit -> {
-
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = stringResource(id = R.string.category_edit_title),
-                        tint = LocalAppColors.current.light,
-                        modifier = Modifier.size(16.dp)
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.cta_edit),
-                        textAlign = TextAlign.Center,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        color = LocalAppColors.current.light
-                    )
-                }
-            }
+            Text(
+                text = stringResource(id = R.string.cta_edit),
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                color = LocalAppColors.current.light
+            )
         }
     }
 }
@@ -168,4 +134,4 @@ private fun CategoryCard_Preview() =
 
 @Preview
 @Composable
-private fun EditCategoriesCard_Preview() = CategoryAction(CategoriesActionBtn.Edit {})
+private fun EditCategoriesCard_Preview() = EditCategoryButton {}

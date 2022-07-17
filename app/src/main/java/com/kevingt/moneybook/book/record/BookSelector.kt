@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -60,7 +60,7 @@ fun BookSelector() {
             if (hasMultipleBooks) {
 
                 Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
+                    imageVector = Icons.Rounded.ArrowDropDown,
                     contentDescription = stringResource(id = R.string.book_selection),
                     tint = LocalAppColors.current.light
                 )
@@ -88,7 +88,7 @@ fun BookSelector() {
 
                     if (bookState?.id == book.id) {
                         Icon(
-                            imageVector = Icons.Filled.Check,
+                            imageVector = Icons.Rounded.Check,
                             contentDescription = null,
                             tint = LocalAppColors.current.primarySemiDark
                         )

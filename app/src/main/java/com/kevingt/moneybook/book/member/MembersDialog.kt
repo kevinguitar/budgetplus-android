@@ -9,7 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -125,7 +125,7 @@ private fun MemberCard(
 
                 IconButton(onClick = removeUser) {
                     Icon(
-                        imageVector = Icons.Filled.Close,
+                        imageVector = Icons.Rounded.Delete,
                         contentDescription = stringResource(id = R.string.cta_delete),
                         tint = Color.Black,
                     )

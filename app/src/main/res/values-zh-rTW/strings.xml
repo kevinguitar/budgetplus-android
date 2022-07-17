@@ -79,7 +79,6 @@
     <string name="cta_invite">邀請</string>
     <string name="cta_edit">編輯</string>
     <string name="cta_save">儲存</string>
-    <string name="cta_share">分享</string>
     <string name="cta_confirm">確認</string>
     <string name="cta_ok">確認</string>
     <string name="cta_cancel">取消</string>
@@ -87,6 +86,7 @@
     <string name="cta_leave">離開</string>
     <string name="cta_delete">刪除</string>
     <string name="select_date">選擇日期</string>
+    <string name="date_to">至</string>
     <string name="username_title">使用者名稱</string>
     <string name="book_name_title">帳本名稱</string>
     <string name="fallback_error_message">出錯了，請稍後再試</string>

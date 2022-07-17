@@ -78,7 +78,6 @@
     <string name="cta_invite">Invite</string>
     <string name="cta_edit">Edit</string>
     <string name="cta_save">Save</string>
-    <string name="cta_share">Share</string>
     <string name="cta_confirm">Confirm</string>
     <string name="cta_ok">OK</string>
     <string name="cta_cancel">Cancel</string>
@@ -86,6 +85,7 @@
     <string name="cta_leave">Leave</string>
     <string name="cta_delete">Delete</string>
     <string name="select_date">Select Date</string>
+    <string name="date_to">to</string>
     <string name="username_title">User Name</string>
     <string name="book_name_title">Book Name</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>

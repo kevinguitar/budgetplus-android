@@ -1,9 +1,11 @@
 package com.kevingt.moneybook.ui
 
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import androidx.compose.ui.layout.LayoutCoordinates
 
 class MenuAction(
-    val icon: ImageVector,
+    @DrawableRes val iconRes: Int,
     val description: String,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val onPositioned: (LayoutCoordinates) -> Unit = {}
 )

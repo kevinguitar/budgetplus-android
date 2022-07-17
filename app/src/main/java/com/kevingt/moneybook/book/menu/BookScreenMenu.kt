@@ -6,7 +6,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -45,7 +45,7 @@ fun BookScreenMenu() {
     Box {
         IconButton(onClick = { isMenuExpanded = true }) {
             Icon(
-                imageVector = Icons.Filled.MoreVert,
+                imageVector = Icons.Rounded.MoreVert,
                 contentDescription = stringResource(id = R.string.menu_open),
                 tint = LocalAppColors.current.light
             )

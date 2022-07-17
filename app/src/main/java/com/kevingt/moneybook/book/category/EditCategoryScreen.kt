@@ -1,6 +1,7 @@
 package com.kevingt.moneybook.book.category
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -12,11 +13,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +40,8 @@ fun EditCategoryScreen(
 ) {
 
     val viewModel = hiltViewModel<EditCategoryViewModel>()
+
+    val haptic = LocalHapticFeedback.current
 
     var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
     var list by remember {
@@ -80,7 +85,14 @@ fun EditCategoryScreen(
 
                 itemsIndexed(list, key = { _, item -> item }) { index, item ->
 
-                    DraggableItem(dragDropState, index) { isDragging ->
+                    DraggableItem(
+                        dragDropState = dragDropState,
+                        index = index,
+                        modifier = Modifier.clickable {
+                            // https://issuetracker.google.com/issues/217739504
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        }
+                    ) { isDragging ->
                         CategoryCell(category = item, isDragging = isDragging) {
                             editDialogMode = CategoryEditMode.Rename(item)
                         }
@@ -99,9 +111,10 @@ fun EditCategoryScreen(
             ) {
 
                 Icon(
-                    imageVector = Icons.Filled.Add,
+                    imageVector = Icons.Rounded.Add,
                     contentDescription = stringResource(id = R.string.cta_add),
-                    tint = LocalAppColors.current.light
+                    tint = LocalAppColors.current.light,
+                    modifier = Modifier.padding(all = 8.dp)
                 )
             }
 
@@ -161,9 +174,10 @@ private fun CategoryCell(
         ) {
 
             Icon(
-                imageVector = Icons.Filled.Menu,
+                painter = painterResource(id = R.drawable.ic_drag_handle),
                 contentDescription = null,
-                tint = LocalAppColors.current.dark
+                tint = LocalAppColors.current.dark,
+                modifier = Modifier.size(20.dp)
             )
 
             Text(

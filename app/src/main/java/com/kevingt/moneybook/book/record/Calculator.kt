@@ -4,13 +4,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,7 +48,10 @@ fun Calculator(viewModel: CalculatorViewModel) {
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
 
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
             AppTextField(
                 value = priceText,
@@ -60,12 +62,15 @@ fun Calculator(viewModel: CalculatorViewModel) {
                 modifier = Modifier.weight(1F)
             )
 
-            IconButton(onClick = { viewModel.onAction(CalculatorAction.Delete) }) {
+            IconButton(
+                onClick = { viewModel.onAction(CalculatorAction.Delete) }
+            ) {
 
                 Icon(
-                    imageVector = Icons.Filled.Delete,
+                    painter = painterResource(id = R.drawable.ic_backspace),
                     contentDescription = stringResource(id = R.string.cta_delete),
-                    tint = LocalAppColors.current.dark
+                    tint = LocalAppColors.current.dark,
+                    modifier = Modifier.size(36.dp)
                 )
             }
         }

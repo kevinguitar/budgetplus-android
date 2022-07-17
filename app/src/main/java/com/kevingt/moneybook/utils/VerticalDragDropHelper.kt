@@ -5,8 +5,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
@@ -168,7 +167,7 @@ fun LazyItemScope.DraggableItem(
     dragDropState: DragDropState,
     index: Int,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.(isDragging: Boolean) -> Unit
+    content: @Composable (isDragging: Boolean) -> Unit
 ) {
     val dragging = index == dragDropState.draggingItemIndex
     val draggingModifier = if (dragging) {
@@ -188,7 +187,9 @@ fun LazyItemScope.DraggableItem(
         // Animation is still kinda buggy, it will animate on screen size changes.
         // Modifier.animateItemPlacement()
     }
-    Column(modifier = modifier.then(draggingModifier)) {
+    Box(
+        modifier = modifier.then(draggingModifier)
+    ) {
         content(dragging)
     }
 }

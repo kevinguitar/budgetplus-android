@@ -7,12 +7,12 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +39,7 @@ fun TopBar(
         if (navigateBack != null) {
             IconButton(onClick = navigateBack) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = stringResource(id = R.string.cta_back),
                     tint = LocalAppColors.current.light
                 )
@@ -64,9 +64,12 @@ fun TopBar(
         }
 
         menuActions?.forEach { action ->
-            IconButton(onClick = action.onClick) {
+            IconButton(
+                onClick = action.onClick,
+                modifier = Modifier.onGloballyPositioned(action.onPositioned)
+            ) {
                 Icon(
-                    imageVector = action.icon,
+                    painter = painterResource(id = action.iconRes),
                     contentDescription = action.description,
                     tint = LocalAppColors.current.light,
                 )
@@ -81,15 +84,19 @@ fun TopBar(
 
 @Preview
 @Composable
-private fun TopBar_Preview() = TopBar(title = "Money Book")
+private fun TopBar_Preview() = AppTheme {
+    TopBar(title = "Money Book")
+}
 
 @Preview
 @Composable
-private fun TopBarWithBack_Preview() = TopBar(
-    title = "Money Book",
-    navigateBack = {},
-    menuActions = listOf(
-        MenuAction(Icons.Filled.Edit, "") {},
-        MenuAction(Icons.Filled.Delete, "") {},
+private fun TopBarWithBack_Preview() = AppTheme {
+    TopBar(
+        title = "Money Book",
+        navigateBack = {},
+        menuActions = listOf(
+            MenuAction(R.drawable.ic_edit, "", onClick = {}),
+            MenuAction(R.drawable.ic_invite, "", onClick = {}),
+        )
     )
-)
+}

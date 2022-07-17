@@ -1,16 +1,16 @@
 package com.kevingt.moneybook.book.record
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,6 +19,7 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.ui.*
+import com.kevingt.moneybook.utils.longFormatted
 
 @Composable
 fun RecordInfo(navController: NavController) {
@@ -43,7 +44,25 @@ fun RecordInfo(navController: NavController) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
 
-        DatePickerLabel(date = date, onClick = { showDatePicker = true })
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .clickable(onClick = { showDatePicker = true })
+        ) {
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_today),
+                contentDescription = stringResource(id = R.string.select_date),
+                tint = LocalAppColors.current.dark
+            )
+
+            Text(
+                text = date.longFormatted,
+                color = LocalAppColors.current.dark
+            )
+        }
 
         CategoriesGrid(
             type = type,

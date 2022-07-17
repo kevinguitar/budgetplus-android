@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -117,7 +118,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 fun BottomNav(navController: NavController) {
 
     BottomNavigation(
-        modifier = Modifier.height(48.dp),
+        modifier = Modifier.height(50.dp),
         backgroundColor = LocalAppColors.current.primaryDark,
         contentColor = LocalAppColors.current.primaryDark,
         elevation = 0.dp
@@ -134,7 +135,8 @@ fun BottomNav(navController: NavController) {
                     Icon(
                         imageVector = tab.icon,
                         contentDescription = null,
-                        tint = LocalAppColors.current.light
+                        tint = LocalAppColors.current.light,
+                        modifier = Modifier.size(28.dp)
                     )
                 },
                 onClick = {

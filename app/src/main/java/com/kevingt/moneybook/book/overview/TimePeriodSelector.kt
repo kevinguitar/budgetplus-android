@@ -1,12 +1,18 @@
 package com.kevingt.moneybook.book.overview
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -19,8 +25,8 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.overview.vm.TimePeriod
 import com.kevingt.moneybook.ui.DatePickerDialog
-import com.kevingt.moneybook.ui.DatePickerLabel
 import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.utils.longFormatted
 
 @Composable
 fun TimePeriodSelector() {
@@ -35,10 +41,35 @@ fun TimePeriodSelector() {
     var showUntilDatePicker by remember { mutableStateOf(false) }
 
     Row(
-        modifier = Modifier.padding(top = 16.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
-        DatePickerLabel(date = fromDate, onClick = { showFromDatePicker = true })
-        DatePickerLabel(date = untilDate, onClick = { showUntilDatePicker = true })
+
+        Icon(
+            imageVector = Icons.Filled.DateRange,
+            contentDescription = stringResource(id = R.string.select_date),
+            tint = LocalAppColors.current.dark
+        )
+
+        Text(
+            text = fromDate.longFormatted,
+            color = LocalAppColors.current.dark,
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .clickable { showFromDatePicker = true }
+        )
+
+        Text(
+            text = stringResource(id = R.string.date_to),
+            color = LocalAppColors.current.dark
+        )
+
+        Text(
+            text = untilDate.longFormatted,
+            color = LocalAppColors.current.dark,
+            modifier = Modifier.clickable { showUntilDatePicker = true }
+        )
     }
 
     FlowRow(

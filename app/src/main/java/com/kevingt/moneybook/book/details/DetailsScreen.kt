@@ -7,9 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -54,12 +51,12 @@ fun DetailsScreen(
             navigateBack = { navController.navigateUp() },
             menuActions = when (sortMode) {
                 RecordsSortMode.Date -> listOf(MenuAction(
-                    icon = Icons.Filled.Star,
+                    iconRes = R.drawable.ic_sort_date,
                     description = stringResource(id = R.string.overview_sort_by_price),
                     onClick = { sortMode = RecordsSortMode.Price }
                 ))
                 RecordsSortMode.Price -> listOf(MenuAction(
-                    icon = Icons.Filled.DateRange,
+                    iconRes = R.drawable.ic_dollar,
                     description = stringResource(id = R.string.overview_sort_by_date),
                     onClick = { sortMode = RecordsSortMode.Date }
                 ))

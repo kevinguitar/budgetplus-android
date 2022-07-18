@@ -38,9 +38,7 @@ fun RecordInfo(navController: NavController) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(bottom = 8.dp)
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
@@ -91,7 +89,9 @@ fun RecordInfo(navController: NavController) {
         Calculator(viewModel = viewModel.calculator)
 
         AppButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 8.dp),
             onClick = {
                 viewModel.record()
                 focusManager.clearFocus()
@@ -99,6 +99,8 @@ fun RecordInfo(navController: NavController) {
         ) {
             Text(text = stringResource(id = R.string.cta_add))
         }
+
+        AdsBanner()
     }
 
     if (showDatePicker) {

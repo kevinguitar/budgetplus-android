@@ -33,7 +33,6 @@ fun BookSelector() {
 
     val bookState by viewModel.book.collectAsState()
     val booksState by viewModel.books.collectAsState()
-    val hasMultipleBooks = booksState.orEmpty().size > 1
 
     var isSelectorShown by remember { mutableStateOf(false) }
     var isBookCreationDialogShown by remember { mutableStateOf(false) }
@@ -45,7 +44,6 @@ fun BookSelector() {
             modifier = Modifier.clickable(
                 interactionSource = MutableInteractionSource(),
                 indication = rememberRipple(color = LocalAppColors.current.dark),
-                enabled = hasMultipleBooks,
                 onClick = { isSelectorShown = true }
             )
         ) {
@@ -57,14 +55,11 @@ fun BookSelector() {
                 color = LocalAppColors.current.light
             )
 
-            if (hasMultipleBooks) {
-
-                Icon(
-                    imageVector = Icons.Rounded.ArrowDropDown,
-                    contentDescription = stringResource(id = R.string.book_selection),
-                    tint = LocalAppColors.current.light
-                )
-            }
+            Icon(
+                imageVector = Icons.Rounded.ArrowDropDown,
+                contentDescription = stringResource(id = R.string.book_selection),
+                tint = LocalAppColors.current.light
+            )
         }
 
         DropdownMenu(

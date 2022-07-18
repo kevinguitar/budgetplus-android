@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,7 @@ fun AppTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     title: String,
+    placeholder: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
@@ -41,7 +43,20 @@ fun AppTextField(
         ),
         keyboardOptions = keyboardOptions,
         singleLine = true,
-        cursorBrush = SolidColor(LocalAppColors.current.dark)
+        cursorBrush = SolidColor(LocalAppColors.current.dark),
+        decorationBox = @Composable { innerTextField ->
+            if (value.isEmpty() && placeholder != null) {
+                Text(
+                    text = placeholder,
+                    textAlign = TextAlign.End,
+                    fontSize = fontSize,
+                    color = LocalAppColors.current.dark,
+                    modifier = Modifier.alpha(0.5F)
+                )
+            }
+
+            innerTextField()
+        }
     )
 }
 
@@ -51,6 +66,7 @@ fun AppTextField(
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
     title: String,
+    placeholder: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
@@ -68,7 +84,20 @@ fun AppTextField(
         ),
         keyboardOptions = keyboardOptions,
         singleLine = true,
-        cursorBrush = SolidColor(LocalAppColors.current.dark)
+        cursorBrush = SolidColor(LocalAppColors.current.dark),
+        decorationBox = @Composable { innerTextField ->
+            if (value.text.isEmpty() && placeholder != null) {
+                Text(
+                    text = placeholder,
+                    textAlign = TextAlign.End,
+                    fontSize = fontSize,
+                    color = LocalAppColors.current.dark,
+                    modifier = Modifier.alpha(0.5F)
+                )
+            }
+
+            innerTextField()
+        }
     )
 }
 

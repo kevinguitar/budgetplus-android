@@ -9,6 +9,8 @@
 
     <!-- Record -->
     <string name="record_description">內容</string>
+    <string name="record_description_placeholder_expense">花在哪裡？</string>
+    <string name="record_description_placeholder_income">錢從哪裡來？</string>
     <string name="record_price">金額</string>
     <string name="record_expense">支出</string>
     <string name="record_income">收入</string>

@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
+import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.longFormatted
 
@@ -76,6 +77,12 @@ fun RecordInfo(navController: NavController) {
             value = name,
             onValueChange = viewModel::setName,
             title = stringResource(id = R.string.record_description),
+            placeholder = stringResource(
+                id = when (type) {
+                    RecordType.Expense -> R.string.record_description_placeholder_expense
+                    RecordType.Income -> R.string.record_description_placeholder_income
+                }
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

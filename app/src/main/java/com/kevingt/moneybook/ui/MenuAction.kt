@@ -7,5 +7,5 @@ class MenuAction(
     @DrawableRes val iconRes: Int,
     val description: String,
     val onClick: () -> Unit,
-    val onPositioned: (LayoutCoordinates) -> Unit = {}
+    val onPositioned: ((LayoutCoordinates) -> Unit)? = null
 )

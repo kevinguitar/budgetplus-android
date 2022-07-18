@@ -8,6 +8,8 @@
 
     <!-- Record -->
     <string name="record_description">Description</string>
+    <string name="record_description_placeholder_expense">What did you pay for?</string>
+    <string name="record_description_placeholder_income">Where\'s the money from?</string>
     <string name="record_price">Price</string>
     <string name="record_expense">Expense</string>
     <string name="record_income">Income</string>

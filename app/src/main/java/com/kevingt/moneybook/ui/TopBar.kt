@@ -66,7 +66,11 @@ fun TopBar(
         menuActions?.forEach { action ->
             IconButton(
                 onClick = action.onClick,
-                modifier = Modifier.onGloballyPositioned(action.onPositioned)
+                modifier = Modifier.apply {
+                    if (action.onPositioned != null) {
+                        onGloballyPositioned(action.onPositioned)
+                    }
+                }
             ) {
                 Icon(
                     painter = painterResource(id = action.iconRes),

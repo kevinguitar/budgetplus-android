@@ -11,18 +11,31 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.ui.LocalAppColors
 import kotlinx.coroutines.delay
 
+fun LayoutCoordinates.toBubbleOffset(): IntOffset {
+    val (width, height) = size
+    val offset = positionInRoot()
+
+    return IntOffset(
+        x = ((offset.x + width / 2)).toInt(),
+        y = (offset.y + height).toInt()
+    )
+}
+
+//TODO: make it work
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TourBubble(
     key: String,
     text: String,
-    coordinates: Pair<Dp, Dp>
+    bubbleOffset: IntOffset
 ) {
 
     val viewModel = hiltViewModel<TourViewModel>()
@@ -40,10 +53,7 @@ fun TourBubble(
         visible = visible,
         enter = scaleIn(),
         exit = scaleOut(),
-        modifier = Modifier.offset(
-            x = coordinates.first,
-            y = coordinates.second
-        )
+        modifier = Modifier.offset { bubbleOffset }
     ) {
 
         Column {

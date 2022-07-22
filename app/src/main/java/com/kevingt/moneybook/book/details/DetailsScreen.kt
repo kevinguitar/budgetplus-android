@@ -1,13 +1,10 @@
 package com.kevingt.moneybook.book.details
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +22,7 @@ import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
+import com.kevingt.moneybook.utils.rippleClick
 import com.kevingt.moneybook.utils.shortFormatted
 import java.time.LocalDate
 
@@ -102,9 +100,8 @@ fun RecordCard(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(color = LocalAppColors.current.dark),
+            .rippleClick(
+                color = LocalAppColors.current.dark,
                 onClick = onEdit
             )
             .padding(vertical = 12.dp)

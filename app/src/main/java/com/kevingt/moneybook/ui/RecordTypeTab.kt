@@ -1,5 +1,6 @@
 package com.kevingt.moneybook.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -7,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,7 +39,7 @@ fun RecordTypeTab(
 
         Spacer(
             modifier = Modifier
-                .size(3.dp, 24.dp)
+                .size(2.dp, 24.dp)
                 .background(
                     color = LocalAppColors.current.dark,
                     shape = CircleShape
@@ -60,23 +62,31 @@ private fun TypePill(
     onClick: () -> Unit,
 ) {
 
-    Surface(
-        onClick = onClick,
-        shape = CircleShape,
-        color = if (isSelected) {
+    val bgColor by animateColorAsState(
+        if (isSelected) {
             LocalAppColors.current.dark
         } else {
             LocalAppColors.current.light
-        },
+        }
+    )
+
+    val textColor by animateColorAsState(
+        if (isSelected) {
+            LocalAppColors.current.light
+        } else {
+            LocalAppColors.current.dark
+        }
+    )
+
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = bgColor,
     ) {
 
         Text(
             text = text,
-            color = if (isSelected) {
-                LocalAppColors.current.light
-            } else {
-                LocalAppColors.current.dark
-            },
+            color = textColor,
             modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp)
         )
     }
@@ -84,4 +94,6 @@ private fun TypePill(
 
 @Composable
 @Preview(showBackground = true)
-private fun RecordTypeTab_Preview() = RecordTypeTab(selected = RecordType.Expense) {}
+private fun RecordTypeTab_Preview() = AppTheme {
+    RecordTypeTab(selected = RecordType.Expense) {}
+}

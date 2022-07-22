@@ -1,6 +1,5 @@
 package com.kevingt.moneybook.book.record
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +20,7 @@ import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.longFormatted
+import com.kevingt.moneybook.utils.rippleClick
 
 @Composable
 fun RecordInfo(navController: NavController) {
@@ -48,7 +48,7 @@ fun RecordInfo(navController: NavController) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .clickable(onClick = { showDatePicker = true })
+                .rippleClick { showDatePicker = true }
         ) {
 
             Icon(

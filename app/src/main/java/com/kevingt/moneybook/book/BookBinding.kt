@@ -1,20 +1,22 @@
 package com.kevingt.moneybook.book
 
 import android.os.Bundle
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +37,7 @@ import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.ARG_CATEGORY
 import com.kevingt.moneybook.utils.ARG_TYPE
 import com.kevingt.moneybook.utils.consumeEach
+import com.kevingt.moneybook.utils.rippleClick
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
@@ -115,46 +118,95 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 }
 
 @Composable
-fun BottomNav(navController: NavController) {
+private fun BottomNav(navController: NavController) {
 
-    BottomNavigation(
-        modifier = Modifier.height(50.dp),
-        backgroundColor = LocalAppColors.current.primaryDark,
-        contentColor = LocalAppColors.current.primaryDark,
-        elevation = 0.dp
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .background(color = LocalAppColors.current.light)
     ) {
 
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+        Row(modifier = Modifier.fillMaxSize()) {
 
-        BookTab.values().forEach { tab ->
+            BookTab.values().forEach { tab ->
+                BottomNavItem(
+                    navController = navController,
+                    tab = tab,
+                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
+                )
+            }
+        }
 
-            BottomNavigationItem(
-                selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
-                icon = {
-                    Icon(
-                        imageVector = tab.icon,
-                        contentDescription = null,
-                        tint = LocalAppColors.current.light,
-                        modifier = Modifier.size(28.dp)
-                    )
-                },
-                onClick = {
-                    navController.navigate(tab.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
-                        launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
-                        restoreState = true
+        Spacer(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .height(0.5.dp)
+                .alpha(0.4F)
+                .background(color = LocalAppColors.current.dark)
+        )
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun RowScope.BottomNavItem(
+    navController: NavController,
+    tab: BookTab,
+    isSelected: Boolean
+) {
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .weight(1F)
+            .fillMaxHeight()
+            .rippleClick {
+                navController.navigate(tab.route) {
+                    // Pop up to the start destination of the graph to
+                    // avoid building up a large stack of destinations
+                    // on the back stack as users select items
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
                     }
+                    // Avoid multiple copies of the same destination when
+                    // reselecting the same item
+                    launchSingleTop = true
+                    // Restore state when reselecting a previously selected item
+                    restoreState = true
                 }
+            }
+    ) {
+
+        this@BottomNavItem.AnimatedVisibility(
+            visible = isSelected,
+            enter = scaleIn(),
+            exit = scaleOut()
+        ) {
+
+            Spacer(
+                modifier = Modifier
+                    .size(width = 60.dp, height = 32.dp)
+                    .background(
+                        color = LocalAppColors.current.dark,
+                        shape = RoundedCornerShape(50)
+                    )
             )
         }
+
+        Icon(
+            imageVector = tab.icon,
+            contentDescription = null,
+            tint = if (isSelected) {
+                LocalAppColors.current.light
+            } else {
+                LocalAppColors.current.dark
+            },
+            modifier = Modifier.size(28.dp)
+        )
     }
 }

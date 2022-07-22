@@ -1,6 +1,5 @@
 package com.kevingt.moneybook.book.overview
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -27,6 +26,7 @@ import com.kevingt.moneybook.book.overview.vm.TimePeriod
 import com.kevingt.moneybook.ui.DatePickerDialog
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.longFormatted
+import com.kevingt.moneybook.utils.rippleClick
 
 @Composable
 fun TimePeriodSelector() {
@@ -57,7 +57,7 @@ fun TimePeriodSelector() {
             color = LocalAppColors.current.dark,
             modifier = Modifier
                 .padding(horizontal = 4.dp)
-                .clickable { showFromDatePicker = true }
+                .rippleClick { showFromDatePicker = true }
         )
 
         Text(
@@ -68,7 +68,7 @@ fun TimePeriodSelector() {
         Text(
             text = untilDate.longFormatted,
             color = LocalAppColors.current.dark,
-            modifier = Modifier.clickable { showUntilDatePicker = true }
+            modifier = Modifier.rippleClick { showUntilDatePicker = true }
         )
     }
 

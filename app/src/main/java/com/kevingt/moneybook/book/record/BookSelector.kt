@@ -1,8 +1,6 @@
 package com.kevingt.moneybook.book.record
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +22,7 @@ import com.kevingt.moneybook.ui.DropdownItem
 import com.kevingt.moneybook.ui.DropdownMenuDivider
 import com.kevingt.moneybook.ui.InputDialog
 import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.utils.rippleClick
 
 @Composable
 fun BookSelector() {
@@ -41,9 +39,8 @@ fun BookSelector() {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(color = LocalAppColors.current.dark),
+            modifier = Modifier.rippleClick(
+                color = LocalAppColors.current.dark,
                 onClick = { isSelectorShown = true }
             )
         ) {

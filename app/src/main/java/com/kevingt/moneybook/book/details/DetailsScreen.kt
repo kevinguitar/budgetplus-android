@@ -49,17 +49,19 @@ fun DetailsScreen(
         TopBar(
             title = "$category $totalPrice",
             navigateBack = { navController.navigateUp() },
-            menuActions = when (sortMode) {
-                RecordsSortMode.Date -> listOf(MenuAction(
-                    iconRes = R.drawable.ic_sort_date,
-                    description = stringResource(id = R.string.overview_sort_by_price),
-                    onClick = { sortMode = RecordsSortMode.Price }
-                ))
-                RecordsSortMode.Price -> listOf(MenuAction(
-                    iconRes = R.drawable.ic_dollar,
-                    description = stringResource(id = R.string.overview_sort_by_date),
-                    onClick = { sortMode = RecordsSortMode.Date }
-                ))
+            menuActions = {
+                when (sortMode) {
+                    RecordsSortMode.Date -> MenuAction(
+                        iconRes = R.drawable.ic_sort_date,
+                        description = stringResource(id = R.string.overview_sort_by_price),
+                        onClick = { sortMode = RecordsSortMode.Price }
+                    )
+                    RecordsSortMode.Price -> MenuAction(
+                        iconRes = R.drawable.ic_dollar,
+                        description = stringResource(id = R.string.overview_sort_by_date),
+                        onClick = { sortMode = RecordsSortMode.Date }
+                    )
+                }
             }
         )
 

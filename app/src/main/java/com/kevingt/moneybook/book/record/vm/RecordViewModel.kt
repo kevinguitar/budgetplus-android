@@ -34,8 +34,8 @@ class RecordViewModel @Inject constructor(
     private val _category = MutableStateFlow<String?>(null)
     val category: StateFlow<String?> = _category.asStateFlow()
 
-    private val _name = MutableStateFlow("")
-    val name: StateFlow<String> = _name.asStateFlow()
+    private val _note = MutableStateFlow("")
+    val note: StateFlow<String> = _note.asStateFlow()
 
     fun setType(type: RecordType) {
         _type.value = type
@@ -49,8 +49,8 @@ class RecordViewModel @Inject constructor(
         _category.value = category
     }
 
-    fun setName(name: String) {
-        _name.value = name
+    fun setNote(note: String) {
+        _note.value = note
     }
 
     fun shareJoinLink(context: Context) {
@@ -84,7 +84,7 @@ class RecordViewModel @Inject constructor(
             type = type.value,
             date = date.value.toEpochDay(),
             category = category,
-            name = name.value,
+            name = note.value,
             price = calculator.price.value,
             author = authManager.userState.value?.toAuthor()
         )
@@ -97,7 +97,7 @@ class RecordViewModel @Inject constructor(
 
     private fun resetScreen() {
         _category.value = null
-        _name.value = ""
+        _note.value = ""
         calculator.clearPrice()
     }
 }

@@ -22,12 +22,11 @@ import com.kevingt.moneybook.ui.AppTextField
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
+@Parcelize
 sealed class CategoryEditMode : Parcelable {
 
-    @Parcelize
     object Add : CategoryEditMode()
 
-    @Parcelize
     data class Rename(val currentName: String) : CategoryEditMode()
 
 }

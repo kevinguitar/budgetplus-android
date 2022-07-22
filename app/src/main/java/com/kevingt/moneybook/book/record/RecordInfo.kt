@@ -29,7 +29,7 @@ fun RecordInfo(navController: NavController) {
 
     val type by viewModel.type.collectAsState()
     val date by viewModel.date.collectAsState()
-    val name by viewModel.name.collectAsState()
+    val name by viewModel.note.collectAsState()
     val category by viewModel.category.collectAsState()
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -73,12 +73,12 @@ fun RecordInfo(navController: NavController) {
 
         AppTextField(
             value = name,
-            onValueChange = viewModel::setName,
-            title = stringResource(id = R.string.record_description),
+            onValueChange = viewModel::setNote,
+            title = stringResource(id = R.string.record_note),
             placeholder = stringResource(
                 id = when (type) {
-                    RecordType.Expense -> R.string.record_description_placeholder_expense
-                    RecordType.Income -> R.string.record_description_placeholder_income
+                    RecordType.Expense -> R.string.record_note_placeholder_expense
+                    RecordType.Income -> R.string.record_note_placeholder_income
                 }
             ),
             modifier = Modifier

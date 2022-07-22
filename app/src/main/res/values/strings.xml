@@ -7,9 +7,9 @@
     <string name="auth_success">Welcome, %s!</string>
 
     <!-- Record -->
-    <string name="record_description">Description</string>
-    <string name="record_description_placeholder_expense">What did you pay for?</string>
-    <string name="record_description_placeholder_income">Where\'s the money from?</string>
+    <string name="record_note">Note</string>
+    <string name="record_note_placeholder_expense">What did you pay for?</string>
+    <string name="record_note_placeholder_income">Where did you earn from?</string>
     <string name="record_price">Price</string>
     <string name="record_expense">Expense</string>
     <string name="record_income">Income</string>
@@ -29,6 +29,8 @@
     <!-- Category -->
     <string name="category_title">Category</string>
     <string name="category_edit_title">Edit Categories</string>
+    <string name="category_edit_unsave_message">Do you want to leave without saving the changes?</string>
+    <string name="category_edit_successful">Category list has been saved</string>
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
     <string name="category_transport">Transport</string>

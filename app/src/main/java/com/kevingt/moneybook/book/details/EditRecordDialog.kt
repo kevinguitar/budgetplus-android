@@ -44,7 +44,7 @@ fun EditRecordDialog(
             AppTextField(
                 value = name,
                 onValueChange = viewModel::setName,
-                title = stringResource(id = R.string.record_description)
+                title = stringResource(id = R.string.record_note)
             )
 
             AppTextField(

@@ -1,5 +1,6 @@
 package com.kevingt.moneybook.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -11,7 +12,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +24,7 @@ fun TopBar(
     title: String?,
     titleContent: @Composable (() -> Unit)? = null,
     navigateBack: (() -> Unit)? = null,
-    menuActions: List<MenuAction>? = null,
+    menuActions: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null
 ) {
 
@@ -63,26 +63,28 @@ fun TopBar(
             }
         }
 
-        menuActions?.forEach { action ->
-            IconButton(
-                onClick = action.onClick,
-                modifier = Modifier.apply {
-                    if (action.onPositioned != null) {
-                        onGloballyPositioned(action.onPositioned)
-                    }
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = action.iconRes),
-                    contentDescription = action.description,
-                    tint = LocalAppColors.current.light,
-                )
-            }
+        if (menuActions != null) {
+            menuActions()
         }
 
         if (dropdownMenu != null) {
             dropdownMenu()
         }
+    }
+}
+
+@Composable
+fun MenuAction(
+    @DrawableRes iconRes: Int,
+    description: String,
+    onClick: () -> Unit = {}
+) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = iconRes),
+            contentDescription = description,
+            tint = LocalAppColors.current.light,
+        )
     }
 }
 
@@ -98,9 +100,9 @@ private fun TopBarWithBack_Preview() = AppTheme {
     TopBar(
         title = "Money Book",
         navigateBack = {},
-        menuActions = listOf(
-            MenuAction(R.drawable.ic_edit, "", onClick = {}),
-            MenuAction(R.drawable.ic_invite, "", onClick = {}),
-        )
+        menuActions = {
+            MenuAction(iconRes = R.drawable.ic_edit, description = "")
+            MenuAction(iconRes = R.drawable.ic_invite, description = "")
+        }
     )
 }

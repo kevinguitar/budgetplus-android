@@ -8,15 +8,14 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -26,11 +25,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.ConfirmDialog
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.DraggableItem
 import com.kevingt.moneybook.utils.dragContainer
 import com.kevingt.moneybook.utils.rememberDragDropState
+import com.kevingt.moneybook.utils.thenIf
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -43,33 +44,50 @@ fun EditCategoryScreen(
 
     val haptic = LocalHapticFeedback.current
 
+    val originalCategories = when (type) {
+        RecordType.Expense -> viewModel.expenseCategories
+        RecordType.Income -> viewModel.incomeCategories
+    }
+
     var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
-    var list by remember {
-        mutableStateOf(
-            when (type) {
-                RecordType.Expense -> viewModel.expenseCategories
-                RecordType.Income -> viewModel.incomeCategories
-            }
-        )
-    }
+    var isExitDialogShown by remember { mutableStateOf(false) }
+    var list by remember { mutableStateOf(originalCategories) }
 
-    fun updateList(newList: List<String>) {
-        list = newList
-        viewModel.updateCategories(type, newList)
-    }
-
+    val isListModified = originalCategories != list
     val listState = rememberLazyListState()
     val dragDropState = rememberDragDropState(listState) { fromIndex, toIndex ->
-        list.toMutableList()
+        list = list.toMutableList()
             .apply { add(toIndex, removeAt(fromIndex)) }
-            .also(::updateList)
     }
 
     Column {
 
         TopBar(
             title = stringResource(id = R.string.category_edit_title),
-            navigateBack = { navController.navigateUp() }
+            navigateBack = {
+                if (isListModified) {
+                    isExitDialogShown = true
+                } else {
+                    navController.navigateUp()
+                }
+            },
+            menuActions = {
+                IconButton(onClick = {
+                    if (isListModified) {
+                        viewModel.updateCategories(type, list)
+                        navController.navigateUp()
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.Rounded.Check,
+                        contentDescription = stringResource(id = R.string.cta_save),
+                        tint = LocalAppColors.current.light,
+                        modifier = Modifier.thenIf(!isListModified) {
+                            Modifier.alpha(0.5F)
+                        }
+                    )
+                }
+            }
         )
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -127,7 +145,7 @@ fun EditCategoryScreen(
         EditCategoryDialog(
             mode = dialogMode,
             onConfirm = { name ->
-                val newList = list.toMutableList().apply {
+                list = list.toMutableList().apply {
                     when (dialogMode) {
                         CategoryEditMode.Add -> add(name)
                         is CategoryEditMode.Rename -> {
@@ -136,14 +154,21 @@ fun EditCategoryScreen(
                         }
                     }
                 }
-                updateList(newList)
             },
             onDismiss = { editDialogMode = null },
             onDelete = {
                 val name = (dialogMode as CategoryEditMode.Rename).currentName
-                val newList = list.toMutableList().apply { remove(name) }
-                updateList(newList)
+                list = list.toMutableList().apply { remove(name) }
             }
+        )
+    }
+
+    if (isExitDialogShown) {
+
+        ConfirmDialog(
+            message = stringResource(id = R.string.category_edit_unsave_message),
+            onConfirm = { navController.navigateUp() },
+            onDismiss = { isExitDialogShown = false }
         )
     }
 }

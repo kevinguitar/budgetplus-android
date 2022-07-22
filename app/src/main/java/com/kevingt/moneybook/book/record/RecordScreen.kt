@@ -19,7 +19,6 @@ fun RecordScreen(navController: NavController) {
     val viewModel = hiltViewModel<RecordViewModel>()
 
     val context = LocalContext.current
-//    var inviteBubbleOffset by remember { mutableStateOf(IntOffset.Zero) }
 
     Column {
 
@@ -28,12 +27,13 @@ fun RecordScreen(navController: NavController) {
             TopBar(
                 title = null,
                 titleContent = { BookSelector() },
-                menuActions = listOf(MenuAction(
-                    iconRes = R.drawable.ic_invite,
-                    description = stringResource(id = R.string.cta_invite),
-                    onClick = { viewModel.shareJoinLink(context) },
-//                    onPositioned = { inviteBubbleOffset = it.toBubbleOffset() }
-                )),
+                menuActions = {
+                    MenuAction(
+                        iconRes = R.drawable.ic_invite,
+                        description = stringResource(id = R.string.cta_invite),
+                        onClick = { viewModel.shareJoinLink(context) }
+                    )
+                },
                 dropdownMenu = { BookScreenMenu() }
             )
         }
@@ -41,10 +41,4 @@ fun RecordScreen(navController: NavController) {
         RecordInfo(navController = navController)
 
     }
-
-    /*TourBubble(
-        key = "invite",
-        text = "Invite your friends to track together!",
-        bubbleOffset = inviteBubbleOffset
-    )*/
 }

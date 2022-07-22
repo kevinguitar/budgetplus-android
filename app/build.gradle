@@ -93,6 +93,10 @@ dependencies {
     // https://google.github.io/accompanist/flowlayout/
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.9-beta"
 
+    // Lottie
+    // https://github.com/airbnb/lottie/blob/master/android-compose.md
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
+
     // Navigation
     // https://developer.android.com/jetpack/androidx/releases/navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"

@@ -8,7 +8,6 @@ import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +21,6 @@ class RecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -63,7 +61,7 @@ class RecordViewModel @Inject constructor(
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))
     }
 
-    fun record() {
+    fun record(): Boolean {
         calculator.evaluate()
 
         val category = category.value
@@ -71,12 +69,12 @@ class RecordViewModel @Inject constructor(
 
         if (category == null) {
             toaster.showMessage(R.string.record_empty_category)
-            return
+            return false
         }
 
         if (price == 0.0) {
             toaster.showMessage(R.string.record_empty_price)
-            return
+            return false
         }
 
         val record = Record(
@@ -89,9 +87,8 @@ class RecordViewModel @Inject constructor(
         )
 
         recordRepo.createRecord(record)
-        toaster.showMessage(context.getString(R.string.record_created, category))
-
         resetScreen()
+        return true
     }
 
     private fun resetScreen() {

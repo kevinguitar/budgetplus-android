@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,8 +32,6 @@ fun RecordInfo(navController: NavController) {
     val category by viewModel.category.collectAsState()
 
     var showDatePicker by remember { mutableStateOf(false) }
-
-    val focusManager = LocalFocusManager.current
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -88,17 +85,7 @@ fun RecordInfo(navController: NavController) {
 
         Calculator(viewModel = viewModel.calculator)
 
-        AppButton(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp),
-            onClick = {
-                viewModel.record()
-                focusManager.clearFocus()
-            },
-        ) {
-            Text(text = stringResource(id = R.string.cta_add))
-        }
+        RecordButton(viewModel = viewModel)
 
         AdsBanner()
     }

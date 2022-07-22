@@ -11,10 +11,16 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DropdownItem(
     name: String,
+    icon: @Composable (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
 
     DropdownMenuItem(onClick = onClick) {
+
+        if (icon != null) {
+            icon()
+        }
+
         Text(
             text = name,
             color = LocalAppColors.current.primarySemiDark

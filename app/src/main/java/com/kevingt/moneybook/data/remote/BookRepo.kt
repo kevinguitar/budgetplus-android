@@ -2,6 +2,7 @@ package com.kevingt.moneybook.data.remote
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.days
 
 interface BookRepo {
 
@@ -33,11 +35,15 @@ interface BookRepo {
 
     val hasPendingJoinRequest: Boolean
 
+    fun generateJoinLink(): String
+
     fun setPendingJoinRequest(uri: Uri)
 
     /**
      *  @return The book's name that the user just joined.
-     *  @throws ExceedBooksLimitException
+     *  @throws JoinLinkExpiredException
+     *  @throws ExceedFreeBooksLimitException
+     *  @throws ExceedPremiumBooksLimitException
      */
     suspend fun handlePendingJoinRequest(): String
 
@@ -45,9 +51,6 @@ interface BookRepo {
 
     suspend fun checkUserHasBook(): Boolean
 
-    /**
-     *  @throws ExceedBooksLimitException
-     */
     suspend fun createBook(name: String)
 
     suspend fun renameBook(newName: String)
@@ -80,9 +83,9 @@ class BookRepoImpl @Inject constructor(
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
 
     override val hasPendingJoinRequest: Boolean
-        get() = pendingJoinId.value != null
+        get() = pendingJoinUri.value != null
 
-    private val pendingJoinId = MutableStateFlow<String?>(null)
+    private val pendingJoinUri = MutableStateFlow<Uri?>(null)
 
     private val booksDb = Firebase.firestore.collection("books")
 
@@ -96,9 +99,20 @@ class BookRepoImpl @Inject constructor(
             .launchIn(appScope)
     }
 
+    override fun generateJoinLink(): String {
+        // The join link will expire in 1 day
+        val validBefore = System.currentTimeMillis() + 1.days.inWholeMilliseconds
+        val joinLink = "https://moneybook.cchi.tw/".toUri()
+            .buildUpon()
+            .appendPath("join")
+            .appendPath(requireBookId)
+            .appendQueryParameter("valid", validBefore.toString())
+            .build()
+        return joinLink.toString()
+    }
+
     override fun setPendingJoinRequest(uri: Uri) {
-        val bookId = uri.lastPathSegment
-        pendingJoinId.value = bookId
+        pendingJoinUri.value = uri
     }
 
     private suspend fun getLatestBook(bookId: String): Book {
@@ -108,8 +122,20 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun handlePendingJoinRequest(): String {
-        checkBooksLimit()
-        val bookId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
+        val isPremium = authManager.userState.value?.premium == true
+        val bookCount = booksState.value.orEmpty().size
+        when {
+            isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> throw ExceedPremiumBooksLimitException()
+            !isPremium && bookCount >= FREE_BOOKS_LIMIT -> throw ExceedFreeBooksLimitException()
+        }
+
+        val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
+        val bookId = uri.lastPathSegment ?: error("No book id is presented")
+        val validBefore = uri.getQueryParameter("valid")
+        if (validBefore == null || System.currentTimeMillis() > validBefore.toLong()) {
+            throw JoinLinkExpiredException()
+        }
+
         val userId = authManager.requireUserId()
 
         val book = getLatestBook(bookId)
@@ -123,14 +149,8 @@ class BookRepoImpl @Inject constructor(
             .update(authorsField, newAuthors)
             .await()
 
-        pendingJoinId.value = null
+        pendingJoinUri.value = null
         return book.name
-    }
-
-    private fun checkBooksLimit() {
-        if (booksState.value.orEmpty().size >= BOOKS_LIMIT) {
-            throw ExceedBooksLimitException()
-        }
     }
 
     override suspend fun removeMember(userId: String) {
@@ -156,7 +176,6 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun createBook(name: String) {
-        checkBooksLimit()
         val userId = authManager.requireUserId()
         val expenses = context.resources.getStringArray(R.array.default_expense_categories)
         val incomes = context.resources.getStringArray(R.array.default_income_categories)

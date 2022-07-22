@@ -3,13 +3,18 @@ package com.kevingt.moneybook.auth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.User
+import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
+import com.kevingt.moneybook.utils.requireValue
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,6 +33,7 @@ interface AuthManager {
 @Singleton
 class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
+    @AppScope appScope: CoroutineScope
 ) : AuthManager {
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
@@ -39,7 +45,9 @@ class AuthManagerImpl @Inject constructor(
 
     init {
         Firebase.auth.addAuthStateListener { auth ->
-            setUser(auth.currentUser?.toUser())
+            appScope.launch {
+                updateUser(auth.currentUser?.toUser())
+            }
         }
     }
 
@@ -57,7 +65,7 @@ class AuthManagerImpl @Inject constructor(
                 .build()
         ).await()
 
-        setUser(currentUser.toUser().copy(name = newName))
+        updateUser(currentUser.toUser().copy(name = newName))
     }
 
     override fun logout() {
@@ -71,12 +79,26 @@ class AuthManagerImpl @Inject constructor(
         photoUrl = photoUrl?.toString()
     )
 
-    private fun setUser(user: User?) {
-        _userState.value = user
-        currentUser = user
-
-        if (user != null) {
-            usersDb.document(user.id).set(user)
+    private suspend fun updateUser(user: User?) {
+        if (user == null) {
+            _userState.value = null
+            currentUser = null
+            return
         }
+
+        // Get the latest remote user from the server
+        val remoteUser = usersDb.document(user.id)
+            .get(Source.SERVER)
+            .requireValue<User>()
+
+        // Merge exclusive fields to the Firebase auth user
+        val mergedUser = user.copy(
+            premium = remoteUser.premium,
+            hideAds = remoteUser.hideAds
+        )
+
+        _userState.value = mergedUser
+        currentUser = mergedUser
+        usersDb.document(user.id).set(mergedUser)
     }
 }

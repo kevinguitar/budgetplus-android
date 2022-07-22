@@ -9,6 +9,8 @@ data class User(
     val name: String? = null,
     val email: String? = null,
     val photoUrl: String? = null,
+    val premium: Boolean? = false,
+    val hideAds: Boolean? = false
 ) : Parcelable
 
 @Parcelize

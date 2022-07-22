@@ -26,6 +26,9 @@
     <string name="book_selection">選擇帳本</string>
     <string name="book_create_success">%s 已新增成功</string>
     <string name="book_join_success">已加入 %s</string>
+    <string name="book_join_link_expired">連結已失效ＱＱ</string>
+    <string name="book_join_exceed_free_limit">付費以創建、加入更多帳本</string>
+    <string name="book_exceed_maximum">已達帳本總數上限</string>
 
     <!-- Category -->
     <string name="category_title">類別名稱</string>
@@ -75,6 +78,9 @@
     <string name="overview_period_last_month">上個月</string>
     <string name="overview_sort_by_date">依日期排序</string>
     <string name="overview_sort_by_price">依金額排序</string>
+
+    <!-- Premium -->
+    <string name="premium_coming_soon">功能尚未開放，敬請期待！</string>
 
     <!-- General -->
     <string name="cta_add">新增</string>

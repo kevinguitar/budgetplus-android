@@ -145,7 +145,7 @@ private fun BottomNav(navController: NavController) {
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .height(0.5.dp)
+                .height(1.dp)
                 .alpha(0.4F)
                 .background(color = LocalAppColors.current.dark)
         )

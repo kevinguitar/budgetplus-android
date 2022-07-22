@@ -25,6 +25,9 @@
     <string name="book_selection">Select book</string>
     <string name="book_create_success">Your book %s is created!</string>
     <string name="book_join_success">You have joined %s successfully!</string>
+    <string name="book_join_link_expired">The join link is expired…</string>
+    <string name="book_join_exceed_free_limit">Go premium to create/ join more books!</string>
+    <string name="book_exceed_maximum">You have reached the maximum books limit</string>
 
     <!-- Category -->
     <string name="category_title">Category</string>
@@ -74,6 +77,9 @@
     <string name="overview_period_last_month">Last Month</string>
     <string name="overview_sort_by_date">Sort by date</string>
     <string name="overview_sort_by_price">Sort by price</string>
+
+    <!-- Premium -->
+    <string name="premium_coming_soon">Unavailable yet, coming soon!</string>
 
     <!-- General -->
     <string name="cta_add">Add</string>

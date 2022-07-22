@@ -1,13 +1,12 @@
 package com.kevingt.moneybook.book.record
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.BookSelectorViewModel
+import com.kevingt.moneybook.book.record.vm.CreateBookBtnState
 import com.kevingt.moneybook.ui.DropdownItem
 import com.kevingt.moneybook.ui.DropdownMenuDivider
 import com.kevingt.moneybook.ui.InputDialog
@@ -31,6 +31,7 @@ fun BookSelector() {
 
     val bookState by viewModel.book.collectAsState()
     val booksState by viewModel.books.collectAsState()
+    val createBookBtnState by viewModel.createBookBtnState.collectAsState()
 
     var isSelectorShown by remember { mutableStateOf(false) }
     var isBookCreationDialogShown by remember { mutableStateOf(false) }
@@ -90,10 +91,29 @@ fun BookSelector() {
 
             DropdownMenuDivider()
 
-            DropdownItem(name = stringResource(id = R.string.menu_create_book)) {
-                isBookCreationDialogShown = true
-                isSelectorShown = false
-            }
+            DropdownItem(
+                name = stringResource(id = R.string.menu_create_book),
+                icon = {
+                    if (createBookBtnState != CreateBookBtnState.Enabled) {
+                        Icon(
+                            imageVector = Icons.Rounded.Lock,
+                            contentDescription = null,
+                            tint = LocalAppColors.current.primarySemiDark,
+                            modifier = Modifier
+                                .padding(end = 4.dp)
+                                .size(20.dp)
+                        )
+                    }
+                },
+                onClick = {
+                    when (createBookBtnState) {
+                        CreateBookBtnState.Enabled -> isBookCreationDialogShown = true
+                        CreateBookBtnState.NeedPremium -> viewModel.buyPremium()
+                        CreateBookBtnState.ReachedMax -> viewModel.showReachedMaxMessage()
+                    }
+                    isSelectorShown = false
+                }
+            )
         }
 
     }

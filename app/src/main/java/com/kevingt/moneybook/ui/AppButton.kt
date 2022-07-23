@@ -13,20 +13,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
+//TODO: Use surface here
 @Composable
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
-    backgroundColor: Color = LocalAppColors.current.dark,
-    contentColor: Color = LocalAppColors.current.light,
+    color: Color = LocalAppColors.current.dark,
     shape: Shape = RoundedCornerShape(12.dp),
     content: @Composable RowScope.() -> Unit
 ) = Button(
     modifier = modifier,
     onClick = onClick,
     enabled = enabled,
-    colors = AppButtonColors(backgroundColor, contentColor),
+    colors = AppButtonColors(color, LocalAppColors.current.light),
     elevation = null,
     shape = shape,
     content = content

@@ -3,7 +3,6 @@ package com.kevingt.moneybook.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,9 +20,10 @@ fun DropdownItem(
             icon()
         }
 
-        Text(
+        AppText(
             text = name,
-            color = LocalAppColors.current.primarySemiDark
+            color = LocalAppColors.current.primarySemiDark,
+            fontSize = FontSize.SemiLarge
         )
     }
 }

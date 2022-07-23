@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
@@ -36,9 +35,8 @@ fun EditRecordDialog(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            Text(
+            AppText(
                 text = stringResource(id = R.string.record_edit_title),
-                color = LocalAppColors.current.dark
             )
 
             AppTextField(
@@ -59,7 +57,10 @@ fun EditRecordDialog(
                 AppButton(
                     onClick = { showDeleteConfirmationDialog = true },
                 ) {
-                    Text(text = stringResource(id = R.string.cta_delete))
+                    AppText(
+                        text = stringResource(id = R.string.cta_delete),
+                        color = LocalAppColors.current.light
+                    )
                 }
 
                 AppButton(
@@ -68,7 +69,10 @@ fun EditRecordDialog(
                         onDismiss()
                     },
                 ) {
-                    Text(text = stringResource(id = R.string.cta_save))
+                    AppText(
+                        text = stringResource(id = R.string.cta_save),
+                        color = LocalAppColors.current.light
+                    )
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.kevingt.moneybook.book.record
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.ui.AppButton
+import com.kevingt.moneybook.ui.AppText
+import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
 fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
@@ -60,7 +61,10 @@ fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
             )
         } else {
 
-            Text(text = stringResource(id = R.string.cta_add))
+            AppText(
+                text = stringResource(id = R.string.cta_add),
+                color = LocalAppColors.current.light
+            )
         }
     }
 }

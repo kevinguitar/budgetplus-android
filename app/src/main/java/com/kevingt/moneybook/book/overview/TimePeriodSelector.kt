@@ -7,15 +7,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
@@ -23,6 +20,7 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.book.overview.vm.TimePeriod
+import com.kevingt.moneybook.ui.AppText
 import com.kevingt.moneybook.ui.DatePickerDialog
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.utils.longFormatted
@@ -52,22 +50,19 @@ fun TimePeriodSelector() {
             tint = LocalAppColors.current.dark
         )
 
-        Text(
+        AppText(
             text = fromDate.longFormatted,
-            color = LocalAppColors.current.dark,
             modifier = Modifier
                 .padding(horizontal = 4.dp)
                 .rippleClick { showFromDatePicker = true }
         )
 
-        Text(
+        AppText(
             text = stringResource(id = R.string.date_to),
-            color = LocalAppColors.current.dark
         )
 
-        Text(
+        AppText(
             text = untilDate.longFormatted,
-            color = LocalAppColors.current.dark,
             modifier = Modifier.rippleClick { showUntilDatePicker = true }
         )
     }
@@ -151,12 +146,10 @@ private fun TimePeriodPill(
             is TimePeriod.Custom -> error("Custom period doesn't shown in pill.")
         }
 
-        Text(
+        AppText(
             text = stringResource(id = titleRes),
-            textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
             color = LocalAppColors.current.light,
+            singleLine = true,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }

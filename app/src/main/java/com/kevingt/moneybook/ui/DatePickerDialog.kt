@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,10 +55,9 @@ fun DatePickerDialog(
                     .padding(bottom = 16.dp, end = 16.dp)
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text(
+                    AppText(
                         text = stringResource(id = R.string.cta_cancel),
-                        style = MaterialTheme.typography.button,
-                        color = MaterialTheme.colors.onPrimary
+                        color = LocalAppColors.current.light
                     )
                 }
 
@@ -70,10 +67,9 @@ fun DatePickerDialog(
                         onDismiss()
                     }
                 ) {
-                    Text(
+                    AppText(
                         text = stringResource(id = R.string.cta_ok),
-                        style = MaterialTheme.typography.button,
-                        color = MaterialTheme.colors.onPrimary
+                        color = LocalAppColors.current.light
                     )
                 }
 

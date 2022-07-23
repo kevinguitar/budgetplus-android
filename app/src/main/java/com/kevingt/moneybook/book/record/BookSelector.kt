@@ -2,7 +2,9 @@ package com.kevingt.moneybook.book.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
@@ -18,10 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.BookSelectorViewModel
 import com.kevingt.moneybook.book.record.vm.CreateBookBtnState
-import com.kevingt.moneybook.ui.DropdownItem
-import com.kevingt.moneybook.ui.DropdownMenuDivider
-import com.kevingt.moneybook.ui.InputDialog
-import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.rippleClick
 
 @Composable
@@ -46,9 +45,9 @@ fun BookSelector() {
             )
         ) {
 
-            Text(
+            AppText(
                 text = bookState?.name.orEmpty(),
-                style = MaterialTheme.typography.h5,
+                fontSize = FontSize.Header,
                 fontWeight = FontWeight.SemiBold,
                 color = LocalAppColors.current.light
             )
@@ -74,9 +73,10 @@ fun BookSelector() {
                     isSelectorShown = false
                 }) {
 
-                    Text(
+                    AppText(
                         text = book.name,
-                        color = LocalAppColors.current.primarySemiDark
+                        color = LocalAppColors.current.primarySemiDark,
+                        fontSize = FontSize.SemiLarge
                     )
 
                     if (bookState?.id == book.id) {

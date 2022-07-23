@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,11 +45,10 @@ fun AppTextField(
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.isEmpty() && placeholder != null) {
-                Text(
+                AppText(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
-                    color = LocalAppColors.current.dark,
                     modifier = Modifier.alpha(0.5F)
                 )
             }
@@ -87,11 +85,10 @@ fun AppTextField(
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.text.isEmpty() && placeholder != null) {
-                Text(
+                AppText(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
-                    color = LocalAppColors.current.dark,
                     modifier = Modifier.alpha(0.5F)
                 )
             }
@@ -121,11 +118,10 @@ private fun AppTextFieldInternal(
             .padding(horizontal = 16.dp)
     ) {
 
-        Text(
+        AppText(
             text = title,
             fontWeight = FontWeight.Bold,
             fontSize = fontSize,
-            color = LocalAppColors.current.dark
         )
 
         content()

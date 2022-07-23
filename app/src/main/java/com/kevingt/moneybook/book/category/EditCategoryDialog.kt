@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,9 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevingt.moneybook.R
-import com.kevingt.moneybook.ui.AppButton
-import com.kevingt.moneybook.ui.AppDialog
-import com.kevingt.moneybook.ui.AppTextField
+import com.kevingt.moneybook.ui.*
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -78,7 +75,10 @@ fun EditCategoryDialog(
                         onDelete()
                         onDismiss()
                     }) {
-                        Text(text = stringResource(id = R.string.cta_delete))
+                        AppText(
+                            text = stringResource(id = R.string.cta_delete),
+                            color = LocalAppColors.current.light
+                        )
                     }
                 }
 
@@ -93,7 +93,10 @@ fun EditCategoryDialog(
                         CategoryEditMode.Add -> R.string.cta_add
                         is CategoryEditMode.Rename -> R.string.cta_rename
                     }
-                    Text(text = stringResource(id = textRes))
+                    AppText(
+                        text = stringResource(id = textRes),
+                        color = LocalAppColors.current.light
+                    )
                 }
             }
         }

@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.bubble.vm.BubbleDest
@@ -27,10 +24,7 @@ import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.monetize.AdsBanner
 import com.kevingt.moneybook.monetize.AdsMode
-import com.kevingt.moneybook.ui.AppTheme
-import com.kevingt.moneybook.ui.LocalAppColors
-import com.kevingt.moneybook.ui.MenuAction
-import com.kevingt.moneybook.ui.TopBar
+import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.dollar
 import com.kevingt.moneybook.utils.rippleClick
 import com.kevingt.moneybook.utils.shortFormatted
@@ -147,11 +141,10 @@ fun RecordCard(
                 modifier = Modifier.weight(1F),
             ) {
 
-                Text(
+                AppText(
                     text = item.name,
-                    style = MaterialTheme.typography.subtitle1,
+                    fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
-                    color = LocalAppColors.current.dark,
                 )
 
                 Row(
@@ -159,14 +152,13 @@ fun RecordCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Text(
+                    AppText(
                         text = LocalDate.ofEpochDay(item.date).shortFormatted,
-                        color = LocalAppColors.current.dark,
                     )
 
-                    Text(
+                    AppText(
                         text = item.author?.name.orEmpty(),
-                        fontSize = 12.sp,
+                        fontSize = FontSize.Small,
                         color = LocalAppColors.current.light,
                         modifier = Modifier
                             .background(
@@ -179,9 +171,9 @@ fun RecordCard(
 
             }
 
-            Text(
+            AppText(
                 text = item.price.dollar,
-                color = LocalAppColors.current.dark,
+                fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold,
             )
         }

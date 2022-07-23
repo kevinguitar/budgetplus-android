@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -84,7 +83,7 @@ private fun TypePill(
         color = bgColor,
     ) {
 
-        Text(
+        AppText(
             text = text,
             color = textColor,
             modifier = Modifier.padding(horizontal = 30.dp, vertical = 12.dp)

@@ -3,7 +3,10 @@ package com.kevingt.moneybook.book.record
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,9 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.CalculatorViewModel
-import com.kevingt.moneybook.ui.AppTextField
-import com.kevingt.moneybook.ui.AppTheme
-import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.ui.*
 
 enum class CalculatorButton(val text: String) {
     Seven("7"), Four("4"),
@@ -127,10 +128,10 @@ private fun CalculatorBtn(
 
         Box(contentAlignment = Alignment.Center) {
 
-            Text(
+            AppText(
                 text = text,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h5,
+                fontSize = FontSize.Header,
                 fontWeight = FontWeight.Bold,
                 color = LocalAppColors.current.light
             )
@@ -156,10 +157,10 @@ private fun CalculatorActionBtn(
 
         Box(contentAlignment = Alignment.Center) {
 
-            Text(
+            AppText(
                 text = text,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h5,
+                fontSize = FontSize.Header,
                 fontWeight = FontWeight.Bold,
                 color = LocalAppColors.current.light
             )

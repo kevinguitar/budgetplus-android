@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,8 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,11 +78,9 @@ fun CategoryCard(
         onClick = onClick
     ) {
 
-        Text(
+        AppText(
             text = category,
-            textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
+            singleLine = true,
             color = LocalAppColors.current.light,
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
         )
@@ -115,11 +110,9 @@ private fun EditCategoryButton(onClick: () -> Unit) {
                 modifier = Modifier.size(16.dp)
             )
 
-            Text(
+            AppText(
                 text = stringResource(id = R.string.cta_edit),
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                singleLine = true,
                 color = LocalAppColors.current.light
             )
         }
@@ -128,9 +121,12 @@ private fun EditCategoryButton(onClick: () -> Unit) {
 
 @Preview
 @Composable
-private fun CategoryCard_Preview() =
+private fun CategoryCard_Preview() = AppTheme {
     CategoryCard(category = "Food", isSelected = true, onClick = {})
+}
 
 @Preview
 @Composable
-private fun EditCategoriesCard_Preview() = EditCategoryButton {}
+private fun EditCategoriesCard_Preview() = AppTheme {
+    EditCategoryButton {}
+}

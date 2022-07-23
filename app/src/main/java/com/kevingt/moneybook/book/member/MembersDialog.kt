@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.*
@@ -26,6 +25,8 @@ import coil.request.ImageRequest
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.ui.AppDialog
+import com.kevingt.moneybook.ui.AppText
+import com.kevingt.moneybook.ui.AppTheme
 import com.kevingt.moneybook.ui.ConfirmDialog
 
 @Composable
@@ -48,7 +49,7 @@ fun MembersDialog(
             modifier = Modifier.size(width = 280.dp, height = 400.dp)
         ) {
 
-            Text(text = stringResource(id = R.string.members_title))
+            AppText(text = stringResource(id = R.string.members_title))
 
             if (members.isEmpty()) {
                 CircularProgressIndicator()
@@ -108,7 +109,7 @@ private fun MemberCard(
             modifier = Modifier.clip(CircleShape)
         )
 
-        Text(
+        AppText(
             text = member.name.orEmpty(),
             modifier = Modifier.weight(1F)
         )
@@ -116,7 +117,7 @@ private fun MemberCard(
         when {
 
             member.id == ownerId -> {
-                Text(
+                AppText(
                     text = stringResource(id = R.string.members_owner_label)
                 )
             }
@@ -137,12 +138,14 @@ private fun MemberCard(
 
 @Preview
 @Composable
-private fun MemberCard_Preview() = MemberCard(
-    member = User(
-        name = "Kevin Chiu",
-        photoUrl = ""
-    ),
-    myUserId = "user01",
-    ownerId = "user01",
-    removeUser = { }
-)
+private fun MemberCard_Preview() = AppTheme {
+    MemberCard(
+        member = User(
+            name = "Kevin Chiu",
+            photoUrl = ""
+        ),
+        myUserId = "user01",
+        ownerId = "user01",
+        removeUser = { }
+    )
+}

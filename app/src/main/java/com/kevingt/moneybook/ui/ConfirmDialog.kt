@@ -1,7 +1,6 @@
 package com.kevingt.moneybook.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +25,7 @@ fun ConfirmDialog(
                 .wrapContentHeight()
         ) {
 
-            Text(text = message)
+            AppText(text = message)
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -34,14 +33,20 @@ fun ConfirmDialog(
             ) {
 
                 AppButton(onClick = onDismiss) {
-                    Text(text = stringResource(id = R.string.cta_cancel))
+                    AppText(
+                        text = stringResource(id = R.string.cta_cancel),
+                        color = LocalAppColors.current.light
+                    )
                 }
 
                 AppButton(onClick = {
                     onConfirm()
                     onDismiss()
                 }) {
-                    Text(text = stringResource(id = R.string.cta_confirm))
+                    AppText(
+                        text = stringResource(id = R.string.cta_confirm),
+                        color = LocalAppColors.current.light
+                    )
                 }
             }
         }
@@ -50,8 +55,10 @@ fun ConfirmDialog(
 
 @Preview
 @Composable
-private fun ConfirmDialog_Preview() = ConfirmDialog(
-    message = "You won't be able to restore the changes. Are you sure you want to delete this book?",
-    onConfirm = {},
-    onDismiss = {}
-)
+private fun ConfirmDialog_Preview() = AppTheme {
+    ConfirmDialog(
+        message = "You won't be able to restore the changes. Are you sure you want to delete this book?",
+        onConfirm = {},
+        onDismiss = {}
+    )
+}

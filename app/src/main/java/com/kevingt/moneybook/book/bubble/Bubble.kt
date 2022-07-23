@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevingt.moneybook.book.bubble.vm.BubbleDest
 import com.kevingt.moneybook.book.bubble.vm.BubbleTextDirection
 import com.kevingt.moneybook.book.bubble.vm.BubbleViewModel
+import com.kevingt.moneybook.ui.AppText
 import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
@@ -69,9 +69,8 @@ fun Bubble() {
                         .background(color = LocalAppColors.current.dark.copy(alpha = 0.8F))
                 )
 
-                Text(
+                AppText(
                     text = stringResource(id = dest.textRes),
-                    color = LocalAppColors.current.dark,
                     modifier = Modifier
                         .align(
                             when (dest.textDirection) {

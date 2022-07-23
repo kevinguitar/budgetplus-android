@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
@@ -49,9 +47,9 @@ fun TopBar(
         }
 
         when {
-            title != null -> Text(
+            title != null -> AppText(
                 text = title,
-                style = MaterialTheme.typography.h5,
+                fontSize = FontSize.Header,
                 fontWeight = FontWeight.SemiBold,
                 color = LocalAppColors.current.light,
                 modifier = Modifier.weight(1F)

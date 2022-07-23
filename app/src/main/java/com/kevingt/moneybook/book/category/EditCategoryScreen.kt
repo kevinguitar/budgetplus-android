@@ -8,7 +8,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
@@ -28,6 +31,7 @@ import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.bubble.vm.BubbleDest
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.AppText
 import com.kevingt.moneybook.ui.ConfirmDialog
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.TopBar
@@ -218,9 +222,8 @@ private fun CategoryCell(
                 modifier = Modifier.size(20.dp)
             )
 
-            Text(
+            AppText(
                 text = category,
-                color = LocalAppColors.current.dark
             )
         }
     }

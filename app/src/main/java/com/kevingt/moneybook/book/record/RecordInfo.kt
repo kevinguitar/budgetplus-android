@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,10 +56,7 @@ fun RecordInfo(navController: NavController) {
                 tint = LocalAppColors.current.dark
             )
 
-            Text(
-                text = date.longFormatted,
-                color = LocalAppColors.current.dark
-            )
+            AppText(text = date.longFormatted)
         }
 
         CategoriesGrid(

@@ -2,7 +2,6 @@ package com.kevingt.moneybook.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +56,10 @@ fun InputDialog(
                 enabled = name.text.isNotBlank() && name.text != currentInput,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text(text = buttonText)
+                AppText(
+                    text = buttonText,
+                    color = LocalAppColors.current.light
+                )
             }
         }
     }

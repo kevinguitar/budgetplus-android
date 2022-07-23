@@ -3,8 +3,6 @@ package com.kevingt.moneybook.book.overview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,7 +16,8 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.HistoryDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Record
-import com.kevingt.moneybook.ui.LocalAppColors
+import com.kevingt.moneybook.ui.AppText
+import com.kevingt.moneybook.ui.FontSize
 import com.kevingt.moneybook.ui.RecordTypeTab
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
@@ -45,10 +44,9 @@ fun OverviewScreen(navController: NavController) {
 
         TimePeriodSelector()
 
-        Text(
+        AppText(
             text = stringResource(id = R.string.overview_total_price, totalPrice),
-            style = MaterialTheme.typography.h6,
-            color = LocalAppColors.current.dark,
+            fontSize = FontSize.Large,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp)
@@ -90,15 +88,13 @@ fun RecordGroup(
             }
     ) {
 
-        Text(
+        AppText(
             text = category,
-            color = LocalAppColors.current.dark,
             modifier = Modifier.weight(1F)
         )
 
-        Text(
+        AppText(
             text = records.sumOf { it.price }.dollar,
-            color = LocalAppColors.current.dark
         )
     }
 }

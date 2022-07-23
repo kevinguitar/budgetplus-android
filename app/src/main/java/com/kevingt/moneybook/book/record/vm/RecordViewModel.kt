@@ -95,7 +95,7 @@ class RecordViewModel @Inject constructor(
             type = type.value,
             date = date.value.toEpochDay(),
             category = category,
-            name = note.value,
+            name = note.value.ifEmpty { category },
             price = calculator.price.value,
             author = authManager.userState.value?.toAuthor()
         )

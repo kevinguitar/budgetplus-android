@@ -1,8 +1,11 @@
 package com.kevingt.moneybook.book.details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -14,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.bubble.vm.BubbleDest
@@ -21,6 +25,7 @@ import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.ui.AppTheme
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.MenuAction
 import com.kevingt.moneybook.ui.TopBar
@@ -82,12 +87,13 @@ fun DetailsScreen(
             RecordsSortMode.Price -> records.sortedByDescending { it.price }
         }
 
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
+        LazyColumn {
 
-            items(sortedRecords) { item ->
-                RecordCard(item = item) {
+            itemsIndexed(sortedRecords) { index, item ->
+                RecordCard(
+                    item = item,
+                    isLast = index == sortedRecords.lastIndex
+                ) {
                     editRecordDialog = item
                 }
             }
@@ -107,55 +113,96 @@ fun DetailsScreen(
 @Composable
 fun RecordCard(
     item: Record,
+    isLast: Boolean,
     onEdit: () -> Unit
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .rippleClick(
                 color = LocalAppColors.current.dark,
                 onClick = onEdit
             )
-            .padding(vertical = 12.dp)
+            .padding(horizontal = 16.dp)
     ) {
 
-        Text(
-            text = LocalDate.ofEpochDay(item.date).shortFormatted,
-            color = LocalAppColors.current.dark,
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
 
-        Text(
-            text = item.name,
-            style = MaterialTheme.typography.subtitle1,
-            fontWeight = FontWeight.SemiBold,
-            color = LocalAppColors.current.dark,
-            modifier = Modifier.weight(1F)
-        )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.weight(1F),
+            ) {
 
-        Text(
-            text = item.price.dollar,
-            color = LocalAppColors.current.dark,
-        )
+                Text(
+                    text = item.name,
+                    style = MaterialTheme.typography.subtitle1,
+                    fontWeight = FontWeight.SemiBold,
+                    color = LocalAppColors.current.dark,
+                )
 
-        Text(
-            text = item.author?.name.orEmpty(),
-            color = LocalAppColors.current.dark,
-        )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = LocalDate.ofEpochDay(item.date).shortFormatted,
+                        color = LocalAppColors.current.dark,
+                    )
+
+                    Text(
+                        text = item.author?.name.orEmpty(),
+                        fontSize = 12.sp,
+                        color = LocalAppColors.current.light,
+                        modifier = Modifier
+                            .background(
+                                color = LocalAppColors.current.primary,
+                                shape = CircleShape
+                            )
+                            .padding(vertical = 1.dp, horizontal = 8.dp)
+                    )
+                }
+
+            }
+
+            Text(
+                text = item.price.dollar,
+                color = LocalAppColors.current.dark,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+
+        if (!isLast) {
+            Divider(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(0.5.dp)
+                    .background(color = LocalAppColors.current.primary)
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun RecordCard_Preview() = RecordCard(
-    item = Record(
-        type = RecordType.Income,
-        date = LocalDate.now().toEpochDay(),
-        category = "Food",
-        name = "Fancy Restaurant",
-        price = 453.93,
-        author = Author(id = "", name = "Kevin")
-    ),
-    onEdit = {}
-)
+private fun RecordCard_Preview() = AppTheme {
+    RecordCard(
+        item = Record(
+            type = RecordType.Income,
+            date = LocalDate.now().toEpochDay(),
+            category = "Food",
+            name = "Fancy Restaurant",
+            price = 453.93,
+            author = Author(id = "", name = "Kevin")
+        ),
+        isLast = false,
+        onEdit = {}
+    )
+}

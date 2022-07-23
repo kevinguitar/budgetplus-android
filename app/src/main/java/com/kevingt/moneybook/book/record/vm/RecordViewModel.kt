@@ -5,6 +5,9 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.auth.AuthManager
+import com.kevingt.moneybook.book.bubble.vm.BubbleDest
+import com.kevingt.moneybook.book.bubble.vm.BubbleRepo
+import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.*
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +22,10 @@ class RecordViewModel @Inject constructor(
     val calculator: CalculatorViewModel,
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
+    private val bubbleRepo: BubbleRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
+    preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -34,6 +39,8 @@ class RecordViewModel @Inject constructor(
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
+
+    private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
 
     fun setType(type: RecordType) {
         _type.value = type
@@ -59,6 +66,13 @@ class RecordViewModel @Inject constructor(
             putExtra(Intent.EXTRA_TEXT, context.getString(R.string.menu_share_book, joinLink))
         }
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))
+    }
+
+    fun highlightInviteButton(dest: BubbleDest) {
+        if (!isInviteBubbleShown) {
+            isInviteBubbleShown = true
+            bubbleRepo.setDestination(dest)
+        }
     }
 
     fun record(): Boolean {

@@ -8,12 +8,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kevingt.moneybook.R
+import com.kevingt.moneybook.book.bubble.vm.BubbleDest
 import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
@@ -48,16 +51,27 @@ fun DetailsScreen(
             title = "$category $totalPrice",
             navigateBack = { navController.navigateUp() },
             menuActions = {
+                val modifier = Modifier.onGloballyPositioned {
+                    viewModel.highlightSortingButton(
+                        BubbleDest.RecordsSorting(
+                            size = it.size,
+                            offset = it.positionInRoot()
+                        )
+                    )
+                }
+
                 when (sortMode) {
                     RecordsSortMode.Date -> MenuAction(
                         iconRes = R.drawable.ic_sort_date,
                         description = stringResource(id = R.string.overview_sort_by_price),
-                        onClick = { sortMode = RecordsSortMode.Price }
+                        onClick = { sortMode = RecordsSortMode.Price },
+                        modifier = modifier
                     )
                     RecordsSortMode.Price -> MenuAction(
                         iconRes = R.drawable.ic_dollar,
                         description = stringResource(id = R.string.overview_sort_by_date),
-                        onClick = { sortMode = RecordsSortMode.Date }
+                        onClick = { sortMode = RecordsSortMode.Date },
+                        modifier = modifier
                     )
                 }
             }

@@ -27,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.kevingt.moneybook.book.bubble.Bubble
 import com.kevingt.moneybook.book.category.EditCategoryScreen
 import com.kevingt.moneybook.book.details.DetailsScreen
 import com.kevingt.moneybook.book.overview.OverviewScreen
@@ -52,20 +53,25 @@ fun BookBinding(viewModel: BookViewModel) {
             .launchIn(this)
     }
 
-    Scaffold(
-        bottomBar = { BottomNav(navController) }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = BookTab.Add.route,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(color = LocalAppColors.current.light)
-        ) {
-            addTabGraph(navController)
-            overviewTabGraph(navController)
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Scaffold(
+            bottomBar = { BottomNav(navController) }
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = BookTab.Add.route,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .background(color = LocalAppColors.current.light)
+            ) {
+                addTabGraph(navController)
+                overviewTabGraph(navController)
+            }
         }
+
+        Bubble()
     }
 }
 

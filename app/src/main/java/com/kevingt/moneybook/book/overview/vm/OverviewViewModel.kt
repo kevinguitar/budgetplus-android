@@ -6,6 +6,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevingt.moneybook.book.bubble.vm.BubbleDest
+import com.kevingt.moneybook.book.bubble.vm.BubbleRepo
 import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
@@ -20,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    private val bubbleRepo: BubbleRepo,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
@@ -30,6 +33,8 @@ class OverviewViewModel @Inject constructor(
     private var cachePeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
     private val _timePeriod = MutableStateFlow(cachePeriod)
     val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
+
+    private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
@@ -80,6 +85,13 @@ class OverviewViewModel @Inject constructor(
         _timePeriod.value = timePeriod
         cachePeriod = timePeriod
         observeRecords()
+    }
+
+    fun highlightSortingButton(dest: BubbleDest) {
+        if (!isSortingBubbleShown) {
+            isSortingBubbleShown = true
+            bubbleRepo.setDestination(dest)
+        }
     }
 
     private var recordsRegistration: ListenerRegistration? = null

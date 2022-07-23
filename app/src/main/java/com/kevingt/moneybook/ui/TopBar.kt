@@ -77,9 +77,13 @@ fun TopBar(
 fun MenuAction(
     @DrawableRes iconRes: Int,
     description: String,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    IconButton(onClick = onClick) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = description,

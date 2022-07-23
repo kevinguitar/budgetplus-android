@@ -81,6 +81,11 @@
     <!-- Premium -->
     <string name="premium_coming_soon">功能尚未開放，敬請期待！</string>
 
+    <!-- Bubble -->
+    <string name="bubble_invite">分享帳本給好友們，一起記帳！</string>
+    <string name="bubble_save_category">編輯和排序完成後，點擊以儲存</string>
+    <string name="bubble_records_sorting">選擇用日期或是金額排序帳目</string>
+
     <!-- General -->
     <string name="cta_add">新增</string>
     <string name="cta_create">建立</string>

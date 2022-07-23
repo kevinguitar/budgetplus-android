@@ -80,6 +80,11 @@
     <!-- Premium -->
     <string name="premium_coming_soon">Unavailable yet, coming soon!</string>
 
+    <!-- Bubble -->
+    <string name="bubble_invite">Invite fellows to track expenses together!</string>
+    <string name="bubble_save_category">Click save after you finish editing and reordering</string>
+    <string name="bubble_records_sorting">Change the records sorting by date or price</string>
+
     <!-- General -->
     <string name="cta_add">Add</string>
     <string name="cta_create">Create</string>

@@ -1,5 +1,6 @@
-package com.kevingt.moneybook.ui
+package com.kevingt.moneybook.monetize
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -10,8 +11,13 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import kotlin.math.roundToInt
 
+enum class AdsMode {
+    Banner, Adaptive
+}
+
+@SuppressLint("VisibleForTests")
 @Composable
-fun AdsBanner() {
+fun AdsBanner(mode: AdsMode) {
 
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
 
@@ -21,7 +27,15 @@ fun AdsBanner() {
             modifier = Modifier.fillMaxWidth(),
             factory = { context ->
                 AdView(context).apply {
-                    setAdSize(AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(context, boxWidth))
+                    setAdSize(
+                        when (mode) {
+                            AdsMode.Banner -> AdSize.BANNER
+                            AdsMode.Adaptive -> AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
+                                context,
+                                boxWidth
+                            )
+                        }
+                    )
                     adUnitId = "ca-app-pub-3940256099942544/6300978111"
                     loadAd(AdRequest.Builder().build())
                 }

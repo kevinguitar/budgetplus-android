@@ -1,6 +1,5 @@
 package com.kevingt.moneybook.book.overview
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +22,8 @@ import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.RecordTypeTab
 import com.kevingt.moneybook.ui.TopBar
 import com.kevingt.moneybook.utils.dollar
+import com.kevingt.moneybook.utils.rippleClick
+import com.kevingt.moneybook.utils.thenIf
 
 @Composable
 fun OverviewScreen(navController: NavController) {
@@ -84,7 +85,9 @@ fun RecordGroup(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .clickable(onClick = onClick)
+            .thenIf(records.isNotEmpty()) {
+                Modifier.rippleClick(onClick = onClick)
+            }
     ) {
 
         Text(

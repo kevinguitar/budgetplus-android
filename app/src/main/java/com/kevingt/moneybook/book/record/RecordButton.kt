@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,7 @@ fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
     }
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
     AppButton(
         modifier = Modifier
@@ -44,6 +46,7 @@ fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
             if (viewModel.record()) {
                 focusManager.clearFocus()
                 showCheckAnimation = true
+                viewModel.showFullScreenAdIfNeeded(context)
             }
         },
     ) {

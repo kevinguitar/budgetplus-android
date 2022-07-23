@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.IntSize
 import com.kevingt.moneybook.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 class BubbleRepo @Inject constructor() {
 
     private val _destination = MutableStateFlow<BubbleDest?>(null)
-    val destination: StateFlow<BubbleDest?> get() = _destination
+    val destination: StateFlow<BubbleDest?> = _destination.asStateFlow()
 
     fun setDestination(dest: BubbleDest) {
         _destination.value = dest

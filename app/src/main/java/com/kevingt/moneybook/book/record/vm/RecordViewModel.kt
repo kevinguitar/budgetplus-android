@@ -1,5 +1,6 @@
 package com.kevingt.moneybook.book.record.vm
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.kevingt.moneybook.book.bubble.vm.BubbleDest
 import com.kevingt.moneybook.book.bubble.vm.BubbleRepo
 import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.*
+import com.kevingt.moneybook.monetize.FullScreenAdsLoader
 import com.kevingt.moneybook.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,7 @@ class RecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val authManager: AuthManager,
+    private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val toaster: Toaster,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
@@ -40,7 +43,10 @@ class RecordViewModel @Inject constructor(
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
 
+    val isHideAds = authManager.isHideAds
+
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
+    private var recordCount by preferenceHolder.bindInt(0)
 
     fun setType(type: RecordType) {
         _type.value = type
@@ -101,8 +107,20 @@ class RecordViewModel @Inject constructor(
         )
 
         recordRepo.createRecord(record)
+        recordCount += 1
         resetScreen()
         return true
+    }
+
+    /**
+     *  Show full screen Ad on every 10 records
+     */
+    fun showFullScreenAdIfNeeded(context: Context) {
+        val activity = context as? Activity ?: return
+
+        if (recordCount % 10 == 0 && !authManager.isHideAds.value) {
+            fullScreenAdsLoader.showAd(activity)
+        }
     }
 
     private fun resetScreen() {

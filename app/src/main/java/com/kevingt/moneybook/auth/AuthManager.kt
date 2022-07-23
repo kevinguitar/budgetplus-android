@@ -10,10 +10,12 @@ import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.User
 import com.kevingt.moneybook.utils.AppScope
 import com.kevingt.moneybook.utils.await
+import com.kevingt.moneybook.utils.mapState
 import com.kevingt.moneybook.utils.requireValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,6 +23,8 @@ import javax.inject.Singleton
 interface AuthManager {
 
     val userState: StateFlow<User?>
+    val isPremium: StateFlow<Boolean>
+    val isHideAds: StateFlow<Boolean>
 
     fun requireUserId(): String
 
@@ -41,7 +45,10 @@ class AuthManagerImpl @Inject constructor(
     private val usersDb = Firebase.firestore.collection("users")
 
     private val _userState = MutableStateFlow(currentUser)
-    override val userState: StateFlow<User?> get() = _userState
+    override val userState: StateFlow<User?> = _userState.asStateFlow()
+
+    override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
+    override val isHideAds: StateFlow<Boolean> = userState.mapState { it?.hideAds == true }
 
     init {
         Firebase.auth.addAuthStateListener { auth ->

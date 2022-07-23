@@ -25,6 +25,8 @@ import com.kevingt.moneybook.book.overview.vm.OverviewViewModel
 import com.kevingt.moneybook.data.remote.Author
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.monetize.AdsBanner
+import com.kevingt.moneybook.monetize.AdsMode
 import com.kevingt.moneybook.ui.AppTheme
 import com.kevingt.moneybook.ui.LocalAppColors
 import com.kevingt.moneybook.ui.MenuAction
@@ -43,10 +45,12 @@ fun DetailsScreen(
 
     requireNotNull(category) { "Category must be presented to show the details." }
 
-    var sortMode by remember { mutableStateOf(RecordsSortMode.Date) }
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     val recordGroups by viewModel.recordGroups.collectAsState()
+    val sortMode by viewModel.sortMode.collectAsState()
+    val isHideAds by viewModel.isHideAds.collectAsState()
+
     val records = recordGroups[category].orEmpty()
     val totalPrice = records.sumOf { it.price }.dollar
 
@@ -69,13 +73,13 @@ fun DetailsScreen(
                     RecordsSortMode.Date -> MenuAction(
                         iconRes = R.drawable.ic_sort_date,
                         description = stringResource(id = R.string.overview_sort_by_price),
-                        onClick = { sortMode = RecordsSortMode.Price },
+                        onClick = { viewModel.setSortMode(RecordsSortMode.Price) },
                         modifier = modifier
                     )
                     RecordsSortMode.Price -> MenuAction(
                         iconRes = R.drawable.ic_dollar,
                         description = stringResource(id = R.string.overview_sort_by_date),
-                        onClick = { sortMode = RecordsSortMode.Date },
+                        onClick = { viewModel.setSortMode(RecordsSortMode.Date) },
                         modifier = modifier
                     )
                 }
@@ -87,7 +91,7 @@ fun DetailsScreen(
             RecordsSortMode.Price -> records.sortedByDescending { it.price }
         }
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1F)) {
 
             itemsIndexed(sortedRecords) { index, item ->
                 RecordCard(
@@ -97,6 +101,10 @@ fun DetailsScreen(
                     editRecordDialog = item
                 }
             }
+        }
+
+        if (!isHideAds) {
+            AdsBanner(mode = AdsMode.Banner)
         }
     }
 

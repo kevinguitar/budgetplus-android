@@ -17,10 +17,7 @@ import com.kevingt.moneybook.utils.await
 import com.kevingt.moneybook.utils.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -74,10 +71,10 @@ class BookRepoImpl @Inject constructor(
     private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
 
     private val _bookState = MutableStateFlow(currentBook)
-    override val bookState: StateFlow<Book?> get() = _bookState
+    override val bookState: StateFlow<Book?> = _bookState.asStateFlow()
 
     private val _booksState = MutableStateFlow<List<Book>?>(null)
-    override val booksState: StateFlow<List<Book>?> get() = _booksState
+    override val booksState: StateFlow<List<Book>?> = _booksState.asStateFlow()
 
     override val currentBookId: String? get() = bookState.value?.id
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }

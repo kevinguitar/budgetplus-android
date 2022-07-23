@@ -6,8 +6,10 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevingt.moneybook.auth.AuthManager
 import com.kevingt.moneybook.book.bubble.vm.BubbleDest
 import com.kevingt.moneybook.book.bubble.vm.BubbleRepo
+import com.kevingt.moneybook.book.details.RecordsSortMode
 import com.kevingt.moneybook.data.local.PreferenceHolder
 import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val bubbleRepo: BubbleRepo,
+    authManager: AuthManager,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
@@ -30,9 +33,15 @@ class OverviewViewModel @Inject constructor(
     private val _type = MutableStateFlow(typeCache)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private var cachePeriod by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
-    private val _timePeriod = MutableStateFlow(cachePeriod)
+    private var periodCache by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
+    private val _timePeriod = MutableStateFlow(periodCache)
     val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
+
+    private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
+    private val _sortMode = MutableStateFlow(sortModeCache)
+    val sortMode: StateFlow<RecordsSortMode> = _sortMode.asStateFlow()
+
+    val isHideAds = authManager.isHideAds
 
     private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
@@ -83,8 +92,13 @@ class OverviewViewModel @Inject constructor(
 
     fun setTimePeriod(timePeriod: TimePeriod) {
         _timePeriod.value = timePeriod
-        cachePeriod = timePeriod
+        periodCache = timePeriod
         observeRecords()
+    }
+
+    fun setSortMode(sortMode: RecordsSortMode) {
+        _sortMode.value = sortMode
+        sortModeCache = sortMode
     }
 
     fun highlightSortingButton(dest: BubbleDest) {

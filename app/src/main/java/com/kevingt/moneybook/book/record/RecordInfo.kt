@@ -17,6 +17,8 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.AddDest
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.data.remote.RecordType
+import com.kevingt.moneybook.monetize.AdsBanner
+import com.kevingt.moneybook.monetize.AdsMode
 import com.kevingt.moneybook.ui.*
 import com.kevingt.moneybook.utils.longFormatted
 import com.kevingt.moneybook.utils.rippleClick
@@ -30,6 +32,7 @@ fun RecordInfo(navController: NavController) {
     val date by viewModel.date.collectAsState()
     val name by viewModel.note.collectAsState()
     val category by viewModel.category.collectAsState()
+    val isHideAds by viewModel.isHideAds.collectAsState()
 
     var showDatePicker by remember { mutableStateOf(false) }
 
@@ -87,7 +90,9 @@ fun RecordInfo(navController: NavController) {
 
         RecordButton(viewModel = viewModel)
 
-        AdsBanner()
+        if (!isHideAds) {
+            AdsBanner(mode = AdsMode.Adaptive)
+        }
     }
 
     if (showDatePicker) {

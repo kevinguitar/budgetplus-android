@@ -40,8 +40,7 @@ fun TimePeriodSelector() {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
     ) {
 
         Icon(
@@ -57,9 +56,7 @@ fun TimePeriodSelector() {
                 .rippleClick { showFromDatePicker = true }
         )
 
-        AppText(
-            text = stringResource(id = R.string.date_to),
-        )
+        AppText(text = stringResource(id = R.string.date_to))
 
         AppText(
             text = untilDate.longFormatted,
@@ -68,9 +65,8 @@ fun TimePeriodSelector() {
     }
 
     FlowRow(
-        mainAxisSize = SizeMode.Expand,
+        mainAxisSize = SizeMode.Wrap,
         mainAxisSpacing = 12.dp,
-        modifier = Modifier.padding(16.dp)
     ) {
         setOf(
             TimePeriod.Today,

@@ -5,8 +5,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import com.kevingt.moneybook.book.record.CalculatorAction
 import com.kevingt.moneybook.book.record.CalculatorButton
-import com.kevingt.moneybook.utils.priceText
 import com.kevingt.moneybook.utils.roundUpPrice
+import com.kevingt.moneybook.utils.roundUpPriceText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,7 +66,7 @@ class CalculatorViewModel @Inject constructor(
         val rawResult: Double = expression.evaluate()
 
         _price.value = rawResult.roundUpPrice
-        _priceText.value = rawResult.priceText
+        _priceText.value = rawResult.roundUpPriceText
     }
 
     fun clearPrice() {

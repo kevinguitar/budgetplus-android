@@ -15,7 +15,6 @@ import com.kevingt.moneybook.data.remote.BookRepo
 import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordType
 import com.kevingt.moneybook.utils.mapState
-import com.kevingt.moneybook.utils.priceText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -28,6 +27,8 @@ class OverviewViewModel @Inject constructor(
     authManager: AuthManager,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
+
+    val bookName = bookRepo.bookState.mapState { it?.name }
 
     private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
     private val _type = MutableStateFlow(typeCache)
@@ -51,32 +52,16 @@ class OverviewViewModel @Inject constructor(
     private val records = MutableStateFlow<Sequence<Record>?>(null)
 
     val totalPrice = records.mapState { record ->
-        record.orEmpty().sumOf { it.price }.priceText
+        record.orEmpty().sumOf { it.price }
     }
 
-    val recordGroups = combine(
-        records.filterNotNull(),
-        bookRepo.bookState.filterNotNull(),
-        type,
-    ) { records, book, type ->
-        val recordsGroup = records
+    val recordGroups = records.mapState { records ->
+        records.orEmpty()
             .groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
             .toMap()
-            .toMutableMap()
-
-        // Put the empty categories at the end
-        when (type) {
-            RecordType.Expense -> book.expenseCategories
-            RecordType.Income -> book.incomeCategories
-        }.forEach { category ->
-            recordsGroup.putIfAbsent(category, emptyList())
-        }
-
-        recordsGroup.toMap()
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
     init {
         bookRepo.bookState

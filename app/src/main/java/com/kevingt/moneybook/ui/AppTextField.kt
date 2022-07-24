@@ -120,7 +120,7 @@ private fun AppTextFieldInternal(
 
         AppText(
             text = title,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             fontSize = fontSize,
         )
 

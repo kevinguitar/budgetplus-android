@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.CalculatorViewModel
 import com.kevingt.moneybook.ui.*
@@ -57,7 +56,7 @@ fun Calculator(viewModel: CalculatorViewModel) {
             AppTextField(
                 value = priceText,
                 onValueChange = {},
-                fontSize = 20.sp,
+                fontSize = FontSize.HeaderSmall,
                 enabled = false,
                 title = "$",
                 modifier = Modifier.weight(1F)
@@ -112,6 +111,8 @@ fun Calculator(viewModel: CalculatorViewModel) {
     }
 }
 
+private val calculatorBtnSize = 52.dp
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CalculatorBtn(
@@ -121,7 +122,7 @@ private fun CalculatorBtn(
 
     Surface(
         onClick = onClick,
-        modifier = Modifier.size(48.dp),
+        modifier = Modifier.size(calculatorBtnSize),
         shape = CircleShape,
         color = LocalAppColors.current.primary
     ) {
@@ -131,7 +132,7 @@ private fun CalculatorBtn(
             AppText(
                 text = text,
                 textAlign = TextAlign.Center,
-                fontSize = FontSize.Header,
+                fontSize = FontSize.HeaderLarge,
                 fontWeight = FontWeight.Bold,
                 color = LocalAppColors.current.light
             )
@@ -149,7 +150,7 @@ private fun CalculatorActionBtn(
     Surface(
         onClick = onClick,
         modifier = Modifier
-            .width(48.dp)
+            .width(calculatorBtnSize)
             .fillMaxHeight(),
         shape = RoundedCornerShape(50),
         color = LocalAppColors.current.dark

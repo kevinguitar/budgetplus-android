@@ -173,8 +173,8 @@ fun RecordCard(
 
             AppText(
                 text = item.price.dollar,
-                fontSize = FontSize.Large,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = FontSize.SemiLarge,
+                fontWeight = FontWeight.Medium,
             )
         }
 

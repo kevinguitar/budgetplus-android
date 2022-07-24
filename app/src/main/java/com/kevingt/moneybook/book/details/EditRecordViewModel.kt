@@ -6,8 +6,8 @@ import com.kevingt.moneybook.data.remote.Record
 import com.kevingt.moneybook.data.remote.RecordRepo
 import com.kevingt.moneybook.utils.Toaster
 import com.kevingt.moneybook.utils.mapState
-import com.kevingt.moneybook.utils.priceText
 import com.kevingt.moneybook.utils.roundUpPrice
+import com.kevingt.moneybook.utils.roundUpPriceText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +29,7 @@ class EditRecordViewModel @Inject constructor(
 
     fun setRecord(record: Record) {
         editRecord.value = record
-        _priceText.value = record.price.priceText
+        _priceText.value = record.price.roundUpPriceText
     }
 
     fun setName(name: String) {

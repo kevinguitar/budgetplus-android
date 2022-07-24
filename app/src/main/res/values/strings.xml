@@ -62,13 +62,13 @@
     <string name="menu_rename_user">Rename User</string>
     <string name="menu_rename_book">Rename Book</string>
     <string name="menu_view_members">View Members</string>
-    <string name="menu_create_book">Create New Book</string>
+    <string name="menu_create_book">Create a new book</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_confirm_delete">Are you sure you want to delete %s?</string>
     <string name="menu_confirm_leave">Are you sure you want to leave %s?</string>
 
     <!-- Overview -->
-    <string name="overview_title">Overview</string>
+    <string name="overview_title">%s\'s Overview</string>
     <string name="overview_total_price">Total $%s</string>
     <string name="overview_period_day">Today</string>
     <string name="overview_period_week">Week</string>

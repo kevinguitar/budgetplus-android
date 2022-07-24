@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
-//TODO: Use surface here
 @Composable
 fun AppButton(
     modifier: Modifier = Modifier,

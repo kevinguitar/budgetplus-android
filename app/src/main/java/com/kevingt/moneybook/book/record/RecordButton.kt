@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -18,6 +19,7 @@ import com.kevingt.moneybook.R
 import com.kevingt.moneybook.book.record.vm.RecordViewModel
 import com.kevingt.moneybook.ui.AppButton
 import com.kevingt.moneybook.ui.AppText
+import com.kevingt.moneybook.ui.FontSize
 import com.kevingt.moneybook.ui.LocalAppColors
 
 @Composable
@@ -63,7 +65,9 @@ fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
 
             AppText(
                 text = stringResource(id = R.string.cta_add),
-                color = LocalAppColors.current.light
+                color = LocalAppColors.current.light,
+                fontSize = FontSize.SemiLarge,
+                fontWeight = FontWeight.Medium
             )
         }
     }

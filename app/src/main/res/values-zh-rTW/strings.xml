@@ -69,7 +69,7 @@
     <string name="menu_confirm_leave">確認離開 %s?</string>
 
     <!-- Overview -->
-    <string name="overview_title">總覽</string>
+    <string name="overview_title">%s總覽</string>
     <string name="overview_total_price">合計 $%s</string>
     <string name="overview_period_day">今日</string>
     <string name="overview_period_week">本週</string>

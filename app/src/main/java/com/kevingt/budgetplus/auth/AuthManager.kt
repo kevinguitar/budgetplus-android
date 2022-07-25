@@ -37,7 +37,7 @@ interface AuthManager {
 @Singleton
 class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
-    @AppScope appScope: CoroutineScope
+    @AppScope private val appScope: CoroutineScope
 ) : AuthManager {
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
@@ -52,9 +52,7 @@ class AuthManagerImpl @Inject constructor(
 
     init {
         Firebase.auth.addAuthStateListener { auth ->
-            appScope.launch {
-                updateUser(auth.currentUser?.toUser())
-            }
+            updateUser(auth.currentUser?.toUser())
         }
     }
 
@@ -86,26 +84,26 @@ class AuthManagerImpl @Inject constructor(
         photoUrl = photoUrl?.toString()
     )
 
-    private suspend fun updateUser(user: User?) {
-        if (user == null) {
-            _userState.value = null
-            currentUser = null
-            return
+    private fun updateUser(user: User?) {
+        _userState.value = user
+        currentUser = user
+        user ?: return
+
+        appScope.launch {
+            // Get the latest remote user from the server
+            val remoteUser = usersDb.document(user.id)
+                .get(Source.SERVER)
+                .requireValue<User>()
+
+            // Merge exclusive fields to the Firebase auth user
+            val mergedUser = user.copy(
+                premium = remoteUser.premium,
+                hideAds = remoteUser.hideAds
+            )
+
+            _userState.value = mergedUser
+            currentUser = mergedUser
+            usersDb.document(user.id).set(mergedUser)
         }
-
-        // Get the latest remote user from the server
-        val remoteUser = usersDb.document(user.id)
-            .get(Source.SERVER)
-            .requireValue<User>()
-
-        // Merge exclusive fields to the Firebase auth user
-        val mergedUser = user.copy(
-            premium = remoteUser.premium,
-            hideAds = remoteUser.hideAds
-        )
-
-        _userState.value = mergedUser
-        currentUser = mergedUser
-        usersDb.document(user.id).set(mergedUser)
     }
 }

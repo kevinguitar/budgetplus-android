@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Co-spending Tracker</string>
+    <string name="app_name">Budget+</string>
 
     <!-- Auth -->
     <string name="auth_facebook">Facebook</string>

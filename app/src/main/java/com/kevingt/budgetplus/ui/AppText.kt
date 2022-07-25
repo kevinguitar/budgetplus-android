@@ -1,0 +1,36 @@
+package com.kevingt.budgetplus.ui
+
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+
+@Composable
+fun AppText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = LocalAppColors.current.dark,
+    fontSize: TextUnit = FontSize.Normal,
+    fontWeight: FontWeight? = null,
+    textAlign: TextAlign? = null,
+    singleLine: Boolean = false,
+) {
+
+    BasicText(
+        text = text,
+        modifier = modifier,
+        style = TextStyle(
+            color = color,
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+            textAlign = textAlign
+        ),
+        overflow = TextOverflow.Ellipsis,
+        maxLines = if (singleLine) 1 else Int.MAX_VALUE,
+    )
+}

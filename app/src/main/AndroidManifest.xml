@@ -11,7 +11,7 @@
     </queries>
 
     <application
-        android:name=".MoneyBookApp"
+        android:name=".BudgetPlusApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

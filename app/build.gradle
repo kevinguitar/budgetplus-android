@@ -15,11 +15,11 @@ ext {
 }
 
 android {
-    namespace 'com.kevingt.moneybook'
+    namespace 'com.kevingt.budgetplus'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.kevingt.moneybook"
+        applicationId "com.kevingt.budgetplus"
         minSdk 23
         targetSdk 32
         versionCode 1
@@ -32,9 +32,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

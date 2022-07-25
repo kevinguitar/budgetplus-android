@@ -8,15 +8,19 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:919948371655:android:e2433c7523792891bd40e2",
+        "mobilesdk_app_id": "1:919948371655:android:f7264939aed36511bd40e2",
         "android_client_info": {
-          "package_name": "com.kevingt.moneybook.debug"
+          "package_name": "com.kevingt.budgetplus"
         }
       },
       "oauth_client": [
         {
-          "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "919948371655-u3sfoaq15j6qs6d7atn6puqrf7bcfpiq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevingt.budgetplus",
+            "certificate_hash": "108d46d887ddd555c99f7fb09906b2ca223717f9"
+          }
         }
       ],
       "api_key": [

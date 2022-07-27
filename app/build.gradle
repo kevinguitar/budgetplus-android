@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 ext {
@@ -106,9 +107,11 @@ dependencies {
 
     // Firebase
     // https://firebase.google.com/support/release-notes/android
-    implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // 3rd party auth
     implementation 'com.google.android.gms:play-services-auth:20.2.0'

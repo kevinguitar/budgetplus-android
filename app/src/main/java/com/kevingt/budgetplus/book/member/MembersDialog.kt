@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,10 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.kevingt.budgetplus.R
 import com.kevingt.budgetplus.data.remote.User
-import com.kevingt.budgetplus.ui.AppDialog
-import com.kevingt.budgetplus.ui.AppText
-import com.kevingt.budgetplus.ui.AppTheme
-import com.kevingt.budgetplus.ui.ConfirmDialog
+import com.kevingt.budgetplus.ui.*
 
 @Composable
 fun MembersDialog(
@@ -46,13 +44,21 @@ fun MembersDialog(
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.size(width = 280.dp, height = 400.dp)
         ) {
 
-            AppText(text = stringResource(id = R.string.members_title))
+            AppText(
+                text = stringResource(id = R.string.members_title),
+                fontSize = FontSize.Large,
+                fontWeight = FontWeight.SemiBold
+            )
 
             if (members.isEmpty()) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    color = LocalAppColors.current.dark,
+                    modifier = Modifier.padding(top = 32.dp)
+                )
             } else {
                 LazyColumn {
                     items(members) { member ->

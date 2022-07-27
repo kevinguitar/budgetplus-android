@@ -105,9 +105,11 @@ fun EditCategoryDialog(
 
 @Preview
 @Composable
-private fun EditCategoryDialog() = EditCategoryDialog(
-    mode = CategoryEditMode.Rename("My Awesome Category"),
-    onConfirm = {},
-    onDismiss = {},
-    onDelete = {}
-)
+private fun EditCategoryDialog() = AppTheme {
+    EditCategoryDialog(
+        mode = CategoryEditMode.Rename("My Awesome Category"),
+        onConfirm = {},
+        onDismiss = {},
+        onDelete = {}
+    )
+}

@@ -84,7 +84,10 @@ fun RecordInfo(navController: NavController) {
 
         Calculator(viewModel = viewModel.calculator)
 
-        RecordButton(viewModel = viewModel)
+        RecordButton(
+            viewModel = viewModel,
+            applyBottomPadding = isHideAds
+        )
 
         if (!isHideAds) {
             AdsBanner(mode = AdsMode.Adaptive)

@@ -1,6 +1,7 @@
 package com.kevingt.budgetplus.book.record
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
@@ -21,9 +22,13 @@ import com.kevingt.budgetplus.ui.AppButton
 import com.kevingt.budgetplus.ui.AppText
 import com.kevingt.budgetplus.ui.FontSize
 import com.kevingt.budgetplus.ui.LocalAppColors
+import com.kevingt.budgetplus.utils.thenIf
 
 @Composable
-fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
+fun ColumnScope.RecordButton(
+    viewModel: RecordViewModel,
+    applyBottomPadding: Boolean
+) {
 
     var showCheckAnimation by remember { mutableStateOf(false) }
     val checkAnimation by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_check))
@@ -43,6 +48,7 @@ fun ColumnScope.RecordButton(viewModel: RecordViewModel) {
     AppButton(
         modifier = Modifier
             .align(Alignment.CenterHorizontally)
+            .thenIf(applyBottomPadding) { Modifier.padding(bottom = 16.dp) }
             .size(width = 120.dp, height = 48.dp),
         shape = CircleShape,
         onClick = {

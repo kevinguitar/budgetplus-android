@@ -23,6 +23,7 @@ fun OverviewScreen(navController: NavController) {
 
     val bookName by viewModel.bookName.collectAsState()
     val totalPrice by viewModel.totalPrice.collectAsState()
+    val isHideAds by viewModel.isHideAds.collectAsState()
     val recordGroups by viewModel.recordGroups.collectAsState()
     val keys = recordGroups.keys.toList()
 
@@ -56,6 +57,8 @@ fun OverviewScreen(navController: NavController) {
             }
         }
 
-        AdsBanner(mode = AdsMode.Banner)
+        if (!isHideAds) {
+            AdsBanner(mode = AdsMode.Banner)
+        }
     }
 }

@@ -1,13 +1,12 @@
 package com.kevingt.budgetplus.data.remote
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 enum class RecordType {
     Expense, Income
 }
 
-@Parcelize
+@Serializable
 data class Record(
     val id: String = "",
     val type: RecordType = RecordType.Expense,
@@ -16,4 +15,4 @@ data class Record(
     val name: String = "",
     val price: Double = 0.0,
     val author: Author? = null
-) : Parcelable
+)

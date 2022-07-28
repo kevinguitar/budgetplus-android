@@ -1,9 +1,8 @@
 package com.kevingt.budgetplus.data.remote
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class Book(
     val id: String = "",
     val name: String = "",
@@ -13,4 +12,4 @@ data class Book(
     val expenseCategories: List<String> = emptyList(),
     val incomeCategories: List<String> = emptyList(),
     val archived: Boolean = false
-) : Parcelable
+)

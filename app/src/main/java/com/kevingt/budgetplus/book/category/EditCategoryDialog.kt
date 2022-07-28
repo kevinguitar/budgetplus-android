@@ -1,6 +1,5 @@
 package com.kevingt.budgetplus.book.category
 
-import android.os.Parcelable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.kevingt.budgetplus.R
 import com.kevingt.budgetplus.ui.*
 import kotlinx.coroutines.delay
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
-sealed class CategoryEditMode : Parcelable {
+@Serializable
+sealed class CategoryEditMode {
 
     object Add : CategoryEditMode()
 

@@ -1,8 +1,6 @@
 package com.kevingt.budgetplus
 
 import android.app.Application
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -13,6 +11,7 @@ class BudgetPlusApp : Application() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
-        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        //TODO: Disable crash report for debug builds
+        //Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

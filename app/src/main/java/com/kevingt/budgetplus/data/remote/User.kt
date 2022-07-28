@@ -1,9 +1,8 @@
 package com.kevingt.budgetplus.data.remote
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class User(
     val id: String = "",
     val name: String? = null,
@@ -11,12 +10,12 @@ data class User(
     val photoUrl: String? = null,
     val premium: Boolean? = false,
     val hideAds: Boolean? = false
-) : Parcelable
+)
 
-@Parcelize
+@Serializable
 data class Author(
     val id: String = "",
     val name: String? = null,
-) : Parcelable
+)
 
 fun User.toAuthor() = Author(id = id, name = name)

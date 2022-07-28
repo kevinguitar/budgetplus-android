@@ -86,9 +86,13 @@ class AuthManagerImpl @Inject constructor(
     )
 
     private fun updateUser(user: User?) {
-        _userState.value = user
-        currentUser = user
-        user ?: return
+        val userWithExclusiveFields = user?.copy(
+            premium = currentUser?.premium,
+            hideAds = currentUser?.hideAds
+        )
+        _userState.value = userWithExclusiveFields
+        currentUser = userWithExclusiveFields
+        userWithExclusiveFields ?: return
 
         appScope.launch {
             try {
@@ -98,7 +102,7 @@ class AuthManagerImpl @Inject constructor(
                     .requireValue<User>()
 
                 // Merge exclusive fields to the Firebase auth user
-                val mergedUser = user.copy(
+                val mergedUser = userWithExclusiveFields.copy(
                     premium = remoteUser.premium,
                     hideAds = remoteUser.hideAds
                 )

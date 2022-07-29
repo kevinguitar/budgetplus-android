@@ -4,12 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.kevingt.budgetplus.auth.AuthManager
 import com.kevingt.budgetplus.auth.AuthManagerImpl
-import com.kevingt.budgetplus.book.overview.vm.TimePeriod
-import com.kevingt.budgetplus.book.overview.vm.TimePeriodTypeAdapter
 import com.kevingt.budgetplus.data.local.AppPreference
 import com.kevingt.budgetplus.data.local.Preference
 import com.kevingt.budgetplus.data.remote.BookRepo
@@ -54,12 +50,6 @@ interface GlobalModule {
         @AppScope
         @Singleton
         fun provideAppCoroutineScope(): CoroutineScope = AppCoroutineScope
-
-        @Provides
-        @Singleton
-        fun provideGson(): Gson = GsonBuilder()
-            .registerTypeHierarchyAdapter(TimePeriod::class.java, TimePeriodTypeAdapter())
-            .create()
 
         @Provides
         fun provideVibrator(@ApplicationContext context: Context): Vibrator {

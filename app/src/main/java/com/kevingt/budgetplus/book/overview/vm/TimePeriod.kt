@@ -1,12 +1,16 @@
 package com.kevingt.budgetplus.book.overview.vm
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
+@Serializable
 sealed class TimePeriod {
 
     abstract val from: LocalDate
     abstract val until: LocalDate
 
+    @Serializable
     object Today : TimePeriod() {
 
         private val now get() = LocalDate.now()
@@ -15,6 +19,7 @@ sealed class TimePeriod {
         override val until: LocalDate get() = now
     }
 
+    @Serializable
     object Week : TimePeriod() {
 
         private val now get() = LocalDate.now()
@@ -24,6 +29,7 @@ sealed class TimePeriod {
         override val until: LocalDate get() = now.plusDays((7 - dayOfWeek).toLong())
     }
 
+    @Serializable
     object Month : TimePeriod() {
 
         private val now get() = LocalDate.now()
@@ -33,6 +39,7 @@ sealed class TimePeriod {
         override val until: LocalDate get() = now.withDayOfMonth(monthDays)
     }
 
+    @Serializable
     object LastMonth : TimePeriod() {
 
         private val now get() = LocalDate.now()
@@ -52,9 +59,10 @@ sealed class TimePeriod {
                 .withDayOfMonth(monthDays)
     }
 
+    @Serializable
     data class Custom(
-        override val from: LocalDate,
-        override val until: LocalDate
+        @Contextual override val from: LocalDate,
+        @Contextual override val until: LocalDate
     ) : TimePeriod() {
 
         init {

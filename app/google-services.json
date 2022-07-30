@@ -15,12 +15,24 @@
       },
       "oauth_client": [
         {
+          "client_id": "919948371655-pbldqpf5faqc3i8mhpqg18aa6a9gtjbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevingt.budgetplus",
+            "certificate_hash": "004239a8341f4ccca5a2d989d6b2711e59c101ec"
+          }
+        },
+        {
           "client_id": "919948371655-u3sfoaq15j6qs6d7atn6puqrf7bcfpiq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.kevingt.budgetplus",
             "certificate_hash": "108d46d887ddd555c99f7fb09906b2ca223717f9"
           }
+        },
+        {
+          "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -37,7 +49,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-1715595826940818~8600970513"
     }
   ],
   "configuration_version": "1"

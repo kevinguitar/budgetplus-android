@@ -19,7 +19,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.kevingt.budgetplus.R
 import com.kevingt.budgetplus.book.overview.vm.OverviewViewModel
-import com.kevingt.budgetplus.book.overview.vm.TimePeriod
+import com.kevingt.budgetplus.data.remote.TimePeriod
 import com.kevingt.budgetplus.ui.AppText
 import com.kevingt.budgetplus.ui.DatePickerDialog
 import com.kevingt.budgetplus.ui.LocalAppColors

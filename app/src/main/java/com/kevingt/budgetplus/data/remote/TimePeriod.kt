@@ -1,4 +1,4 @@
-package com.kevingt.budgetplus.book.overview.vm
+package com.kevingt.budgetplus.data.remote
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable

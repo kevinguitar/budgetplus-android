@@ -1,11 +1,14 @@
 package com.kevingt.budgetplus.book.overview
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +21,7 @@ import com.kevingt.budgetplus.ui.AppText
 import com.kevingt.budgetplus.ui.AppTheme
 import com.kevingt.budgetplus.ui.FontSize
 import com.kevingt.budgetplus.ui.LocalAppColors
+import com.kevingt.budgetplus.utils.darken
 import com.kevingt.budgetplus.utils.dollar
 import com.kevingt.budgetplus.utils.rippleClick
 import com.kevingt.budgetplus.utils.roundUpPercentageText
@@ -33,7 +37,7 @@ fun OverviewGroup(
 ) {
 
     val sum = records.sumOf { it.price }
-    val percentage = sum * 100 / totalPrice
+    val percentage = sum / totalPrice
 
     Box(
         modifier = Modifier
@@ -47,11 +51,32 @@ fun OverviewGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Box(
+            BoxWithConstraints(
                 modifier = Modifier
                     .weight(1F)
                     .padding(vertical = 16.dp)
             ) {
+
+                val baseProgress = 24.dp
+                val progress = baseProgress + (maxWidth - baseProgress).times(percentage.toFloat())
+                val width by animateDpAsState(
+                    targetValue = progress,
+                    animationSpec = tween(durationMillis = 500)
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .width(width)
+                        .height(24.dp)
+                        .align(Alignment.CenterStart)
+                        .background(
+                            color = color.copy(alpha = 0.7F),
+                            shape = RoundedCornerShape(
+                                topEndPercent = 50,
+                                bottomEndPercent = 50
+                            )
+                        )
+                )
 
                 AppText(
                     text = category,
@@ -66,30 +91,16 @@ fun OverviewGroup(
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterEnd)
                 )
-
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth((percentage / 100).toFloat())
-                        .height(24.dp)
-                        .align(Alignment.CenterStart)
-                        .background(
-                            color = color.copy(alpha = 0.1F),
-                            shape = RoundedCornerShape(
-                                topEndPercent = 50,
-                                bottomEndPercent = 50
-                            )
-                        )
-                )
             }
 
             AppText(
-                text = "${percentage.roundUpPercentageText}%",
+                text = "${(percentage * 100).roundUpPercentageText}%",
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Small,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(
-                        color = color,
+                        color = color.darken(1.2F),
                         shape = CircleShape
                     )
                     .width(48.dp)
@@ -120,7 +131,7 @@ private fun OverviewGroup_Preview() = AppTheme {
             Record(price = 453.1),
         ),
         totalPrice = 1043.5,
-        color = Color.Red,
+        color = overviewColors[0],
         isLast = false,
         onClick = {}
     )

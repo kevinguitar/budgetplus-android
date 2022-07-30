@@ -35,8 +35,8 @@ fun OverviewScreen(navController: NavController) {
         LazyColumn(modifier = Modifier.weight(1F)) {
 
             items(
-                recordGroups.size + 1,
-                key = { index -> if (index == 0) "header" else keys[index - 1] }
+                count = recordGroups.size + 1,
+                key = { index -> if (index == 0) "header" else keys[index - 1] },
             ) { index ->
 
                 if (index == 0) {
@@ -47,7 +47,7 @@ fun OverviewScreen(navController: NavController) {
                         category = key,
                         records = recordGroups[key].orEmpty(),
                         totalPrice = totalPrice,
-                        color = overviewColors[index % overviewColors.size],
+                        color = overviewColors[(index - 1) % overviewColors.size],
                         isLast = index == recordGroups.size,
                         onClick = {
                             navController.navigate(route = "${HistoryDest.Details.route}/$key")

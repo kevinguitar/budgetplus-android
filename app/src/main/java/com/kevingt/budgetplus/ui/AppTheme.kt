@@ -20,11 +20,8 @@ fun AppTheme(content: @Composable () -> Unit) {
         dark = Color(0xFF7E8072)
     )
 
-    val customTypography = CustomTypography()
-
     CompositionLocalProvider(
         LocalAppColors provides customColors,
-        LocalAppTypography provides customTypography,
         content = content
     )
 }
@@ -54,8 +51,4 @@ val LocalAppColors = staticCompositionLocalOf {
         primaryDark = Color.Unspecified,
         dark = Color.Unspecified,
     )
-}
-
-val LocalAppTypography = staticCompositionLocalOf {
-    CustomTypography()
 }

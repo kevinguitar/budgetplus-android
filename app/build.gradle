@@ -135,7 +135,7 @@ dependencies {
 
     // 3rd party auth
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    implementation 'com.facebook.android:facebook-login:12.3.0'
+    implementation 'com.facebook.android:facebook-login:13.0.0'
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:21.1.0'

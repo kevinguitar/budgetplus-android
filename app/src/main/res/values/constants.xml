@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Facebook sdk-->
-    <string name="facebook_app_id" translatable="false">870843223714646</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb870843223714646</string>
-    <string name="facebook_client_token" translatable="false">520f3389ef9fb759aea83e2d44d17320</string>
+    <string name="facebook_app_id" translatable="false">1549206848815980</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1549206848815980</string>
+    <string name="facebook_client_token" translatable="false">bd84b82c9519471eeef74ef515bcb2df</string>
 
     <!-- Google sdk-->
     <string name="google_cloud_client_id" translatable="false">919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com</string>

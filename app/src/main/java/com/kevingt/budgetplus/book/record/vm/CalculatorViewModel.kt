@@ -24,6 +24,8 @@ class CalculatorViewModel @Inject constructor(
     val price: StateFlow<Double> = _price.asStateFlow()
 
     fun onInput(btn: CalculatorButton) {
+        vibrate()
+
         val currentPrice = priceText.value
         when (btn) {
             CalculatorButton.Plus, CalculatorButton.Minus,
@@ -41,16 +43,16 @@ class CalculatorViewModel @Inject constructor(
                 currentPrice + btn.text
             }
         }
-        vibrate()
     }
 
     fun onAction(action: CalculatorAction) {
+        vibrate()
+
         when (action) {
             CalculatorAction.Clear -> clearPrice()
             CalculatorAction.Equal -> evaluate()
             CalculatorAction.Delete -> delete()
         }
-        vibrate()
     }
 
     fun evaluate() {
@@ -85,13 +87,8 @@ class CalculatorViewModel @Inject constructor(
     private val vibrationDuration get() = 2L
 
     private fun vibrate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator?.vibrate(
-                VibrationEffect.createOneShot(
-                    vibrationDuration,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
         } else {
             @Suppress("DEPRECATION")
             vibrator?.vibrate(vibrationDuration)

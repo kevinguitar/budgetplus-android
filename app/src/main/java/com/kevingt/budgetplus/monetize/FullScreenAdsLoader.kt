@@ -36,7 +36,7 @@ class FullScreenAdsLoader @Inject constructor(
     private fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
-            /* adUnitId = */ "ca-app-pub-3940256099942544/1033173712",
+            /* adUnitId = */ "ca-app-pub-1715595826940818/8759100223",
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {

@@ -36,7 +36,7 @@ fun AdsBanner(mode: AdsMode) {
                             )
                         }
                     )
-                    adUnitId = "ca-app-pub-3940256099942544/6300978111"
+                    adUnitId = "ca-app-pub-1715595826940818/5969285355"
                     loadAd(AdRequest.Builder().build())
                 }
             }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="admob_application_id" translatable="false">ca-app-pub-1715595826940818~8600970513</string>
-    <string name="admob_banner_id" translatable="false">ca-app-pub-1715595826940818/5969285355</string>
-    <string name="admob_interstitial_id" translatable="false">ca-app-pub-1715595826940818/8759100223</string>
+    <string name="admob_application_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admob_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+
+<!--    <string name="admob_application_id" translatable="false">ca-app-pub-1715595826940818~8600970513</string>-->
+<!--    <string name="admob_banner_id" translatable="false">ca-app-pub-1715595826940818/5969285355</string>-->
+<!--    <string name="admob_interstitial_id" translatable="false">ca-app-pub-1715595826940818/8759100223</string>-->
 
 </resources>

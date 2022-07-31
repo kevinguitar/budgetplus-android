@@ -9,6 +9,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.kevingt.budgetplus.R
 import kotlin.math.roundToInt
 
 enum class AdsMode {
@@ -36,7 +37,7 @@ fun AdsBanner(mode: AdsMode) {
                             )
                         }
                     )
-                    adUnitId = "ca-app-pub-1715595826940818/5969285355"
+                    adUnitId = context.getString(R.string.admob_banner_id)
                     loadAd(AdRequest.Builder().build())
                 }
             }

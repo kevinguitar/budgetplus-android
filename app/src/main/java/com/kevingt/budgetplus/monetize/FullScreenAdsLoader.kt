@@ -7,6 +7,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.kevingt.budgetplus.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
@@ -36,7 +37,7 @@ class FullScreenAdsLoader @Inject constructor(
     private fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
-            /* adUnitId = */ "ca-app-pub-1715595826940818/8759100223",
+            /* adUnitId = */ context.getString(R.string.admob_interstitial_id),
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {

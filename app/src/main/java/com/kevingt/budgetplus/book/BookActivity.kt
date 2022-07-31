@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.google.android.gms.ads.MobileAds
 import com.kevingt.budgetplus.auth.AuthActivity
 import com.kevingt.budgetplus.auth.AuthManager
 import com.kevingt.budgetplus.data.remote.BookRepo
@@ -40,8 +39,6 @@ class BookActivity : ComponentActivity() {
             startActivity(Intent(this, destination))
             finish()
         }
-
-        MobileAds.initialize(this)
 
         setContent {
             AppTheme {

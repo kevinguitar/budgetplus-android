@@ -16,11 +16,11 @@ ext {
 }
 
 android {
-    namespace 'com.kevingt.budgetplus'
+    namespace 'com.kevlina.budgetplus'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.kevingt.budgetplus"
+        applicationId "com.kevlina.budgetplus"
         minSdk 23
         targetSdk 32
         versionCode 1

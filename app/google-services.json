@@ -38,6 +38,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyCHaWG9WKberugWYccA1E1CZexAYBf6IEE"
+        },
+        {
+          "current_key": "AIzaSyARfCGlVb6UUiTB-JO3LDvMdy_nV1i7B3k"
         }
       ],
       "services": {
@@ -51,6 +54,54 @@
         }
       },
       "admob_app_id": "ca-app-pub-1715595826940818~8600970513"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919948371655:android:eaf3d1fbe464a5c8bd40e2",
+        "android_client_info": {
+          "package_name": "com.kevlina.budgetplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919948371655-8vn4dmvb73r0q7oc1can908jar2q661d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevlina.budgetplus",
+            "certificate_hash": "004239a8341f4ccca5a2d989d6b2711e59c101ec"
+          }
+        },
+        {
+          "client_id": "919948371655-e9uf5uprvbpvb70duf30u32219nerghd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevlina.budgetplus",
+            "certificate_hash": "108d46d887ddd555c99f7fb09906b2ca223717f9"
+          }
+        },
+        {
+          "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHaWG9WKberugWYccA1E1CZexAYBf6IEE"
+        },
+        {
+          "current_key": "AIzaSyARfCGlVb6UUiTB-JO3LDvMdy_nV1i7B3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

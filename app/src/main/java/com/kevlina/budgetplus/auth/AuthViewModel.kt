@@ -14,6 +14,8 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.tasks.Task
@@ -38,6 +40,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
+    private val gso: dagger.Lazy<GoogleSignInOptions>,
     @ActivityContext private val context: Context,
 ) {
 
@@ -47,6 +50,7 @@ class AuthViewModel @Inject constructor(
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val oneTapClient: SignInClient by lazy { Identity.getSignInClient(activity) }
     private val callbackManager by lazy { CallbackManager.Factory.create() }
+    private val googleSignInClient by lazy { GoogleSignIn.getClient(activity, gso.get()) }
 
     private val callback = object : FacebookCallback<LoginResult> {
         override fun onSuccess(result: LoginResult) {
@@ -74,14 +78,25 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        @Suppress("DEPRECATION")
+        activity.startActivityForResult(signInIntent, REQ_GOOGLE_SIGN_IN)
+    }
+
+    /**
+     *  If there are any accounts that were authorized before, launch the one-tap sign in dialog.
+     */
+    fun checkAuthorizedAccounts() {
         val request = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     .setServerClientId(context.getString(R.string.google_cloud_client_id))
-                    .setFilterByAuthorizedAccounts(false)
+                    .setFilterByAuthorizedAccounts(true)
                     .build()
             )
+            // Automatically sign in when exactly one credential is retrieved.
+            .setAutoSelectEnabled(true)
             .build()
 
         oneTapClient.beginSignIn(request)
@@ -96,19 +111,15 @@ class AuthViewModel @Inject constructor(
                     Timber.e("Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            .addOnFailureListener(activity) { e ->
-                // No saved credentials found. Launch the One Tap sign-up flow, or
-                // do nothing and continue presenting the signed-out UI.
-                toaster.showError(e)
-            }
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQ_ONE_TAP) {
-            try {
+        when (requestCode) {
+
+            REQ_ONE_TAP -> try {
                 val credential = oneTapClient.getSignInCredentialFromIntent(data)
                 val idToken = credential.googleIdToken
                 val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
@@ -120,6 +131,15 @@ class AuthViewModel @Inject constructor(
                 } else {
                     toaster.showError(e)
                 }
+            }
+
+            REQ_GOOGLE_SIGN_IN -> try {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                val firebaseCredential = GoogleAuthProvider.getCredential(task.result.idToken, null)
+                auth.signInWithCredential(firebaseCredential)
+                    .addOnCompleteListener(activity, ::onLoginCompleted)
+            } catch (e: ApiException) {
+                Timber.w(e)
             }
         }
     }
@@ -153,5 +173,6 @@ class AuthViewModel @Inject constructor(
 
     companion object {
         private const val REQ_ONE_TAP = 134
+        private const val REQ_GOOGLE_SIGN_IN = 135
     }
 }

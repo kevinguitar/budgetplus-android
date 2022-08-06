@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.book.menu.vm
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.auth.AuthActivity
@@ -69,7 +70,10 @@ class BookMenuViewModel @Inject constructor(
     fun logout() {
         authManager.logout()
 
-        val navInfo = NavigationInfo(destination = AuthActivity::class)
+        val navInfo = NavigationInfo(
+            destination = AuthActivity::class,
+            bundle = Bundle().apply { putBoolean(AuthActivity.ARG_ENABLE_ONE_TAP, false) }
+        )
         navigation.tryEmit(navInfo)
     }
 }

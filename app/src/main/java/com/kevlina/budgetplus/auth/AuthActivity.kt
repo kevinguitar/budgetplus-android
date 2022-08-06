@@ -16,6 +16,8 @@ class AuthActivity : ComponentActivity() {
     @Inject
     lateinit var viewModel: Lazy<AuthViewModel>
 
+    private val enableOneTap by lazy { intent.extras?.getBoolean(ARG_ENABLE_ONE_TAP) ?: true }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,6 +26,10 @@ class AuthActivity : ComponentActivity() {
                 AuthBinding(viewModel = viewModel.get())
             }
         }
+
+        if (enableOneTap) {
+            viewModel.get().checkAuthorizedAccounts()
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -31,5 +37,9 @@ class AuthActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.get().onActivityResult(requestCode, resultCode, data)
+    }
+
+    companion object {
+        const val ARG_ENABLE_ONE_TAP = "enable_one_tap"
     }
 }

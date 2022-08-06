@@ -16,7 +16,10 @@ fun NavigationFlow() = MutableSharedFlow<NavigationInfo>(
 
 fun Flow<NavigationInfo>.consumeEach(context: Context) =
     onEach { info ->
-        context.startActivity(Intent(context, info.destination.java))
+        val intent = Intent(context, info.destination.java)
+        intent.putExtras(info.bundle)
+        context.startActivity(intent)
+
         if (info.finishCurrent) {
             (context as Activity).finish()
         }

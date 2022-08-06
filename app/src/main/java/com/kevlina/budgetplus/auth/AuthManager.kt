@@ -1,5 +1,8 @@
 package com.kevlina.budgetplus.auth
 
+import android.content.Context
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -12,6 +15,7 @@ import com.kevlina.budgetplus.utils.AppScope
 import com.kevlina.budgetplus.utils.await
 import com.kevlina.budgetplus.utils.mapState
 import com.kevlina.budgetplus.utils.requireValue
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +42,9 @@ interface AuthManager {
 @Singleton
 class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
-    @AppScope private val appScope: CoroutineScope
+    private val gso: dagger.Lazy<GoogleSignInOptions>,
+    @AppScope private val appScope: CoroutineScope,
+    @ApplicationContext private val context: Context
 ) : AuthManager {
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
@@ -76,6 +82,7 @@ class AuthManagerImpl @Inject constructor(
 
     override fun logout() {
         Firebase.auth.signOut()
+        GoogleSignIn.getClient(context, gso.get()).signOut()
     }
 
     private fun FirebaseUser.toUser() = User(

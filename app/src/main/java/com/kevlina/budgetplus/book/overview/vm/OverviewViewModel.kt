@@ -35,9 +35,17 @@ class OverviewViewModel @Inject constructor(
     private val _type = MutableStateFlow(typeCache)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private var periodCache by preferenceHolder.bindObject<TimePeriod>(TimePeriod.Month)
-    private val _timePeriod = MutableStateFlow(periodCache)
-    val timePeriod: StateFlow<TimePeriod> = _timePeriod.asStateFlow()
+    // Cache the time period by book id
+    private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
+    private val timePeriodMap = MutableStateFlow(periodCache)
+
+    val timePeriod: StateFlow<TimePeriod> = combine(
+        timePeriodMap,
+        bookRepo.bookState.filterNotNull()
+    ) { periodMap, book ->
+        periodMap[book.id] ?: TimePeriod.Month
+    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), TimePeriod.Month)
 
     private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
     private val _sortMode = MutableStateFlow(sortModeCache)
@@ -77,8 +85,12 @@ class OverviewViewModel @Inject constructor(
     }
 
     fun setTimePeriod(timePeriod: TimePeriod) {
-        _timePeriod.value = timePeriod
-        periodCache = timePeriod
+        val bookId = bookRepo.currentBookId ?: return
+        val newMapping = periodCache.toMutableMap()
+            .apply { this[bookId] = timePeriod }
+
+        timePeriodMap.value = newMapping
+        periodCache = newMapping
         observeRecords()
     }
 

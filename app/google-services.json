@@ -80,6 +80,14 @@
           }
         },
         {
+          "client_id": "919948371655-vip5a87vjtcee7ks2l4jljbmkectc0lg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevlina.budgetplus",
+            "certificate_hash": "377c468ba4619c50efbd40768f12df11b4dab4ce"
+          }
+        },
+        {
           "client_id": "919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com",
           "client_type": 3
         }

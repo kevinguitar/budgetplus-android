@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -58,7 +59,7 @@ fun EditCategoryScreen(
 
     var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
     var isExitDialogShown by remember { mutableStateOf(false) }
-    var list by remember { mutableStateOf(originalCategories) }
+    var list by rememberSaveable { mutableStateOf(originalCategories) }
 
     val isListModified = originalCategories != list
     val listState = rememberLazyListState()

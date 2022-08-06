@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.utils
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
@@ -162,6 +163,7 @@ fun Modifier.dragContainer(dragDropState: DragDropState): Modifier {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyItemScope.DraggableItem(
     dragDropState: DragDropState,
@@ -184,8 +186,10 @@ fun LazyItemScope.DraggableItem(
             }
     } else {
         Modifier
+        // TODO: Follow up
         // Animation is still kinda buggy, it will animate on screen size changes.
-        // Modifier.animateItemPlacement()
+        // https://issuetracker.google.com/issues/235259330
+        Modifier.animateItemPlacement()
     }
     Box(
         modifier = modifier.then(draggingModifier)

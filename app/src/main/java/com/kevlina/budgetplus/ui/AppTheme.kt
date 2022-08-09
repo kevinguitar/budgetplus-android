@@ -5,8 +5,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
@@ -34,12 +32,6 @@ data class CustomColors(
     val primarySemiDark: Color,
     val primaryDark: Color,
     val dark: Color,
-)
-
-@Immutable
-data class CustomTypography(
-    val content: TextStyle = TextStyle(fontSize = 14.sp),
-    val title: TextStyle = TextStyle()
 )
 
 val LocalAppColors = staticCompositionLocalOf {

@@ -10,12 +10,10 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.data.remote.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.combineState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,9 +28,9 @@ class BookSelectorViewModel @Inject constructor(
     val book = bookRepo.bookState
     val books = bookRepo.booksState
 
-    val createBookBtnState: StateFlow<CreateBookBtnState> = combine(
-        authManager.userState,
-        bookRepo.booksState
+    val createBookBtnState: StateFlow<CreateBookBtnState> = authManager.userState.combineState(
+        other = bookRepo.booksState,
+        scope = viewModelScope
     ) { user, books ->
         val isPremium = user?.premium == true
         val size = books.orEmpty().size
@@ -41,8 +39,7 @@ class BookSelectorViewModel @Inject constructor(
             !isPremium && size >= FREE_BOOKS_LIMIT -> CreateBookBtnState.NeedPremium
             else -> CreateBookBtnState.Enabled
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CreateBookBtnState.Enabled)
-
+    }
 
     fun selectBook(book: Book) {
         bookRepo.selectBook(book)

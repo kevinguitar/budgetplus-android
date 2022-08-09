@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -39,13 +40,12 @@ class OverviewViewModel @Inject constructor(
     private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
     private val timePeriodMap = MutableStateFlow(periodCache)
 
-    val timePeriod: StateFlow<TimePeriod> = combine(
-        timePeriodMap,
-        bookRepo.bookState.filterNotNull()
+    val timePeriod: StateFlow<TimePeriod> = timePeriodMap.combineState(
+        other = bookRepo.bookState,
+        scope = viewModelScope
     ) { periodMap, book ->
-        periodMap[book.id] ?: TimePeriod.Month
+        book?.id?.let(periodMap::get) ?: TimePeriod.Month
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), TimePeriod.Month)
 
     private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
     private val _sortMode = MutableStateFlow(sortModeCache)
@@ -73,15 +73,13 @@ class OverviewViewModel @Inject constructor(
     }
 
     init {
-        bookRepo.bookState
-            .onEach { observeRecords() }
+        combine(timePeriod, type) { _, _ -> observeRecords() }
             .launchIn(viewModelScope)
     }
 
     fun setRecordType(type: RecordType) {
         _type.value = type
         typeCache = type
-        observeRecords()
     }
 
     fun setTimePeriod(timePeriod: TimePeriod) {
@@ -91,7 +89,6 @@ class OverviewViewModel @Inject constructor(
 
         timePeriodMap.value = newMapping
         periodCache = newMapping
-        observeRecords()
     }
 
     fun setSortMode(sortMode: RecordsSortMode) {
@@ -109,6 +106,7 @@ class OverviewViewModel @Inject constructor(
     private var recordsRegistration: ListenerRegistration? = null
 
     private fun observeRecords() {
+        Timber.d("OOO: Observe records")
         recordsRegistration?.remove()
         recordsRegistration = Firebase.firestore
             .collection("books")

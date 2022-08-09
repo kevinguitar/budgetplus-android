@@ -9,10 +9,8 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.combineState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,13 +23,12 @@ class BookMenuViewModel @Inject constructor(
 
     val navigation = NavigationFlow()
 
-    val isBookOwner = combine(
-        bookRepo.bookState,
-        authManager.userState
+    val isBookOwner = bookRepo.bookState.combineState(
+        other = authManager.userState,
+        scope = viewModelScope
     ) { book, user ->
         book != null && book.ownerId == user?.id
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val currentUsername get() = authManager.userState.value?.name
 

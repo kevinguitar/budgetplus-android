@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,14 +41,19 @@ fun Bubble() {
     val viewModel = hiltViewModel<BubbleViewModel>()
 
     val destination by viewModel.destination.collectAsState()
-    val dest = destination
+    var isBubbleVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = destination) {
+        isBubbleVisible = destination != null
+    }
 
     AnimatedVisibility(
-        visible = dest != null,
+        visible = isBubbleVisible,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
 
+        val dest = destination
         if (dest != null) {
             Box(
                 modifier = Modifier
@@ -58,7 +61,10 @@ fun Bubble() {
                     .clickable(
                         interactionSource = MutableInteractionSource(),
                         indication = null,
-                        onClick = viewModel::clearDest
+                        onClick = {
+                            isBubbleVisible = false
+                            viewModel.clearDest()
+                        }
                     )
             ) {
 

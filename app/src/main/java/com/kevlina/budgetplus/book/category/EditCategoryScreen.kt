@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.book.category
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -203,7 +204,8 @@ private fun CategoryCell(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = LocalAppColors.current.primaryLight,
+        color = LocalAppColors.current.light,
+        border = BorderStroke(1.dp, LocalAppColors.current.primaryLight),
         elevation = elevation,
         onClick = onClick
     ) {

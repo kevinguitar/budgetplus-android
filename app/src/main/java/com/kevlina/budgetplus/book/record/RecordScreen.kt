@@ -2,6 +2,8 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -24,7 +26,7 @@ fun RecordScreen(navController: NavController) {
 
     val context = LocalContext.current
 
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
 
         Box {
 
@@ -50,7 +52,16 @@ fun RecordScreen(navController: NavController) {
             )
         }
 
-        RecordInfo(navController = navController)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1F)
+        ) {
+
+            RecordInfo(navController = navController)
+
+            DoneAnimator()
+        }
 
     }
 }

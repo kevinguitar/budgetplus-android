@@ -13,9 +13,9 @@ import com.kevlina.budgetplus.data.remote.*
 import com.kevlina.budgetplus.monetize.FullScreenAdsLoader
 import com.kevlina.budgetplus.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -28,7 +28,8 @@ class RecordViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val toaster: Toaster,
-    preferenceHolder: PreferenceHolder
+    preferenceHolder: PreferenceHolder,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -42,6 +43,12 @@ class RecordViewModel @Inject constructor(
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
+
+    private val _recordEvent = MutableSharedFlow<Unit>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val recordEvent: Flow<Unit> = _recordEvent.asSharedFlow()
 
     val isHideAds = authManager.isHideAds
 
@@ -107,6 +114,8 @@ class RecordViewModel @Inject constructor(
         )
 
         recordRepo.createRecord(record)
+        _recordEvent.tryEmit(Unit)
+        toaster.showMessage(context.getString(R.string.record_created, category))
         recordCount += 1
         resetScreen()
         return true

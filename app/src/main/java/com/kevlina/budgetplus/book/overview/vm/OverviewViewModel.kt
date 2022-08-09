@@ -73,7 +73,11 @@ class OverviewViewModel @Inject constructor(
     }
 
     init {
-        combine(timePeriod, type) { _, _ -> observeRecords() }
+        combine(
+            timePeriod,
+            type,
+            bookRepo.bookState.mapNotNull { it?.id }
+        ) { _, _, _ -> observeRecords() }
             .launchIn(viewModelScope)
     }
 

@@ -8,6 +8,10 @@
     <string name="auth_google">Continue with Google</string>
     <string name="auth_success">Welcome, %s!</string>
 
+    <!-- Welcome -->
+    <string name="welcome_create_book_title">Create a new accounting book</string>
+    <string name="welcome_join_instruction">Wanna track expenses together?\nAsk your fellows to share the join link with you!</string>
+
     <!-- Record -->
     <string name="record_note">Note</string>
     <string name="record_note_placeholder_expense">What did you pay for?</string>
@@ -97,6 +101,7 @@
     <string name="cta_save">Save</string>
     <string name="cta_confirm">Confirm</string>
     <string name="cta_ok">OK</string>
+    <string name="cta_go">Go</string>
     <string name="cta_cancel">Cancel</string>
     <string name="cta_back">Back</string>
     <string name="cta_leave">Leave</string>
@@ -105,5 +110,6 @@
     <string name="date_to">to</string>
     <string name="username_title">User Name</string>
     <string name="book_name_title">Book Name</string>
+    <string name="book_name_placeholder">My accounting book</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
 </resources>

@@ -57,8 +57,7 @@
             android:name=".welcome.WelcomeActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
             android:hardwareAccelerated="false"
-            android:theme="@style/ComposeActivityStyle"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/ComposeActivityStyle" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

@@ -19,6 +19,7 @@ fun AppText(
     fontWeight: FontWeight? = null,
     textAlign: TextAlign? = null,
     singleLine: Boolean = false,
+    lineHeight: TextUnit = TextUnit.Unspecified,
 ) {
 
     BasicText(
@@ -28,7 +29,8 @@ fun AppText(
             color = color,
             fontSize = fontSize,
             fontWeight = fontWeight,
-            textAlign = textAlign
+            textAlign = textAlign,
+            lineHeight = lineHeight
         ),
         overflow = TextOverflow.Ellipsis,
         maxLines = if (singleLine) 1 else Int.MAX_VALUE,

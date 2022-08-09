@@ -9,6 +9,10 @@
     <string name="auth_google">Google</string>
     <string name="auth_success">歡迎, %s!</string>
 
+    <!-- Welcome -->
+    <string name="welcome_create_book_title">創建你的記帳本</string>
+    <string name="welcome_join_instruction">或是想共同記帳？\n快請家人朋友分享加入連結給你吧！</string>
+
     <!-- Record -->
     <string name="record_note">內容</string>
     <string name="record_note_placeholder_expense">花在哪裡？</string>
@@ -98,6 +102,7 @@
     <string name="cta_save">儲存</string>
     <string name="cta_confirm">確認</string>
     <string name="cta_ok">確認</string>
+    <string name="cta_go">Go</string>
     <string name="cta_cancel">取消</string>
     <string name="cta_back">返回</string>
     <string name="cta_leave">離開</string>
@@ -106,5 +111,6 @@
     <string name="date_to">至</string>
     <string name="username_title">使用者名稱</string>
     <string name="book_name_title">帳本名稱</string>
+    <string name="book_name_placeholder">我的記帳本</string>
     <string name="fallback_error_message">出錯了，請稍後再試</string>
 </resources>

@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 fun InputDialog(
     currentInput: String? = null,
     title: String,
+    placeholder: String? = null,
     buttonText: String,
     onButtonClicked: (String) -> Unit,
     onDismiss: () -> Unit,
@@ -45,6 +46,7 @@ fun InputDialog(
                 value = name,
                 onValueChange = { name = it },
                 title = title,
+                placeholder = placeholder,
                 modifier = Modifier.focusRequester(focusRequester)
             )
 

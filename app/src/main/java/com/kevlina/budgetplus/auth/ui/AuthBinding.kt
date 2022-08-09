@@ -61,6 +61,7 @@ fun AuthBinding(viewModel: AuthViewModel) {
         AppText(
             text = stringResource(id = R.string.auth_welcome_description),
             color = LocalAppColors.current.light,
+            modifier = Modifier.padding(vertical = 32.dp)
         )
 
         SocialSignInButton(

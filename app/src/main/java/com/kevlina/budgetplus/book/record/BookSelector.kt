@@ -123,6 +123,7 @@ fun BookSelector() {
         InputDialog(
             buttonText = stringResource(id = R.string.cta_create),
             title = stringResource(id = R.string.book_name_title),
+            placeholder = stringResource(id = R.string.book_name_placeholder),
             onButtonClicked = viewModel::createBook,
             onDismiss = { isBookCreationDialogShown = false }
         )

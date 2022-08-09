@@ -106,7 +106,6 @@ class OverviewViewModel @Inject constructor(
     private var recordsRegistration: ListenerRegistration? = null
 
     private fun observeRecords() {
-        Timber.d("OOO: Observe records")
         recordsRegistration?.remove()
         recordsRegistration = Firebase.firestore
             .collection("books")

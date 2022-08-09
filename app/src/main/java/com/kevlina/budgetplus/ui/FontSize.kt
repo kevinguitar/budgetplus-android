@@ -11,4 +11,5 @@ object FontSize {
     val HeaderSmall = 20.sp
     val Header = 22.sp
     val HeaderLarge = 24.sp
+    val HeaderXLarge = 32.sp
 }

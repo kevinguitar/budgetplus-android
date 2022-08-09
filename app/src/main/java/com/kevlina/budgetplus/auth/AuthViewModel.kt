@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.auth
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -117,9 +118,9 @@ class AuthViewModel @Inject constructor(
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
 
-        when (requestCode) {
+        when {
 
-            REQ_ONE_TAP -> try {
+            requestCode == REQ_ONE_TAP -> try {
                 val credential = oneTapClient.getSignInCredentialFromIntent(data)
                 val idToken = credential.googleIdToken
                 val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
@@ -133,7 +134,7 @@ class AuthViewModel @Inject constructor(
                 }
             }
 
-            REQ_GOOGLE_SIGN_IN -> try {
+            requestCode == REQ_GOOGLE_SIGN_IN && resultCode == RESULT_OK -> try {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val firebaseCredential = GoogleAuthProvider.getCredential(task.result.idToken, null)
                 auth.signInWithCredential(firebaseCredential)

@@ -2,8 +2,10 @@
     <string name="app_name">Budget+</string>
 
     <!-- Auth -->
-    <string name="auth_facebook">Facebook</string>
-    <string name="auth_google">Google</string>
+    <string name="auth_welcome_title">Welcome to Budget+</string>
+    <string name="auth_welcome_description">Simple, fast, budget sharing</string>
+    <string name="auth_facebook">Continue with Facebook</string>
+    <string name="auth_google">Continue with Google</string>
     <string name="auth_success">Welcome, %s!</string>
 
     <!-- Record -->

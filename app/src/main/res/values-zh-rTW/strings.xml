@@ -3,6 +3,8 @@
     <string name="app_name">極簡記帳</string>
 
     <!-- Auth -->
+    <string name="auth_welcome_title">歡迎加入極簡記帳</string>
+    <string name="auth_welcome_description">簡單、快速、共享</string>
     <string name="auth_facebook">Facebook</string>
     <string name="auth_google">Google</string>
     <string name="auth_success">歡迎, %s!</string>

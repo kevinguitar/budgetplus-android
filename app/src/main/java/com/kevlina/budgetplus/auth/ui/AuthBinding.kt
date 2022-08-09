@@ -1,20 +1,25 @@
 package com.kevlina.budgetplus.auth.ui
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthViewModel
 import com.kevlina.budgetplus.ui.AppButton
 import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
@@ -31,24 +36,79 @@ fun AuthBinding(viewModel: AuthViewModel) {
     }
 
     Column(
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(LocalAppColors.current.primary)
     ) {
-        AppButton(onClick = { viewModel.signInWithFacebook() }) {
-            AppText(
-                text = stringResource(id = R.string.auth_facebook),
-                color = LocalAppColors.current.light
+
+        CurvedAuthTitle()
+
+        Box(contentAlignment = Alignment.Center) {
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo_bg),
+                contentDescription = null
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = null
             )
         }
 
-        AppButton(onClick = { viewModel.signInWithGoogle() }) {
-            AppText(
-                text = stringResource(id = R.string.auth_google),
-                color = LocalAppColors.current.light
-            )
-        }
+        AppText(
+            text = stringResource(id = R.string.auth_welcome_description),
+            color = LocalAppColors.current.light,
+        )
+
+        SocialSignInButton(
+            onClick = viewModel::signInWithGoogle,
+            textRes = R.string.auth_google,
+            iconRes = R.drawable.ic_google
+        )
+
+        SocialSignInButton(
+            onClick = viewModel::signInWithFacebook,
+            textRes = R.string.auth_facebook,
+            iconRes = R.drawable.ic_facebook
+        )
+    }
+}
+
+@Composable
+private fun SocialSignInButton(
+    onClick: () -> Unit,
+    @StringRes textRes: Int,
+    @DrawableRes iconRes: Int,
+) {
+
+    AppButton(
+        modifier = Modifier
+            .padding(horizontal = 32.dp)
+            .fillMaxWidth()
+            .height(48.dp)
+            .padding(horizontal = 16.dp),
+        onClick = onClick,
+        color = LocalAppColors.current.light
+    ) {
+
+        Image(
+            painter = painterResource(id = iconRes),
+            contentDescription = null,
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 16.dp)
+        )
+
+        AppText(
+            text = stringResource(id = textRes),
+            color = LocalAppColors.current.dark,
+            fontSize = FontSize.SemiLarge,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1F)
+        )
     }
 }

@@ -56,6 +56,7 @@ class MembersViewModel @Inject constructor(
                     val users = authors
                         .map { id -> async { getUser(id) } }
                         .awaitAll()
+                        .filterNotNull()
                         .toMutableList()
 
                     // Move the owner to the first of the list
@@ -73,7 +74,12 @@ class MembersViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getUser(userId: String): User {
-        return usersDb.document(userId).get().requireValue()
+    private suspend fun getUser(userId: String): User? {
+        return try {
+            usersDb.document(userId).get().requireValue()
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
+        }
     }
 }

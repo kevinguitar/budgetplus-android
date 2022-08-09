@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -102,24 +101,24 @@ class AuthManagerImpl @Inject constructor(
         userWithExclusiveFields ?: return
 
         appScope.launch {
-            try {
+            val mergedUser = try {
                 // Get the latest remote user from the server
                 val remoteUser = usersDb.document(user.id)
                     .get(Source.SERVER)
                     .requireValue<User>()
 
                 // Merge exclusive fields to the Firebase auth user
-                val mergedUser = userWithExclusiveFields.copy(
+                userWithExclusiveFields.copy(
                     premium = remoteUser.premium,
                     hideAds = remoteUser.hideAds
                 )
-
-                _userState.value = mergedUser
-                currentUser = mergedUser
-                usersDb.document(user.id).set(mergedUser)
             } catch (e: Exception) {
-                Timber.e(e)
+                userWithExclusiveFields
             }
+
+            _userState.value = mergedUser
+            currentUser = mergedUser
+            usersDb.document(user.id).set(mergedUser)
         }
     }
 }

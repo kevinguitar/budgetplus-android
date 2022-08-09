@@ -8,8 +8,8 @@ data class User(
     val name: String? = null,
     val email: String? = null,
     val photoUrl: String? = null,
-    val premium: Boolean? = false,
-    val hideAds: Boolean? = false
+    val premium: Boolean? = null,
+    val hideAds: Boolean? = null
 )
 
 @Serializable

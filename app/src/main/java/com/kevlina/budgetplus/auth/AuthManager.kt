@@ -11,16 +11,14 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.User
-import com.kevlina.budgetplus.utils.AppScope
-import com.kevlina.budgetplus.utils.await
-import com.kevlina.budgetplus.utils.mapState
-import com.kevlina.budgetplus.utils.requireValue
+import com.kevlina.budgetplus.utils.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -101,24 +99,28 @@ class AuthManagerImpl @Inject constructor(
         userWithExclusiveFields ?: return
 
         appScope.launch {
-            val mergedUser = try {
+            try {
                 // Get the latest remote user from the server
                 val remoteUser = usersDb.document(user.id)
                     .get(Source.SERVER)
                     .requireValue<User>()
 
                 // Merge exclusive fields to the Firebase auth user
-                userWithExclusiveFields.copy(
+                val mergedUser = userWithExclusiveFields.copy(
                     premium = remoteUser.premium,
                     hideAds = remoteUser.hideAds
                 )
-            } catch (e: Exception) {
-                userWithExclusiveFields
-            }
 
-            _userState.value = mergedUser
-            currentUser = mergedUser
-            usersDb.document(user.id).set(mergedUser)
+                _userState.value = mergedUser
+                currentUser = mergedUser
+
+                usersDb.document(user.id).set(mergedUser)
+            } catch (e: DocNotExistsException) {
+                // Can't find user in the db yet, set it with the local data.
+                usersDb.document(user.id).set(userWithExclusiveFields)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
         }
     }
 }

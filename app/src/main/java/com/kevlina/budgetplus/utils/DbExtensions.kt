@@ -17,10 +17,12 @@ suspend inline fun <reified T : Any> Task<DocumentSnapshot>.requireValue(): T =
         addOnSuccessListener {
             val value = it.toObject<T>()
             if (value == null) {
-                cont.resumeWithException(IllegalStateException("Required value is null."))
+                cont.resumeWithException(DocNotExistsException())
             } else {
                 cont.resume(value)
             }
         }
         addOnFailureListener { cont.resumeWithException(it) }
     }
+
+class DocNotExistsException : IllegalStateException("Document doesn't exists")

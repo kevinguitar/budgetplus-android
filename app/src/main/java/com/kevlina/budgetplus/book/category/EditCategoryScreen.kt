@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -42,7 +41,6 @@ import com.kevlina.budgetplus.utils.dragContainer
 import com.kevlina.budgetplus.utils.rememberDragDropState
 import com.kevlina.budgetplus.utils.thenIf
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EditCategoryScreen(
     navController: NavController,
@@ -192,7 +190,6 @@ fun EditCategoryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CategoryCell(
     category: String,

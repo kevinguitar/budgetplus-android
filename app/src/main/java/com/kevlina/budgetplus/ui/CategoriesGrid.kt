@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -60,7 +59,6 @@ fun CategoriesGrid(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CategoryCard(
     category: String,
@@ -87,7 +85,6 @@ fun CategoryCard(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun EditCategoryButton(onClick: () -> Unit) {
 

@@ -4,7 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,7 +53,6 @@ fun RecordTypeTab(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun TypePill(
     text: String,

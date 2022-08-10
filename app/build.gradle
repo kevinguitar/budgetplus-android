@@ -74,7 +74,11 @@ android {
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += [
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+        ]
     }
 }
 

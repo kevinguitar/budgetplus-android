@@ -3,7 +3,6 @@ package com.kevlina.budgetplus.book.record
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -113,7 +112,6 @@ fun Calculator(viewModel: CalculatorViewModel) {
 
 private val calculatorBtnSize = 52.dp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CalculatorBtn(
     text: String,
@@ -140,7 +138,6 @@ private fun CalculatorBtn(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CalculatorActionBtn(
     text: String,

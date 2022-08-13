@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
+import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.ConfirmDialog
@@ -65,6 +67,10 @@ fun EditCategoryScreen(
     val dragDropState = rememberDragDropState(listState) { fromIndex, toIndex ->
         list = list.toMutableList()
             .apply { add(toIndex, removeAt(fromIndex)) }
+    }
+
+    val bubbleShape = with(LocalDensity.current) {
+        BubbleShape.RoundedRect(12.dp.toPx())
     }
 
     Column {
@@ -128,7 +134,22 @@ fun EditCategoryScreen(
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         }
                     ) { isDragging ->
-                        CategoryCell(category = item, isDragging = isDragging) {
+
+                        CategoryCell(
+                            category = item,
+                            isDragging = isDragging,
+                            modifier = Modifier.thenIf(index == 0) {
+                                Modifier.onGloballyPositioned {
+                                    viewModel.highlightCategoryHint(
+                                        BubbleDest.EditCategoriesHint(
+                                            size = it.size,
+                                            offset = it.positionInRoot(),
+                                            shape = bubbleShape
+                                        )
+                                    )
+                                }
+                            }
+                        ) {
                             editDialogMode = CategoryEditMode.Rename(item)
                         }
                     }
@@ -194,6 +215,7 @@ fun EditCategoryScreen(
 private fun CategoryCell(
     category: String,
     isDragging: Boolean,
+    modifier: Modifier,
     onClick: () -> Unit
 ) {
 
@@ -204,7 +226,8 @@ private fun CategoryCell(
         color = LocalAppColors.current.light,
         border = BorderStroke(1.dp, LocalAppColors.current.primaryLight),
         elevation = elevation,
-        onClick = onClick
+        onClick = onClick,
+        modifier = modifier
     ) {
 
         Row(

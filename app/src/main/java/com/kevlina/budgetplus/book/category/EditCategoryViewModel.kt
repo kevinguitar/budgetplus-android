@@ -25,6 +25,7 @@ class EditCategoryViewModel @Inject constructor(
     val incomeCategories
         get() = bookRepo.bookState.value?.incomeCategories.orEmpty()
 
+    private var isEditHintBubbleShown by preferenceHolder.bindBoolean(false)
     private var isSaveBubbleShown by preferenceHolder.bindBoolean(false)
 
     fun updateCategories(type: RecordType, newCategories: List<String>) {
@@ -32,10 +33,17 @@ class EditCategoryViewModel @Inject constructor(
         toaster.showMessage(R.string.category_edit_successful)
     }
 
+    fun highlightCategoryHint(dest: BubbleDest) {
+        if (!isEditHintBubbleShown) {
+            isEditHintBubbleShown = true
+            bubbleRepo.addBubbleToQueue(dest)
+        }
+    }
+
     fun highlightSaveButton(dest: BubbleDest) {
         if (!isSaveBubbleShown) {
             isSaveBubbleShown = true
-            bubbleRepo.setDestination(dest)
+            bubbleRepo.addBubbleToQueue(dest)
         }
     }
 }

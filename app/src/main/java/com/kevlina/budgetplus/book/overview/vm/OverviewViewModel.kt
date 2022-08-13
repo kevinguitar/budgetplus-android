@@ -103,7 +103,7 @@ class OverviewViewModel @Inject constructor(
     fun highlightSortingButton(dest: BubbleDest) {
         if (!isSortingBubbleShown) {
             isSortingBubbleShown = true
-            bubbleRepo.setDestination(dest)
+            bubbleRepo.addBubbleToQueue(dest)
         }
     }
 

@@ -15,9 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
@@ -30,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
+import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.book.bubble.vm.BubbleTextDirection
 import com.kevlina.budgetplus.book.bubble.vm.BubbleViewModel
 import com.kevlina.budgetplus.ui.AppText
@@ -63,7 +62,7 @@ fun Bubble() {
                         indication = null,
                         onClick = {
                             isBubbleVisible = false
-                            viewModel.clearDest()
+                            viewModel.dismissBubble()
                         }
                     )
             ) {
@@ -71,7 +70,7 @@ fun Bubble() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(HollowCircleShape(dest = dest))
+                        .clip(HollowShape(dest = dest))
                         .background(color = LocalAppColors.current.dark.copy(alpha = 0.8F))
                 )
 
@@ -82,16 +81,17 @@ fun Bubble() {
                             when (dest.textDirection) {
                                 BubbleTextDirection.TopStart, BubbleTextDirection.BottomStart -> Alignment.TopStart
                                 BubbleTextDirection.TopEnd, BubbleTextDirection.BottomEnd -> Alignment.TopEnd
+                                BubbleTextDirection.TopCenter, BubbleTextDirection.BottomCenter -> Alignment.TopCenter
                             }
                         )
                         .offset(
                             x = 0.dp,
                             y = with(LocalDensity.current) {
                                 when (dest.textDirection) {
-                                    BubbleTextDirection.TopStart, BubbleTextDirection.TopEnd -> {
+                                    BubbleTextDirection.TopStart, BubbleTextDirection.TopEnd, BubbleTextDirection.TopCenter -> {
                                         dest.offset.y.toDp() - dest.size.height.toDp()
                                     }
-                                    BubbleTextDirection.BottomStart, BubbleTextDirection.BottomEnd -> {
+                                    BubbleTextDirection.BottomStart, BubbleTextDirection.BottomEnd, BubbleTextDirection.BottomCenter -> {
                                         dest.offset.y.toDp() + dest.size.height.toDp()
                                     }
                                 }
@@ -110,7 +110,7 @@ fun Bubble() {
     }
 }
 
-class HollowCircleShape(private val dest: BubbleDest) : Shape {
+class HollowShape(private val dest: BubbleDest) : Shape {
 
     override fun createOutline(
         size: Size,
@@ -128,12 +128,18 @@ class HollowCircleShape(private val dest: BubbleDest) : Shape {
         }
 
         val ovalPath = Path().apply {
-            addOval(
-                Rect(
-                    offset = dest.offset,
-                    size = dest.size.toSize()
-                )
+
+            val rect = Rect(
+                offset = dest.offset,
+                size = dest.size.toSize()
             )
+
+            when (val shape = dest.shape) {
+                BubbleShape.Circle -> addOval(rect)
+                is BubbleShape.RoundedRect -> addRoundRect(
+                    RoundRect(rect, CornerRadius(shape.corner))
+                )
+            }
         }
 
         return Outline.Generic(Path().apply {

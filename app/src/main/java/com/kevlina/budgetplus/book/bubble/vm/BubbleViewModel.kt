@@ -9,9 +9,9 @@ class BubbleViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo
 ) : ViewModel() {
 
-    val destination = bubbleRepo.destination
+    val destination = bubbleRepo.bubble
 
-    fun clearDest() {
-        bubbleRepo.clearDestination()
+    fun dismissBubble() {
+        bubbleRepo.popBubble()
     }
 }

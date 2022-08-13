@@ -84,7 +84,7 @@ class RecordViewModel @Inject constructor(
     fun highlightInviteButton(dest: BubbleDest) {
         if (!isInviteBubbleShown) {
             isInviteBubbleShown = true
-            bubbleRepo.setDestination(dest)
+            bubbleRepo.addBubbleToQueue(dest)
         }
     }
 

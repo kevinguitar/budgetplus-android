@@ -2,6 +2,8 @@ package com.kevlina.budgetplus
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -14,7 +16,6 @@ class BudgetPlusApp : Application() {
         MobileAds.initialize(this)
 
         Timber.plant(Timber.DebugTree())
-        //TODO: Disable crash report for debug builds
-        //Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

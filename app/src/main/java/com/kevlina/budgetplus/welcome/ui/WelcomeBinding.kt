@@ -25,11 +25,11 @@ fun WelcomeBinding(viewModel: WelcomeViewModel) {
             .launchIn(this)
     }
 
-    CreateBook(viewModel)
+    WelcomeContent(viewModel)
 }
 
 @Composable
-fun CreateBook(viewModel: WelcomeViewModel) {
+private fun WelcomeContent(viewModel: WelcomeViewModel) {
 
     Column(
         verticalArrangement = Arrangement.Center,

@@ -1,10 +1,12 @@
 package com.kevlina.budgetplus.book.overview
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,6 +16,7 @@ import com.kevlina.budgetplus.book.HistoryDest
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.monetize.AdsMode
+import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.TopBar
 
 @Composable
@@ -32,7 +35,12 @@ fun OverviewScreen(navController: NavController) {
         TopBar(title = stringResource(id = R.string.overview_title, bookName.orEmpty()))
 
         //TODO: Add zerocase
-        LazyColumn(modifier = Modifier.weight(1F)) {
+        LazyColumn(
+            modifier = Modifier
+                .width(AppTheme.maxContentWidth)
+                .align(Alignment.CenterHorizontally)
+                .weight(1F)
+        ) {
 
             items(
                 count = recordGroups.size + 1,

@@ -34,10 +34,7 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.ConfirmDialog
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.ui.TopBar
+import com.kevlina.budgetplus.ui.*
 import com.kevlina.budgetplus.utils.DraggableItem
 import com.kevlina.budgetplus.utils.dragContainer
 import com.kevlina.budgetplus.utils.rememberDragDropState
@@ -113,11 +110,17 @@ fun EditCategoryScreen(
             }
         )
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .weight(1F)
+                .fillMaxSize()
+        ) {
 
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .width(AppTheme.maxContentWidth)
+                    .fillMaxHeight()
+                    .align(Alignment.Center)
                     .dragContainer(dragDropState),
                 state = listState,
                 contentPadding = PaddingValues(16.dp),
@@ -173,7 +176,6 @@ fun EditCategoryScreen(
                     modifier = Modifier.padding(all = 8.dp)
                 )
             }
-
         }
     }
 

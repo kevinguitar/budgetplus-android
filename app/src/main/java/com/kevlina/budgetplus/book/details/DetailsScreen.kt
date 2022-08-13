@@ -85,7 +85,12 @@ fun DetailsScreen(
             RecordsSortMode.Price -> records.sortedByDescending { it.price }
         }
 
-        LazyColumn(modifier = Modifier.weight(1F)) {
+        LazyColumn(
+            modifier = Modifier
+                .width(AppTheme.maxContentWidth)
+                .align(Alignment.CenterHorizontally)
+                .weight(1F)
+        ) {
 
             itemsIndexed(sortedRecords) { index, item ->
                 RecordCard(

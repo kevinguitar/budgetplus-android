@@ -5,6 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
@@ -43,4 +45,10 @@ val LocalAppColors = staticCompositionLocalOf {
         primaryDark = Color.Unspecified,
         dark = Color.Unspecified,
     )
+}
+
+object AppTheme {
+
+    val maxContentWidth: Dp get() = 568.dp
+
 }

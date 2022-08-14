@@ -99,7 +99,7 @@ class BookRepoImpl @Inject constructor(
     override fun generateJoinLink(): String {
         // The join link will expire in 1 day
         val validBefore = System.currentTimeMillis() + 1.days.inWholeMilliseconds
-        val joinLink = "https://moneybook.cchi.tw/".toUri()
+        val joinLink = "https://budgetplus.cchi.tw/".toUri()
             .buildUpon()
             .appendPath("join")
             .appendPath(requireBookId)

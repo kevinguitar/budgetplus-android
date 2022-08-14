@@ -26,9 +26,10 @@ fun AnimatedLogo() {
         )
     )
 
+    val logoTranslationYTotal = 10F
     val logoTranslationY by transition.animateFloat(
-        initialValue = -5F,
-        targetValue = 5F,
+        initialValue = 0F,
+        targetValue = logoTranslationYTotal,
         animationSpec = infiniteRepeatable(
             animation = tween(1_000),
             repeatMode = RepeatMode.Reverse
@@ -46,7 +47,9 @@ fun AnimatedLogo() {
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = null,
-            modifier = Modifier.graphicsLayer { translationY = logoTranslationY }
+            modifier = Modifier.graphicsLayer {
+                translationY = logoTranslationY - logoTranslationYTotal / 2
+            }
         )
     }
 }

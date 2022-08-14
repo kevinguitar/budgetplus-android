@@ -20,7 +20,7 @@ class BubbleRepo @Inject constructor(
 ) {
 
     private val bubblesQueue = arrayListOf<BubbleDest>()
-    private val bubbleShownDelay get() = 500L
+    private val bubbleShownDelay get() = 200L
 
     private val _bubble = MutableStateFlow<BubbleDest?>(null)
     val bubble: StateFlow<BubbleDest?> = _bubble.asStateFlow()

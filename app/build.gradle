@@ -34,7 +34,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/Users/kevin/Documents/BudgetPlus/BudgetKey")
+            storeFile file("../BudgetKey")
             storePassword 'budget+'
             keyAlias 'key0'
             keyPassword 'budget+'

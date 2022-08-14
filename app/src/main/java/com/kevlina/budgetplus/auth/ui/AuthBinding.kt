@@ -53,18 +53,7 @@ fun AuthBinding(viewModel: AuthViewModel) {
 
             CurvedAuthTitle()
 
-            Box(contentAlignment = Alignment.Center) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_logo_bg),
-                    contentDescription = null
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_logo),
-                    contentDescription = null
-                )
-            }
+            AnimatedLogo()
 
             AppText(
                 text = stringResource(id = R.string.auth_welcome_description),

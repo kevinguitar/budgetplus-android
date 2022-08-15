@@ -1,23 +1,32 @@
 package com.kevlina.budgetplus.utils
 
 import java.math.RoundingMode
+import java.text.NumberFormat
+
+private val pricingFormat = NumberFormat.getNumberInstance()
+    .also {
+        it.roundingMode = RoundingMode.HALF_UP
+        it.minimumFractionDigits = 0
+        it.maximumFractionDigits = 2
+    }
+
+private val ratioFormat = NumberFormat.getNumberInstance()
+    .also {
+        it.roundingMode = RoundingMode.HALF_UP
+        it.minimumFractionDigits = 0
+        it.maximumFractionDigits = 1
+    }
 
 val Double.roundUpPriceText: String
-    get() = toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
-        .stripTrailingZeros()
-        .toPlainString()
+    get() = pricingFormat.format(this)
 
 val Double.roundUpPercentageText: String
-    get() = toBigDecimal()
-        .setScale(1, RoundingMode.HALF_UP)
-        .stripTrailingZeros()
-        .toPlainString()
+    get() = ratioFormat.format(this)
 
 val Double.dollar: String
     get() = "$$roundUpPriceText"
 
-val Double.roundUpPrice: Double
-    get() = toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
-        .toDouble()
+val String.parseToPrice: Double
+    get() = requireNotNull(pricingFormat.parse(this)) {
+        "Incorrect price format: $this"
+    }.toDouble()

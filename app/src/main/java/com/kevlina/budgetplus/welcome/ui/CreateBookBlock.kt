@@ -29,13 +29,13 @@ fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
         Column(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .width(IntrinsicSize.Min)
+                .width(IntrinsicSize.Max)
                 .padding(top = 16.dp, end = 24.dp)
         ) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
                 Image(
@@ -45,7 +45,7 @@ fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
 
                 AppText(
                     text = stringResource(id = R.string.app_name),
-                    color = LocalAppColors.current.primary
+                    color = LocalAppColors.current.primary,
                 )
             }
 

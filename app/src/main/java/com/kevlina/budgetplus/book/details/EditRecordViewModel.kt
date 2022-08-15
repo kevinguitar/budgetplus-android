@@ -6,7 +6,7 @@ import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordRepo
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.mapState
-import com.kevlina.budgetplus.utils.roundUpPrice
+import com.kevlina.budgetplus.utils.parseToPrice
 import com.kevlina.budgetplus.utils.roundUpPriceText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,9 +41,12 @@ class EditRecordViewModel @Inject constructor(
     }
 
     fun editRecord() {
-        val newRecord = editRecord.value.copy(
-            price = priceText.value.toDouble().roundUpPrice
-        )
+        val newRecord = try {
+            editRecord.value.copy(price = priceText.value.parseToPrice)
+        } catch (e: Exception) {
+            toaster.showError(e)
+            return
+        }
         recordRepo.editRecord(newRecord.id, newRecord)
         toaster.showMessage(R.string.record_edited)
     }

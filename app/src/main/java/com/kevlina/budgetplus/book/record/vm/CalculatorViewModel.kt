@@ -5,12 +5,12 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import com.kevlina.budgetplus.book.record.CalculatorAction
 import com.kevlina.budgetplus.book.record.CalculatorButton
-import com.kevlina.budgetplus.utils.roundUpPrice
 import com.kevlina.budgetplus.utils.roundUpPriceText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.math.RoundingMode
 import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor(
@@ -67,8 +67,10 @@ class CalculatorViewModel @Inject constructor(
 
         val rawResult: Double = expression.evaluate()
 
-        _price.value = rawResult.roundUpPrice
         _priceText.value = rawResult.roundUpPriceText
+        _price.value = rawResult.toBigDecimal()
+            .setScale(2, RoundingMode.HALF_UP)
+            .toDouble()
     }
 
     fun clearPrice() {

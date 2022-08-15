@@ -80,7 +80,13 @@ fun BookScreenMenu() {
             DropdownMenuDivider()
 
             DropdownItem(
-                name = stringResource(id = if (isBookOwner) R.string.cta_delete else R.string.cta_leave)
+                name = stringResource(
+                    id = if (isBookOwner) {
+                        R.string.menu_delete_book
+                    } else {
+                        R.string.menu_leave_book
+                    }
+                )
             ) {
                 isDeleteOrLeaveDialogShown = true
                 isMenuExpanded = false

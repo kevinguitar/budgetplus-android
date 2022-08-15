@@ -7,11 +7,11 @@ import com.kevlina.budgetplus.data.remote.RecordRepo
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.mapState
 import com.kevlina.budgetplus.utils.parseToPrice
-import com.kevlina.budgetplus.utils.roundUpPriceText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +29,10 @@ class EditRecordViewModel @Inject constructor(
 
     fun setRecord(record: Record) {
         editRecord.value = record
-        _priceText.value = record.price.roundUpPriceText
+        _priceText.value = record.price.toBigDecimal()
+            .setScale(2, RoundingMode.HALF_UP)
+            .stripTrailingZeros()
+            .toPlainString()
     }
 
     fun setName(name: String) {

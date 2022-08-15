@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.auth.ui
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.R
 
 @Composable
@@ -41,15 +44,20 @@ fun AnimatedLogo() {
         Image(
             painter = painterResource(id = R.drawable.ic_logo_bg),
             contentDescription = null,
-            modifier = Modifier.graphicsLayer { rotationZ = bgRotation }
+            modifier = Modifier
+                .size(260.dp)
+                .graphicsLayer { rotationZ = bgRotation }
         )
 
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = null,
-            modifier = Modifier.graphicsLayer {
-                translationY = logoTranslationY - logoTranslationYTotal / 2
-            }
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .size(190.dp)
+                .graphicsLayer {
+                    translationY = logoTranslationY - logoTranslationYTotal / 2
+                }
         )
     }
 }

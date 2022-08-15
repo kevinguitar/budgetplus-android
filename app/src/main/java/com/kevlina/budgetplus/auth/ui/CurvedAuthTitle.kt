@@ -34,7 +34,7 @@ fun CurvedAuthTitle() {
         ) {
             drawIntoCanvas {
                 val textPadding = 16.dp.toPx()
-                val arcHeight = 240.dp.toPx()
+                val arcHeight = 300.dp.toPx()
                 val arcWidth = maxWidth.toPx()
                 Path()
 

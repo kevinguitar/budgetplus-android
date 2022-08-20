@@ -77,7 +77,7 @@ class OverviewViewModel @Inject constructor(
             timePeriod,
             type,
             bookRepo.bookState.mapNotNull { it?.id }
-        ) { _, _, _ -> observeRecords() }
+        ) { _, _, bookId -> observeRecords(bookId) }
             .launchIn(viewModelScope)
     }
 
@@ -109,11 +109,11 @@ class OverviewViewModel @Inject constructor(
 
     private var recordsRegistration: ListenerRegistration? = null
 
-    private fun observeRecords() {
+    private fun observeRecords(bookId: String) {
         recordsRegistration?.remove()
         recordsRegistration = Firebase.firestore
             .collection("books")
-            .document(requireNotNull(bookRepo.currentBookId) { "Book id is null" })
+            .document(bookId)
             .collection("records")
             .whereEqualTo("type", type.value)
             .whereGreaterThanOrEqualTo("date", fromDate.value.toEpochDay())

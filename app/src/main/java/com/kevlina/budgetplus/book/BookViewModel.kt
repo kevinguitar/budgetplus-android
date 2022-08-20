@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.data.remote.ExceedFreeBooksLimitException
-import com.kevlina.budgetplus.data.remote.ExceedPremiumBooksLimitException
-import com.kevlina.budgetplus.data.remote.JoinLinkExpiredException
+import com.kevlina.budgetplus.data.remote.JoinBookException
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo
 import com.kevlina.budgetplus.utils.Toaster
@@ -56,13 +54,10 @@ class BookViewModel @Inject constructor(
             try {
                 val bookName = bookRepo.handlePendingJoinRequest()
                 toaster.showMessage(context.getString(R.string.book_join_success, bookName))
+            } catch (e: JoinBookException) {
+                toaster.showMessage(e.errorRes)
             } catch (e: Exception) {
-                when (e) {
-                    is JoinLinkExpiredException -> toaster.showMessage(R.string.book_join_link_expired)
-                    is ExceedFreeBooksLimitException -> toaster.showMessage(R.string.book_join_exceed_free_limit)
-                    is ExceedPremiumBooksLimitException -> toaster.showMessage(R.string.book_exceed_maximum)
-                    else -> toaster.showError(e)
-                }
+                toaster.showError(e)
             }
         }
     }

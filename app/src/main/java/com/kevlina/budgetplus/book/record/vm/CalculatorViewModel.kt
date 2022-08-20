@@ -5,16 +5,19 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import com.kevlina.budgetplus.book.record.CalculatorAction
 import com.kevlina.budgetplus.book.record.CalculatorButton
+import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.roundUpPriceText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.objecthunter.exp4j.ExpressionBuilder
+import timber.log.Timber
 import java.math.RoundingMode
 import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor(
-    private val vibrator: Vibrator?
+    private val vibrator: Vibrator?,
+    private val toaster: Toaster?
 ) {
 
     private val _priceText = MutableStateFlow(EMPTY_PRICE)
@@ -60,12 +63,21 @@ class CalculatorViewModel @Inject constructor(
             .replace('×', '*')
             .replace('÷', '/')
 
-        val expression = ExpressionBuilder(text).build()
-        if (!expression.validate().isValid) {
+        val rawResult: Double = try {
+            val expression = ExpressionBuilder(text).build()
+            val validation = expression.validate()
+            if (!validation.isValid) {
+                toaster?.showMessage(validation.errors.joinToString())
+                Timber.e("Calculator validation error. Raw: $text")
+                return
+            }
+
+            expression.evaluate()
+        } catch (e: Exception) {
+            toaster?.showError(e)
+            Timber.e("Calculator evaluation error. Raw: $text")
             return
         }
-
-        val rawResult: Double = expression.evaluate()
 
         _priceText.value = rawResult.roundUpPriceText
         _price.value = rawResult.toBigDecimal()

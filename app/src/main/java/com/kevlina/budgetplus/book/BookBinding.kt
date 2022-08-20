@@ -7,7 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -199,7 +199,7 @@ private fun RowScope.BottomNavItem(
                     .size(width = 60.dp, height = 32.dp)
                     .background(
                         color = LocalAppColors.current.dark,
-                        shape = RoundedCornerShape(50)
+                        shape = CircleShape
                     )
             )
         }

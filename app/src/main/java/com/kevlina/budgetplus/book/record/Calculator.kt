@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -37,31 +36,38 @@ enum class CalculatorAction(val text: String) {
     Clear("AC"), Equal("="), Delete("");
 }
 
+private val calculatorSpacing = 12.dp
+
 @Composable
 fun Calculator(viewModel: CalculatorViewModel) {
 
     val priceText by viewModel.priceText.collectAsState()
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(calculatorSpacing),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(calculatorSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
             AppTextField(
                 value = priceText,
                 onValueChange = {},
-                fontSize = FontSize.HeaderSmall,
+                fontSize = FontSize.Header,
                 enabled = false,
                 title = "$",
-                modifier = Modifier.weight(1F)
+                modifier = Modifier
+                    .weight(1F)
+                    .fillMaxWidth()
             )
 
             IconButton(
+                modifier = Modifier
+                    .weight(0.2F)
+                    .height(IntrinsicSize.Min),
                 onClick = { viewModel.onAction(CalculatorAction.Delete) }
             ) {
 
@@ -69,17 +75,17 @@ fun Calculator(viewModel: CalculatorViewModel) {
                     painter = painterResource(id = R.drawable.ic_backspace),
                     contentDescription = stringResource(id = R.string.cta_delete),
                     tint = LocalAppColors.current.dark,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.fillMaxSize(0.8F)
                 )
             }
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(calculatorSpacing)) {
 
             CalculatorButton.values().toList().chunked(8).forEachIndexed { index, rows ->
 
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(calculatorSpacing),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(intrinsicSize = IntrinsicSize.Min)
@@ -87,7 +93,10 @@ fun Calculator(viewModel: CalculatorViewModel) {
 
                     rows.chunked(2).forEach { btns ->
 
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(calculatorSpacing),
+                            modifier = Modifier.weight(1F)
+                        ) {
 
                             btns.forEach { btn ->
 
@@ -110,8 +119,6 @@ fun Calculator(viewModel: CalculatorViewModel) {
     }
 }
 
-private val calculatorBtnSize = 52.dp
-
 @Composable
 private fun CalculatorBtn(
     text: String,
@@ -120,7 +127,9 @@ private fun CalculatorBtn(
 
     Surface(
         onClick = onClick,
-        modifier = Modifier.size(calculatorBtnSize),
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1F),
         shape = CircleShape,
         color = LocalAppColors.current.primary
     ) {
@@ -139,7 +148,7 @@ private fun CalculatorBtn(
 }
 
 @Composable
-private fun CalculatorActionBtn(
+private fun RowScope.CalculatorActionBtn(
     text: String,
     onClick: () -> Unit
 ) {
@@ -147,9 +156,9 @@ private fun CalculatorActionBtn(
     Surface(
         onClick = onClick,
         modifier = Modifier
-            .width(calculatorBtnSize)
+            .weight(1F)
             .fillMaxHeight(),
-        shape = RoundedCornerShape(50),
+        shape = CircleShape,
         color = LocalAppColors.current.dark
     ) {
 
@@ -169,5 +178,5 @@ private fun CalculatorActionBtn(
 @Preview(showBackground = true)
 @Composable
 private fun Calculator_Preview() = AppTheme {
-    Calculator(CalculatorViewModel(null))
+    Calculator(CalculatorViewModel(null, null))
 }

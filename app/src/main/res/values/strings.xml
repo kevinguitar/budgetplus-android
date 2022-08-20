@@ -33,6 +33,7 @@
     <string name="book_create_success">Your book %s is created!</string>
     <string name="book_join_success">You have joined %s successfully!</string>
     <string name="book_join_link_expired">The join link is expired…</string>
+    <string name="book_already_archived">Oops, the book has been deleted…</string>
     <string name="book_join_exceed_free_limit">Go premium to create/ join more books!</string>
     <string name="book_exceed_maximum">You have reached the maximum books limit</string>
 

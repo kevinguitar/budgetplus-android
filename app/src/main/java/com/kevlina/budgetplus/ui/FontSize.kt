@@ -8,8 +8,7 @@ object FontSize {
     val SemiLarge = 16.sp
     val Large = 18.sp
 
-    val HeaderSmall = 20.sp
     val Header = 22.sp
-    val HeaderLarge = 24.sp
+    val HeaderLarge = 26.sp
     val HeaderXLarge = 32.sp
 }

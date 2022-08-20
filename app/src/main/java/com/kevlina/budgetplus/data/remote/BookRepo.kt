@@ -38,9 +38,7 @@ interface BookRepo {
 
     /**
      *  @return The book's name that the user just joined.
-     *  @throws JoinLinkExpiredException
-     *  @throws ExceedFreeBooksLimitException
-     *  @throws ExceedPremiumBooksLimitException
+     *  @throws JoinBookException
      */
     suspend fun handlePendingJoinRequest(): String
 
@@ -122,20 +120,24 @@ class BookRepoImpl @Inject constructor(
         val isPremium = authManager.userState.value?.premium == true
         val bookCount = booksState.value.orEmpty().size
         when {
-            isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> throw ExceedPremiumBooksLimitException()
-            !isPremium && bookCount >= FREE_BOOKS_LIMIT -> throw ExceedFreeBooksLimitException()
+            isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> throw JoinBookException(R.string.book_exceed_maximum)
+            !isPremium && bookCount >= FREE_BOOKS_LIMIT -> throw JoinBookException(R.string.book_join_exceed_free_limit)
         }
 
         val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
         val bookId = uri.lastPathSegment ?: error("No book id is presented")
         val validBefore = uri.getQueryParameter("valid")
         if (validBefore == null || System.currentTimeMillis() > validBefore.toLong()) {
-            throw JoinLinkExpiredException()
+            throw JoinBookException(R.string.book_join_link_expired)
         }
 
         val userId = authManager.requireUserId()
 
         val book = getLatestBook(bookId)
+        if (book.archived) {
+            throw JoinBookException(R.string.book_already_archived)
+        }
+
         val newAuthors = book.authors.toMutableList()
         if (userId !in newAuthors) {
             newAuthors.add(userId)

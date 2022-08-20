@@ -33,6 +33,7 @@
     <string name="book_create_success">「%s」已新增成功</string>
     <string name="book_join_success">已加入「%s」</string>
     <string name="book_join_link_expired">連結已失效ＱＱ</string>
+    <string name="book_already_archived">糟糕，帳本已經被刪除了</string>
     <string name="book_join_exceed_free_limit">付費以創建、加入更多帳本</string>
     <string name="book_exceed_maximum">已達帳本總數上限</string>
 

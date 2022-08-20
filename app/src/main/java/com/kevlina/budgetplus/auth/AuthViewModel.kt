@@ -96,8 +96,6 @@ class AuthViewModel @Inject constructor(
                     .setFilterByAuthorizedAccounts(true)
                     .build()
             )
-            // Automatically sign in when exactly one credential is retrieved.
-            .setAutoSelectEnabled(true)
             .build()
 
         oneTapClient.beginSignIn(request)

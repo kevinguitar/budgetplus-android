@@ -23,8 +23,8 @@ android {
         applicationId "com.kevlina.budgetplus"
         minSdk 23
         targetSdk 32
-        versionCode 7
-        versionName "0.0.7"
+        versionCode 100
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

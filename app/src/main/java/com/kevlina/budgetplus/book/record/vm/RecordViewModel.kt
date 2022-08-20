@@ -12,6 +12,7 @@ import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.*
 import com.kevlina.budgetplus.monetize.FullScreenAdsLoader
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.BufferOverflow
@@ -28,6 +29,7 @@ class RecordViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
@@ -116,6 +118,7 @@ class RecordViewModel @Inject constructor(
         recordRepo.createRecord(record)
         _recordEvent.tryEmit(Unit)
         toaster.showMessage(context.getString(R.string.record_created, category))
+        tracker.logEvent("record_created")
         recordCount += 1
         resetScreen()
         return true

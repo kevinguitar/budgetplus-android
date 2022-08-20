@@ -6,10 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.auth.AuthActivity
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.utils.NavigationFlow
-import com.kevlina.budgetplus.utils.NavigationInfo
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.combineState
+import com.kevlina.budgetplus.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +16,7 @@ class BookMenuViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
+    private val tracker: Tracker,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -38,6 +36,7 @@ class BookMenuViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authManager.renameUser(newName)
+                tracker.logEvent("user_renamed")
             } catch (e: Exception) {
                 toaster.showError(e)
             }
@@ -66,6 +65,7 @@ class BookMenuViewModel @Inject constructor(
 
     fun logout() {
         authManager.logout()
+        tracker.logEvent("logout")
 
         val navInfo = NavigationInfo(
             destination = AuthActivity::class,

@@ -12,7 +12,7 @@ ext {
     compose_ui_version = '1.2.1'
     compose_compiler_version = '1.3.0'
     nav_version = '2.5.1'
-    dagger_hilt_version = '2.42'
+    dagger_hilt_version = '2.43.2'
 }
 
 android {
@@ -113,7 +113,7 @@ dependencies {
 
     // Kotlinx serialization
     // https://github.com/Kotlin/kotlinx.serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
 
     // Navigation
     // https://developer.android.com/jetpack/androidx/releases/navigation
@@ -127,7 +127,7 @@ dependencies {
 
     // Firebase
     // https://firebase.google.com/support/release-notes/android
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'

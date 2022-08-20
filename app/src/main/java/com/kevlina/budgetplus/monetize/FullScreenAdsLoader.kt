@@ -8,6 +8,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 @SuppressLint("VisibleForTests")
 @Singleton
 class FullScreenAdsLoader @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val tracker: Tracker
 ) {
 
     private val adState = MutableStateFlow<InterstitialAd?>(null)
@@ -32,6 +34,7 @@ class FullScreenAdsLoader @Inject constructor(
     fun showAd(activity: Activity) {
         adState.value?.show(activity)
         loadAd()
+        tracker.logEvent("show_ad_full_screen")
     }
 
     private fun loadAd() {

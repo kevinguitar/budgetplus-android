@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.data.remote.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class BookSelectorViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     authManager: AuthManager,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
@@ -50,6 +52,7 @@ class BookSelectorViewModel @Inject constructor(
             try {
                 bookRepo.createBook(name)
                 toaster.showMessage(context.getString(R.string.book_create_success, name))
+                tracker.logEvent("book_created_from_selector")
             } catch (e: Exception) {
                 toaster.showError(e)
             }
@@ -58,6 +61,7 @@ class BookSelectorViewModel @Inject constructor(
 
     fun buyPremium() {
         toaster.showMessage(R.string.premium_coming_soon)
+        tracker.logEvent("buy_premium_attempt")
     }
 
     fun showReachedMaxMessage() {

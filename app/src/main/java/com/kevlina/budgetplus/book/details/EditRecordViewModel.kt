@@ -5,6 +5,7 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordRepo
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.mapState
 import com.kevlina.budgetplus.utils.parseToPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
-    private val toaster: Toaster
+    private val toaster: Toaster,
+    private val tracker: Tracker
 ) : ViewModel() {
 
     private val editRecord = MutableStateFlow(Record())
@@ -52,10 +54,12 @@ class EditRecordViewModel @Inject constructor(
         }
         recordRepo.editRecord(newRecord.id, newRecord)
         toaster.showMessage(R.string.record_edited)
+        tracker.logEvent("record_edited")
     }
 
     fun deleteRecord() {
         recordRepo.deleteRecord(editRecord.value.id)
         toaster.showMessage(R.string.record_deleted)
+        tracker.logEvent("record_deleted")
     }
 }

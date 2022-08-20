@@ -46,7 +46,7 @@ class AuthManagerImpl @Inject constructor(
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
 
-    private val usersDb = Firebase.firestore.collection("users")
+    private val usersDb by lazy { Firebase.firestore.collection("users") }
 
     private val _userState = MutableStateFlow(currentUser)
     override val userState: StateFlow<User?> = _userState.asStateFlow()

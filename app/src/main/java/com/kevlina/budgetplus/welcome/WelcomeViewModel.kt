@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.data.remote.JoinBookException
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
@@ -29,6 +31,7 @@ class WelcomeViewModel @Inject constructor(
             try {
                 bookRepo.createBook(name)
                 toaster.showMessage(context.getString(R.string.book_create_success, name))
+                tracker.logEvent("book_created_from_welcome")
 
                 val navInfo = NavigationInfo(destination = BookActivity::class)
                 navigation.tryEmit(navInfo)

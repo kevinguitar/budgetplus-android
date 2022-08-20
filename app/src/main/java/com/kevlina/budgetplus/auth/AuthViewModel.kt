@@ -32,6 +32,7 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.launch
@@ -41,6 +42,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @ActivityContext private val context: Context,
 ) {
@@ -71,6 +73,7 @@ class AuthViewModel @Inject constructor(
             activity,
             listOf("email", "public_profile")
         )
+        tracker.logEvent("sign_in_with_facebook")
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -82,6 +85,7 @@ class AuthViewModel @Inject constructor(
         val signInIntent = googleSignInClient.signInIntent
         @Suppress("DEPRECATION")
         activity.startActivityForResult(signInIntent, REQ_GOOGLE_SIGN_IN)
+        tracker.logEvent("sign_in_with_google")
     }
 
     /**
@@ -144,6 +148,9 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun onLoginCompleted(task: Task<AuthResult>) {
+        val isNewUser = task.result.additionalUserInfo?.isNewUser == true
+        tracker.logEvent(if (isNewUser) "sign_up" else "login")
+
         if (task.isSuccessful) {
             val message = context.getString(R.string.auth_success, task.result.user?.displayName)
             toaster.showMessage(message)

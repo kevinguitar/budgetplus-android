@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val bubbleRepo: BubbleRepo,
+    private val tracker: Tracker,
     authManager: AuthManager,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
@@ -93,11 +95,17 @@ class OverviewViewModel @Inject constructor(
 
         timePeriodMap.value = newMapping
         periodCache = newMapping
+
+        tracker.logEvent(
+            event = "overview_period_changed",
+            params = mapOf("period" to timePeriod::class.simpleName.orEmpty())
+        )
     }
 
     fun setSortMode(sortMode: RecordsSortMode) {
         _sortMode.value = sortMode
         sortModeCache = sortMode
+        tracker.logEvent("overview_sort_mode_changed")
     }
 
     fun highlightSortingButton(dest: BubbleDest) {

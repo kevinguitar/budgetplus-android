@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class EditCategoryViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val bubbleRepo: BubbleRepo,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     preferenceHolder: PreferenceHolder
 ) : ViewModel() {
 
@@ -31,6 +33,7 @@ class EditCategoryViewModel @Inject constructor(
     fun updateCategories(type: RecordType, newCategories: List<String>) {
         bookRepo.updateCategories(type, newCategories)
         toaster.showMessage(R.string.category_edit_successful)
+        tracker.logEvent("categories_updated")
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {

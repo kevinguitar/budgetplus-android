@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.User
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.requireValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class MembersViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
-    private val toaster: Toaster
+    private val toaster: Toaster,
+    private val tracker: Tracker
 ) : ViewModel() {
 
     private val usersDb = Firebase.firestore.collection("users")
@@ -41,6 +43,7 @@ class MembersViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.removeMember(userId)
+                tracker.logEvent("member_removed")
                 loadMembers()
             } catch (e: Exception) {
                 toaster.showError(e)
@@ -49,27 +52,26 @@ class MembersViewModel @Inject constructor(
     }
 
     fun loadMembers() {
-        val authors = bookRepo.bookState.value?.authors
-        if (authors != null) {
-            viewModelScope.launch {
-                try {
-                    val users = authors
-                        .map { id -> async { getUser(id) } }
-                        .awaitAll()
-                        .filterNotNull()
-                        .toMutableList()
+        val authors = bookRepo.bookState.value?.authors ?: return
+        viewModelScope.launch {
+            try {
+                val users = authors
+                    .map { id -> async { getUser(id) } }
+                    .awaitAll()
+                    .filterNotNull()
+                    .toMutableList()
 
-                    // Move the owner to the first of the list
-                    val owner = users.find { it.id == ownerId }
-                    if (owner != null) {
-                        users.remove(owner)
-                        users.add(0, owner)
-                    }
-
-                    bookMembers.value = users
-                } catch (e: Exception) {
-                    Timber.e(e)
+                // Move the owner to the first of the list
+                val owner = users.find { it.id == ownerId }
+                if (owner != null) {
+                    users.remove(owner)
+                    users.add(0, owner)
                 }
+
+                bookMembers.value = users
+                tracker.logEvent("member_loaded")
+            } catch (e: Exception) {
+                Timber.e(e)
             }
         }
     }

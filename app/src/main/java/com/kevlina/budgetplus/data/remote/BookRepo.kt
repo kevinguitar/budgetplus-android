@@ -13,6 +13,7 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.utils.AppScope
+import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.await
 import com.kevlina.budgetplus.utils.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -61,6 +62,7 @@ interface BookRepo {
 @Singleton
 class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
+    private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppScope appScope: CoroutineScope,
     @ApplicationContext private val context: Context,
@@ -82,7 +84,7 @@ class BookRepoImpl @Inject constructor(
 
     private val pendingJoinUri = MutableStateFlow<Uri?>(null)
 
-    private val booksDb = Firebase.firestore.collection("books")
+    private val booksDb by lazy { Firebase.firestore.collection("books") }
 
     private val authorsField get() = "authors"
     private val createdOnField get() = "createdOn"
@@ -103,6 +105,7 @@ class BookRepoImpl @Inject constructor(
             .appendPath(requireBookId)
             .appendQueryParameter("valid", validBefore.toString())
             .build()
+        tracker.logEvent("join_book_link_generated")
         return joinLink.toString()
     }
 
@@ -120,14 +123,21 @@ class BookRepoImpl @Inject constructor(
         val isPremium = authManager.userState.value?.premium == true
         val bookCount = booksState.value.orEmpty().size
         when {
-            isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> throw JoinBookException(R.string.book_exceed_maximum)
-            !isPremium && bookCount >= FREE_BOOKS_LIMIT -> throw JoinBookException(R.string.book_join_exceed_free_limit)
+            isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> {
+                tracker.logEvent("join_book_reach_max_limit")
+                throw JoinBookException(R.string.book_exceed_maximum)
+            }
+            !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
+                tracker.logEvent("join_book_reach_free_limit")
+                throw JoinBookException(R.string.book_join_exceed_free_limit)
+            }
         }
 
         val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
         val bookId = uri.lastPathSegment ?: error("No book id is presented")
         val validBefore = uri.getQueryParameter("valid")
         if (validBefore == null || System.currentTimeMillis() > validBefore.toLong()) {
+            tracker.logEvent("join_book_link_expired")
             throw JoinBookException(R.string.book_join_link_expired)
         }
 
@@ -149,6 +159,7 @@ class BookRepoImpl @Inject constructor(
             .await()
 
         pendingJoinUri.value = null
+        tracker.logEvent("join_book_success")
         return book.name
     }
 
@@ -191,6 +202,7 @@ class BookRepoImpl @Inject constructor(
 
     override suspend fun renameBook(newName: String) {
         booksDb.document(requireBookId).update("name", newName).await()
+        tracker.logEvent("book_renamed")
     }
 
     override suspend fun leaveOrDeleteBook() {
@@ -199,6 +211,7 @@ class BookRepoImpl @Inject constructor(
             booksDb.document(book.id)
                 .update(archivedField, true)
                 .await()
+            tracker.logEvent("book_deleted")
         } else {
             val authorsWithoutMe = book.authors.toMutableList()
             authorsWithoutMe.remove(authManager.requireUserId())
@@ -206,6 +219,7 @@ class BookRepoImpl @Inject constructor(
             booksDb.document(book.id)
                 .update(authorsField, authorsWithoutMe)
                 .await()
+            tracker.logEvent("book_leaved")
         }
     }
 

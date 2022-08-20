@@ -66,7 +66,7 @@ class OverviewViewModel @Inject constructor(
         record.orEmpty().sumOf { it.price }
     }
 
-    val recordGroups = records.mapState { records ->
+    val recordGroups: StateFlow<Map<String, List<Record>>> = records.mapState { records ->
         records.orEmpty()
             .groupBy { it.category }
             .toList()

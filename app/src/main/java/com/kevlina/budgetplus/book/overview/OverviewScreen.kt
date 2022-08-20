@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.book.overview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,39 +30,51 @@ fun OverviewScreen(navController: NavController) {
     val isHideAds by viewModel.isHideAds.collectAsState()
     val recordGroups by viewModel.recordGroups.collectAsState()
     val keys = recordGroups.keys.toList()
+    val isGroupEmpty = keys.isEmpty()
 
     Column {
 
         TopBar(title = stringResource(id = R.string.overview_title, bookName.orEmpty()))
 
-        //TODO: Add zerocase
         LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .width(AppTheme.maxContentWidth)
                 .align(Alignment.CenterHorizontally)
                 .weight(1F)
         ) {
 
-            items(
-                count = recordGroups.size + 1,
-                key = { index -> if (index == 0) "header" else keys[index - 1] },
-            ) { index ->
+            item(
+                key = OverviewUiType.Header.name,
+                contentType = OverviewUiType.Header,
+                content = { OverviewHeader(viewModel, isGroupEmpty) }
+            )
 
-                if (index == 0) {
-                    OverviewHeader(viewModel = viewModel)
-                } else {
-                    val key = keys[index - 1]
-                    OverviewGroup(
-                        category = key,
-                        records = recordGroups[key].orEmpty(),
-                        totalPrice = totalPrice,
-                        color = overviewColors[(index - 1) % overviewColors.size],
-                        isLast = index == recordGroups.size,
-                        onClick = {
-                            navController.navigate(route = "${HistoryDest.Details.route}/$key")
-                        }
-                    )
-                }
+            itemsIndexed(
+                items = keys,
+                key = { _, key -> key },
+                contentType = { _, _ -> OverviewUiType.Group }
+            ) { index, key ->
+
+                OverviewGroup(
+                    category = key,
+                    records = recordGroups[key].orEmpty(),
+                    totalPrice = totalPrice,
+                    color = overviewColors[(index) % overviewColors.size],
+                    isLast = index == recordGroups.size - 1,
+                    onClick = {
+                        navController.navigate(route = "${HistoryDest.Details.route}/$key")
+                    }
+                )
+            }
+
+            if (isGroupEmpty) {
+
+                item(
+                    key = OverviewUiType.ZeroCase.name,
+                    contentType = OverviewUiType.ZeroCase,
+                    content = { OverviewZeroCase() }
+                )
             }
         }
 
@@ -69,4 +82,8 @@ fun OverviewScreen(navController: NavController) {
             AdsBanner(mode = AdsMode.Banner)
         }
     }
+}
+
+enum class OverviewUiType {
+    Header, Group, ZeroCase
 }

@@ -17,7 +17,10 @@ import com.kevlina.budgetplus.ui.RecordTypeTab
 import com.kevlina.budgetplus.utils.roundUpPriceText
 
 @Composable
-fun OverviewHeader(viewModel: OverviewViewModel) {
+fun OverviewHeader(
+    viewModel: OverviewViewModel,
+    isGroupEmpty: Boolean
+) {
 
     val type by viewModel.type.collectAsState()
     val totalPrice by viewModel.totalPrice.collectAsState()
@@ -34,10 +37,16 @@ fun OverviewHeader(viewModel: OverviewViewModel) {
 
         TimePeriodSelector()
 
-        AppText(
-            text = stringResource(id = R.string.overview_total_price, totalPrice.roundUpPriceText),
-            fontSize = FontSize.Large,
-            fontWeight = FontWeight.SemiBold
-        )
+        if (!isGroupEmpty) {
+            
+            AppText(
+                text = stringResource(
+                    id = R.string.overview_total_price,
+                    totalPrice.roundUpPriceText
+                ),
+                fontSize = FontSize.Large,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }

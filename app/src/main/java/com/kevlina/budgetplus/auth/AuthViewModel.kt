@@ -118,7 +118,9 @@ class AuthViewModel @Inject constructor(
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // Pass the activity result back to the Facebook SDK
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
+            return
+        }
 
         when {
 
@@ -148,10 +150,10 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun onLoginCompleted(task: Task<AuthResult>) {
-        val isNewUser = task.result.additionalUserInfo?.isNewUser == true
-        tracker.logEvent(if (isNewUser) "sign_up" else "login")
-
         if (task.isSuccessful) {
+            val isNewUser = task.result.additionalUserInfo?.isNewUser == true
+            tracker.logEvent(if (isNewUser) "sign_up" else "login")
+
             val message = context.getString(R.string.auth_success, task.result.user?.displayName)
             toaster.showMessage(message)
             checkBookAvailability()

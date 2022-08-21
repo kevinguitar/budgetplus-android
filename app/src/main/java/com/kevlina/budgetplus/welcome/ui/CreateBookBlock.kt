@@ -65,6 +65,7 @@ fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .width(AppTheme.maxContentWidth)
                 .padding(all = 24.dp)
         ) {
 

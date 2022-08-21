@@ -14,6 +14,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.LocalAppColors
 
@@ -23,6 +24,7 @@ fun ColumnScope.CollabBlock() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_collab))
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .weight(1F)
@@ -36,14 +38,13 @@ fun ColumnScope.CollabBlock() {
             lineHeight = 24.sp,
             modifier = Modifier
                 .weight(1F)
+                .width(AppTheme.maxContentWidth)
                 .padding(24.dp)
         )
 
         LottieAnimation(
             composition = composition,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .height(200.dp)
+            modifier = Modifier.height(200.dp)
         )
     }
 }

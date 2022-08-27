@@ -26,7 +26,6 @@ interface AuthManager {
 
     val userState: StateFlow<User?>
     val isPremium: StateFlow<Boolean>
-    val isHideAds: StateFlow<Boolean>
 
     fun requireUserId(): String
 
@@ -52,7 +51,6 @@ class AuthManagerImpl @Inject constructor(
     override val userState: StateFlow<User?> = _userState.asStateFlow()
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
-    override val isHideAds: StateFlow<Boolean> = userState.mapState { it?.hideAds == true }
 
     init {
         Firebase.auth.addAuthStateListener { auth ->
@@ -90,10 +88,7 @@ class AuthManagerImpl @Inject constructor(
     )
 
     private fun updateUser(user: User?) {
-        val userWithExclusiveFields = user?.copy(
-            premium = currentUser?.premium,
-            hideAds = currentUser?.hideAds
-        )
+        val userWithExclusiveFields = user?.copy(premium = currentUser?.premium)
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields
         userWithExclusiveFields ?: return
@@ -106,10 +101,7 @@ class AuthManagerImpl @Inject constructor(
                     .requireValue<User>()
 
                 // Merge exclusive fields to the Firebase auth user
-                val mergedUser = userWithExclusiveFields.copy(
-                    premium = remoteUser.premium,
-                    hideAds = remoteUser.hideAds
-                )
+                val mergedUser = userWithExclusiveFields.copy(premium = remoteUser.premium)
 
                 _userState.value = mergedUser
                 currentUser = mergedUser

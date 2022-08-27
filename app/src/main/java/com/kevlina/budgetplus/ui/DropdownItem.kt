@@ -31,5 +31,5 @@ fun DropdownItem(
 @Composable
 fun DropdownMenuDivider() {
 
-    Divider(modifier = Modifier.padding(vertical = 2.dp, horizontal = 12.dp))
+    Divider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp))
 }

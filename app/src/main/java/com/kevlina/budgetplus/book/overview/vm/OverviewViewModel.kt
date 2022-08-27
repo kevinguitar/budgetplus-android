@@ -53,7 +53,7 @@ class OverviewViewModel @Inject constructor(
     private val _sortMode = MutableStateFlow(sortModeCache)
     val sortMode: StateFlow<RecordsSortMode> = _sortMode.asStateFlow()
 
-    val isHideAds = authManager.isHideAds
+    val isHideAds = authManager.isPremium
 
     private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 

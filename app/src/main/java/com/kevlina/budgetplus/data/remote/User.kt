@@ -9,7 +9,6 @@ data class User(
     val email: String? = null,
     val photoUrl: String? = null,
     val premium: Boolean? = null,
-    val hideAds: Boolean? = null
 )
 
 @Serializable

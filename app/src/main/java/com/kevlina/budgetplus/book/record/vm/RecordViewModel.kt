@@ -52,7 +52,7 @@ class RecordViewModel @Inject constructor(
     )
     val recordEvent: Flow<Unit> = _recordEvent.asSharedFlow()
 
-    val isHideAds = authManager.isHideAds
+    val isHideAds = authManager.isPremium
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
     private var recordCount by preferenceHolder.bindInt(0)
@@ -129,7 +129,7 @@ class RecordViewModel @Inject constructor(
     fun showFullScreenAdIfNeeded(context: Context) {
         val activity = context as? Activity ?: return
 
-        if (recordCount % 10 == 0 && !authManager.isHideAds.value) {
+        if (recordCount % 10 == 0 && !authManager.isPremium.value) {
             fullScreenAdsLoader.showAd(activity)
         }
     }

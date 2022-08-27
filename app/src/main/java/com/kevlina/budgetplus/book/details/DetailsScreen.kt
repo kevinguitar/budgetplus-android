@@ -51,7 +51,7 @@ fun DetailsScreen(
     Column {
 
         TopBar(
-            title = "$category $totalPrice",
+            title = stringResource(id = R.string.overview_details_title, category, totalPrice),
             navigateBack = { navController.navigateUp() },
             menuActions = {
                 val modifier = Modifier.onGloballyPositioned {

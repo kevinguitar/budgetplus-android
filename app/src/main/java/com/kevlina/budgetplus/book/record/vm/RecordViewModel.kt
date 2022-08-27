@@ -77,7 +77,6 @@ class RecordViewModel @Inject constructor(
         val joinLink = bookRepo.generateJoinLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            //TODO: Append play store link after publishing
             putExtra(Intent.EXTRA_TEXT, context.getString(R.string.menu_share_book, joinLink))
         }
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))

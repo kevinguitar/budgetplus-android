@@ -1,10 +1,12 @@
 package com.kevlina.budgetplus.ui
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -50,5 +52,6 @@ val LocalAppColors = staticCompositionLocalOf {
 object AppTheme {
 
     val maxContentWidth: Dp get() = 568.dp
+    val dialogShape: Shape get() = RoundedCornerShape(12.dp)
 
 }

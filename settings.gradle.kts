@@ -15,4 +15,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BudgetPlus"
-include ':app'
+include(
+    "app"
+)

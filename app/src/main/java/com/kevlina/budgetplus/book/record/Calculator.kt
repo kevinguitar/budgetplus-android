@@ -2,16 +2,20 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
@@ -76,7 +80,7 @@ fun Calculator(
                         btns.forEach { btn ->
 
                             CalculatorBtn(
-                                text = btn.text,
+                                button = btn,
                                 isAdaptive = adaptiveButton,
                                 onClick = { viewModel.onInput(btn) }
                             )
@@ -101,7 +105,7 @@ fun Calculator(
 
 @Composable
 private fun ColumnScope.CalculatorBtn(
-    text: String,
+    button: CalculatorButton,
     isAdaptive: Boolean,
     onClick: () -> Unit
 ) {
@@ -123,13 +127,20 @@ private fun ColumnScope.CalculatorBtn(
 
         Box(contentAlignment = Alignment.Center) {
 
-            AppText(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontSize = FontSize.HeaderLarge,
-                fontWeight = FontWeight.Bold,
-                color = LocalAppColors.current.light
-            )
+            when (button) {
+                CalculatorButton.Back -> Icon(
+                    painter = painterResource(id = R.drawable.ic_backspace),
+                    contentDescription = stringResource(id = R.string.cta_delete),
+                    tint = LocalAppColors.current.light
+                )
+                else -> AppText(
+                    text = button.text,
+                    textAlign = TextAlign.Center,
+                    fontSize = FontSize.HeaderLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = LocalAppColors.current.light
+                )
+            }
         }
     }
 }

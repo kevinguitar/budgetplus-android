@@ -1,10 +1,13 @@
 package com.kevlina.budgetplus.book.record
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -15,8 +18,9 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.*
-import com.kevlina.budgetplus.utils.longFormatted
 import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.utils.shortFormatted
+import java.time.LocalDate
 
 @Composable
 fun RecordInfo(
@@ -25,6 +29,7 @@ fun RecordInfo(
 ) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
+    val focusManager = LocalFocusManager.current
 
     val type by viewModel.type.collectAsState()
     val date by viewModel.date.collectAsState()
@@ -63,14 +68,16 @@ fun RecordInfo(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.rippleClick { showDatePicker = true }
+                modifier = Modifier
+                    .rippleClick { showDatePicker = true }
+                    .padding(vertical = 8.dp)
             ) {
 
                 Icon(
@@ -79,7 +86,18 @@ fun RecordInfo(
                     tint = LocalAppColors.current.dark
                 )
 
-                AppText(text = date.longFormatted)
+                AppText(
+                    text = when {
+                        date.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
+                        date.plusDays(1).isEqual(LocalDate.now()) -> {
+                            stringResource(id = R.string.yesterday)
+                        }
+                        date.minusDays(1).isEqual(LocalDate.now()) -> {
+                            stringResource(id = R.string.tomorrow)
+                        }
+                        else -> date.shortFormatted
+                    }
+                )
             }
 
             AppTextField(
@@ -88,7 +106,13 @@ fun RecordInfo(
                 fontSize = FontSize.Header,
                 enabled = false,
                 title = "$",
-                modifier = Modifier.weight(1F)
+                modifier = Modifier
+                    .weight(1F)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { focusManager.clearFocus() }
+                    )
             )
         }
     }

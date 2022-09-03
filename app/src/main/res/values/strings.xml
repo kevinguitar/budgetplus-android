@@ -119,6 +119,9 @@
     <string name="cta_delete">Delete</string>
     <string name="select_date">Select Date</string>
     <string name="date_to">to</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="tomorrow">Tomorrow</string>
     <string name="username_title">User Name</string>
     <string name="book_name_title">Book Name</string>
     <string name="book_name_placeholder">My accounting book</string>

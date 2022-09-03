@@ -119,6 +119,6 @@ class CalculatorViewModel @Inject constructor(
     }
 
     companion object {
-        private const val EMPTY_PRICE: String = "0"
+        const val EMPTY_PRICE: String = "0"
     }
 }

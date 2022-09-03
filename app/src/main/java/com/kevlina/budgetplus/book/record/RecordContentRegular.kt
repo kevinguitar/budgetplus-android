@@ -6,12 +6,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.LocalAppColors
@@ -20,6 +24,14 @@ import com.kevlina.budgetplus.ui.LocalAppColors
 fun RecordContentRegular(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
+    val priceText by viewModel.calculator.priceText.collectAsState()
+    val infoScrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = priceText) {
+        if (priceText != CalculatorViewModel.EMPTY_PRICE) {
+            infoScrollState.animateScrollTo(infoScrollState.maxValue)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -32,7 +44,7 @@ fun RecordContentRegular(navController: NavController) {
             modifier = Modifier
                 .weight(1F)
                 .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(infoScrollState)
         )
 
         Spacer(

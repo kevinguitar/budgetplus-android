@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
 
@@ -18,6 +20,14 @@ fun RecordContentWide(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
     val isHideAds by viewModel.isHideAds.collectAsState()
+    val priceText by viewModel.calculator.priceText.collectAsState()
+    val infoScrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = priceText) {
+        if (priceText != CalculatorViewModel.EMPTY_PRICE) {
+            infoScrollState.animateScrollTo(infoScrollState.maxValue)
+        }
+    }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
@@ -32,7 +42,7 @@ fun RecordContentWide(navController: NavController) {
                 navController = navController,
                 modifier = Modifier
                     .weight(1F)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(infoScrollState)
             )
 
             if (!isHideAds) {

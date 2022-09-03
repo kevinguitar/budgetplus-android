@@ -22,8 +22,8 @@ import com.kevlina.budgetplus.data.remote.TimePeriod
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.DatePickerDialog
 import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.longFormatted
 import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.utils.shortFormatted
 
 @Composable
 fun TimePeriodSelector() {
@@ -49,7 +49,7 @@ fun TimePeriodSelector() {
         )
 
         AppText(
-            text = fromDate.longFormatted,
+            text = fromDate.shortFormatted,
             modifier = Modifier
                 .padding(horizontal = 4.dp)
                 .rippleClick { showFromDatePicker = true }
@@ -58,7 +58,7 @@ fun TimePeriodSelector() {
         AppText(text = stringResource(id = R.string.date_to))
 
         AppText(
-            text = untilDate.longFormatted,
+            text = untilDate.shortFormatted,
             modifier = Modifier.rippleClick { showUntilDatePicker = true }
         )
     }

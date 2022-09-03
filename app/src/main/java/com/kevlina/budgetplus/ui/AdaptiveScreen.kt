@@ -10,7 +10,7 @@ fun AdaptiveScreen(
     modifier: Modifier,
     regularContent: @Composable () -> Unit,
     wideContent: @Composable () -> Unit,
-    packedContent: @Composable () -> Unit,
+    packedContent: @Composable () -> Unit = regularContent,
     extraContent: @Composable (BoxScope.() -> Unit)? = null
 ) {
 

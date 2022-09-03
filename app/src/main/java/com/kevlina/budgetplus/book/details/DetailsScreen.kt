@@ -23,7 +23,6 @@ import com.kevlina.budgetplus.data.remote.Author
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.monetize.AdsMode
 import com.kevlina.budgetplus.ui.*
 import com.kevlina.budgetplus.utils.dollar
 import com.kevlina.budgetplus.utils.rippleClick
@@ -103,7 +102,7 @@ fun DetailsScreen(
         }
 
         if (!isHideAds) {
-            AdsBanner(mode = AdsMode.Banner)
+            AdsBanner()
         }
     }
 

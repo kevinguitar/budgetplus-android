@@ -16,7 +16,6 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.HistoryDest
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.monetize.AdsMode
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.TopBar
 
@@ -79,7 +78,7 @@ fun OverviewScreen(navController: NavController) {
         }
 
         if (!isHideAds) {
-            AdsBanner(mode = AdsMode.Banner)
+            AdsBanner()
         }
     }
 }

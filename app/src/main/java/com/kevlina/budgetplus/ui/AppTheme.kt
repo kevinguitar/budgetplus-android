@@ -52,6 +52,8 @@ val LocalAppColors = staticCompositionLocalOf {
 object AppTheme {
 
     val maxContentWidth: Dp get() = 568.dp
+    val twoPanelMinWidth: Dp get() = 600.dp
+    val packedMaxHeight: Dp get() = 480.dp
     val dialogShape: Shape get() = RoundedCornerShape(12.dp)
 
 }

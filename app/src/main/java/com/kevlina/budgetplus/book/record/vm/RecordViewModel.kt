@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
@@ -11,12 +12,13 @@ import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.*
 import com.kevlina.budgetplus.monetize.FullScreenAdsLoader
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -46,16 +48,19 @@ class RecordViewModel @Inject constructor(
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
 
-    private val _recordEvent = MutableSharedFlow<Unit>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    val recordEvent: Flow<Unit> = _recordEvent.asSharedFlow()
+    private val _recordEvent = MutableEventFlow<Unit>()
+    val recordEvent: EventFlow<Unit> = _recordEvent.asStateFlow()
 
     val isHideAds = authManager.isPremium
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
     private var recordCount by preferenceHolder.bindInt(0)
+
+    init {
+        calculator.recordFlow
+            .consumeEach { record() }
+            .launchIn(viewModelScope)
+    }
 
     fun setType(type: RecordType) {
         _type.value = type
@@ -89,20 +94,29 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    fun record(): Boolean {
-        calculator.evaluate()
+    /**
+     *  Show full screen Ad on every 10 records
+     */
+    fun showFullScreenAdIfNeeded(context: Context) {
+        val activity = context as? Activity ?: return
 
+        if (recordCount % 10 == 0 && !authManager.isPremium.value) {
+            fullScreenAdsLoader.showAd(activity)
+        }
+    }
+
+    private fun record() {
         val category = category.value
         val price = calculator.price.value
 
         if (category == null) {
             toaster.showMessage(R.string.record_empty_category)
-            return false
+            return
         }
 
         if (price == 0.0) {
             toaster.showMessage(R.string.record_empty_price)
-            return false
+            return
         }
 
         val record = Record(
@@ -115,23 +129,11 @@ class RecordViewModel @Inject constructor(
         )
 
         recordRepo.createRecord(record)
-        _recordEvent.tryEmit(Unit)
+        _recordEvent.sendEvent()
         toaster.showMessage(context.getString(R.string.record_created, category))
         tracker.logEvent("record_created")
         recordCount += 1
         resetScreen()
-        return true
-    }
-
-    /**
-     *  Show full screen Ad on every 10 records
-     */
-    fun showFullScreenAdIfNeeded(context: Context) {
-        val activity = context as? Activity ?: return
-
-        if (recordCount % 10 == 0 && !authManager.isPremium.value) {
-            fullScreenAdsLoader.showAd(activity)
-        }
     }
 
     private fun resetScreen() {

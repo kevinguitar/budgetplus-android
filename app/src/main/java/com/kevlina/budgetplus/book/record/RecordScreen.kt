@@ -3,9 +3,7 @@ package com.kevlina.budgetplus.book.record
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -17,7 +15,7 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.menu.BookScreenMenu
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
-import com.kevlina.budgetplus.ui.AppTheme
+import com.kevlina.budgetplus.ui.AdaptiveScreen
 import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.ui.TopBar
 
@@ -25,7 +23,6 @@ import com.kevlina.budgetplus.ui.TopBar
 fun RecordScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
-
     val context = LocalContext.current
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -54,17 +51,19 @@ fun RecordScreen(navController: NavController) {
             )
         }
 
-        Box(
-            modifier = Modifier
-                .width(AppTheme.maxContentWidth)
-                .align(Alignment.CenterHorizontally)
-                .weight(1F)
-        ) {
-
-            RecordInfo(navController = navController)
-
-            DoneAnimator()
-        }
-
+        AdaptiveScreen(
+            wideContent = {
+                RecordContentWide(navController = navController)
+            },
+            regularContent = {
+                RecordContentRegular(navController = navController)
+            },
+            packedContent = {
+                RecordContentPacked(navController = navController)
+            },
+            extraContent = {
+                DoneAnimator()
+            }
+        )
     }
 }

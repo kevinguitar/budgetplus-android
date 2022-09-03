@@ -1,8 +1,6 @@
 package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,14 +14,15 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.monetize.AdsMode
 import com.kevlina.budgetplus.ui.*
 import com.kevlina.budgetplus.utils.longFormatted
 import com.kevlina.budgetplus.utils.rippleClick
 
 @Composable
-fun RecordInfo(navController: NavController) {
+fun RecordInfo(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
 
@@ -31,39 +30,21 @@ fun RecordInfo(navController: NavController) {
     val date by viewModel.date.collectAsState()
     val name by viewModel.note.collectAsState()
     val category by viewModel.category.collectAsState()
-    val isHideAds by viewModel.isHideAds.collectAsState()
+    val priceText by viewModel.calculator.priceText.collectAsState()
 
     var showDatePicker by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.verticalScroll(rememberScrollState())
+        modifier = modifier
     ) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .rippleClick { showDatePicker = true }
-        ) {
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_today),
-                contentDescription = stringResource(id = R.string.select_date),
-                tint = LocalAppColors.current.dark
-            )
-
-            AppText(text = date.longFormatted)
-        }
 
         CategoriesGrid(
             type = type,
             onCategorySelected = viewModel::setCategory,
             onEditClicked = { navController.navigate(route = "${AddDest.EditCategory.route}/$type") },
-            modifier = Modifier.padding(horizontal = 16.dp),
             selectedCategory = category
         )
 
@@ -77,20 +58,38 @@ fun RecordInfo(navController: NavController) {
                     RecordType.Income -> R.string.record_note_placeholder_income
                 }
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Calculator(viewModel = viewModel.calculator)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
 
-        RecordButton(
-            viewModel = viewModel,
-            applyBottomPadding = isHideAds
-        )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.rippleClick { showDatePicker = true }
+            ) {
 
-        if (!isHideAds) {
-            AdsBanner(mode = AdsMode.Adaptive)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_today),
+                    contentDescription = stringResource(id = R.string.select_date),
+                    tint = LocalAppColors.current.dark
+                )
+
+                AppText(text = date.longFormatted)
+            }
+
+            AppTextField(
+                value = priceText,
+                onValueChange = {},
+                fontSize = FontSize.Header,
+                enabled = false,
+                title = "$",
+                modifier = Modifier.weight(1F)
+            )
         }
     }
 

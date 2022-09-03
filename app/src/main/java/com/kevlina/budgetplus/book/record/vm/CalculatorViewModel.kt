@@ -5,8 +5,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import com.kevlina.budgetplus.book.record.CalculatorAction
 import com.kevlina.budgetplus.book.record.CalculatorButton
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.roundUpPriceText
+import com.kevlina.budgetplus.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,19 +25,27 @@ class CalculatorViewModel @Inject constructor(
     private val _price = MutableStateFlow(0.0)
     val price: StateFlow<Double> = _price.asStateFlow()
 
+    val needEvaluate: StateFlow<Boolean> = priceText.mapState { text ->
+        CalculatorButton.Plus.text in text ||
+                CalculatorButton.Minus.text in text ||
+                CalculatorButton.Multiply.text in text ||
+                CalculatorButton.Divide.text in text
+    }
+
+    private val _recordFlow = MutableEventFlow<Unit>()
+    val recordFlow: EventFlow<Unit> = _recordFlow.asStateFlow()
+
     fun onInput(btn: CalculatorButton) {
         vibrate()
 
         val currentPrice = priceText.value
         when (btn) {
+            CalculatorButton.Back -> delete()
             CalculatorButton.Plus, CalculatorButton.Minus,
             CalculatorButton.Multiply, CalculatorButton.Divide -> {
                 if (currentPrice != EMPTY_PRICE) {
                     _priceText.value = currentPrice + btn.text
                 }
-            }
-            CalculatorButton.DoubleZero -> if (currentPrice != EMPTY_PRICE) {
-                _priceText.value = currentPrice + btn.text
             }
             else -> _priceText.value = if (currentPrice == EMPTY_PRICE) {
                 btn.text
@@ -48,20 +55,10 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
-    fun onAction(action: CalculatorAction) {
-        vibrate()
-
-        when (action) {
-            CalculatorAction.Clear -> clearPrice()
-            CalculatorAction.Equal -> evaluate()
-            CalculatorAction.Delete -> delete()
-        }
-    }
-
-    fun evaluate() {
+    private fun evaluate() {
         val text = priceText.value
-            .replace('×', '*')
-            .replace('÷', '/')
+            .replace(CalculatorButton.Multiply.text, "*")
+            .replace(CalculatorButton.Divide.text, "/")
 
         val rawResult: Double = try {
             val expression = ExpressionBuilder(text).build()
@@ -88,6 +85,18 @@ class CalculatorViewModel @Inject constructor(
     fun clearPrice() {
         _price.value = 0.0
         _priceText.value = EMPTY_PRICE
+    }
+
+    fun onCalculatorAction(action: CalculatorAction) {
+        vibrate()
+        when {
+            action == CalculatorAction.Clear -> clearPrice()
+            needEvaluate.value -> evaluate()
+            else -> {
+                evaluate()
+                _recordFlow.sendEvent()
+            }
+        }
     }
 
     private fun delete() {

@@ -2,23 +2,21 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
-import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.AppTheme
+import com.kevlina.budgetplus.ui.FontSize
+import com.kevlina.budgetplus.ui.LocalAppColors
 
 enum class CalculatorButton(val text: String) {
     Seven("7"), Four("4"),
@@ -26,110 +24,99 @@ enum class CalculatorButton(val text: String) {
     Nine("9"), Six("6"),
     Divide("÷"), Multiply("×"),
 
-    One("1"), DoubleZero("00"),
-    Two("2"), Zero("0"),
-    Three("3"), Dot("."),
+    One("1"), Zero("0"),
+    Two("2"), Dot("."),
+    Three("3"), Back("<-"),
     Minus("-"), Plus("+");
 }
 
-enum class CalculatorAction(val text: String) {
-    Clear("AC"), Equal("="), Delete("");
+enum class CalculatorAction {
+    Clear, Ok;
 }
 
-private val calculatorSpacing = 12.dp
+private val horizontalSpacing = 12.dp
+private val verticalSpacing = 8.dp
 
 @Composable
-fun Calculator(viewModel: CalculatorViewModel) {
+fun Calculator(
+    viewModel: CalculatorViewModel,
+    adaptiveButton: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
 
-    val priceText by viewModel.priceText.collectAsState()
+    val needEvaluate by viewModel.needEvaluate.collectAsState()
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(calculatorSpacing),
-        modifier = Modifier.padding(horizontal = 16.dp)
+        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+        modifier = modifier
     ) {
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(calculatorSpacing),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        CalculatorButton.values().toList().chunked(8).forEachIndexed { index, rows ->
 
-            AppTextField(
-                value = priceText,
-                onValueChange = {},
-                fontSize = FontSize.Header,
-                enabled = false,
-                title = "$",
-                modifier = Modifier
-                    .weight(1F)
-                    .fillMaxWidth()
-            )
-
-            IconButton(
-                modifier = Modifier
-                    .weight(0.2F)
-                    .height(IntrinsicSize.Min),
-                onClick = { viewModel.onAction(CalculatorAction.Delete) }
-            ) {
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_backspace),
-                    contentDescription = stringResource(id = R.string.cta_delete),
-                    tint = LocalAppColors.current.dark,
-                    modifier = Modifier.fillMaxSize(0.8F)
-                )
-            }
-        }
-
-        Column(verticalArrangement = Arrangement.spacedBy(calculatorSpacing)) {
-
-            CalculatorButton.values().toList().chunked(8).forEachIndexed { index, rows ->
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(calculatorSpacing),
-                    modifier = Modifier
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
+                modifier = if (adaptiveButton) {
+                    Modifier
+                        .weight(1F)
+                        .fillMaxWidth()
+                } else {
+                    Modifier
                         .fillMaxWidth()
                         .height(intrinsicSize = IntrinsicSize.Min)
-                ) {
+                }
+            ) {
 
-                    rows.chunked(2).forEach { btns ->
+                rows.chunked(2).forEach { btns ->
 
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(calculatorSpacing),
-                            modifier = Modifier.weight(1F)
-                        ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+                        modifier = Modifier.weight(1F)
+                    ) {
 
-                            btns.forEach { btn ->
+                        btns.forEach { btn ->
 
-                                CalculatorBtn(
-                                    text = btn.text,
-                                    onClick = { viewModel.onInput(btn) }
-                                )
-                            }
+                            CalculatorBtn(
+                                text = btn.text,
+                                isAdaptive = adaptiveButton,
+                                onClick = { viewModel.onInput(btn) }
+                            )
                         }
                     }
-
-                    val action = CalculatorAction.values()[index]
-                    CalculatorActionBtn(
-                        text = action.text,
-                        onClick = { viewModel.onAction(action) },
-                    )
                 }
+
+                val action = CalculatorAction.values()[index]
+
+                CalculatorActionBtn(
+                    text = when {
+                        action == CalculatorAction.Clear -> "AC"
+                        needEvaluate -> "="
+                        else -> "OK"
+                    },
+                    onClick = { viewModel.onCalculatorAction(action) },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun CalculatorBtn(
+private fun ColumnScope.CalculatorBtn(
     text: String,
+    isAdaptive: Boolean,
     onClick: () -> Unit
 ) {
 
     Surface(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1F),
+        modifier = if (isAdaptive) {
+            Modifier
+                .weight(1F)
+                .fillMaxWidth()
+        } else {
+            Modifier
+                .weight(1F)
+                .aspectRatio(1F)
+        },
         shape = CircleShape,
         color = LocalAppColors.current.primary
     ) {
@@ -178,5 +165,5 @@ private fun RowScope.CalculatorActionBtn(
 @Preview(showBackground = true)
 @Composable
 private fun Calculator_Preview() = AppTheme {
-    Calculator(CalculatorViewModel(null, null))
+    Calculator(viewModel = CalculatorViewModel(null, null))
 }

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kevlina.budgetplus.ui.AdaptiveScreen
 import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.consumeEach
+import com.kevlina.budgetplus.utils.consume
 import com.kevlina.budgetplus.welcome.WelcomeViewModel
 import kotlinx.coroutines.flow.launchIn
 
@@ -19,7 +19,7 @@ fun WelcomeBinding(viewModel: WelcomeViewModel) {
 
     LaunchedEffect(viewModel) {
         viewModel.navigation
-            .consumeEach(context)
+            .consume(context)
             .launchIn(this)
     }
 

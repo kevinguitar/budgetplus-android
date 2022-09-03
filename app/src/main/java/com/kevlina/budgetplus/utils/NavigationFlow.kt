@@ -7,7 +7,7 @@ import android.content.Intent
 @Suppress("FunctionName")
 fun NavigationFlow() = MutableEventFlow<NavigationInfo>()
 
-fun EventFlow<NavigationInfo>.consumeEach(context: Context) =
+fun EventFlow<NavigationInfo>.consume(context: Context) =
     consumeEach { info ->
         val intent = Intent(context, info.destination.java)
         intent.putExtras(info.bundle)

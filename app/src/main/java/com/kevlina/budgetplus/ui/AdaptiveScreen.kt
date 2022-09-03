@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.ui
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
@@ -14,7 +15,10 @@ fun AdaptiveScreen(
     extraContent: @Composable (BoxScope.() -> Unit)? = null
 ) {
 
-    BoxWithConstraints(modifier = modifier) {
+    BoxWithConstraints(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
 
         when {
             maxWidth > AppTheme.twoPanelMinWidth && maxWidth > maxHeight -> wideContent()

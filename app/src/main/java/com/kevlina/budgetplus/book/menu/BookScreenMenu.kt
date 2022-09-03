@@ -18,7 +18,7 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.ui.*
-import com.kevlina.budgetplus.utils.consumeEach
+import com.kevlina.budgetplus.utils.consume
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
@@ -30,7 +30,7 @@ fun BookScreenMenu() {
 
     LaunchedEffect(viewModel) {
         viewModel.navigation
-            .consumeEach(context)
+            .consume(context)
             .launchIn(this)
     }
 

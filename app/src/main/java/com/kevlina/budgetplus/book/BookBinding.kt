@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.ARG_CATEGORY
 import com.kevlina.budgetplus.utils.ARG_TYPE
-import com.kevlina.budgetplus.utils.consumeEach
+import com.kevlina.budgetplus.utils.consume
 import com.kevlina.budgetplus.utils.rippleClick
 import kotlinx.coroutines.flow.launchIn
 
@@ -49,7 +49,7 @@ fun BookBinding(viewModel: BookViewModel) {
 
     LaunchedEffect(viewModel) {
         viewModel.navigation
-            .consumeEach(context)
+            .consume(context)
             .launchIn(this)
     }
 

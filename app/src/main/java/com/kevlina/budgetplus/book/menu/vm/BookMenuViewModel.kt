@@ -71,6 +71,6 @@ class BookMenuViewModel @Inject constructor(
             destination = AuthActivity::class,
             bundle = Bundle().apply { putBoolean(AuthActivity.ARG_ENABLE_ONE_TAP, false) }
         )
-        navigation.tryEmit(navInfo)
+        navigation.sendEvent(navInfo)
     }
 }

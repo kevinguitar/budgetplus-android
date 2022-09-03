@@ -29,10 +29,7 @@ import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.BookActivity
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.utils.NavigationFlow
-import com.kevlina.budgetplus.utils.NavigationInfo
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.utils.*
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.launch
@@ -175,7 +172,7 @@ class AuthViewModel @Inject constructor(
                 toaster.showError(e)
                 NavigationInfo(destination = WelcomeActivity::class)
             }
-            navigation.tryEmit(navInfo)
+            navigation.sendEvent(navInfo)
         }
     }
 

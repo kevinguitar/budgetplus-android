@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -52,11 +53,14 @@ fun RecordScreen(navController: NavController) {
         }
 
         AdaptiveScreen(
-            wideContent = {
-                RecordContentWide(navController = navController)
-            },
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .weight(1F),
             regularContent = {
                 RecordContentRegular(navController = navController)
+            },
+            wideContent = {
+                RecordContentWide(navController = navController)
             },
             packedContent = {
                 RecordContentPacked(navController = navController)

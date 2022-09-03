@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.data.remote.JoinBookException
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo
 import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.sendEvent
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,7 +34,7 @@ class BookViewModel @Inject constructor(
                 .onEach { book ->
                     if (book == null) {
                         val nav = NavigationInfo(destination = WelcomeActivity::class)
-                        navigation.tryEmit(nav)
+                        navigation.sendEvent(nav)
                     }
                 }
                 .launchIn(viewModelScope)

@@ -1,7 +1,10 @@
 package com.kevlina.budgetplus.welcome.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,16 +22,13 @@ import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.LocalAppColors
 
 @Composable
-fun ColumnScope.CollabBlock() {
+fun CollabBlock(modifier: Modifier) {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_collab))
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F)
-            .background(LocalAppColors.current.primary)
+        modifier = modifier.background(LocalAppColors.current.primary)
     ) {
 
         AppText(

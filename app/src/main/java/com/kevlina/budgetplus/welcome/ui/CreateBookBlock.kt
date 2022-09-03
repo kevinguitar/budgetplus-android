@@ -16,21 +16,27 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.ui.*
 
 @Composable
-fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
+fun CreateBookBlock(
+    modifier: Modifier,
+    createBook: (String) -> Unit,
+    isWideMode: Boolean = false
+) {
 
     var value by remember { mutableStateOf("") }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .weight(1F)
-    ) {
+    Box(modifier = modifier) {
 
         Column(
             modifier = Modifier
-                .align(Alignment.TopEnd)
+                .align(
+                    if (isWideMode) {
+                        Alignment.BottomStart
+                    } else {
+                        Alignment.TopEnd
+                    }
+                )
                 .width(IntrinsicSize.Max)
-                .padding(top = 16.dp, end = 24.dp)
+                .padding(vertical = 16.dp, horizontal = 24.dp)
         ) {
 
             Row(
@@ -64,7 +70,13 @@ fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(
+                    if (isWideMode) {
+                        Alignment.TopCenter
+                    } else {
+                        Alignment.BottomCenter
+                    }
+                )
                 .width(AppTheme.maxContentWidth)
                 .padding(all = 24.dp)
         ) {
@@ -105,10 +117,14 @@ fun ColumnScope.CreateBookBlock(createBook: (String) -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 360, heightDp = 300)
 @Composable
 private fun CreateBookBlock_Preview() = AppTheme {
-    Column {
-        CreateBookBlock(createBook = {})
-    }
+    CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {})
+}
+
+@Preview(showBackground = true, widthDp = 300, heightDp = 360)
+@Composable
+private fun CreateBookBlockWide_Preview() = AppTheme {
+    CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {}, isWideMode = true)
 }

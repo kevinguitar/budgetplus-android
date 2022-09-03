@@ -1,14 +1,12 @@
 package com.kevlina.budgetplus.welcome.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.kevlina.budgetplus.ui.AdaptiveScreen
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.consumeEach
 import com.kevlina.budgetplus.welcome.WelcomeViewModel
@@ -25,22 +23,18 @@ fun WelcomeBinding(viewModel: WelcomeViewModel) {
             .launchIn(this)
     }
 
-    WelcomeContent(viewModel)
-}
-
-@Composable
-private fun WelcomeContent(viewModel: WelcomeViewModel) {
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    AdaptiveScreen(
         modifier = Modifier
             .fillMaxSize()
-            .background(LocalAppColors.current.light)
-    ) {
-
-        CreateBookBlock(createBook = viewModel::createBook)
-
-        CollabBlock()
-    }
+            .background(LocalAppColors.current.light),
+        regularContent = {
+            WelcomeContentRegular(viewModel)
+        },
+        wideContent = {
+            WelcomeContentWide(viewModel)
+        },
+        packedContent = {
+            WelcomeContentPacked(viewModel)
+        }
+    )
 }

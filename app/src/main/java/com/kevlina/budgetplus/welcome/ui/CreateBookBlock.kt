@@ -46,7 +46,8 @@ fun CreateBookBlock(
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_logo_combined),
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
                 )
 
                 AppText(

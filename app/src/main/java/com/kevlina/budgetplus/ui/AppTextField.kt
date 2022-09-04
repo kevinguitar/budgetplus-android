@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +30,11 @@ fun AppTextField(
     placeholder: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TextUnit.Unspecified,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        capitalization = KeyboardCapitalization.Sentences,
+        imeAction = ImeAction.Done
+    ),
+    onDone: (KeyboardActionScope.() -> Unit)? = null
 ) = AppTextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
@@ -41,6 +48,7 @@ fun AppTextField(
             fontSize = fontSize
         ),
         keyboardOptions = keyboardOptions,
+        keyboardActions = KeyboardActions(onDone = onDone),
         singleLine = true,
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
@@ -67,7 +75,11 @@ fun AppTextField(
     placeholder: String? = null,
     enabled: Boolean = true,
     fontSize: TextUnit = TextUnit.Unspecified,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        capitalization = KeyboardCapitalization.Sentences,
+        imeAction = ImeAction.Done
+    ),
+    onDone: (KeyboardActionScope.() -> Unit)? = null
 ) = AppTextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
@@ -81,6 +93,7 @@ fun AppTextField(
             fontSize = fontSize
         ),
         keyboardOptions = keyboardOptions,
+        keyboardActions = KeyboardActions(onDone = onDone),
         singleLine = true,
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->

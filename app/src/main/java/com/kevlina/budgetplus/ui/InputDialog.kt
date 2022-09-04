@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -47,7 +48,13 @@ fun InputDialog(
                 onValueChange = { name = it },
                 title = title,
                 placeholder = placeholder,
-                modifier = Modifier.focusRequester(focusRequester)
+                modifier = Modifier.focusRequester(focusRequester),
+                onDone = {
+                    if (name.text.isNotBlank() && name.text != currentInput) {
+                        onButtonClicked(name.text)
+                        onDismiss()
+                    }
+                }
             )
 
             AppButton(
@@ -58,9 +65,11 @@ fun InputDialog(
                 enabled = name.text.isNotBlank() && name.text != currentInput,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
+
                 AppText(
                     text = buttonText,
-                    color = LocalAppColors.current.light
+                    color = LocalAppColors.current.light,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }

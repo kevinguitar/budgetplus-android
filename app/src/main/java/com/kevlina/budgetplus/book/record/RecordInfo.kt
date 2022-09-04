@@ -63,7 +63,8 @@ fun RecordInfo(
                     RecordType.Income -> R.string.record_note_placeholder_income
                 }
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onDone = { focusManager.clearFocus() }
         )
 
         Row(

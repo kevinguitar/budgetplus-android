@@ -62,7 +62,8 @@ fun EditRecordDialog(
                 ) {
                     AppText(
                         text = stringResource(id = R.string.cta_delete),
-                        color = LocalAppColors.current.light
+                        color = LocalAppColors.current.light,
+                        fontWeight = FontWeight.Medium
                     )
                 }
 
@@ -74,7 +75,8 @@ fun EditRecordDialog(
                 ) {
                     AppText(
                         text = stringResource(id = R.string.cta_save),
-                        color = LocalAppColors.current.light
+                        color = LocalAppColors.current.light,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }

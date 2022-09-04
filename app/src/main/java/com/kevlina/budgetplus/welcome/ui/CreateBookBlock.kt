@@ -98,7 +98,12 @@ fun CreateBookBlock(
                     onValueChange = { value = it },
                     title = stringResource(id = R.string.book_name_title),
                     placeholder = stringResource(id = R.string.book_name_placeholder),
-                    modifier = Modifier.weight(1F)
+                    modifier = Modifier.weight(1F),
+                    onDone = {
+                        if (value.isNotBlank()) {
+                            createBook(value)
+                        }
+                    }
                 )
 
                 AppButton(
@@ -110,7 +115,7 @@ fun CreateBookBlock(
                     AppText(
                         text = stringResource(id = R.string.cta_go),
                         color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }
@@ -118,13 +123,13 @@ fun CreateBookBlock(
     }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 300)
+@Preview(showBackground = true, widthDp = 400, heightDp = 240)
 @Composable
 private fun CreateBookBlock_Preview() = AppTheme {
     CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {})
 }
 
-@Preview(showBackground = true, widthDp = 300, heightDp = 360)
+@Preview(showBackground = true, widthDp = 400, heightDp = 240)
 @Composable
 private fun CreateBookBlockWide_Preview() = AppTheme {
     CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {}, isWideMode = true)

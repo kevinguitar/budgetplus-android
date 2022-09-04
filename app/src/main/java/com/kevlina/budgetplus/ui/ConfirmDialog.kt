@@ -29,7 +29,6 @@ fun ConfirmDialog(
             AppText(
                 text = message,
                 fontSize = FontSize.SemiLarge,
-                fontWeight = FontWeight.Medium
             )
 
             Row(
@@ -40,7 +39,8 @@ fun ConfirmDialog(
                 AppButton(onClick = onDismiss) {
                     AppText(
                         text = stringResource(id = R.string.cta_cancel),
-                        color = LocalAppColors.current.light
+                        color = LocalAppColors.current.light,
+                        fontWeight = FontWeight.Medium
                     )
                 }
 
@@ -50,7 +50,8 @@ fun ConfirmDialog(
                 }) {
                     AppText(
                         text = stringResource(id = R.string.cta_confirm),
-                        color = LocalAppColors.current.light
+                        color = LocalAppColors.current.light,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }

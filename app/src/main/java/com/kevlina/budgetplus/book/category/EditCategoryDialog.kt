@@ -10,6 +10,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,13 @@ fun EditCategoryDialog(
                 value = name,
                 onValueChange = { name = it },
                 title = stringResource(id = R.string.category_title),
-                modifier = Modifier.focusRequester(focusRequester)
+                modifier = Modifier.focusRequester(focusRequester),
+                onDone = {
+                    if (name.text.isNotBlank() && name.text != currentName) {
+                        onConfirm(name.text)
+                        onDismiss()
+                    }
+                }
             )
 
             Row(
@@ -76,7 +83,8 @@ fun EditCategoryDialog(
                     }) {
                         AppText(
                             text = stringResource(id = R.string.cta_delete),
-                            color = LocalAppColors.current.light
+                            color = LocalAppColors.current.light,
+                            fontWeight = FontWeight.Medium
                         )
                     }
                 }
@@ -94,7 +102,8 @@ fun EditCategoryDialog(
                     }
                     AppText(
                         text = stringResource(id = textRes),
-                        color = LocalAppColors.current.light
+                        color = LocalAppColors.current.light,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }

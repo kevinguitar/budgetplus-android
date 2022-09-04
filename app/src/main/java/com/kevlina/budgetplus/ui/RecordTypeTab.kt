@@ -87,7 +87,7 @@ private fun TypePill(
             text = text,
             color = textColor,
             fontSize = FontSize.SemiLarge,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .width(120.dp)

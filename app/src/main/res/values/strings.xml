@@ -4,7 +4,7 @@
 
     <!-- Auth -->
     <string name="auth_welcome_title">Welcome to Budget+</string>
-    <string name="auth_welcome_description">Simple | Fast | Budget Sharing</string>
+    <string name="auth_welcome_description">A mighty co-spending tracker\nUse it anywhere with your friends and family</string>
     <string name="auth_facebook">Continue with Facebook</string>
     <string name="auth_google">Continue with Google</string>
     <string name="auth_success">Welcome, %s!</string>

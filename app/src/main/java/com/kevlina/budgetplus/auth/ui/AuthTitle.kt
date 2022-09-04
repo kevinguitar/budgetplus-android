@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.FontSize
@@ -27,6 +29,8 @@ fun AuthDescription(modifier: Modifier) {
     AppText(
         text = stringResource(id = R.string.auth_welcome_description),
         color = LocalAppColors.current.light,
+        textAlign = TextAlign.Center,
+        lineHeight = 24.sp,
         modifier = modifier
     )
 }

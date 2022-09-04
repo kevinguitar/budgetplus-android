@@ -4,7 +4,7 @@
 
     <!-- Auth -->
     <string name="auth_welcome_title">歡迎加入極簡記帳</string>
-    <string name="auth_welcome_description">簡單、快速、共享</string>
+    <string name="auth_welcome_description">飛快的記帳 App，從開啟到完成記帳只要 5 秒鐘\n快跟你的親朋好友共同記帳吧！</string>
     <string name="auth_facebook">以 Facebook 繼續</string>
     <string name="auth_google">以 Google 繼續</string>
     <string name="auth_success">歡迎，%s！</string>

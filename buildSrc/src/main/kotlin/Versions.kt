@@ -27,7 +27,7 @@ object Versions {
 
     // Firebase BOM
     // https://firebase.google.com/support/release-notes/android
-    const val FIREBASE_BOM_VERSION = "30.3.2"
+    const val FIREBASE_BOM_VERSION = "30.4.0"
 
 
 

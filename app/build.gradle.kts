@@ -127,7 +127,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
 
     // 3rd party auth
-    implementation("com.google.android.gms:play-services-auth:20.2.0")
+    implementation("com.google.android.gms:play-services-auth:20.3.0")
     implementation("com.facebook.android:facebook-login:13.0.0")
 
     // AdMob

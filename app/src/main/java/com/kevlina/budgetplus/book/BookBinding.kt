@@ -91,7 +91,7 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
             val args = entry.arguments ?: Bundle.EMPTY
             EditCategoryScreen(
                 navController = navController,
-                type = args.getSerializable(ARG_TYPE) as RecordType
+                type = requireNotNull(args.getSerializable(ARG_TYPE, RecordType::class.java))
             )
         }
     }

@@ -12,6 +12,6 @@ object AppConfig {
     const val MIN_ANDROID_SDK_VERSION = 23
 
     // Compile and target sdk version
-    const val ANDROID_SDK_VERSION = 32
+    const val ANDROID_SDK_VERSION = 33
 
 }

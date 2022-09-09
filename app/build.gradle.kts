@@ -86,7 +86,7 @@ kapt {
 dependencies {
 
     // Android core
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
 
     // Jetpack Compose
@@ -125,6 +125,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+
+    // Google Play billing
+    implementation("com.android.billingclient:billing-ktx:${Versions.BILLING_VERSION}")
 
     // 3rd party auth
     implementation("com.google.android.gms:play-services-auth:20.3.0")

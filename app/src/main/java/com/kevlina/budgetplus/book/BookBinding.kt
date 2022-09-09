@@ -35,10 +35,7 @@ import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.ARG_CATEGORY
-import com.kevlina.budgetplus.utils.ARG_TYPE
-import com.kevlina.budgetplus.utils.consume
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.utils.*
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
@@ -91,7 +88,7 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
             val args = entry.arguments ?: Bundle.EMPTY
             EditCategoryScreen(
                 navController = navController,
-                type = requireNotNull(args.getSerializable(ARG_TYPE, RecordType::class.java))
+                type = args.getSerializableCompat(ARG_TYPE)
             )
         }
     }

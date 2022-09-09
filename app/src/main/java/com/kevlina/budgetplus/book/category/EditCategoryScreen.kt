@@ -35,9 +35,6 @@ import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.*
-import com.kevlina.budgetplus.utils.DraggableItem
-import com.kevlina.budgetplus.utils.dragContainer
-import com.kevlina.budgetplus.utils.rememberDragDropState
 import com.kevlina.budgetplus.utils.thenIf
 
 @Composable

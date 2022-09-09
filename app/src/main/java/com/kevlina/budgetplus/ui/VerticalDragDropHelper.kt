@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.ui
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring

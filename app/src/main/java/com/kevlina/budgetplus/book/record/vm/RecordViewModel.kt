@@ -95,12 +95,14 @@ class RecordViewModel @Inject constructor(
     }
 
     /**
-     *  Show full screen Ad on every 10 records
+     *  Show full screen Ad on every [fullScreenAdRecords] records
      */
+    private val fullScreenAdRecords: Int get() = 5
+
     fun showFullScreenAdIfNeeded(context: Context) {
         val activity = context as? Activity ?: return
 
-        if (recordCount % 10 == 0 && !authManager.isPremium.value) {
+        if (recordCount % fullScreenAdRecords == 0 && !authManager.isPremium.value) {
             fullScreenAdsLoader.showAd(activity)
         }
     }

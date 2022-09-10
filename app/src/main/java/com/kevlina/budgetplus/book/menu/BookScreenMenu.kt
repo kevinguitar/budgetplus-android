@@ -2,7 +2,9 @@ package com.kevlina.budgetplus.book.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -14,7 +16,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.ui.*
@@ -22,7 +30,7 @@ import com.kevlina.budgetplus.utils.consume
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun BookScreenMenu() {
+fun BookScreenMenu(navController: NavController) {
 
     val viewModel = hiltViewModel<BookMenuViewModel>()
 
@@ -35,6 +43,9 @@ fun BookScreenMenu() {
     }
 
     val isBookOwner by viewModel.isBookOwner.collectAsState()
+    val isPremium by viewModel.isPremium.collectAsState()
+
+    val icPremium by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_premium))
 
     var isMenuExpanded by remember { mutableStateOf(false) }
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
@@ -57,6 +68,26 @@ fun BookScreenMenu() {
             offset = DpOffset(x = 4.dp, y = 0.dp),
             modifier = Modifier.background(color = LocalAppColors.current.light)
         ) {
+
+            if (!isPremium) {
+                DropdownMenuItem(onClick = {
+                    isMenuExpanded = false
+                    navController.navigate(AddDest.UnlockPremium.route)
+                }) {
+
+                    AppText(
+                        text = stringResource(id = R.string.premium_hide_ads),
+                        color = LocalAppColors.current.primarySemiDark,
+                        fontSize = FontSize.SemiLarge
+                    )
+
+                    LottieAnimation(
+                        composition = icPremium,
+                        iterations = LottieConstants.IterateForever,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+            }
 
             DropdownItem(name = stringResource(id = R.string.menu_rename_user)) {
                 isRenameUserDialogShown = true
@@ -95,6 +126,7 @@ fun BookScreenMenu() {
     }
 
     if (isRenameUserDialogShown) {
+
         InputDialog(
             currentInput = viewModel.currentUsername,
             title = stringResource(id = R.string.username_title),

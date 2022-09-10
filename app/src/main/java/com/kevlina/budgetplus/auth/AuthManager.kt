@@ -31,6 +31,8 @@ interface AuthManager {
 
     suspend fun renameUser(newName: String)
 
+    suspend fun markPremium()
+
     fun logout()
 
 }
@@ -75,6 +77,14 @@ class AuthManagerImpl @Inject constructor(
         updateUser(currentUser.toUser().copy(name = newName))
     }
 
+    override suspend fun markPremium() {
+        val premiumUser = currentUser?.copy(premium = true) ?: return
+        usersDb.document(premiumUser.id).set(premiumUser).await()
+
+        _userState.value = premiumUser
+        currentUser = premiumUser
+    }
+
     override fun logout() {
         Firebase.auth.signOut()
         GoogleSignIn.getClient(context, gso.get()).signOut()
@@ -84,7 +94,7 @@ class AuthManagerImpl @Inject constructor(
         id = uid,
         name = displayName,
         email = email,
-        photoUrl = photoUrl?.toString()
+        photoUrl = photoUrl?.toString(),
     )
 
     private fun updateUser(user: User?) {

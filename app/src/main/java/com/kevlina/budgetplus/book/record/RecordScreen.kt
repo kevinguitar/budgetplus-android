@@ -32,7 +32,7 @@ fun RecordScreen(navController: NavController) {
 
             TopBar(
                 title = null,
-                titleContent = { BookSelector() },
+                titleContent = { BookSelector(navController) },
                 menuActions = {
                     MenuAction(
                         iconRes = R.drawable.ic_invite,
@@ -48,7 +48,7 @@ fun RecordScreen(navController: NavController) {
                         }
                     )
                 },
-                dropdownMenu = { BookScreenMenu() }
+                dropdownMenu = { BookScreenMenu(navController) }
             )
         }
 

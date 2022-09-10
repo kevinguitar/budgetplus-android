@@ -34,6 +34,7 @@ import com.kevlina.budgetplus.book.overview.OverviewScreen
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.premium.PremiumScreen
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.*
 import kotlinx.coroutines.flow.launchIn
@@ -90,6 +91,10 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
                 navController = navController,
                 type = args.getSerializableCompat(ARG_TYPE)
             )
+        }
+
+        composable(route = AddDest.UnlockPremium.route) {
+            PremiumScreen(navController = navController)
         }
     }
 }

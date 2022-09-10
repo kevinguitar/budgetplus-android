@@ -59,11 +59,6 @@ class BookSelectorViewModel @Inject constructor(
         }
     }
 
-    fun buyPremium() {
-        toaster.showMessage(R.string.premium_coming_soon)
-        tracker.logEvent("buy_premium_attempt")
-    }
-
     fun showReachedMaxMessage() {
         toaster.showMessage(R.string.book_exceed_maximum)
     }

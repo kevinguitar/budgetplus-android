@@ -28,8 +28,9 @@ class BookMenuViewModel @Inject constructor(
         book != null && book.ownerId == user?.id
     }
 
-    val currentUsername get() = authManager.userState.value?.name
+    val isPremium = authManager.isPremium
 
+    val currentUsername get() = authManager.userState.value?.name
     val currentBookName get() = bookRepo.bookState.value?.name
 
     fun renameUser(newName: String) {

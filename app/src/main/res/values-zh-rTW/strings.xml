@@ -96,7 +96,17 @@
     <string name="overview_details_title">%1$s：%2$s</string>
 
     <!-- Premium -->
-    <string name="premium_coming_soon">功能尚未開放，敬請期待！</string>
+    <string name="premium_unlock">解鎖進階版</string>
+    <string name="premium_hide_ads">隱藏廣告</string>
+    <string name="premium_pricing">%s 一次性付款，解鎖進階功能\n無憂無慮用到天荒地老</string>
+    <string name="premium_description">
+        ✔ 不受任何廣告干擾
+        \n✔ 擴充至十本記帳本
+        \n✔ 更多進階功能未來優先試用
+    </string>
+    <string name="premium_unlock_cta">取得進階版</string>
+    <string name="premium_unlocked">極簡記帳進階版，解鎖！</string>
+    <string name="premium_acknowledge_fail">無法確認款項，請稍後再試</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">點擊分享連結，邀請好友們一起記帳！</string>

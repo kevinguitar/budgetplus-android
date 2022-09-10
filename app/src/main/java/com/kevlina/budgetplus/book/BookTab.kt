@@ -12,7 +12,7 @@ enum class BookTab(val icon: ImageVector) {
 }
 
 enum class AddDest {
-    Record, EditCategory;
+    Record, EditCategory, UnlockPremium;
 
     val route get() = name
 }

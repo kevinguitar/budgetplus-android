@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -115,7 +114,9 @@ private fun MemberCard(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape)
+            modifier = Modifier
+                .size(36.dp)
+                .clip(CircleShape)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -132,7 +133,9 @@ private fun MemberCard(
 
         AppText(
             text = member.name.orEmpty(),
-            modifier = Modifier.weight(1F)
+            modifier = Modifier
+                .weight(1F)
+                .padding(end = 16.dp)
         )
 
         when {
@@ -140,20 +143,20 @@ private fun MemberCard(
             member.id == ownerId -> {
                 AppText(
                     text = stringResource(id = R.string.members_owner_label),
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    fontSize = FontSize.Small,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
             }
 
             myUserId == ownerId -> {
 
-                IconButton(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    onClick = removeUser
-                ) {
+                IconButton(onClick = removeUser) {
                     Icon(
                         imageVector = Icons.Rounded.Delete,
                         contentDescription = stringResource(id = R.string.cta_delete),
-                        tint = Color.Black,
+                        tint = LocalAppColors.current.dark,
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }

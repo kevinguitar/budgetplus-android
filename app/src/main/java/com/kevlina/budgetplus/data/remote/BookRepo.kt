@@ -120,45 +120,41 @@ class BookRepoImpl @Inject constructor(
     }
 
     override suspend fun handlePendingJoinRequest(): String {
+        val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
+        val bookId = uri.lastPathSegment ?: error("No book id is presented")
+        val validBefore = uri.getQueryParameter("valid")
+        pendingJoinUri.value = null
+
+        val userId = authManager.requireUserId()
         val isPremium = authManager.userState.value?.premium == true
-        val bookCount = booksState.value.orEmpty().size
+        val bookCount = booksState.filterNotNull().first().size
+        val book = getLatestBook(bookId)
+
         when {
+            book.archived -> throw JoinBookException(R.string.book_already_archived)
+            userId in book.authors -> throw JoinBookException(R.string.book_already_joined)
             isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_max_limit")
                 throw JoinBookException(R.string.book_exceed_maximum)
             }
             !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_free_limit")
-                throw JoinBookException(R.string.book_join_exceed_free_limit)
+                throw ExceedFreeLimitException(R.string.book_join_exceed_free_limit)
+            }
+            validBefore == null || System.currentTimeMillis() > validBefore.toLong() -> {
+                tracker.logEvent("join_book_link_expired")
+                throw JoinBookException(R.string.book_join_link_expired)
             }
         }
 
-        val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
-        val bookId = uri.lastPathSegment ?: error("No book id is presented")
-        val validBefore = uri.getQueryParameter("valid")
-        if (validBefore == null || System.currentTimeMillis() > validBefore.toLong()) {
-            tracker.logEvent("join_book_link_expired")
-            throw JoinBookException(R.string.book_join_link_expired)
-        }
-
-        val userId = authManager.requireUserId()
-
-        val book = getLatestBook(bookId)
-        if (book.archived) {
-            throw JoinBookException(R.string.book_already_archived)
-        }
-
         val newAuthors = book.authors.toMutableList()
-        if (userId !in newAuthors) {
-            newAuthors.add(userId)
-        }
+        newAuthors.add(userId)
 
         setBook(book)
         booksDb.document(bookId)
             .update(authorsField, newAuthors)
             .await()
 
-        pendingJoinUri.value = null
         tracker.logEvent("join_book_success")
         return book.name
     }

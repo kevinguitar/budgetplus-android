@@ -49,6 +49,10 @@ fun BookBinding(viewModel: BookViewModel) {
         viewModel.navigation
             .consume(context)
             .launchIn(this)
+
+        viewModel.unlockPremiumEvent
+            .consumeEach { navController.navigate(AddDest.UnlockPremium.route) }
+            .launchIn(this)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

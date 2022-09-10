@@ -100,7 +100,7 @@ dependencies {
     implementation("androidx.compose.compiler:compiler:${Versions.COMPOSE_COMPILER_VERSION}")
     // Compose UI utils
     // https://google.github.io/accompanist/flowlayout/
-    implementation("com.google.accompanist:accompanist-flowlayout:0.24.9-beta")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.25.1")
 
     // Lottie
     // https://github.com/airbnb/lottie/blob/master/android-compose.md

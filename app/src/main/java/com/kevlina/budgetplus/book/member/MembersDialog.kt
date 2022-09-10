@@ -22,6 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.User
 import com.kevlina.budgetplus.ui.*
@@ -95,8 +99,9 @@ private fun MemberCard(
     removeUser: () -> Unit
 ) {
 
+    val icPremium by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_premium))
+
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .height(56.dp)
@@ -113,6 +118,18 @@ private fun MemberCard(
             modifier = Modifier.clip(CircleShape)
         )
 
+        Spacer(modifier = Modifier.width(16.dp))
+
+        if (member.premium == true) {
+            LottieAnimation(
+                composition = icPremium,
+                iterations = LottieConstants.IterateForever,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(24.dp)
+            )
+        }
+
         AppText(
             text = member.name.orEmpty(),
             modifier = Modifier.weight(1F)
@@ -122,13 +139,17 @@ private fun MemberCard(
 
             member.id == ownerId -> {
                 AppText(
-                    text = stringResource(id = R.string.members_owner_label)
+                    text = stringResource(id = R.string.members_owner_label),
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
 
             myUserId == ownerId -> {
 
-                IconButton(onClick = removeUser) {
+                IconButton(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = removeUser
+                ) {
                     Icon(
                         imageVector = Icons.Rounded.Delete,
                         contentDescription = stringResource(id = R.string.cta_delete),
@@ -140,7 +161,7 @@ private fun MemberCard(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun MemberCard_Preview() = AppTheme {
     MemberCard(

@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.book.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -84,7 +85,9 @@ fun BookScreenMenu(navController: NavController) {
                     LottieAnimation(
                         composition = icPremium,
                         iterations = LottieConstants.IterateForever,
-                        modifier = Modifier.size(32.dp)
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(24.dp)
                     )
                 }
             }

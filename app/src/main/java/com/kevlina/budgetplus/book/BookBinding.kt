@@ -135,14 +135,26 @@ private fun BottomNav(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(color = LocalAppColors.current.light)
     ) {
 
-        Row(modifier = Modifier.fillMaxSize()) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .alpha(0.4F)
+                .background(color = LocalAppColors.current.dark)
+        )
+
+        Row(
+            modifier = Modifier
+                .weight(1F)
+                .fillMaxWidth()
+        ) {
 
             BookTab.values().forEach { tab ->
                 BottomNavItem(
@@ -152,15 +164,6 @@ private fun BottomNav(navController: NavController) {
                 )
             }
         }
-
-        Spacer(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .fillMaxWidth()
-                .height(1.dp)
-                .alpha(0.4F)
-                .background(color = LocalAppColors.current.dark)
-        )
     }
 }
 

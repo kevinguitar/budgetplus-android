@@ -178,8 +178,12 @@ class BillingControllerImpl @Inject constructor(
                                     .build()
                             )*/
 
-                            authManager.markPremium()
-                            _purchaseState.value = PurchaseState.Success
+                            _purchaseState.value = try {
+                                authManager.markPremium()
+                                PurchaseState.Success
+                            } catch (e: Exception) {
+                                PurchaseState.Fail("Failed to mark premium, come back later.")
+                            }
                         }
                         return@repeat
                     }

@@ -93,21 +93,22 @@ fun BookScreenMenu(navController: NavController) {
             }
 
             DropdownItem(name = stringResource(id = R.string.menu_rename_user)) {
-                isRenameUserDialogShown = true
                 isMenuExpanded = false
+                isRenameUserDialogShown = true
             }
 
             DropdownItem(name = stringResource(id = R.string.menu_rename_book)) {
-                isRenameBookDialogShown = true
                 isMenuExpanded = false
+                isRenameBookDialogShown = true
             }
 
             DropdownItem(name = stringResource(id = R.string.menu_view_members)) {
-                isMembersDialogShown = true
                 isMenuExpanded = false
+                isMembersDialogShown = true
             }
 
             DropdownItem(name = stringResource(id = R.string.menu_logout)) {
+                isMenuExpanded = false
                 viewModel.logout()
             }
 
@@ -122,8 +123,8 @@ fun BookScreenMenu(navController: NavController) {
                     }
                 )
             ) {
-                isDeleteOrLeaveDialogShown = true
                 isMenuExpanded = false
+                isDeleteOrLeaveDialogShown = true
             }
         }
     }

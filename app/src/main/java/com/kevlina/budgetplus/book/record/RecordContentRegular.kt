@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
+import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.LocalAppColors
 
@@ -24,6 +25,7 @@ import com.kevlina.budgetplus.ui.LocalAppColors
 fun RecordContentRegular(navController: NavController) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
+    val isHideAds by viewModel.isHideAds.collectAsState()
     val priceText by viewModel.calculator.priceText.collectAsState()
     val infoScrollState = rememberScrollState()
 
@@ -67,5 +69,9 @@ fun RecordContentRegular(navController: NavController) {
                 )
                 .padding(vertical = 8.dp, horizontal = 16.dp)
         )
+
+        if (!isHideAds) {
+            AdsBanner()
+        }
     }
 }

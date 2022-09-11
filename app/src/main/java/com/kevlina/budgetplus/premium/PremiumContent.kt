@@ -2,6 +2,8 @@ package com.kevlina.budgetplus.premium
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,6 +41,7 @@ fun PremiumContent() {
                 color = LocalAppColors.current.light,
                 shape = AppTheme.dialogShape
             )
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
 

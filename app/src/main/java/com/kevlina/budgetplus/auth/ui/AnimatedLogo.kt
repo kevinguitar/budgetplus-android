@@ -45,7 +45,7 @@ fun AnimatedLogo() {
             painter = painterResource(id = R.drawable.ic_logo_bg),
             contentDescription = null,
             modifier = Modifier
-                .size(260.dp)
+                .size(240.dp)
                 .graphicsLayer { rotationZ = bgRotation }
         )
 
@@ -54,7 +54,7 @@ fun AnimatedLogo() {
             contentDescription = null,
             modifier = Modifier
                 .padding(start = 12.dp)
-                .size(190.dp)
+                .size(160.dp)
                 .graphicsLayer {
                     translationY = logoTranslationY - logoTranslationYTotal / 2
                 }

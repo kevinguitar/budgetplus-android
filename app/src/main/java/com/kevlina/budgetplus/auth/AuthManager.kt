@@ -31,7 +31,7 @@ interface AuthManager {
 
     suspend fun renameUser(newName: String)
 
-    suspend fun markPremium()
+    fun markPremium()
 
     fun logout()
 
@@ -77,9 +77,9 @@ class AuthManagerImpl @Inject constructor(
         updateUser(currentUser.toUser().copy(name = newName))
     }
 
-    override suspend fun markPremium() {
+    override fun markPremium() {
         val premiumUser = currentUser?.copy(premium = true) ?: return
-        usersDb.document(premiumUser.id).set(premiumUser).await()
+        usersDb.document(premiumUser.id).set(premiumUser)
 
         _userState.value = premiumUser
         currentUser = premiumUser

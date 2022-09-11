@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,7 +56,6 @@ fun CategoriesGrid(
     }
 }
 
-private val cardShape = RoundedCornerShape(12.dp)
 private val cardPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)
 
 @Composable
@@ -70,14 +68,14 @@ fun CategoryCard(
     Box(
         modifier = Modifier
             .background(
-                shape = cardShape,
+                shape = AppTheme.cardShape,
                 color = if (isSelected) {
                     LocalAppColors.current.dark
                 } else {
                     LocalAppColors.current.primary
                 }
             )
-            .clip(cardShape)
+            .clip(AppTheme.cardShape)
             .rippleClick(onClick = onClick)
     ) {
 
@@ -96,10 +94,10 @@ private fun EditCategoryButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(
-                shape = cardShape,
+                shape = AppTheme.cardShape,
                 color = LocalAppColors.current.primary
             )
-            .clip(cardShape)
+            .clip(AppTheme.cardShape)
             .rippleClick(onClick = onClick)
     ) {
 

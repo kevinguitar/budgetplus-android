@@ -169,8 +169,8 @@ class BillingControllerImpl @Inject constructor(
                     val billingResult = billingClient.acknowledgePurchase(params)
                     val status = BillingStatus(billingResult.responseCode)
 
-                    if (status == BillingStatus.OK) {
-                        if (PRODUCT_PREMIUM_ID in purchase.products) {
+                    when {
+                        status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products -> {
                             // Code snippet to consume the product, useful for testing purposes.
                             /*billingClient.consumePurchase(
                                 ConsumeParams.newBuilder()
@@ -178,19 +178,13 @@ class BillingControllerImpl @Inject constructor(
                                     .build()
                             )*/
 
-                            _purchaseState.value = try {
-                                authManager.markPremium()
-                                PurchaseState.Success
-                            } catch (e: Exception) {
-                                PurchaseState.Fail("Failed to mark premium, come back later.")
-                            }
+                            authManager.markPremium()
+                            _purchaseState.value = PurchaseState.Success
                         }
-                        return@repeat
-                    }
-
-                    if (attempt == acknowledgeMaxAttempt - 1) {
-                        Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")
-                        _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
+                        attempt == acknowledgeMaxAttempt - 1 -> {
+                            Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")
+                            _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
+                        }
                     }
                 }
             }

@@ -27,11 +27,11 @@ fun AuthContent(viewModel: AuthViewModel) {
                 .padding(vertical = 32.dp)
         ) {
 
-            AuthTitle(modifier = Modifier.padding(bottom = 32.dp))
+            AuthTitle(modifier = Modifier.padding(bottom = 24.dp))
 
             AnimatedLogo()
 
-            AuthDescription(modifier = Modifier.padding(vertical = 32.dp))
+            AuthDescription(modifier = Modifier.padding(vertical = 24.dp))
 
             SocialSignInButton(
                 onClick = viewModel::signInWithGoogle,

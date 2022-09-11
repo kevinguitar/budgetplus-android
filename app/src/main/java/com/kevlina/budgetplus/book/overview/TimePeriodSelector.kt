@@ -1,25 +1,27 @@
 package com.kevlina.budgetplus.book.overview
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.flowlayout.SizeMode
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.data.remote.TimePeriod
 import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.DatePickerDialog
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.rippleClick
@@ -64,8 +66,9 @@ fun TimePeriodSelector() {
     }
 
     FlowRow(
-        mainAxisSize = SizeMode.Wrap,
         mainAxisSpacing = 12.dp,
+        crossAxisSpacing = 12.dp,
+        mainAxisAlignment = FlowMainAxisAlignment.Center
     ) {
         setOf(
             TimePeriod.Today,
@@ -122,14 +125,18 @@ private fun TimePeriodPill(
     onClick: () -> Unit
 ) {
 
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = if (isSelected) {
-            LocalAppColors.current.dark
-        } else {
-            LocalAppColors.current.primary
-        },
-        onClick = onClick
+    Box(
+        modifier = Modifier
+            .background(
+                shape = AppTheme.cardShape,
+                color = if (isSelected) {
+                    LocalAppColors.current.dark
+                } else {
+                    LocalAppColors.current.primary
+                }
+            )
+            .clip(AppTheme.cardShape)
+            .rippleClick(onClick = onClick)
     ) {
 
         val titleRes = when (timePeriod) {

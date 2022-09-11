@@ -17,5 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "BudgetPlus"
 include(
     "app",
-    "benchmark"
+    "app-benchmark"
 )

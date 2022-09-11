@@ -4,7 +4,7 @@ object Versions {
 
     // Version of Android Gradle Plugin
     // https://maven.google.com/web/index.html?q=gradle#com.android.tools.build:gradle
-    const val ANDROID_GRADLE_PLUGIN_VERSION = "7.2.2"
+    const val AGP_VERSION = "7.3.0-rc01"
 
     // Kotlin
     // Full release notest - https://github.com/JetBrains/kotlin/releases/tag/vKOTLIN_VERSION
@@ -28,10 +28,14 @@ object Versions {
 
     // Firebase BOM
     // https://firebase.google.com/support/release-notes/android
-    const val FIREBASE_BOM_VERSION = "30.4.0"
+    const val FIREBASE_BOM_VERSION = "30.4.1"
 
     // Google Play billing
     // https://developer.android.com/google/play/billing/release-notes
     const val BILLING_VERSION = "5.0.0"
+
+    // Profile Installer
+    // https://developer.android.com/jetpack/androidx/releases/profileinstaller
+    const val PROFILE_INSTALLER_VERSION = "1.2.0"
 
 }

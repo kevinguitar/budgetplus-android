@@ -49,6 +49,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        create("benchmark") {
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
     }
 
     compileOptions {
@@ -57,9 +63,7 @@ android {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
     buildFeatures.compose = true
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER_VERSION
@@ -112,12 +116,15 @@ dependencies {
 
     // Navigation
     // https://developer.android.com/jetpack/androidx/releases/navigation
-    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation("androidx.navigation:navigation-compose:2.5.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:${Versions.DAGGER_HILT_VERSION}")
     kapt("com.google.dagger:hilt-compiler:${Versions.DAGGER_HILT_VERSION}")
+
+    // Baseline profile
+    implementation("androidx.profileinstaller:profileinstaller:${Versions.PROFILE_INSTALLER_VERSION}")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM_VERSION}"))
@@ -134,13 +141,13 @@ dependencies {
     implementation("com.facebook.android:facebook-login:13.0.0")
 
     // AdMob
-    implementation("com.google.android.gms:play-services-ads:21.1.0")
+    implementation("com.google.android.gms:play-services-ads:21.2.0")
 
     // Utils
     implementation("com.jakewharton.timber:timber:5.0.1")
     implementation("net.objecthunter:exp4j:0.4.8")
     implementation("io.coil-kt:coil-compose:2.1.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

@@ -71,6 +71,9 @@ android {
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
+    bundle {
+        storeArchive.enable = false
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

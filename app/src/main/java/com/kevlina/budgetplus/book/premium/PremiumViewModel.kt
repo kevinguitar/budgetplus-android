@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.premium
+package com.kevlina.budgetplus.book.premium
 
 import android.content.Context
 import androidx.activity.ComponentActivity

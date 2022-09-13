@@ -7,14 +7,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.auth.AuthManager
+import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.book.details.RecordsSortMode
 import com.kevlina.budgetplus.data.local.PreferenceHolder
-import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.data.remote.Record
-import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.data.remote.*
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
@@ -26,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
     authManager: AuthManager,
@@ -68,6 +67,10 @@ class OverviewViewModel @Inject constructor(
 
     val recordGroups: StateFlow<Map<String, List<Record>>> = records.mapState { records ->
         records.orEmpty()
+            .map { record ->
+                val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
+                record.copy(author = author ?: record.author)
+            }
             .groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }

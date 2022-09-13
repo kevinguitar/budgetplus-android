@@ -6,6 +6,8 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.auth.AuthManagerImpl
+import com.kevlina.budgetplus.auth.UserRepo
+import com.kevlina.budgetplus.auth.UserRepoImpl
 import com.kevlina.budgetplus.billing.BillingController
 import com.kevlina.budgetplus.billing.BillingControllerImpl
 import com.kevlina.budgetplus.data.local.AppPreference
@@ -42,6 +44,9 @@ interface GlobalModule {
 
     @Binds
     fun provideBookRepo(impl: BookRepoImpl): BookRepo
+
+    @Binds
+    fun provideUserRepo(impl: UserRepoImpl): UserRepo
 
     @Binds
     fun provideRecordRepo(impl: RecordRepoImpl): RecordRepo

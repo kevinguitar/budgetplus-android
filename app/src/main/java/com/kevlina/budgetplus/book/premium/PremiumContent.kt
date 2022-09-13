@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.premium
+package com.kevlina.budgetplus.book.premium
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

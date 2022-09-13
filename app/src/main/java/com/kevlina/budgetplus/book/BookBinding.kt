@@ -32,9 +32,9 @@ import com.kevlina.budgetplus.book.category.EditCategoryScreen
 import com.kevlina.budgetplus.book.details.DetailsScreen
 import com.kevlina.budgetplus.book.overview.OverviewScreen
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.book.premium.PremiumScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.premium.PremiumScreen
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.*
 import kotlinx.coroutines.flow.launchIn

@@ -34,7 +34,6 @@ fun MembersDialog(
     onDismiss: () -> Unit
 ) {
 
-    //TODO: We should generate new instance of VM on every call
     val viewModel = hiltViewModel<MembersViewModel>()
     viewModel.loadMembers()
 

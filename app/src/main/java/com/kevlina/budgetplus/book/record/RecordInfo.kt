@@ -23,12 +23,13 @@ import com.kevlina.budgetplus.ui.*
 import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.rippleClick
 import com.kevlina.budgetplus.utils.shortFormatted
+import com.kevlina.budgetplus.utils.thenIf
 import java.time.LocalDate
 
 @Composable
 fun RecordInfo(
     navigator: Navigator,
-    scrollToBottomOnPriceChange: Boolean,
+    scrollable: Boolean,
     modifier: Modifier = Modifier
 ) {
 
@@ -44,7 +45,7 @@ fun RecordInfo(
     val scrollState = rememberScrollState()
     var showDatePicker by remember { mutableStateOf(false) }
 
-    if (scrollToBottomOnPriceChange) {
+    if (scrollable) {
         LaunchedEffect(key1 = priceText) {
             if (priceText != CalculatorViewModel.EMPTY_PRICE
                 && scrollState.value != scrollState.maxValue
@@ -56,7 +57,9 @@ fun RecordInfo(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.verticalScroll(scrollState)
+        modifier = modifier.thenIf(scrollable) {
+            Modifier.verticalScroll(scrollState)
+        }
     ) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)

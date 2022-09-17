@@ -28,7 +28,7 @@ fun RecordContentWide(navigator: Navigator) {
 
             RecordInfo(
                 navigator = navigator,
-                scrollToBottomOnPriceChange = true,
+                scrollable = true,
                 modifier = Modifier.weight(1F)
             )
 

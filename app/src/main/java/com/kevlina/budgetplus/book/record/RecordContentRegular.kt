@@ -31,7 +31,7 @@ fun RecordContentRegular(navigator: Navigator) {
 
         RecordInfo(
             navigator = navigator,
-            scrollToBottomOnPriceChange = true,
+            scrollable = true,
             modifier = Modifier
                 .weight(1F)
                 .padding(horizontal = 16.dp)

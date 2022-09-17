@@ -20,6 +20,7 @@ import com.kevlina.budgetplus.R
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
+//TODO: LocalDate type is unstable
 @Composable
 fun DatePickerDialog(
     date: LocalDate,
@@ -79,6 +80,7 @@ fun DatePickerDialog(
     }
 }
 
+//TODO: LocalDate type is unstable
 @Composable
 private fun CustomDatePicker(
     date: LocalDate,

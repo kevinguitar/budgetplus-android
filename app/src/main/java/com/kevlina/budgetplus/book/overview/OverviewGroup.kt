@@ -26,6 +26,7 @@ import com.kevlina.budgetplus.utils.dollar
 import com.kevlina.budgetplus.utils.rippleClick
 import com.kevlina.budgetplus.utils.roundUpPercentageText
 
+//TODO: records param is unstable
 @Composable
 fun OverviewGroup(
     category: String,

@@ -30,7 +30,9 @@ fun RecordContentRegular(navController: NavController) {
     val infoScrollState = rememberScrollState()
 
     LaunchedEffect(key1 = priceText) {
-        if (priceText != CalculatorViewModel.EMPTY_PRICE) {
+        if (priceText != CalculatorViewModel.EMPTY_PRICE
+            && infoScrollState.value != infoScrollState.maxValue
+        ) {
             infoScrollState.animateScrollTo(infoScrollState.maxValue)
         }
     }

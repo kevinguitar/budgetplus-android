@@ -13,3 +13,26 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10" apply false
     id("org.jetbrains.kotlin.jvm") version "1.7.10" apply false
 }
+
+// Composable metrics
+// ./gradlew assembleRelease -Pandroidx.enableComposeCompilerReports=true
+// https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
+// https://chris.banes.dev/composable-metrics/
+subprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            if (project.findProperty("androidx.enableComposeCompilerReports") == "true") {
+                freeCompilerArgs = freeCompilerArgs + listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                            project.buildDir.absolutePath + "/compose_metrics"
+                )
+                freeCompilerArgs = freeCompilerArgs + listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                            project.buildDir.absolutePath + "/compose_metrics"
+                )
+            }
+        }
+    }
+}

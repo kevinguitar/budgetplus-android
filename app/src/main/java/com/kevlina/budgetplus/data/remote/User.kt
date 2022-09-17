@@ -9,7 +9,7 @@ data class User(
     val email: String? = null,
     val photoUrl: String? = null,
     val premium: Boolean? = null,
-    val createdOn: Long? = System.currentTimeMillis()
+    val createdOn: Long? = null
 )
 
 @Serializable

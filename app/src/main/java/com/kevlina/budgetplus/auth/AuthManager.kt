@@ -95,13 +95,12 @@ class AuthManagerImpl @Inject constructor(
         name = displayName,
         email = email,
         photoUrl = photoUrl?.toString(),
-        createdOn = null
     )
 
     private fun updateUser(user: User?) {
         val userWithExclusiveFields = user?.copy(
             premium = currentUser?.premium,
-            createdOn = currentUser?.createdOn
+            createdOn = currentUser?.createdOn ?: System.currentTimeMillis()
         )
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields

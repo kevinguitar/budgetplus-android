@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,11 +26,11 @@ fun RecordContentPacked(navigator: Navigator) {
         modifier = Modifier
             .fillMaxHeight()
             .width(AppTheme.maxContentWidth)
-            .verticalScroll(rememberScrollState())
     ) {
 
         RecordInfo(
             navigator = navigator,
+            scrollToBottomOnPriceChange = false,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 

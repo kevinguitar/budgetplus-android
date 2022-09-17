@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.book.record
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
+import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.*
@@ -25,6 +28,7 @@ import java.time.LocalDate
 @Composable
 fun RecordInfo(
     navigator: Navigator,
+    scrollToBottomOnPriceChange: Boolean,
     modifier: Modifier = Modifier
 ) {
 
@@ -33,15 +37,26 @@ fun RecordInfo(
 
     val type by viewModel.type.collectAsState()
     val date by viewModel.date.collectAsState()
-    val name by viewModel.note.collectAsState()
+    val note by viewModel.note.collectAsState()
     val category by viewModel.category.collectAsState()
     val priceText by viewModel.calculator.priceText.collectAsState()
 
+    val scrollState = rememberScrollState()
     var showDatePicker by remember { mutableStateOf(false) }
+
+    if (scrollToBottomOnPriceChange) {
+        LaunchedEffect(key1 = priceText) {
+            if (priceText != CalculatorViewModel.EMPTY_PRICE
+                && scrollState.value != scrollState.maxValue
+            ) {
+                scrollState.animateScrollTo(scrollState.maxValue)
+            }
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier.verticalScroll(scrollState)
     ) {
 
         RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
@@ -54,7 +69,7 @@ fun RecordInfo(
         )
 
         AppTextField(
-            value = name,
+            value = note,
             onValueChange = viewModel::setNote,
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(

@@ -2,11 +2,8 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppTheme
@@ -26,16 +22,6 @@ fun RecordContentRegular(navigator: Navigator) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
     val isHideAds by viewModel.isHideAds.collectAsState()
-    val priceText by viewModel.calculator.priceText.collectAsState()
-    val infoScrollState = rememberScrollState()
-
-    LaunchedEffect(key1 = priceText) {
-        if (priceText != CalculatorViewModel.EMPTY_PRICE
-            && infoScrollState.value != infoScrollState.maxValue
-        ) {
-            infoScrollState.animateScrollTo(infoScrollState.maxValue)
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -45,10 +31,10 @@ fun RecordContentRegular(navigator: Navigator) {
 
         RecordInfo(
             navigator = navigator,
+            scrollToBottomOnPriceChange = true,
             modifier = Modifier
                 .weight(1F)
                 .padding(horizontal = 16.dp)
-                .verticalScroll(infoScrollState)
         )
 
         Spacer(

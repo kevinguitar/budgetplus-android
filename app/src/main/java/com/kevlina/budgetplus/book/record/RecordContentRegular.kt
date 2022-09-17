@@ -14,15 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
-fun RecordContentRegular(navController: NavController) {
+fun RecordContentRegular(navigator: Navigator) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
     val isHideAds by viewModel.isHideAds.collectAsState()
@@ -44,7 +44,7 @@ fun RecordContentRegular(navController: NavController) {
     ) {
 
         RecordInfo(
-            navController = navController,
+            navigator = navigator,
             modifier = Modifier
                 .weight(1F)
                 .padding(horizontal = 16.dp)

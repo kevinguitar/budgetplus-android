@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
@@ -24,6 +23,7 @@ import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.dollar
 import com.kevlina.budgetplus.utils.rippleClick
 import com.kevlina.budgetplus.utils.shortFormatted
@@ -31,7 +31,7 @@ import java.time.LocalDate
 
 @Composable
 fun DetailsScreen(
-    navController: NavController,
+    navigator: Navigator,
     viewModel: OverviewViewModel,
     category: String?
 ) {
@@ -51,7 +51,7 @@ fun DetailsScreen(
 
         TopBar(
             title = stringResource(id = R.string.overview_details_title, category, totalPrice),
-            navigateBack = { navController.navigateUp() },
+            navigateBack = { navigator.navigateUp() },
             menuActions = {
                 val modifier = Modifier.onGloballyPositioned {
                     viewModel.highlightSortingButton(

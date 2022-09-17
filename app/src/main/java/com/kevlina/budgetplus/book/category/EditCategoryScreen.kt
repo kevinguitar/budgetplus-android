@@ -29,17 +29,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.thenIf
 
 @Composable
 fun EditCategoryScreen(
-    navController: NavController,
+    navigator: Navigator,
     type: RecordType
 ) {
 
@@ -75,7 +75,7 @@ fun EditCategoryScreen(
                 if (isListModified) {
                     isExitDialogShown = true
                 } else {
-                    navController.navigateUp()
+                    navigator.navigateUp()
                 }
             },
             menuActions = {
@@ -83,7 +83,7 @@ fun EditCategoryScreen(
                     onClick = {
                         if (isListModified) {
                             viewModel.updateCategories(type, list)
-                            navController.navigateUp()
+                            navigator.navigateUp()
                         }
                     },
                     modifier = Modifier.onGloballyPositioned {
@@ -204,7 +204,7 @@ fun EditCategoryScreen(
 
         ConfirmDialog(
             message = stringResource(id = R.string.category_edit_unsave_message),
-            onConfirm = { navController.navigateUp() },
+            onConfirm = { navigator.navigateUp() },
             onDismiss = { isExitDialogShown = false }
         )
     }

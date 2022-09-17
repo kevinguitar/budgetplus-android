@@ -12,19 +12,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.rippleClick
 import com.kevlina.budgetplus.utils.shortFormatted
 import java.time.LocalDate
 
 @Composable
 fun RecordInfo(
-    navController: NavController,
+    navigator: Navigator,
     modifier: Modifier = Modifier
 ) {
 
@@ -49,7 +49,7 @@ fun RecordInfo(
         CategoriesGrid(
             type = type,
             onCategorySelected = viewModel::setCategory,
-            onEditClicked = { navController.navigate(route = "${AddDest.EditCategory.route}/$type") },
+            onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },
             selectedCategory = category
         )
 

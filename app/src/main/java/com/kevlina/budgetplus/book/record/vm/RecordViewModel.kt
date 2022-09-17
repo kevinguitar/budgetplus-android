@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.book.record.vm
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
@@ -23,6 +24,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
+@Stable
 class RecordViewModel @Inject constructor(
     val calculator: CalculatorViewModel,
     private val bookRepo: BookRepo,

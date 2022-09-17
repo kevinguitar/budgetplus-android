@@ -11,7 +11,6 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.menu.BookScreenMenu
@@ -19,9 +18,10 @@ import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.ui.AdaptiveScreen
 import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.ui.TopBar
+import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
-fun RecordScreen(navController: NavController) {
+fun RecordScreen(navigator: Navigator) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
     val context = LocalContext.current
@@ -32,7 +32,7 @@ fun RecordScreen(navController: NavController) {
 
             TopBar(
                 title = null,
-                titleContent = { BookSelector(navController) },
+                titleContent = { BookSelector(navigator) },
                 menuActions = {
                     MenuAction(
                         iconRes = R.drawable.ic_invite,
@@ -48,7 +48,7 @@ fun RecordScreen(navController: NavController) {
                         }
                     )
                 },
-                dropdownMenu = { BookScreenMenu(navController) }
+                dropdownMenu = { BookScreenMenu(navigator) }
             )
         }
 
@@ -57,13 +57,13 @@ fun RecordScreen(navController: NavController) {
                 .align(Alignment.CenterHorizontally)
                 .weight(1F),
             regularContent = {
-                RecordContentRegular(navController = navController)
+                RecordContentRegular(navigator = navigator)
             },
             wideContent = {
-                RecordContentWide(navController = navController)
+                RecordContentWide(navigator = navigator)
             },
             packedContent = {
-                RecordContentPacked(navController = navController)
+                RecordContentPacked(navigator = navigator)
             },
             extraContent = {
                 DoneAnimator()

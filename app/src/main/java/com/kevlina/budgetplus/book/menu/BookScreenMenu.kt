@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -27,11 +26,12 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.consume
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun BookScreenMenu(navController: NavController) {
+fun BookScreenMenu(navigator: Navigator) {
 
     val viewModel = hiltViewModel<BookMenuViewModel>()
 
@@ -73,7 +73,7 @@ fun BookScreenMenu(navController: NavController) {
             if (!isPremium) {
                 DropdownMenuItem(onClick = {
                     isMenuExpanded = false
-                    navController.navigate(AddDest.UnlockPremium.route)
+                    navigator.navigate(AddDest.UnlockPremium.route)
                 }) {
 
                     AppText(

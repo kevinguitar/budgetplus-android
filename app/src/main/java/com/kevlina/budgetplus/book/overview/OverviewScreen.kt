@@ -11,16 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.HistoryDest
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.TopBar
+import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
-fun OverviewScreen(navController: NavController) {
+fun OverviewScreen(navigator: Navigator) {
 
     val viewModel = hiltViewModel<OverviewViewModel>()
 
@@ -62,7 +62,7 @@ fun OverviewScreen(navController: NavController) {
                     color = overviewColors[(index) % overviewColors.size],
                     isLast = index == recordGroups.size - 1,
                     onClick = {
-                        navController.navigate(route = "${HistoryDest.Details.route}/$key")
+                        navigator.navigate(route = "${HistoryDest.Details.route}/$key")
                     }
                 )
             }

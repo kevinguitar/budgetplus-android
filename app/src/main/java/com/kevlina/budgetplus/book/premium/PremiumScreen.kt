@@ -12,13 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.ui.TopBar
+import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
-fun PremiumScreen(navController: NavController) {
+fun PremiumScreen(navigator: Navigator) {
 
     val viewModel = hiltViewModel<PremiumViewModel>()
     val isPaymentProcessing by viewModel.isPaymentProcessing.collectAsState(initial = false)
@@ -26,7 +26,7 @@ fun PremiumScreen(navController: NavController) {
 
     LaunchedEffect(key1 = purchaseDone) {
         if (purchaseDone) {
-            navController.navigateUp()
+            navigator.navigateUp()
         }
     }
 
@@ -36,7 +36,7 @@ fun PremiumScreen(navController: NavController) {
 
         TopBar(
             title = stringResource(id = R.string.premium_unlock),
-            navigateBack = navController::navigateUp
+            navigateBack = navigator::navigateUp
         )
 
         Box(

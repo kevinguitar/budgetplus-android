@@ -15,7 +15,7 @@ plugins {
 }
 
 // Composable metrics
-// ./gradlew assembleRelease -Pandroidx.enableComposeCompilerReports=true
+// ./gradlew assembleRelease -Pandroidx.enableComposeCompilerReports=true --rerun-tasks
 // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
 // https://chris.banes.dev/composable-metrics/
 subprojects {

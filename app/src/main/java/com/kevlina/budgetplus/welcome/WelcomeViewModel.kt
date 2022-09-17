@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.welcome
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@Stable
 class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,

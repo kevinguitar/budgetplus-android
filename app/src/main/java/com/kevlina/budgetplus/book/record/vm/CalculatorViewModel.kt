@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.book.record.vm
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.book.record.CalculatorAction
 import com.kevlina.budgetplus.book.record.CalculatorButton
 import com.kevlina.budgetplus.utils.*
@@ -14,6 +15,7 @@ import timber.log.Timber
 import java.math.RoundingMode
 import javax.inject.Inject
 
+@Stable
 class CalculatorViewModel @Inject constructor(
     private val vibrator: Vibrator?,
     private val toaster: Toaster?

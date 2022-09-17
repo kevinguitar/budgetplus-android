@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.book.overview.vm
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ListenerRegistration
@@ -22,6 +23,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@Stable
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val userRepo: UserRepo,

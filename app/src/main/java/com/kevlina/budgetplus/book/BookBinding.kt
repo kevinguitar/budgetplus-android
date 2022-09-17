@@ -81,7 +81,7 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
     navigation(startDestination = AddDest.Record.route, route = BookTab.Add.route) {
 
         composable(route = AddDest.Record.route) {
-            RecordScreen(navController = navController)
+            RecordScreen(navigator = navController.toNavigator())
         }
 
         composable(
@@ -92,13 +92,13 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
         ) { entry ->
             val args = entry.arguments ?: Bundle.EMPTY
             EditCategoryScreen(
-                navController = navController,
+                navigator = navController.toNavigator(),
                 type = args.getSerializableCompat(ARG_TYPE)
             )
         }
 
         composable(route = AddDest.UnlockPremium.route) {
-            PremiumScreen(navController = navController)
+            PremiumScreen(navigator = navController.toNavigator())
         }
     }
 }
@@ -107,7 +107,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
     navigation(startDestination = HistoryDest.Overview.route, route = BookTab.History.route) {
 
         composable(HistoryDest.Overview.route) {
-            OverviewScreen(navController = navController)
+            OverviewScreen(navigator = navController.toNavigator())
         }
 
         composable(
@@ -121,7 +121,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
             // Share the same VM instance with overview screen
             val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
             DetailsScreen(
-                navController = navController,
+                navigator = navController.toNavigator(),
                 viewModel = viewModel,
                 category = args.getString(ARG_CATEGORY)
             )

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+@Stable
 class AuthViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,

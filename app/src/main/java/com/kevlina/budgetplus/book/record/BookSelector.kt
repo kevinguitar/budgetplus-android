@@ -17,16 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.BookSelectorViewModel
 import com.kevlina.budgetplus.book.record.vm.CreateBookBtnState
 import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.rippleClick
 
 @Composable
-fun BookSelector(navController: NavController) {
+fun BookSelector(navigator: Navigator) {
 
     val viewModel = hiltViewModel<BookSelectorViewModel>()
 
@@ -110,7 +110,7 @@ fun BookSelector(navController: NavController) {
                 onClick = {
                     when (createBookBtnState) {
                         CreateBookBtnState.Enabled -> isBookCreationDialogShown = true
-                        CreateBookBtnState.NeedPremium -> navController.navigate(AddDest.UnlockPremium.route)
+                        CreateBookBtnState.NeedPremium -> navigator.navigate(AddDest.UnlockPremium.route)
                         CreateBookBtnState.ReachedMax -> viewModel.showReachedMaxMessage()
                     }
                     isSelectorShown = false

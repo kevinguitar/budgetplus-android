@@ -10,13 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.monetize.AdsBanner
+import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
-fun RecordContentWide(navController: NavController) {
+fun RecordContentWide(navigator: Navigator) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
     val isHideAds by viewModel.isHideAds.collectAsState()
@@ -39,7 +39,7 @@ fun RecordContentWide(navController: NavController) {
         Column(modifier = Modifier.weight(1F)) {
 
             RecordInfo(
-                navController = navController,
+                navigator = navigator,
                 modifier = Modifier
                     .weight(1F)
                     .verticalScroll(infoScrollState)

@@ -87,6 +87,7 @@ fun PremiumContent() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
+            enabled = premiumPricing != null,
             onClick = { viewModel.getPremium(context) }
         ) {
             AppText(

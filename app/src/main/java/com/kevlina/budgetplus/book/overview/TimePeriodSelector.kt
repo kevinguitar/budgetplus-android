@@ -41,7 +41,7 @@ fun TimePeriodSelector() {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
     ) {
 
         Icon(
@@ -53,15 +53,17 @@ fun TimePeriodSelector() {
         AppText(
             text = fromDate.shortFormatted,
             modifier = Modifier
-                .padding(horizontal = 4.dp)
                 .rippleClick { showFromDatePicker = true }
+                .padding(all = 8.dp)
         )
 
         AppText(text = stringResource(id = R.string.date_to))
 
         AppText(
             text = untilDate.shortFormatted,
-            modifier = Modifier.rippleClick { showUntilDatePicker = true }
+            modifier = Modifier
+                .rippleClick { showUntilDatePicker = true }
+                .padding(all = 8.dp)
         )
     }
 

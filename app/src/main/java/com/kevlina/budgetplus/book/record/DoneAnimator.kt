@@ -26,7 +26,7 @@ fun BoxScope.DoneAnimator() {
     val focusManager = LocalFocusManager.current
 
     var showAnimation by remember { mutableStateOf(false) }
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
+    val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
     val lottieAnimatable = rememberLottieAnimatable()
 
     LaunchedEffect(key1 = viewModel) {
@@ -36,7 +36,10 @@ fun BoxScope.DoneAnimator() {
                 viewModel.showFullScreenAdIfNeeded(context)
 
                 showAnimation = true
-                lottieAnimatable.animate(composition)
+                lottieAnimatable.animate(
+                    composition = imgDone,
+                    speed = 1.2F
+                )
                 showAnimation = false
             }
             .launchIn(this)
@@ -45,10 +48,10 @@ fun BoxScope.DoneAnimator() {
     if (showAnimation) {
 
         LottieAnimation(
-            composition = composition,
+            composition = imgDone,
             progress = { lottieAnimatable.progress },
             modifier = Modifier
-                .size(240.dp)
+                .size(160.dp)
                 .align(Alignment.Center),
         )
     }

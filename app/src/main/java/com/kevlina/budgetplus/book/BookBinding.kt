@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
@@ -205,7 +206,7 @@ private fun RowScope.BottomNavItem(
 
             Spacer(
                 modifier = Modifier
-                    .size(width = 60.dp, height = 32.dp)
+                    .size(width = 60.dp, height = 36.dp)
                     .background(
                         color = LocalAppColors.current.dark,
                         shape = CircleShape
@@ -214,7 +215,7 @@ private fun RowScope.BottomNavItem(
         }
 
         Icon(
-            imageVector = tab.icon,
+            painter = painterResource(id = tab.icon),
             contentDescription = null,
             tint = if (isSelected) {
                 LocalAppColors.current.light

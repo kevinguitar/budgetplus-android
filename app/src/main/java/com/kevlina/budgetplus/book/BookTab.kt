@@ -1,12 +1,10 @@
 package com.kevlina.budgetplus.book
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.List
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import com.kevlina.budgetplus.R
 
-enum class BookTab(val icon: ImageVector) {
-    Add(Icons.Rounded.Add), History(Icons.Rounded.List);
+enum class BookTab(@DrawableRes val icon: Int) {
+    Add(R.drawable.ic_record), History(R.drawable.ic_list);
 
     val route get() = name
 }

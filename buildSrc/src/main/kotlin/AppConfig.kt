@@ -8,7 +8,7 @@ object AppConfig {
     const val APPLICATION_ID = "com.kevlina.budgetplus"
 
     // Budget+ version
-    const val APP_VERSION = "1.1.4"
+    const val APP_VERSION = "1.1.5"
 
     // Minimal Android sdk version
     const val MIN_ANDROID_SDK_VERSION = 23

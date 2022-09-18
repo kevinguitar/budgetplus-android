@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.monetize
 
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -10,20 +12,33 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.kevlina.budgetplus.R
+import kotlin.math.roundToInt
 
 @Composable
 fun AdsBanner() {
 
-    AndroidView(
+    BoxWithConstraints(
         modifier = Modifier
             .height(50.dp)
-            .fillMaxWidth(),
-        factory = { context ->
-            AdView(context).apply {
-                setAdSize(AdSize.BANNER)
-                adUnitId = context.getString(R.string.admob_banner_id)
-                loadAd(AdRequest.Builder().build())
+            .fillMaxWidth()
+    ) {
+
+        val boxWidth = maxWidth.value.roundToInt()
+
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(
+                        AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                            /* context = */ context,
+                            /* width = */ boxWidth
+                        )
+                    )
+                    adUnitId = context.getString(R.string.admob_banner_id)
+                    loadAd(AdRequest.Builder().build())
+                }
             }
-        }
-    )
+        )
+    }
 }

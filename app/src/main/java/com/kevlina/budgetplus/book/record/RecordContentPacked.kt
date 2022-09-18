@@ -41,7 +41,6 @@ fun RecordContentPacked(navigator: Navigator) {
             viewModel = viewModel.calculator,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .width(360.dp)
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
 

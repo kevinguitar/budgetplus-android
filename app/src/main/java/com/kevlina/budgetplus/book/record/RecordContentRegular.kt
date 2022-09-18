@@ -24,9 +24,8 @@ fun RecordContentRegular(navigator: Navigator) {
     val isHideAds by viewModel.isHideAds.collectAsState()
 
     Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .width(AppTheme.maxContentWidth)
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxHeight()
     ) {
 
         RecordInfo(
@@ -34,6 +33,7 @@ fun RecordContentRegular(navigator: Navigator) {
             scrollable = true,
             modifier = Modifier
                 .weight(1F)
+                .width(AppTheme.maxContentWidth)
                 .padding(horizontal = 16.dp)
         )
 
@@ -45,18 +45,25 @@ fun RecordContentRegular(navigator: Navigator) {
                 .background(color = LocalAppColors.current.dark)
         )
 
-        Calculator(
-            viewModel = viewModel.calculator,
+        Box(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
                 .background(LocalAppColors.current.primaryLight)
-                .padding(vertical = 8.dp, horizontal = 16.dp)
-                .background(
-                    color = LocalAppColors.current.light,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(vertical = 8.dp, horizontal = 16.dp)
-        )
+        ) {
+
+            Calculator(
+                viewModel = viewModel.calculator,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .width(AppTheme.maxContentWidth)
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                    .background(
+                        color = LocalAppColors.current.light,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+            )
+        }
 
         if (!isHideAds) {
             AdsBanner()

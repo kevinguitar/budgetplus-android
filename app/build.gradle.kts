@@ -22,7 +22,7 @@ android {
         minSdk = AppConfig.MIN_ANDROID_SDK_VERSION
         targetSdk = AppConfig.ANDROID_SDK_VERSION
         versionName = AppConfig.APP_VERSION
-        versionCode = AppConfig.APP_VERSION.replace(".", "").toInt()
+        versionCode = AppConfig.appVersionCode
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

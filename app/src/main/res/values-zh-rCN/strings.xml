@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">极简记帐</string>
+
+    <!-- Auth -->
+    <string name="auth_welcome_title">欢迎加入极简记帐</string>
+    <string name="auth_welcome_description">飞快的记帐 App，从开启到完成记帐只要 5 秒钟\n快跟你的亲朋好友共同记帐吧！</string>
+    <string name="auth_facebook">以 Facebook 继续</string>
+    <string name="auth_google">以 Google 继续</string>
+    <string name="auth_success">欢迎，%s！</string>
+
+    <!-- Welcome -->
+    <string name="welcome_create_book_title">你可以创建帐本</string>
+    <string name="welcome_join_instruction">或是想加入好友创建的帐本一起记帐吗？\n快请他们分享加入连结给你吧！</string>
+
+    <!-- Record -->
+    <string name="record_note">内容</string>
+    <string name="record_note_placeholder_expense">花在哪裡？</string>
+    <string name="record_note_placeholder_income">钱从哪裡来？</string>
+    <string name="record_price">金额</string>
+    <string name="record_expense">支出</string>
+    <string name="record_income">收入</string>
+    <string name="record_empty_category">请选择类别</string>
+    <string name="record_empty_price">请输入金额</string>
+    <string name="record_created">已新增至%s</string>
+    <string name="record_edit_title">编辑纪录</string>
+    <string name="record_edited">已储存</string>
+    <string name="record_deleted">已删除</string>
+    <string name="record_confirm_delete">确认删除此笔纪录吗？</string>
+
+    <!-- Book -->
+    <string name="book_selection">选择帐本</string>
+    <string name="book_create_success">“%s”已新增成功</string>
+    <string name="book_join_success">已加入“%s”</string>
+    <string name="book_join_link_expired">连结已失效ＱＱ</string>
+    <string name="book_already_archived">糟糕，帐本已经被删除了</string>
+    <string name="book_already_joined">您已加入帐本了</string>
+    <string name="book_join_exceed_free_limit">取得进阶版以创建、加入更多帐本</string>
+    <string name="book_exceed_maximum">已达帐本总数上限</string>
+
+    <!-- Category -->
+    <string name="category_title">类别名称</string>
+    <string name="category_edit_title">编辑类别</string>
+    <string name="category_edit_unsave_message">尚有未储存的变更，确定要离开吗？</string>
+    <string name="category_edit_successful">类别清单已储存</string>
+    <string name="category_food">饮食</string>
+    <string name="category_daily">日常</string>
+    <string name="category_transport">交通</string>
+    <string name="category_social">社交</string>
+    <string name="category_entertainment">娱乐</string>
+    <string name="category_medical">医疗</string>
+    <string name="category_insurance">保险</string>
+    <string name="category_loan">贷款</string>
+    <string name="category_rent">房租</string>
+    <string name="category_workout">健身</string>
+    <string name="category_mobile">电信</string>
+    <string name="category_utility">水电</string>
+    <string name="category_investment">投资</string>
+    <string name="category_salary">薪水</string>
+    <string name="category_bonus">奖金</string>
+    <string name="category_rebate">现金回馈</string>
+    <string name="category_other">其他</string>
+
+    <!-- Members -->
+    <string name="members_title">成员</string>
+    <string name="members_owner_label">创建者</string>
+    <string name="members_confirm_remove">确定要将%1$s从“%2$s”中移除吗？</string>
+
+    <!-- Menu -->
+    <string name="menu_share_book">点击下面的连结跟我一起记帐吧！\n%s</string>
+    <string name="menu_open">目录</string>
+    <string name="menu_rename_user">编辑使用者名称</string>
+    <string name="menu_rename_book">重新命名帐本</string>
+    <string name="menu_view_members">查看成员</string>
+    <string name="menu_create_book">创建新帐本</string>
+    <string name="menu_logout">登出</string>
+    <string name="menu_delete_book">删除帐本</string>
+    <string name="menu_leave_book">离开帐本</string>
+    <string name="menu_confirm_delete">确定要删除“%s”吗？</string>
+    <string name="menu_confirm_leave">确定要离开“%s”吗？</string>
+
+    <!-- Overview -->
+    <string name="overview_title">%s总览</string>
+    <string name="overview_total_price">合计：$%s</string>
+    <string name="overview_period_day">本日</string>
+    <string name="overview_period_week">本週</string>
+    <string name="overview_period_month">本月</string>
+    <string name="overview_period_last_month">上个月</string>
+    <string name="overview_sort_by_date">依日期排序</string>
+    <string name="overview_sort_by_price">依金额排序</string>
+    <string name="overview_details_title">%1$s：%2$s</string>
+
+    <!-- Premium -->
+    <string name="premium_unlock">解锁进阶版</string>
+    <string name="premium_hide_ads">隐藏广告</string>
+    <string name="premium_pricing">%s 一次性付款，解锁进阶功能\n无忧无虑用到天荒地老</string>
+    <string name="premium_description">
+        ✔ 不受任何广告干扰
+        \n✔ 扩充至十本记帐本
+        \n✔ 更多进阶功能未来优先试用
+    </string>
+    <string name="premium_unlock_cta">取得进阶版</string>
+    <string name="premium_unlocked">极简记帐进阶版，解锁！</string>
+    <string name="premium_acknowledge_fail">无法确认款项，请稍后再试</string>
+
+    <!-- Bubble -->
+    <string name="bubble_invite">点击分享连结，邀请好友们一起记帐！</string>
+    <string name="bubble_edit_category">点击以重新命名或删除，长按拖曳排序</string>
+    <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
+    <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
+
+    <!-- General -->
+    <string name="cta_add">新增</string>
+    <string name="cta_create">建立</string>
+    <string name="cta_rename">储存</string>
+    <string name="cta_invite">邀请</string>
+    <string name="cta_edit">编辑</string>
+    <string name="cta_save">储存</string>
+    <string name="cta_confirm">确认</string>
+    <string name="cta_ok">确认</string>
+    <string name="cta_go">Go</string>
+    <string name="cta_cancel">取消</string>
+    <string name="cta_back">返回</string>
+    <string name="cta_delete">删除</string>
+    <string name="select_date">选择日期</string>
+    <string name="date_to">至</string>
+    <string name="today">今天</string>
+    <string name="yesterday">昨天</string>
+    <string name="tomorrow">明天</string>
+    <string name="username_title">使用者名称</string>
+    <string name="book_name_title">帐本名称</string>
+    <string name="book_name_placeholder">我的记帐本</string>
+    <string name="fallback_error_message">出错了，请稍后再试</string>
+</resources>

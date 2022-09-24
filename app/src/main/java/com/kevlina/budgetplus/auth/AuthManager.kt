@@ -11,7 +11,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.User
-import com.kevlina.budgetplus.utils.*
+import com.kevlina.budgetplus.utils.AppScope
+import com.kevlina.budgetplus.utils.DocNotExistsException
+import com.kevlina.budgetplus.utils.await
+import com.kevlina.budgetplus.utils.mapState
+import com.kevlina.budgetplus.utils.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,7 +104,8 @@ class AuthManagerImpl @Inject constructor(
     private fun updateUser(user: User?) {
         val userWithExclusiveFields = user?.copy(
             premium = currentUser?.premium,
-            createdOn = currentUser?.createdOn ?: System.currentTimeMillis()
+            createdOn = currentUser?.createdOn ?: System.currentTimeMillis(),
+            lastActiveOn = System.currentTimeMillis()
         )
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields

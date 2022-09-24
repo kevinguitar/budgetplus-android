@@ -4,14 +4,14 @@ import android.content.Context
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse
 import com.android.installreferrer.api.InstallReferrerStateListener
-import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.data.remote.BookRepo
 import dagger.hilt.android.qualifiers.ActivityContext
 import timber.log.Timber
 import javax.inject.Inject
 
 class ReferrerHandler @Inject constructor(
     @ActivityContext private val context: Context,
-    private val toaster: Toaster
+    private val bookRepo: BookRepo
 ) : InstallReferrerStateListener {
 
     private val referrerClient by lazy {
@@ -27,9 +27,9 @@ class ReferrerHandler @Inject constructor(
     override fun onInstallReferrerSetupFinished(responseCode: Int) {
         when (responseCode) {
             InstallReferrerResponse.OK -> {
-                Timber.d("ReferrerClient: Ok")
-                Timber.d("ReferrerClient: ${referrerClient.installReferrer.installReferrer}")
-                toaster.showMessage(referrerClient.installReferrer.installReferrer)
+                val joinId = referrerClient.installReferrer.installReferrer
+                Timber.d("ReferrerClient: Ok. JoinId=$joinId")
+                bookRepo.setPendingJoinRequest(joinId)
                 referrerClient.endConnection()
             }
 

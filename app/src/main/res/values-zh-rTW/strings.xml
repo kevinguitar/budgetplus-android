@@ -67,13 +67,7 @@
     <string name="members_confirm_remove">確定要將%1$s從「%2$s」中移除嗎？</string>
 
     <!-- Menu -->
-    <string name="menu_share_book">
-        點擊以下連結一起記帳吧！
-        \n%s
-        \n
-        \n還沒下載極簡記帳？快去商店下載 Android App 吧！
-        \nhttps://play.google.com/store/apps/details?id=com.kevlina.budgetplus
-    </string>
+    <string name="menu_share_book">點擊下面的連結跟我一起記帳吧！\n%s</string>
     <string name="menu_open">目錄</string>
     <string name="menu_rename_user">編輯使用者名稱</string>
     <string name="menu_rename_book">重新命名帳本</string>

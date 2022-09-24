@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.data.remote
 
 import android.content.Context
-import android.net.Uri
 import androidx.core.net.toUri
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -18,7 +17,13 @@ import com.kevlina.budgetplus.utils.await
 import com.kevlina.budgetplus.utils.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,7 +40,7 @@ interface BookRepo {
 
     fun generateJoinLink(): String
 
-    fun setPendingJoinRequest(uri: Uri)
+    fun setPendingJoinRequest(joinId: String?)
 
     /**
      *  @return The book's name that the user just joined.
@@ -62,6 +67,7 @@ interface BookRepo {
 @Singleton
 class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
+    private val joinInfoProcessor: JoinInfoProcessor,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppScope appScope: CoroutineScope,
@@ -80,9 +86,9 @@ class BookRepoImpl @Inject constructor(
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
 
     override val hasPendingJoinRequest: Boolean
-        get() = pendingJoinUri.value != null
+        get() = pendingJoinId.value != null
 
-    private val pendingJoinUri = MutableStateFlow<Uri?>(null)
+    private val pendingJoinId = MutableStateFlow<String?>(null)
 
     private val booksDb by lazy { Firebase.firestore.collection("books") }
 
@@ -97,20 +103,18 @@ class BookRepoImpl @Inject constructor(
     }
 
     override fun generateJoinLink(): String {
-        // The join link will expire in 1 day
-        val validBefore = System.currentTimeMillis() + 1.days.inWholeMilliseconds
+        val joinId = joinInfoProcessor.generateJoinId(requireBookId)
         val joinLink = "https://budgetplus.cchi.tw/".toUri()
             .buildUpon()
             .appendPath("join")
-            .appendPath(requireBookId)
-            .appendQueryParameter("valid", validBefore.toString())
+            .appendPath(joinId)
             .build()
         tracker.logEvent("join_book_link_generated")
         return joinLink.toString()
     }
 
-    override fun setPendingJoinRequest(uri: Uri) {
-        pendingJoinUri.value = uri
+    override fun setPendingJoinRequest(joinId: String?) {
+        pendingJoinId.value = joinId
     }
 
     private suspend fun getLatestBook(bookId: String): Book {
@@ -119,11 +123,15 @@ class BookRepoImpl @Inject constructor(
             .copy(id = bookId)
     }
 
+    // The join link will expire in 1 day
+    private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
+
     override suspend fun handlePendingJoinRequest(): String {
-        val uri = requireNotNull(pendingJoinUri.value) { "Doesn't have pending join request" }
-        val bookId = uri.lastPathSegment ?: error("No book id is presented")
-        val validBefore = uri.getQueryParameter("valid")
-        pendingJoinUri.value = null
+        val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
+        val joinInfo = joinInfoProcessor.resolveJoinId(joinId)
+        val bookId = joinInfo.bookId
+        val validBefore = joinInfo.generatedOn + linkExpirationMillis
+        pendingJoinId.value = null
 
         val userId = authManager.requireUserId()
         val isPremium = authManager.userState.value?.premium == true
@@ -137,11 +145,13 @@ class BookRepoImpl @Inject constructor(
                 tracker.logEvent("join_book_reach_max_limit")
                 throw JoinBookException(R.string.book_exceed_maximum)
             }
+
             !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_free_limit")
                 throw ExceedFreeLimitException(R.string.book_join_exceed_free_limit)
             }
-            validBefore == null || System.currentTimeMillis() > validBefore.toLong() -> {
+
+            System.currentTimeMillis() > validBefore -> {
                 tracker.logEvent("join_book_link_expired")
                 throw JoinBookException(R.string.book_join_link_expired)
             }

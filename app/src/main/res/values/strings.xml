@@ -67,13 +67,7 @@
     <string name="members_confirm_remove">Are you sure you want to remove %1$s from %2$s?</string>
 
     <!-- Menu -->
-    <string name="menu_share_book">
-        Click the link to track expenses together!
-        \n%s
-        \n
-        \nDon\'t have Budget+ yet? Click here to install the Android App!
-        \nhttps://play.google.com/store/apps/details?id=com.kevlina.budgetplus
-    </string>
+    <string name="menu_share_book">Click the link to track expenses with me!\n%s</string>
     <string name="menu_open">Open Menu</string>
     <string name="menu_rename_user">Rename User</string>
     <string name="menu_rename_book">Rename Book</string>

@@ -9,7 +9,11 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.ExceedFreeLimitException
 import com.kevlina.budgetplus.data.remote.JoinBookException
-import com.kevlina.budgetplus.utils.*
+import com.kevlina.budgetplus.utils.MutableEventFlow
+import com.kevlina.budgetplus.utils.NavigationFlow
+import com.kevlina.budgetplus.utils.NavigationInfo
+import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.sendEvent
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -46,7 +50,7 @@ class BookViewModel @Inject constructor(
     fun handleIntent(intent: Intent?) {
         val uri = intent?.data ?: return
         if (uri.pathSegments.firstOrNull() == "join") {
-            bookRepo.setPendingJoinRequest(uri)
+            bookRepo.setPendingJoinRequest(uri.lastPathSegment)
         }
     }
 

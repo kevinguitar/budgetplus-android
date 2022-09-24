@@ -29,8 +29,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.BookActivity
+import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.utils.*
+import com.kevlina.budgetplus.utils.NavigationFlow
+import com.kevlina.budgetplus.utils.NavigationInfo
+import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.utils.sendEvent
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.launch
@@ -44,6 +49,8 @@ class AuthViewModel @Inject constructor(
     private val tracker: Tracker,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @ActivityContext private val context: Context,
+    referrerHandler: ReferrerHandler,
+    preferenceHolder: PreferenceHolder,
 ) {
 
     val navigation = NavigationFlow()
@@ -63,6 +70,15 @@ class AuthViewModel @Inject constructor(
 
         override fun onError(error: FacebookException) {
             Timber.e(error, "Facebook sign-in failed")
+        }
+    }
+
+    private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
+
+    init {
+        if (isFirstLaunchAfterInstall) {
+            isFirstLaunchAfterInstall = false
+            referrerHandler.retrieveReferrer()
         }
     }
 

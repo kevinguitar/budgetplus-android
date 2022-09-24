@@ -97,7 +97,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
 
     // Jetpack Compose
-    implementation("androidx.activity:activity-compose:1.5.1")
+    implementation("androidx.activity:activity-compose:1.6.0")
     implementation("androidx.compose.material:material:${Versions.COMPOSE_VERSION}")
     implementation("androidx.compose.ui:ui:${Versions.COMPOSE_VERSION}")
     implementation("androidx.compose.ui:ui-tooling-preview:${Versions.COMPOSE_VERSION}")
@@ -138,6 +138,9 @@ dependencies {
 
     // Google Play billing
     implementation("com.android.billingclient:billing-ktx:${Versions.BILLING_VERSION}")
+
+    // Install Referrer
+    implementation("com.android.installreferrer:installreferrer:2.2")
 
     // 3rd party auth
     implementation("com.google.android.gms:play-services-auth:20.3.0")

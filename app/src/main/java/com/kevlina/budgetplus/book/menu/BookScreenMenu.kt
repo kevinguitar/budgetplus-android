@@ -6,11 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,7 +29,14 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
-import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.ConfirmDialog
+import com.kevlina.budgetplus.ui.DropdownItem
+import com.kevlina.budgetplus.ui.DropdownMenuDivider
+import com.kevlina.budgetplus.ui.FontSize
+import com.kevlina.budgetplus.ui.InputDialog
+import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.consume
 import kotlinx.coroutines.flow.launchIn
@@ -55,13 +66,12 @@ fun BookScreenMenu(navigator: Navigator) {
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Box {
-        IconButton(onClick = { isMenuExpanded = true }) {
-            Icon(
-                imageVector = Icons.Rounded.MoreVert,
-                contentDescription = stringResource(id = R.string.menu_open),
-                tint = LocalAppColors.current.light
-            )
-        }
+
+        MenuAction(
+            imageVector = Icons.Rounded.MoreVert,
+            description = stringResource(id = R.string.menu_open),
+            onClick = { isMenuExpanded = true }
+        )
 
         DropdownMenu(
             expanded = isMenuExpanded,

@@ -4,15 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.RecordTypeTab
@@ -20,12 +18,11 @@ import com.kevlina.budgetplus.utils.roundUpPriceText
 
 @Composable
 fun OverviewHeader(
-    viewModel: OverviewViewModel,
-    isGroupEmpty: Boolean
+    type: RecordType,
+    totalPrice: Double,
+    isGroupEmpty: Boolean,
+    onTypeSelected: (RecordType) -> Unit
 ) {
-
-    val type by viewModel.type.collectAsState()
-    val totalPrice by viewModel.totalPrice.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -35,7 +32,7 @@ fun OverviewHeader(
 
         RecordTypeTab(
             selected = type,
-            onTypeSelected = viewModel::setRecordType
+            onTypeSelected = onTypeSelected
         )
 
         TimePeriodSelector()

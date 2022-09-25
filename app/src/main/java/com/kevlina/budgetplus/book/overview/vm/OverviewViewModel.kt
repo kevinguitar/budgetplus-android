@@ -3,23 +3,29 @@ package com.kevlina.budgetplus.book.overview.vm
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.book.details.RecordsSortMode
 import com.kevlina.budgetplus.data.local.PreferenceHolder
-import com.kevlina.budgetplus.data.remote.*
+import com.kevlina.budgetplus.data.remote.BookRepo
+import com.kevlina.budgetplus.data.remote.Record
+import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.data.remote.toAuthor
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import timber.log.Timber
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +34,7 @@ class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
+    private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     authManager: AuthManager,
     preferenceHolder: PreferenceHolder
@@ -61,14 +68,18 @@ class OverviewViewModel @Inject constructor(
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
 
-    private val records = MutableStateFlow<Sequence<Record>?>(null)
+    val totalPrice = combine(recordsObserver.records, type) { records, type ->
+        records
+            .filter { it.type == type }
+            .sumOf { it.price }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val totalPrice = records.mapState { record ->
-        record.orEmpty().sumOf { it.price }
-    }
-
-    val recordGroups: StateFlow<Map<String, List<Record>>> = records.mapState { records ->
-        records.orEmpty()
+    val recordGroups: StateFlow<Map<String, List<Record>>> = combine(
+        recordsObserver.records,
+        type
+    ) { records, type ->
+        records
+            .filter { it.type == type }
             .map { record ->
                 val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
                 record.copy(author = author ?: record.author)
@@ -77,20 +88,20 @@ class OverviewViewModel @Inject constructor(
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
             .toMap()
-    }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
     init {
         combine(
+            bookRepo.bookState.mapNotNull { it?.id },
             timePeriod,
-            type,
-            bookRepo.bookState.mapNotNull { it?.id }
-        ) { _, _, bookId -> observeRecords(bookId) }
-            .launchIn(viewModelScope)
+            recordsObserver::observeRecords
+        ).launchIn(viewModelScope)
     }
 
     fun setRecordType(type: RecordType) {
         _type.value = type
         typeCache = type
+        tracker.logEvent("overview_type_changed")
     }
 
     fun setTimePeriod(timePeriod: TimePeriod) {
@@ -118,35 +129,5 @@ class OverviewViewModel @Inject constructor(
             isSortingBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
-    }
-
-    private var recordsRegistration: ListenerRegistration? = null
-
-    private fun observeRecords(bookId: String) {
-        recordsRegistration?.remove()
-        recordsRegistration = Firebase.firestore
-            .collection("books")
-            .document(bookId)
-            .collection("records")
-            .whereEqualTo("type", type.value)
-            .whereGreaterThanOrEqualTo("date", fromDate.value.toEpochDay())
-            .whereLessThanOrEqualTo("date", untilDate.value.toEpochDay())
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Timber.e(e, "Listen failed.")
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null) {
-                    records.value = snapshot.documents
-                        .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
-                        .asSequence()
-                }
-            }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        recordsRegistration?.remove()
     }
 }

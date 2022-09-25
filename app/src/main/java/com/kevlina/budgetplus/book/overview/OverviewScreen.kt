@@ -25,6 +25,7 @@ fun OverviewScreen(navigator: Navigator) {
     val viewModel = hiltViewModel<OverviewViewModel>()
 
     val bookName by viewModel.bookName.collectAsState()
+    val type by viewModel.type.collectAsState()
     val totalPrice by viewModel.totalPrice.collectAsState()
     val isHideAds by viewModel.isHideAds.collectAsState()
     val recordGroups by viewModel.recordGroups.collectAsState()
@@ -46,7 +47,14 @@ fun OverviewScreen(navigator: Navigator) {
             item(
                 key = OverviewUiType.Header.name,
                 contentType = OverviewUiType.Header,
-                content = { OverviewHeader(viewModel, isGroupEmpty) }
+                content = {
+                    OverviewHeader(
+                        type = type,
+                        totalPrice = totalPrice,
+                        isGroupEmpty = isGroupEmpty,
+                        onTypeSelected = viewModel::setRecordType
+                    )
+                }
             )
 
             itemsIndexed(

@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import buildSrc.src.main.kotlin.AppConfig
+import buildSrc.src.main.kotlin.Libraries
 import buildSrc.src.main.kotlin.Versions
 
 plugins {
@@ -66,7 +67,7 @@ android {
 
     buildFeatures.compose = true
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER_VERSION
+        kotlinCompilerExtensionVersion = Versions.composeCompilerVersion
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -93,73 +94,73 @@ kapt {
 dependencies {
 
     // Android core
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation(Libraries.androidCore)
+    implementation(Libraries.androidLifecycle)
 
     // Jetpack Compose
-    implementation("androidx.activity:activity-compose:1.6.0")
-    implementation("androidx.compose.material:material:${Versions.COMPOSE_VERSION}")
-    implementation("androidx.compose.ui:ui:${Versions.COMPOSE_VERSION}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${Versions.COMPOSE_VERSION}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${Versions.COMPOSE_VERSION}")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE_VERSION}")
+    implementation(Libraries.composeActivity)
+    implementation(Libraries.composeMaterial)
+    implementation(Libraries.composeUi)
+    implementation(Libraries.composeUiPreview)
+    implementation(Libraries.composeUiTooling)
+    implementation(Libraries.composeUiTest)
     // Compose Compiler
-    implementation("androidx.compose.compiler:compiler:${Versions.COMPOSE_COMPILER_VERSION}")
+    implementation(Libraries.composeCompiler)
     // Compose UI utils
     // https://google.github.io/accompanist/flowlayout/
-    implementation("com.google.accompanist:accompanist-flowlayout:0.25.1")
+    implementation(Libraries.accompanistFlowLayout)
 
     // Lottie
     // https://github.com/airbnb/lottie/blob/master/android-compose.md
-    implementation("com.airbnb.android:lottie-compose:5.2.0")
+    implementation(Libraries.lottieCompose)
 
     // Kotlinx serialization
     // https://github.com/Kotlin/kotlinx.serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation(Libraries.kotlinSerialization)
 
     // Navigation
     // https://developer.android.com/jetpack/androidx/releases/navigation
-    implementation("androidx.navigation:navigation-compose:2.5.2")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation(Libraries.navigationCompose)
+    implementation(Libraries.navigationHilt)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:${Versions.DAGGER_HILT_VERSION}")
-    kapt("com.google.dagger:hilt-compiler:${Versions.DAGGER_HILT_VERSION}")
+    implementation(Libraries.hiltAndroid)
+    kapt(Libraries.hiltCompiler)
 
     // Baseline profile
-    implementation("androidx.profileinstaller:profileinstaller:${Versions.PROFILE_INSTALLER_VERSION}")
+    implementation(Libraries.profileInstaller)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM_VERSION}"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform(Libraries.firebaseBom))
+    implementation(Libraries.firebaseAuth)
+    implementation(Libraries.firebaseFirestore)
+    implementation(Libraries.firebaseCrashlytics)
+    implementation(Libraries.firebaseAnalytics)
 
     // Google Play billing
-    implementation("com.android.billingclient:billing-ktx:${Versions.BILLING_VERSION}")
+    implementation(Libraries.googlePlayBilling)
 
     // Install Referrer
-    implementation("com.android.installreferrer:installreferrer:2.2")
+    implementation(Libraries.installReferrer)
 
     // 3rd party auth
-    implementation("com.google.android.gms:play-services-auth:20.3.0")
-    implementation("com.facebook.android:facebook-login:13.0.0")
+    implementation(Libraries.googleAuth)
+    implementation(Libraries.facebookAuth)
 
     // AdMob
-    implementation("com.google.android.gms:play-services-ads:21.2.0")
+    implementation(Libraries.googleAds)
 
     // Utils
-    implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("net.objecthunter:exp4j:0.4.8")
-    implementation("io.coil-kt:coil-compose:2.1.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
+    implementation(Libraries.timber)
+    implementation(Libraries.exp4j)
+    implementation(Libraries.coilCompose)
+    coreLibraryDesugaring(Libraries.desugar)
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE_VERSION}")
+    testImplementation(Libraries.junit)
+    testImplementation(Libraries.truth)
+    androidTestImplementation(Libraries.junitTest)
+    androidTestImplementation(Libraries.espresso)
+    androidTestImplementation(Libraries.junitCompose)
 
 }

@@ -74,6 +74,12 @@ class OverviewViewModel @Inject constructor(
             .sumOf { it.price }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
+    val balance = recordsObserver.records.mapState { records ->
+        val expenses = records.filter { it.type == RecordType.Expense }
+        val incomes = records.filter { it.type == RecordType.Income }
+        incomes.sumOf { it.price } - expenses.sumOf { it.price }
+    }
+
     val recordGroups: StateFlow<Map<String, List<Record>>> = combine(
         recordsObserver.records,
         type

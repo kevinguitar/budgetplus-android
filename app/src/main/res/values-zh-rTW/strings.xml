@@ -88,6 +88,7 @@
     <string name="overview_period_last_month">上個月</string>
     <string name="overview_sort_by_date">依日期排序</string>
     <string name="overview_sort_by_price">依金額排序</string>
+    <string name="overview_balance">結餘: %s</string>
     <string name="overview_details_title">%1$s：%2$s</string>
 
     <!-- Premium -->

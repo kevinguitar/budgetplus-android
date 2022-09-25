@@ -88,6 +88,7 @@
     <string name="overview_period_last_month">Last Month</string>
     <string name="overview_sort_by_date">Sort by date</string>
     <string name="overview_sort_by_price">Sort by price</string>
+    <string name="overview_balance">Balance: %s</string>
     <string name="overview_details_title">%1$s: %2$s</string>
 
     <!-- Premium -->

@@ -2,7 +2,6 @@
 
 import buildSrc.src.main.kotlin.AppConfig
 import buildSrc.src.main.kotlin.Libraries
-import buildSrc.src.main.kotlin.Versions
 
 plugins {
     id("com.android.application")
@@ -67,7 +66,7 @@ android {
 
     buildFeatures.compose = true
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.composeCompilerVersion
+        kotlinCompilerExtensionVersion = Libraries.composeCompilerVersion
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -107,15 +106,12 @@ dependencies {
     // Compose Compiler
     implementation(Libraries.composeCompiler)
     // Compose UI utils
-    // https://google.github.io/accompanist/flowlayout/
     implementation(Libraries.accompanistFlowLayout)
 
     // Lottie
-    // https://github.com/airbnb/lottie/blob/master/android-compose.md
     implementation(Libraries.lottieCompose)
 
     // Kotlinx serialization
-    // https://github.com/Kotlin/kotlinx.serialization
     implementation(Libraries.kotlinSerialization)
 
     // Navigation

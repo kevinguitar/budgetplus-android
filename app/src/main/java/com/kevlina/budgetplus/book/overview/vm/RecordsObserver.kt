@@ -27,14 +27,12 @@ class RecordsObserver @Inject constructor() {
     private var recordsRegistration: ListenerRegistration? = null
 
     fun observeRecords(bookId: String, period: TimePeriod) {
-        Timber.d("OOO: observe attempt")
         val newConfig = bookId to period
         if (currentRegistrationConfig == newConfig) {
             // Do not establish the listener again if the config is the same
             return
         }
 
-        Timber.d("OOO: observing")
         currentRegistrationConfig = newConfig
         recordsRegistration?.remove()
         recordsRegistration = Firebase.firestore

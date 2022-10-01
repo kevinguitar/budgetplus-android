@@ -10,14 +10,12 @@ object Libraries {
     const val composeActivity = "androidx.activity:activity-compose:1.6.0"
     const val composeMaterial = "androidx.compose.material:material:${Versions.composeVersion}"
     const val composeUi = "androidx.compose.ui:ui:${Versions.composeVersion}"
-    const val composeUiPreview =
-        "androidx.compose.ui:ui-tooling-preview:${Versions.composeVersion}"
+    const val composeUiPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.composeVersion}"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeVersion}"
     const val composeUiTest = "androidx.compose.ui:ui-test-manifest:${Versions.composeVersion}"
 
     // Compose Compiler
-    const val composeCompiler =
-        "androidx.compose.compiler:compiler:${Versions.composeCompilerVersion}"
+    const val composeCompiler = "androidx.compose.compiler:compiler:${Versions.composeCompilerVersion}"
 
     // Compose UI utils
     // https://google.github.io/accompanist/flowlayout/
@@ -41,8 +39,7 @@ object Libraries {
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.daggerHiltVersion}"
 
     // Baseline profile
-    const val profileInstaller =
-        "androidx.profileinstaller:profileinstaller:${Versions.profileInstallerVersion}"
+    const val profileInstaller = "androidx.profileinstaller:profileinstaller:${Versions.profileInstallerVersion}"
 
     // Firebase
     const val firebaseBom = "com.google.firebase:firebase-bom:${Versions.firebaseBomVersion}"

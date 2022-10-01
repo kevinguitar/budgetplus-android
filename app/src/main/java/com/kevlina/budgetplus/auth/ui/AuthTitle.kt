@@ -17,6 +17,7 @@ fun AuthTitle(modifier: Modifier = Modifier) {
     AppText(
         text = stringResource(id = R.string.auth_welcome_title),
         color = LocalAppColors.current.light,
+        textAlign = TextAlign.Center,
         fontSize = FontSize.HeaderXLarge,
         fontWeight = FontWeight.SemiBold,
         modifier = modifier

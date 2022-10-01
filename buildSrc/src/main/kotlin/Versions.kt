@@ -7,7 +7,7 @@ object Versions {
     const val agpVersion = "7.3.0"
 
     // Kotlin
-    // Full release notest - https://github.com/JetBrains/kotlin/releases
+    // Full release notes - https://github.com/JetBrains/kotlin/releases
     // release - https://kotlinlang.org/docs/releases.html#release-details
     // eap - https://kotlinlang.org/docs/eap.html#build-details
     // Before updating version of Kotlin always check version supported by Compose
@@ -20,7 +20,7 @@ object Versions {
 
     // Compose compiler
     // https://developer.android.com/jetpack/androidx/releases/compose-compiler
-    const val composeCompilerVersion = "1.3.0"
+    const val composeCompilerVersion = "1.3.1"
 
     // Dagger Hilt
     // https://dagger.dev/hilt/gradle-setup

@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.book.overview.vm
 
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -39,6 +40,7 @@ class RecordsObserver @Inject constructor() {
             .collection("books")
             .document(bookId)
             .collection("records")
+            .orderBy("date", Query.Direction.DESCENDING)
             .whereGreaterThanOrEqualTo("date", period.from.toEpochDay())
             .whereLessThanOrEqualTo("date", period.until.toEpochDay())
             .addSnapshotListener { snapshot, e ->

@@ -8,11 +8,16 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.BookActivity
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.JoinBookException
-import com.kevlina.budgetplus.utils.*
+import com.kevlina.budgetplus.utils.NavigationFlow
+import com.kevlina.budgetplus.utils.NavigationInfo
+import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.utils.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,8 +62,10 @@ class WelcomeViewModel @Inject constructor(
 
                 val navInfo = NavigationInfo(destination = BookActivity::class)
                 navigation.sendEvent(navInfo)
-            } catch (e: JoinBookException) {
+            } catch (e: JoinBookException.General) {
                 toaster.showMessage(e.errorRes)
+            } catch (e: JoinBookException.JoinInfoNotFound) {
+                Timber.e(e)
             } catch (e: Exception) {
                 toaster.showError(e)
             }

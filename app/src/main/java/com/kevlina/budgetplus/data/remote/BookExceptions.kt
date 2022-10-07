@@ -5,5 +5,11 @@ import androidx.annotation.StringRes
 const val FREE_BOOKS_LIMIT: Int = 1
 const val PREMIUM_BOOKS_LIMIT: Int = 10
 
-open class JoinBookException(@StringRes open val errorRes: Int) : IllegalStateException()
-class ExceedFreeLimitException(@StringRes override val errorRes: Int) : JoinBookException(errorRes)
+sealed class JoinBookException : IllegalStateException() {
+
+    class ExceedFreeLimit(@StringRes val errorRes: Int) : JoinBookException()
+
+    object JoinInfoNotFound : JoinBookException()
+
+    class General(@StringRes val errorRes: Int) : JoinBookException()
+}

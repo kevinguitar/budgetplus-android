@@ -132,7 +132,12 @@ class BookRepoImpl @Inject constructor(
 
     override suspend fun handlePendingJoinRequest(): String {
         val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
-        val joinInfo = joinInfoProcessor.resolveJoinId(joinId)
+        val joinInfo = try {
+            joinInfoProcessor.resolveJoinId(joinId)
+        } catch (e: Exception) {
+            // Do not show any error on UI, the joinId could be the random referral from GP
+            throw JoinBookException.JoinInfoNotFound
+        }
         val bookId = joinInfo.bookId
         val validBefore = joinInfo.generatedOn + linkExpirationMillis
         pendingJoinId.value = null
@@ -143,21 +148,21 @@ class BookRepoImpl @Inject constructor(
         val book = getLatestBook(bookId)
 
         when {
-            book.archived -> throw JoinBookException(R.string.book_already_archived)
-            userId in book.authors -> throw JoinBookException(R.string.book_already_joined)
+            book.archived -> throw JoinBookException.General(R.string.book_already_archived)
+            userId in book.authors -> throw JoinBookException.General(R.string.book_already_joined)
             isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_max_limit")
-                throw JoinBookException(R.string.book_exceed_maximum)
+                throw JoinBookException.General(R.string.book_exceed_maximum)
             }
 
             !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_free_limit")
-                throw ExceedFreeLimitException(R.string.book_join_exceed_free_limit)
+                throw JoinBookException.ExceedFreeLimit(R.string.book_join_exceed_free_limit)
             }
 
             System.currentTimeMillis() > validBefore -> {
                 tracker.logEvent("join_book_link_expired")
-                throw JoinBookException(R.string.book_join_link_expired)
+                throw JoinBookException.General(R.string.book_join_link_expired)
             }
         }
 

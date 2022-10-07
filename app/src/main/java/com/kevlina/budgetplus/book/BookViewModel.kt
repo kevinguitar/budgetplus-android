@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.data.remote.ExceedFreeLimitException
 import com.kevlina.budgetplus.data.remote.JoinBookException
 import com.kevlina.budgetplus.utils.MutableEventFlow
 import com.kevlina.budgetplus.utils.NavigationFlow
@@ -20,6 +19,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,11 +61,13 @@ class BookViewModel @Inject constructor(
             try {
                 val bookName = bookRepo.handlePendingJoinRequest()
                 toaster.showMessage(context.getString(R.string.book_join_success, bookName))
-            } catch (e: ExceedFreeLimitException) {
+            } catch (e: JoinBookException.ExceedFreeLimit) {
                 unlockPremiumEvent.sendEvent()
                 toaster.showMessage(e.errorRes)
-            } catch (e: JoinBookException) {
+            } catch (e: JoinBookException.General) {
                 toaster.showMessage(e.errorRes)
+            } catch (e: JoinBookException.JoinInfoNotFound) {
+                Timber.e(e)
             } catch (e: Exception) {
                 toaster.showError(e)
             }

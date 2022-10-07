@@ -60,7 +60,7 @@ import com.kevlina.budgetplus.utils.thenIf
 @Composable
 fun EditCategoryScreen(
     navigator: Navigator,
-    type: RecordType
+    type: RecordType,
 ) {
 
     val viewModel = hiltViewModel<EditCategoryViewModel>()
@@ -136,7 +136,11 @@ fun EditCategoryScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                itemsIndexed(list, key = { _, item -> item }) { index, item ->
+                itemsIndexed(
+                    items = list,
+                    key = { _, item -> item },
+                    contentType = { _, _ -> "category" }
+                ) { index, item ->
 
                     DraggableItem(
                         dragDropState = dragDropState,
@@ -196,7 +200,7 @@ fun EditCategoryScreen(
             onConfirm = { name ->
                 list = list.toMutableList().apply {
                     when (dialogMode) {
-                        CategoryEditMode.Add -> add(name)
+                        CategoryEditMode.Add -> if (name !in this) add(name)
                         is CategoryEditMode.Rename -> {
                             val index = indexOf(dialogMode.currentName)
                             if (index != -1) this[index] = name
@@ -227,7 +231,7 @@ private fun CategoryCell(
     category: String,
     isDragging: Boolean,
     modifier: Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)

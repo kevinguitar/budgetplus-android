@@ -25,16 +25,21 @@ interface Toaster {
 
 @Singleton
 class ToasterImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : Toaster {
 
-    private val toast by lazy {
-        Toast.makeText(context, null, LENGTH_SHORT)
-    }
+    private var toast: Toast? = null
+    private var lastMessage: CharSequence? = null
 
     override fun showMessage(charSequence: CharSequence) {
-        toast.setText(charSequence)
-        toast.show()
+        // Cancel duplicated messages to avoid a long queue
+        if (lastMessage == charSequence) {
+            toast?.cancel()
+        }
+
+        toast = Toast.makeText(context, charSequence, LENGTH_SHORT)
+        toast?.show()
+        lastMessage = charSequence
     }
 
     override fun showMessage(resId: Int) {

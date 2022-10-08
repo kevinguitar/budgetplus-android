@@ -6,12 +6,8 @@ import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordRepo
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
-import com.kevlina.budgetplus.utils.mapState
 import com.kevlina.budgetplus.utils.parseToPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import java.math.RoundingMode
 import java.time.LocalDate
 import javax.inject.Inject
@@ -23,37 +19,25 @@ class EditRecordViewModel @Inject constructor(
     private val tracker: Tracker,
 ) : ViewModel() {
 
-    private val editRecord = MutableStateFlow(Record())
-
-    val date = editRecord.mapState { LocalDate.ofEpochDay(it.date) }
-    val name = editRecord.mapState { it.name }
-
-    private val _priceText = MutableStateFlow("")
-    val priceText: StateFlow<String> = _priceText.asStateFlow()
-
-    fun setRecord(record: Record) {
-        editRecord.value = record
-        _priceText.value = record.price.toBigDecimal()
+    fun parsePrice(record: Record): String {
+        return record.price.toBigDecimal()
             .setScale(2, RoundingMode.HALF_UP)
             .stripTrailingZeros()
             .toPlainString()
     }
 
-    fun setDate(date: LocalDate) {
-        editRecord.value = editRecord.value.copy(date = date.toEpochDay())
-    }
-
-    fun setName(name: String) {
-        editRecord.value = editRecord.value.copy(name = name)
-    }
-
-    fun setPrice(price: String) {
-        _priceText.value = price
-    }
-
-    fun editRecord() {
+    fun editRecord(
+        record: Record,
+        newDate: LocalDate,
+        newName: String,
+        newPriceText: String,
+    ) {
         val newRecord = try {
-            editRecord.value.copy(price = priceText.value.parseToPrice)
+            record.copy(
+                date = newDate.toEpochDay(),
+                name = newName,
+                price = newPriceText.parseToPrice
+            )
         } catch (e: Exception) {
             toaster.showError(e)
             return
@@ -63,8 +47,8 @@ class EditRecordViewModel @Inject constructor(
         tracker.logEvent("record_edited")
     }
 
-    fun deleteRecord() {
-        recordRepo.deleteRecord(editRecord.value.id)
+    fun deleteRecord(recordId: String) {
+        recordRepo.deleteRecord(recordId)
         toaster.showMessage(R.string.record_deleted)
         tracker.logEvent("record_deleted")
     }

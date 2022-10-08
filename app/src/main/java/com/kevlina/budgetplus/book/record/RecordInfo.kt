@@ -2,15 +2,23 @@ package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,28 +27,31 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.ui.AppTextField
+import com.kevlina.budgetplus.ui.CategoriesGrid
+import com.kevlina.budgetplus.ui.DatePickerDialog
+import com.kevlina.budgetplus.ui.FontSize
+import com.kevlina.budgetplus.ui.RecordTypeTab
+import com.kevlina.budgetplus.ui.SingleDatePicker
 import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.rippleClick
-import com.kevlina.budgetplus.utils.shortFormatted
 import com.kevlina.budgetplus.utils.thenIf
-import java.time.LocalDate
 
 @Composable
 fun RecordInfo(
     navigator: Navigator,
     scrollable: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
-    val viewModel = hiltViewModel<RecordViewModel>()
+    val vm = hiltViewModel<RecordViewModel>()
     val focusManager = LocalFocusManager.current
 
-    val type by viewModel.type.collectAsState()
-    val date by viewModel.date.collectAsState()
-    val note by viewModel.note.collectAsState()
-    val category by viewModel.category.collectAsState()
-    val priceText by viewModel.calculator.priceText.collectAsState()
+    val type by vm.type.collectAsState()
+    val date by vm.date.collectAsState()
+    val note by vm.note.collectAsState()
+    val category by vm.category.collectAsState()
+    val priceText by vm.calculator.priceText.collectAsState()
 
     val scrollState = rememberScrollState()
     var showDatePicker by remember { mutableStateOf(false) }
@@ -62,18 +73,18 @@ fun RecordInfo(
         }
     ) {
 
-        RecordTypeTab(selected = type, onTypeSelected = viewModel::setType)
+        RecordTypeTab(selected = type, onTypeSelected = vm::setType)
 
         CategoriesGrid(
             type = type,
-            onCategorySelected = viewModel::setCategory,
+            onCategorySelected = vm::setCategory,
             onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },
             selectedCategory = category
         )
 
         AppTextField(
             value = note,
-            onValueChange = viewModel::setNote,
+            onValueChange = vm::setNote,
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(
                 id = when (type) {
@@ -91,33 +102,12 @@ fun RecordInfo(
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            SingleDatePicker(
+                date = date,
                 modifier = Modifier
                     .rippleClick { showDatePicker = true }
                     .padding(vertical = 8.dp)
-            ) {
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_today),
-                    contentDescription = stringResource(id = R.string.select_date),
-                    tint = LocalAppColors.current.dark
-                )
-
-                AppText(
-                    text = when {
-                        date.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
-                        date.plusDays(1).isEqual(LocalDate.now()) -> {
-                            stringResource(id = R.string.yesterday)
-                        }
-                        date.minusDays(1).isEqual(LocalDate.now()) -> {
-                            stringResource(id = R.string.tomorrow)
-                        }
-                        else -> date.shortFormatted
-                    }
-                )
-            }
+            )
 
             AppTextField(
                 value = priceText,
@@ -140,7 +130,7 @@ fun RecordInfo(
 
         DatePickerDialog(
             date = date,
-            onDatePicked = viewModel::setDate,
+            onDatePicked = vm::setDate,
             onDismiss = { showDatePicker = false }
         )
     }

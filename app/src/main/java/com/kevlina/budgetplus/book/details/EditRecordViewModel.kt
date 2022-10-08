@@ -13,17 +13,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.math.RoundingMode
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker
+    private val tracker: Tracker,
 ) : ViewModel() {
 
     private val editRecord = MutableStateFlow(Record())
 
+    val date = editRecord.mapState { LocalDate.ofEpochDay(it.date) }
     val name = editRecord.mapState { it.name }
 
     private val _priceText = MutableStateFlow("")
@@ -35,6 +37,10 @@ class EditRecordViewModel @Inject constructor(
             .setScale(2, RoundingMode.HALF_UP)
             .stripTrailingZeros()
             .toPlainString()
+    }
+
+    fun setDate(date: LocalDate) {
+        editRecord.value = editRecord.value.copy(date = date.toEpochDay())
     }
 
     fun setName(name: String) {

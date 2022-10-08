@@ -2,9 +2,10 @@
 
 import buildSrc.src.main.kotlin.AppConfig
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.test")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.test)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -49,10 +50,12 @@ android {
 }
 
 dependencies {
-    implementation("androidx.test.ext:junit:1.1.3")
-    implementation("androidx.test.espresso:espresso-core:3.4.0")
-    implementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha03")
+    with(libs) {
+        implementation(junit.android)
+        implementation(espresso)
+        implementation(test.uiautomator)
+        implementation(macro.benchmark)
+    }
 }
 
 androidComponents {

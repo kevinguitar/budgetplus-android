@@ -1,16 +1,18 @@
 @file:Suppress("UnstableApiUsage")
 
 import buildSrc.src.main.kotlin.AppConfig
-import buildSrc.src.main.kotlin.Libraries
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    with (libs.plugins) {
+        alias(android.application)
+        alias(kotlin.android)
+        alias(kotlin.kapt)
+        alias(kotlin.serialization)
+        alias(hilt.android)
+        alias(google.services)
+        alias(firebase.crashlytics)
+    }
 }
 
 android {
@@ -66,7 +68,7 @@ android {
 
     buildFeatures.compose = true
     composeOptions {
-        kotlinCompilerExtensionVersion = Libraries.composeCompilerVersion
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
@@ -76,87 +78,36 @@ android {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-        )
-    }
-}
-
 kapt {
     correctErrorTypes = true
 }
 
 dependencies {
+    with(libs) {
+        implementation(platform(firebase.bom))
+        implementation(bundles.firebase)
+        implementation(bundles.compose)
+        implementation(bundles.navigation)
+        implementation(bundles.google.services)
+        implementation(bundles.test)
 
-    // Android core
-    implementation(Libraries.androidCore)
-    implementation(Libraries.androidLifecycle)
+        implementation(android.core)
+        implementation(android.lifecycle)
 
-    // Jetpack Compose
-    implementation(Libraries.composeActivity)
-    implementation(Libraries.composeMaterial)
-    implementation(Libraries.composeUi)
-    implementation(Libraries.composeUiPreview)
-    implementation(Libraries.composeUiTooling)
-    implementation(Libraries.composeUiTest)
-    // Compose Compiler
-    implementation(Libraries.composeCompiler)
-    // Compose UI utils
-    implementation(Libraries.accompanistFlowLayout)
+        implementation(accompanist.flowlayout)
+        implementation(lottie.compose)
+        implementation(kotlin.serialization)
 
-    // Lottie
-    implementation(Libraries.lottieCompose)
+        implementation(hilt.android)
+        kapt(hilt.compiler)
 
-    // Kotlinx serialization
-    implementation(Libraries.kotlinSerialization)
-
-    // Navigation
-    // https://developer.android.com/jetpack/androidx/releases/navigation
-    implementation(Libraries.navigationCompose)
-    implementation(Libraries.navigationHilt)
-
-    // Dagger Hilt
-    implementation(Libraries.hiltAndroid)
-    kapt(Libraries.hiltCompiler)
-
-    // Baseline profile
-    implementation(Libraries.profileInstaller)
-
-    // Firebase
-    implementation(platform(Libraries.firebaseBom))
-    implementation(Libraries.firebaseAuth)
-    implementation(Libraries.firebaseFirestore)
-    implementation(Libraries.firebaseCrashlytics)
-    implementation(Libraries.firebaseAnalytics)
-
-    // Google Play billing
-    implementation(Libraries.googlePlayBilling)
-
-    // Install Referrer
-    implementation(Libraries.installReferrer)
-
-    // 3rd party auth
-    implementation(Libraries.googleAuth)
-    implementation(Libraries.facebookAuth)
-
-    // AdMob
-    implementation(Libraries.googleAds)
-
-    // Utils
-    implementation(Libraries.timber)
-    implementation(Libraries.exp4j)
-    implementation(Libraries.coilCompose)
-    coreLibraryDesugaring(Libraries.desugar)
-
-    // Testing
-    testImplementation(Libraries.junit)
-    testImplementation(Libraries.truth)
-    androidTestImplementation(Libraries.junitTest)
-    androidTestImplementation(Libraries.espresso)
-    androidTestImplementation(Libraries.junitCompose)
-
+        implementation(profile.installer)
+        implementation(google.billing)
+        implementation(install.referrer)
+        implementation(facebook.auth)
+        implementation(timber)
+        implementation(exp4j)
+        implementation(coil.compose)
+        coreLibraryDesugaring(desugar)
+    }
 }

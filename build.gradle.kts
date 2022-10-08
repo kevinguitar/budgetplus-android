@@ -10,6 +10,8 @@ plugins {
         alias(hilt.android) apply false
         alias(google.services) apply false
         alias(firebase.crashlytics) apply false
+        alias(toml.checker)
+        alias(toml.updater)
     }
 }
 

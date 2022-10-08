@@ -96,3 +96,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-services = { id = "com.google.gms.google-services", version = "4.3.14" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "2.9.2" }
+
+toml-checker = "com.github.ben-manes.versions:0.42.0"
+toml-updater = "nl.littlerobots.version-catalog-update:0.3.1"

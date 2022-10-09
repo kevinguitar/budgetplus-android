@@ -23,3 +23,9 @@
 -keep public class com.google.firebase.** {*;}
 -keep class com.google.android.gms.internal.** {*;}
 -keepclasseswithmembers class com.google.firebase.FirebaseException
+
+# Requred from r8
+-dontwarn androidx.recyclerview.widget.RecyclerView
+-dontwarn com.google.errorprone.annotations.InlineMe
+-dontwarn com.google.errorprone.annotations.MustBeClosed
+-dontwarn javax.lang.model.element.Modifier

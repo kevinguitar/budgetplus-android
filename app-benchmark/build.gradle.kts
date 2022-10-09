@@ -55,6 +55,11 @@ dependencies {
         implementation(espresso)
         implementation(test.uiautomator)
         implementation(macro.benchmark)
+
+        // Required for r8
+        implementation(android.core)
+        implementation(recyclerview)
+        implementation(google.errorprone)
     }
 }
 

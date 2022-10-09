@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.monetize
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import com.google.android.gms.ads.AdView
 import com.kevlina.budgetplus.R
 import kotlin.math.roundToInt
 
+@SuppressLint("VisibleForTests")
 @Composable
 fun AdsBanner() {
 

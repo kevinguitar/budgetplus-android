@@ -24,8 +24,13 @@
 -keep class com.google.android.gms.internal.** {*;}
 -keepclasseswithmembers class com.google.firebase.FirebaseException
 
-# Requred from r8
--dontwarn androidx.recyclerview.widget.RecyclerView
--dontwarn com.google.errorprone.annotations.InlineMe
--dontwarn com.google.errorprone.annotations.MustBeClosed
--dontwarn javax.lang.model.element.Modifier
+# Required rules for r8
+-dontwarn org.bouncycastle.jsse.BCSSLParameters
+-dontwarn org.bouncycastle.jsse.BCSSLSocket
+-dontwarn org.bouncycastle.jsse.provider.BouncyCastleJsseProvider
+-dontwarn org.conscrypt.Conscrypt$Version
+-dontwarn org.conscrypt.Conscrypt
+-dontwarn org.conscrypt.ConscryptHostnameVerifier
+-dontwarn org.openjsse.javax.net.ssl.SSLParameters
+-dontwarn org.openjsse.javax.net.ssl.SSLSocket
+-dontwarn org.openjsse.net.ssl.OpenJSSE

@@ -1,10 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
-import buildSrc.src.main.kotlin.AppConfig
+import kotlin.math.pow
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with (libs.plugins) {
+    with(libs.plugins) {
         alias(android.application)
         alias(kotlin.android)
         alias(kotlin.kapt)
@@ -16,15 +16,37 @@ plugins {
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
-    compileSdk = AppConfig.ANDROID_SDK_VERSION
+    val appId = rootProject.ext["application_id"] as String
+    val appVersion = rootProject.ext["app_version"] as String
+    val targetSdkVersion = rootProject.ext["android_sdk"] as Int
+    val minSdkVersion = rootProject.ext["min_android_sdk"] as Int
+
+    /**
+     *  Major version * 10^6
+     *  Minor version * 10^3
+     *  Bugfix version * 10^0
+     *
+     *  "1.1.4"     to 1001004
+     *  "3.100.1"   to 3100001
+     *  "10.52.39"  to 10052039
+     */
+    val appVersionCode = appVersion
+        .split(".")
+        .reversed()
+        .mapIndexed { index, num ->
+            num.toInt() * 10.0.pow(index * 3).toInt()
+        }
+        .sum()
+
+    namespace = appId
+    compileSdk = targetSdkVersion
 
     defaultConfig {
-        applicationId = AppConfig.APPLICATION_ID
-        minSdk = AppConfig.MIN_ANDROID_SDK_VERSION
-        targetSdk = AppConfig.ANDROID_SDK_VERSION
-        versionName = AppConfig.APP_VERSION
-        versionCode = AppConfig.appVersionCode
+        applicationId = appId
+        minSdk = minSdkVersion
+        targetSdk = targetSdkVersion
+        versionName = appVersion
+        versionCode = appVersionCode
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -75,6 +97,16 @@ android {
     }
     bundle {
         storeArchive.enable = false
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+        )
     }
 }
 

@@ -1,7 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import buildSrc.src.main.kotlin.AppConfig
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.test)
@@ -9,8 +7,10 @@ plugins {
 }
 
 android {
-    namespace = "${AppConfig.APPLICATION_ID}.benchmark"
-    compileSdk = AppConfig.ANDROID_SDK_VERSION
+    val targetSdkVersion = rootProject.ext["android_sdk"] as Int
+
+    namespace = "${rootProject.ext["application_id"] as String}.benchmark"
+    compileSdk = targetSdkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,8 +18,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = AppConfig.MIN_ANDROID_SDK_VERSION
-        targetSdk = AppConfig.ANDROID_SDK_VERSION
+        minSdk = rootProject.ext["min_android_sdk"] as Int
+        targetSdk = targetSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,9 +57,9 @@ dependencies {
         implementation(macro.benchmark)
 
         // Required for r8
-        implementation(android.core)
-        implementation(recyclerview)
-        implementation(google.errorprone)
+        compileOnly(android.core)
+        compileOnly(recyclerview)
+        compileOnly(google.errorprone)
     }
 }
 

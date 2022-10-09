@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Facebook sdk-->
     <string name="facebook_app_id" translatable="false">1549206848815980</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb1549206848815980</string>
+    <string name="fb_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb1549206848815980</string>
     <string name="facebook_client_token" translatable="false">bd84b82c9519471eeef74ef515bcb2df</string>
 
     <!-- Google sdk-->

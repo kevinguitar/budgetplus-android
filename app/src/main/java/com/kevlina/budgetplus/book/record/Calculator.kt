@@ -1,6 +1,16 @@
 package com.kevlina.budgetplus.book.record
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -44,8 +54,8 @@ private val verticalSpacing = 8.dp
 @Composable
 fun Calculator(
     viewModel: CalculatorViewModel,
-    adaptiveButton: Boolean = false,
     modifier: Modifier = Modifier,
+    adaptiveButton: Boolean = false,
 ) {
 
     val needEvaluate by viewModel.needEvaluate.collectAsState()

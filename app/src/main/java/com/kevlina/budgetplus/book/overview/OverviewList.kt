@@ -27,7 +27,7 @@ fun OverviewList(
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(bottom = 40.dp),
+        contentPadding = PaddingValues(bottom = 48.dp),
         modifier = modifier
     ) {
 

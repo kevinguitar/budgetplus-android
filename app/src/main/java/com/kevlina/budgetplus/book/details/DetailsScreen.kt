@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
 import com.kevlina.budgetplus.data.remote.Author
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
@@ -50,29 +50,25 @@ import java.time.LocalDate
 @Composable
 fun DetailsScreen(
     navigator: Navigator,
-    viewModel: OverviewViewModel,
-    category: String?
+    vm: DetailsViewModel,
 ) {
-
-    requireNotNull(category) { "Category must be presented to show the details." }
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 
-    val recordGroups by viewModel.recordGroups.collectAsState()
-    val sortMode by viewModel.sortMode.collectAsState()
-    val isHideAds by viewModel.isHideAds.collectAsState()
+    val records by vm.records.collectAsState()
+    val sortMode by vm.sortMode.collectAsState()
+    val isHideAds by vm.isHideAds.collectAsState()
 
-    val records = recordGroups[category].orEmpty()
     val totalPrice = records.sumOf { it.price }.dollar
 
     Column(modifier = Modifier.fillMaxSize()) {
 
         TopBar(
-            title = stringResource(id = R.string.overview_details_title, category, totalPrice),
+            title = stringResource(id = R.string.overview_details_title, vm.category, totalPrice),
             navigateBack = { navigator.navigateUp() },
             menuActions = {
                 val modifier = Modifier.onGloballyPositioned {
-                    viewModel.highlightSortingButton(
+                    vm.highlightSortingButton(
                         BubbleDest.RecordsSorting(
                             size = it.size,
                             offset = it.positionInRoot()
@@ -84,23 +80,19 @@ fun DetailsScreen(
                     RecordsSortMode.Date -> MenuAction(
                         iconRes = R.drawable.ic_sort_date,
                         description = stringResource(id = R.string.overview_sort_by_price),
-                        onClick = { viewModel.setSortMode(RecordsSortMode.Price) },
+                        onClick = { vm.setSortMode(RecordsSortMode.Price) },
                         modifier = modifier
                     )
+
                     RecordsSortMode.Price -> MenuAction(
                         iconRes = R.drawable.ic_dollar,
                         description = stringResource(id = R.string.overview_sort_by_date),
-                        onClick = { viewModel.setSortMode(RecordsSortMode.Date) },
+                        onClick = { vm.setSortMode(RecordsSortMode.Date) },
                         modifier = modifier
                     )
                 }
             }
         )
-
-        val sortedRecords = when (sortMode) {
-            RecordsSortMode.Date -> records.sortedByDescending { it.date }
-            RecordsSortMode.Price -> records.sortedByDescending { it.price }
-        }
 
         LazyColumn(
             modifier = Modifier
@@ -109,12 +101,10 @@ fun DetailsScreen(
                 .weight(1F)
         ) {
 
-            //TODO: ui to filter by author
-
-            itemsIndexed(sortedRecords) { index, item ->
+            itemsIndexed(records) { index, item ->
                 RecordCard(
                     item = item,
-                    isLast = index == sortedRecords.lastIndex
+                    isLast = index == records.lastIndex
                 ) {
                     editRecordDialog = item
                 }
@@ -140,7 +130,7 @@ fun DetailsScreen(
 fun RecordCard(
     item: Record,
     isLast: Boolean,
-    onEdit: () -> Unit
+    onEdit: () -> Unit,
 ) {
     Box(
         modifier = Modifier

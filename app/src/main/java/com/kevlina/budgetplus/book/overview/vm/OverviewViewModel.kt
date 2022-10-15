@@ -4,16 +4,11 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.auth.AuthManager
-import com.kevlina.budgetplus.auth.UserRepo
-import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
-import com.kevlina.budgetplus.book.details.RecordsSortMode
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.data.remote.TimePeriod
-import com.kevlina.budgetplus.data.remote.toAuthor
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
@@ -32,8 +27,6 @@ import javax.inject.Inject
 @Stable
 class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
-    private val userRepo: UserRepo,
-    private val bubbleRepo: BubbleRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     authManager: AuthManager,
@@ -57,13 +50,7 @@ class OverviewViewModel @Inject constructor(
         book?.id?.let(periodMap::get) ?: TimePeriod.Month
     }
 
-    private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
-    private val _sortMode = MutableStateFlow(sortModeCache)
-    val sortMode: StateFlow<RecordsSortMode> = _sortMode.asStateFlow()
-
     val isHideAds = authManager.isPremium
-
-    private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
@@ -86,10 +73,6 @@ class OverviewViewModel @Inject constructor(
     ) { records, type ->
         records
             .filter { it.type == type }
-            .map { record ->
-                val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
-                record.copy(author = author ?: record.author)
-            }
             .groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
@@ -122,18 +105,5 @@ class OverviewViewModel @Inject constructor(
             event = "overview_period_changed",
             params = mapOf("period" to timePeriod::class.simpleName.orEmpty())
         )
-    }
-
-    fun setSortMode(sortMode: RecordsSortMode) {
-        _sortMode.value = sortMode
-        sortModeCache = sortMode
-        tracker.logEvent("overview_sort_mode_changed")
-    }
-
-    fun highlightSortingButton(dest: BubbleDest) {
-        if (!isSortingBubbleShown) {
-            isSortingBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
     }
 }

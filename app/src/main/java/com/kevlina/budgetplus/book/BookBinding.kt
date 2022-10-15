@@ -23,14 +23,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -45,8 +43,8 @@ import androidx.navigation.navigation
 import com.kevlina.budgetplus.book.bubble.Bubble
 import com.kevlina.budgetplus.book.category.EditCategoryScreen
 import com.kevlina.budgetplus.book.details.DetailsScreen
+import com.kevlina.budgetplus.book.details.detailsVm
 import com.kevlina.budgetplus.book.overview.OverviewScreen
-import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.book.premium.PremiumScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.data.remote.RecordType
@@ -132,20 +130,19 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
         }
 
         composable(
-            route = "${HistoryDest.Details.route}/{$ARG_CATEGORY}",
-            arguments = listOf(navArgument(ARG_CATEGORY) { type = NavType.StringType })
+            route = "${HistoryDest.Details.route}/{$ARG_TYPE}/{$ARG_CATEGORY}",
+            arguments = listOf(
+                navArgument(ARG_TYPE) { type = NavType.EnumType(RecordType::class.java) },
+                navArgument(ARG_CATEGORY) { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             val args = backStackEntry.arguments ?: Bundle.EMPTY
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(HistoryDest.Overview.route)
-            }
-            // Share the same VM instance with overview screen
-            //TODO: Don't really need this, should just map the data from records observer
-            val viewModel = hiltViewModel<OverviewViewModel>(parentEntry)
             DetailsScreen(
                 navigator = navController.toNavigator(),
-                viewModel = viewModel,
-                category = args.getString(ARG_CATEGORY)
+                vm = detailsVm(
+                    type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
+                    category = requireNotNull(args.getString(ARG_CATEGORY))
+                )
             )
         }
     }
@@ -194,7 +191,7 @@ private fun BottomNav(navController: NavController) {
 private fun RowScope.BottomNavItem(
     navController: NavController,
     tab: BookTab,
-    isSelected: Boolean
+    isSelected: Boolean,
 ) {
 
     Box(

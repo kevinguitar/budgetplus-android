@@ -57,7 +57,7 @@ fun OverviewList(
                 color = overviewColors[(index) % overviewColors.size],
                 isLast = index == recordGroups.size - 1,
                 onClick = {
-                    navigator.navigate(route = "${HistoryDest.Details.route}/$key")
+                    navigator.navigate(route = "${HistoryDest.Details.route}/$type/$key")
                 }
             )
         }

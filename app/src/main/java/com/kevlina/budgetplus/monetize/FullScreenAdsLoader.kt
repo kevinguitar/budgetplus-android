@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class FullScreenAdsLoader @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val tracker: Tracker
+    private val tracker: Tracker,
 ) {
 
     private val adState = MutableStateFlow<InterstitialAd?>(null)
@@ -43,15 +43,14 @@ class FullScreenAdsLoader @Inject constructor(
             /* adUnitId = */ context.getString(R.string.admob_interstitial_id),
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Timber.e(adError.message)
-                    adState.value = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    adState.value = interstitialAd
-                }
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Timber.e(adError.message)
+                adState.value = null
             }
-        )
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                adState.value = interstitialAd
+            }
+        })
     }
 }

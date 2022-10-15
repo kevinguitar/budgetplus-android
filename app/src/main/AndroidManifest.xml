@@ -28,7 +28,6 @@
             android:name=".book.BookActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
             android:exported="true"
-            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:theme="@style/ComposeActivityStyle"
             android:windowSoftInputMode="adjustNothing">
@@ -52,12 +51,10 @@
         <activity
             android:name=".auth.AuthActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
-            android:hardwareAccelerated="false"
             android:theme="@style/ComposeActivityStyle" />
         <activity
             android:name=".welcome.WelcomeActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
-            android:hardwareAccelerated="false"
             android:theme="@style/ComposeActivityStyle" />
 
         <meta-data

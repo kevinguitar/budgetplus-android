@@ -23,16 +23,16 @@ import com.kevlina.budgetplus.utils.Navigator
 @Composable
 fun OverviewScreen(navigator: Navigator) {
 
-    val viewModel = hiltViewModel<OverviewViewModel>()
+    val vm = hiltViewModel<OverviewViewModel>()
 
-    val bookName by viewModel.bookName.collectAsState()
-    val type by viewModel.type.collectAsState()
-    val totalPrice by viewModel.totalPrice.collectAsState()
-    val balance by viewModel.balance.collectAsState()
-    val isHideAds by viewModel.isHideAds.collectAsState()
-    val recordGroups by viewModel.recordGroups.collectAsState()
+    val bookName by vm.bookName.collectAsState()
+    val type by vm.type.collectAsState()
+    val totalPrice by vm.totalPrice.collectAsState()
+    val balance by vm.balance.collectAsState()
+    val isHideAds by vm.isHideAds.collectAsState()
+    val recordGroups by vm.recordGroups.collectAsState()
 
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
 
         TopBar(title = stringResource(id = R.string.overview_title, bookName.orEmpty()))
 
@@ -48,7 +48,7 @@ fun OverviewScreen(navigator: Navigator) {
                 recordGroups = recordGroups,
                 type = type,
                 totalPrice = totalPrice,
-                onTypeSelected = viewModel::setRecordType,
+                onTypeSelected = vm::setRecordType,
                 modifier = Modifier.fillMaxSize()
             )
 

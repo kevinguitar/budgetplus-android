@@ -86,6 +86,7 @@
     <string name="overview_period_week">Week</string>
     <string name="overview_period_month">Month</string>
     <string name="overview_period_last_month">Last Month</string>
+    <string name="overview_exceed_max_period">Unlock premium to set the period above one month</string>
     <string name="overview_sort_by_date">Sort by date</string>
     <string name="overview_sort_by_price">Sort by price</string>
     <string name="overview_balance">Balance: %s</string>
@@ -98,6 +99,7 @@
     <string name="premium_description">
         ✔ Enjoy Ads-free experience
         \n✔ Hold up to 10 accounting books
+        \n✔ Filter records without period limitation
         \n✔ More premium features in the future
     </string>
     <string name="premium_unlock_cta">Get Premium</string>

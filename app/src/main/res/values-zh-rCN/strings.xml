@@ -86,6 +86,7 @@
     <string name="overview_period_week">本週</string>
     <string name="overview_period_month">本月</string>
     <string name="overview_period_last_month">上个月</string>
+    <string name="overview_exceed_max_period">解锁进阶版以筛选大于一个月的帐目</string>
     <string name="overview_sort_by_date">依日期排序</string>
     <string name="overview_sort_by_price">依金额排序</string>
     <string name="overview_balance">结余: %s</string>
@@ -96,8 +97,9 @@
     <string name="premium_hide_ads">隐藏广告</string>
     <string name="premium_pricing">%s 一次性付款，解锁进阶功能\n无忧无虑用到天荒地老</string>
     <string name="premium_description">
-        ✔ 不受任何广告干扰
+        ✔ 不受任何广告打扰
         \n✔ 扩充至十本记帐本
+        \n✔ 筛选大于一个月的帐目
         \n✔ 更多进阶功能未来优先试用
     </string>
     <string name="premium_unlock_cta">取得进阶版</string>

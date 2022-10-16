@@ -3,12 +3,14 @@ package com.kevlina.budgetplus.book.overview.vm
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthManager
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
 import com.kevlina.budgetplus.utils.mapState
@@ -29,8 +31,9 @@ class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
-    authManager: AuthManager,
-    preferenceHolder: PreferenceHolder
+    private val authManager: AuthManager,
+    private val toaster: Toaster,
+    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
@@ -95,15 +98,22 @@ class OverviewViewModel @Inject constructor(
 
     fun setTimePeriod(timePeriod: TimePeriod) {
         val bookId = bookRepo.currentBookId ?: return
+        val isAboveOneMonth = timePeriod.from.isBefore(timePeriod.until.minusMonths(1))
+        val period = if (!authManager.isPremium.value && isAboveOneMonth) {
+            toaster.showMessage(R.string.overview_exceed_max_period)
+            tracker.logEvent("overview_exceed_max_period")
+            TimePeriod.Custom(
+                from = timePeriod.from,
+                until = timePeriod.from.plusMonths(1)
+            )
+        } else {
+            timePeriod
+        }
+
         val newMapping = periodCache.toMutableMap()
-            .apply { this[bookId] = timePeriod }
+            .apply { this[bookId] = period }
 
         timePeriodMap.value = newMapping
         periodCache = newMapping
-
-        tracker.logEvent(
-            event = "overview_period_changed",
-            params = mapOf("period" to timePeriod::class.simpleName.orEmpty())
-        )
     }
 }

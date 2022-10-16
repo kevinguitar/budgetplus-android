@@ -1,6 +1,6 @@
 ext {
     set("application_id", "com.kevlina.budgetplus")
-    set("app_version", "1.1.9")
+    set("app_version", "1.1.10")
     set("min_android_sdk", 23)
     set("android_sdk", 33)
 }

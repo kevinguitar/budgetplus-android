@@ -78,7 +78,10 @@ class AuthManagerImpl @Inject constructor(
                 .build()
         ).await()
 
-        updateUser(currentUser.toUser().copy(name = newName))
+        updateUser(
+            user = currentUser.toUser().copy(name = newName),
+            newName = newName
+        )
     }
 
     override fun markPremium() {
@@ -101,15 +104,20 @@ class AuthManagerImpl @Inject constructor(
         photoUrl = photoUrl?.toString(),
     )
 
-    private fun updateUser(user: User?) {
-        val userWithExclusiveFields = user?.copy(
+    private fun updateUser(user: User?, newName: String? = null) {
+        if (user == null) {
+            _userState.value = null
+            currentUser = null
+            return
+        }
+
+        val userWithExclusiveFields = user.copy(
             premium = currentUser?.premium,
             createdOn = currentUser?.createdOn ?: System.currentTimeMillis(),
             lastActiveOn = System.currentTimeMillis()
         )
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields
-        userWithExclusiveFields ?: return
 
         appScope.launch {
             try {
@@ -120,6 +128,7 @@ class AuthManagerImpl @Inject constructor(
 
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
+                    name = newName ?: remoteUser.name,
                     premium = remoteUser.premium,
                     createdOn = remoteUser.createdOn
                 )

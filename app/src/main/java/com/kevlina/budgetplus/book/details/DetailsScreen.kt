@@ -14,6 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.EventNote
+import androidx.compose.material.icons.rounded.Paid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -78,14 +81,14 @@ fun DetailsScreen(
 
                 when (sortMode) {
                     RecordsSortMode.Date -> MenuAction(
-                        iconRes = R.drawable.ic_sort_date,
+                        imageVector = Icons.Rounded.EventNote,
                         description = stringResource(id = R.string.overview_sort_by_price),
                         onClick = { vm.setSortMode(RecordsSortMode.Price) },
                         modifier = modifier
                     )
 
                     RecordsSortMode.Price -> MenuAction(
-                        iconRes = R.drawable.ic_dollar,
+                        imageVector = Icons.Rounded.Paid,
                         description = stringResource(id = R.string.overview_sort_by_date),
                         onClick = { vm.setSortMode(RecordsSortMode.Date) },
                         modifier = modifier

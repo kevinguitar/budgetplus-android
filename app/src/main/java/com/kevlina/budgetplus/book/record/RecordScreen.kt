@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.book.record
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.GroupAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +37,7 @@ fun RecordScreen(navigator: Navigator) {
                 titleContent = { BookSelector(navigator) },
                 menuActions = {
                     MenuAction(
-                        iconRes = R.drawable.ic_invite,
+                        imageVector = Icons.Rounded.GroupAdd,
                         description = stringResource(id = R.string.cta_invite),
                         onClick = { viewModel.shareJoinLink(context) },
                         modifier = Modifier.onGloballyPositioned {

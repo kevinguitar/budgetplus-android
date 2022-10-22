@@ -3,10 +3,11 @@ package com.kevlina.budgetplus.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Today
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.R
@@ -26,7 +27,7 @@ fun SingleDatePicker(
     ) {
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_today),
+            imageVector = Icons.Rounded.Today,
             contentDescription = stringResource(id = R.string.select_date),
             tint = LocalAppColors.current.dark
         )

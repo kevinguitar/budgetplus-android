@@ -1,10 +1,7 @@
 package com.kevlina.budgetplus.book
 
-import androidx.annotation.DrawableRes
-import com.kevlina.budgetplus.R
-
-enum class BookTab(@DrawableRes val icon: Int) {
-    Add(R.drawable.ic_record), History(R.drawable.ic_list);
+enum class BookTab {
+    Add, History;
 
     val route get() = name
 }

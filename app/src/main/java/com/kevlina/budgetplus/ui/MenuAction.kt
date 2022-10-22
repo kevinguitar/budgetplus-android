@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.ui
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -13,44 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.utils.thenIf
-
-@Composable
-fun MenuAction(
-    @DrawableRes iconRes: Int,
-    description: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    onClick: () -> Unit = {}
-) {
-
-    Box(
-        modifier = modifier
-            .size(48.dp)
-            .clickable(
-                onClick = onClick,
-                enabled = enabled,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(
-                    bounded = false,
-                    radius = 24.dp,
-                    color = LocalAppColors.current.light
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = description,
-            tint = LocalAppColors.current.light,
-            modifier = Modifier.thenIf(!enabled) {
-                Modifier.alpha(0.5F)
-            }
-        )
-    }
-}
 
 @Composable
 fun MenuAction(

@@ -11,6 +11,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.DriveFileRenameOutline
+import androidx.compose.material.icons.rounded.GroupAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -88,8 +90,8 @@ private fun TopBarWithBack_Preview() = AppTheme {
         title = "Money Book",
         navigateBack = {},
         menuActions = {
-            MenuAction(iconRes = R.drawable.ic_edit, description = "")
-            MenuAction(iconRes = R.drawable.ic_invite, description = "")
+            MenuAction(imageVector = Icons.Rounded.DriveFileRenameOutline, description = "")
+            MenuAction(imageVector = Icons.Rounded.GroupAdd, description = "")
         }
     )
 }

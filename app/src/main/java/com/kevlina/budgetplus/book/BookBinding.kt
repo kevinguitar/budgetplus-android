@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FormatListBulleted
+import androidx.compose.material.icons.rounded.PostAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -233,7 +235,10 @@ private fun RowScope.BottomNavItem(
         }
 
         Icon(
-            painter = painterResource(id = tab.icon),
+            imageVector = when (tab) {
+                BookTab.Add -> Icons.Rounded.PostAdd
+                BookTab.History -> Icons.Rounded.FormatListBulleted
+            },
             contentDescription = null,
             tint = if (isSelected) {
                 LocalAppColors.current.light

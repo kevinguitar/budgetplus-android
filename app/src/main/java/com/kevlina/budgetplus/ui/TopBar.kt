@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -47,6 +48,9 @@ fun TopBar(
                     tint = LocalAppColors.current.light
                 )
             }
+
+            // Override the system back with navigateBack behavior
+            BackHandler(enabled = true, onBack = navigateBack)
         } else {
             Spacer(modifier = Modifier.width(16.dp))
         }

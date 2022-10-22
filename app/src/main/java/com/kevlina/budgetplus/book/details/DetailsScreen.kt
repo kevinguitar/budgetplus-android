@@ -68,7 +68,7 @@ fun DetailsScreen(
 
         TopBar(
             title = stringResource(id = R.string.overview_details_title, vm.category, totalPrice),
-            navigateBack = { navigator.navigateUp() },
+            navigateBack = navigator::navigateUp,
             menuActions = {
                 val modifier = Modifier.onGloballyPositioned {
                     vm.highlightSortingButton(

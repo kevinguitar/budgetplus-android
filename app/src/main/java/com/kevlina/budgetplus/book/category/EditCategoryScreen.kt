@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,8 +55,6 @@ fun EditCategoryScreen(
 
     val viewModel = hiltViewModel<EditCategoryViewModel>()
 
-    val haptic = LocalHapticFeedback.current
-
     val originalCategories = when (type) {
         RecordType.Expense -> viewModel.expenseCategories
         RecordType.Income -> viewModel.incomeCategories
@@ -75,10 +72,6 @@ fun EditCategoryScreen(
         }
     )
 
-    val bubbleShape = with(LocalDensity.current) {
-        BubbleShape.RoundedRect(12.dp.toPx())
-    }
-
     Column {
 
         TopBar(
@@ -94,7 +87,7 @@ fun EditCategoryScreen(
                 MenuAction(
                     imageVector = Icons.Rounded.Check,
                     description = stringResource(id = R.string.cta_save),
-                    enabled = isListModified,
+                    enabled = originalCategories != list,
                     modifier = Modifier.onGloballyPositioned {
                         viewModel.highlightSaveButton(
                             BubbleDest.SaveCategories(
@@ -146,6 +139,10 @@ fun EditCategoryScreen(
                             isDragging = isDragging,
                             onClick = { editDialogMode = CategoryEditMode.Rename(item) },
                             modifier = Modifier.thenIf(index == 0) {
+                                val bubbleShape = with(LocalDensity.current) {
+                                    BubbleShape.RoundedRect(12.dp.toPx())
+                                }
+
                                 Modifier.onGloballyPositioned {
                                     viewModel.highlightCategoryHint(
                                         BubbleDest.EditCategoriesHint(

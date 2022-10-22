@@ -1,6 +1,14 @@
 package com.kevlina.budgetplus.book.member
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -8,7 +16,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,11 +40,17 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.data.remote.User
-import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.ui.AppDialog
+import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.AppTheme
+import com.kevlina.budgetplus.ui.ConfirmDialog
+import com.kevlina.budgetplus.ui.FontSize
+import com.kevlina.budgetplus.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.ui.LocalAppColors
 
 @Composable
 fun MembersDialog(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
 
     val viewModel = hiltViewModel<MembersViewModel>()
@@ -46,7 +65,6 @@ fun MembersDialog(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.size(width = 280.dp, height = 400.dp)
         ) {
 
             AppText(
@@ -60,8 +78,10 @@ fun MembersDialog(
                     modifier = Modifier.padding(top = 32.dp)
                 )
             } else {
-                LazyColumn {
-                    items(members) { member ->
+                LazyColumn(
+                    modifier = Modifier.heightIn(max = 400.dp)
+                ) {
+                    items(members, key = { user -> user.id }) { member ->
                         MemberCard(
                             member = member,
                             myUserId = viewModel.userId,
@@ -94,7 +114,7 @@ private fun MemberCard(
     member: User,
     myUserId: String,
     ownerId: String?,
-    removeUser: () -> Unit
+    removeUser: () -> Unit,
 ) {
 
     val icPremium by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_premium))

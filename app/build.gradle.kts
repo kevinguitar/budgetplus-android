@@ -127,6 +127,7 @@ dependencies {
         implementation(android.lifecycle)
 
         implementation(accompanist.flowlayout)
+        implementation(reorderable)
         implementation(lottie.compose)
         implementation(kotlin.serialization)
 

@@ -1,24 +1,17 @@
 package com.kevlina.budgetplus.book.category
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
@@ -32,12 +25,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,17 +36,17 @@ import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.data.remote.RecordType
-import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.ConfirmDialog
-import com.kevlina.budgetplus.ui.DraggableItem
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.ui.TopBar
-import com.kevlina.budgetplus.ui.dragContainer
-import com.kevlina.budgetplus.ui.rememberDragDropState
 import com.kevlina.budgetplus.utils.Navigator
 import com.kevlina.budgetplus.utils.thenIf
+import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorderAfterLongPress
+import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import org.burnoutcrew.reorderable.reorderable
 
 @Composable
 fun EditCategoryScreen(
@@ -77,11 +68,12 @@ fun EditCategoryScreen(
     var list by rememberSaveable { mutableStateOf(originalCategories) }
 
     val isListModified = originalCategories != list
-    val listState = rememberLazyListState()
-    val dragDropState = rememberDragDropState(listState) { fromIndex, toIndex ->
-        list = list.toMutableList()
-            .apply { add(toIndex, removeAt(fromIndex)) }
-    }
+    val reorderableState = rememberReorderableLazyListState(
+        onMove = { (fromIndex, _), (toIndex, _) ->
+            list = list.toMutableList()
+                .apply { add(toIndex, removeAt(fromIndex)) }
+        }
+    )
 
     val bubbleShape = with(LocalDensity.current) {
         BubbleShape.RoundedRect(12.dp.toPx())
@@ -130,8 +122,9 @@ fun EditCategoryScreen(
                     .width(AppTheme.maxContentWidth)
                     .fillMaxHeight()
                     .align(Alignment.Center)
-                    .dragContainer(dragDropState),
-                state = listState,
+                    .reorderable(reorderableState)
+                    .detectReorderAfterLongPress(reorderableState),
+                state = reorderableState.listState,
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -142,18 +135,16 @@ fun EditCategoryScreen(
                     contentType = { _, _ -> "category" }
                 ) { index, item ->
 
-                    DraggableItem(
-                        dragDropState = dragDropState,
+                    ReorderableItem(
+                        reorderableState = reorderableState,
+                        key = item,
                         index = index,
-                        modifier = Modifier.clickable {
-                            // https://issuetracker.google.com/issues/217739504
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        }
                     ) { isDragging ->
 
                         CategoryCell(
                             category = item,
                             isDragging = isDragging,
+                            onClick = { editDialogMode = CategoryEditMode.Rename(item) },
                             modifier = Modifier.thenIf(index == 0) {
                                 Modifier.onGloballyPositioned {
                                     viewModel.highlightCategoryHint(
@@ -165,9 +156,7 @@ fun EditCategoryScreen(
                                     )
                                 }
                             }
-                        ) {
-                            editDialogMode = CategoryEditMode.Rename(item)
-                        }
+                        )
                     }
                 }
             }
@@ -223,46 +212,5 @@ fun EditCategoryScreen(
             onConfirm = { navigator.navigateUp() },
             onDismiss = { isExitDialogShown = false }
         )
-    }
-}
-
-@Composable
-private fun CategoryCell(
-    category: String,
-    isDragging: Boolean,
-    modifier: Modifier,
-    onClick: () -> Unit,
-) {
-
-    val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
-
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = LocalAppColors.current.light,
-        border = BorderStroke(1.dp, LocalAppColors.current.primaryLight),
-        elevation = elevation,
-        onClick = onClick,
-        modifier = modifier
-    ) {
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_drag_handle),
-                contentDescription = null,
-                tint = LocalAppColors.current.dark,
-                modifier = Modifier.size(20.dp)
-            )
-
-            AppText(
-                text = category,
-            )
-        }
     }
 }

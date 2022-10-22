@@ -12,7 +12,7 @@ import androidx.compose.ui.window.Dialog
 @Composable
 fun AppDialog(
     onDismissRequest: () -> Unit,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
 
     Dialog(onDismissRequest = onDismissRequest) {

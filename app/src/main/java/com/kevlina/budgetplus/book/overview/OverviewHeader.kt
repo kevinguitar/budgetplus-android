@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.book.overview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +20,14 @@ fun OverviewHeader(
     type: RecordType,
     totalPrice: Double,
     isGroupEmpty: Boolean,
-    onTypeSelected: (RecordType) -> Unit
+    onTypeSelected: (RecordType) -> Unit,
+    modifier: Modifier,
 ) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
 
         RecordTypeTab(
@@ -38,7 +38,7 @@ fun OverviewHeader(
         TimePeriodSelector()
 
         if (!isGroupEmpty) {
-            
+
             AppText(
                 text = stringResource(
                     id = R.string.overview_total_price,

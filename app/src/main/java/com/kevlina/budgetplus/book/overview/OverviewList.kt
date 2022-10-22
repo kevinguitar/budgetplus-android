@@ -1,9 +1,12 @@
 package com.kevlina.budgetplus.book.overview
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,34 +18,39 @@ import com.kevlina.budgetplus.utils.Navigator
 @Composable
 fun OverviewList(
     navigator: Navigator,
+    includeHeader: Boolean,
     recordGroups: Map<String, List<Record>>,
     type: RecordType,
     totalPrice: Double,
     onTypeSelected: (RecordType) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
 
-    val keys = recordGroups.keys.toList()
-    val isGroupEmpty = keys.isEmpty()
+    val keys = remember(recordGroups) {
+        recordGroups.keys.toList()
+    }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(bottom = 48.dp),
-        modifier = modifier
+        modifier = Modifier.fillMaxSize()
     ) {
 
-        item(
-            key = OverviewUiType.Header.name,
-            contentType = OverviewUiType.Header,
-            content = {
-                OverviewHeader(
-                    type = type,
-                    totalPrice = totalPrice,
-                    isGroupEmpty = isGroupEmpty,
-                    onTypeSelected = onTypeSelected
-                )
-            }
-        )
+        if (includeHeader) {
+
+            item(
+                key = OverviewUiType.Header.name,
+                contentType = OverviewUiType.Header,
+                content = {
+                    OverviewHeader(
+                        type = type,
+                        totalPrice = totalPrice,
+                        isGroupEmpty = keys.isEmpty(),
+                        onTypeSelected = onTypeSelected,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+            )
+        }
 
         itemsIndexed(
             items = keys,
@@ -62,7 +70,7 @@ fun OverviewList(
             )
         }
 
-        if (isGroupEmpty) {
+        if (keys.isEmpty()) {
 
             item(
                 key = OverviewUiType.ZeroCase.name,

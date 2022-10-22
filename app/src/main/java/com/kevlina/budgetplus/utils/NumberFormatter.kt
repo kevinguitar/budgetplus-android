@@ -21,6 +21,12 @@ private val ratioFormat by lazy {
         }
 }
 
+val Double.plainPriceString: String
+    get() = toBigDecimal()
+        .setScale(2, RoundingMode.HALF_UP)
+        .stripTrailingZeros()
+        .toPlainString()
+
 val Double.roundUpPriceText: String
     get() = pricingFormat.format(this)
 

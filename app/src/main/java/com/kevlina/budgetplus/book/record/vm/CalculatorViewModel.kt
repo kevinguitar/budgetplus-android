@@ -78,7 +78,7 @@ class CalculatorViewModel @Inject constructor(
             return
         }
 
-        _priceText.value = rawResult.roundUpPriceText
+        _priceText.value = rawResult.plainPriceString
         _price.value = rawResult.toBigDecimal()
             .setScale(2, RoundingMode.HALF_UP)
             .toDouble()

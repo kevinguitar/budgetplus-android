@@ -35,6 +35,7 @@ import com.kevlina.budgetplus.ui.DatePickerDialog
 import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.ui.SingleDatePicker
+import com.kevlina.budgetplus.utils.plainPriceString
 import com.kevlina.budgetplus.utils.rippleClick
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -60,7 +61,7 @@ fun EditRecordDialog(
     }
 
     var priceText by remember {
-        val text = vm.parsePrice(editRecord)
+        val text = editRecord.price.plainPriceString
         mutableStateOf(TextFieldValue(
             text = text,
             selection = TextRange(text.length)

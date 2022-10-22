@@ -8,7 +8,6 @@ import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.parseToPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.math.RoundingMode
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -18,13 +17,6 @@ class EditRecordViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
 ) : ViewModel() {
-
-    fun parsePrice(record: Record): String {
-        return record.price.toBigDecimal()
-            .setScale(2, RoundingMode.HALF_UP)
-            .stripTrailingZeros()
-            .toPlainString()
-    }
 
     fun editRecord(
         record: Record,

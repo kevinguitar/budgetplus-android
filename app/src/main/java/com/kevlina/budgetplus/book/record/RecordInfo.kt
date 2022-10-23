@@ -73,7 +73,11 @@ fun RecordInfo(
         }
     ) {
 
-        RecordTypeTab(selected = type, onTypeSelected = vm::setType)
+        RecordTypeTab(
+            selected = type,
+            onTypeSelected = vm::setType,
+            modifier = Modifier.padding(top = 16.dp)
+        )
 
         CategoriesGrid(
             type = type,

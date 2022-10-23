@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.data.remote.Record
-import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.utils.Navigator
@@ -18,12 +16,8 @@ import com.kevlina.budgetplus.utils.Navigator
 @Composable
 fun OverviewContent(
     navigator: Navigator,
-    type: RecordType,
-    totalPrice: Double,
     balance: Double,
     isHideAds: Boolean,
-    recordGroups: Map<String, List<Record>>,
-    setRecordType: (RecordType) -> Unit,
 ) {
 
     Column(
@@ -36,11 +30,7 @@ fun OverviewContent(
 
             OverviewList(
                 navigator = navigator,
-                includeHeader = true,
-                recordGroups = recordGroups,
-                type = type,
-                totalPrice = totalPrice,
-                onTypeSelected = setRecordType,
+                header = { OverviewHeader(modifier = Modifier.padding(horizontal = 16.dp)) },
             )
 
             BalanceFloatingLabel(

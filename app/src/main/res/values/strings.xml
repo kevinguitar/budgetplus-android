@@ -91,6 +91,8 @@
     <string name="overview_sort_by_price">Sort by price</string>
     <string name="overview_balance">Balance: %s</string>
     <string name="overview_details_title">%1$s: %2$s</string>
+    <string name="overview_author_everyone">Everyone</string>
+    <string name="overview_author_anonymous">Anonymous</string>
 
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>

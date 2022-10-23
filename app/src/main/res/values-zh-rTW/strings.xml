@@ -91,6 +91,8 @@
     <string name="overview_sort_by_price">依金額排序</string>
     <string name="overview_balance">結餘: %s</string>
     <string name="overview_details_title">%1$s：%2$s</string>
+    <string name="overview_author_everyone">所有人</string>
+    <string name="overview_author_anonymous">匿名</string>
 
     <!-- Premium -->
     <string name="premium_unlock">解鎖進階版</string>

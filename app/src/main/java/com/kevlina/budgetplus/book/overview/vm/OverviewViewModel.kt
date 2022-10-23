@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthManager
+import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.data.local.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.Record
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.data.remote.User
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
 import com.kevlina.budgetplus.utils.combineState
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -32,6 +35,7 @@ class OverviewViewModel @Inject constructor(
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     private val authManager: AuthManager,
+    private val userRepo: UserRepo,
     private val toaster: Toaster,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -58,25 +62,35 @@ class OverviewViewModel @Inject constructor(
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
 
-    val totalPrice = combine(recordsObserver.records, type) { records, type ->
-        records
-            .filter { it.type == type }
-            .sumOf { it.price }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
+    val authors = bookRepo.bookState.mapState {
+        it?.authors.orEmpty().mapNotNull(userRepo::getUser)
+    }
 
-    val balance = recordsObserver.records.mapState { records ->
+    private val _selectedAuthor = MutableStateFlow<User?>(null)
+    val selectedAuthor: StateFlow<User?> = _selectedAuthor.asStateFlow()
+
+    private val records = combine(
+        recordsObserver.records,
+        type,
+        selectedAuthor
+    ) { records, type, author ->
+        val authorId = author?.id
+        records.filter {
+            it.type == type && (authorId == null || it.author?.id == authorId)
+        }
+    }
+
+    val totalPrice = records.map { records -> records.sumOf { it.price } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
+
+    val balance = records.map { records ->
         val expenses = records.filter { it.type == RecordType.Expense }
         val incomes = records.filter { it.type == RecordType.Income }
         incomes.sumOf { it.price } - expenses.sumOf { it.price }
-    }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val recordGroups: StateFlow<Map<String, List<Record>>> = combine(
-        recordsObserver.records,
-        type
-    ) { records, type ->
-        records
-            .filter { it.type == type }
-            .groupBy { it.category }
+    val recordGroups: StateFlow<Map<String, List<Record>>> = records.map { records ->
+        records.groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
             .toMap()
@@ -115,5 +129,9 @@ class OverviewViewModel @Inject constructor(
 
         timePeriodMap.value = newMapping
         periodCache = newMapping
+    }
+
+    fun setAuthor(author: User?) {
+        _selectedAuthor.value = author
     }
 }

@@ -10,7 +10,7 @@ import com.kevlina.budgetplus.data.remote.RecordType
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable
-fun detailsVm(type: RecordType, category: String): DetailsViewModel {
+fun detailsVm(type: RecordType, category: String, authorId: String?): DetailsViewModel {
     val factory = EntryPointAccessors
         .fromActivity<BookActivity.VmFactoryProvider>(LocalContext.current as Activity)
         .detailsVmFactory()
@@ -18,6 +18,7 @@ fun detailsVm(type: RecordType, category: String): DetailsViewModel {
     return viewModel(factory = DetailsViewModel.provideFactory(
         assistedFactory = factory,
         type = type,
-        category = category
+        category = category,
+        authorId = authorId
     ))
 }

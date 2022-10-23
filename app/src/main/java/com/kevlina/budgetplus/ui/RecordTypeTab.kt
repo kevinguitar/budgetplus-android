@@ -2,7 +2,13 @@ package com.kevlina.budgetplus.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -20,15 +26,14 @@ import com.kevlina.budgetplus.data.remote.RecordType
 @Composable
 fun RecordTypeTab(
     selected: RecordType,
-    onTypeSelected: (RecordType) -> Unit
+    onTypeSelected: (RecordType) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
 
         TypePill(
@@ -99,5 +104,5 @@ private fun TypePill(
 @Composable
 @Preview(showBackground = true)
 private fun RecordTypeTab_Preview() = AppTheme {
-    RecordTypeTab(selected = RecordType.Expense) {}
+    RecordTypeTab(selected = RecordType.Expense, onTypeSelected = {})
 }

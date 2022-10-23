@@ -51,6 +51,7 @@ import com.kevlina.budgetplus.book.premium.PremiumScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.utils.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.utils.ARG_CATEGORY
 import com.kevlina.budgetplus.utils.ARG_TYPE
 import com.kevlina.budgetplus.utils.consume
@@ -132,10 +133,14 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
         }
 
         composable(
-            route = "${HistoryDest.Details.route}/{$ARG_TYPE}/{$ARG_CATEGORY}",
+            route = "${HistoryDest.Details.route}/{$ARG_TYPE}/{$ARG_CATEGORY}?$ARG_AUTHOR_ID={$ARG_AUTHOR_ID}",
             arguments = listOf(
                 navArgument(ARG_TYPE) { type = NavType.EnumType(RecordType::class.java) },
-                navArgument(ARG_CATEGORY) { type = NavType.StringType }
+                navArgument(ARG_CATEGORY) { type = NavType.StringType },
+                navArgument(ARG_AUTHOR_ID) {
+                    nullable = true
+                    type = NavType.StringType
+                }
             )
         ) { backStackEntry ->
             val args = backStackEntry.arguments ?: Bundle.EMPTY
@@ -143,7 +148,8 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
                 navigator = navController.toNavigator(),
                 vm = detailsVm(
                     type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
-                    category = requireNotNull(args.getString(ARG_CATEGORY))
+                    category = requireNotNull(args.getString(ARG_CATEGORY)),
+                    authorId = args.getString(ARG_AUTHOR_ID)
                 )
             )
         }

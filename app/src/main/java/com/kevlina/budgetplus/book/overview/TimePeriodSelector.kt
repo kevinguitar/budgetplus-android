@@ -8,7 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,11 +35,11 @@ import com.kevlina.budgetplus.utils.shortFormatted
 @Composable
 fun TimePeriodSelector() {
 
-    val viewModel = hiltViewModel<OverviewViewModel>()
+    val vm = hiltViewModel<OverviewViewModel>()
 
-    val timePeriod by viewModel.timePeriod.collectAsState()
-    val fromDate by viewModel.fromDate.collectAsState()
-    val untilDate by viewModel.untilDate.collectAsState()
+    val timePeriod by vm.timePeriod.collectAsState()
+    val fromDate by vm.fromDate.collectAsState()
+    val untilDate by vm.untilDate.collectAsState()
 
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showUntilDatePicker by remember { mutableStateOf(false) }
@@ -70,7 +75,8 @@ fun TimePeriodSelector() {
     FlowRow(
         mainAxisSpacing = 12.dp,
         crossAxisSpacing = 12.dp,
-        mainAxisAlignment = FlowMainAxisAlignment.Center
+        mainAxisAlignment = FlowMainAxisAlignment.Center,
+        modifier = Modifier.padding(top = 16.dp)
     ) {
         setOf(
             TimePeriod.Today,
@@ -82,7 +88,7 @@ fun TimePeriodSelector() {
                 TimePeriodPill(
                     timePeriod = period,
                     isSelected = timePeriod == period,
-                    onClick = { viewModel.setTimePeriod(period) }
+                    onClick = { vm.setTimePeriod(period) }
                 )
             }
     }
@@ -93,7 +99,7 @@ fun TimePeriodSelector() {
             date = fromDate,
             onDismiss = { showFromDatePicker = false },
             onDatePicked = { from ->
-                viewModel.setTimePeriod(
+                vm.setTimePeriod(
                     TimePeriod.Custom(
                         from = from,
                         until = if (from.isAfter(untilDate)) {
@@ -114,7 +120,7 @@ fun TimePeriodSelector() {
             minDate = fromDate,
             onDismiss = { showUntilDatePicker = false },
             onDatePicked = { until ->
-                viewModel.setTimePeriod(TimePeriod.Custom(from = fromDate, until = until))
+                vm.setTimePeriod(TimePeriod.Custom(from = fromDate, until = until))
             }
         )
     }
@@ -124,7 +130,7 @@ fun TimePeriodSelector() {
 private fun TimePeriodPill(
     timePeriod: TimePeriod,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Box(

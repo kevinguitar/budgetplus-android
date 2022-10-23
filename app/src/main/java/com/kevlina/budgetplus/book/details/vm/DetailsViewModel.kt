@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.stateIn
 
 class DetailsViewModel @AssistedInject constructor(
     @Assisted type: RecordType,
-    @Assisted val category: String,
+    @Assisted("category") val category: String,
+    @Assisted("authorId") private val authorId: String?,
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
@@ -44,7 +45,10 @@ class DetailsViewModel @AssistedInject constructor(
 
     val records = combine(recordsObserver.records, sortMode) { records, sortMode ->
         records
-            .filter { it.type == type && it.category == category }
+            .filter {
+                it.type == type && it.category == category &&
+                    (authorId == null || it.author?.id == authorId)
+            }
             .map { record ->
                 val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
                 record.copy(author = author ?: record.author)
@@ -73,7 +77,11 @@ class DetailsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(type: RecordType, category: String): DetailsViewModel
+        fun create(
+            type: RecordType,
+            @Assisted("category") category: String,
+            @Assisted("authorId") authorId: String?,
+        ): DetailsViewModel
     }
 
     companion object {
@@ -82,9 +90,10 @@ class DetailsViewModel @AssistedInject constructor(
             assistedFactory: Factory,
             type: RecordType,
             category: String,
+            authorId: String?,
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(type, category) as T
+                return assistedFactory.create(type, category, authorId) as T
             }
         }
     }

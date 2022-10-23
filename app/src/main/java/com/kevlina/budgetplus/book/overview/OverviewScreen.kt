@@ -21,11 +21,8 @@ fun OverviewScreen(navigator: Navigator) {
     val vm = hiltViewModel<OverviewViewModel>()
 
     val bookName by vm.bookName.collectAsState()
-    val type by vm.type.collectAsState()
-    val totalPrice by vm.totalPrice.collectAsState()
     val balance by vm.balance.collectAsState()
     val isHideAds by vm.isHideAds.collectAsState()
-    val recordGroups by vm.recordGroups.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -38,23 +35,15 @@ fun OverviewScreen(navigator: Navigator) {
             regularContent = {
                 OverviewContent(
                     navigator = navigator,
-                    type = type,
-                    totalPrice = totalPrice,
                     balance = balance,
                     isHideAds = isHideAds,
-                    recordGroups = recordGroups,
-                    setRecordType = vm::setRecordType
                 )
             },
             wideContent = {
                 OverviewContentWide(
                     navigator = navigator,
-                    type = type,
-                    totalPrice = totalPrice,
                     balance = balance,
                     isHideAds = isHideAds,
-                    recordGroups = recordGroups,
-                    setRecordType = vm::setRecordType
                 )
             }
         )

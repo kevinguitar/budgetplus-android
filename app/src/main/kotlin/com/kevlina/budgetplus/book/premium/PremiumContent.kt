@@ -1,7 +1,11 @@
 package com.kevlina.budgetplus.book.premium
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -22,7 +26,12 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.ui.*
+import com.kevlina.budgetplus.ui.AppButton
+import com.kevlina.budgetplus.ui.AppText
+import com.kevlina.budgetplus.ui.AppTheme
+import com.kevlina.budgetplus.ui.FontSize
+import com.kevlina.budgetplus.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.ui.LocalAppColors
 
 @Composable
 fun PremiumContent() {

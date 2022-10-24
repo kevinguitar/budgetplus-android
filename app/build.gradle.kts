@@ -14,10 +14,10 @@ plugins {
 }
 
 android {
-    val appId = rootProject.ext["application_id"] as String
-    val appVersion = rootProject.ext["app_version"] as String
-    val targetSdkVersion = rootProject.ext["android_sdk"] as Int
-    val minSdkVersion = rootProject.ext["min_android_sdk"] as Int
+    val appId: String by rootProject.extra
+    val appVersion: String by rootProject.extra
+    val minAndroidSdk: Int by rootProject.extra
+    val androidSdk: Int by rootProject.extra
 
     /**
      *  Major version * 10^6
@@ -37,12 +37,12 @@ android {
         .sum()
 
     namespace = appId
-    compileSdk = targetSdkVersion
+    compileSdk = androidSdk
 
     defaultConfig {
         applicationId = appId
-        minSdk = minSdkVersion
-        targetSdk = targetSdkVersion
+        minSdk = minAndroidSdk
+        targetSdk = androidSdk
         versionName = appVersion
         versionCode = appVersionCode
 

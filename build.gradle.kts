@@ -1,9 +1,7 @@
-ext {
-    set("application_id", "com.kevlina.budgetplus")
-    set("app_version", "1.1.11")
-    set("min_android_sdk", 23)
-    set("android_sdk", 33)
-}
+val appId by extra("com.kevlina.budgetplus")
+val appVersion by extra("1.1.11")
+val minAndroidSdk by extra(23)
+val androidSdk by extra(33)
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {

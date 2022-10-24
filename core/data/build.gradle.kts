@@ -8,10 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "${rootProject.ext["application_id"] as String}.core.data"
-    compileSdk = rootProject.ext["android_sdk"] as Int
+    val appId: String by rootProject.extra
+    val minAndroidSdk: Int by rootProject.extra
+    val androidSdk: Int by rootProject.extra
+
+    namespace = "$appId.core.data"
+    compileSdk = androidSdk
     defaultConfig {
-        minSdk = rootProject.ext["min_android_sdk"] as Int
+        minSdk = minAndroidSdk
     }
 }
 

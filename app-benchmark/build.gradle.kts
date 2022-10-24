@@ -7,10 +7,12 @@ plugins {
 }
 
 android {
-    val targetSdkVersion = rootProject.ext["android_sdk"] as Int
+    val appId: String by rootProject.extra
+    val minAndroidSdk: Int by rootProject.extra
+    val androidSdk: Int by rootProject.extra
 
-    namespace = "${rootProject.ext["application_id"] as String}.benchmark"
-    compileSdk = targetSdkVersion
+    namespace = "$appId.benchmark"
+    compileSdk = androidSdk
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,8 +20,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = rootProject.ext["min_android_sdk"] as Int
-        targetSdk = targetSdkVersion
+        minSdk = minAndroidSdk
+        targetSdk = androidSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

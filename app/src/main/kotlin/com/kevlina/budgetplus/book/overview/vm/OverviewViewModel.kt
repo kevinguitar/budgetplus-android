@@ -83,10 +83,19 @@ class OverviewViewModel @Inject constructor(
     val totalPrice = records.map { records -> records.sumOf { it.price } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val balance = records.map { records ->
-        val expenses = records.filter { it.type == RecordType.Expense }
-        val incomes = records.filter { it.type == RecordType.Income }
-        incomes.sumOf { it.price } - expenses.sumOf { it.price }
+    val balance = combine(
+        recordsObserver.records,
+        selectedAuthor
+    ) { records, author ->
+        val authorId = author?.id
+        records
+            .filter { authorId == null || it.author?.id == authorId }
+            .sumOf { record ->
+                when (record.type) {
+                    RecordType.Expense -> -record.price
+                    RecordType.Income -> record.price
+                }
+            }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     val recordGroups: StateFlow<Map<String, List<Record>>> = records.map { records ->

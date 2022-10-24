@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.User
-import com.kevlina.budgetplus.data.remote.BookRepo
+import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.Tracker
+import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

@@ -17,6 +17,10 @@ android {
     defaultConfig {
         minSdk = minAndroidSdk
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
@@ -27,8 +31,12 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
 
     implementation(libs.kotlin.serialization)
     implementation(libs.google.auth)
+
+    coreLibraryDesugaring(libs.desugar)
+    testImplementation(libs.bundles.test)
 }

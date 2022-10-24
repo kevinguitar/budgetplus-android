@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.DropdownItem
 import com.kevlina.budgetplus.ui.LocalAppColors

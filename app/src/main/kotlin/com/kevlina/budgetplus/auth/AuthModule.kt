@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.auth
 
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

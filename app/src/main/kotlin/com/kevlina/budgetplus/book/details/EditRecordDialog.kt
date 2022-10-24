@@ -24,8 +24,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.data.remote.Record
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.ui.AppButton
 import com.kevlina.budgetplus.ui.AppDialog
 import com.kevlina.budgetplus.ui.AppText

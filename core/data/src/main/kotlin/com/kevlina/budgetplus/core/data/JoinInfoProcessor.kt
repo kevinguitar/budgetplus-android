@@ -1,8 +1,8 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.kevlina.budgetplus.core.data.requireValue
+import com.kevlina.budgetplus.core.data.remote.JoinInfo
 import java.util.UUID
 import javax.inject.Inject
 

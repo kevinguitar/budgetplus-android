@@ -31,12 +31,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
-import com.kevlina.budgetplus.core.data.Author
-import com.kevlina.budgetplus.data.remote.Record
-import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.Author
+import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.monetize.AdsBanner
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme

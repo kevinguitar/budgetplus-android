@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.auth.AuthViewModel
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppTheme
 
 @Composable

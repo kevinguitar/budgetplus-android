@@ -5,7 +5,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject

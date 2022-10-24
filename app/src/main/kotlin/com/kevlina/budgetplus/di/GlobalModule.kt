@@ -8,10 +8,6 @@ import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.auth.UserRepoImpl
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppScope
-import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.data.remote.BookRepoImpl
-import com.kevlina.budgetplus.data.remote.RecordRepo
-import com.kevlina.budgetplus.data.remote.RecordRepoImpl
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.ToasterImpl
 import dagger.Binds
@@ -31,13 +27,7 @@ interface GlobalModule {
     fun provideToaster(impl: ToasterImpl): Toaster
 
     @Binds
-    fun provideBookRepo(impl: BookRepoImpl): BookRepo
-
-    @Binds
     fun provideUserRepo(impl: UserRepoImpl): UserRepo
-
-    @Binds
-    fun provideRecordRepo(impl: RecordRepoImpl): RecordRepo
 
     companion object {
 

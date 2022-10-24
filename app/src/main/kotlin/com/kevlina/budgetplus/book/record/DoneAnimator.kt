@@ -18,8 +18,8 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.utils.consumeEach
 import kotlinx.coroutines.flow.launchIn
 

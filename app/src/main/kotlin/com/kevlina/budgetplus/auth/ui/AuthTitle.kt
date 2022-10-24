@@ -6,7 +6,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.FontSize
 import com.kevlina.budgetplus.ui.LocalAppColors

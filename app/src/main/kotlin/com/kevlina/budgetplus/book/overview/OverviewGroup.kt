@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.FontSize

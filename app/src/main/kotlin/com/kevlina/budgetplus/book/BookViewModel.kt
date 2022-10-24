@@ -5,9 +5,9 @@ import android.content.Intent
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.data.remote.JoinBookException
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.utils.MutableEventFlow
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo

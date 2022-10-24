@@ -1,6 +1,5 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data.remote
 
-import com.kevlina.budgetplus.core.data.Author
 import kotlinx.serialization.Serializable
 
 enum class RecordType {

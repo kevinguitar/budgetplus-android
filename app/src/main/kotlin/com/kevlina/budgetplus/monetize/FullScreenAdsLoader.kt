@@ -7,8 +7,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.Tracker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber

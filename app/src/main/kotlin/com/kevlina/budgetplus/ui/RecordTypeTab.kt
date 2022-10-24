@@ -20,8 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.RecordType
 
 @Composable
 fun RecordTypeTab(

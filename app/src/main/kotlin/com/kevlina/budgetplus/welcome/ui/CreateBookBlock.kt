@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppButton
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTextField

@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.utils.rippleClick
 
 @Composable

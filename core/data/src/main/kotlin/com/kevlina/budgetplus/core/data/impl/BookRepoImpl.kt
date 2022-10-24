@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data.impl
 
 import android.content.Context
 import androidx.core.net.toUri
@@ -8,13 +8,20 @@ import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.PreferenceHolder
+import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
+import com.kevlina.budgetplus.core.data.JoinBookException
+import com.kevlina.budgetplus.core.data.JoinInfoProcessor
+import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
+import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.await
+import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.remote.Book
+import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.core.data.requireValue
-import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,43 +38,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
 
-interface BookRepo {
-
-    val bookState: StateFlow<Book?>
-    val booksState: StateFlow<List<Book>?>
-
-    val currentBookId: String?
-
-    val hasPendingJoinRequest: Boolean
-
-    fun generateJoinLink(): String
-
-    fun setPendingJoinRequest(joinId: String?)
-
-    /**
-     *  @return The book's name that the user just joined.
-     *  @throws JoinBookException
-     */
-    suspend fun handlePendingJoinRequest(): String
-
-    suspend fun removeMember(userId: String)
-
-    suspend fun checkUserHasBook(): Boolean
-
-    suspend fun createBook(name: String)
-
-    suspend fun renameBook(newName: String)
-
-    suspend fun leaveOrDeleteBook()
-
-    fun selectBook(book: Book)
-
-    fun updateCategories(type: RecordType, categories: List<String>)
-
-}
-
 @Singleton
-class BookRepoImpl @Inject constructor(
+internal class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
     private val tracker: Tracker,

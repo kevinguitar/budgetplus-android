@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kevlina.budgetplus.book.BookActivity
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
-import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.core.data.remote.RecordType
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable

@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 

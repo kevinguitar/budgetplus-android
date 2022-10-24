@@ -25,10 +25,10 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.ConfirmDialog
 import com.kevlina.budgetplus.ui.DropdownItem

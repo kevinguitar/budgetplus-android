@@ -31,10 +31,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
-import com.kevlina.budgetplus.data.remote.RecordType
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.ConfirmDialog
 import com.kevlina.budgetplus.ui.LocalAppColors

@@ -12,7 +12,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.kevlina.budgetplus.R
+import com.kevlina.budgetplus.core.common.R
 import kotlin.math.roundToInt
 
 @SuppressLint("VisibleForTests")

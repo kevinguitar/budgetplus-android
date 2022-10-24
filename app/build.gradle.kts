@@ -118,7 +118,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.google.services)
-    implementation(libs.bundles.test)
+    testImplementation(libs.bundles.test)
 
     implementation(libs.android.core)
     implementation(libs.android.lifecycle)

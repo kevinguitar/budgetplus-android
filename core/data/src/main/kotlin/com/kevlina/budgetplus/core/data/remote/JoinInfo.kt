@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data.remote
 
 data class JoinInfo(
     val bookId: String = "",

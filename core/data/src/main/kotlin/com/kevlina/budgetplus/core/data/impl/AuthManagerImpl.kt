@@ -13,9 +13,9 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.DocNotExistsException
-import com.kevlina.budgetplus.core.data.PreferenceHolder
-import com.kevlina.budgetplus.core.data.User
 import com.kevlina.budgetplus.core.data.await
+import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

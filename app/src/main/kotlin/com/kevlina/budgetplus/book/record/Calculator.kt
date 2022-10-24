@@ -26,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.FontSize

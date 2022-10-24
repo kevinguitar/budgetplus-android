@@ -1,22 +1,15 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data.impl
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.RecordRepo
+import com.kevlina.budgetplus.core.data.remote.Record
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface RecordRepo {
-
-    fun createRecord(record: Record)
-
-    fun editRecord(recordId: String, record: Record)
-
-    fun deleteRecord(recordId: String)
-
-}
-
 @Singleton
-class RecordRepoImpl @Inject constructor(
+internal class RecordRepoImpl @Inject constructor(
     private val bookRepo: BookRepo,
 ) : RecordRepo {
 

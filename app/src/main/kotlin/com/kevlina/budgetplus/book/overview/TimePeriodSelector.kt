@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
-import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
-import com.kevlina.budgetplus.data.remote.TimePeriod
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.DatePickerDialog

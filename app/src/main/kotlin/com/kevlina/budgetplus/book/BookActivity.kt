@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import com.kevlina.budgetplus.auth.AuthActivity
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.data.remote.BookRepo
+import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.welcome.WelcomeActivity
 import dagger.hilt.EntryPoint

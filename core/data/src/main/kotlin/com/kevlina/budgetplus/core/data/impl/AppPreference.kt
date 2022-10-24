@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.core.data.impl
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.kevlina.budgetplus.core.data.Preference
+import com.kevlina.budgetplus.core.data.local.Preference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

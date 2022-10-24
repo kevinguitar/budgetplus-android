@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.ui
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.data.remote.BookRepo
+import com.kevlina.budgetplus.core.data.BookRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

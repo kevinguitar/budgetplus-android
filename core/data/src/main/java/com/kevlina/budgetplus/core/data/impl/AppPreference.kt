@@ -1,22 +1,14 @@
-package com.kevlina.budgetplus.data.local
+package com.kevlina.budgetplus.core.data.impl
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.kevlina.budgetplus.core.data.Preference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface Preference {
-
-    val pref: SharedPreferences
-    val editor: SharedPreferences.Editor
-
-    fun clearAll()
-
-}
-
 @Singleton
-class AppPreference @Inject constructor(
+internal class AppPreference @Inject constructor(
     @ApplicationContext context: Context
 ) : Preference {
 

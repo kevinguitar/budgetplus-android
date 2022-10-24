@@ -4,15 +4,13 @@ import kotlin.math.pow
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(libs.plugins) {
-        alias(android.application)
-        alias(kotlin.android)
-        alias(kotlin.kapt)
-        alias(kotlin.serialization)
-        alias(hilt.android)
-        alias(google.services)
-        alias(firebase.crashlytics)
-    }
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -115,32 +113,42 @@ kapt {
 }
 
 dependencies {
-    with(libs) {
-        implementation(platform(firebase.bom))
-        implementation(bundles.firebase)
-        implementation(bundles.compose)
-        implementation(bundles.navigation)
-        implementation(bundles.google.services)
-        implementation(bundles.test)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.google.services)
+    implementation(libs.bundles.test)
 
-        implementation(android.core)
-        implementation(android.lifecycle)
+    implementation(libs.android.core)
+    implementation(libs.android.lifecycle)
 
-        implementation(accompanist.flowlayout)
-        implementation(reorderable)
-        implementation(lottie.compose)
-        implementation(kotlin.serialization)
+    implementation(libs.accompanist.flowlayout)
+    implementation(libs.reorderable)
+    implementation(libs.lottie.compose)
+    implementation(libs.kotlin.serialization)
 
-        implementation(hilt.android)
-        kapt(hilt.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-        implementation(profile.installer)
-        implementation(google.billing)
-        implementation(install.referrer)
-        implementation(facebook.auth)
-        implementation(timber)
-        implementation(exp4j)
-        implementation(coil.compose)
-        coreLibraryDesugaring(desugar)
-    }
+    implementation(libs.profile.installer)
+    implementation(libs.google.billing)
+    implementation(libs.install.referrer)
+    implementation(libs.facebook.auth)
+    implementation(libs.timber)
+    implementation(libs.exp4j)
+    implementation(libs.coil.compose)
+    coreLibraryDesugaring(libs.desugar)
+
+    implementation(project(":core:billing"))
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+//    implementation(project(":core:ui"))
+//    implementation(project(":feature:add-record"))
+//    implementation(project(":feature:auth"))
+//    implementation(project(":feature:edit-category"))
+//    implementation(project(":feature:overview"))
+//    implementation(project(":feature:records"))
+//    implementation(project(":feature:unlock-premium"))
+//    implementation(project(":feature:welcome"))
 }

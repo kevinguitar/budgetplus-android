@@ -1,11 +1,23 @@
-package com.kevlina.budgetplus.billing
+package com.kevlina.budgetplus.core.billing
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import com.android.billingclient.api.*
-import com.kevlina.budgetplus.auth.AuthManager
-import com.kevlina.budgetplus.utils.AppScope
-import com.kevlina.budgetplus.utils.mapState
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryProductDetails
+import com.android.billingclient.api.queryPurchasesAsync
+import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +27,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class BillingControllerImpl @Inject constructor(
+internal class BillingControllerImpl @Inject constructor(
     @ApplicationContext context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,

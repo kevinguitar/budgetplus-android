@@ -39,7 +39,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.data.remote.User
+import com.kevlina.budgetplus.core.data.User
 import com.kevlina.budgetplus.ui.AppDialog
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme

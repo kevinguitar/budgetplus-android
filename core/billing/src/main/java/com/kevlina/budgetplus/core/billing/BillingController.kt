@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.billing
+package com.kevlina.budgetplus.core.billing
 
 import androidx.activity.ComponentActivity
 import kotlinx.coroutines.flow.StateFlow

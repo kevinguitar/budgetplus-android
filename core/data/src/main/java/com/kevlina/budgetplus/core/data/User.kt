@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.data.remote
+package com.kevlina.budgetplus.core.data
 
 import kotlinx.serialization.Serializable
 

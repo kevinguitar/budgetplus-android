@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.billing
+package com.kevlina.budgetplus.core.billing
 
 /**
  *  Enum version of Google Play Billing statuses.

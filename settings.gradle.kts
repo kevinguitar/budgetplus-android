@@ -16,7 +16,16 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BudgetPlus"
-include(
-    "app",
-    "app-benchmark"
-)
+include(":app")
+include(":app-benchmark")
+include(":core:billing")
+include(":core:common")
+include(":core:data")
+//include(":core:ui")
+//include(":feature:add-record")
+//include(":feature:auth")
+//include(":feature:edit-category")
+//include(":feature:overview")
+//include(":feature:records")
+//include(":feature:unlock-premium")
+//include(":feature:welcome")

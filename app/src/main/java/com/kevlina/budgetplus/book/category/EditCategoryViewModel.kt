@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
-import com.kevlina.budgetplus.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.RecordType
 import com.kevlina.budgetplus.utils.Toaster

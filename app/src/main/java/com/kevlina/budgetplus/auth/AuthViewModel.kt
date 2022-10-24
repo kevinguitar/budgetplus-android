@@ -29,7 +29,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.R
 import com.kevlina.budgetplus.book.BookActivity
-import com.kevlina.budgetplus.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.PreferenceHolder
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.utils.NavigationFlow
 import com.kevlina.budgetplus.utils.NavigationInfo

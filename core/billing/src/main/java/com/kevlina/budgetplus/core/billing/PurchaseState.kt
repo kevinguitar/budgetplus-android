@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.billing
+package com.kevlina.budgetplus.core.billing
 
 sealed class PurchaseState {
 

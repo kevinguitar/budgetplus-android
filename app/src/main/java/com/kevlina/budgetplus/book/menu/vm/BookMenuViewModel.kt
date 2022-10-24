@@ -4,9 +4,14 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.auth.AuthActivity
-import com.kevlina.budgetplus.auth.AuthManager
+import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.data.remote.BookRepo
-import com.kevlina.budgetplus.utils.*
+import com.kevlina.budgetplus.utils.NavigationFlow
+import com.kevlina.budgetplus.utils.NavigationInfo
+import com.kevlina.budgetplus.utils.Toaster
+import com.kevlina.budgetplus.utils.Tracker
+import com.kevlina.budgetplus.utils.sendEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

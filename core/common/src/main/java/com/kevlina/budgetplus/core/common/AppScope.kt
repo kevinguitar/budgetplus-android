@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

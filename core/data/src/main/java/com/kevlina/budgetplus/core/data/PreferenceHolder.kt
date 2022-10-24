@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.data.local
+package com.kevlina.budgetplus.core.data
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString

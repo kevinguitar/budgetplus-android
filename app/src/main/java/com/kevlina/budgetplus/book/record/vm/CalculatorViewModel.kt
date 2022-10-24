@@ -6,6 +6,7 @@ import android.os.Vibrator
 import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.book.record.CalculatorAction
 import com.kevlina.budgetplus.book.record.CalculatorButton
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.utils.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

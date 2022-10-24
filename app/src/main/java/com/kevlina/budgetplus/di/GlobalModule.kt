@@ -4,20 +4,14 @@ import android.content.Context
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
-import com.kevlina.budgetplus.auth.AuthManager
-import com.kevlina.budgetplus.auth.AuthManagerImpl
 import com.kevlina.budgetplus.auth.UserRepo
 import com.kevlina.budgetplus.auth.UserRepoImpl
-import com.kevlina.budgetplus.billing.BillingController
-import com.kevlina.budgetplus.billing.BillingControllerImpl
-import com.kevlina.budgetplus.data.local.AppPreference
-import com.kevlina.budgetplus.data.local.Preference
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.BookRepoImpl
 import com.kevlina.budgetplus.data.remote.RecordRepo
 import com.kevlina.budgetplus.data.remote.RecordRepoImpl
-import com.kevlina.budgetplus.utils.AppCoroutineScope
-import com.kevlina.budgetplus.utils.AppScope
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.ToasterImpl
 import dagger.Binds
@@ -37,12 +31,6 @@ interface GlobalModule {
     fun provideToaster(impl: ToasterImpl): Toaster
 
     @Binds
-    fun provideAuthManager(impl: AuthManagerImpl): AuthManager
-
-    @Binds
-    fun providePreference(impl: AppPreference): Preference
-
-    @Binds
     fun provideBookRepo(impl: BookRepoImpl): BookRepo
 
     @Binds
@@ -50,9 +38,6 @@ interface GlobalModule {
 
     @Binds
     fun provideRecordRepo(impl: RecordRepoImpl): RecordRepo
-
-    @Binds
-    fun provideBillingController(impl: BillingControllerImpl): BillingController
 
     companion object {
 

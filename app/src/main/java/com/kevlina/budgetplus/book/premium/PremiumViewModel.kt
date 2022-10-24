@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.billing.BillingController
-import com.kevlina.budgetplus.billing.PurchaseState
+import com.kevlina.budgetplus.core.billing.BillingController
+import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel

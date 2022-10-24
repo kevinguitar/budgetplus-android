@@ -50,17 +50,15 @@ android {
 }
 
 dependencies {
-    with(libs) {
-        implementation(junit.android)
-        implementation(espresso)
-        implementation(test.uiautomator)
-        implementation(macro.benchmark)
+    implementation(libs.junit.android)
+    implementation(libs.espresso)
+    implementation(libs.test.uiautomator)
+    implementation(libs.macro.benchmark)
 
-        // Required for r8
-        compileOnly(android.core)
-        compileOnly(recyclerview)
-        compileOnly(google.errorprone)
-    }
+    // Required for r8
+    compileOnly(libs.android.core)
+    compileOnly(libs.recyclerview)
+    compileOnly(libs.google.errorprone)
 }
 
 androidComponents {

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.auth
+package com.kevlina.budgetplus.core.data.impl
 
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -9,13 +9,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.kevlina.budgetplus.data.local.PreferenceHolder
-import com.kevlina.budgetplus.data.remote.User
-import com.kevlina.budgetplus.utils.AppScope
-import com.kevlina.budgetplus.utils.DocNotExistsException
-import com.kevlina.budgetplus.utils.await
-import com.kevlina.budgetplus.utils.mapState
-import com.kevlina.budgetplus.utils.requireValue
+import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.data.AuthManager
+import com.kevlina.budgetplus.core.data.DocNotExistsException
+import com.kevlina.budgetplus.core.data.PreferenceHolder
+import com.kevlina.budgetplus.core.data.User
+import com.kevlina.budgetplus.core.data.await
+import com.kevlina.budgetplus.core.data.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,23 +27,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface AuthManager {
-
-    val userState: StateFlow<User?>
-    val isPremium: StateFlow<Boolean>
-
-    fun requireUserId(): String
-
-    suspend fun renameUser(newName: String)
-
-    fun markPremium()
-
-    fun logout()
-
-}
-
 @Singleton
-class AuthManagerImpl @Inject constructor(
+internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @AppScope private val appScope: CoroutineScope,

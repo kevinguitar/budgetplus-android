@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.book.bubble.vm
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.utils.AppScope
+import com.kevlina.budgetplus.core.common.AppScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

@@ -5,14 +5,14 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.R
-import com.kevlina.budgetplus.auth.AuthManager
+import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.data.remote.Book
 import com.kevlina.budgetplus.data.remote.BookRepo
 import com.kevlina.budgetplus.data.remote.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.data.remote.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.utils.Toaster
 import com.kevlina.budgetplus.utils.Tracker
-import com.kevlina.budgetplus.utils.combineState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.data
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot

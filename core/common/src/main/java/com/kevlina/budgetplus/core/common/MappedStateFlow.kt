@@ -1,7 +1,11 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * Maps value of one StateFlow to another StateFlow

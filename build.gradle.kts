@@ -7,18 +7,17 @@ ext {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(libs.plugins) {
-        alias(android.application) apply false
-        alias(android.test) apply false
-        alias(kotlin.android) apply false
-        alias(kotlin.kapt) apply false
-        alias(kotlin.serialization) apply false
-        alias(hilt.android) apply false
-        alias(google.services) apply false
-        alias(firebase.crashlytics) apply false
-        alias(toml.checker)
-        alias(toml.updater)
-    }
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.toml.checker)
+    alias(libs.plugins.toml.updater)
 }
 
 // Composable metrics

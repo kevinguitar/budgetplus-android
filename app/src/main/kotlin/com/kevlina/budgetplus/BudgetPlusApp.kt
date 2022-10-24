@@ -21,7 +21,6 @@ class BudgetPlusApp : Application() {
         MobileAds.initialize(this)
 
         Timber.plant(Timber.DebugTree())
-        Firebase.crashlytics.setCrashlyticsCollectionEnabled(false)
-//        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

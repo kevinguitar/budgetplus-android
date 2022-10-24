@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.utils
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import com.kevlina.budgetplus.BuildConfig
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import kotlinx.coroutines.CoroutineScope
@@ -19,8 +20,7 @@ class Tracker @Inject constructor(
 
     private val analytics by lazy {
         Firebase.analytics.apply {
-//            setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-            setAnalyticsCollectionEnabled(false)
+            setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
         }
     }
 

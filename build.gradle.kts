@@ -1,5 +1,5 @@
 val appId by extra("com.kevlina.budgetplus")
-val appVersion by extra("1.1.11")
+val appVersion by extra("1.1.12")
 val minAndroidSdk by extra(23)
 val androidSdk by extra(33)
 

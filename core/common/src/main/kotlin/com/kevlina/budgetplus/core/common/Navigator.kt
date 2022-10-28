@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common
 
 import androidx.compose.runtime.Stable
 import androidx.navigation.NavController

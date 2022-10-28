@@ -16,11 +16,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.menu.BookScreenMenu
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
-import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
 fun RecordScreen(navigator: Navigator) {

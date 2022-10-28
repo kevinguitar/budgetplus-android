@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.dollar
@@ -47,7 +48,6 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.utils.Navigator
 import java.time.LocalDate
 
 @Composable

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -41,7 +42,6 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.thenIf
-import com.kevlina.budgetplus.utils.Navigator
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState

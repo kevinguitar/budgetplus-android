@@ -7,11 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.NavigationFlow
 import com.kevlina.budgetplus.core.common.NavigationInfo
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.feature.auth.AuthActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

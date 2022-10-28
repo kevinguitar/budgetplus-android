@@ -73,10 +73,6 @@ firebase = [
     "firebase-crashlytics",
     "firebase-firestore",
 ]
-navigation = [
-    "navigation-compose",
-    "navigation-hilt",
-]
 test = [
     "junit-android",
     "junit-compose",

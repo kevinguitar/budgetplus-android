@@ -44,19 +44,19 @@ import com.kevlina.budgetplus.book.category.EditCategoryScreen
 import com.kevlina.budgetplus.book.details.DetailsScreen
 import com.kevlina.budgetplus.book.details.detailsVm
 import com.kevlina.budgetplus.book.overview.OverviewScreen
-import com.kevlina.budgetplus.book.premium.PremiumScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.consume
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.getSerializableCompat
+import com.kevlina.budgetplus.core.common.toNavigator
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 import com.kevlina.budgetplus.utils.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.utils.ARG_CATEGORY
 import com.kevlina.budgetplus.utils.ARG_TYPE
-import com.kevlina.budgetplus.utils.toNavigator
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

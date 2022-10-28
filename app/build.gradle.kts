@@ -16,10 +16,9 @@ kapt {
 
 dependencies {
     implementation(platform(libs.firebase.bom))
-
     implementation(libs.bundles.firebase)
-    implementation(libs.bundles.navigation)
 
+    implementation(libs.navigation.compose)
     implementation(libs.google.ads)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.reorderable)
@@ -40,6 +39,6 @@ dependencies {
 //    implementation(project(":feature:edit-category"))
 //    implementation(project(":feature:overview"))
 //    implementation(project(":feature:records"))
-//    implementation(project(":feature:unlock-premium"))
+    implementation(project(":feature:unlock-premium"))
     implementation(project(":feature:welcome"))
 }

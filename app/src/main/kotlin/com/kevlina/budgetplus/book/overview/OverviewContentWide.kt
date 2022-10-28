@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
 fun OverviewContentWide(

@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.ui.AppTextField
@@ -34,7 +35,6 @@ import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
-import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
 fun RecordInfo(

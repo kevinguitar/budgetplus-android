@@ -1,9 +1,11 @@
 package com.kevlina.budgetplus.core.data
 
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.impl.AppPreference
 import com.kevlina.budgetplus.core.data.impl.AuthManagerImpl
 import com.kevlina.budgetplus.core.data.impl.BookRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordRepoImpl
+import com.kevlina.budgetplus.core.data.impl.TrackerImpl
 import com.kevlina.budgetplus.core.data.impl.UserRepoImpl
 import com.kevlina.budgetplus.core.data.local.Preference
 import dagger.Binds
@@ -41,6 +43,9 @@ internal interface DataModule {
 
     @Binds
     fun provideUserRepo(impl: UserRepoImpl): UserRepo
+
+    @Binds
+    fun provideTracker(impl: TrackerImpl): Tracker
 
     companion object {
 

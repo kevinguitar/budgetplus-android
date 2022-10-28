@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.BookSelectorViewModel
 import com.kevlina.budgetplus.book.record.vm.CreateBookBtnState
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -37,7 +38,6 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
 fun BookSelector(navigator: Navigator) {

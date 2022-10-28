@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.premium
+package com.kevlina.budgetplus.feature.unlock.premium
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -7,7 +7,7 @@ import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.data.Tracker
+import com.kevlina.budgetplus.core.common.Tracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

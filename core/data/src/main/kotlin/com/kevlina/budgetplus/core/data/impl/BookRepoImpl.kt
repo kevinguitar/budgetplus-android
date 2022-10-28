@@ -11,13 +11,13 @@ import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.core.data.JoinInfoProcessor
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
-import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.await
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book

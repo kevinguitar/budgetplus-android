@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.HistoryDest
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.utils.ARG_AUTHOR_ID
-import com.kevlina.budgetplus.utils.Navigator
 
 @Composable
 fun OverviewList(

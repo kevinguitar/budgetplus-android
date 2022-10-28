@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.auth.ui
+package com.kevlina.budgetplus.feature.auth.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

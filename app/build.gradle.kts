@@ -18,9 +18,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
     implementation(libs.bundles.navigation)
-    implementation(libs.bundles.google.services)
     testImplementation(libs.bundles.test)
 
+    implementation(libs.google.ads)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.reorderable)
     implementation(libs.lottie.compose)
@@ -28,8 +28,6 @@ dependencies {
 
     implementation(libs.profile.installer)
     implementation(libs.google.billing)
-    implementation(libs.install.referrer)
-    implementation(libs.facebook.auth)
     implementation(libs.exp4j)
     implementation(libs.coil.compose)
 
@@ -38,7 +36,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
 //    implementation(project(":feature:add-record"))
-//    implementation(project(":feature:auth"))
+    implementation(project(":feature:auth"))
 //    implementation(project(":feature:edit-category"))
 //    implementation(project(":feature:overview"))
 //    implementation(project(":feature:records"))

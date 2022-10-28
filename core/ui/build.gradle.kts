@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-
+    implementation(libs.android.appcompat)
     implementation(libs.compose.material)
 }

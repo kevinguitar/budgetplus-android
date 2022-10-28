@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.auth.ui
+package com.kevlina.budgetplus.feature.auth.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.kevlina.budgetplus.auth.AuthViewModel
 import com.kevlina.budgetplus.core.common.consume
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.feature.auth.AuthViewModel
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

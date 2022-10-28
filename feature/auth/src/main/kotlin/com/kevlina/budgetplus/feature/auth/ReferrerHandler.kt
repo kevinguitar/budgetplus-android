@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.auth
+package com.kevlina.budgetplus.feature.auth
 
 import android.content.Context
 import com.android.installreferrer.api.InstallReferrerClient

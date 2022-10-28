@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.auth.ui
+package com.kevlina.budgetplus.feature.auth.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

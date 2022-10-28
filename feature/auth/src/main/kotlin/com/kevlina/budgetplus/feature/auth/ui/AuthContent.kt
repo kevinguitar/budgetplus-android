@@ -1,45 +1,43 @@
-package com.kevlina.budgetplus.auth.ui
+package com.kevlina.budgetplus.feature.auth.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.auth.AuthViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.feature.auth.AuthViewModel
 
 @Composable
-fun AuthContentWide(viewModel: AuthViewModel) {
+fun AuthContent(viewModel: AuthViewModel) {
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 32.dp)
-    ) {
-
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.weight(1F)
-        ) {
-            AnimatedLogo()
-        }
+    Box(modifier = Modifier.fillMaxSize()) {
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(1F)
+            modifier = Modifier
+                .width(AppTheme.maxContentWidth)
+                .align(Alignment.Center)
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 32.dp)
         ) {
 
-            AuthTitle()
+            AuthTitle(modifier = Modifier.padding(bottom = 24.dp))
 
-            AuthDescription(modifier = Modifier.padding(vertical = 16.dp))
+            AnimatedLogo()
+
+            AuthDescription(modifier = Modifier.padding(vertical = 24.dp))
 
             SocialSignInButton(
                 onClick = viewModel::signInWithGoogle,

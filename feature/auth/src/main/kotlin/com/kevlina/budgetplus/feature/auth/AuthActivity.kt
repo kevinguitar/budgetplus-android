@@ -1,11 +1,11 @@
-package com.kevlina.budgetplus.auth
+package com.kevlina.budgetplus.feature.auth
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.kevlina.budgetplus.auth.ui.AuthBinding
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.feature.auth.ui.AuthBinding
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

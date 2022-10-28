@@ -9,6 +9,7 @@ kotlin = "1.7.20"
 
 [libraries]
 accompanist-flowlayout = "com.google.accompanist:accompanist-flowlayout:0.27.0"
+android-appcompat = "androidx.appcompat:appcompat:1.5.1"
 android-core = "androidx.core:core-ktx:1.9.0"
 # @keep
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
@@ -72,10 +73,6 @@ firebase = [
     "firebase-auth",
     "firebase-crashlytics",
     "firebase-firestore",
-]
-google-services = [
-    "google-ads",
-    "google-auth",
 ]
 navigation = [
     "navigation-compose",

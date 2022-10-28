@@ -6,8 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)

@@ -20,6 +20,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             add("api", libs.findLibrary("android.core").get())
             add("api", libs.findLibrary("coroutines").get())
             add("api", libs.findLibrary("timber").get())
+
+            if (path != ":core:common") {
+                add("implementation", project(":core:common"))
+            }
         }
     }
 }

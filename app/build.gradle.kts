@@ -16,9 +16,9 @@ kapt {
 
 dependencies {
     implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.firebase)
     implementation(libs.bundles.navigation)
-    testImplementation(libs.bundles.test)
 
     implementation(libs.google.ads)
     implementation(libs.accompanist.flowlayout)

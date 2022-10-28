@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.category
+package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

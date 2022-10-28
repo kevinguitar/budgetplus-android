@@ -1,8 +1,11 @@
-package com.kevlina.budgetplus.core.common
+package com.kevlina.budgetplus.core.common.nav
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.consumeEach
 
 @Suppress("FunctionName")
 fun NavigationFlow() = MutableEventFlow<NavigationInfo>()

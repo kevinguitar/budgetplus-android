@@ -3,8 +3,6 @@ package com.kevlina.budgetplus.book.details.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.book.details.RecordsSortMode
 import com.kevlina.budgetplus.book.overview.vm.RecordsObserver
 import com.kevlina.budgetplus.core.common.RecordType
@@ -13,6 +11,8 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

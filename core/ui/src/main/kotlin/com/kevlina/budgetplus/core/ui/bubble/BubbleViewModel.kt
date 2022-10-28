@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.bubble.vm
+package com.kevlina.budgetplus.core.ui.bubble
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel

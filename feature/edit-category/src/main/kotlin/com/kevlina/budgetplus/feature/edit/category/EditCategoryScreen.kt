@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.category
+package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,11 +29,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
-import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.Icon
@@ -41,6 +39,8 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
 import com.kevlina.budgetplus.core.ui.thenIf
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress

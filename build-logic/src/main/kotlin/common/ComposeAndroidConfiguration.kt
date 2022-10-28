@@ -23,9 +23,7 @@ internal fun Project.configureComposeAndroid(
         }
 
         kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs +
-                listOf("-opt-in=androidx.compose.material.ExperimentalMaterialApi") +
-                buildComposeMetricsParameters()
+            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
         }
     }
 

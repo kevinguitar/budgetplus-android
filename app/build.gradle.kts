@@ -21,7 +21,6 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.google.ads)
     implementation(libs.accompanist.flowlayout)
-    implementation(libs.reorderable)
     implementation(libs.lottie.compose)
     implementation(libs.kotlin.serialization)
 
@@ -34,11 +33,11 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
-//    implementation(project(":feature:add-record"))
+    implementation(project(":feature:add-record"))
     implementation(project(":feature:auth"))
-//    implementation(project(":feature:edit-category"))
-//    implementation(project(":feature:overview"))
-//    implementation(project(":feature:records"))
+    implementation(project(":feature:edit-category"))
+    implementation(project(":feature:overview"))
+    implementation(project(":feature:records"))
     implementation(project(":feature:unlock-premium"))
     implementation(project(":feature:welcome"))
 }

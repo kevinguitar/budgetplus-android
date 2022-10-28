@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.bubble.vm
+package com.kevlina.budgetplus.core.ui.bubble
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize

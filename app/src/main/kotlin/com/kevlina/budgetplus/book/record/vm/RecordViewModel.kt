@@ -6,8 +6,6 @@ import android.content.Intent
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
@@ -22,6 +20,8 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.monetize.FullScreenAdsLoader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

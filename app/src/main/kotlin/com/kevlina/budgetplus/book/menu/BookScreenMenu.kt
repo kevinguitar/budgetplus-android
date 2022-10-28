@@ -26,9 +26,9 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
-import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.consume
+import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.common.nav.consume
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.DropdownItem

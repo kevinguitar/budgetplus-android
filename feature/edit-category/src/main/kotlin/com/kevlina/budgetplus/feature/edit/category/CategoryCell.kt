@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.category
+package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke

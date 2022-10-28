@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.bubble
+package com.kevlina.budgetplus.core.ui.bubble
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -37,10 +37,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
-import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
-import com.kevlina.budgetplus.book.bubble.vm.BubbleTextDirection
-import com.kevlina.budgetplus.book.bubble.vm.BubbleViewModel
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 

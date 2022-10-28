@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common
+package com.kevlina.budgetplus.core.common.nav
 
 import android.app.Activity
 import android.os.Bundle

@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
-import com.kevlina.budgetplus.core.common.Navigator
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.TopBar
 

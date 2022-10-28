@@ -13,7 +13,7 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
-import com.kevlina.budgetplus.welcome.WelcomeActivity
+import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.launchIn

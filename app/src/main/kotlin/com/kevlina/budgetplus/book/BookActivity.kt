@@ -10,7 +10,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.feature.auth.AuthActivity
-import com.kevlina.budgetplus.welcome.WelcomeActivity
+import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint

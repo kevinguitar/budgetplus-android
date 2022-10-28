@@ -41,5 +41,5 @@ dependencies {
 //    implementation(project(":feature:overview"))
 //    implementation(project(":feature:records"))
 //    implementation(project(":feature:unlock-premium"))
-//    implementation(project(":feature:welcome"))
+    implementation(project(":feature:welcome"))
 }

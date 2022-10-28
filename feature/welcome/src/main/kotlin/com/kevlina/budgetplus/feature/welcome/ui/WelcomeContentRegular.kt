@@ -1,11 +1,11 @@
-package com.kevlina.budgetplus.welcome.ui
+package com.kevlina.budgetplus.feature.welcome.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kevlina.budgetplus.welcome.WelcomeViewModel
+import com.kevlina.budgetplus.feature.welcome.WelcomeViewModel
 
 @Composable
 fun WelcomeContentRegular(viewModel: WelcomeViewModel) {

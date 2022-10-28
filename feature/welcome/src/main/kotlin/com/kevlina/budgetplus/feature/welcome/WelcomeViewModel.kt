@@ -1,10 +1,10 @@
-package com.kevlina.budgetplus.welcome
+package com.kevlina.budgetplus.feature.welcome
 
+import android.app.Activity
 import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.book.BookActivity
 import com.kevlina.budgetplus.core.common.NavigationFlow
 import com.kevlina.budgetplus.core.common.NavigationInfo
 import com.kevlina.budgetplus.core.common.R
@@ -19,6 +19,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.reflect.KClass
 
 @HiltViewModel
 @Stable
@@ -27,6 +29,7 @@ class WelcomeViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
     @ApplicationContext private val context: Context,
+    @Named("book") private val bookDest: KClass<out Activity>,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -44,7 +47,7 @@ class WelcomeViewModel @Inject constructor(
                 toaster.showMessage(context.getString(R.string.book_create_success, name))
                 tracker.logEvent("book_created_from_welcome")
 
-                val navInfo = NavigationInfo(destination = BookActivity::class)
+                val navInfo = NavigationInfo(destination = bookDest)
                 navigation.sendEvent(navInfo)
             } catch (e: Exception) {
                 toaster.showError(e)
@@ -60,7 +63,7 @@ class WelcomeViewModel @Inject constructor(
                 val bookName = bookRepo.handlePendingJoinRequest()
                 toaster.showMessage(context.getString(R.string.book_join_success, bookName))
 
-                val navInfo = NavigationInfo(destination = BookActivity::class)
+                val navInfo = NavigationInfo(destination = bookDest)
                 navigation.sendEvent(navInfo)
             } catch (e: JoinBookException.General) {
                 toaster.showMessage(e.errorRes)

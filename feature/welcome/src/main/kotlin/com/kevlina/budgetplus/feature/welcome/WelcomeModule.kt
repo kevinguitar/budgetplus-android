@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.welcome
+package com.kevlina.budgetplus.feature.welcome
 
 import android.app.Activity
 import dagger.Module

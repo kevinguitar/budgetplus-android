@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.welcome.ui
+package com.kevlina.budgetplus.feature.welcome.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.kevlina.budgetplus.core.common.consume
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.LocalAppColors
-import com.kevlina.budgetplus.welcome.WelcomeViewModel
+import com.kevlina.budgetplus.feature.welcome.WelcomeViewModel
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.welcome.ui
+package com.kevlina.budgetplus.feature.welcome.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

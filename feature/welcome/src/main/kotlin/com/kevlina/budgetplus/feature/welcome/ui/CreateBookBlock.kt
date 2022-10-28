@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.welcome.ui
+package com.kevlina.budgetplus.feature.welcome.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

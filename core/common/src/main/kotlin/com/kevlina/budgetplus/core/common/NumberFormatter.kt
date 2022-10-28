@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common
 
 import java.math.RoundingMode
 import java.text.NumberFormat

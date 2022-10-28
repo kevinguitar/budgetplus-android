@@ -4,7 +4,7 @@ import android.app.Application
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.kevlina.budgetplus.auth.UserRepo
+import com.kevlina.budgetplus.core.data.UserRepo
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject

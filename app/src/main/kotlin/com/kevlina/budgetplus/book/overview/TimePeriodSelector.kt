@@ -24,13 +24,13 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.ui.DatePickerDialog
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.utils.rippleClick
-import com.kevlina.budgetplus.utils.shortFormatted
 
 @Composable
 fun TimePeriodSelector() {

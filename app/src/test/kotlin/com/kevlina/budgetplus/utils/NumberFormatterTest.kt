@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.utils
 
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.roundUpPercentageText
+import com.kevlina.budgetplus.core.common.roundUpPriceText
 import org.junit.Test
 
 class NumberFormatterTest {

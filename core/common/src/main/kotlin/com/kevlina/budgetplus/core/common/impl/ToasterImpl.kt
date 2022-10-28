@@ -1,30 +1,16 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common.impl
 
 import android.content.Context
 import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
-import androidx.annotation.MainThread
-import androidx.annotation.StringRes
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface Toaster {
-
-    @MainThread
-    fun showMessage(charSequence: CharSequence)
-
-    @MainThread
-    fun showMessage(@StringRes resId: Int)
-
-    @MainThread
-    fun showError(e: Exception)
-}
-
 @Singleton
-class ToasterImpl @Inject constructor(
+internal class ToasterImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : Toaster {
 
@@ -37,7 +23,7 @@ class ToasterImpl @Inject constructor(
             toast?.cancel()
         }
 
-        toast = Toast.makeText(context, charSequence, LENGTH_SHORT)
+        toast = Toast.makeText(context, charSequence, Toast.LENGTH_SHORT)
         toast?.show()
         lastMessage = charSequence
     }

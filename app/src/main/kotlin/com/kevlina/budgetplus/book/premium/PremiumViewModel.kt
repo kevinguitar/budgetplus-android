@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.Tracker
-import com.kevlina.budgetplus.utils.Toaster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

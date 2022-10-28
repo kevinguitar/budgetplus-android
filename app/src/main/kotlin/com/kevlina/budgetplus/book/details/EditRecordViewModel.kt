@@ -2,11 +2,11 @@ package com.kevlina.budgetplus.book.details
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.parseToPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject

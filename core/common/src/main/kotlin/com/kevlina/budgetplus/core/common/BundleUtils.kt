@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common
 
 import android.os.Build
 import android.os.Bundle

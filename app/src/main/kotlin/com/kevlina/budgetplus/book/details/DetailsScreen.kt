@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.dollar
+import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordType
@@ -45,9 +47,7 @@ import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.ui.TopBar
 import com.kevlina.budgetplus.utils.Navigator
-import com.kevlina.budgetplus.utils.dollar
 import com.kevlina.budgetplus.utils.rippleClick
-import com.kevlina.budgetplus.utils.shortFormatted
 import java.time.LocalDate
 
 @Composable

@@ -1,15 +1,10 @@
-package com.kevlina.budgetplus.di
+package com.kevlina.budgetplus.core.common
 
 import android.content.Context
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
-import com.kevlina.budgetplus.auth.UserRepo
-import com.kevlina.budgetplus.auth.UserRepoImpl
-import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.AppScope
-import com.kevlina.budgetplus.utils.Toaster
-import com.kevlina.budgetplus.utils.ToasterImpl
+import com.kevlina.budgetplus.core.common.impl.ToasterImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,13 +16,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface GlobalModule {
+internal interface CommonModule {
 
     @Binds
     fun provideToaster(impl: ToasterImpl): Toaster
-
-    @Binds
-    fun provideUserRepo(impl: UserRepoImpl): UserRepo
 
     companion object {
 

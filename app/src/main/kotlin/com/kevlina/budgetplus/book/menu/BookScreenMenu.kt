@@ -29,6 +29,7 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.consume
 import com.kevlina.budgetplus.ui.AppText
 import com.kevlina.budgetplus.ui.ConfirmDialog
 import com.kevlina.budgetplus.ui.DropdownItem
@@ -38,7 +39,6 @@ import com.kevlina.budgetplus.ui.InputDialog
 import com.kevlina.budgetplus.ui.LocalAppColors
 import com.kevlina.budgetplus.ui.MenuAction
 import com.kevlina.budgetplus.utils.Navigator
-import com.kevlina.budgetplus.utils.consume
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

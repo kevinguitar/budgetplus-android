@@ -1,10 +1,11 @@
-package com.kevlina.budgetplus.auth
+package com.kevlina.budgetplus.core.data.impl
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.requireValue
@@ -19,14 +20,8 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface UserRepo {
-
-    fun getUser(userId: String): User?
-
-}
-
 @Singleton
-class UserRepoImpl @Inject constructor(
+internal class UserRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     @AppScope appScope: CoroutineScope,
     bookRepo: BookRepo

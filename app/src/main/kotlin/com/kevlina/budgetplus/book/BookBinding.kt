@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -53,6 +54,7 @@ import com.kevlina.budgetplus.core.common.nav.consume
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
@@ -77,21 +79,20 @@ fun BookBinding(viewModel: BookViewModel) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Column(modifier = Modifier.fillMaxSize()) {
-
+        Scaffold(
+            bottomBar = { BottomNav(navController) }
+        ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = BookTab.Add.route,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1F)
+                    .fillMaxSize()
+                    .padding(innerPadding)
                     .background(color = LocalAppColors.current.light)
             ) {
                 addTabGraph(navController)
                 overviewTabGraph(navController)
             }
-
-            BottomNav(navController)
         }
 
         Bubble()

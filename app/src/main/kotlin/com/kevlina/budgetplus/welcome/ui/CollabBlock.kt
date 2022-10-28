@@ -16,10 +16,10 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
 fun CollabBlock(modifier: Modifier) {

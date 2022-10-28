@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.ui
 
 import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color

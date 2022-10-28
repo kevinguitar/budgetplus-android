@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.InfiniteCircularProgress
-import com.kevlina.budgetplus.ui.TopBar
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.utils.Navigator
 
 @Composable

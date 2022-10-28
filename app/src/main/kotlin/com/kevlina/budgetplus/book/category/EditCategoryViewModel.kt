@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

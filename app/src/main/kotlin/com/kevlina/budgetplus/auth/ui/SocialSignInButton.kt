@@ -14,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.ui.AppButton
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppButton
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
 fun SocialSignInButton(

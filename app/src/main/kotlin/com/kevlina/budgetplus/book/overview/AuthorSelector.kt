@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.PersonSearch
@@ -22,10 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.DropdownItem
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.DropdownItem
+import com.kevlina.budgetplus.core.ui.DropdownMenu
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.rippleClick
 
 @Composable
 fun AuthorSelector() {
@@ -48,7 +48,6 @@ fun AuthorSelector() {
 
             Icon(
                 imageVector = Icons.Rounded.PersonSearch,
-                contentDescription = null,
                 tint = LocalAppColors.current.dark
             )
 

@@ -7,11 +7,11 @@ import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.book.details.RecordsSortMode
 import com.kevlina.budgetplus.book.overview.vm.RecordsObserver
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

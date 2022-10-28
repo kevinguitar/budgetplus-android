@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.ui
+package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable

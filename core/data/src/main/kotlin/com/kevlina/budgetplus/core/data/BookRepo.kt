@@ -1,7 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.remote.Book
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import kotlinx.coroutines.flow.StateFlow
 
 interface BookRepo {

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.ui
+package com.kevlina.budgetplus.book.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DriveFileRenameOutline
 import androidx.compose.runtime.Composable
@@ -22,8 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.data.remote.RecordType
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.rippleClick
 
 @Composable
 fun CategoriesGrid(

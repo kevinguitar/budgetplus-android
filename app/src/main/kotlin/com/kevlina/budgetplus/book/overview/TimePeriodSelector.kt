@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
@@ -26,11 +25,12 @@ import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.DatePickerDialog
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.rippleClick
 
 @Composable
 fun TimePeriodSelector() {

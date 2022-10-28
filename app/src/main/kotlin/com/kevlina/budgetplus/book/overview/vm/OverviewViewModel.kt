@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
@@ -13,7 +14,6 @@ import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
 import dagger.hilt.android.lifecycle.HiltViewModel

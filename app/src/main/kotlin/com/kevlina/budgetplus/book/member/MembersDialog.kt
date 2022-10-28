@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.Composable
@@ -40,13 +38,15 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
-import com.kevlina.budgetplus.ui.AppDialog
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.ConfirmDialog
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.InfiniteCircularProgress
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppDialog
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.IconButton
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
 fun MembersDialog(

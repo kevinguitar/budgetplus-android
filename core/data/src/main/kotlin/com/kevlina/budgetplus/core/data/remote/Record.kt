@@ -1,10 +1,7 @@
 package com.kevlina.budgetplus.core.data.remote
 
+import com.kevlina.budgetplus.core.common.RecordType
 import kotlinx.serialization.Serializable
-
-enum class RecordType {
-    Expense, Income
-}
 
 @Serializable
 data class Record(

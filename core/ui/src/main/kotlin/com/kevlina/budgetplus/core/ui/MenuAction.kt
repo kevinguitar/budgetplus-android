@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.ui
+package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.utils.thenIf
 
 @Composable
 fun MenuAction(

@@ -11,6 +11,7 @@ import com.kevlina.budgetplus.book.bubble.vm.BubbleRepo
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -20,7 +21,6 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.monetize.FullScreenAdsLoader
 import dagger.hilt.android.lifecycle.HiltViewModel

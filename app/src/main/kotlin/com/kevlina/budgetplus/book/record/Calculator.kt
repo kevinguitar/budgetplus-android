@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Backspace
 import androidx.compose.runtime.Composable
@@ -28,10 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Surface
 
 enum class CalculatorButton(val text: String) {
     Seven("7"), Four("4"),

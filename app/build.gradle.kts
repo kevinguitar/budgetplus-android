@@ -109,7 +109,7 @@ dependencies {
     implementation(project(":core:billing"))
     implementation(project(":core:common"))
     implementation(project(":core:data"))
-//    implementation(project(":core:ui"))
+    implementation(project(":core:ui"))
 //    implementation(project(":feature:add-record"))
 //    implementation(project(":feature:auth"))
 //    implementation(project(":feature:edit-category"))

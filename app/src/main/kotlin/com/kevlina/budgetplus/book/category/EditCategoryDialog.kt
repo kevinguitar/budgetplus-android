@@ -20,12 +20,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppButton
-import com.kevlina.budgetplus.ui.AppDialog
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTextField
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppButton
+import com.kevlina.budgetplus.core.ui.AppDialog
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 

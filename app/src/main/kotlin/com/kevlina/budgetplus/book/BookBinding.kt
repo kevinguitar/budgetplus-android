@@ -15,11 +15,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FormatListBulleted
 import androidx.compose.material.icons.rounded.PostAdd
@@ -49,15 +46,16 @@ import com.kevlina.budgetplus.book.details.detailsVm
 import com.kevlina.budgetplus.book.overview.OverviewScreen
 import com.kevlina.budgetplus.book.premium.PremiumScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.consume
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.getSerializableCompat
-import com.kevlina.budgetplus.core.data.remote.RecordType
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.utils.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.utils.ARG_CATEGORY
 import com.kevlina.budgetplus.utils.ARG_TYPE
-import com.kevlina.budgetplus.utils.rippleClick
 import com.kevlina.budgetplus.utils.toNavigator
 import kotlinx.coroutines.flow.launchIn
 
@@ -79,20 +77,21 @@ fun BookBinding(viewModel: BookViewModel) {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Scaffold(
-            bottomBar = { BottomNav(navController) }
-        ) { innerPadding ->
+        Column(modifier = Modifier.fillMaxSize()) {
+
             NavHost(
                 navController = navController,
                 startDestination = BookTab.Add.route,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
+                    .fillMaxWidth()
+                    .weight(1F)
                     .background(color = LocalAppColors.current.light)
             ) {
                 addTabGraph(navController)
                 overviewTabGraph(navController)
             }
+
+            BottomNav(navController)
         }
 
         Bubble()
@@ -245,7 +244,6 @@ private fun RowScope.BottomNavItem(
                 BookTab.Add -> Icons.Rounded.PostAdd
                 BookTab.History -> Icons.Rounded.FormatListBulleted
             },
-            contentDescription = null,
             tint = if (isSelected) {
                 LocalAppColors.current.light
             } else {

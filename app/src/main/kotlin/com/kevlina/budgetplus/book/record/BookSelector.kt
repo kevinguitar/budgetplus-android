@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
@@ -30,14 +27,17 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.BookSelectorViewModel
 import com.kevlina.budgetplus.book.record.vm.CreateBookBtnState
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.DropdownItem
-import com.kevlina.budgetplus.ui.DropdownMenuDivider
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.InputDialog
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.DropdownItem
+import com.kevlina.budgetplus.core.ui.DropdownMenu
+import com.kevlina.budgetplus.core.ui.DropdownMenuDivider
+import com.kevlina.budgetplus.core.ui.DropdownMenuItem
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.InputDialog
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.utils.Navigator
-import com.kevlina.budgetplus.utils.rippleClick
 
 @Composable
 fun BookSelector(navigator: Navigator) {

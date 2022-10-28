@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.roundUpPercentageText
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.utils.darken
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.darken
+import com.kevlina.budgetplus.core.ui.rippleClick
 
 //TODO: records param is unstable
 @Composable
@@ -118,7 +117,7 @@ fun OverviewGroup(
         }
 
         if (!isLast) {
-            Divider(
+            Spacer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()

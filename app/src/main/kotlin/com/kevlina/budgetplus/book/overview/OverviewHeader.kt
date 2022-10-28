@@ -14,9 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.roundUpPriceText
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.RecordTypeTab
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.RecordTypeTab
 
 @Composable
 fun OverviewHeader(modifier: Modifier) {

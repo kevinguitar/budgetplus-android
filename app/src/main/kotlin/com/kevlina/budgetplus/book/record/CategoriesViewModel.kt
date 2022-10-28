@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.ui
+package com.kevlina.budgetplus.book.record
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.mapState

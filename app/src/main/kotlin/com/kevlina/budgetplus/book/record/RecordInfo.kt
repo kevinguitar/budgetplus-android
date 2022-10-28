@@ -26,16 +26,15 @@ import com.kevlina.budgetplus.book.AddDest
 import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.data.remote.RecordType
-import com.kevlina.budgetplus.ui.AppTextField
-import com.kevlina.budgetplus.ui.CategoriesGrid
-import com.kevlina.budgetplus.ui.DatePickerDialog
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.RecordTypeTab
-import com.kevlina.budgetplus.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.RecordTypeTab
+import com.kevlina.budgetplus.core.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.utils.Navigator
-import com.kevlina.budgetplus.utils.rippleClick
-import com.kevlina.budgetplus.utils.thenIf
 
 @Composable
 fun RecordInfo(

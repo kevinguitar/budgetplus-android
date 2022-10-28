@@ -28,12 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppButton
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTextField
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppButton
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
 fun CreateBookBlock(

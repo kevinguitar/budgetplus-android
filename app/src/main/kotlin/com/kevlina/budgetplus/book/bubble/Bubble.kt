@@ -41,8 +41,8 @@ import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.bubble.vm.BubbleShape
 import com.kevlina.budgetplus.book.bubble.vm.BubbleTextDirection
 import com.kevlina.budgetplus.book.bubble.vm.BubbleViewModel
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
 fun Bubble() {

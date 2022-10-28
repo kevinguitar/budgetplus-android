@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EventNote
 import androidx.compose.material.icons.rounded.Paid
@@ -34,20 +34,20 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.book.bubble.vm.BubbleDest
 import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.data.remote.RecordType
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.MenuAction
+import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTheme
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.ui.MenuAction
-import com.kevlina.budgetplus.ui.TopBar
 import com.kevlina.budgetplus.utils.Navigator
-import com.kevlina.budgetplus.utils.rippleClick
 import java.time.LocalDate
 
 @Composable
@@ -196,7 +196,7 @@ fun RecordCard(
         }
 
         if (!isLast) {
-            Divider(
+            Spacer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()

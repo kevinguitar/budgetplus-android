@@ -27,16 +27,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.ui.AppButton
-import com.kevlina.budgetplus.ui.AppDialog
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.AppTextField
-import com.kevlina.budgetplus.ui.ConfirmDialog
-import com.kevlina.budgetplus.ui.DatePickerDialog
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.ui.SingleDatePicker
-import com.kevlina.budgetplus.utils.rippleClick
+import com.kevlina.budgetplus.core.ui.AppButton
+import com.kevlina.budgetplus.core.ui.AppDialog
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.ui.rippleClick
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 

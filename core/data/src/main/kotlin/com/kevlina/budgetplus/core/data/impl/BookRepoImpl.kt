@@ -10,6 +10,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
@@ -20,7 +21,6 @@ import com.kevlina.budgetplus.core.data.Tracker
 import com.kevlina.budgetplus.core.data.await
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
-import com.kevlina.budgetplus.core.data.remote.RecordType
 import com.kevlina.budgetplus.core.data.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope

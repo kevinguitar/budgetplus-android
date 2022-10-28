@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.book.record.vm.RecordViewModel
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.monetize.AdsBanner
-import com.kevlina.budgetplus.ui.AppTheme
 import com.kevlina.budgetplus.utils.Navigator
 
 @Composable

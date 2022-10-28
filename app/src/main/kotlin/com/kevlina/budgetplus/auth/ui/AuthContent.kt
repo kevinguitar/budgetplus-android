@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.auth.AuthViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 fun AuthContent(viewModel: AuthViewModel) {

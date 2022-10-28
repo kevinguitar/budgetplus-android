@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.Composable
@@ -30,14 +28,16 @@ import com.kevlina.budgetplus.book.member.MembersDialog
 import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consume
-import com.kevlina.budgetplus.ui.AppText
-import com.kevlina.budgetplus.ui.ConfirmDialog
-import com.kevlina.budgetplus.ui.DropdownItem
-import com.kevlina.budgetplus.ui.DropdownMenuDivider
-import com.kevlina.budgetplus.ui.FontSize
-import com.kevlina.budgetplus.ui.InputDialog
-import com.kevlina.budgetplus.ui.LocalAppColors
-import com.kevlina.budgetplus.ui.MenuAction
+import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.ui.DropdownItem
+import com.kevlina.budgetplus.core.ui.DropdownMenu
+import com.kevlina.budgetplus.core.ui.DropdownMenuDivider
+import com.kevlina.budgetplus.core.ui.DropdownMenuItem
+import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.InputDialog
+import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.utils.Navigator
 import kotlinx.coroutines.flow.launchIn
 

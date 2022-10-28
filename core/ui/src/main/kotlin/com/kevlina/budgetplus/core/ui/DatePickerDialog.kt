@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.ui
+package com.kevlina.budgetplus.core.ui
 
 import android.widget.DatePicker
 import androidx.compose.foundation.background

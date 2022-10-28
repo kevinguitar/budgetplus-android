@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.kevlina.budgetplus.auth.AuthViewModel
 import com.kevlina.budgetplus.core.common.consume
-import com.kevlina.budgetplus.ui.AdaptiveScreen
-import com.kevlina.budgetplus.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AdaptiveScreen
+import com.kevlina.budgetplus.core.ui.LocalAppColors
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

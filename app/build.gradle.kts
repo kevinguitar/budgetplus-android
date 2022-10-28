@@ -4,20 +4,19 @@ import kotlin.math.pow
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("budgetplus.android.app")
+    id("budgetplus.hilt.android")
+    id("budgetplus.compose.app")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt.android)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
-    val appId: String by rootProject.extra
-    val appVersion: String by rootProject.extra
-    val minAndroidSdk: Int by rootProject.extra
-    val androidSdk: Int by rootProject.extra
+    val appId: String by project
+    val appVersion: String by project
+    val minAndroidSdk: String by project
+    val androidSdk: String by project
 
     /**
      *  Major version * 10^6
@@ -36,13 +35,10 @@ android {
         }
         .sum()
 
-    namespace = appId
-    compileSdk = androidSdk
-
     defaultConfig {
         applicationId = appId
-        minSdk = minAndroidSdk
-        targetSdk = androidSdk
+        minSdk = minAndroidSdk.toInt()
+        targetSdk = androidSdk.toInt()
         versionName = appVersion
         versionCode = appVersionCode
 
@@ -79,32 +75,11 @@ android {
         }
     }
 
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
-    }
-
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
     packagingOptions {
         resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
     bundle {
         storeArchive.enable = false
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-        )
     }
 }
 
@@ -115,30 +90,21 @@ kapt {
 dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
-    implementation(libs.bundles.compose)
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.google.services)
     testImplementation(libs.bundles.test)
-
-    implementation(libs.android.core)
-    implementation(libs.android.lifecycle)
 
     implementation(libs.accompanist.flowlayout)
     implementation(libs.reorderable)
     implementation(libs.lottie.compose)
     implementation(libs.kotlin.serialization)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
     implementation(libs.profile.installer)
     implementation(libs.google.billing)
     implementation(libs.install.referrer)
     implementation(libs.facebook.auth)
-    implementation(libs.timber)
     implementation(libs.exp4j)
     implementation(libs.coil.compose)
-    coreLibraryDesugaring(libs.desugar)
 
     implementation(project(":core:billing"))
     implementation(project(":core:common"))

@@ -33,5 +33,9 @@ gradlePlugin {
             id = "budgetplus.hilt.android"
             implementationClass = "HiltAndroidConventionPlugin"
         }
+        register("kotlinSerialization") {
+            id = "budgetplus.kotlin.serialization"
+            implementationClass = "KotlinSerializationConventionPlugin"
+        }
     }
 }

@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import java.io.File
 
-@Suppress("UnstableApiUsage")
 internal fun Project.configureComposeAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
 ) {

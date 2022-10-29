@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import com.android.build.api.dsl.ApplicationExtension
 import common.configureKotlinAndroid
 import org.gradle.api.Plugin
@@ -13,6 +11,8 @@ class AndroidAppConventionPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("com.android.application")
             apply("org.jetbrains.kotlin.android")
+            apply("com.google.gms.google-services")
+            apply("com.google.firebase.crashlytics")
         }
 
         val appId: String by project

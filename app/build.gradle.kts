@@ -1,12 +1,7 @@
-@file:Suppress("UnstableApiUsage")
-
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("budgetplus.android.app")
     id("budgetplus.hilt.android")
     id("budgetplus.compose.app")
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.firebase.crashlytics)
 }
 
 kapt {

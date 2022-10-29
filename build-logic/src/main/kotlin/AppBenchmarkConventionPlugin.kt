@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.TestAndroidComponentsExtension
 import org.gradle.api.JavaVersion

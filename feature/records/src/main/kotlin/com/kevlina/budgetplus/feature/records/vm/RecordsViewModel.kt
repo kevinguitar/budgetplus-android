@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
+import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
@@ -28,9 +30,10 @@ class RecordsViewModel @AssistedInject constructor(
     @Assisted("category") val category: String,
     @Assisted("authorId") private val authorId: String?,
     private val userRepo: UserRepo,
+    private val bookRepo: BookRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
-    authManager: AuthManager,
+    private val authManager: AuthManager,
     recordsObserver: RecordsObserver,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -73,6 +76,11 @@ class RecordsViewModel @AssistedInject constructor(
             isSortingBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
+    }
+
+    fun canEditRecord(record: Record): Boolean {
+        val myUserId = authManager.requireUserId()
+        return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
     }
 
     @AssistedFactory

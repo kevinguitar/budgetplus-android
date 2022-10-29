@@ -47,6 +47,7 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.records.vm.RecordsViewModel
 import java.time.LocalDate
 
@@ -107,7 +108,8 @@ fun RecordsScreen(
             itemsIndexed(records) { index, item ->
                 RecordCard(
                     item = item,
-                    isLast = index == records.lastIndex
+                    isLast = index == records.lastIndex,
+                    canEdit = vm.canEditRecord(item)
                 ) {
                     editRecordDialog = item
                 }
@@ -133,15 +135,18 @@ fun RecordsScreen(
 fun RecordCard(
     item: Record,
     isLast: Boolean,
+    canEdit: Boolean,
     onEdit: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .rippleClick(
-                color = LocalAppColors.current.dark,
-                onClick = onEdit
-            )
+            .thenIf(canEdit) {
+                Modifier.rippleClick(
+                    color = LocalAppColors.current.dark,
+                    onClick = onEdit
+                )
+            }
             .padding(horizontal = 16.dp)
     ) {
 
@@ -220,6 +225,7 @@ private fun RecordCard_Preview() = AppTheme {
             author = Author(id = "", name = "Kevin")
         ),
         isLast = false,
+        canEdit = true,
         onEdit = {}
     )
 }

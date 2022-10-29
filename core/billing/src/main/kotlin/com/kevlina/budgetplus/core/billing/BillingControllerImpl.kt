@@ -170,6 +170,13 @@ internal class BillingControllerImpl @Inject constructor(
         purchases.forEach { purchase ->
             if (purchase.isAcknowledged) {
                 Timber.d("BillingClient: Found purchased product ${purchase.products.joinToString()}")
+
+                // Code snippet to consume the product, useful for testing purposes.
+                /*billingClient.consumePurchase(
+                    ConsumeParams.newBuilder()
+                        .setPurchaseToken(purchases.first().purchaseToken)
+                        .build()
+                )*/
             } else {
                 // Acknowledge the purchase
                 val params = AcknowledgePurchaseParams.newBuilder()
@@ -183,13 +190,6 @@ internal class BillingControllerImpl @Inject constructor(
 
                     when {
                         status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products -> {
-                            // Code snippet to consume the product, useful for testing purposes.
-                            /*billingClient.consumePurchase(
-                                ConsumeParams.newBuilder()
-                                    .setPurchaseToken(purchases.first().purchaseToken)
-                                    .build()
-                            )*/
-
                             authManager.markPremium()
                             _purchaseState.value = PurchaseState.Success
                         }

@@ -88,65 +88,69 @@ fun EditRecordDialog(
         nameFocus.requestFocus()
     }
 
-    AppDialog(onDismissRequest = onDismiss) {
+    // Do not stack the dialog, it causes some weird ui issue
+    if (!showDeleteConfirmationDialog) {
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        AppDialog(onDismissRequest = onDismiss) {
 
-            AppText(
-                text = stringResource(id = R.string.record_edit_title),
-                fontSize = FontSize.Large,
-                fontWeight = FontWeight.SemiBold
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-            SingleDatePicker(
-                date = date,
-                modifier = Modifier.rippleClick { showDatePickerDialog = true }
-            )
-
-            AppTextField(
-                value = name,
-                onValueChange = { name = it },
-                modifier = Modifier.focusRequester(nameFocus),
-                title = stringResource(id = R.string.record_note),
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences,
-                    imeAction = ImeAction.Next
+                AppText(
+                    text = stringResource(id = R.string.record_edit_title),
+                    fontSize = FontSize.Large,
+                    fontWeight = FontWeight.SemiBold
                 )
-            )
 
-            AppTextField(
-                value = priceText,
-                onValueChange = { priceText = it },
-                modifier = Modifier.focusRequester(priceFocus),
-                title = stringResource(id = R.string.record_price),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                onDone = { confirmEdit() }
-            )
+                SingleDatePicker(
+                    date = date,
+                    modifier = Modifier.rippleClick { showDatePickerDialog = true }
+                )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-
-                AppButton(
-                    onClick = { showDeleteConfirmationDialog = true },
-                ) {
-                    AppText(
-                        text = stringResource(id = R.string.cta_delete),
-                        color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.Medium
+                AppTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    modifier = Modifier.focusRequester(nameFocus),
+                    title = stringResource(id = R.string.record_note),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Next
                     )
-                }
+                )
 
-                AppButton(onClick = ::confirmEdit) {
-                    AppText(
-                        text = stringResource(id = R.string.cta_save),
-                        color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.Medium
-                    )
+                AppTextField(
+                    value = priceText,
+                    onValueChange = { priceText = it },
+                    modifier = Modifier.focusRequester(priceFocus),
+                    title = stringResource(id = R.string.record_price),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    ),
+                    onDone = { confirmEdit() }
+                )
+
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+
+                    AppButton(
+                        onClick = { showDeleteConfirmationDialog = true },
+                    ) {
+                        AppText(
+                            text = stringResource(id = R.string.cta_delete),
+                            color = LocalAppColors.current.light,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                    AppButton(onClick = ::confirmEdit) {
+                        AppText(
+                            text = stringResource(id = R.string.cta_save),
+                            color = LocalAppColors.current.light,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }

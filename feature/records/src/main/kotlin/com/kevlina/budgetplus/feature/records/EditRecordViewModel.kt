@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.details
+package com.kevlina.budgetplus.feature.records
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.R

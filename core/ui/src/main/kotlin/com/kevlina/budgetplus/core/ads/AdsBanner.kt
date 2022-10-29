@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.monetize
+package com.kevlina.budgetplus.core.ads
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.BoxWithConstraints

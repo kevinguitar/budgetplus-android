@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.details
+package com.kevlina.budgetplus.feature.records
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
+import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.dollar
@@ -47,13 +47,13 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.monetize.AdsBanner
+import com.kevlina.budgetplus.feature.records.vm.RecordsViewModel
 import java.time.LocalDate
 
 @Composable
-fun DetailsScreen(
+fun RecordsScreen(
     navigator: Navigator,
-    vm: DetailsViewModel,
+    vm: RecordsViewModel,
 ) {
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }

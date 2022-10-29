@@ -15,4 +15,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 dependencies {
     implementation(libs.android.appcompat)
     implementation(libs.compose.material)
+    implementation(libs.google.ads)
 }

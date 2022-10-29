@@ -5,6 +5,7 @@ import com.kevlina.budgetplus.core.data.impl.AppPreference
 import com.kevlina.budgetplus.core.data.impl.AuthManagerImpl
 import com.kevlina.budgetplus.core.data.impl.BookRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordRepoImpl
+import com.kevlina.budgetplus.core.data.impl.RecordsObserverImpl
 import com.kevlina.budgetplus.core.data.impl.TrackerImpl
 import com.kevlina.budgetplus.core.data.impl.UserRepoImpl
 import com.kevlina.budgetplus.core.data.local.Preference
@@ -46,6 +47,9 @@ internal interface DataModule {
 
     @Binds
     fun provideTracker(impl: TrackerImpl): Tracker
+
+    @Binds
+    fun provideRecordsObserver(impl: RecordsObserverImpl): RecordsObserver
 
     companion object {
 

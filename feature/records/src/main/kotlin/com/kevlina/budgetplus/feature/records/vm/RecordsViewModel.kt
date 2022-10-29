@@ -1,18 +1,18 @@
-package com.kevlina.budgetplus.book.details.vm
+package com.kevlina.budgetplus.feature.records.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.book.details.RecordsSortMode
-import com.kevlina.budgetplus.book.overview.vm.RecordsObserver
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
+import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.records.RecordsSortMode
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class DetailsViewModel @AssistedInject constructor(
+class RecordsViewModel @AssistedInject constructor(
     @Assisted type: RecordType,
     @Assisted("category") val category: String,
     @Assisted("authorId") private val authorId: String?,
@@ -81,7 +81,7 @@ class DetailsViewModel @AssistedInject constructor(
             type: RecordType,
             @Assisted("category") category: String,
             @Assisted("authorId") authorId: String?,
-        ): DetailsViewModel
+        ): RecordsViewModel
     }
 
     companion object {

@@ -62,7 +62,7 @@ fun OverviewList(
                 isLast = index == recordGroups.size - 1,
                 onClick = {
                     navigator.navigate(route = buildString {
-                        append(HistoryDest.Details.route)
+                        append(HistoryDest.Records.route)
                         append("/$type/$key")
 
                         val authorId = selectedAuthor?.id

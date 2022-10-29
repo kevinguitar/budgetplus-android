@@ -1,10 +1,11 @@
-package com.kevlina.budgetplus.book.overview.vm
+package com.kevlina.budgetplus.core.data.impl
 
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,15 +20,15 @@ import javax.inject.Singleton
  *  reduce the db requests for us.
  */
 @Singleton
-class RecordsObserver @Inject constructor() {
+internal class RecordsObserverImpl @Inject constructor(): RecordsObserver {
 
     private val _records = MutableStateFlow<Sequence<Record>>(emptySequence())
-    val records: StateFlow<Sequence<Record>> = _records.asStateFlow()
+    override val records: StateFlow<Sequence<Record>> = _records.asStateFlow()
 
     private var currentRegistrationConfig: Pair<String, TimePeriod>? = null
     private var recordsRegistration: ListenerRegistration? = null
 
-    fun observeRecords(bookId: String, period: TimePeriod) {
+    override fun observeRecords(bookId: String, period: TimePeriod) {
         val newConfig = bookId to period
         if (currentRegistrationConfig == newConfig) {
             // Do not establish the listener again if the config is the same

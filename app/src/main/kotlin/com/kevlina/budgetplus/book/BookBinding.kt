@@ -40,8 +40,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.kevlina.budgetplus.book.details.DetailsScreen
-import com.kevlina.budgetplus.book.details.detailsVm
 import com.kevlina.budgetplus.book.overview.OverviewScreen
 import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.core.common.RecordType
@@ -58,6 +56,7 @@ import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
+import com.kevlina.budgetplus.feature.records.RecordsScreen
 import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 import kotlinx.coroutines.flow.launchIn
 
@@ -133,7 +132,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
         }
 
         composable(
-            route = "${HistoryDest.Details.route}/{$ARG_TYPE}/{$ARG_CATEGORY}?$ARG_AUTHOR_ID={$ARG_AUTHOR_ID}",
+            route = "${HistoryDest.Records.route}/{$ARG_TYPE}/{$ARG_CATEGORY}?$ARG_AUTHOR_ID={$ARG_AUTHOR_ID}",
             arguments = listOf(
                 navArgument(ARG_TYPE) { type = NavType.EnumType(RecordType::class.java) },
                 navArgument(ARG_CATEGORY) { type = NavType.StringType },
@@ -144,9 +143,9 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
             )
         ) { backStackEntry ->
             val args = backStackEntry.arguments ?: Bundle.EMPTY
-            DetailsScreen(
+            RecordsScreen(
                 navigator = navController.toNavigator(),
-                vm = detailsVm(
+                vm = recordsVm(
                     type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
                     category = requireNotNull(args.getString(ARG_CATEGORY)),
                     authorId = args.getString(ARG_AUTHOR_ID)

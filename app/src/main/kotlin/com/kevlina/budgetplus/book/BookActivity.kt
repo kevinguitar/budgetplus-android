@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import com.kevlina.budgetplus.book.details.vm.DetailsViewModel
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.feature.auth.AuthActivity
+import com.kevlina.budgetplus.feature.records.vm.RecordsViewModel
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -64,6 +64,6 @@ class BookActivity : ComponentActivity() {
     @EntryPoint
     @InstallIn(ActivityComponent::class)
     interface VmFactoryProvider {
-        fun detailsVmFactory(): DetailsViewModel.Factory
+        fun detailsVmFactory(): RecordsViewModel.Factory
     }
 }

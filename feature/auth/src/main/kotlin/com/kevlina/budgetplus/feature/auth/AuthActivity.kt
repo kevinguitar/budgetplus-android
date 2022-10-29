@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.feature.auth.ui.AuthBinding
 import dagger.Lazy
@@ -37,9 +38,5 @@ class AuthActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.get().onActivityResult(requestCode, resultCode, data)
-    }
-
-    companion object {
-        const val ARG_ENABLE_ONE_TAP = "enable_one_tap"
     }
 }

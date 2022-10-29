@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.record
+package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
 
 @Composable
 fun RecordContentRegular(navigator: Navigator) {

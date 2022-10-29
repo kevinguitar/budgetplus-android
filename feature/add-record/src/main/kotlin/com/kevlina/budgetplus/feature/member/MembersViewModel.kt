@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.member
+package com.kevlina.budgetplus.feature.member
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

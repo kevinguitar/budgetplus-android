@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.record.vm
+package com.kevlina.budgetplus.feature.add.record.vm
 
 import android.app.Activity
 import android.content.Context

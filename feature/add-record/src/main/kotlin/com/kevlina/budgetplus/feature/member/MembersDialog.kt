@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.member
+package com.kevlina.budgetplus.feature.member
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -40,7 +40,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.kevlina.budgetplus.book.record.RecordScreen
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.getSerializableCompat
@@ -57,6 +56,7 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.feature.add.record.RecordScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
 import com.kevlina.budgetplus.feature.overview.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen

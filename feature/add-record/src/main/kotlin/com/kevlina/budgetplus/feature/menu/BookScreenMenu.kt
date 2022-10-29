@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.menu
+package com.kevlina.budgetplus.feature.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,8 +23,6 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.kevlina.budgetplus.book.member.MembersDialog
-import com.kevlina.budgetplus.book.menu.vm.BookMenuViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -39,6 +37,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.MenuAction
+import com.kevlina.budgetplus.feature.member.MembersDialog
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

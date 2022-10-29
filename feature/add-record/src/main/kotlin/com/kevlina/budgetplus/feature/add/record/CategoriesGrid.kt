@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.record
+package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

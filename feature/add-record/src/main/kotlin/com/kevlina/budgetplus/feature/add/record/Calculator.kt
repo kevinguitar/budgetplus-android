@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.record
+package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.book.record.vm.CalculatorViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -32,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Surface
+import com.kevlina.budgetplus.feature.add.record.vm.CalculatorViewModel
 
 enum class CalculatorButton(val text: String) {
     Seven("7"), Four("4"),

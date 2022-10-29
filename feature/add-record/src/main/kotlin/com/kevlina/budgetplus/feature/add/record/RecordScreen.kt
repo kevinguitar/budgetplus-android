@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.record
+package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,14 +13,14 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.menu.BookScreenMenu
-import com.kevlina.budgetplus.book.record.vm.RecordViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
+import com.kevlina.budgetplus.feature.menu.BookScreenMenu
 
 @Composable
 fun RecordScreen(navigator: Navigator) {

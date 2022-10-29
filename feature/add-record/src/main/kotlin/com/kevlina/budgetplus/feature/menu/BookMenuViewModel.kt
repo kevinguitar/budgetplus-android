@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.menu.vm
+package com.kevlina.budgetplus.feature.menu
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.nav.NavigationInfo
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.feature.auth.AuthActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -79,7 +79,7 @@ class BookMenuViewModel @Inject constructor(
 
         val navInfo = NavigationInfo(
             destination = authDest,
-            bundle = Bundle().apply { putBoolean(AuthActivity.ARG_ENABLE_ONE_TAP, false) }
+            bundle = Bundle().apply { putBoolean(ARG_ENABLE_ONE_TAP, false) }
         )
         navigation.sendEvent(navInfo)
     }

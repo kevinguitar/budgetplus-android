@@ -58,8 +58,6 @@ dependencies {
     implementation(libs.macro.benchmark)
 
     // Required for r8
-    compileOnly(libs.android.core)
-    compileOnly(libs.recyclerview)
     compileOnly(libs.google.errorprone)
 }
 

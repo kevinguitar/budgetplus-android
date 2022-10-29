@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.benchmark
 
 import android.os.Build
-import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith
 
 // Use the latest SDK to generate the file
 @SdkSuppress(minSdkVersion = Build.VERSION_CODES.S_V2)
-@OptIn(ExperimentalBaselineProfilesApi::class)
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class BaselineProfileGenerator {

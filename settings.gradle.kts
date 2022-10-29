@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "BudgetPlus"
 include(":app")
-include(":app-benchmark")
+include(":benchmark")
 include(":core:billing")
 include(":core:common")
 include(":core:data")

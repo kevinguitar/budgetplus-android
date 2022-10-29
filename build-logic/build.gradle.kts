@@ -17,9 +17,9 @@ gradlePlugin {
             id = "budgetplus.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        register("hiltAndroid") {
-            id = "budgetplus.hilt.android"
-            implementationClass = "HiltAndroidConventionPlugin"
+        register("appBenchmark") {
+            id = "budgetplus.app.benchmark"
+            implementationClass = "AppBenchmarkConventionPlugin"
         }
         register("composeApp") {
             id = "budgetplus.compose.app"
@@ -28,6 +28,10 @@ gradlePlugin {
         register("composeLibrary") {
             id = "budgetplus.compose.library"
             implementationClass = "ComposeLibraryConventionPlugin"
+        }
+        register("hiltAndroid") {
+            id = "budgetplus.hilt.android"
+            implementationClass = "HiltAndroidConventionPlugin"
         }
     }
 }

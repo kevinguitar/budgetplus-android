@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book
+package com.kevlina.budgetplus.core.common.nav
 
 enum class BookTab {
     Add, History;

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.overview
+package com.kevlina.budgetplus.feature.overview
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,11 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.book.overview.vm.OverviewViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.feature.overview.vm.OverviewViewModel
 
 @Composable
 fun OverviewScreen(navigator: Navigator) {

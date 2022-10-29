@@ -5,5 +5,9 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":core:data"))
     implementation(project(":core:ui"))
+
+    implementation(libs.accompanist.flowlayout)
+    implementation(libs.lottie.compose)
 }

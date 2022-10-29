@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.overview
+package com.kevlina.budgetplus.feature.overview
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween

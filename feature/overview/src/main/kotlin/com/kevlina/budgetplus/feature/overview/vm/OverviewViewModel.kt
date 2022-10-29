@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.overview.vm
+package com.kevlina.budgetplus.feature.overview.vm
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel

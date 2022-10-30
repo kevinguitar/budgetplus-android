@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -52,7 +51,8 @@ fun RecordContentRegular(navigator: Navigator) {
                 .background(color = LocalAppColors.current.dark)
         )
 
-        Box(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(LocalAppColors.current.primaryLight)
@@ -61,7 +61,6 @@ fun RecordContentRegular(navigator: Navigator) {
             Calculator(
                 viewModel = viewModel.calculator,
                 modifier = Modifier
-                    .align(Alignment.Center)
                     .width(AppTheme.maxContentWidth)
                     .padding(vertical = 8.dp, horizontal = 16.dp)
                     .background(
@@ -70,10 +69,10 @@ fun RecordContentRegular(navigator: Navigator) {
                     )
                     .padding(vertical = 8.dp, horizontal = 16.dp)
             )
-        }
 
-        if (!isHideAds) {
-            AdsBanner()
+            if (!isHideAds) {
+                AdsBanner()
+            }
         }
     }
 }

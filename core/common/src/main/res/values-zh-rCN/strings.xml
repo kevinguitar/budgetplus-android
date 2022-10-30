@@ -135,5 +135,6 @@
     <string name="username_title">使用者名称</string>
     <string name="book_name_title">帐本名称</string>
     <string name="book_name_placeholder">我的记帐本</string>
+    <string name="ads_not_available">暂无广告</string>
     <string name="fallback_error_message">出错了，请稍后再试</string>
 </resources>

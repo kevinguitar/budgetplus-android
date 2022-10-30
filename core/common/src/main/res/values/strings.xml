@@ -135,5 +135,6 @@
     <string name="username_title">User Name</string>
     <string name="book_name_title">Book Name</string>
     <string name="book_name_placeholder">My accounting book</string>
+    <string name="ads_not_available">No ads available</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
 </resources>

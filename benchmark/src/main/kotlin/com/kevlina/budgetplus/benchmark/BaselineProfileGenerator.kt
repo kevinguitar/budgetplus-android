@@ -5,9 +5,6 @@ import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.filters.SdkSuppress
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,21 +18,17 @@ class BaselineProfileGenerator {
     @get:Rule
     val baselineProfileRule = BaselineProfileRule()
 
-    private lateinit var device: UiDevice
-
-    @Before
-    fun setUp() {
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        device = UiDevice.getInstance(instrumentation)
-    }
-
     @Test
     fun startup() {
         baselineProfileRule.collectBaselineProfile(
             packageName = APP_PACKAGE,
             profileBlock = {
+                // This block defines the app's critical user journey. Here we are interested in
+                // optimizing for app startup. But you can also navigate and scroll
+                // through your most important UI.
                 pressHome()
                 startActivityAndWait()
+                authorize()
             }
         )
     }

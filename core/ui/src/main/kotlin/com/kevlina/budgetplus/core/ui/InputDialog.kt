@@ -54,7 +54,7 @@ fun InputDialog(
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
                     if (name.text.isNotBlank() && name.text != currentInput) {
-                        onButtonClicked(name.text)
+                        onButtonClicked(name.text.trim())
                         onDismiss()
                     }
                 }
@@ -62,7 +62,7 @@ fun InputDialog(
 
             AppButton(
                 onClick = {
-                    onButtonClicked(name.text)
+                    onButtonClicked(name.text.trim())
                     onDismiss()
                 },
                 enabled = name.text.isNotBlank() && name.text != currentInput,

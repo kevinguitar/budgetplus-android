@@ -116,7 +116,7 @@ fun RecordInfo(
                 value = priceText,
                 onValueChange = {},
                 fontSize = FontSize.Header,
-                enabled = false,
+                readOnly = true,
                 title = "$",
                 modifier = Modifier
                     .weight(1F)

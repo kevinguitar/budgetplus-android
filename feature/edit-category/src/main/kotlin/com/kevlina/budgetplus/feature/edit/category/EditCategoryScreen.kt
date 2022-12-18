@@ -43,6 +43,7 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
 import com.kevlina.budgetplus.core.ui.thenIf
 import org.burnoutcrew.reorderable.ReorderableItem
+import org.burnoutcrew.reorderable.detectReorder
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
@@ -138,6 +139,7 @@ fun EditCategoryScreen(
                             category = item,
                             isDragging = isDragging,
                             onClick = { editDialogMode = CategoryEditMode.Rename(item) },
+                            handlerModifier = Modifier.detectReorder(reorderableState),
                             modifier = Modifier.thenIf(index == 0) {
                                 val bubbleShape = with(LocalDensity.current) {
                                     BubbleShape.RoundedRect(12.dp.toPx())

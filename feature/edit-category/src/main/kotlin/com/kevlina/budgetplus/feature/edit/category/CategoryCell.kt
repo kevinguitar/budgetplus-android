@@ -25,6 +25,7 @@ fun CategoryCell(
     category: String,
     isDragging: Boolean,
     modifier: Modifier,
+    handlerModifier: Modifier,
     onClick: () -> Unit,
 ) {
 
@@ -51,7 +52,7 @@ fun CategoryCell(
                 imageVector = Icons.Rounded.DragHandle,
                 contentDescription = null,
                 tint = LocalAppColors.current.dark,
-                modifier = Modifier.size(20.dp)
+                modifier = handlerModifier.size(20.dp)
             )
 
             AppText(

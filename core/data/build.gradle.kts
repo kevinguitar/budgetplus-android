@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
 
+    implementation(libs.google.ads)
     implementation(libs.google.auth)
 
     testImplementation(libs.bundles.test)

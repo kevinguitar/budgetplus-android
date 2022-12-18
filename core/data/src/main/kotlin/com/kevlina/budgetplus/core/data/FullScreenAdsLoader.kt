@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.ads
+package com.kevlina.budgetplus.core.data
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -19,19 +19,24 @@ import javax.inject.Singleton
 @Singleton
 class FullScreenAdsLoader @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
 
     private val adState = MutableStateFlow<InterstitialAd?>(null)
 
     init {
-        loadAd()
+        if (!authManager.isPremium.value) {
+            loadAd()
+        }
     }
 
     /**
      *  Show Ad and load the next one immediately.
      */
     fun showAd(activity: Activity) {
+        if (authManager.isPremium.value) return
+
         adState.value?.show(activity)
         loadAd()
         tracker.logEvent("show_ad_full_screen")

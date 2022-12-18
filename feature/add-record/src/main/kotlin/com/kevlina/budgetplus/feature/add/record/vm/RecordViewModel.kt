@@ -6,7 +6,6 @@ import android.content.Intent
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
@@ -17,6 +16,7 @@ import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -113,7 +113,7 @@ class RecordViewModel @Inject constructor(
     fun showFullScreenAdIfNeeded(context: Context) {
         val activity = context as? Activity ?: return
 
-        if (recordCount % fullScreenAdRecords == 0 && !authManager.isPremium.value) {
+        if (recordCount % fullScreenAdRecords == 0) {
             fullScreenAdsLoader.showAd(activity)
         }
     }

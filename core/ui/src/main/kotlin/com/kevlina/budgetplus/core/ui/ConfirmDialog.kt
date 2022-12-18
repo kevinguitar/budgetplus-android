@@ -33,6 +33,7 @@ fun ConfirmDialog(
             AppText(
                 text = message,
                 fontSize = FontSize.SemiLarge,
+                fontWeight = FontWeight.SemiBold
             )
 
             Row(

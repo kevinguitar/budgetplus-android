@@ -1,13 +1,13 @@
 package com.kevlina.budgetplus.core.data.impl
 
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.data.remote.UsersDb
 import com.kevlina.budgetplus.core.data.requireValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -23,12 +23,12 @@ import javax.inject.Singleton
 @Singleton
 internal class UserRepoImpl @Inject constructor(
     private val authManager: AuthManager,
+    @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
     @AppScope appScope: CoroutineScope,
     bookRepo: BookRepo
 ) : UserRepo {
 
     private val userMapping = hashMapOf<String, User>()
-    private val usersDb = Firebase.firestore.collection("users")
 
     init {
         combine(
@@ -64,7 +64,7 @@ internal class UserRepoImpl @Inject constructor(
 
     private suspend fun loadUser(userId: String) {
         try {
-            val user = usersDb.document(userId).get().requireValue<User>()
+            val user = usersDb.get().document(userId).get().requireValue<User>()
             userMapping[userId] = user
         } catch (e: Exception) {
             Timber.e(e)

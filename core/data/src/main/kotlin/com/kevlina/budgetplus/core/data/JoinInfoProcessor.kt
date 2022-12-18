@@ -1,20 +1,18 @@
 package com.kevlina.budgetplus.core.data
 
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.JoinInfo
+import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
 import java.util.UUID
 import javax.inject.Inject
 
-class JoinInfoProcessor @Inject constructor() {
-
-    private val joinInfoDb by lazy {
-        Firebase.firestore.collection("join_info")
-    }
+class JoinInfoProcessor @Inject constructor(
+    @JoinInfoDb private val joinInfoDb: dagger.Lazy<CollectionReference>,
+) {
 
     fun generateJoinId(bookId: String): String {
         val joinId = UUID.randomUUID().toString()
-        joinInfoDb.document(joinId).set(
+        joinInfoDb.get().document(joinId).set(
             JoinInfo(
                 bookId = bookId,
                 generatedOn = System.currentTimeMillis()
@@ -24,6 +22,6 @@ class JoinInfoProcessor @Inject constructor() {
     }
 
     suspend fun resolveJoinId(joinId: String): JoinInfo {
-        return joinInfoDb.document(joinId).get().requireValue()
+        return joinInfoDb.get().document(joinId).get().requireValue()
     }
 }

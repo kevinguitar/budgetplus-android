@@ -6,8 +6,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.mapState
@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.data.DocNotExistsException
 import com.kevlina.budgetplus.core.data.await
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.data.remote.UsersDb
 import com.kevlina.budgetplus.core.data.requireValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -32,12 +33,11 @@ internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @AppScope private val appScope: CoroutineScope,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
 ) : AuthManager {
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
-
-    private val usersDb by lazy { Firebase.firestore.collection("users") }
 
     private val _userState = MutableStateFlow(currentUser)
     override val userState: StateFlow<User?> = _userState.asStateFlow()
@@ -72,7 +72,7 @@ internal class AuthManagerImpl @Inject constructor(
 
     override fun markPremium() {
         val premiumUser = currentUser?.copy(premium = true) ?: return
-        usersDb.document(premiumUser.id).set(premiumUser)
+        usersDb.get().document(premiumUser.id).set(premiumUser)
 
         _userState.value = premiumUser
         currentUser = premiumUser
@@ -108,7 +108,7 @@ internal class AuthManagerImpl @Inject constructor(
         appScope.launch {
             try {
                 // Get the latest remote user from the server
-                val remoteUser = usersDb.document(user.id)
+                val remoteUser = usersDb.get().document(user.id)
                     .get(Source.SERVER)
                     .requireValue<User>()
 
@@ -122,10 +122,10 @@ internal class AuthManagerImpl @Inject constructor(
                 _userState.value = mergedUser
                 currentUser = mergedUser
 
-                usersDb.document(user.id).set(mergedUser)
+                usersDb.get().document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
                 // Can't find user in the db yet, set it with the local data.
-                usersDb.document(user.id).set(userWithExclusiveFields)
+                usersDb.get().document(user.id).set(userWithExclusiveFields)
             } catch (e: Exception) {
                 Timber.e(e)
             }

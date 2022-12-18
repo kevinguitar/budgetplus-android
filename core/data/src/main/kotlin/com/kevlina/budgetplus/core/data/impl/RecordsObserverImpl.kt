@@ -1,11 +1,11 @@
 package com.kevlina.budgetplus.core.data.impl
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.data.RecordsObserver
+import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,9 @@ import javax.inject.Singleton
  *  reduce the db requests for us.
  */
 @Singleton
-internal class RecordsObserverImpl @Inject constructor(): RecordsObserver {
+internal class RecordsObserverImpl @Inject constructor(
+    @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
+): RecordsObserver {
 
     private val _records = MutableStateFlow<Sequence<Record>>(emptySequence())
     override val records: StateFlow<Sequence<Record>> = _records.asStateFlow()
@@ -37,8 +39,7 @@ internal class RecordsObserverImpl @Inject constructor(): RecordsObserver {
 
         currentRegistrationConfig = newConfig
         recordsRegistration?.remove()
-        recordsRegistration = Firebase.firestore
-            .collection("books")
+        recordsRegistration = booksDb.get()
             .document(bookId)
             .collection("records")
             .orderBy("date", Query.Direction.DESCENDING)

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EventNote
 import androidx.compose.material.icons.rounded.Paid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,14 @@ fun RecordsScreen(
     val sortMode by vm.sortMode.collectAsState()
     val isHideAds by vm.isHideAds.collectAsState()
 
-    val totalPrice = records.sumOf { it.price }.dollar
+    val totalPrice = records.orEmpty().sumOf { it.price }.dollar
+
+    // Observe the records, when the last record get deleted, navigate back to the overview screen.
+    LaunchedEffect(key1 = records) {
+        if (records?.isEmpty() == true) {
+            navigator.navigateUp()
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -105,10 +113,10 @@ fun RecordsScreen(
                 .weight(1F)
         ) {
 
-            itemsIndexed(records) { index, item ->
+            itemsIndexed(records.orEmpty()) { index, item ->
                 RecordCard(
                     item = item,
-                    isLast = index == records.lastIndex,
+                    isLast = index == records?.lastIndex,
                     canEdit = vm.canEditRecord(item)
                 ) {
                     editRecordDialog = item

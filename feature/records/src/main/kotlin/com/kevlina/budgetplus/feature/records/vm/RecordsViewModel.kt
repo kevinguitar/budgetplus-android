@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.stateIn
 
 class RecordsViewModel @AssistedInject constructor(
@@ -47,10 +46,8 @@ class RecordsViewModel @AssistedInject constructor(
 
     val isHideAds = authManager.isPremium
 
-    val records = combine(
-        recordsObserver.records.filterNotNull(),
-        sortMode
-    ) { records, sortMode ->
+    val records = combine(recordsObserver.records, sortMode) { records, sortMode ->
+        records ?: return@combine null
         records
             .filter {
                 it.type == type && it.category == category &&

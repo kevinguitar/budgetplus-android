@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface RecordsObserver {
 
+    val timePeriod: StateFlow<TimePeriod>
+
     val records: StateFlow<Sequence<Record>>
 
-    fun observeRecords(bookId: String, period: TimePeriod)
+    fun setTimePeriod(bookId: String, period: TimePeriod)
 
 }

@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -23,9 +22,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -47,17 +44,7 @@ class OverviewViewModel @Inject constructor(
     private val _type = MutableStateFlow(typeCache)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    // Cache the time period by book id
-    private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
-    private val timePeriodMap = MutableStateFlow(periodCache)
-
-    val timePeriod: StateFlow<TimePeriod> = timePeriodMap.combineState(
-        other = bookRepo.bookState,
-        scope = viewModelScope
-    ) { periodMap, book ->
-        book?.id?.let(periodMap::get) ?: TimePeriod.Month
-    }
-
+    val timePeriod = recordsObserver.timePeriod
     val isHideAds = authManager.isPremium
 
     val fromDate = timePeriod.mapState { it.from }
@@ -106,14 +93,6 @@ class OverviewViewModel @Inject constructor(
             .toMap()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
 
-    init {
-        combine(
-            bookRepo.bookState.mapNotNull { it?.id },
-            timePeriod,
-            recordsObserver::observeRecords
-        ).launchIn(viewModelScope)
-    }
-
     fun setRecordType(type: RecordType) {
         _type.value = type
         typeCache = type
@@ -134,11 +113,7 @@ class OverviewViewModel @Inject constructor(
             timePeriod
         }
 
-        val newMapping = periodCache.toMutableMap()
-            .apply { this[bookId] = period }
-
-        timePeriodMap.value = newMapping
-        periodCache = newMapping
+        recordsObserver.setTimePeriod(bookId, period)
     }
 
     fun setAuthor(author: User?) {

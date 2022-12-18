@@ -35,8 +35,8 @@ internal class RecordsObserverImpl @Inject constructor(
     bookRepo: BookRepo,
 ) : RecordsObserver {
 
-    private val _records = MutableStateFlow<Sequence<Record>>(emptySequence())
-    override val records: StateFlow<Sequence<Record>> = _records.asStateFlow()
+    private val _records = MutableStateFlow<Sequence<Record>?>(null)
+    override val records: StateFlow<Sequence<Record>?> = _records.asStateFlow()
 
     // Cache the time period by book id
     private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())

@@ -8,7 +8,7 @@ interface RecordsObserver {
 
     val timePeriod: StateFlow<TimePeriod>
 
-    val records: StateFlow<Sequence<Record>>
+    val records: StateFlow<Sequence<Record>?>
 
     fun setTimePeriod(bookId: String, period: TimePeriod)
 

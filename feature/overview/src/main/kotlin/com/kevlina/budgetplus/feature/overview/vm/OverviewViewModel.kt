@@ -17,11 +17,13 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -57,22 +59,22 @@ class OverviewViewModel @Inject constructor(
     private val _selectedAuthor = MutableStateFlow<User?>(null)
     val selectedAuthor: StateFlow<User?> = _selectedAuthor.asStateFlow()
 
-    private val records = combine(
+    private val records: Flow<Sequence<Record>?> = combine(
         recordsObserver.records,
         type,
         selectedAuthor
     ) { records, type, author ->
         val authorId = author?.id
-        records.filter {
+        records?.filter {
             it.type == type && (authorId == null || it.author?.id == authorId)
         }
     }
 
-    val totalPrice = records.map { records -> records.sumOf { it.price } }
+    val totalPrice = records.map { records -> records.orEmpty().sumOf { it.price } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     val balance = combine(
-        recordsObserver.records,
+        recordsObserver.records.filterNotNull(),
         selectedAuthor
     ) { records, author ->
         val authorId = author?.id
@@ -86,7 +88,8 @@ class OverviewViewModel @Inject constructor(
             }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val recordGroups: StateFlow<Map<String, List<Record>>> = records.map { records ->
+    val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
+        records ?: return@map null
         records.groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }

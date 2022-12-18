@@ -51,5 +51,5 @@ fun OverviewScreen(navigator: Navigator) {
 }
 
 enum class OverviewUiType {
-    Header, Group, ZeroCase
+    Header, Group, ZeroCase, Loader
 }

@@ -42,7 +42,7 @@ fun OverviewHeader(modifier: Modifier) {
 
         TimePeriodSelector()
 
-        if (recordGroups.isNotEmpty()) {
+        if (recordGroups?.isNotEmpty() == true) {
 
             AppText(
                 text = stringResource(

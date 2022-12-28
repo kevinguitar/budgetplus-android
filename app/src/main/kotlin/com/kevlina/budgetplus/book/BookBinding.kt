@@ -50,6 +50,7 @@ import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.consume
+import com.kevlina.budgetplus.core.common.nav.originalNavValue
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
@@ -150,7 +151,7 @@ fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
                 navigator = navController.toNavigator(),
                 vm = recordsVm(
                     type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
-                    category = requireNotNull(args.getString(ARG_CATEGORY)),
+                    category = requireNotNull(args.getString(ARG_CATEGORY)).originalNavValue,
                     authorId = args.getString(ARG_AUTHOR_ID)
                 )
             )

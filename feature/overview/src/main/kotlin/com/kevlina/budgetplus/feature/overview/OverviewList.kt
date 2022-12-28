@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.common.nav.navKey
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.feature.overview.vm.OverviewViewModel
 
@@ -78,7 +79,7 @@ fun OverviewList(
                     onClick = {
                         navigator.navigate(route = buildString {
                             append(HistoryDest.Records.route)
-                            append("/$type/$key")
+                            append("/$type/${key.navKey}")
 
                             val authorId = selectedAuthor?.id
                             if (authorId != null) {

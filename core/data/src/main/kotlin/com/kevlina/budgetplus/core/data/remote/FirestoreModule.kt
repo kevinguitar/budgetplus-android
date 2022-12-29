@@ -42,7 +42,6 @@ internal object FirestoreModule {
     }
 
     @RecordsDb
-    @Singleton
     @Provides
     fun provideRecordsDb(bookRepo: BookRepo): CollectionReference {
         return Firebase.firestore.collection("books")

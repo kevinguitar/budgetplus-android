@@ -158,7 +158,6 @@ private fun MemberCard(
         )
 
         when {
-
             member.id == ownerId -> {
                 AppText(
                     text = stringResource(id = R.string.members_owner_label),
@@ -169,8 +168,11 @@ private fun MemberCard(
             }
 
             myUserId == ownerId -> {
-
-                IconButton(onClick = removeUser) {
+                IconButton(
+                    onClick = removeUser,
+                    rippleColor = LocalAppColors.current.dark,
+                    size = 40.dp
+                ) {
                     Icon(
                         imageVector = Icons.Rounded.Delete,
                         contentDescription = stringResource(id = R.string.cta_delete),

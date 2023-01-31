@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.DriveFileRenameOutline
@@ -29,7 +28,7 @@ fun TopBar(
     titleContent: @Composable (() -> Unit)? = null,
     navigateBack: (() -> Unit)? = null,
     menuActions: @Composable (() -> Unit)? = null,
-    dropdownMenu: @Composable (() -> Unit)? = null
+    dropdownMenu: @Composable (() -> Unit)? = null,
 ) {
 
     Row(

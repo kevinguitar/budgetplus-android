@@ -43,6 +43,7 @@
     <string name="category_edit_title">編輯類別</string>
     <string name="category_edit_unsave_message">尚有未儲存的變更，確定要離開嗎？</string>
     <string name="category_edit_successful">類別清單已儲存</string>
+    <string name="category_already_exist">類別%s已存在</string>
     <string name="category_food">飲食</string>
     <string name="category_daily">日常</string>
     <string name="category_transport">交通</string>

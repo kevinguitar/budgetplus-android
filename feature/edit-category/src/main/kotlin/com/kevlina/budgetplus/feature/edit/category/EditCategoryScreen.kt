@@ -186,9 +186,14 @@ fun EditCategoryScreen(
         EditCategoryDialog(
             mode = dialogMode,
             onConfirm = { name ->
+                if (name in list) {
+                    viewModel.showCategoryExistError(name)
+                    return@EditCategoryDialog
+                }
+
                 list = list.toMutableList().apply {
                     when (dialogMode) {
-                        CategoryEditMode.Add -> if (name !in this) add(name)
+                        CategoryEditMode.Add -> add(name)
                         is CategoryEditMode.Rename -> {
                             val index = indexOf(dialogMode.currentName)
                             if (index != -1) this[index] = name

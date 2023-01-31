@@ -43,6 +43,7 @@
     <string name="category_edit_title">Edit Categories</string>
     <string name="category_edit_unsave_message">Do you want to leave without saving the changes?</string>
     <string name="category_edit_successful">Category list has been saved</string>
+    <string name="category_already_exist">Category %s already exist</string>
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
     <string name="category_transport">Transport</string>

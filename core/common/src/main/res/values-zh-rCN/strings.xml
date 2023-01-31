@@ -43,6 +43,7 @@
     <string name="category_edit_title">编辑类别</string>
     <string name="category_edit_unsave_message">尚有未储存的变更，确定要离开吗？</string>
     <string name="category_edit_successful">类别清单已储存</string>
+    <string name="category_already_exist">类别%s已存在</string>
     <string name="category_food">饮食</string>
     <string name="category_daily">日常</string>
     <string name="category_transport">交通</string>

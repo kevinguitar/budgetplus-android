@@ -14,6 +14,7 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
@@ -135,6 +136,7 @@ class RecordViewModel @Inject constructor(
         val record = Record(
             type = type.value,
             date = date.value.toEpochDay(),
+            timestamp = date.value.withCurrentTime,
             category = category,
             name = note.value.trim().ifEmpty { category },
             price = calculator.price.value,

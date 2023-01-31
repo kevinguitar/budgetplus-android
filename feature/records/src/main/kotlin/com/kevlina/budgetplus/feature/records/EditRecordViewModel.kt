@@ -9,6 +9,8 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,9 +26,15 @@ class EditRecordViewModel @Inject constructor(
         newName: String,
         newPriceText: String,
     ) {
+        // Keep the record's original time
+        val originalTime = LocalDateTime
+            .ofEpochSecond(record.createdOn, 0, ZoneOffset.UTC)
+            .toLocalTime()
+
         val newRecord = try {
             record.copy(
                 date = newDate.toEpochDay(),
+                timestamp = LocalDateTime.of(newDate, originalTime).toEpochSecond(ZoneOffset.UTC),
                 name = newName,
                 price = newPriceText.parseToPrice
             )

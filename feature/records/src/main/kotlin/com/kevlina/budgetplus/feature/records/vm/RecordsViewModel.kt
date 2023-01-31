@@ -59,7 +59,7 @@ class RecordsViewModel @AssistedInject constructor(
             }
             .run {
                 when (sortMode) {
-                    RecordsSortMode.Date -> sortedByDescending { it.date }
+                    RecordsSortMode.Date -> sortedByDescending { it.createdOn }
                     RecordsSortMode.Price -> sortedByDescending { it.price }
                 }
             }

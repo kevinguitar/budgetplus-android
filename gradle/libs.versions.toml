@@ -1,21 +1,21 @@
 [versions]
-compose-compiler = "1.4.0-alpha02"
-firebase-bom = "31.1.1"
+compose-compiler = "1.4.0"
+firebase-bom = "31.2.0"
 # @pin https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "7.4.0-rc01"
+gradle-plugin = "7.4.0"
 hilt = "2.44.2"
 # @pin https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.7.21"
+kotlin = "1.8.0"
 
 [libraries]
-accompanist-flowlayout = "com.google.accompanist:accompanist-flowlayout:0.28.0"
+accompanist-flowlayout = "com.google.accompanist:accompanist-flowlayout:0.29.1-alpha"
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha01"
 android-core = "androidx.core:core-ktx:1.9.0"
 # @keep
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil-compose = "io.coil-kt:coil-compose:2.2.2"
-compose-activity = "androidx.activity:activity-compose:1.7.0-alpha02"
-compose-bom = "androidx.compose:compose-bom:2022.12.00"
+compose-activity = "androidx.activity:activity-compose:1.7.0-alpha04"
+compose-bom = "androidx.compose:compose-bom:2023.01.00"
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
@@ -25,7 +25,7 @@ compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 desugar = "com.android.tools:desugar_jdk_libs:2.0.0"
-espresso = "androidx.test.espresso:espresso-core:3.5.0"
+espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 facebook-auth = "com.facebook.android:facebook-login:15.2.0"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -33,26 +33,26 @@ firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:21.4.0"
-google-auth = "com.google.android.gms:play-services-auth:20.4.0"
+google-ads = "com.google.android.gms:play-services-ads:21.5.0"
+google-auth = "com.google.android.gms:play-services-auth:20.4.1"
 google-billing = "com.android.billingclient:billing-ktx:5.1.0"
-google-errorprone = "com.google.errorprone:error_prone_annotations:2.16"
+google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
-junit-android = "androidx.test.ext:junit:1.1.4"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0-alpha03"
+junit-android = "androidx.test.ext:junit:1.1.5"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0-alpha05"
 junit-core = "junit:junit:4.13.2"
 # @keep
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0-RC"
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha08"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha09"
 navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha04"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
-profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-alpha02"
+profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-alpha03"
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
-test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha01"
+test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha02"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.1.3"
 
@@ -84,10 +84,10 @@ android-application = { id = "com.android.application", version.ref = "gradle-pl
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-test = { id = "com.android.test", version.ref = "gradle-plugin" }
 firebase-crashlytics = "com.google.firebase.crashlytics:2.9.2"
-google-services = "com.google.gms.google-services:4.3.14"
+google-services = "com.google.gms.google-services:4.3.15"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-toml-checker = "com.github.ben-manes.versions:0.44.0"
+toml-checker = "com.github.ben-manes.versions:0.45.0"
 toml-updater = "nl.littlerobots.version-catalog-update:0.7.0"

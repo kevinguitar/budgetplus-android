@@ -49,6 +49,7 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0-RC"
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha09"
+mockk = "io.mockk:mockk:1.13.4"
 navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha04"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-alpha03"
@@ -77,6 +78,7 @@ test = [
     "junit-android",
     "junit-compose",
     "junit-core",
+    "mockk",
     "truth",
 ]
 

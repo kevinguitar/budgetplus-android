@@ -1,13 +1,11 @@
 package com.kevlina.budgetplus.inapp.review
 
 import android.app.Activity
-import android.content.Context
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
-import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.ReviewManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
-import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -19,20 +17,17 @@ import javax.inject.Inject
  *  [INSTALL_DAYS_MIN] days, and will only request the review once per app installation.
  */
 internal class InAppReviewManagerImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val reviewManager: ReviewManager,
     preferenceHolder: PreferenceHolder,
 ) : InAppReviewManager {
 
-    private val reviewManager = ReviewManagerFactory.create(context)
+    private val now get() = LocalDateTime.now()
 
     private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
-    private var firstInitDatetime by preferenceHolder.bindLong(0)
-
-    init {
-        if (firstInitDatetime == 0L) {
-            firstInitDatetime = LocalDateTime.now().minusDays(5).toEpochSecond(ZoneOffset.UTC)
-        }
-    }
+    private var firstInitDatetime by preferenceHolder.bindLong(
+        //TODO: Remove the minus 5 days workaround!!
+        now.minusDays(5).toEpochSecond(ZoneOffset.UTC)
+    )
 
     override fun isEligibleForReview(): Boolean {
         if (hasRequestedBefore) {
@@ -40,8 +35,6 @@ internal class InAppReviewManagerImpl @Inject constructor(
         }
 
         val initDateTime = LocalDateTime.ofEpochSecond(firstInitDatetime, 0, ZoneOffset.UTC)
-        val now = LocalDateTime.now()
-
         return initDateTime.plusDays(INSTALL_DAYS_MIN).isBefore(now)
     }
 

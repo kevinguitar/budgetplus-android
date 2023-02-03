@@ -24,12 +24,14 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -42,6 +44,7 @@ class RecordViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val authManager: AuthManager,
     private val fullScreenAdsLoader: FullScreenAdsLoader,
+    private val inAppReviewManager: InAppReviewManager,
     private val toaster: Toaster,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
@@ -111,11 +114,14 @@ class RecordViewModel @Inject constructor(
      */
     private val fullScreenAdRecords: Int get() = 5
 
-    fun showFullScreenAdIfNeeded(context: Context) {
+    fun onRecordCreated(context: Context) {
         val activity = context as? Activity ?: return
 
-        if (recordCount % fullScreenAdRecords == 0) {
-            fullScreenAdsLoader.showAd(activity)
+        when (recordCount % fullScreenAdRecords) {
+            0 -> fullScreenAdsLoader.showAd(activity)
+            // Request the in app review when almost reach the next full screen ad,
+            // just to have a better UX while user reviewing.
+            fullScreenAdRecords - 1 -> tryLaunchReviewFlow(activity)
         }
     }
 
@@ -155,5 +161,13 @@ class RecordViewModel @Inject constructor(
         _category.value = null
         _note.value = ""
         calculator.clearPrice()
+    }
+
+    private fun tryLaunchReviewFlow(activity: Activity) {
+        if (inAppReviewManager.isEligibleForReview()) {
+            viewModelScope.launch {
+                inAppReviewManager.launchReviewFlow(activity)
+            }
+        }
     }
 }

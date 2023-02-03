@@ -24,7 +24,7 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-desugar = "com.android.tools:desugar_jdk_libs:2.0.0"
+desugar = "com.android.tools:desugar_jdk_libs:2.0.2"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 facebook-auth = "com.facebook.android:facebook-login:15.2.0"
@@ -37,6 +37,7 @@ google-ads = "com.google.android.gms:play-services-ads:21.5.0"
 google-auth = "com.google.android.gms:play-services-auth:20.4.1"
 google-billing = "com.android.billingclient:billing-ktx:5.1.0"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"
+google-play-review = "com.google.android.play:review-ktx:2.0.1"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"

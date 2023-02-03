@@ -25,6 +25,16 @@ class PreferenceHolder @Inject constructor(
         }
     }
 
+    fun bindLong(default: Long) = object : ReadWriteProperty<Any, Long> {
+        override fun getValue(thisRef: Any, property: KProperty<*>): Long {
+            return preference.pref.getLong(property.name, default)
+        }
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
+            preference.editor.putLong(property.name, value).apply()
+        }
+    }
+
     fun bindBoolean(default: Boolean) = object : ReadWriteProperty<Any, Boolean> {
         override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
             return preference.pref.getBoolean(property.name, default)

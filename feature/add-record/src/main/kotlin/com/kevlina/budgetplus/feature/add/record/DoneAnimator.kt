@@ -38,7 +38,7 @@ fun BoxScope.DoneAnimator() {
         viewModel.recordEvent
             .consumeEach {
                 focusManager.clearFocus()
-                viewModel.showFullScreenAdIfNeeded(context)
+                viewModel.onRecordCreated(context)
 
                 showAnimation = true
                 lottieAnimatable.animate(

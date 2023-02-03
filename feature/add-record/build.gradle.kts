@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(project(":core:inapp-review"))
     implementation(project(":core:ui"))
 
     implementation(libs.accompanist.flowlayout)

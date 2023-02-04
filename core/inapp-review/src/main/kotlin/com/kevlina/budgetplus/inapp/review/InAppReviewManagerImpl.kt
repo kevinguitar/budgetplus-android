@@ -14,8 +14,9 @@ import javax.inject.Inject
 
 /**
  *  This implementation controls whether we should launch the review flow or not, depends on a
- *  couple conditions. We only request the review when the user uses the app for more than
- *  [INSTALL_DAYS_MIN] days, and will only request the review once per app installation.
+ *  few conditions. We only request the review when the user uses the app for more than
+ *  [INSTALL_DAYS_MIN] days, and will only request the review once per app installation, also,
+ *  if the user rejected, we'll never prompt the review flow again for them.
  */
 internal class InAppReviewManagerImpl @Inject constructor(
     private val reviewManager: ReviewManager,
@@ -27,10 +28,7 @@ internal class InAppReviewManagerImpl @Inject constructor(
 
     private var hasRejectedBefore by preferenceHolder.bindBoolean(false)
     private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
-    private var firstInitDatetime by preferenceHolder.bindLong(
-        //TODO: Remove the minus 5 days workaround!!
-        now.minusDays(5).toEpochSecond(ZoneOffset.UTC)
-    )
+    private var firstInitDatetime by preferenceHolder.bindLong(now.toEpochSecond(ZoneOffset.UTC))
 
     override fun isEligibleForReview(): Boolean {
         if (hasRejectedBefore || hasRequestedBefore) {

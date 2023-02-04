@@ -26,7 +26,8 @@ fun ConfirmDialog(
     AppDialog(onDismissRequest = onDismiss) {
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .width(280.dp)
                 .wrapContentHeight()
@@ -35,19 +36,17 @@ fun ConfirmDialog(
             AppText(
                 text = message,
                 fontSize = FontSize.SemiLarge,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Medium
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
                 AppButton(onClick = onDismiss) {
                     AppText(
                         text = cancelText,
                         color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.Medium
                     )
                 }
 
@@ -55,7 +54,6 @@ fun ConfirmDialog(
                     AppText(
                         text = confirmText,
                         color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.Medium
                     )
                 }
             }

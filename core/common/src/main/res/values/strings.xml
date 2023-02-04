@@ -67,6 +67,11 @@
     <string name="members_owner_label">Owner</string>
     <string name="members_confirm_remove">Are you sure you want to remove %1$s from %2$s?</string>
 
+    <!-- Review -->
+    <string name="review_request_message">Hope you like our product! Would you like to rate the app?</string>
+    <string name="review_request_yes">Sure!</string>
+    <string name="review_request_no">No</string>
+
     <!-- Menu -->
     <string name="menu_share_book">Click the link to track expenses with me!\n%s</string>
     <string name="menu_open">Open Menu</string>

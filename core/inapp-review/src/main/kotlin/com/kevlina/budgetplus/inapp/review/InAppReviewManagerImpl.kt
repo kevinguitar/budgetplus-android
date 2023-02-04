@@ -4,6 +4,7 @@ import android.app.Activity
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
+import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
 import timber.log.Timber
@@ -18,11 +19,13 @@ import javax.inject.Inject
  */
 internal class InAppReviewManagerImpl @Inject constructor(
     private val reviewManager: ReviewManager,
+    private val toaster: Toaster,
     preferenceHolder: PreferenceHolder,
 ) : InAppReviewManager {
 
     private val now get() = LocalDateTime.now()
 
+    private var hasRejectedBefore by preferenceHolder.bindBoolean(false)
     private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
     private var firstInitDatetime by preferenceHolder.bindLong(
         //TODO: Remove the minus 5 days workaround!!
@@ -30,7 +33,7 @@ internal class InAppReviewManagerImpl @Inject constructor(
     )
 
     override fun isEligibleForReview(): Boolean {
-        if (hasRequestedBefore) {
+        if (hasRejectedBefore || hasRequestedBefore) {
             return false
         }
 
@@ -44,8 +47,13 @@ internal class InAppReviewManagerImpl @Inject constructor(
             reviewManager.launchReview(activity, reviewInfo)
             hasRequestedBefore = true
         } catch (e: Exception) {
+            toaster.showError(e)
             Timber.e(e, "Failed to launch the review flow")
         }
+    }
+
+    override fun rejectReviewing() {
+        hasRejectedBefore = true
     }
 
     companion object {

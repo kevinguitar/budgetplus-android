@@ -18,7 +18,9 @@ import com.kevlina.budgetplus.core.common.R
 fun ConfirmDialog(
     message: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    confirmText: String = stringResource(id = R.string.cta_confirm),
+    cancelText: String = stringResource(id = R.string.cta_cancel),
 ) {
 
     AppDialog(onDismissRequest = onDismiss) {
@@ -43,18 +45,15 @@ fun ConfirmDialog(
 
                 AppButton(onClick = onDismiss) {
                     AppText(
-                        text = stringResource(id = R.string.cta_cancel),
+                        text = cancelText,
                         color = LocalAppColors.current.light,
                         fontWeight = FontWeight.Medium
                     )
                 }
 
-                AppButton(onClick = {
-                    onConfirm()
-                    onDismiss()
-                }) {
+                AppButton(onClick = onConfirm) {
                     AppText(
-                        text = stringResource(id = R.string.cta_confirm),
+                        text = confirmText,
                         color = LocalAppColors.current.light,
                         fontWeight = FontWeight.Medium
                     )

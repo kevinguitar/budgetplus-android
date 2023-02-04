@@ -66,6 +66,9 @@ class RecordViewModel @Inject constructor(
     private val _recordEvent = MutableEventFlow<Unit>()
     val recordEvent: EventFlow<Unit> = _recordEvent.asStateFlow()
 
+    private val _requestReviewEvent = MutableEventFlow<Unit>()
+    val requestReviewEvent: EventFlow<Unit> = _requestReviewEvent.asStateFlow()
+
     val isHideAds = authManager.isPremium
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
@@ -121,8 +124,24 @@ class RecordViewModel @Inject constructor(
             0 -> fullScreenAdsLoader.showAd(activity)
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
-            fullScreenAdRecords - 1 -> tryLaunchReviewFlow(activity)
+            else -> if (inAppReviewManager.isEligibleForReview()) {
+//            fullScreenAdRecords - 1 -> if (inAppReviewManager.isEligibleForReview()) {
+                _requestReviewEvent.sendEvent()
+                tracker.logEvent("inapp_review_requested")
+            }
         }
+    }
+
+    fun launchReviewFlow(activity: Activity) {
+        viewModelScope.launch {
+            inAppReviewManager.launchReviewFlow(activity)
+        }
+        tracker.logEvent("inapp_review_accepted")
+    }
+
+    fun rejectReview() {
+        inAppReviewManager.rejectReviewing()
+        tracker.logEvent("inapp_review_rejected")
     }
 
     private fun record() {
@@ -161,13 +180,5 @@ class RecordViewModel @Inject constructor(
         _category.value = null
         _note.value = ""
         calculator.clearPrice()
-    }
-
-    private fun tryLaunchReviewFlow(activity: Activity) {
-        if (inAppReviewManager.isEligibleForReview()) {
-            viewModelScope.launch {
-                inAppReviewManager.launchReviewFlow(activity)
-            }
-        }
     }
 }

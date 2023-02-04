@@ -171,6 +171,7 @@ fun EditRecordDialog(
             message = stringResource(id = R.string.record_confirm_delete),
             onConfirm = {
                 vm.deleteRecord(editRecord.id)
+                showDeleteConfirmationDialog = false
                 onDismiss()
             },
             onDismiss = { showDeleteConfirmationDialog = false }

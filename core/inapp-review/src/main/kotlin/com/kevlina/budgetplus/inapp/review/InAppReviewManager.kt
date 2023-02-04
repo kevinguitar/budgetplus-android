@@ -8,4 +8,6 @@ interface InAppReviewManager {
 
     suspend fun launchReviewFlow(activity: Activity)
 
+    fun rejectReviewing()
+
 }

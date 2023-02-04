@@ -67,6 +67,11 @@
     <string name="members_owner_label">創建者</string>
     <string name="members_confirm_remove">確定要將%1$s從「%2$s」中移除嗎？</string>
 
+    <!-- Review -->
+    <string name="review_request_message">希望您喜歡我們的 App！請問您願意留個評價嗎？</string>
+    <string name="review_request_yes">當然好！</string>
+    <string name="review_request_no">先不要</string>
+
     <!-- Menu -->
     <string name="menu_share_book">點擊下面的連結跟我一起記帳吧！\n%s</string>
     <string name="menu_open">目錄</string>

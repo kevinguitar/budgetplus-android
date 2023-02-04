@@ -103,7 +103,10 @@ fun MembersDialog(
                 member.name.orEmpty(),
                 viewModel.bookName.orEmpty()
             ),
-            onConfirm = { viewModel.removeMember(member.id) },
+            onConfirm = {
+                viewModel.removeMember(member.id)
+                removeMember = null
+            },
             onDismiss = { removeMember = null }
         )
     }

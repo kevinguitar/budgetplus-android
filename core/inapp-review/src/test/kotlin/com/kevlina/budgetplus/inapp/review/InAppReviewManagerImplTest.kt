@@ -15,7 +15,16 @@ class InAppReviewManagerImplTest {
 
     @Test
     fun `WHEN the app is fresh install THEN is not eligible for review`() {
-        every { preference.pref.getLong("firstInitDatetime", 0) } returns ineligibleTime
+        every { preference.pref.getLong("firstInitDatetime", any()) } returns ineligibleTime
+
+        val reviewManager = createReviewManager()
+        assertThat(reviewManager.isEligibleForReview()).isFalse()
+    }
+
+    @Test
+    fun `WHEN the user already rejected before THEN is not eligible for review`() {
+        every { preference.pref.getBoolean("hasRejectedBefore", false) } returns true
+        every { preference.pref.getLong("firstInitDatetime", any()) } returns eligibleTime
 
         val reviewManager = createReviewManager()
         assertThat(reviewManager.isEligibleForReview()).isFalse()
@@ -24,7 +33,7 @@ class InAppReviewManagerImplTest {
     @Test
     fun `WHEN we already requested the review before THEN is not eligible for review`() {
         every { preference.pref.getBoolean("hasRequestedBefore", false) } returns true
-        every { preference.pref.getLong("firstInitDatetime", 0) } returns eligibleTime
+        every { preference.pref.getLong("firstInitDatetime", any()) } returns eligibleTime
 
         val reviewManager = createReviewManager()
         assertThat(reviewManager.isEligibleForReview()).isFalse()
@@ -32,7 +41,7 @@ class InAppReviewManagerImplTest {
 
     @Test
     fun `WHEN we never requested and the app is installed more than 3 days THEN request review`() {
-        every { preference.pref.getLong("firstInitDatetime", 0) } returns eligibleTime
+        every { preference.pref.getLong("firstInitDatetime", any()) } returns eligibleTime
 
         val reviewManager = createReviewManager()
         assertThat(reviewManager.isEligibleForReview()).isTrue()
@@ -42,11 +51,13 @@ class InAppReviewManagerImplTest {
     private val ineligibleTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
     private val preference = mockk<Preference> {
+        every { pref.getBoolean("hasRejectedBefore", false) } returns false
         every { pref.getBoolean("hasRequestedBefore", false) } returns false
     }
 
     private fun createReviewManager() = InAppReviewManagerImpl(
         reviewManager = FakeReviewManager(mockk()),
+        toaster = mockk(),
         preferenceHolder = PreferenceHolder(preference, Json)
     )
 }

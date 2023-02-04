@@ -213,7 +213,10 @@ fun EditCategoryScreen(
 
         ConfirmDialog(
             message = stringResource(id = R.string.category_edit_unsave_message),
-            onConfirm = { navigator.navigateUp() },
+            onConfirm = {
+                navigator.navigateUp()
+                isExitDialogShown = false
+            },
             onDismiss = { isExitDialogShown = false }
         )
     }

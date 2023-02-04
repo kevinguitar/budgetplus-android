@@ -174,7 +174,10 @@ fun BookScreenMenu(navigator: Navigator) {
                 id = if (isBookOwner) R.string.menu_confirm_delete else R.string.menu_confirm_leave,
                 viewModel.currentBookName.orEmpty()
             ),
-            onConfirm = { viewModel.deleteOrLeave() },
+            onConfirm = {
+                viewModel.deleteOrLeave()
+                isDeleteOrLeaveDialogShown = false
+            },
             onDismiss = { isDeleteOrLeaveDialogShown = false }
         )
     }

@@ -5,6 +5,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.data.UserRepo
+import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,6 +15,7 @@ class BudgetPlusApp : Application() {
 
     // Dependencies that need to be instantiated upon app launch
     @Inject lateinit var userRepo: UserRepo
+    @Inject lateinit var notificationChannelsInitializer: NotificationChannelsInitializer
 
     override fun onCreate() {
         super.onCreate()

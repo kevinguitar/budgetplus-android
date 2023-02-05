@@ -69,6 +69,9 @@ class RecordViewModel @Inject constructor(
     private val _requestReviewEvent = MutableEventFlow<Unit>()
     val requestReviewEvent: EventFlow<Unit> = _requestReviewEvent.asStateFlow()
 
+    private val _requestPermissionEvent = MutableEventFlow<Unit>()
+    val requestPermissionEvent: EventFlow<Unit> = _requestPermissionEvent.asStateFlow()
+
     val isHideAds = authManager.isPremium
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
@@ -103,6 +106,7 @@ class RecordViewModel @Inject constructor(
             putExtra(Intent.EXTRA_TEXT, context.getString(R.string.menu_share_book, joinLink))
         }
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))
+        _requestPermissionEvent.sendEvent()
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
@@ -122,6 +126,7 @@ class RecordViewModel @Inject constructor(
 
         when (recordCount % fullScreenAdRecords) {
             0 -> fullScreenAdsLoader.showAd(activity)
+            4 -> _requestPermissionEvent.sendEvent()
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
             fullScreenAdRecords - 1 -> if (inAppReviewManager.isEligibleForReview()) {
@@ -141,6 +146,10 @@ class RecordViewModel @Inject constructor(
     fun rejectReview() {
         inAppReviewManager.rejectReviewing()
         tracker.logEvent("inapp_review_rejected")
+    }
+
+    fun showNotificationPermissionHint() {
+        toaster.showMessage(R.string.notification_hint)
     }
 
     private fun record() {

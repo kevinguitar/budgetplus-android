@@ -9,7 +9,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.DocNotExistsException
@@ -78,6 +80,14 @@ internal class AuthManagerImpl @Inject constructor(
         currentUser = premiumUser
     }
 
+    override fun updateFcmToken(newToken: String) {
+        val userWithNewToken = currentUser?.copy(fcmToken = newToken) ?: return
+        usersDb.get().document(userWithNewToken.id).set(userWithNewToken)
+
+        _userState.value = userWithNewToken
+        currentUser = userWithNewToken
+    }
+
     override fun logout() {
         Firebase.auth.signOut()
         GoogleSignIn.getClient(context, gso.get()).signOut()
@@ -100,7 +110,8 @@ internal class AuthManagerImpl @Inject constructor(
         val userWithExclusiveFields = user.copy(
             premium = currentUser?.premium,
             createdOn = currentUser?.createdOn ?: System.currentTimeMillis(),
-            lastActiveOn = System.currentTimeMillis()
+            lastActiveOn = System.currentTimeMillis(),
+            language = context.getString(R.string.app_language),
         )
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields
@@ -112,11 +123,19 @@ internal class AuthManagerImpl @Inject constructor(
                     .get(Source.SERVER)
                     .requireValue<User>()
 
+                val fcmToken = try {
+                    Firebase.messaging.token.await()
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to retrieve the fcm token")
+                    null
+                }
+
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
                     name = newName ?: remoteUser.name,
                     premium = remoteUser.premium,
-                    createdOn = remoteUser.createdOn
+                    createdOn = remoteUser.createdOn,
+                    fcmToken = fcmToken ?: remoteUser.fcmToken
                 )
 
                 _userState.value = mergedUser

@@ -14,6 +14,8 @@ interface AuthManager {
 
     fun markPremium()
 
+    fun updateFcmToken(newToken: String)
+
     fun logout()
 
 }

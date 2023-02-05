@@ -15,13 +15,14 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BudgetPlus"
+rootProject.name = "budgetplus"
 include(":app")
 include(":benchmark")
 include(":core:billing")
 include(":core:common")
 include(":core:data")
 include(":core:inapp-review")
+include(":core:notification")
 include(":core:ui")
 include(":feature:add-record")
 include(":feature:auth")

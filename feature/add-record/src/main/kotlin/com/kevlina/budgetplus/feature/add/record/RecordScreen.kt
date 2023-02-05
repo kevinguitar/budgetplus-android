@@ -101,4 +101,7 @@ fun RecordScreen(navigator: Navigator) {
             )
         }
     }
+
+    // Handle the runtime notification permission request
+    NotificationPermissionHandler()
 }

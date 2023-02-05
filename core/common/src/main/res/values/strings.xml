@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Budget+</string>
+    <string name="app_language">en</string>
 
     <!-- Auth -->
     <string name="auth_welcome_title">Welcome to Budget+</string>
@@ -119,6 +120,13 @@
     <string name="bubble_edit_category">Click to rename or delete, long click to reorder</string>
     <string name="bubble_save_category">Click save after you finish editing</string>
     <string name="bubble_records_sorting">Change the records sorting by date or price</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_general">General</string>
+    <string name="notification_channel_general_desc">Some reminders and any other updates regarding the app changes</string>
+    <string name="notification_channel_new_member">New Member</string>
+    <string name="notification_channel_new_member_desc">We\'ll notify you when a new member joins your accounting book</string>
+    <string name="notification_hint">Turn on the notification in the settings if you change your mind</string>
 
     <!-- General -->
     <string name="cta_add">Add</string>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">极简记帐</string>
+    <string name="app_language">cn</string>
 
     <!-- Auth -->
     <string name="auth_welcome_title">欢迎加入极简记帐</string>
@@ -119,6 +120,13 @@
     <string name="bubble_edit_category">点击以重新命名或删除，长按拖曳排序</string>
     <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
     <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_general">一般</string>
+    <string name="notification_channel_general_desc">一些提醒和 App 相关的通知</string>
+    <string name="notification_channel_new_member">新成员</string>
+    <string name="notification_channel_new_member_desc">当您的帐本有新成员加入时，我们会通知您</string>
+    <string name="notification_hint">如果您改变主意，请在设定中打开通知</string>
 
     <!-- General -->
     <string name="cta_add">新增</string>

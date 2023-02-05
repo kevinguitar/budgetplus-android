@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":core:billing"))
     implementation(project(":core:common"))
     implementation(project(":core:data"))
+    implementation(project(":core:notification"))
     implementation(project(":core:ui"))
     implementation(project(":feature:add-record"))
     implementation(project(":feature:auth"))

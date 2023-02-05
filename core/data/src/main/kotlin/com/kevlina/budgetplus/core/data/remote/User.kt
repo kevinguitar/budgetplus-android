@@ -11,6 +11,8 @@ data class User(
     val premium: Boolean? = null,
     val createdOn: Long? = null,
     val lastActiveOn: Long? = null,
+    val fcmToken: String? = null,
+    val language: String? = null,
 )
 
 @Serializable

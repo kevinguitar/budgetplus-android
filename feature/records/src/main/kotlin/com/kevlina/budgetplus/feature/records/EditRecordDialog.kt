@@ -71,7 +71,7 @@ fun EditRecordDialog(
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
-    val (nameFocus, priceFocus) = FocusRequester.createRefs()
+    val (nameFocus, priceFocus) = remember { FocusRequester.createRefs() }
 
     fun confirmEdit() {
         vm.editRecord(

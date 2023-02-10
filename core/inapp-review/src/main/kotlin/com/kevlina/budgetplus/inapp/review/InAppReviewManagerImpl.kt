@@ -28,7 +28,13 @@ internal class InAppReviewManagerImpl @Inject constructor(
 
     private var hasRejectedBefore by preferenceHolder.bindBoolean(false)
     private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
-    private var firstInitDatetime by preferenceHolder.bindLong(now.toEpochSecond(ZoneOffset.UTC))
+    private var firstInitDatetime by preferenceHolder.bindLong(0L)
+
+    init {
+        if (firstInitDatetime == 0L) {
+            firstInitDatetime = now.toEpochSecond(ZoneOffset.UTC)
+        }
+    }
 
     override fun isEligibleForReview(): Boolean {
         if (hasRejectedBefore || hasRequestedBefore) {

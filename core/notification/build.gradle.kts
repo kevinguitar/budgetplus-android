@@ -7,5 +7,5 @@ dependencies {
     implementation(project(":core:data"))
 
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging)
+    api(libs.firebase.messaging)
 }

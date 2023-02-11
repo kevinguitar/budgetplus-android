@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">极简记帐</string>
-    <string name="app_language">cn</string>
+    <string name="app_language">zh-cn</string>
 
     <!-- Auth -->
     <string name="auth_welcome_title">欢迎加入极简记帐</string>

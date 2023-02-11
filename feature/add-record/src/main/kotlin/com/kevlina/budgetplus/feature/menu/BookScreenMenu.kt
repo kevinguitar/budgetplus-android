@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,7 +42,10 @@ import com.kevlina.budgetplus.feature.member.MembersDialog
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun BookScreenMenu(navigator: Navigator) {
+fun BookScreenMenu(
+    navigator: Navigator,
+    showMembers: Boolean,
+) {
 
     val viewModel = hiltViewModel<BookMenuViewModel>()
 
@@ -61,7 +65,7 @@ fun BookScreenMenu(navigator: Navigator) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
-    var isMembersDialogShown by remember { mutableStateOf(false) }
+    var isMembersDialogShown by rememberSaveable { mutableStateOf(showMembers) }
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Box {

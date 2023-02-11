@@ -39,12 +39,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.getSerializableCompat
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.ARG_CATEGORY
+import com.kevlina.budgetplus.core.common.nav.ARG_SHOW_MEMBERS
 import com.kevlina.budgetplus.core.common.nav.ARG_TYPE
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
@@ -103,10 +106,29 @@ fun BookBinding(viewModel: BookViewModel) {
 }
 
 fun NavGraphBuilder.addTabGraph(navController: NavController) {
-    navigation(startDestination = AddDest.Record.route, route = BookTab.Add.route) {
 
-        composable(route = AddDest.Record.route) {
-            RecordScreen(navigator = navController.toNavigator())
+    val recordRoute = "${AddDest.Record.route}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
+
+    navigation(
+        startDestination = recordRoute,
+        route = BookTab.Add.route
+    ) {
+
+        composable(
+            route = recordRoute,
+            arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
+                type = NavType.BoolType
+                defaultValue = false
+            }),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$APP_DEEPLINK/$recordRoute" }
+            )
+        ) { entry ->
+            val args = entry.arguments ?: Bundle.EMPTY
+            RecordScreen(
+                navigator = navController.toNavigator(),
+                showMembers = args.getBoolean(ARG_SHOW_MEMBERS, false)
+            )
         }
 
         composable(
@@ -131,7 +153,12 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
     navigation(startDestination = HistoryDest.Overview.route, route = BookTab.History.route) {
 
-        composable(HistoryDest.Overview.route) {
+        composable(
+            route = HistoryDest.Overview.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${HistoryDest.Overview.route}" }
+            )
+        ) {
             OverviewScreen(navigator = navController.toNavigator())
         }
 

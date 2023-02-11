@@ -45,6 +45,8 @@
                 <data android:scheme="https" />
                 <data android:host="budgetplus.cchi.tw" />
                 <data android:pathPrefix="/join" />
+                <data android:pathPrefix="/record" />
+                <data android:pathPrefix="/overview" />
             </intent-filter>
         </activity>
 

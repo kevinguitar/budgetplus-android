@@ -31,7 +31,10 @@ import com.kevlina.budgetplus.feature.menu.BookScreenMenu
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun RecordScreen(navigator: Navigator) {
+fun RecordScreen(
+    navigator: Navigator,
+    showMembers: Boolean,
+) {
 
     val vm = hiltViewModel<RecordViewModel>()
     val context = LocalContext.current
@@ -64,7 +67,7 @@ fun RecordScreen(navigator: Navigator) {
                     }
                 )
             },
-            dropdownMenu = { BookScreenMenu(navigator) }
+            dropdownMenu = { BookScreenMenu(navigator, showMembers) }
         )
 
         AdaptiveScreen(

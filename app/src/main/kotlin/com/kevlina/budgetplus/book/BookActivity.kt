@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.core.net.toUri
+import com.kevlina.budgetplus.core.common.nav.ARG_URL
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -29,6 +31,12 @@ class BookActivity : ComponentActivity() {
     private val viewModel by viewModels<BookViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // When the app is in the background, the fcm won't go through the service impl, so we need
+        // to check the intent extras manually, if the url is presented, simply pass it as data.
+        val url = intent.extras?.getString(ARG_URL)
+        if (url != null) {
+            intent.data = url.toUri()
+        }
         super.onCreate(savedInstanceState)
 
         viewModel.handleIntent(intent)

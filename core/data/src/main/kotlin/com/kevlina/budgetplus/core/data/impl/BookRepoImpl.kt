@@ -11,6 +11,7 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
@@ -79,7 +80,7 @@ internal class BookRepoImpl @Inject constructor(
 
     override fun generateJoinLink(): String {
         val joinId = joinInfoProcessor.generateJoinId(requireBookId)
-        val joinLink = "https://budgetplus.cchi.tw/".toUri()
+        val joinLink = APP_DEEPLINK.toUri()
             .buildUpon()
             .appendPath("join")
             .appendPath(joinId)

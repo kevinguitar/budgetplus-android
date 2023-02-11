@@ -17,3 +17,5 @@ val String.originalNavValue: String
     get() = replace(SLASH_REPLACEMENT, "/")
         .replace(HASH_REPLACEMENT, "#")
         .replace(MOD_REPLACEMENT, "%")
+
+const val APP_DEEPLINK = "https://budgetplus.cchi.tw"

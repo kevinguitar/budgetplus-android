@@ -1,21 +1,22 @@
 [versions]
 accompanist = "0.29.1-alpha"
-compose-compiler = "1.4.0"
-firebase-bom = "31.2.0"
+compose-compiler = "1.4.2"
+firebase-bom = "31.2.1"
 # @pin https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "7.4.0"
-hilt = "2.44.2"
+gradle-plugin = "7.4.1"
+hilt = "2.45"
 # @pin https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.8.0"
+kotlin = "1.8.10"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha01"
+android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
 android-core = "androidx.core:core-ktx:1.9.0"
 # @keep
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil-compose = "io.coil-kt:coil-compose:2.2.2"
-compose-activity = "androidx.activity:activity-compose:1.7.0-alpha04"
+# @pin https://developer.android.com/jetpack/androidx/releases/activity#version_18_2
+compose-activity = "androidx.activity:activity-compose:1.7.0-beta01"
 compose-bom = "androidx.compose:compose-bom:2023.01.00"
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -44,7 +45,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0-alpha05"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0-beta01"
 junit-core = "junit:junit:4.13.2"
 # @keep
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -52,9 +53,9 @@ kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0-R
 lottie-compose = "com.airbnb.android:lottie-compose:5.2.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha09"
 mockk = "io.mockk:mockk:1.13.4"
-navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha04"
+navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha05"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
-profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-alpha03"
+profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0-beta01"
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha02"
 timber = "com.jakewharton.timber:timber:5.0.1"
@@ -88,7 +89,7 @@ test = [
 android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-test = { id = "com.android.test", version.ref = "gradle-plugin" }
-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.2"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.9.4"
 google-services = "com.google.gms.google-services:4.3.15"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

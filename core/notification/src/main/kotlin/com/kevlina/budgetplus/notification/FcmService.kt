@@ -11,6 +11,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.notification.channel.CHANNEL_GENERAL
 import com.kevlina.budgetplus.notification.channel.CHANNEL_NEW_MEMBER
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,6 +22,7 @@ class FcmService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         authManager.updateFcmToken(newToken = token)
+        Timber.d("New fcm token: $token")
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

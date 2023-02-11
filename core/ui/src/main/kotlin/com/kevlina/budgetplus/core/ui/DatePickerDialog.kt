@@ -2,11 +2,12 @@ package com.kevlina.budgetplus.core.ui
 
 import android.widget.DatePicker
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.TextButton
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +32,7 @@ fun DatePickerDialog(
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     onDatePicked: (LocalDate) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
 
     var currentDate by remember { mutableStateOf(date) }
@@ -40,7 +41,6 @@ fun DatePickerDialog(
 
         Column(
             modifier = Modifier
-                .wrapContentSize()
                 .background(
                     color = Color.DarkGray,
                     shape = AppTheme.dialogShape
@@ -56,29 +56,32 @@ fun DatePickerDialog(
             )
 
             Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(bottom = 16.dp, end = 16.dp)
             ) {
-                TextButton(onClick = onDismiss) {
-                    AppText(
-                        text = stringResource(id = R.string.cta_cancel),
-                        color = LocalAppColors.current.light
-                    )
-                }
 
-                TextButton(
-                    onClick = {
-                        onDatePicked(currentDate)
-                        onDismiss()
-                    }
-                ) {
-                    AppText(
-                        text = stringResource(id = R.string.cta_ok),
-                        color = LocalAppColors.current.light
-                    )
-                }
+                AppText(
+                    text = stringResource(id = R.string.cta_cancel),
+                    color = Color.White,
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(8.dp))
+                        .rippleClick(onClick = onDismiss)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
 
+                AppText(
+                    text = stringResource(id = R.string.cta_ok),
+                    color = Color.White,
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(8.dp))
+                        .rippleClick {
+                            onDatePicked(currentDate)
+                            onDismiss()
+                        }
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
             }
         }
     }
@@ -90,7 +93,7 @@ private fun CustomDatePicker(
     date: LocalDate,
     minDate: LocalDate?,
     maxDate: LocalDate?,
-    onDateSelected: (LocalDate) -> Unit
+    onDateSelected: (LocalDate) -> Unit,
 ) {
     AndroidView(
         modifier = Modifier.wrapContentSize(),

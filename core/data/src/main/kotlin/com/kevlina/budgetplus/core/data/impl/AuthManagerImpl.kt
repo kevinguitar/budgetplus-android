@@ -129,6 +129,7 @@ internal class AuthManagerImpl @Inject constructor(
                     Timber.e(e, "Failed to retrieve the fcm token")
                     null
                 }
+                Timber.d("Fcm token: $fcmToken")
 
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(

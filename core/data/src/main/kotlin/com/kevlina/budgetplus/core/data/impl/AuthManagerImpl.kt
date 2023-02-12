@@ -117,19 +117,19 @@ internal class AuthManagerImpl @Inject constructor(
         currentUser = userWithExclusiveFields
 
         appScope.launch {
+            val fcmToken = try {
+                Firebase.messaging.token.await()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to retrieve the fcm token")
+                null
+            }
+            Timber.d("Fcm token: $fcmToken")
+
             try {
                 // Get the latest remote user from the server
                 val remoteUser = usersDb.get().document(user.id)
                     .get(Source.SERVER)
                     .requireValue<User>()
-
-                val fcmToken = try {
-                    Firebase.messaging.token.await()
-                } catch (e: Exception) {
-                    Timber.e(e, "Failed to retrieve the fcm token")
-                    null
-                }
-                Timber.d("Fcm token: $fcmToken")
 
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
@@ -144,8 +144,9 @@ internal class AuthManagerImpl @Inject constructor(
 
                 usersDb.get().document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
-                // Can't find user in the db yet, set it with the local data.
-                usersDb.get().document(user.id).set(userWithExclusiveFields)
+                // Can't find user in the db yet, set it with the data what we have in place.
+                usersDb.get().document(user.id)
+                    .set(userWithExclusiveFields.copy(fcmToken = fcmToken))
             } catch (e: Exception) {
                 Timber.e(e)
             }

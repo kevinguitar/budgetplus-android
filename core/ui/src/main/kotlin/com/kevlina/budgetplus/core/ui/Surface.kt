@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.Surface as MaterialSurface
+import androidx.compose.material3.Surface as MaterialSurface
 
 @Composable
 fun Surface(
@@ -31,7 +31,8 @@ fun Surface(
         shape = shape,
         color = color,
         border = border,
-        elevation = elevation,
+        //TODO: Check what is this
+        shadowElevation = elevation,
         interactionSource = interactionSource,
         content = content
     )

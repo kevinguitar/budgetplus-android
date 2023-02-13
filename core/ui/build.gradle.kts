@@ -7,13 +7,13 @@ plugins {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
         )
     }
 }
 
 dependencies {
     implementation(libs.android.appcompat)
-    implementation(libs.compose.material)
+    implementation(libs.compose.material3)
     implementation(libs.google.ads)
 }

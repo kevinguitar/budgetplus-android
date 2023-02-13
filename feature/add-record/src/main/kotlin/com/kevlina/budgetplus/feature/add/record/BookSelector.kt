@@ -89,18 +89,22 @@ fun BookSelector(navigator: Navigator) {
                     isSelectorShown = false
                 }) {
 
-                    AppText(
-                        text = book.name,
-                        color = LocalAppColors.current.primarySemiDark,
-                        fontSize = FontSize.SemiLarge
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
 
-                    if (bookState?.id == book.id) {
-                        Icon(
-                            imageVector = Icons.Rounded.Check,
-                            contentDescription = null,
-                            tint = LocalAppColors.current.primarySemiDark
+                        AppText(
+                            text = book.name,
+                            color = LocalAppColors.current.primarySemiDark,
+                            fontSize = FontSize.SemiLarge
                         )
+
+                        if (bookState?.id == book.id) {
+                            Icon(
+                                imageVector = Icons.Rounded.Check,
+                                contentDescription = null,
+                                tint = LocalAppColors.current.primarySemiDark,
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            )
+                        }
                     }
                 }
             }

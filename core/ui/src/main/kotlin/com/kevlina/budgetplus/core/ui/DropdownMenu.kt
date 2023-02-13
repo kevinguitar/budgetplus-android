@@ -3,19 +3,20 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
-import androidx.compose.material.MenuDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import androidx.compose.material.DropdownMenu as MaterialDropdownMenu
-import androidx.compose.material.DropdownMenuItem as MaterialDropdownMenuItem
+import androidx.compose.material3.DropdownMenu as MaterialDropdownMenu
+import androidx.compose.material3.DropdownMenuItem as MaterialDropdownMenuItem
 
 @Composable
 fun DropdownMenu(
@@ -43,7 +44,7 @@ fun DropdownMenuItem(
     enabled: Boolean = true,
     contentPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable RowScope.() -> Unit,
+    content: @Composable () -> Unit,
 ) {
     MaterialDropdownMenuItem(
         onClick = onClick,
@@ -51,7 +52,7 @@ fun DropdownMenuItem(
         enabled = enabled,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
-        content = content
+        text = content,
     )
 }
 
@@ -60,21 +61,25 @@ fun DropdownItem(
     name: String,
     icon: @Composable (() -> Unit)? = null,
     textColor: Color = LocalAppColors.current.primarySemiDark,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
-    androidx.compose.material.DropdownMenuItem(onClick = onClick) {
+    MaterialDropdownMenuItem(
+        onClick = onClick,
+        text = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (icon != null) {
+                    icon()
+                }
 
-        if (icon != null) {
-            icon()
+                AppText(
+                    text = name,
+                    color = textColor,
+                    fontSize = FontSize.SemiLarge
+                )
+            }
         }
-
-        AppText(
-            text = name,
-            color = textColor,
-            fontSize = FontSize.SemiLarge
-        )
-    }
+    )
 }
 
 @Composable

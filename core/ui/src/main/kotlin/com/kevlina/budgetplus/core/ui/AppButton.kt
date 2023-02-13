@@ -2,12 +2,9 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -25,28 +22,13 @@ fun AppButton(
     modifier = modifier,
     onClick = onClick,
     enabled = enabled,
-    colors = AppButtonColors(color, LocalAppColors.current.light),
+    colors = ButtonDefaults.buttonColors(
+        containerColor = color,
+        contentColor = LocalAppColors.current.light,
+        disabledContainerColor = color.copy(alpha = 0.4F),
+        disabledContentColor = LocalAppColors.current.light
+    ),
     elevation = null,
     shape = shape,
     content = content
 )
-
-@Immutable
-private class AppButtonColors(
-    private val backgroundColor: Color,
-    private val contentColor: Color
-) : ButtonColors {
-
-    @Composable
-    override fun backgroundColor(enabled: Boolean): State<Color> = rememberUpdatedState(
-        if (enabled) {
-            backgroundColor
-        } else {
-            backgroundColor.copy(alpha = 0.4F)
-        }
-    )
-
-    @Composable
-    override fun contentColor(enabled: Boolean): State<Color> =
-        rememberUpdatedState(contentColor)
-}

@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -89,19 +91,22 @@ fun BookScreenMenu(
                     navigator.navigate(AddDest.UnlockPremium.route)
                 }) {
 
-                    AppText(
-                        text = stringResource(id = R.string.premium_hide_ads),
-                        color = LocalAppColors.current.primarySemiDark,
-                        fontSize = FontSize.SemiLarge
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
 
-                    LottieAnimation(
-                        composition = icPremium,
-                        iterations = LottieConstants.IterateForever,
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .size(24.dp)
-                    )
+                        AppText(
+                            text = stringResource(id = R.string.premium_hide_ads),
+                            color = LocalAppColors.current.primarySemiDark,
+                            fontSize = FontSize.SemiLarge
+                        )
+
+                        LottieAnimation(
+                            composition = icPremium,
+                            iterations = LottieConstants.IterateForever,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .size(24.dp)
+                        )
+                    }
                 }
             }
 

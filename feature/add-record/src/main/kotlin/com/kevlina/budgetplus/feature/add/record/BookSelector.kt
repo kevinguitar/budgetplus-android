@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -78,8 +79,10 @@ fun BookSelector(navigator: Navigator) {
         DropdownMenu(
             expanded = isSelectorShown,
             onDismissRequest = { isSelectorShown = false },
-            modifier = Modifier.background(color = LocalAppColors.current.light),
-            offset = DpOffset(0.dp, 8.dp)
+            offset = DpOffset(0.dp, 8.dp),
+            modifier = Modifier
+                .background(color = LocalAppColors.current.light)
+                .heightIn(max = 300.dp)
         ) {
 
             booksState.orEmpty().forEach { book ->

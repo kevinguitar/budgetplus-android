@@ -31,6 +31,8 @@ internal class TrackerImpl @Inject constructor(
     }
 
     override fun logEvent(event: String) {
-        analytics.logEvent(event, null)
+        if (!BuildConfig.DEBUG) {
+            analytics.logEvent(event, null)
+        }
     }
 }

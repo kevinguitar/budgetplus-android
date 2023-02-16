@@ -135,6 +135,7 @@ internal class AuthManagerImpl @Inject constructor(
                 val mergedUser = userWithExclusiveFields.copy(
                     name = newName ?: remoteUser.name,
                     premium = remoteUser.premium,
+                    internal = remoteUser.internal,
                     createdOn = remoteUser.createdOn,
                     fcmToken = fcmToken ?: remoteUser.fcmToken
                 )

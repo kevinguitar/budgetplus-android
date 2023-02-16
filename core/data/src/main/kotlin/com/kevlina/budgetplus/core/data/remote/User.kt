@@ -9,6 +9,7 @@ data class User(
     val email: String? = null,
     val photoUrl: String? = null,
     val premium: Boolean? = null,
+    val internal: Boolean? = null,
     val createdOn: Long? = null,
     val lastActiveOn: Long? = null,
     val fcmToken: String? = null,

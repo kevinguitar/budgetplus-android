@@ -2,6 +2,7 @@ package com.kevlina.budgetplus
 
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.data.UserRepo
@@ -23,6 +24,7 @@ class BudgetPlusApp : Application() {
         MobileAds.initialize(this)
 
         Timber.plant(Timber.DebugTree())
+        Firebase.analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
         Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

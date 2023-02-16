@@ -18,11 +18,7 @@ internal class TrackerImpl @Inject constructor(
     @AppScope appScope: CoroutineScope,
 ) : Tracker {
 
-    private val analytics by lazy {
-        Firebase.analytics.apply {
-            setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-        }
-    }
+    private val analytics by lazy { Firebase.analytics }
 
     init {
         authManager.userState

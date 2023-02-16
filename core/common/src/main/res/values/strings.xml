@@ -114,6 +114,7 @@
     <string name="premium_unlock_cta">Get Premium</string>
     <string name="premium_unlocked">Budget+ Premium unlocked!</string>
     <string name="premium_acknowledge_fail">Payment can\'t be acknowledged, please come back later.</string>
+    <string name="premium_payment_pending">Your payment is still pending, come back later.</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>

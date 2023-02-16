@@ -16,6 +16,7 @@ import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,7 +29,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 internal class BillingControllerImpl @Inject constructor(
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
@@ -164,40 +165,42 @@ internal class BillingControllerImpl @Inject constructor(
         }
     }
 
-    private val acknowledgeMaxAttempt = 3
-
     private suspend fun processPurchases(purchases: List<Purchase>) {
         purchases.forEach { purchase ->
-            if (purchase.isAcknowledged) {
-                Timber.d("BillingClient: Found purchased product ${purchase.products.joinToString()}")
+            when {
+                purchase.isAcknowledged -> {
+                    Timber.d("BillingClient: Found purchased product ${purchase.products.joinToString()}")
 
-                // Code snippet to consume the product, useful for testing purposes.
-                /*billingClient.consumePurchase(
-                    ConsumeParams.newBuilder()
-                        .setPurchaseToken(purchases.first().purchaseToken)
+                    // Code snippet to consume the product, useful for testing purposes.
+                    /*billingClient.consumePurchase(
+                        ConsumeParams.newBuilder()
+                            .setPurchaseToken(purchases.first().purchaseToken)
+                            .build()
+                    )*/
+                }
+
+                purchase.purchaseState == Purchase.PurchaseState.PURCHASED -> {
+                    // Acknowledge the purchase
+                    val params = AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.purchaseToken)
                         .build()
-                )*/
-            } else {
-                // Acknowledge the purchase
-                val params = AcknowledgePurchaseParams.newBuilder()
-                    .setPurchaseToken(purchase.purchaseToken)
-                    .build()
 
-                repeat(acknowledgeMaxAttempt) { attempt ->
-                    Timber.d("BillingClient: Acknowledge attempt ${attempt + 1}")
+                    Timber.d("BillingClient: Acknowledging the purchase.")
                     val billingResult = billingClient.acknowledgePurchase(params)
                     val status = BillingStatus(billingResult.responseCode)
 
-                    when {
-                        status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products -> {
-                            authManager.markPremium()
-                            _purchaseState.value = PurchaseState.Success
-                        }
-                        attempt == acknowledgeMaxAttempt - 1 -> {
-                            Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")
-                            _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
-                        }
+                    if (status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products) {
+                        authManager.markPremium()
+                        _purchaseState.value = PurchaseState.Success
+                    } else {
+                        Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")
+                        _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
                     }
+                }
+
+                else -> {
+                    Timber.w("BillingClient: Cannot process the purchase. Purchase state: ${purchase.purchaseState}")
+                    _purchaseState.value = PurchaseState.Fail(context.getString(R.string.premium_payment_pending))
                 }
             }
         }

@@ -114,6 +114,7 @@
     <string name="premium_unlock_cta">取得進階版</string>
     <string name="premium_unlocked">極簡記帳進階版，解鎖！</string>
     <string name="premium_acknowledge_fail">無法確認款項，請稍後再試</string>
+    <string name="premium_payment_pending">您的款項正在處理中，請稍後再回來</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">點擊分享連結，邀請好友們一起記帳！</string>

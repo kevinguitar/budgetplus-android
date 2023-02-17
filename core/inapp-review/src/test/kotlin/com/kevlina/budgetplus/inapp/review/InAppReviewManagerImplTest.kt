@@ -2,10 +2,12 @@ package com.kevlina.budgetplus.inapp.review
 
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import java.time.LocalDateTime
@@ -45,6 +47,9 @@ class InAppReviewManagerImplTest {
 
         val reviewManager = createReviewManager()
         assertThat(reviewManager.isEligibleForReview()).isTrue()
+        verify {
+            tracker.logEvent("inapp_review_requested")
+        }
     }
 
     private val eligibleTime = LocalDateTime.now().minusDays(5).toEpochSecond(ZoneOffset.UTC)
@@ -55,9 +60,12 @@ class InAppReviewManagerImplTest {
         every { pref.getBoolean("hasRequestedBefore", false) } returns false
     }
 
+    private val tracker = mockk<Tracker>(relaxUnitFun = true)
+
     private fun createReviewManager() = InAppReviewManagerImpl(
         reviewManager = FakeReviewManager(mockk()),
         toaster = mockk(),
+        tracker = tracker,
         preferenceHolder = PreferenceHolder(preference, Json)
     )
 }

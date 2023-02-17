@@ -5,6 +5,7 @@ import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
 import timber.log.Timber
@@ -21,6 +22,7 @@ import javax.inject.Inject
 internal class InAppReviewManagerImpl @Inject constructor(
     private val reviewManager: ReviewManager,
     private val toaster: Toaster,
+    private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
 ) : InAppReviewManager {
 
@@ -42,13 +44,18 @@ internal class InAppReviewManagerImpl @Inject constructor(
         }
 
         val initDateTime = LocalDateTime.ofEpochSecond(firstInitDatetime, 0, ZoneOffset.UTC)
-        return initDateTime.plusDays(INSTALL_DAYS_MIN).isBefore(now)
+        val eligible = initDateTime.plusDays(INSTALL_DAYS_MIN).isBefore(now)
+        if (eligible) {
+            tracker.logEvent("inapp_review_requested")
+        }
+        return eligible
     }
 
     override suspend fun launchReviewFlow(activity: Activity) {
         try {
             val reviewInfo = reviewManager.requestReview()
             reviewManager.launchReview(activity, reviewInfo)
+            tracker.logEvent("inapp_review_accepted")
             hasRequestedBefore = true
         } catch (e: Exception) {
             toaster.showError(e)
@@ -57,6 +64,7 @@ internal class InAppReviewManagerImpl @Inject constructor(
     }
 
     override fun rejectReviewing() {
+        tracker.logEvent("inapp_review_rejected")
         hasRejectedBefore = true
     }
 

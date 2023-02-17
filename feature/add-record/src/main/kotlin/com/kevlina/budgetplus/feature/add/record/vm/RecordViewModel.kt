@@ -131,7 +131,6 @@ class RecordViewModel @Inject constructor(
             // just to have a better UX while user reviewing.
             fullScreenAdRecords - 1 -> if (inAppReviewManager.isEligibleForReview()) {
                 _requestReviewEvent.sendEvent()
-                tracker.logEvent("inapp_review_requested")
             }
         }
     }
@@ -140,12 +139,10 @@ class RecordViewModel @Inject constructor(
         viewModelScope.launch {
             inAppReviewManager.launchReviewFlow(activity)
         }
-        tracker.logEvent("inapp_review_accepted")
     }
 
     fun rejectReview() {
         inAppReviewManager.rejectReviewing()
-        tracker.logEvent("inapp_review_rejected")
     }
 
     fun showNotificationPermissionHint() {

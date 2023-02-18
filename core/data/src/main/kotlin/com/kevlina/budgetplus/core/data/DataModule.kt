@@ -24,6 +24,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Singleton
 
 @Module
@@ -58,6 +60,7 @@ internal interface DataModule {
         fun provideJson(): Json = Json {
             serializersModule = SerializersModule {
                 contextual(LocalDateSerializer)
+                contextual(LocalDateTimeSerializer)
             }
         }
     }
@@ -74,5 +77,19 @@ private object LocalDateSerializer : KSerializer<LocalDate> {
 
     override fun deserialize(decoder: Decoder): LocalDate {
         return LocalDate.ofEpochDay(decoder.decodeLong())
+    }
+}
+
+private object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("LocalDateTime", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
+        encoder.encodeLong(value.toEpochSecond(ZoneOffset.UTC))
+    }
+
+    override fun deserialize(decoder: Decoder): LocalDateTime {
+        return LocalDateTime.ofEpochSecond(decoder.decodeLong(), 0, ZoneOffset.UTC)
     }
 }

@@ -1,6 +1,7 @@
 [versions]
 accompanist = "0.29.1-alpha"
 compose-compiler = "1.4.2"
+coil = "2.2.2"
 firebase-bom = "31.2.1"
 # @pin https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "7.4.1"
@@ -14,7 +15,8 @@ android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
 android-core = "androidx.core:core-ktx:1.9.0"
 # @keep
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
-coil-compose = "io.coil-kt:coil-compose:2.2.2"
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 # @pin https://developer.android.com/jetpack/androidx/releases/activity#version_18_2
 compose-activity = "androidx.activity:activity-compose:1.7.0-beta01"
 compose-bom = "androidx.compose:compose-bom:2023.01.00"

@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:data"))
 
     implementation(platform(libs.firebase.bom))

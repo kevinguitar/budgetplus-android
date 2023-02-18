@@ -4,5 +4,6 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.coil)
     testImplementation(libs.bundles.test)
 }

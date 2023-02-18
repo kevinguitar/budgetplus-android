@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record
+package com.kevlina.budgetplus.feature.add.record.ui
 
 import android.app.Activity
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
-import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
+import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import com.kevlina.budgetplus.feature.menu.BookScreenMenu
 import kotlinx.coroutines.flow.launchIn
 

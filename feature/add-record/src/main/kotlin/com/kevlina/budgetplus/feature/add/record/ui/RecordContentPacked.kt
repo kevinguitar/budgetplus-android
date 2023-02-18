@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record
+package com.kevlina.budgetplus.feature.add.record.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
+import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 
 @Composable
 fun RecordContentPacked(navigator: Navigator) {

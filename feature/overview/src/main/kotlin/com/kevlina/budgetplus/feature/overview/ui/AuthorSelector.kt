@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.overview
+package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,7 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.feature.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
 fun AuthorSelector() {

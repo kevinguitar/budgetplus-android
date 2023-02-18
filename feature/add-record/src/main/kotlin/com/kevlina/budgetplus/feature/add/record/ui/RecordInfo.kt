@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record
+package com.kevlina.budgetplus.feature.add.record.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -33,8 +33,8 @@ import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
-import com.kevlina.budgetplus.feature.add.record.vm.CalculatorViewModel
-import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
+import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
+import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 
 @Composable
 fun RecordInfo(

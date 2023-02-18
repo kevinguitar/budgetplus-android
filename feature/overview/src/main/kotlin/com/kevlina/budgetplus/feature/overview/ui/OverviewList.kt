@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.overview
+package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.navKey
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
-import com.kevlina.budgetplus.feature.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
 fun OverviewList(

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record
+package com.kevlina.budgetplus.feature.add.record.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.requestNotificationPermission
-import com.kevlina.budgetplus.feature.add.record.vm.RecordViewModel
+import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import kotlinx.coroutines.flow.launchIn
 
 @Composable

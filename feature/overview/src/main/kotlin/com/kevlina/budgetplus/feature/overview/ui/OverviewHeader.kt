@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.overview
+package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,7 @@ import com.kevlina.budgetplus.core.common.roundUpPriceText
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
-import com.kevlina.budgetplus.feature.overview.vm.OverviewViewModel
+import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
 fun OverviewHeader(modifier: Modifier) {

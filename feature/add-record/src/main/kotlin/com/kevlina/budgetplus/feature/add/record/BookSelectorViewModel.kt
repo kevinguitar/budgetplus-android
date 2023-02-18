@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record.vm
+package com.kevlina.budgetplus.feature.add.record
 
 import android.content.Context
 import androidx.compose.runtime.Stable

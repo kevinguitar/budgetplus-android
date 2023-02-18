@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record
+package com.kevlina.budgetplus.feature.add.record.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -37,8 +37,8 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.feature.add.record.vm.BookSelectorViewModel
-import com.kevlina.budgetplus.feature.add.record.vm.CreateBookBtnState
+import com.kevlina.budgetplus.feature.add.record.BookSelectorViewModel
+import com.kevlina.budgetplus.feature.add.record.CreateBookBtnState
 
 @Composable
 fun BookSelector(navigator: Navigator) {

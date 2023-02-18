@@ -60,9 +60,9 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.feature.add.record.RecordScreen
+import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
-import com.kevlina.budgetplus.feature.overview.OverviewScreen
+import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
 import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 import kotlinx.coroutines.flow.launchIn

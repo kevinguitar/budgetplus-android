@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.overview
+package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record.vm
+package com.kevlina.budgetplus.feature.add.record
 
 enum class CreateBookBtnState {
     Enabled, NeedPremium, ReachedMax

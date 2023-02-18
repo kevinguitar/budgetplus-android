@@ -10,44 +10,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun BoxScope.DoneAnimator() {
+fun BoxScope.DoneAnimator(event: EventFlow<Unit>) {
 
-    val viewModel = hiltViewModel<RecordViewModel>()
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var showAnimation by remember { mutableStateOf(false) }
     val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
     val lottieAnimatable = rememberLottieAnimatable()
 
-    LaunchedEffect(key1 = viewModel) {
-        viewModel.recordEvent
-            .consumeEach {
-                focusManager.clearFocus()
-                viewModel.onRecordCreated(context)
+    LaunchedEffect(key1 = event) {
+        event.consumeEach {
+            focusManager.clearFocus()
 
-                showAnimation = true
-                lottieAnimatable.animate(
-                    composition = imgDone,
-                    speed = 1.2F
-                )
-                showAnimation = false
-            }
-            .launchIn(this)
+            showAnimation = true
+            lottieAnimatable.animate(
+                composition = imgDone,
+                speed = 1.2F
+            )
+            showAnimation = false
+        }.launchIn(this)
     }
 
     if (showAnimation) {

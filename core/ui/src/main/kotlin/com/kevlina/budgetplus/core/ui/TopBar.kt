@@ -26,7 +26,7 @@ import com.kevlina.budgetplus.core.common.R
 fun TopBar(
     title: String?,
     titleContent: @Composable (() -> Unit)? = null,
-    navigateBack: (() -> Unit)? = null,
+    navigateUp: (() -> Unit)? = null,
     menuActions: @Composable (() -> Unit)? = null,
     dropdownMenu: @Composable (() -> Unit)? = null,
 ) {
@@ -39,8 +39,8 @@ fun TopBar(
             .background(color = LocalAppColors.current.primaryDark)
     ) {
 
-        if (navigateBack != null) {
-            IconButton(onClick = navigateBack) {
+        if (navigateUp != null) {
+            IconButton(onClick = navigateUp) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,
                     contentDescription = stringResource(id = R.string.cta_back),
@@ -49,7 +49,7 @@ fun TopBar(
             }
 
             // Override the system back with navigateBack behavior
-            BackHandler(enabled = true, onBack = navigateBack)
+            BackHandler(enabled = true, onBack = navigateUp)
         } else {
             Spacer(modifier = Modifier.width(16.dp))
         }
@@ -91,7 +91,7 @@ private fun TopBar_Preview() = AppTheme {
 private fun TopBarWithBack_Preview() = AppTheme {
     TopBar(
         title = "Money Book",
-        navigateBack = {},
+        navigateUp = {},
         menuActions = {
             MenuAction(imageVector = Icons.Rounded.DriveFileRenameOutline, description = "")
             MenuAction(imageVector = Icons.Rounded.GroupAdd, description = "")

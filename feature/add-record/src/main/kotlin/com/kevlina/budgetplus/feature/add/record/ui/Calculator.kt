@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,6 +60,7 @@ fun Calculator(
     adaptiveButton: Boolean = false,
 ) {
 
+    val context = LocalContext.current
     val needEvaluate by viewModel.needEvaluate.collectAsState()
 
     Column(
@@ -107,7 +109,7 @@ fun Calculator(
                         needEvaluate -> "="
                         else -> "OK"
                     },
-                    onClick = { viewModel.onCalculatorAction(action) },
+                    onClick = { viewModel.onCalculatorAction(context, action) },
                 )
             }
         }
@@ -118,7 +120,7 @@ fun Calculator(
 private fun ColumnScope.CalculatorBtn(
     button: CalculatorButton,
     isAdaptive: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Surface(
@@ -144,6 +146,7 @@ private fun ColumnScope.CalculatorBtn(
                     contentDescription = stringResource(id = R.string.cta_delete),
                     tint = LocalAppColors.current.light
                 )
+
                 else -> AppText(
                     text = button.text,
                     textAlign = TextAlign.Center,
@@ -159,7 +162,7 @@ private fun ColumnScope.CalculatorBtn(
 @Composable
 private fun RowScope.CalculatorActionBtn(
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Surface(

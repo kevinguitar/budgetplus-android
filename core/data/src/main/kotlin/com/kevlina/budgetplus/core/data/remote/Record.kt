@@ -18,6 +18,7 @@ data class Record(
     val author: Author? = null,
     val date: Long = 0,
     val timestamp: Long? = null,
+    val batchId: String? = null,
 ) {
 
     @get:Exclude
@@ -25,4 +26,8 @@ data class Record(
         get() = timestamp ?: LocalDateTime
             .of(LocalDate.ofEpochDay(date), LocalTime.MIN)
             .toEpochSecond(ZoneOffset.UTC)
+
+    @get:Exclude
+    val isBatched: Boolean
+        get() = batchId != null
 }

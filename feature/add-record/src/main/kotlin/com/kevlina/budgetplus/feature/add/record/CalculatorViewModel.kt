@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
+import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -23,7 +24,7 @@ import javax.inject.Inject
 @Stable
 class CalculatorViewModel @Inject constructor(
     private val vibrator: Vibrator?,
-    private val toaster: Toaster?
+    private val toaster: Toaster?,
 ) {
 
     private val _priceText = MutableStateFlow(EMPTY_PRICE)
@@ -34,13 +35,13 @@ class CalculatorViewModel @Inject constructor(
 
     val needEvaluate: StateFlow<Boolean> = priceText.mapState { text ->
         CalculatorButton.Plus.text in text ||
-                CalculatorButton.Minus.text in text ||
-                CalculatorButton.Multiply.text in text ||
-                CalculatorButton.Divide.text in text
+            CalculatorButton.Minus.text in text ||
+            CalculatorButton.Multiply.text in text ||
+            CalculatorButton.Divide.text in text
     }
 
-    private val _recordFlow = MutableEventFlow<Unit>()
-    val recordFlow: EventFlow<Unit> = _recordFlow.asStateFlow()
+    private val _recordFlow = MutableEventFlow<Context>()
+    val recordFlow: EventFlow<Context> = _recordFlow.asStateFlow()
 
     fun onInput(btn: CalculatorButton) {
         vibrate()
@@ -49,11 +50,13 @@ class CalculatorViewModel @Inject constructor(
         when (btn) {
             CalculatorButton.Back -> delete()
             CalculatorButton.Plus, CalculatorButton.Minus,
-            CalculatorButton.Multiply, CalculatorButton.Divide -> {
+            CalculatorButton.Multiply, CalculatorButton.Divide,
+            -> {
                 if (currentPrice != EMPTY_PRICE) {
                     _priceText.value = currentPrice + btn.text
                 }
             }
+
             else -> _priceText.value = if (currentPrice == EMPTY_PRICE) {
                 btn.text
             } else {
@@ -94,14 +97,14 @@ class CalculatorViewModel @Inject constructor(
         _priceText.value = EMPTY_PRICE
     }
 
-    fun onCalculatorAction(action: CalculatorAction) {
+    fun onCalculatorAction(context: Context, action: CalculatorAction) {
         vibrate()
         when {
             action == CalculatorAction.Clear -> clearPrice()
             needEvaluate.value -> evaluate()
             else -> {
                 evaluate()
-                _recordFlow.sendEvent()
+                _recordFlow.sendEvent(context)
             }
         }
     }

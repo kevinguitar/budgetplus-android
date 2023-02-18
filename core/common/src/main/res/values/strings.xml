@@ -29,6 +29,23 @@
     <string name="record_deleted">Record deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
 
+    <!-- Batch Record -->
+    <string name="batch_record_title">Batch Record</string>
+    <string name="batch_record_start_date">Start Date:</string>
+    <string name="batch_record_frequency">Batch Frequency:</string>
+    <string name="batch_record_frequency_monthly">Monthly</string>
+    <string name="batch_record_frequency_weekly">Weekly</string>
+    <string name="batch_record_frequency_daily">Daily</string>
+    <string name="batch_record_times">Number of times:</string>
+    <string name="batch_record_cta">Record</string>
+    <string name="batch_record_created">%1$s records added to %2$s</string>
+    <string name="batch_record_edit_confirmation">Do you want to apply for all the future records as well?</string>
+    <string name="batch_record_delete_confirmation">Do you want to delete all the future records as well?</string>
+    <string name="batch_record_only_this">Only this</string>
+    <string name="batch_record_all_future_records">All future records</string>
+    <string name="batch_record_edited">%s records were edited</string>
+    <string name="batch_record_deleted">%s records were deleted</string>
+
     <!-- Book -->
     <string name="book_selection">Select book</string>
     <string name="book_create_success">Your book %s is created!</string>
@@ -108,6 +125,7 @@
     <string name="premium_description">
         ✔ Enjoy Ads-free experience
         \n✔ Hold up to 10 accounting books
+        \n✔ Batch record your regular expenses
         \n✔ Filter records without period limitation
         \n✔ More premium features in the future
     </string>

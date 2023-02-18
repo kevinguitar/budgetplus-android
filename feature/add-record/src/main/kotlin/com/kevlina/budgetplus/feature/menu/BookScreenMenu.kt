@@ -85,6 +85,33 @@ fun BookScreenMenu(
             modifier = Modifier.background(color = LocalAppColors.current.light)
         ) {
 
+            DropdownMenuItem(onClick = {
+                isMenuExpanded = false
+                if (isPremium) {
+                    navigator.navigate(AddDest.BatchRecord.route)
+                } else {
+                    navigator.navigate(AddDest.UnlockPremium.route)
+                }
+            }) {
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    AppText(
+                        text = stringResource(id = R.string.batch_record_title),
+                        color = LocalAppColors.current.primarySemiDark,
+                        fontSize = FontSize.SemiLarge
+                    )
+
+                    LottieAnimation(
+                        composition = icPremium,
+                        iterations = LottieConstants.IterateForever,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .size(24.dp)
+                    )
+                }
+            }
+
             if (!isPremium) {
                 DropdownMenuItem(onClick = {
                     isMenuExpanded = false

@@ -31,7 +31,6 @@ fun Surface(
         shape = shape,
         color = color,
         border = border,
-        //TODO: Check what is this
         shadowElevation = elevation,
         interactionSource = interactionSource,
         content = content

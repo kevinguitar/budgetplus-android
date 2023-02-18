@@ -61,6 +61,7 @@ import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
+import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
@@ -146,6 +147,10 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
         composable(route = AddDest.UnlockPremium.route) {
             PremiumScreen(navigator = navController.toNavigator())
+        }
+
+        composable(route = AddDest.BatchRecord.route) {
+            BatchRecordScreen(navigator = navController.toNavigator())
         }
     }
 }

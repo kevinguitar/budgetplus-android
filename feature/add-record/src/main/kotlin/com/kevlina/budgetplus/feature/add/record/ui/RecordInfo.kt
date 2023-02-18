@@ -82,7 +82,8 @@ fun RecordInfo(
             type = type,
             onCategorySelected = vm::setCategory,
             onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },
-            selectedCategory = category
+            selectedCategory = category,
+            modifier = Modifier.fillMaxWidth()
         )
 
         AppTextField(

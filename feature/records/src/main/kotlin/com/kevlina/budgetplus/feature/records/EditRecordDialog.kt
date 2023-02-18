@@ -70,26 +70,23 @@ fun EditRecordDialog(
 
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var showEditBatchDialog by remember { mutableStateOf(false) }
+    var showDeleteBatchDialog by remember { mutableStateOf(false) }
 
     val (nameFocus, priceFocus) = remember { FocusRequester.createRefs() }
 
-    fun confirmEdit() {
+    fun confirmEdit(editBatch: Boolean = false) {
         vm.editRecord(
             record = editRecord,
             newDate = date,
             newName = name.text,
-            newPriceText = priceText.text
+            newPriceText = priceText.text,
+            editBatch = editBatch
         )
-        onDismiss()
-    }
-
-    LaunchedEffect(Unit) {
-        delay(100)
-        nameFocus.requestFocus()
     }
 
     // Do not stack the dialog, it causes some weird ui issue
-    if (!showDeleteConfirmationDialog) {
+    if (!showDeleteConfirmationDialog && !showEditBatchDialog && !showDeleteBatchDialog) {
 
         AppDialog(onDismissRequest = onDismiss) {
 
@@ -129,14 +126,25 @@ fun EditRecordDialog(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done
                     ),
-                    onDone = { confirmEdit() }
+                    onDone = {
+                        if (editRecord.isBatched) {
+                            showEditBatchDialog = true
+                        } else {
+                            confirmEdit()
+                            onDismiss()
+                        }
+                    }
                 )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 
-                    AppButton(
-                        onClick = { showDeleteConfirmationDialog = true },
-                    ) {
+                    AppButton(onClick = {
+                        if (editRecord.isBatched) {
+                            showDeleteBatchDialog = true
+                        } else {
+                            showDeleteConfirmationDialog = true
+                        }
+                    }) {
                         AppText(
                             text = stringResource(id = R.string.cta_delete),
                             color = LocalAppColors.current.light,
@@ -144,7 +152,13 @@ fun EditRecordDialog(
                         )
                     }
 
-                    AppButton(onClick = ::confirmEdit) {
+                    AppButton(onClick = {
+                        if (editRecord.isBatched) {
+                            showEditBatchDialog = true
+                        } else {
+                            confirmEdit()
+                        }
+                    }) {
                         AppText(
                             text = stringResource(id = R.string.cta_save),
                             color = LocalAppColors.current.light,
@@ -154,6 +168,11 @@ fun EditRecordDialog(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        delay(100)
+        nameFocus.requestFocus()
     }
 
     if (showDatePickerDialog) {
@@ -170,11 +189,47 @@ fun EditRecordDialog(
         ConfirmDialog(
             message = stringResource(id = R.string.record_confirm_delete),
             onConfirm = {
-                vm.deleteRecord(editRecord.id)
+                vm.deleteRecord(editRecord)
                 showDeleteConfirmationDialog = false
                 onDismiss()
             },
             onDismiss = { showDeleteConfirmationDialog = false }
+        )
+    }
+
+    if (showEditBatchDialog) {
+
+        EditBatchDialog(
+            onDismiss = { showEditBatchDialog = false },
+            text = stringResource(id = R.string.batch_record_edit_confirmation),
+            onSelectOne = {
+                confirmEdit()
+                showEditBatchDialog = false
+                onDismiss()
+            },
+            onSelectAll = {
+                confirmEdit(editBatch = true)
+                showEditBatchDialog = false
+                onDismiss()
+            }
+        )
+    }
+
+    if (showDeleteBatchDialog) {
+
+        EditBatchDialog(
+            onDismiss = { showDeleteBatchDialog = false },
+            text = stringResource(id = R.string.batch_record_delete_confirmation),
+            onSelectOne = {
+                vm.deleteRecord(editRecord)
+                showDeleteBatchDialog = false
+                onDismiss()
+            },
+            onSelectAll = {
+                vm.deleteRecord(editRecord, deleteBatch = true)
+                showDeleteBatchDialog = false
+                onDismiss()
+            }
         )
     }
 }

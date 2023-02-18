@@ -29,6 +29,23 @@
     <string name="record_deleted">已删除</string>
     <string name="record_confirm_delete">确认删除此笔纪录吗？</string>
 
+    <!-- Batch Record -->
+    <string name="batch_record_title">批次记帐</string>
+    <string name="batch_record_start_date">开始日期</string>
+    <string name="batch_record_frequency">周期</string>
+    <string name="batch_record_frequency_monthly">每月</string>
+    <string name="batch_record_frequency_weekly">每周</string>
+    <string name="batch_record_frequency_daily">每天</string>
+    <string name="batch_record_times">次数</string>
+    <string name="batch_record_cta">批次记帐</string>
+    <string name="batch_record_created">%1$s笔纪录已新增至%2$s</string>
+    <string name="batch_record_edit_confirmation">您要一并套用至未来的所有记录吗？</string>
+    <string name="batch_record_delete_confirmation">您要一并删除未来的所有纪录吗？</string>
+    <string name="batch_record_only_this">这笔就好</string>
+    <string name="batch_record_all_future_records">所有纪录</string>
+    <string name="batch_record_edited">已编辑%s笔纪录</string>
+    <string name="batch_record_deleted">已删除%s笔纪录</string>
+
     <!-- Book -->
     <string name="book_selection">选择帐本</string>
     <string name="book_create_success">“%s”已新增成功</string>
@@ -108,6 +125,7 @@
     <string name="premium_description">
         ✔ 不受任何广告打扰
         \n✔ 扩充至十本记帐本
+        \n✔ 批次新增您的固定支出收入
         \n✔ 筛选大于一个月的帐目
         \n✔ 更多进阶功能未来优先试用
     </string>

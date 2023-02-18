@@ -32,7 +32,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 fun CategoriesGrid(
     type: RecordType,
     onCategorySelected: (String) -> Unit,
-    onEditClicked: () -> Unit,
+    onEditClicked: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     selectedCategory: String? = null
 ) {
@@ -61,7 +61,9 @@ fun CategoriesGrid(
             }
         }
 
-        EditCategoryButton(onEditClicked)
+        if (onEditClicked != null) {
+            EditCategoryButton(onEditClicked)
+        }
     }
 }
 

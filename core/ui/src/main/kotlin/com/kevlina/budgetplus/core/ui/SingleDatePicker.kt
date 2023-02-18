@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.shortFormatted
@@ -18,6 +19,8 @@ import java.time.LocalDate
 fun SingleDatePicker(
     date: LocalDate,
     modifier: Modifier,
+    showIcon: Boolean = true,
+    fontSize: TextUnit = FontSize.Normal,
 ) {
 
     Row(
@@ -26,11 +29,13 @@ fun SingleDatePicker(
         modifier = modifier
     ) {
 
-        Icon(
-            imageVector = Icons.Rounded.Today,
-            contentDescription = stringResource(id = R.string.select_date),
-            tint = LocalAppColors.current.dark
-        )
+        if (showIcon) {
+            Icon(
+                imageVector = Icons.Rounded.Today,
+                contentDescription = stringResource(id = R.string.select_date),
+                tint = LocalAppColors.current.dark
+            )
+        }
 
         AppText(
             text = when {
@@ -44,7 +49,8 @@ fun SingleDatePicker(
                 }
 
                 else -> date.shortFormatted
-            }
+            },
+            fontSize = fontSize
         )
     }
 }

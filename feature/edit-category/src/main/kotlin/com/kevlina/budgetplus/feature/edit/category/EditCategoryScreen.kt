@@ -77,7 +77,7 @@ fun EditCategoryScreen(
 
         TopBar(
             title = stringResource(id = R.string.category_edit_title),
-            navigateBack = {
+            navigateUp = {
                 if (isListModified) {
                     isExitDialogShown = true
                 } else {

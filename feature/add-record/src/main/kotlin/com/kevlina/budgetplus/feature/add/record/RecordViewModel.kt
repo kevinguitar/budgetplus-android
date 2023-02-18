@@ -26,7 +26,6 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,7 +47,6 @@ class RecordViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -79,7 +77,7 @@ class RecordViewModel @Inject constructor(
 
     init {
         calculator.recordFlow
-            .consumeEach { record() }
+            .consumeEach(::record)
             .launchIn(viewModelScope)
     }
 
@@ -116,25 +114,6 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    /**
-     *  Show full screen Ad on every [fullScreenAdRecords] records
-     */
-    private val fullScreenAdRecords: Int get() = 5
-
-    fun onRecordCreated(context: Context) {
-        val activity = context as? Activity ?: return
-
-        when (recordCount % fullScreenAdRecords) {
-            0 -> fullScreenAdsLoader.showAd(activity)
-            3 -> _requestPermissionEvent.sendEvent()
-            // Request the in app review when almost reach the next full screen ad,
-            // just to have a better UX while user reviewing.
-            4 -> if (inAppReviewManager.isEligibleForReview()) {
-                _requestReviewEvent.sendEvent()
-            }
-        }
-    }
-
     fun launchReviewFlow(activity: Activity) {
         viewModelScope.launch {
             inAppReviewManager.launchReviewFlow(activity)
@@ -149,7 +128,7 @@ class RecordViewModel @Inject constructor(
         toaster.showMessage(R.string.notification_hint)
     }
 
-    private fun record() {
+    private fun record(context: Context) {
         val category = category.value
         val price = calculator.price.value
 
@@ -178,12 +157,33 @@ class RecordViewModel @Inject constructor(
         toaster.showMessage(context.getString(R.string.record_created, category))
         tracker.logEvent("record_created")
         recordCount += 1
+
         resetScreen()
+        onRecordCreated(context)
     }
 
     private fun resetScreen() {
         _category.value = null
         _note.value = ""
         calculator.clearPrice()
+    }
+
+    /**
+     *  Show full screen Ad on every [fullScreenAdRecords] records
+     */
+    private val fullScreenAdRecords: Int get() = 5
+
+    private fun onRecordCreated(context: Context) {
+        val activity = context as? Activity ?: return
+
+        when (recordCount % fullScreenAdRecords) {
+            0 -> fullScreenAdsLoader.showAd(activity)
+            3 -> _requestPermissionEvent.sendEvent()
+            // Request the in app review when almost reach the next full screen ad,
+            // just to have a better UX while user reviewing.
+            4 -> if (inAppReviewManager.isEligibleForReview()) {
+                _requestReviewEvent.sendEvent()
+            }
+        }
     }
 }

@@ -32,11 +32,11 @@
     <!-- Batch Record -->
     <string name="batch_record_title">批次记帐</string>
     <string name="batch_record_start_date">开始日期</string>
-    <string name="batch_record_frequency">周期</string>
+    <string name="batch_record_frequency">循环周期</string>
     <string name="batch_record_frequency_monthly">每月</string>
     <string name="batch_record_frequency_weekly">每周</string>
     <string name="batch_record_frequency_daily">每天</string>
-    <string name="batch_record_times">次数</string>
+    <string name="batch_record_times">循环次数</string>
     <string name="batch_record_cta">批次记帐</string>
     <string name="batch_record_created">%1$s笔纪录已新增至%2$s</string>
     <string name="batch_record_edit_confirmation">您要一并套用至未来的所有记录吗？</string>

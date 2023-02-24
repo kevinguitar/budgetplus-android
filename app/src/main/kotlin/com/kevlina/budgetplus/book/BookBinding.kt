@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.book
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -69,7 +70,10 @@ import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun BookBinding(viewModel: BookViewModel) {
+fun BookBinding(
+    viewModel: BookViewModel,
+    newIntent: Intent?
+) {
 
     val navController = rememberNavController()
     val context = LocalContext.current
@@ -82,6 +86,10 @@ fun BookBinding(viewModel: BookViewModel) {
         viewModel.unlockPremiumEvent
             .consumeEach { navController.navigate(AddDest.UnlockPremium.route) }
             .launchIn(this)
+    }
+
+    LaunchedEffect(newIntent) {
+        navController.handleDeepLink(newIntent)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

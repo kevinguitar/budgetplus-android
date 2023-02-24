@@ -157,6 +157,7 @@ fun EditRecordDialog(
                             showEditBatchDialog = true
                         } else {
                             confirmEdit()
+                            onDismiss()
                         }
                     }) {
                         AppText(

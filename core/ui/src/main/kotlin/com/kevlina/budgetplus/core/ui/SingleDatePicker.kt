@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.shortFormatted
+import com.kevlina.budgetplus.core.common.mediumFormatted
 import java.time.LocalDate
 
 @Composable
@@ -48,7 +48,7 @@ fun SingleDatePicker(
                     stringResource(id = R.string.tomorrow)
                 }
 
-                else -> date.shortFormatted
+                else -> date.mediumFormatted
             },
             fontSize = fontSize
         )

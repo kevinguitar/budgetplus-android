@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.shortFormatted
+import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -56,7 +56,7 @@ fun TimePeriodSelector() {
         )
 
         AppText(
-            text = fromDate.shortFormatted,
+            text = fromDate.mediumFormatted,
             modifier = Modifier
                 .rippleClick { showFromDatePicker = true }
                 .padding(all = 8.dp)
@@ -65,7 +65,7 @@ fun TimePeriodSelector() {
         AppText(text = stringResource(id = R.string.date_to))
 
         AppText(
-            text = untilDate.shortFormatted,
+            text = untilDate.mediumFormatted,
             modifier = Modifier
                 .rippleClick { showUntilDatePicker = true }
                 .padding(all = 8.dp)

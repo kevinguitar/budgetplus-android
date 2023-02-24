@@ -83,6 +83,7 @@ internal fun BatchRecordContent() {
             onValueChange = vm::setPriceText,
             fontSize = FontSize.Header,
             title = "$",
+            placeholder = "0",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )

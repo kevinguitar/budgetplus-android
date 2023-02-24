@@ -113,7 +113,7 @@
     <string name="overview_exceed_max_period">解锁进阶版以筛选大于一个月的帐目</string>
     <string name="overview_sort_by_date">依日期排序</string>
     <string name="overview_sort_by_price">依金额排序</string>
-    <string name="overview_balance">结余: %s</string>
+    <string name="overview_balance">结余：%s</string>
     <string name="overview_details_title">%1$s：%2$s</string>
     <string name="overview_author_everyone">所有人</string>
     <string name="overview_author_anonymous">匿名</string>

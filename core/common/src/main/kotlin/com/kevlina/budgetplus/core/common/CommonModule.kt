@@ -12,6 +12,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -27,6 +28,12 @@ internal interface CommonModule {
         @AppScope
         @Singleton
         fun provideAppCoroutineScope(): CoroutineScope = AppCoroutineScope
+
+        @Provides
+        @Named("is_debug")
+        fun provideIsDebug(@ApplicationContext context: Context): Boolean {
+            return context.resources.getBoolean(R.bool.is_debug)
+        }
 
         @Provides
         fun provideVibrator(@ApplicationContext context: Context): Vibrator {

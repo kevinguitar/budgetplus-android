@@ -3,19 +3,20 @@ package com.kevlina.budgetplus.core.data.impl
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppScope
-import com.kevlina.budgetplus.core.common.BuildConfig
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 internal class TrackerImpl @Inject constructor(
     authManager: AuthManager,
     @AppScope appScope: CoroutineScope,
+    @Named("is_debug") private val isDebug: Boolean,
 ) : Tracker {
 
     private val analytics by lazy { Firebase.analytics }
@@ -27,7 +28,7 @@ internal class TrackerImpl @Inject constructor(
     }
 
     override fun logEvent(event: String) {
-        if (!BuildConfig.DEBUG) {
+        if (!isDebug) {
             analytics.logEvent(event, null)
         }
     }

@@ -37,7 +37,6 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.rippleClick
-import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -171,11 +170,6 @@ internal fun EditRecordDialog(
         }
     }
 
-    LaunchedEffect(Unit) {
-        delay(100)
-        nameFocus.requestFocus()
-    }
-
     if (showDatePickerDialog) {
 
         DatePickerDialog(
@@ -232,5 +226,9 @@ internal fun EditRecordDialog(
                 onDismiss()
             }
         )
+    }
+
+    LaunchedEffect(Unit) {
+        nameFocus.requestFocus()
     }
 }

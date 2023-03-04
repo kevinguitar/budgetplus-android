@@ -26,7 +26,6 @@ import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTextField
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.LocalAppColors
-import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -58,11 +57,6 @@ fun EditCategoryDialog(
     }
 
     val focusRequester = remember { FocusRequester() }
-
-    LaunchedEffect(Unit) {
-        delay(100)
-        focusRequester.requestFocus()
-    }
 
     AppDialog(onDismissRequest = onDismiss) {
 
@@ -118,6 +112,10 @@ fun EditCategoryDialog(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
     }
 }
 

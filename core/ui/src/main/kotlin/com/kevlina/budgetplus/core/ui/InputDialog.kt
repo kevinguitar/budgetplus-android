@@ -16,7 +16,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 
 @Composable
 fun InputDialog(
@@ -36,11 +35,6 @@ fun InputDialog(
     }
 
     val focusRequester = remember { FocusRequester() }
-
-    LaunchedEffect(Unit) {
-        delay(100)
-        focusRequester.requestFocus()
-    }
 
     AppDialog(onDismissRequest = onDismiss) {
 
@@ -76,5 +70,9 @@ fun InputDialog(
                 )
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
     }
 }

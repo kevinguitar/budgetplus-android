@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 @Stable
-class OverviewViewModel @Inject constructor(
+internal class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
@@ -45,6 +45,10 @@ class OverviewViewModel @Inject constructor(
     private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
     private val _type = MutableStateFlow(typeCache)
     val type: StateFlow<RecordType> = _type.asStateFlow()
+
+    private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
+    private val _mode = MutableStateFlow(modeCache)
+    val mode: StateFlow<OverviewMode> = _mode.asStateFlow()
 
     val timePeriod = recordsObserver.timePeriod
     val isHideAds = authManager.isPremium
@@ -88,13 +92,26 @@ class OverviewViewModel @Inject constructor(
             }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
+    val recordList: StateFlow<List<Record>?> = records.map { it?.toList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
     val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
         records ?: return@map null
         records.groupBy { it.category }
             .toList()
             .sortedByDescending { (_, v) -> v.sumOf { it.price } }
             .toMap()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyMap())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    fun toggleMode() {
+        val newMode = when (mode.value) {
+            OverviewMode.AllRecords -> OverviewMode.GroupByCategories
+            OverviewMode.GroupByCategories -> OverviewMode.AllRecords
+        }
+        _mode.value = newMode
+        modeCache = newMode
+        tracker.logEvent("overview_mode_changed")
+    }
 
     fun setRecordType(type: RecordType) {
         _type.value = type
@@ -121,5 +138,10 @@ class OverviewViewModel @Inject constructor(
 
     fun setAuthor(author: User?) {
         _selectedAuthor.value = author
+    }
+
+    fun canEditRecord(record: Record): Boolean {
+        val myUserId = authManager.userState.value?.id
+        return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
     }
 }

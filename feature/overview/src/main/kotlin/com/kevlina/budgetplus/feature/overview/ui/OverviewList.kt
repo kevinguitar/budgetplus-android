@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,7 +19,11 @@ import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.navKey
+import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.feature.edit.record.EditRecordDialog
+import com.kevlina.budgetplus.feature.edit.record.RecordCard
+import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
@@ -28,13 +34,14 @@ fun OverviewList(
 
     val vm = hiltViewModel<OverviewViewModel>()
 
+    val mode by vm.mode.collectAsState()
     val type by vm.type.collectAsState()
     val selectedAuthor by vm.selectedAuthor.collectAsState()
     val totalPrice by vm.totalPrice.collectAsState()
+    val recordList by vm.recordList.collectAsState()
     val recordGroups by vm.recordGroups.collectAsState()
-    val keys = remember(recordGroups) {
-        recordGroups?.keys?.toList()
-    }
+
+    var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,21 +58,38 @@ fun OverviewList(
             )
         }
 
+        val records = recordList
         when {
-            keys == null -> item(
+            records == null -> item(
                 key = OverviewUiType.Loader.name,
                 contentType = OverviewUiType.Loader,
                 content = { InfiniteCircularProgress(modifier = Modifier.padding(top = 32.dp)) }
             )
 
-            keys.isEmpty() -> item(
+            records.isEmpty() -> item(
                 key = OverviewUiType.ZeroCase.name,
                 contentType = OverviewUiType.ZeroCase,
                 content = { OverviewZeroCase() }
             )
 
-            else -> itemsIndexed(
-                items = keys,
+            mode == OverviewMode.AllRecords -> itemsIndexed(
+                items = records,
+                key = { _, record -> record.id },
+                contentType = { _, _ -> OverviewUiType.Record }
+            ) { index, record ->
+
+                RecordCard(
+                    item = record,
+                    isLast = index == records.lastIndex,
+                    canEdit = vm.canEditRecord(record),
+                    showCategory = true
+                ) {
+                    editRecordDialog = record
+                }
+            }
+
+            mode == OverviewMode.GroupByCategories -> itemsIndexed(
+                items = recordGroups?.keys?.toList().orEmpty(),
                 key = { _, key -> key },
                 contentType = { _, _ -> OverviewUiType.Group }
             ) { index, key ->
@@ -90,5 +114,16 @@ fun OverviewList(
                 )
             }
         }
+    }
+
+    val editRecord = editRecordDialog
+    if (editRecord != null) {
+
+        EditRecordDialog(
+            editRecord = editRecord,
+            onDismiss = {
+                editRecordDialog = null
+            }
+        )
     }
 }

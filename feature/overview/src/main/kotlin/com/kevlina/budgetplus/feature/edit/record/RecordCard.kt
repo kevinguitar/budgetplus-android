@@ -38,8 +38,17 @@ internal fun RecordCard(
     item: Record,
     isLast: Boolean,
     canEdit: Boolean,
+    showCategory: Boolean,
     onEdit: () -> Unit,
 ) {
+
+    val pillModifier = Modifier
+        .background(
+            color = LocalAppColors.current.primary,
+            shape = CircleShape
+        )
+        .padding(vertical = 1.dp, horizontal = 8.dp)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,16 +103,21 @@ internal fun RecordCard(
                         text = LocalDate.ofEpochDay(item.date).shortFormatted,
                     )
 
+                    if (showCategory) {
+
+                        AppText(
+                            text = item.category,
+                            fontSize = FontSize.Small,
+                            color = LocalAppColors.current.light,
+                            modifier = pillModifier
+                        )
+                    }
+
                     AppText(
                         text = item.author?.name.orEmpty(),
                         fontSize = FontSize.Small,
                         color = LocalAppColors.current.light,
-                        modifier = Modifier
-                            .background(
-                                color = LocalAppColors.current.primary,
-                                shape = CircleShape
-                            )
-                            .padding(vertical = 1.dp, horizontal = 8.dp)
+                        modifier = pillModifier
                     )
                 }
 
@@ -142,6 +156,7 @@ private fun RecordCard_Preview() = AppTheme {
         ),
         isLast = false,
         canEdit = true,
+        showCategory = true,
         onEdit = {}
     )
 }

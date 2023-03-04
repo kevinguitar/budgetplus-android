@@ -97,7 +97,8 @@ fun RecordsScreen(
                 RecordCard(
                     item = item,
                     isLast = index == records?.lastIndex,
-                    canEdit = vm.canEditRecord(item)
+                    canEdit = vm.canEditRecord(item),
+                    showCategory = false
                 ) {
                     editRecordDialog = item
                 }

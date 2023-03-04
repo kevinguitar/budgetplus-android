@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +36,6 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.rippleClick
-import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -169,11 +167,6 @@ fun EditRecordDialog(
                 }
             }
         }
-    }
-
-    LaunchedEffect(Unit) {
-        delay(100)
-        nameFocus.requestFocus()
     }
 
     if (showDatePickerDialog) {

@@ -29,7 +29,8 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
-import com.kevlina.budgetplus.feature.records.vm.RecordsViewModel
+import com.kevlina.budgetplus.feature.edit.record.EditRecordDialog
+import com.kevlina.budgetplus.feature.edit.record.RecordCard
 
 @Composable
 fun RecordsScreen(

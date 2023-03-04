@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.feature.records.vm.RecordsViewModel
+import com.kevlina.budgetplus.feature.records.RecordsViewModel
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable

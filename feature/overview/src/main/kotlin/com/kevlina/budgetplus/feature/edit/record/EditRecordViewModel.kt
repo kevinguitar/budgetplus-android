@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.records
+package com.kevlina.budgetplus.feature.edit.record
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

@@ -89,6 +89,14 @@ sealed class BubbleDest {
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
     ) : BubbleDest()
 
+    data class OverviewMode(
+        override val size: IntSize,
+        override val offset: Offset,
+        override val shape: BubbleShape = BubbleShape.Circle,
+        override val textRes: Int = R.string.bubble_overview_mode,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+    ) : BubbleDest()
+
     data class RecordsSorting(
         override val size: IntSize,
         override val offset: Offset,

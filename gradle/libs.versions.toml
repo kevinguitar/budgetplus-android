@@ -2,7 +2,7 @@
 accompanist = "0.29.1-alpha"
 coil = "2.2.2"
 compose-compiler = "1.4.3"
-firebase-bom = "31.2.2"
+firebase-bom = "31.2.3"
 gradle-plugin = "8.1.0-alpha07"
 hilt = "2.45"
 # @pin https://kotlinlang.org/docs/releases.html#release-details

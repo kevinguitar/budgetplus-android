@@ -16,6 +16,8 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +38,7 @@ internal class OverviewViewModel @Inject constructor(
     private val tracker: Tracker,
     private val authManager: AuthManager,
     private val userRepo: UserRepo,
+    private val bubbleRepo: BubbleRepo,
     private val toaster: Toaster,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -49,6 +52,8 @@ internal class OverviewViewModel @Inject constructor(
     private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
     private val _mode = MutableStateFlow(modeCache)
     val mode: StateFlow<OverviewMode> = _mode.asStateFlow()
+
+    private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
 
     val timePeriod = recordsObserver.timePeriod
     val isHideAds = authManager.isPremium
@@ -143,5 +148,12 @@ internal class OverviewViewModel @Inject constructor(
     fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+    }
+
+    fun highlightModeButton(dest: BubbleDest) {
+        if (!recordList.value.isNullOrEmpty() && !isModeBubbleShown) {
+            isModeBubbleShown = true
+            bubbleRepo.addBubbleToQueue(dest)
+        }
     }
 }

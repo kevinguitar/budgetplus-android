@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
@@ -17,6 +19,7 @@ import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
@@ -41,7 +44,15 @@ fun OverviewScreen(navigator: Navigator) {
                         OverviewMode.GroupByCategories -> Icons.Rounded.BarChart
                     },
                     description = stringResource(id = R.string.overview_details_title),
-                    onClick = vm::toggleMode
+                    onClick = vm::toggleMode,
+                    modifier = Modifier.onGloballyPositioned {
+                        vm.highlightModeButton(
+                            BubbleDest.OverviewMode(
+                                size = it.size,
+                                offset = it.positionInRoot()
+                            )
+                        )
+                    }
                 )
             }
         )

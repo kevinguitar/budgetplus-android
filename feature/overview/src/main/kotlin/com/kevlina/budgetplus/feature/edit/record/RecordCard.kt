@@ -109,6 +109,7 @@ internal fun RecordCard(
                             text = item.category,
                             fontSize = FontSize.Small,
                             color = LocalAppColors.current.light,
+                            singleLine = true,
                             modifier = pillModifier
                         )
                     }
@@ -117,6 +118,7 @@ internal fun RecordCard(
                         text = item.author?.name.orEmpty(),
                         fontSize = FontSize.Small,
                         color = LocalAppColors.current.light,
+                        singleLine = true,
                         modifier = pillModifier
                     )
                 }

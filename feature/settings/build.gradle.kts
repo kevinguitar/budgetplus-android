@@ -6,10 +6,8 @@ plugins {
 
 dependencies {
     implementation(project(":core:data"))
-    implementation(project(":core:inapp-review"))
     implementation(project(":core:ui"))
 
-    implementation(libs.accompanist.flowlayout)
+    implementation(libs.coil.compose)
     implementation(libs.lottie.compose)
-    implementation(libs.exp4j)
 }

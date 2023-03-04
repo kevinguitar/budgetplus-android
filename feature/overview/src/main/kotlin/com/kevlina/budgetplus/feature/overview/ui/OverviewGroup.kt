@@ -69,7 +69,8 @@ fun OverviewGroup(
                 val progress = calcProgressWidth(maxWidth, percentage)
                 val width by animateDpAsState(
                     targetValue = progress,
-                    animationSpec = tween(durationMillis = 500)
+                    animationSpec = tween(durationMillis = 500),
+                    label = "widthAnimation"
                 )
 
                 Spacer(

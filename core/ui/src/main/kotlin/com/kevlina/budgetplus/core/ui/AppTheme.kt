@@ -15,6 +15,7 @@ fun AppTheme(content: @Composable () -> Unit) {
 
     val customColors = CustomColors(
         light = Color(0xFFFFF3E0),
+        lightBg = Color(0x33C1A185),
         primaryLight = Color(0xFFE0CCB1),
         primary = Color(0xFFC1A185),
         primarySemiDark = Color(0xFFB0836B),
@@ -31,6 +32,7 @@ fun AppTheme(content: @Composable () -> Unit) {
 @Immutable
 data class CustomColors(
     val light: Color,
+    val lightBg: Color,
     val primaryLight: Color,
     val primary: Color,
     val primarySemiDark: Color,
@@ -41,6 +43,7 @@ data class CustomColors(
 val LocalAppColors = staticCompositionLocalOf {
     CustomColors(
         light = Color.Unspecified,
+        lightBg = Color.Unspecified,
         primaryLight = Color.Unspecified,
         primary = Color.Unspecified,
         primarySemiDark = Color.Unspecified,

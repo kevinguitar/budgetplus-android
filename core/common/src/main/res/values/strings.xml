@@ -93,15 +93,7 @@
     <!-- Menu -->
     <string name="menu_share_book">Click the link to track expenses with me!\n%s</string>
     <string name="menu_open">Open Menu</string>
-    <string name="menu_rename_user">Rename User</string>
-    <string name="menu_rename_book">Rename Book</string>
-    <string name="menu_view_members">View Members</string>
     <string name="menu_create_book">Create A New Book</string>
-    <string name="menu_logout">Logout</string>
-    <string name="menu_delete_book">Delete Book</string>
-    <string name="menu_leave_book">Leave Book</string>
-    <string name="menu_confirm_delete">Are you sure you want to delete %s?</string>
-    <string name="menu_confirm_leave">Are you sure you want to leave %s?</string>
 
     <!-- Overview -->
     <string name="overview_title">%s\'s Overview</string>
@@ -133,6 +125,23 @@
     <string name="premium_unlocked">Budget+ Premium unlocked!</string>
     <string name="premium_acknowledge_fail">Payment can\'t be acknowledged, please come back later.</string>
     <string name="premium_payment_pending">Your payment is still pending, come back later.</string>
+
+    <!-- Settings -->
+    <string name="settings_title">%s\'s Settings</string>
+    <string name="settings_description">Settings</string>
+    <string name="settings_rename_user">Rename User</string>
+    <string name="settings_rename_book">Rename Book</string>
+    <string name="settings_view_members">View Members</string>
+    <string name="settings_logout">Logout</string>
+    <string name="settings_delete_book">Delete Book</string>
+    <string name="settings_leave_book">Leave Book</string>
+    <string name="settings_confirm_delete">Are you sure you want to delete %s?</string>
+    <string name="settings_confirm_leave">Are you sure you want to leave %s?</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_input_vibration">Input Vibration</string>
+    <string name="settings_rate_us">Rate Us on Google Play</string>
+    <string name="settings_contact_us">Contact Us</string>
+    <string name="settings_no_email_app_found">No email app found</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>

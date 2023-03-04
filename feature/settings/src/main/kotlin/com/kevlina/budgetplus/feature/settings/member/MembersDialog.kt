@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.member
+package com.kevlina.budgetplus.feature.settings.member
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,7 +49,7 @@ import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 
 @Composable
-fun MembersDialog(
+internal fun MembersDialog(
     onDismiss: () -> Unit,
 ) {
 

@@ -29,7 +29,7 @@ fun CategoryCell(
     onClick: () -> Unit,
 ) {
 
-    val elevation by animateDpAsState(if (isDragging) 16.dp else 0.dp)
+    val elevation by animateDpAsState(if (isDragging) 16.dp else 0.dp, label = "elevationAnimation")
 
     Surface(
         shape = RoundedCornerShape(12.dp),

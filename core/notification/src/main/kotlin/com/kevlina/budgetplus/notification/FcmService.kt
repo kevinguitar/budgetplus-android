@@ -50,7 +50,7 @@ class FcmService : FirebaseMessagingService() {
         val contentIntent = Intent(Intent.ACTION_VIEW)
         contentIntent.data = if (channelId == CHANNEL_NEW_MEMBER) {
             // Open the record screen and show the members dialog
-            "$APP_DEEPLINK/${AddDest.Record.route}?$ARG_SHOW_MEMBERS=true"
+            "$APP_DEEPLINK/${AddDest.Settings.route}?$ARG_SHOW_MEMBERS=true"
         } else {
             message.data["url"] ?: "$APP_DEEPLINK/${AddDest.Record.route}"
         }.toUri()

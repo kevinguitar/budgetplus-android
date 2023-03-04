@@ -8,6 +8,10 @@
         <provider
             android:authorities="com.facebook.katana.provider.PlatformProvider"
             android:exported="false" />
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
     </queries>
 
     <application
@@ -19,6 +23,7 @@
         android:localeConfig="@xml/locals_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
+
         <profileable
             android:shell="true"
             tools:targetApi="29" />
@@ -29,11 +34,18 @@
             android:exported="true"
             android:theme="@style/ComposeActivityStyle"
             android:windowSoftInputMode="adjustNothing">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -46,6 +58,7 @@
                 <data android:pathPrefix="/join" />
                 <data android:pathPrefix="/record" />
                 <data android:pathPrefix="/overview" />
+                <data android:pathPrefix="/settings" />
             </intent-filter>
         </activity>
 

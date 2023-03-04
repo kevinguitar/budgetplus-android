@@ -9,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_URL
+import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -39,8 +41,13 @@ class BookActivity : ComponentActivity() {
         // When the app is in the background, the fcm won't go through the service impl, so we need
         // to check the intent extras manually, if the url is presented, simply pass it as data.
         val url = intent.extras?.getString(ARG_URL)
-        if (url != null) {
-            intent.data = url.toUri()
+        when {
+            url != null -> intent.data = url.toUri()
+
+            // When the user open the settings from app preference.
+            intent.action == Intent.ACTION_APPLICATION_PREFERENCES -> {
+                intent.data = "$APP_DEEPLINK/${AddDest.Settings.route}".toUri()
+            }
         }
         super.onCreate(savedInstanceState)
 

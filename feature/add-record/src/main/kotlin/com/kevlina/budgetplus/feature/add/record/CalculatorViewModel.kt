@@ -1,9 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
@@ -11,6 +8,7 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +21,7 @@ import javax.inject.Inject
 
 @Stable
 class CalculatorViewModel @Inject constructor(
-    private val vibrator: Vibrator?,
+    private val vibrator: VibratorManager?,
     private val toaster: Toaster?,
 ) {
 
@@ -44,7 +42,7 @@ class CalculatorViewModel @Inject constructor(
     val recordFlow: EventFlow<Context> = _recordFlow.asStateFlow()
 
     fun onInput(btn: CalculatorButton) {
-        vibrate()
+        vibrator?.vibrate()
 
         val currentPrice = priceText.value
         when (btn) {
@@ -98,7 +96,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun onCalculatorAction(context: Context, action: CalculatorAction) {
-        vibrate()
+        vibrator?.vibrate()
         when {
             action == CalculatorAction.Clear -> clearPrice()
             needEvaluate.value -> evaluate()
@@ -114,17 +112,6 @@ class CalculatorViewModel @Inject constructor(
         when {
             currentPrice.length == 1 -> _priceText.value = EMPTY_PRICE
             currentPrice.isNotEmpty() -> _priceText.value = currentPrice.dropLast(1)
-        }
-    }
-
-    private val vibrationDuration get() = 2L
-
-    private fun vibrate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator?.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator?.vibrate(vibrationDuration)
         }
     }
 

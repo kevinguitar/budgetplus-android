@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GroupAdd
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
@@ -27,14 +29,10 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
-import com.kevlina.budgetplus.feature.menu.BookScreenMenu
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
-fun RecordScreen(
-    navigator: Navigator,
-    showMembers: Boolean,
-) {
+fun RecordScreen(navigator: Navigator) {
 
     val vm = hiltViewModel<RecordViewModel>()
     val context = LocalContext.current
@@ -66,8 +64,15 @@ fun RecordScreen(
                         )
                     }
                 )
-            },
-            dropdownMenu = { BookScreenMenu(navigator, showMembers) }
+
+                MenuAction(
+                    imageVector = Icons.Rounded.Settings,
+                    description = stringResource(id = R.string.settings_description),
+                    onClick = {
+                        navigator.navigate(AddDest.Settings.route)
+                    }
+                )
+            }
         )
 
         AdaptiveScreen(

@@ -92,16 +92,7 @@
 
     <!-- Menu -->
     <string name="menu_share_book">点击下面的连结跟我一起记帐吧！\n%s</string>
-    <string name="menu_open">目录</string>
-    <string name="menu_rename_user">编辑使用者名称</string>
-    <string name="menu_rename_book">重新命名帐本</string>
-    <string name="menu_view_members">查看成员</string>
     <string name="menu_create_book">创建新帐本</string>
-    <string name="menu_logout">登出</string>
-    <string name="menu_delete_book">删除帐本</string>
-    <string name="menu_leave_book">离开帐本</string>
-    <string name="menu_confirm_delete">确定要删除“%s”吗？</string>
-    <string name="menu_confirm_leave">确定要离开“%s”吗？</string>
 
     <!-- Overview -->
     <string name="overview_title">%s总览</string>
@@ -133,6 +124,23 @@
     <string name="premium_unlocked">极简记帐进阶版，解锁！</string>
     <string name="premium_acknowledge_fail">无法确认款项，请稍后再试</string>
     <string name="premium_payment_pending">您的款项正在处理中，请稍后再回来</string>
+
+    <!-- Settings -->
+    <string name="settings_title">%s设定</string>
+    <string name="settings_description">设定</string>
+    <string name="settings_rename_user">编辑使用者名称</string>
+    <string name="settings_rename_book">重新命名帐本</string>
+    <string name="settings_view_members">查看成员</string>
+    <string name="settings_logout">登出</string>
+    <string name="settings_delete_book">删除帐本</string>
+    <string name="settings_leave_book">离开帐本</string>
+    <string name="settings_confirm_delete">确定要删除“%s”吗？</string>
+    <string name="settings_confirm_leave">确定要离开“%s”吗？</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_input_vibration">输入震动反馈</string>
+    <string name="settings_rate_us">在 Google Play 上评价</string>
+    <string name="settings_contact_us">与我们联系</string>
+    <string name="settings_no_email_app_found">找不到 email 应用程式</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">点击分享连结，邀请好友们一起记帐！</string>

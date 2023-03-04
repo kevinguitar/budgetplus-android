@@ -28,7 +28,6 @@ fun TopBar(
     titleContent: @Composable (() -> Unit)? = null,
     navigateUp: (() -> Unit)? = null,
     menuActions: @Composable (() -> Unit)? = null,
-    dropdownMenu: @Composable (() -> Unit)? = null,
 ) {
 
     Row(
@@ -72,10 +71,6 @@ fun TopBar(
 
         if (menuActions != null) {
             menuActions()
-        }
-
-        if (dropdownMenu != null) {
-            dropdownMenu()
         }
     }
 }

@@ -66,13 +66,14 @@ import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
+import com.kevlina.budgetplus.feature.settings.SettingsScreen
 import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
 fun BookBinding(
     viewModel: BookViewModel,
-    newIntent: Intent?
+    newIntent: Intent?,
 ) {
 
     val navController = rememberNavController()
@@ -116,28 +117,18 @@ fun BookBinding(
 
 fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
-    val recordRoute = "${AddDest.Record.route}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
-
     navigation(
-        startDestination = recordRoute,
+        startDestination = AddDest.Record.route,
         route = BookTab.Add.route
     ) {
 
         composable(
-            route = recordRoute,
-            arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
-                type = NavType.BoolType
-                defaultValue = false
-            }),
+            route = AddDest.Record.route,
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/$recordRoute" }
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.Record.route}" }
             )
-        ) { entry ->
-            val args = entry.arguments ?: Bundle.EMPTY
-            RecordScreen(
-                navigator = navController.toNavigator(),
-                showMembers = args.getBoolean(ARG_SHOW_MEMBERS, false)
-            )
+        ) {
+            RecordScreen(navigator = navController.toNavigator())
         }
 
         composable(
@@ -150,6 +141,25 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
             EditCategoryScreen(
                 navigator = navController.toNavigator(),
                 type = args.getSerializableCompat(ARG_TYPE)
+            )
+        }
+
+        val settingsRoute = "${AddDest.Settings.route}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
+
+        composable(
+            route = settingsRoute,
+            arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
+                type = NavType.BoolType
+                defaultValue = false
+            }),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$APP_DEEPLINK/$settingsRoute" }
+            )
+        ) { entry ->
+            val args = entry.arguments ?: Bundle.EMPTY
+            SettingsScreen(
+                navigator = navController.toNavigator(),
+                showMembers = args.getBoolean(ARG_SHOW_MEMBERS, false)
             )
         }
 

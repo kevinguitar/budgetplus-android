@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.member
+package com.kevlina.budgetplus.feature.settings.member
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MembersViewModel @Inject constructor(
+internal class MembersViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val userRepo: UserRepo,

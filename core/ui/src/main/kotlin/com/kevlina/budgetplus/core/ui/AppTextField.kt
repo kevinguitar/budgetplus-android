@@ -129,7 +129,7 @@ private fun AppTextFieldInternal(
         modifier = modifier
             .height(56.dp)
             .background(
-                color = LocalAppColors.current.primaryLight,
+                color = LocalAppColors.current.lightBg,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 16.dp)

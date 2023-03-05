@@ -60,7 +60,7 @@ internal fun BatchConfigSelector() {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(LocalAppColors.current.primaryLight)
+            .background(LocalAppColors.current.lightBg)
             .padding(16.dp)
     ) {
 

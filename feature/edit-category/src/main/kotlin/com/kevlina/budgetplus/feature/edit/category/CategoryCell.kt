@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,8 +32,7 @@ fun CategoryCell(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = LocalAppColors.current.light,
-        border = BorderStroke(1.dp, LocalAppColors.current.primaryLight),
+        color = LocalAppColors.current.lightBg,
         elevation = elevation,
         onClick = onClick,
         modifier = modifier

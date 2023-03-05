@@ -55,7 +55,7 @@ fun RecordContentRegular(navigator: Navigator) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(LocalAppColors.current.primaryLight)
+                .background(LocalAppColors.current.lightBg)
         ) {
 
             Calculator(

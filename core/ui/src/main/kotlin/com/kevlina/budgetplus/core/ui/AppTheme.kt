@@ -15,7 +15,7 @@ fun AppTheme(content: @Composable () -> Unit) {
 
     val customColors = CustomColors(
         light = Color(0xFFFFF3E0),
-        lightBg = Color(0x33C1A185),
+        lightBg = Color(0xFFF2E2CD),
         primaryLight = Color(0xFFE0CCB1),
         primary = Color(0xFFC1A185),
         primarySemiDark = Color(0xFFB0836B),

@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart
-import androidx.compose.material.icons.rounded.List
+import androidx.compose.material.icons.rounded.Segment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,7 +40,7 @@ fun OverviewScreen(navigator: Navigator) {
             menuActions = {
                 MenuAction(
                     imageVector = when (mode) {
-                        OverviewMode.AllRecords -> Icons.Rounded.List
+                        OverviewMode.AllRecords -> Icons.Rounded.Segment
                         OverviewMode.GroupByCategories -> Icons.Rounded.BarChart
                     },
                     description = stringResource(id = R.string.overview_details_title),

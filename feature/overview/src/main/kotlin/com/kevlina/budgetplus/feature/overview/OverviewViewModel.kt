@@ -97,8 +97,9 @@ internal class OverviewViewModel @Inject constructor(
             }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val recordList: StateFlow<List<Record>?> = records.map { it?.toList() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+    val recordList: StateFlow<List<Record>?> = records.map { records ->
+        records?.toList()?.sortedByDescending { it.createdOn }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
         records ?: return@map null

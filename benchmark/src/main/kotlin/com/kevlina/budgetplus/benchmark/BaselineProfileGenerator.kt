@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // Use the latest SDK to generate the file
-@SdkSuppress(minSdkVersion = Build.VERSION_CODES.S_V2)
+@SdkSuppress(minSdkVersion = Build.VERSION_CODES.TIRAMISU)
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class BaselineProfileGenerator {

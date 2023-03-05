@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ fun AppButton(
     enabled: Boolean = true,
     color: Color = LocalAppColors.current.dark,
     shape: Shape = RoundedCornerShape(12.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
     content: @Composable RowScope.() -> Unit,
 ) {
     Surface(
@@ -37,7 +39,7 @@ fun AppButton(
         interactionSource = remember { MutableInteractionSource() }
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+            modifier = Modifier.padding(contentPadding),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             content = content

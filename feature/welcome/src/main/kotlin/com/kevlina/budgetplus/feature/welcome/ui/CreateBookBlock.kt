@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,7 +40,7 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 fun CreateBookBlock(
     modifier: Modifier,
     createBook: (String) -> Unit,
-    isWideMode: Boolean = false
+    isWideMode: Boolean = false,
 ) {
 
     var value by remember { mutableStateOf("") }
@@ -130,8 +131,10 @@ fun CreateBookBlock(
                     onClick = { createBook(value) },
                     enabled = value.isNotBlank(),
                     shape = CircleShape,
+                    contentPadding = PaddingValues(),
                     modifier = Modifier.size(56.dp)
                 ) {
+
                     AppText(
                         text = stringResource(id = R.string.cta_go),
                         color = LocalAppColors.current.light,

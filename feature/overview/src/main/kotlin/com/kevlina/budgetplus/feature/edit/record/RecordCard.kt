@@ -42,13 +42,6 @@ internal fun RecordCard(
     onEdit: () -> Unit,
 ) {
 
-    val pillModifier = Modifier
-        .background(
-            color = LocalAppColors.current.primary,
-            shape = CircleShape
-        )
-        .padding(vertical = 1.dp, horizontal = 8.dp)
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,25 +97,11 @@ internal fun RecordCard(
                     )
 
                     if (showCategory) {
-
-                        AppText(
-                            text = item.category,
-                            fontSize = FontSize.Small,
-                            color = LocalAppColors.current.light,
-                            singleLine = true,
-                            modifier = pillModifier
-                        )
+                        PillLabel(text = item.category)
                     }
 
-                    AppText(
-                        text = item.author?.name.orEmpty(),
-                        fontSize = FontSize.Small,
-                        color = LocalAppColors.current.light,
-                        singleLine = true,
-                        modifier = pillModifier
-                    )
+                    PillLabel(text = item.author?.name.orEmpty())
                 }
-
             }
 
             AppText(
@@ -142,6 +121,22 @@ internal fun RecordCard(
             )
         }
     }
+}
+
+@Composable
+private fun PillLabel(text: String) {
+    AppText(
+        text = text,
+        fontSize = FontSize.Small,
+        color = LocalAppColors.current.light,
+        singleLine = true,
+        modifier = Modifier
+            .background(
+                color = LocalAppColors.current.primary,
+                shape = CircleShape
+            )
+            .padding(vertical = 1.dp, horizontal = 8.dp)
+    )
 }
 
 @Preview(showBackground = true)

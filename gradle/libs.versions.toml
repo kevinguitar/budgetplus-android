@@ -18,12 +18,13 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 # @pin https://developer.android.com/jetpack/androidx/releases/activity#version_18_2
-compose-activity = "androidx.activity:activity-compose:1.7.0-beta02"
+# @pin https://issuetracker.google.com/issues/271430143
+compose-activity = "androidx.activity:activity-compose:1.6.1"
 compose-bom = "androidx.compose:compose-bom:2023.01.00"
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-material3 = "androidx.compose.material3:material3:1.1.0-alpha07"
+compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }

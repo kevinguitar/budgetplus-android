@@ -92,7 +92,6 @@
 
     <!-- Menu -->
     <string name="menu_share_book">Click the link to track expenses with me!\n%s</string>
-    <string name="menu_open">Open Menu</string>
     <string name="menu_create_book">Create A New Book</string>
 
     <!-- Overview -->

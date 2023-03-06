@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -98,7 +99,13 @@ internal class OverviewViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     val recordList: StateFlow<List<Record>?> = records.map { records ->
-        records?.toList()?.sortedByDescending { it.createdOn }
+        records
+            ?.map { record ->
+                val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
+                record.copy(author = author ?: record.author)
+            }
+            ?.sortedByDescending { it.createdOn }
+            ?.toList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->

@@ -13,7 +13,7 @@ import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.ForwardToInbox
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Logout
-import androidx.compose.material.icons.rounded.StarRate
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.runtime.Composable
@@ -145,7 +145,7 @@ internal fun SettingsContent(
 
         SettingsItem(
             text = stringResource(id = R.string.settings_rate_us),
-            icon = Icons.Rounded.StarRate,
+            icon = Icons.Rounded.Star,
             onClick = { vm.rateUs(context) }
         )
 

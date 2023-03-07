@@ -78,6 +78,7 @@ internal fun SettingsContent(
             roundTop = true,
             roundBottom = isPremium,
             onClick = {
+                vm.trackBatchRecordClicked()
                 if (isPremium) {
                     navigator.navigate(AddDest.BatchRecord.route)
                 } else {

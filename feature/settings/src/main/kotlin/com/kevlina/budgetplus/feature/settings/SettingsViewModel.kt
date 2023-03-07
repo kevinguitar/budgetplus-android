@@ -56,6 +56,10 @@ internal class SettingsViewModel @Inject constructor(
     val currentUsername get() = authManager.userState.value?.name
     val currentBookName get() = bookRepo.bookState.value?.name
 
+    fun trackBatchRecordClicked() {
+        tracker.logEvent("settings_batch_record_click")
+    }
+
     fun renameUser(newName: String) {
         viewModelScope.launch {
             try {
@@ -83,6 +87,7 @@ internal class SettingsViewModel @Inject constructor(
             data = "package:$appPackage".toUri()
         }
         context.startActivity(intent)
+        tracker.logEvent("settings_language_click")
     }
 
     fun rateUs(context: Context) {
@@ -90,6 +95,7 @@ internal class SettingsViewModel @Inject constructor(
             data = "https://play.google.com/store/apps/details?id=$appPackage".toUri()
         }
         context.startActivity(intent)
+        tracker.logEvent("settings_rate_us_click")
     }
 
     fun contactUs(context: Context) {
@@ -101,6 +107,7 @@ internal class SettingsViewModel @Inject constructor(
         }
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
+            tracker.logEvent("settings_contact_us_click")
         } else {
             toaster.showMessage(R.string.settings_no_email_app_found)
         }

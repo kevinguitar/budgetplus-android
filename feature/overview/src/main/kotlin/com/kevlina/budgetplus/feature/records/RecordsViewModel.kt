@@ -11,9 +11,9 @@ import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.utils.resolveAuthor
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -52,10 +52,7 @@ class RecordsViewModel @AssistedInject constructor(
                 it.type == type && it.category == category &&
                     (authorId == null || it.author?.id == authorId)
             }
-            .map { record ->
-                val author = record.author?.id?.let(userRepo::getUser)?.toAuthor()
-                record.copy(author = author ?: record.author)
-            }
+            .map(userRepo::resolveAuthor)
             .run {
                 when (sortMode) {
                     RecordsSortMode.Date -> sortedByDescending { it.createdOn }

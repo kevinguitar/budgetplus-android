@@ -26,11 +26,11 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.ui.AppTextField
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
@@ -86,7 +86,7 @@ fun RecordInfo(
             modifier = Modifier.fillMaxWidth()
         )
 
-        AppTextField(
+        TextField(
             value = note,
             onValueChange = vm::setNote,
             title = stringResource(id = R.string.record_note),
@@ -113,7 +113,7 @@ fun RecordInfo(
                     .padding(vertical = 8.dp)
             )
 
-            AppTextField(
+            TextField(
                 value = priceText,
                 onValueChange = {},
                 fontSize = FontSize.Header,

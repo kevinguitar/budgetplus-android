@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.ui.AppButton
-import com.kevlina.budgetplus.core.ui.AppText
-import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
+import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.feature.add.record.ui.CategoriesGrid
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 
@@ -64,7 +64,7 @@ internal fun BatchRecordContent() {
             modifier = Modifier.fillMaxWidth()
         )
 
-        AppTextField(
+        TextField(
             value = note,
             onValueChange = vm::setNote,
             title = stringResource(id = R.string.record_note),
@@ -78,7 +78,7 @@ internal fun BatchRecordContent() {
             onDone = { focusManager.clearFocus() }
         )
 
-        AppTextField(
+        TextField(
             value = priceText,
             onValueChange = vm::setPriceText,
             fontSize = FontSize.Header,
@@ -90,13 +90,13 @@ internal fun BatchRecordContent() {
 
         BatchConfigSelector()
 
-        AppButton(
+        Button(
             onClick = vm::batchRecord,
             enabled = isBatchButtonEnabled,
             modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
         ) {
 
-            AppText(
+            Text(
                 text = stringResource(id = R.string.batch_record_cta),
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Large,

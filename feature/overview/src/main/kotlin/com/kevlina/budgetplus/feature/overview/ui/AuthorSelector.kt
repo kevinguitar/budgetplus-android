@@ -19,11 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
@@ -53,7 +53,7 @@ fun AuthorSelector() {
 
             Box {
 
-                AppText(
+                Text(
                     text = selectedAuthor?.name
                         ?: stringResource(id = R.string.overview_author_everyone),
                     modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)

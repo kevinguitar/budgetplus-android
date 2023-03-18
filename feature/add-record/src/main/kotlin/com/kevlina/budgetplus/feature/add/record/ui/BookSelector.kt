@@ -27,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.DropdownMenuDivider
@@ -36,6 +35,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.add.record.BookSelectorViewModel
 import com.kevlina.budgetplus.feature.add.record.CreateBookBtnState
@@ -62,7 +62,7 @@ fun BookSelector(navigator: Navigator) {
             )
         ) {
 
-            AppText(
+            Text(
                 text = bookState?.name.orEmpty(),
                 fontSize = FontSize.Header,
                 fontWeight = FontWeight.SemiBold,
@@ -94,7 +94,7 @@ fun BookSelector(navigator: Navigator) {
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
 
-                        AppText(
+                        Text(
                             text = book.name,
                             color = LocalAppColors.current.primarySemiDark,
                             fontSize = FontSize.SemiLarge

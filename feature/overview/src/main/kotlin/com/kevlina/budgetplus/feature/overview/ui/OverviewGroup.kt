@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.roundUpPercentageText
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
 
@@ -87,14 +87,14 @@ fun OverviewGroup(
                         )
                 )
 
-                AppText(
+                Text(
                     text = category,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
-                AppText(
+                Text(
                     text = sum.dollar,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
@@ -102,7 +102,7 @@ fun OverviewGroup(
                 )
             }
 
-            AppText(
+            Text(
                 text = "${(percentage * 100).roundUpPercentageText}%",
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Small,

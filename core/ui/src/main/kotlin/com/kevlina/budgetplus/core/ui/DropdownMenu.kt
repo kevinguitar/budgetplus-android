@@ -72,7 +72,7 @@ fun DropdownItem(
                     icon()
                 }
 
-                AppText(
+                Text(
                     text = name,
                     color = textColor,
                     fontSize = FontSize.SemiLarge

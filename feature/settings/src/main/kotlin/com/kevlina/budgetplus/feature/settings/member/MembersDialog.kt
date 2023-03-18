@@ -39,7 +39,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.FontSize
@@ -47,6 +46,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.IconButton
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 internal fun MembersDialog(
@@ -67,7 +67,7 @@ internal fun MembersDialog(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            AppText(
+            Text(
                 text = stringResource(id = R.string.members_title),
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold
@@ -153,7 +153,7 @@ private fun MemberCard(
             )
         }
 
-        AppText(
+        Text(
             text = member.name.orEmpty(),
             modifier = Modifier
                 .weight(1F)
@@ -162,7 +162,7 @@ private fun MemberCard(
 
         when {
             member.id == ownerId -> {
-                AppText(
+                Text(
                     text = stringResource(id = R.string.members_owner_label),
                     fontSize = FontSize.Small,
                     fontWeight = FontWeight.Medium,

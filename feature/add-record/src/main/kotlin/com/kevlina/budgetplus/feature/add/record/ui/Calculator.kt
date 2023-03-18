@@ -26,12 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Surface
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 
 enum class CalculatorButton(val text: String) {
@@ -147,7 +147,7 @@ private fun ColumnScope.CalculatorBtn(
                     tint = LocalAppColors.current.light
                 )
 
-                else -> AppText(
+                else -> Text(
                     text = button.text,
                     textAlign = TextAlign.Center,
                     fontSize = FontSize.HeaderLarge,
@@ -176,7 +176,7 @@ private fun RowScope.CalculatorActionBtn(
 
         Box(contentAlignment = Alignment.Center) {
 
-            AppText(
+            Text(
                 text = text,
                 textAlign = TextAlign.Center,
                 fontSize = FontSize.Header,

@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.BatchFrequency
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
@@ -37,6 +36,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import java.time.LocalDate
@@ -92,7 +92,7 @@ private fun DateSelector(
             modifier = iconModifier
         )
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.batch_record_start_date),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
@@ -137,7 +137,7 @@ private fun FrequencySelector(
             modifier = iconModifier
         )
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.batch_record_frequency),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
@@ -150,7 +150,7 @@ private fun FrequencySelector(
                 .padding(vertical = 4.dp)
         ) {
 
-            AppText(
+            Text(
                 text = stringResource(id = frequency.stringRes),
                 fontSize = fontSize,
             )
@@ -200,7 +200,7 @@ private fun TimesSelector(
             modifier = iconModifier
         )
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.batch_record_times),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
@@ -213,7 +213,7 @@ private fun TimesSelector(
                 .padding(vertical = 4.dp)
         ) {
 
-            AppText(
+            Text(
                 text = times.toString(),
                 fontSize = fontSize,
             )

@@ -34,9 +34,9 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.consume
-import com.kevlina.budgetplus.core.ui.AppSwitch
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.InputDialog
+import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 import kotlinx.coroutines.flow.launchIn
 
@@ -133,7 +133,7 @@ internal fun SettingsContent(
             roundTop = !vm.canSelectLanguage,
             verticalPadding = 4.dp,
             action = {
-                AppSwitch(
+                Switch(
                     checked = vibrateOnInput,
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
                     modifier = Modifier

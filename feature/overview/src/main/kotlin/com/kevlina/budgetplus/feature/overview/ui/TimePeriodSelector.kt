@@ -24,11 +24,11 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
@@ -55,16 +55,16 @@ fun TimePeriodSelector() {
             tint = LocalAppColors.current.dark
         )
 
-        AppText(
+        Text(
             text = fromDate.mediumFormatted,
             modifier = Modifier
                 .rippleClick { showFromDatePicker = true }
                 .padding(all = 8.dp)
         )
 
-        AppText(text = stringResource(id = R.string.date_to))
+        Text(text = stringResource(id = R.string.date_to))
 
-        AppText(
+        Text(
             text = untilDate.mediumFormatted,
             modifier = Modifier
                 .rippleClick { showUntilDatePicker = true }
@@ -155,7 +155,7 @@ private fun TimePeriodPill(
             is TimePeriod.Custom -> error("Custom period doesn't shown in pill.")
         }
 
-        AppText(
+        Text(
             text = stringResource(id = titleRes),
             color = LocalAppColors.current.light,
             singleLine = true,

@@ -37,7 +37,7 @@ fun SingleDatePicker(
             )
         }
 
-        AppText(
+        Text(
             text = when {
                 date.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
                 date.plusDays(1).isEqual(LocalDate.now()) -> {

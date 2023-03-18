@@ -54,7 +54,7 @@ fun TopBar(
         }
 
         when {
-            title != null -> AppText(
+            title != null -> Text(
                 text = title,
                 fontSize = FontSize.Header,
                 fontWeight = FontWeight.SemiBold,

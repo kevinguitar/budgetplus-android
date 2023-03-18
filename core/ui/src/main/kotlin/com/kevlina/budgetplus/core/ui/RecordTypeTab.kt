@@ -87,7 +87,7 @@ private fun TypePill(
         color = bgColor,
     ) {
 
-        AppText(
+        Text(
             text = text,
             color = textColor,
             fontSize = FontSize.SemiLarge,

@@ -29,12 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppButton
-import com.kevlina.budgetplus.core.ui.AppText
-import com.kevlina.budgetplus.core.ui.AppTextField
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.TextField
 
 @Composable
 fun CreateBookBlock(
@@ -71,7 +71,7 @@ fun CreateBookBlock(
                     modifier = Modifier.size(24.dp)
                 )
 
-                AppText(
+                Text(
                     text = stringResource(id = R.string.app_name),
                     color = LocalAppColors.current.primary,
                 )
@@ -103,7 +103,7 @@ fun CreateBookBlock(
                 .padding(all = 24.dp)
         ) {
 
-            AppText(
+            Text(
                 text = stringResource(id = R.string.welcome_create_book_title),
                 color = LocalAppColors.current.primary,
                 fontSize = FontSize.Large,
@@ -114,7 +114,7 @@ fun CreateBookBlock(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
-                AppTextField(
+                TextField(
                     value = value,
                     onValueChange = { value = it },
                     title = stringResource(id = R.string.book_name_title),
@@ -127,7 +127,7 @@ fun CreateBookBlock(
                     }
                 )
 
-                AppButton(
+                Button(
                     onClick = { createBook(value) },
                     enabled = value.isNotBlank(),
                     shape = CircleShape,
@@ -135,7 +135,7 @@ fun CreateBookBlock(
                     modifier = Modifier.size(56.dp)
                 ) {
 
-                    AppText(
+                    Text(
                         text = stringResource(id = R.string.cta_go),
                         color = LocalAppColors.current.light,
                         fontWeight = FontWeight.Medium

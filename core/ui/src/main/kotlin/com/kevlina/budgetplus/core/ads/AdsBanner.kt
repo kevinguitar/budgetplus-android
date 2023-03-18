@@ -26,9 +26,9 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import kotlin.math.roundToInt
 
 @SuppressLint("VisibleForTests")
@@ -58,7 +58,7 @@ fun AdsBanner() {
                     modifier = Modifier.size(20.dp)
                 )
 
-                AppText(
+                Text(
                     text = stringResource(id = R.string.ads_not_available),
                     color = LocalAppColors.current.dark,
                 )

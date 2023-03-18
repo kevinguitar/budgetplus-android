@@ -22,10 +22,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 
 @Composable
@@ -90,7 +90,7 @@ fun CategoryCard(
             .rippleClick(onClick = onClick)
     ) {
 
-        AppText(
+        Text(
             text = category,
             singleLine = true,
             color = LocalAppColors.current.light,
@@ -125,7 +125,7 @@ private fun EditCategoryButton(onClick: () -> Unit) {
                 modifier = Modifier.size(16.dp)
             )
 
-            AppText(
+            Text(
                 text = stringResource(id = R.string.cta_edit),
                 singleLine = true,
                 color = LocalAppColors.current.light

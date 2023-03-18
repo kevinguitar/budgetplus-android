@@ -40,7 +40,7 @@ fun InputDialog(
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-            AppTextField(
+            TextField(
                 value = name,
                 onValueChange = { name = it },
                 title = title,
@@ -54,7 +54,7 @@ fun InputDialog(
                 }
             )
 
-            AppButton(
+            Button(
                 onClick = {
                     onButtonClicked(name.text.trim())
                     onDismiss()
@@ -63,7 +63,7 @@ fun InputDialog(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
 
-                AppText(
+                Text(
                     text = buttonText,
                     color = LocalAppColors.current.light,
                     fontWeight = FontWeight.Medium

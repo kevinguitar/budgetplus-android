@@ -14,10 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Surface
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 fun CategoryCell(
@@ -53,7 +53,7 @@ fun CategoryCell(
                 modifier = handlerModifier.size(20.dp)
             )
 
-            AppText(
+            Text(
                 text = category,
             )
         }

@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppButton(
+fun Button(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,

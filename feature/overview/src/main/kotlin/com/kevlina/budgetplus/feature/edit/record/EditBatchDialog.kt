@@ -13,11 +13,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppButton
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.AppText
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 internal fun EditBatchDialog(
@@ -37,7 +37,7 @@ internal fun EditBatchDialog(
                 .wrapContentHeight()
         ) {
 
-            AppText(
+            Text(
                 text = text,
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
@@ -48,15 +48,15 @@ internal fun EditBatchDialog(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                AppButton(onClick = onSelectOne) {
-                    AppText(
+                Button(onClick = onSelectOne) {
+                    Text(
                         text = stringResource(id = R.string.batch_record_only_this),
                         color = LocalAppColors.current.light,
                     )
                 }
 
-                AppButton(onClick = onSelectAll) {
-                    AppText(
+                Button(onClick = onSelectAll) {
+                    Text(
                         text = stringResource(id = R.string.batch_record_all_future_records),
                         color = LocalAppColors.current.light,
                     )

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppTextField(
+fun TextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -39,7 +39,7 @@ fun AppTextField(
         imeAction = ImeAction.Done
     ),
     onDone: (KeyboardActionScope.() -> Unit)? = null
-) = AppTextFieldInternal(modifier, title, fontSize) {
+) = TextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
         value = value,
@@ -57,7 +57,7 @@ fun AppTextField(
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.isEmpty() && placeholder != null) {
-                AppText(
+                Text(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
@@ -71,7 +71,7 @@ fun AppTextField(
 }
 
 @Composable
-fun AppTextField(
+fun TextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -84,7 +84,7 @@ fun AppTextField(
         imeAction = ImeAction.Done
     ),
     onDone: (KeyboardActionScope.() -> Unit)? = null
-) = AppTextFieldInternal(modifier, title, fontSize) {
+) = TextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
         value = value,
@@ -102,7 +102,7 @@ fun AppTextField(
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.text.isEmpty() && placeholder != null) {
-                AppText(
+                Text(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
@@ -116,7 +116,7 @@ fun AppTextField(
 }
 
 @Composable
-private fun AppTextFieldInternal(
+private fun TextFieldInternal(
     modifier: Modifier,
     title: String,
     fontSize: TextUnit,
@@ -135,7 +135,7 @@ private fun AppTextFieldInternal(
             .padding(horizontal = 16.dp)
     ) {
 
-        AppText(
+        Text(
             text = title,
             fontWeight = FontWeight.SemiBold,
             fontSize = fontSize,

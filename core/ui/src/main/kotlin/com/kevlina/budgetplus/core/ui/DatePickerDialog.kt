@@ -62,7 +62,7 @@ fun DatePickerDialog(
                     .padding(bottom = 16.dp, end = 16.dp)
             ) {
 
-                AppText(
+                Text(
                     text = stringResource(id = R.string.cta_cancel),
                     color = Color.White,
                     modifier = Modifier
@@ -71,7 +71,7 @@ fun DatePickerDialog(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 )
 
-                AppText(
+                Text(
                     text = stringResource(id = R.string.cta_ok),
                     color = Color.White,
                     modifier = Modifier

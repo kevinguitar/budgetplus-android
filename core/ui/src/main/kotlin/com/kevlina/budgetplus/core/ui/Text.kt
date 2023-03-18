@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
-fun AppText(
+fun Text(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = LocalAppColors.current.dark,

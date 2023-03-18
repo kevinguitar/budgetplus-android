@@ -34,7 +34,7 @@ fun ConfirmDialog(
                 .wrapContentHeight()
         ) {
 
-            AppText(
+            Text(
                 text = message,
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
@@ -45,15 +45,15 @@ fun ConfirmDialog(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                AppButton(onClick = onDismiss) {
-                    AppText(
+                Button(onClick = onDismiss) {
+                    Text(
                         text = cancelText,
                         color = LocalAppColors.current.light,
                     )
                 }
 
-                AppButton(onClick = onConfirm) {
-                    AppText(
+                Button(onClick = onConfirm) {
+                    Text(
                         text = confirmText,
                         color = LocalAppColors.current.light,
                     )

@@ -16,10 +16,10 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 fun CollabBlock(modifier: Modifier) {
@@ -31,7 +31,7 @@ fun CollabBlock(modifier: Modifier) {
         modifier = modifier.background(LocalAppColors.current.primary)
     ) {
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.welcome_join_instruction),
             color = LocalAppColors.current.light,
             fontSize = FontSize.SemiLarge,

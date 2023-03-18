@@ -1,18 +1,18 @@
 package com.kevlina.budgetplus.core.ui
 
-import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.Switch as MaterialSwitch
 
 @Composable
-fun AppSwitch(
+fun Switch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
     modifier: Modifier = Modifier
 ) {
 
-    Switch(
+    MaterialSwitch(
         checked = checked,
         onCheckedChange = onCheckedChange,
         colors = SwitchDefaults.colors(

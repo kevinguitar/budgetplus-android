@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.dollar
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import kotlinx.coroutines.delay
 
 @Composable
@@ -50,7 +50,7 @@ fun BalanceFloatingLabel(
             )
     ) {
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.overview_balance, balance.dollar),
             color = LocalAppColors.current.light,
             fontWeight = FontWeight.Medium,

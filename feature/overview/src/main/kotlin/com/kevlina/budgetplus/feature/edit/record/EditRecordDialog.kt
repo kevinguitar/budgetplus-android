@@ -27,15 +27,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.ui.AppButton
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.AppText
-import com.kevlina.budgetplus.core.ui.AppTextField
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
+import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.time.LocalDate
 
@@ -94,7 +94,7 @@ internal fun EditRecordDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                AppText(
+                Text(
                     text = stringResource(id = R.string.record_edit_title),
                     fontSize = FontSize.Large,
                     fontWeight = FontWeight.SemiBold
@@ -105,7 +105,7 @@ internal fun EditRecordDialog(
                     modifier = Modifier.rippleClick { showDatePickerDialog = true }
                 )
 
-                AppTextField(
+                TextField(
                     value = name,
                     onValueChange = { name = it },
                     modifier = Modifier.focusRequester(nameFocus),
@@ -116,7 +116,7 @@ internal fun EditRecordDialog(
                     )
                 )
 
-                AppTextField(
+                TextField(
                     value = priceText,
                     onValueChange = { priceText = it },
                     modifier = Modifier.focusRequester(priceFocus),
@@ -137,21 +137,21 @@ internal fun EditRecordDialog(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 
-                    AppButton(onClick = {
+                    Button(onClick = {
                         if (editRecord.isBatched) {
                             showDeleteBatchDialog = true
                         } else {
                             showDeleteConfirmationDialog = true
                         }
                     }) {
-                        AppText(
+                        Text(
                             text = stringResource(id = R.string.cta_delete),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium
                         )
                     }
 
-                    AppButton(onClick = {
+                    Button(onClick = {
                         if (editRecord.isBatched) {
                             showEditBatchDialog = true
                         } else {
@@ -159,7 +159,7 @@ internal fun EditRecordDialog(
                             onDismiss()
                         }
                     }) {
-                        AppText(
+                        Text(
                             text = stringResource(id = R.string.cta_save),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium

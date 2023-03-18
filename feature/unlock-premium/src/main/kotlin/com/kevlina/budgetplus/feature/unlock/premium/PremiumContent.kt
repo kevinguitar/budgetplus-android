@@ -26,12 +26,12 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppButton
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 fun PremiumContent() {
@@ -61,7 +61,7 @@ fun PremiumContent() {
             modifier = Modifier.size(280.dp, 200.dp)
         )
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.premium_unlock),
             fontSize = FontSize.HeaderLarge,
             fontWeight = FontWeight.SemiBold
@@ -75,7 +75,7 @@ fun PremiumContent() {
             )
         } else {
 
-            AppText(
+            Text(
                 text = stringResource(id = R.string.premium_pricing, premiumPricing.orEmpty()),
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
@@ -85,21 +85,21 @@ fun PremiumContent() {
             )
         }
 
-        AppText(
+        Text(
             text = stringResource(id = R.string.premium_description),
             fontSize = FontSize.SemiLarge,
             lineHeight = 32.sp,
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        AppButton(
+        Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             enabled = premiumPricing != null,
             onClick = { viewModel.getPremium(context) }
         ) {
-            AppText(
+            Text(
                 text = stringResource(id = R.string.premium_unlock_cta),
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Large,

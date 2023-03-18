@@ -20,12 +20,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.ui.AppButton
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.AppText
-import com.kevlina.budgetplus.core.ui.AppTextField
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.TextField
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -62,7 +62,7 @@ fun EditCategoryDialog(
 
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
-            AppTextField(
+            TextField(
                 value = name,
                 onValueChange = { name = it },
                 title = stringResource(id = R.string.category_title),
@@ -81,11 +81,11 @@ fun EditCategoryDialog(
             ) {
 
                 if (mode is CategoryEditMode.Rename) {
-                    AppButton(onClick = {
+                    Button(onClick = {
                         onDelete()
                         onDismiss()
                     }) {
-                        AppText(
+                        Text(
                             text = stringResource(id = R.string.cta_delete),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium
@@ -93,7 +93,7 @@ fun EditCategoryDialog(
                     }
                 }
 
-                AppButton(
+                Button(
                     onClick = {
                         onConfirm(name.text)
                         onDismiss()
@@ -104,7 +104,7 @@ fun EditCategoryDialog(
                         CategoryEditMode.Add -> R.string.cta_add
                         is CategoryEditMode.Rename -> R.string.cta_rename
                     }
-                    AppText(
+                    Text(
                         text = stringResource(id = textRes),
                         color = LocalAppColors.current.light,
                         fontWeight = FontWeight.Medium

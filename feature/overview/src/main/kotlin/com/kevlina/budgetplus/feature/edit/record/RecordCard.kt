@@ -24,11 +24,11 @@ import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
 import java.time.LocalDate
@@ -80,7 +80,7 @@ internal fun RecordCard(
                         )
                     }
 
-                    AppText(
+                    Text(
                         text = item.name,
                         fontSize = FontSize.SemiLarge,
                         fontWeight = FontWeight.SemiBold,
@@ -92,7 +92,7 @@ internal fun RecordCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    AppText(
+                    Text(
                         text = LocalDate.ofEpochDay(item.date).shortFormatted,
                     )
 
@@ -104,7 +104,7 @@ internal fun RecordCard(
                 }
             }
 
-            AppText(
+            Text(
                 text = item.price.dollar,
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
@@ -125,7 +125,7 @@ internal fun RecordCard(
 
 @Composable
 private fun PillLabel(text: String) {
-    AppText(
+    Text(
         text = text,
         fontSize = FontSize.Small,
         color = LocalAppColors.current.light,

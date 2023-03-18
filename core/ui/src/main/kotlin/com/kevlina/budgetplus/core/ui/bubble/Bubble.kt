@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kevlina.budgetplus.core.ui.AppText
 import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 fun Bubble() {
@@ -80,7 +80,7 @@ fun Bubble() {
                         .background(color = LocalAppColors.current.dark.copy(alpha = 0.8F))
                 )
 
-                AppText(
+                Text(
                     text = stringResource(id = dest.textRes),
                     modifier = Modifier
                         .align(

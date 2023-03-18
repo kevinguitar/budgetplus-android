@@ -49,11 +49,12 @@ class BookViewModel @Inject constructor(
 
     fun handleJoinIntent(intent: Intent?): Boolean {
         val uri = intent?.data ?: return false
-        if (uri.pathSegments.firstOrNull() == "join") {
+        return if (uri.pathSegments.firstOrNull() == "join") {
             bookRepo.setPendingJoinRequest(uri.lastPathSegment)
-            return true
+            true
+        } else {
+            false
         }
-        return false
     }
 
     fun handleJoinRequest() {

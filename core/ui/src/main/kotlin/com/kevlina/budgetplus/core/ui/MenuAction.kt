@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 
+private const val DISABLED_ALPHA = 0.5F
+
 @Composable
 fun MenuAction(
     imageVector: ImageVector,
@@ -25,7 +27,7 @@ fun MenuAction(
             contentDescription = description,
             tint = LocalAppColors.current.light,
             modifier = Modifier.thenIf(!enabled) {
-                Modifier.alpha(0.5F)
+                Modifier.alpha(DISABLED_ALPHA)
             }
         )
     }

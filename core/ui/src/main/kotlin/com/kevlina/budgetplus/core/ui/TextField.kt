@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+private const val PLACEHOLDER_ALPHA = 0.5F
+
 @Composable
 fun TextField(
     value: String,
@@ -61,7 +63,7 @@ fun TextField(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
-                    modifier = Modifier.alpha(0.5F)
+                    modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
                 )
             }
 
@@ -106,7 +108,7 @@ fun TextField(
                     text = placeholder,
                     textAlign = TextAlign.End,
                     fontSize = fontSize,
-                    modifier = Modifier.alpha(0.5F)
+                    modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
                 )
             }
 

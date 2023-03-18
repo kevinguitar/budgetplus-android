@@ -59,5 +59,6 @@ object AppTheme {
     val packedMaxHeight: Dp get() = 480.dp
     val dialogShape: Shape get() = RoundedCornerShape(12.dp)
     val cardShape: Shape get() = RoundedCornerShape(12.dp)
+    val dividerAlpha: Float get() = 0.4F
 
 }

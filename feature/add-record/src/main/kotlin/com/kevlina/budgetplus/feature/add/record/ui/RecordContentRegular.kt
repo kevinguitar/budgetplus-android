@@ -47,7 +47,7 @@ fun RecordContentRegular(navigator: Navigator) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .alpha(0.4F)
+                .alpha(AppTheme.dividerAlpha)
                 .background(color = LocalAppColors.current.dark)
         )
 

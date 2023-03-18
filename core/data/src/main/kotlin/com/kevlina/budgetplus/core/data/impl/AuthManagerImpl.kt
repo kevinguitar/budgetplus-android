@@ -57,8 +57,7 @@ internal class AuthManagerImpl @Inject constructor(
     }
 
     override suspend fun renameUser(newName: String) {
-        val currentUser = Firebase.auth.currentUser
-            ?: throw IllegalStateException("Current user is null.")
+        val currentUser = Firebase.auth.currentUser ?: error("Current user is null.")
 
         currentUser.updateProfile(
             UserProfileChangeRequest.Builder()
@@ -145,6 +144,7 @@ internal class AuthManagerImpl @Inject constructor(
 
                 usersDb.get().document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
+                Timber.e(e)
                 // Can't find user in the db yet, set it with the data what we have in place.
                 usersDb.get().document(user.id)
                     .set(userWithExclusiveFields.copy(fcmToken = fcmToken))

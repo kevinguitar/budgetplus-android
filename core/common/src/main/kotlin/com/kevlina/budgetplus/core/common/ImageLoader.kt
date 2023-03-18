@@ -14,7 +14,7 @@ class ImageLoader @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
 
-    private val imageLoader = Coil.imageLoader(context)
+    private val coilLoader = Coil.imageLoader(context)
 
     suspend fun loadBitmap(url: String?): Bitmap? {
         url ?: return null
@@ -22,6 +22,6 @@ class ImageLoader @Inject constructor(
         val request = ImageRequest.Builder(context)
             .data(url)
             .build()
-        return imageLoader.execute(request).drawable?.toBitmap()
+        return coilLoader.execute(request).drawable?.toBitmap()
     }
 }

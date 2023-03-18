@@ -28,15 +28,6 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed class CategoryEditMode {
-
-    object Add : CategoryEditMode()
-
-    data class Rename(val currentName: String) : CategoryEditMode()
-
-}
-
 @Composable
 fun EditCategoryDialog(
     mode: CategoryEditMode,
@@ -117,6 +108,15 @@ fun EditCategoryDialog(
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
+}
+
+@Serializable
+sealed class CategoryEditMode {
+
+    object Add : CategoryEditMode()
+
+    data class Rename(val currentName: String) : CategoryEditMode()
+
 }
 
 @Preview

@@ -94,12 +94,15 @@ fun Bubble() {
                             x = 0.dp,
                             y = with(LocalDensity.current) {
                                 when (dest.textDirection) {
-                                    BubbleTextDirection.TopStart, BubbleTextDirection.TopEnd, BubbleTextDirection.TopCenter -> {
-                                        dest.offset.y.toDp() - dest.size.height.toDp()
-                                    }
-                                    BubbleTextDirection.BottomStart, BubbleTextDirection.BottomEnd, BubbleTextDirection.BottomCenter -> {
-                                        dest.offset.y.toDp() + dest.size.height.toDp()
-                                    }
+                                    BubbleTextDirection.TopStart,
+                                    BubbleTextDirection.TopEnd,
+                                    BubbleTextDirection.TopCenter,
+                                    -> dest.offset.y.toDp() - dest.size.height.toDp()
+
+                                    BubbleTextDirection.BottomStart,
+                                    BubbleTextDirection.BottomEnd,
+                                    BubbleTextDirection.BottomCenter,
+                                    -> dest.offset.y.toDp() + dest.size.height.toDp()
                                 }
                             }
                         )
@@ -121,7 +124,7 @@ class HollowShape(private val dest: BubbleDest) : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
-        density: Density
+        density: Density,
     ): Outline {
 
         val screenRectPath = Path().apply {

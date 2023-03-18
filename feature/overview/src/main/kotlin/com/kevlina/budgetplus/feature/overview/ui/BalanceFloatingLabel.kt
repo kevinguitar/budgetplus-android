@@ -30,7 +30,10 @@ fun BalanceFloatingLabel(
 ) {
 
     var zoomIn by rememberSaveable(balance) { mutableStateOf(true) }
-    val scale by animateFloatAsState(targetValue = if (zoomIn) 1.5F else 1F)
+    val scale by animateFloatAsState(
+        targetValue = if (zoomIn) 1.5F else 1F,
+        label = "BalanceFloatingLabel"
+    )
 
     LaunchedEffect(key1 = balance) {
         delay(1000)

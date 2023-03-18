@@ -8,15 +8,15 @@ import androidx.navigation.NavController
  */
 @Stable
 class Navigator(
-    private val _navigate: (String) -> Unit,
-    private val _up: () -> Boolean
+    private val doNavigate: (String) -> Unit,
+    private val doUp: () -> Boolean
 ) {
 
-    fun navigate(route: String) = _navigate(route)
-    fun navigateUp(): Boolean = _up()
+    fun navigate(route: String) = doNavigate(route)
+    fun navigateUp(): Boolean = doUp()
 }
 
 fun NavController.toNavigator() = Navigator(
-    _navigate = ::navigate,
-    _up = ::navigateUp
+    doNavigate = ::navigate,
+    doUp = ::navigateUp
 )

@@ -107,6 +107,7 @@ internal class BookRepoImpl @Inject constructor(
         val joinInfo = try {
             joinInfoProcessor.resolveJoinId(joinId)
         } catch (e: Exception) {
+            Timber.e(e)
             // Do not show any error on UI, the joinId could be the random referral from GP
             throw JoinBookException.JoinInfoNotFound
         }

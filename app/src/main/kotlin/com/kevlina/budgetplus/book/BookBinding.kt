@@ -56,6 +56,7 @@ import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.consume
 import com.kevlina.budgetplus.core.common.nav.originalNavValue
 import com.kevlina.budgetplus.core.common.nav.toNavigator
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
@@ -226,7 +227,7 @@ private fun BottomNav(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .alpha(0.4F)
+                .alpha(AppTheme.dividerAlpha)
                 .background(color = LocalAppColors.current.dark)
         )
 

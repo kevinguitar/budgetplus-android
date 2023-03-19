@@ -40,6 +40,8 @@ import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 import kotlinx.coroutines.flow.launchIn
 
+private const val VIBRATE_SWITCH_SCALE = 0.7F
+
 @Composable
 internal fun SettingsContent(
     navigator: Navigator,
@@ -138,7 +140,7 @@ internal fun SettingsContent(
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .scale(0.7F)
+                        .scale(VIBRATE_SWITCH_SCALE)
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput

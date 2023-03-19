@@ -20,6 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 
+private const val LOGO_TRANSLATION_Y_TOTAL = 10F
+private const val LOGO_BG_ANIMATE_DURATION = 10_000
+private const val LOGO_ANIMATE_DURATION = 1_000
+
 @Composable
 fun AnimatedLogo() {
 
@@ -29,17 +33,16 @@ fun AnimatedLogo() {
         initialValue = 0F,
         targetValue = 359F,
         animationSpec = infiniteRepeatable(
-            animation = tween(10_000, easing = LinearEasing),
+            animation = tween(LOGO_BG_ANIMATE_DURATION, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         )
     )
 
-    val logoTranslationYTotal = 10F
     val logoTranslationY by transition.animateFloat(
         initialValue = 0F,
-        targetValue = logoTranslationYTotal,
+        targetValue = LOGO_TRANSLATION_Y_TOTAL,
         animationSpec = infiniteRepeatable(
-            animation = tween(1_000),
+            animation = tween(LOGO_ANIMATE_DURATION),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -61,7 +64,7 @@ fun AnimatedLogo() {
                 .padding(start = 12.dp)
                 .size(160.dp)
                 .graphicsLayer {
-                    translationY = logoTranslationY - logoTranslationYTotal / 2
+                    translationY = logoTranslationY - LOGO_TRANSLATION_Y_TOTAL / 2
                 }
         )
     }

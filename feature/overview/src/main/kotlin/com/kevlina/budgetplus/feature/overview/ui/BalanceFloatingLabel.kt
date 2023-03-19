@@ -23,6 +23,11 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import kotlinx.coroutines.delay
 
+private const val LABEL_SCALE_ZOOM = 1.5F
+private const val LABEL_SCALE_NORMAL = 1F
+private const val LABEL_ZOOM_DURATION = 1000L
+private const val LABEL_TRANSLATION_Y = -120
+
 @Composable
 fun BalanceFloatingLabel(
     balance: Double,
@@ -31,12 +36,12 @@ fun BalanceFloatingLabel(
 
     var zoomIn by rememberSaveable(balance) { mutableStateOf(true) }
     val scale by animateFloatAsState(
-        targetValue = if (zoomIn) 1.5F else 1F,
+        targetValue = if (zoomIn) LABEL_SCALE_ZOOM else LABEL_SCALE_NORMAL,
         label = "BalanceFloatingLabel"
     )
 
     LaunchedEffect(key1 = balance) {
-        delay(1000)
+        delay(LABEL_ZOOM_DURATION)
         zoomIn = false
     }
 
@@ -45,7 +50,7 @@ fun BalanceFloatingLabel(
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
-                translationY = -120 * (scale - 1F)
+                translationY = LABEL_TRANSLATION_Y * (scale - 1F)
             }
             .background(
                 color = LocalAppColors.current.dark,

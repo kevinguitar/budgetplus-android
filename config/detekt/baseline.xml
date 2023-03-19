@@ -7,9 +7,6 @@
     <ID>LongParameterList:RecordViewModel.kt$RecordViewModel$( val calculator: CalculatorViewModel, private val bookRepo: BookRepo, private val recordRepo: RecordRepo, private val bubbleRepo: BubbleRepo, private val authManager: AuthManager, private val fullScreenAdsLoader: FullScreenAdsLoader, private val inAppReviewManager: InAppReviewManager, private val toaster: Toaster, private val tracker: Tracker, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:RecordsViewModel.kt$RecordsViewModel$( @Assisted type: RecordType, @Assisted("category") val category: String, @Assisted("authorId") private val authorId: String?, private val userRepo: UserRepo, private val bookRepo: BookRepo, private val bubbleRepo: BubbleRepo, private val tracker: Tracker, private val authManager: AuthManager, recordsObserver: RecordsObserver, preferenceHolder: PreferenceHolder, )</ID>
     <ID>MagicNumber:AndroidAppConventionPlugin.kt$AndroidAppConventionPlugin$3</ID>
-    <ID>MagicNumber:AnimatedLogo.kt$10F</ID>
-    <ID>MagicNumber:AnimatedLogo.kt$10_000</ID>
-    <ID>MagicNumber:AnimatedLogo.kt$1_000</ID>
     <ID>MagicNumber:AppTheme.kt$0xFF7E8072</ID>
     <ID>MagicNumber:AppTheme.kt$0xFF907258</ID>
     <ID>MagicNumber:AppTheme.kt$0xFFB0836B</ID>
@@ -18,11 +15,7 @@
     <ID>MagicNumber:AppTheme.kt$0xFFF2E2CD</ID>
     <ID>MagicNumber:AppTheme.kt$0xFFFFF3E0</ID>
     <ID>MagicNumber:AppTheme.kt$AppTheme$0.4F</ID>
-    <ID>MagicNumber:BalanceFloatingLabel.kt$1.5F</ID>
-    <ID>MagicNumber:BalanceFloatingLabel.kt$1000</ID>
-    <ID>MagicNumber:BalanceFloatingLabel.kt$120</ID>
     <ID>MagicNumber:BatchRecordViewModel.kt$BatchRecordViewModel$30</ID>
-    <ID>MagicNumber:BubbleRepo.kt$BubbleRepo$200L</ID>
     <ID>MagicNumber:Calculator.kt$8</ID>
     <ID>MagicNumber:OverviewColors.kt$0xFFCCC8AD</ID>
     <ID>MagicNumber:OverviewColors.kt$0xFFCCCCCC</ID>
@@ -36,8 +29,6 @@
     <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$3</ID>
     <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$4</ID>
     <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$5</ID>
-    <ID>MagicNumber:SettingsContent.kt$0.7F</ID>
-    <ID>MagicNumber:TimePeriod.kt$TimePeriod.Week$7</ID>
     <ID>MagicNumber:Utils.kt$3_000</ID>
     <ID>TooManyFunctions:BookRepoImpl.kt$BookRepoImpl : BookRepo</ID>
     <ID>TooManyFunctions:RecordViewModel.kt$RecordViewModel : ViewModel</ID>

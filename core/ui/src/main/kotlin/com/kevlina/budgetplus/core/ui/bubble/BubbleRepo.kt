@@ -20,7 +20,6 @@ class BubbleRepo @Inject constructor(
 ) {
 
     private val bubblesQueue = arrayListOf<BubbleDest>()
-    private val bubbleShownDelay get() = 200L
 
     private val _bubble = MutableStateFlow<BubbleDest?>(null)
     val bubble: StateFlow<BubbleDest?> = _bubble.asStateFlow()
@@ -36,7 +35,7 @@ class BubbleRepo @Inject constructor(
         bubbleShownJob?.cancel()
         bubbleShownJob = appScope.launch {
             // Given a short delay to show bubble after UI is presented
-            delay(bubbleShownDelay)
+            delay(BUBBLE_SHOWN_DELAY)
             _bubble.value = dest
         }
     }
@@ -45,7 +44,7 @@ class BubbleRepo @Inject constructor(
         val currentBubble = bubble.value ?: return
         appScope.launch {
             // Given a short delay to hide bubble with animation
-            delay(bubbleShownDelay)
+            delay(BUBBLE_SHOWN_DELAY)
             bubblesQueue.remove(currentBubble)
             _bubble.value = null
 
@@ -53,6 +52,10 @@ class BubbleRepo @Inject constructor(
                 showBubble(bubblesQueue.last())
             }
         }
+    }
+
+    private companion object {
+        const val BUBBLE_SHOWN_DELAY = 200L
     }
 }
 

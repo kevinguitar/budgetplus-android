@@ -24,9 +24,10 @@ sealed class TimePeriod {
 
         private val now get() = LocalDate.now()
         private val dayOfWeek get() = now.dayOfWeek.value
+        private const val WEEK_DAYS = 7
 
         override val from: LocalDate get() = now.minusDays((dayOfWeek - 1).toLong())
-        override val until: LocalDate get() = now.plusDays((7 - dayOfWeek).toLong())
+        override val until: LocalDate get() = now.plusDays((WEEK_DAYS - dayOfWeek).toLong())
     }
 
     @Serializable

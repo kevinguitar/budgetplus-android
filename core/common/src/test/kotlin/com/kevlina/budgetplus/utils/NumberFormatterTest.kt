@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.utils
 
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.roundUpPercentageText
 import com.kevlina.budgetplus.core.common.roundUpPriceText
 import org.junit.Test
@@ -31,5 +32,14 @@ class NumberFormatterTest {
         assertThat(65.001.roundUpPercentageText).isEqualTo("65")
         assertThat(45.456.roundUpPercentageText).isEqualTo("45.5")
         assertThat(87.999.roundUpPercentageText).isEqualTo("88")
+    }
+
+    @Test
+    fun `plainPriceString extension is working correctly`() {
+        assertThat(12.0.plainPriceString).isEqualTo("12")
+        assertThat(12.356.plainPriceString).isEqualTo("12.36")
+        assertThat(12.349.plainPriceString).isEqualTo("12.35")
+        assertThat(12.99.plainPriceString).isEqualTo("12.99")
+        assertThat(12.999.plainPriceString).isEqualTo("13")
     }
 }

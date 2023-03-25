@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
@@ -18,8 +19,10 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.utils.CsvWriter
 import com.kevlina.budgetplus.feature.utils.resolveAuthor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,6 +32,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +45,7 @@ internal class OverviewViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
+    private val csvWriter: CsvWriter,
     private val toaster: Toaster,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -55,6 +61,7 @@ internal class OverviewViewModel @Inject constructor(
     val mode: StateFlow<OverviewMode> = _mode.asStateFlow()
 
     private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
+    private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
 
     val timePeriod = recordsObserver.timePeriod
     val isHideAds = authManager.isPremium
@@ -88,14 +95,16 @@ internal class OverviewViewModel @Inject constructor(
         selectedAuthor
     ) { records, author ->
         val authorId = author?.id
-        records
-            .filter { authorId == null || it.author?.id == authorId }
-            .sumOf { record ->
-                when (record.type) {
-                    RecordType.Expense -> -record.price
-                    RecordType.Income -> record.price
+        withContext(Dispatchers.Default) {
+            records
+                .filter { authorId == null || it.author?.id == authorId }
+                .sumOf { record ->
+                    when (record.type) {
+                        RecordType.Expense -> -record.price
+                        RecordType.Income -> record.price
+                    }
                 }
-            }
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     val recordList: StateFlow<List<Record>?> = records.map { records ->
@@ -107,10 +116,12 @@ internal class OverviewViewModel @Inject constructor(
 
     val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
         records ?: return@map null
-        records.groupBy { it.category }
-            .toList()
-            .sortedByDescending { (_, v) -> v.sumOf { it.price } }
-            .toMap()
+        withContext(Dispatchers.Default) {
+            records.groupBy { it.category }
+                .toList()
+                .sortedByDescending { (_, v) -> v.sumOf { it.price } }
+                .toMap()
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     fun toggleMode() {
@@ -121,6 +132,23 @@ internal class OverviewViewModel @Inject constructor(
         _mode.value = newMode
         modeCache = newMode
         tracker.logEvent("overview_mode_changed")
+    }
+
+    fun exportToCsv() {
+        tracker.logEvent("overview_export_to_csv")
+        viewModelScope.launch {
+            try {
+                val name = "${bookName.value}_${fromDate.value.mediumFormatted}_${untilDate.value.mediumFormatted}"
+                csvWriter.writeRecordsToCsv(name)
+                toaster.showMessage(R.string.export_csv_success)
+            } catch (e: Exception) {
+                toaster.showError(e)
+            }
+        }
+    }
+
+    fun showWriteFilePermissionHint() {
+        toaster.showMessage(R.string.permission_hint)
     }
 
     fun setRecordType(type: RecordType) {
@@ -158,6 +186,13 @@ internal class OverviewViewModel @Inject constructor(
     fun highlightModeButton(dest: BubbleDest) {
         if (!recordList.value.isNullOrEmpty() && !isModeBubbleShown) {
             isModeBubbleShown = true
+            bubbleRepo.addBubbleToQueue(dest)
+        }
+    }
+
+    fun highlightExportButton(dest: BubbleDest) {
+        if (!recordList.value.isNullOrEmpty() && !isExportBubbleShown) {
+            isExportBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
     }

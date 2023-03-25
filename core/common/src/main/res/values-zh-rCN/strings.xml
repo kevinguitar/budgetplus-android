@@ -103,6 +103,17 @@
     <string name="overview_author_everyone">所有人</string>
     <string name="overview_author_anonymous">匿名</string>
 
+    <!-- Export -->
+    <string name="export_cta">汇出报表</string>
+    <string name="export_csv_confirmation">您要汇出所有自%1$s至%2$s的帐目吗？</string>
+    <string name="export_csv_success">报表已储存至下载资料夹</string>
+    <string name="export_column_type">项目</string>
+    <string name="export_column_name">名称</string>
+    <string name="export_column_price">金额</string>
+    <string name="export_column_category">类别</string>
+    <string name="export_column_created_on">时间</string>
+    <string name="export_column_author">记帐人</string>
+
     <!-- Premium -->
     <string name="premium_unlock">解锁进阶版</string>
     <string name="premium_hide_ads">隐藏广告</string>
@@ -141,6 +152,7 @@
     <string name="bubble_edit_category">点击以重新命名或删除，长按拖曳排序</string>
     <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
     <string name="bubble_overview_mode">你可以选择用类别或明细显示帐目</string>
+    <string name="bubble_overview_export">输出成 Excel 档保存</string>
     <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
 
     <!-- Notification -->
@@ -148,7 +160,6 @@
     <string name="notification_channel_general_desc">一些提醒和 App 相关的通知</string>
     <string name="notification_channel_new_member">新成员</string>
     <string name="notification_channel_new_member_desc">当您的帐本有新成员加入时，我们会通知您</string>
-    <string name="notification_hint">如果您改变主意，请在设定中打开通知</string>
 
     <!-- General -->
     <string name="cta_add">新增</string>
@@ -173,4 +184,5 @@
     <string name="book_name_placeholder">我的记帐本</string>
     <string name="ads_not_available">暂无广告</string>
     <string name="fallback_error_message">出错了，请稍后再试</string>
+    <string name="permission_hint">如果您改变主意，请在设定中打开权限</string>
 </resources>

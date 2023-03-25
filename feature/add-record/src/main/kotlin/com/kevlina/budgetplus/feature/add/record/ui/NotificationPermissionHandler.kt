@@ -1,5 +1,8 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import android.Manifest
+import android.app.Activity
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -7,7 +10,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.requestNotificationPermission
+import com.kevlina.budgetplus.core.common.hasPermission
+import com.kevlina.budgetplus.core.common.shouldShowRationale
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import kotlinx.coroutines.flow.launchIn
 
@@ -15,7 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 fun NotificationPermissionHandler() {
 
     val vm = hiltViewModel<RecordViewModel>()
-    val context = LocalContext.current
+    val activity = LocalContext.current as Activity
 
     val permissionRequester = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -25,7 +29,13 @@ fun NotificationPermissionHandler() {
 
     LaunchedEffect(key1 = vm) {
         vm.requestPermissionEvent
-            .consumeEach { permissionRequester.requestNotificationPermission(context) }
+            .consumeEach {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return@consumeEach
+                val permission = Manifest.permission.POST_NOTIFICATIONS
+                if (!activity.hasPermission(permission) && !activity.shouldShowRationale(permission)) {
+                    permissionRequester.launch(permission)
+                }
+            }
             .launchIn(this)
     }
 }

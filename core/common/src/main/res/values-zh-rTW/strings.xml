@@ -103,6 +103,17 @@
     <string name="overview_author_everyone">所有人</string>
     <string name="overview_author_anonymous">匿名</string>
 
+    <!-- Export -->
+    <string name="export_cta">匯出報表</string>
+    <string name="export_csv_confirmation">您要匯出所有自%1$s至%2$s的帳目嗎？</string>
+    <string name="export_csv_success">報表已儲存至下載資料夾</string>
+    <string name="export_column_type">項目</string>
+    <string name="export_column_name">名稱</string>
+    <string name="export_column_price">金額</string>
+    <string name="export_column_category">類別</string>
+    <string name="export_column_created_on">時間</string>
+    <string name="export_column_author">記帳人</string>
+
     <!-- Premium -->
     <string name="premium_unlock">解鎖進階版</string>
     <string name="premium_hide_ads">隱藏廣告</string>
@@ -124,6 +135,7 @@
     <string name="bubble_edit_category">點擊以重新命名或刪除，長按拖曳排序</string>
     <string name="bubble_save_category">編輯完成後，記得儲存喔！</string>
     <string name="bubble_overview_mode">你可以選擇用類別或明細顯示帳目</string>
+    <string name="bubble_overview_export">輸出成 Excel 檔保存</string>
     <string name="bubble_records_sorting">你可以選擇用日期或是金額排序帳目</string>
 
     <!-- Settings -->
@@ -148,7 +160,6 @@
     <string name="notification_channel_general_desc">一些提醒和 App 相關的通知</string>
     <string name="notification_channel_new_member">新成員</string>
     <string name="notification_channel_new_member_desc">當您的帳本有新成員加入時，我們會通知您</string>
-    <string name="notification_hint">如果您改變主意，請在設定中打開通知</string>
 
     <!-- General -->
     <string name="cta_add">新增</string>
@@ -173,4 +184,5 @@
     <string name="book_name_placeholder">我的記帳本</string>
     <string name="ads_not_available">暫無廣告</string>
     <string name="fallback_error_message">出錯了，請稍後再試</string>
+    <string name="permission_hint">如果您改變主意，請在設定中打開權限</string>
 </resources>

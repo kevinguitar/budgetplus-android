@@ -125,7 +125,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun showNotificationPermissionHint() {
-        toaster.showMessage(R.string.notification_hint)
+        toaster.showMessage(R.string.permission_hint)
     }
 
     private fun record(context: Context) {

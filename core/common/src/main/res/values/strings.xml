@@ -103,6 +103,17 @@
     <string name="overview_author_everyone">Everyone</string>
     <string name="overview_author_anonymous">Anonymous</string>
 
+    <!-- Export -->
+    <string name="export_cta">Export csv</string>
+    <string name="export_csv_confirmation">Do you want to export all the records from %1$s to %2$s?</string>
+    <string name="export_csv_success">Your report has been saved to the Download folder</string>
+    <string name="export_column_type">Type</string>
+    <string name="export_column_name">Name</string>
+    <string name="export_column_price">Price</string>
+    <string name="export_column_category">Category</string>
+    <string name="export_column_created_on">Created On</string>
+    <string name="export_column_author">Author</string>
+
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>
     <string name="premium_hide_ads">Hide Ads</string>
@@ -141,6 +152,7 @@
     <string name="bubble_edit_category">Click to rename or delete, long click to reorder</string>
     <string name="bubble_save_category">Click save after you finish editing</string>
     <string name="bubble_overview_mode">Tap to group the records by category</string>
+    <string name="bubble_overview_export">You can export the records to csv</string>
     <string name="bubble_records_sorting">Change the records sorting by date or price</string>
 
     <!-- Notification -->
@@ -148,7 +160,6 @@
     <string name="notification_channel_general_desc">Some reminders and any other updates regarding the app changes</string>
     <string name="notification_channel_new_member">New Member</string>
     <string name="notification_channel_new_member_desc">We\'ll notify you when a new member joins your accounting book</string>
-    <string name="notification_hint">Turn on the notification in the settings if you change your mind</string>
 
     <!-- General -->
     <string name="cta_add">Add</string>
@@ -173,4 +184,5 @@
     <string name="book_name_placeholder">My accounting book</string>
     <string name="ads_not_available">No ads available</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
+    <string name="permission_hint">Turn on the permission in the settings if you change your mind</string>
 </resources>

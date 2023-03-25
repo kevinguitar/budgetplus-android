@@ -9,5 +9,6 @@ dependencies {
     implementation(project(":core:ui"))
 
     implementation(libs.accompanist.flowlayout)
+    implementation(libs.kotlin.csv)
     implementation(libs.lottie.compose)
 }

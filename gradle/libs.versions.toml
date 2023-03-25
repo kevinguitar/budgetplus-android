@@ -1,26 +1,30 @@
 [versions]
-accompanist = "0.29.2-rc"
-coil = "2.2.2"
-compose-compiler = "1.4.3"
-firebase-bom = "31.2.3"
-# @pin https://developer.android.com/reference/tools/gradle-api
+# https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "7.4.2"
-hilt = "2.45"
-# @pin https://kotlinlang.org/docs/releases.html#release-details
+# https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.8.10"
+# https://developer.android.com/jetpack/compose/bom/bom-mapping
+compose-bom = "2023.03.00"
+# https://developer.android.com/jetpack/androidx/releases/compose-compiler
+compose-compiler = "1.4.4"
+# https://github.com/google/accompanist/releases
+accompanist = "0.30.0"
+# https://firebase.google.com/support/release-notes/android
+firebase-bom = "31.3.0"
+# https://mvnrepository.com/artifact/com.google.dagger/hilt-android
+hilt = "2.45"
+# https://github.com/coil-kt/coil/releases
+coil = "2.2.2"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
 android-core = "androidx.core:core-ktx:1.9.0"
-# @keep
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-# @pin https://developer.android.com/jetpack/androidx/releases/activity#version_18_2
-# @pin https://issuetracker.google.com/issues/271430143
 compose-activity = { module = "androidx.activity:activity-compose" }
-compose-bom = "androidx.compose:compose-bom:2023.01.00"
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
@@ -50,7 +54,6 @@ install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
 junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0-rc01"
 junit-core = "junit:junit:4.13.2"
-# @keep
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.0.0"
@@ -99,5 +102,3 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-toml-checker = "com.github.ben-manes.versions:0.46.0"
-toml-updater = "nl.littlerobots.version-catalog-update:0.8.0"

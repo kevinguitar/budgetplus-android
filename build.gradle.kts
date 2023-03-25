@@ -10,8 +10,6 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.detekt)
-    alias(libs.plugins.toml.checker)
-    alias(libs.plugins.toml.updater)
 }
 
 tasks.register("clean", Delete::class) { delete(rootProject.buildDir) }

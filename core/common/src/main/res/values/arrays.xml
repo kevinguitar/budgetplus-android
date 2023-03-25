@@ -5,16 +5,11 @@
         <item>@string/category_food</item>
         <item>@string/category_daily</item>
         <item>@string/category_transport</item>
-        <item>@string/category_social</item>
         <item>@string/category_entertainment</item>
-        <item>@string/category_medical</item>
-        <item>@string/category_insurance</item>
-        <item>@string/category_loan</item>
         <item>@string/category_rent</item>
-        <item>@string/category_workout</item>
         <item>@string/category_mobile</item>
         <item>@string/category_utility</item>
-        <item>@string/category_investment</item>
+        <item>@string/category_other</item>
     </string-array>
 
     <string-array name="default_income_categories">

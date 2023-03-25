@@ -65,16 +65,10 @@
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
     <string name="category_transport">Transport</string>
-    <string name="category_social">Social</string>
     <string name="category_entertainment">Entertainment</string>
-    <string name="category_medical">Medical</string>
-    <string name="category_insurance">Insurance</string>
-    <string name="category_loan">Loan</string>
     <string name="category_rent">Rent</string>
-    <string name="category_workout">Workout</string>
     <string name="category_mobile">Mobile</string>
     <string name="category_utility">Utility</string>
-    <string name="category_investment">Investment</string>
     <string name="category_salary">Salary</string>
     <string name="category_bonus">Bonus</string>
     <string name="category_rebate">Rebate</string>

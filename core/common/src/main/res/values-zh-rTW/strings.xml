@@ -65,16 +65,10 @@
     <string name="category_food">飲食</string>
     <string name="category_daily">日常</string>
     <string name="category_transport">交通</string>
-    <string name="category_social">社交</string>
     <string name="category_entertainment">娛樂</string>
-    <string name="category_medical">醫療</string>
-    <string name="category_insurance">保險</string>
-    <string name="category_loan">貸款</string>
     <string name="category_rent">房租</string>
-    <string name="category_workout">健身</string>
     <string name="category_mobile">電信</string>
     <string name="category_utility">水電</string>
-    <string name="category_investment">投資</string>
     <string name="category_salary">薪水</string>
     <string name="category_bonus">獎金</string>
     <string name="category_rebate">現金回饋</string>

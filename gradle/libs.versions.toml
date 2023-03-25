@@ -52,7 +52,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = { module = "androidx.compose.ui:ui-test-junit4" }
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0"
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

@@ -124,7 +124,11 @@ fun OverviewScreen(navigator: Navigator) {
 
     if (isExportDialogShown) {
         ConfirmDialog(
-            message = stringResource(id = R.string.export_csv_confirmation, fromDate.shortFormatted, untilDate.shortFormatted),
+            message = stringResource(
+                id = R.string.export_csv_confirmation,
+                fromDate.shortFormatted,
+                untilDate.shortFormatted
+            ),
             onConfirm = {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && !activity.hasPermission(writePermission)) {
                     permissionRequester.launch(writePermission)

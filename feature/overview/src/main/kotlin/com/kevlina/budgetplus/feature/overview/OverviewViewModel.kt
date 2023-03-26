@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.feature.overview
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -134,12 +136,18 @@ internal class OverviewViewModel @Inject constructor(
         tracker.logEvent("overview_mode_changed")
     }
 
-    fun exportToCsv() {
+    fun exportToCsv(context: Context) {
         tracker.logEvent("overview_export_to_csv")
         viewModelScope.launch {
             try {
                 val name = "${bookName.value}_${fromDate.value.mediumFormatted}_${untilDate.value.mediumFormatted}"
-                csvWriter.writeRecordsToCsv(name)
+                val fileUri = csvWriter.writeRecordsToCsv(name)
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    putExtra(Intent.EXTRA_STREAM, fileUri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    type = csvWriter.mimeType
+                }
+                context.startActivity(Intent.createChooser(intent, null))
                 toaster.showMessage(R.string.export_csv_success)
             } catch (e: Exception) {
                 toaster.showError(e)

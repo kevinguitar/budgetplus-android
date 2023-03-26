@@ -106,7 +106,7 @@
     <!-- Export -->
     <string name="export_cta">汇出报表</string>
     <string name="export_csv_confirmation">您要汇出所有自%1$s至%2$s的帐目吗？</string>
-    <string name="export_csv_success">报表已储存至下载资料夹</string>
+    <string name="export_csv_success">CSV 报表已储存至下载资料夹</string>
     <string name="export_column_type">项目</string>
     <string name="export_column_name">名称</string>
     <string name="export_column_price">金额</string>
@@ -152,7 +152,7 @@
     <string name="bubble_edit_category">点击以重新命名或删除，长按拖曳排序</string>
     <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
     <string name="bubble_overview_mode">你可以选择用类别或明细显示帐目</string>
-    <string name="bubble_overview_export">输出成 Excel 档保存</string>
+    <string name="bubble_overview_export">输出帐目成 CSV 档保存</string>
     <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
 
     <!-- Notification -->

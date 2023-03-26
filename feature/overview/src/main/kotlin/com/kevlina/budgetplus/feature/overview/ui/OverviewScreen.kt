@@ -48,11 +48,12 @@ fun OverviewScreen(navigator: Navigator) {
 
     var isExportDialogShown by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
     val permissionRequester = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            vm.exportToCsv()
+            vm.exportToCsv(context)
         } else {
             vm.showWriteFilePermissionHint()
         }
@@ -133,7 +134,7 @@ fun OverviewScreen(navigator: Navigator) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && !activity.hasPermission(writePermission)) {
                     permissionRequester.launch(writePermission)
                 } else {
-                    vm.exportToCsv()
+                    vm.exportToCsv(context)
                 }
                 isExportDialogShown = false
             },

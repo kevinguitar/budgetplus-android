@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.core.net.toUri
+import androidx.core.content.FileProvider
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
@@ -27,14 +27,18 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 import javax.inject.Inject
+import javax.inject.Named
 
 internal class CsvWriter @Inject constructor(
     @ApplicationContext private val context: Context,
+    @Named("app_package") private val appPackage: String,
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
 ) {
 
     private val contentResolver get() = context.contentResolver
+
+    val mimeType get() = "text/csv"
 
     suspend fun writeRecordsToCsv(name: String): Uri {
 
@@ -90,7 +94,7 @@ internal class CsvWriter @Inject constructor(
     private fun getFileUri(filename: String): Uri {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, "text/csv")
+            put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
 
@@ -101,7 +105,8 @@ internal class CsvWriter @Inject constructor(
 
     private fun getFileUriPreQ(filename: String): Uri {
         val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        return File(dir, filename).toUri()
+        val file = File(dir, filename)
+        return FileProvider.getUriForFile(context, "$appPackage.provider", file)
     }
 
     private val Record.typeString: String

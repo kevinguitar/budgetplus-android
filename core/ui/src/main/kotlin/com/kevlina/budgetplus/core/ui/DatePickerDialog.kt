@@ -25,7 +25,6 @@ import com.kevlina.budgetplus.core.common.R
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
-//TODO: LocalDate type is unstable
 @Composable
 fun DatePickerDialog(
     date: LocalDate,
@@ -87,7 +86,6 @@ fun DatePickerDialog(
     }
 }
 
-//TODO: LocalDate type is unstable
 @Composable
 private fun CustomDatePicker(
     date: LocalDate,
@@ -123,8 +121,8 @@ private fun CustomDatePicker(
     )
 }
 
-// TODO Cannot use the new style because of this bug from desugaring library
-// see: https://issuetracker.google.com/issues/176502609
+// Cannot use the new style because of this bug from desugaring library
+// see: https://issuetracker.google.com/issues/160113376
 /*
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -168,7 +166,7 @@ fun DatePickerDialog(
         onDismissRequest = onDismiss,
         colors = colors,
         dismissButton = {
-            AppText(
+            Text(
                 text = stringResource(id = R.string.cta_cancel),
                 color = Color.Black,
                 fontWeight = FontWeight.Medium,
@@ -179,7 +177,7 @@ fun DatePickerDialog(
             )
         },
         confirmButton = {
-            AppText(
+            Text(
                 text = stringResource(id = R.string.cta_ok),
                 color = Color.Black,
                 fontWeight = FontWeight.Medium,
@@ -200,7 +198,7 @@ fun DatePickerDialog(
             colors = colors,
             showModeToggle = false,
             title = {
-                AppText(
+                Text(
                     text = stringResource(id = R.string.select_date),
                     color = Color.Black
                 )

@@ -34,7 +34,6 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
 
-//TODO: records param is unstable
 @Composable
 fun OverviewGroup(
     category: String,

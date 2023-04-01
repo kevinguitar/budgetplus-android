@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.ui.Button
@@ -36,11 +36,11 @@ internal fun BatchRecordContent() {
     val vm = hiltViewModel<BatchRecordViewModel>()
     val focusManager = LocalFocusManager.current
 
-    val type by vm.type.collectAsState()
-    val note by vm.note.collectAsState()
-    val category by vm.category.collectAsState()
-    val priceText by vm.priceText.collectAsState()
-    val isBatchButtonEnabled by vm.isBatchButtonEnabled.collectAsState()
+    val type by vm.type.collectAsStateWithLifecycle()
+    val note by vm.note.collectAsStateWithLifecycle()
+    val category by vm.category.collectAsStateWithLifecycle()
+    val priceText by vm.priceText.collectAsStateWithLifecycle()
+    val isBatchButtonEnabled by vm.isBatchButtonEnabled.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier

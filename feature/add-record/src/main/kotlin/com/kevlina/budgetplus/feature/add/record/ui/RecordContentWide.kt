@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
@@ -20,7 +20,7 @@ import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 fun RecordContentWide(navigator: Navigator) {
 
     val viewModel = hiltViewModel<RecordViewModel>()
-    val isHideAds by viewModel.isHideAds.collectAsState()
+    val isHideAds by viewModel.isHideAds.collectAsStateWithLifecycle()
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),

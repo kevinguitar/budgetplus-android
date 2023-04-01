@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -45,9 +45,9 @@ fun BookSelector(navigator: Navigator) {
 
     val viewModel = hiltViewModel<BookSelectorViewModel>()
 
-    val bookState by viewModel.book.collectAsState()
-    val booksState by viewModel.books.collectAsState()
-    val createBookBtnState by viewModel.createBookBtnState.collectAsState()
+    val bookState by viewModel.book.collectAsStateWithLifecycle()
+    val booksState by viewModel.books.collectAsStateWithLifecycle()
+    val createBookBtnState by viewModel.createBookBtnState.collectAsStateWithLifecycle()
 
     var isSelectorShown by remember { mutableStateOf(false) }
     var isBookCreationDialogShown by remember { mutableStateOf(false) }

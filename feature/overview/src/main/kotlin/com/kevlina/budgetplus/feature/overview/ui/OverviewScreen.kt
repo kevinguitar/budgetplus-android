@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.Segment
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +23,7 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -41,10 +41,10 @@ fun OverviewScreen(navigator: Navigator) {
 
     val vm = hiltViewModel<OverviewViewModel>()
 
-    val mode by vm.mode.collectAsState()
-    val bookName by vm.bookName.collectAsState()
-    val balance by vm.balance.collectAsState()
-    val isHideAds by vm.isHideAds.collectAsState()
+    val mode by vm.mode.collectAsStateWithLifecycle()
+    val bookName by vm.bookName.collectAsStateWithLifecycle()
+    val balance by vm.balance.collectAsStateWithLifecycle()
+    val isHideAds by vm.isHideAds.collectAsStateWithLifecycle()
 
     var isExportDialogShown by remember { mutableStateOf(false) }
 
@@ -118,8 +118,8 @@ fun OverviewScreen(navigator: Navigator) {
         )
     }
 
-    val fromDate by vm.fromDate.collectAsState()
-    val untilDate by vm.untilDate.collectAsState()
+    val fromDate by vm.fromDate.collectAsStateWithLifecycle()
+    val untilDate by vm.untilDate.collectAsStateWithLifecycle()
     val activity = LocalContext.current as Activity
     val writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
 

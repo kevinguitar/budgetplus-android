@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.PersonSearch
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -18,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
@@ -32,8 +32,8 @@ fun AuthorSelector() {
 
     val vm = hiltViewModel<OverviewViewModel>()
 
-    val authors by vm.authors.collectAsState()
-    val selectedAuthor by vm.selectedAuthor.collectAsState()
+    val authors by vm.authors.collectAsStateWithLifecycle()
+    val selectedAuthor by vm.selectedAuthor.collectAsStateWithLifecycle()
 
     var isAuthorPickerShown by rememberSaveable { mutableStateOf(false) }
 

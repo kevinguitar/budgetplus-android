@@ -11,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +21,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.AddDest
@@ -46,11 +46,11 @@ fun RecordInfo(
     val vm = hiltViewModel<RecordViewModel>()
     val focusManager = LocalFocusManager.current
 
-    val type by vm.type.collectAsState()
-    val date by vm.date.collectAsState()
-    val note by vm.note.collectAsState()
-    val category by vm.category.collectAsState()
-    val priceText by vm.calculator.priceText.collectAsState()
+    val type by vm.type.collectAsStateWithLifecycle()
+    val date by vm.date.collectAsStateWithLifecycle()
+    val note by vm.note.collectAsStateWithLifecycle()
+    val category by vm.category.collectAsStateWithLifecycle()
+    val priceText by vm.calculator.priceText.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
     var showDatePicker by remember { mutableStateOf(false) }

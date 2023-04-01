@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +36,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 
@@ -45,7 +45,7 @@ fun Bubble() {
 
     val viewModel = hiltViewModel<BubbleViewModel>()
 
-    val destination by viewModel.destination.collectAsState()
+    val destination by viewModel.destination.collectAsStateWithLifecycle()
     var isBubbleVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = destination) {

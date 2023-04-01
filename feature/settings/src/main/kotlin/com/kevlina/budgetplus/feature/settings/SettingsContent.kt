@@ -18,7 +18,6 @@ import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -57,9 +57,9 @@ internal fun SettingsContent(
             .launchIn(this)
     }
 
-    val isBookOwner by vm.isBookOwner.collectAsState()
-    val isPremium by vm.isPremium.collectAsState()
-    val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsState()
+    val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
+    val isPremium by vm.isPremium.collectAsStateWithLifecycle()
+    val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
 
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }

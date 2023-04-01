@@ -28,6 +28,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
@@ -74,6 +75,7 @@ compose = [
     "compose-compiler",
     "compose-foundation",
     "compose-icons",
+    "compose-lifecycle",
     "compose-tooling",
     "compose-tooling-preview",
     "compose-ui",

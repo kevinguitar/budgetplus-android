@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -34,12 +34,12 @@ fun OverviewList(
 
     val vm = hiltViewModel<OverviewViewModel>()
 
-    val mode by vm.mode.collectAsState()
-    val type by vm.type.collectAsState()
-    val selectedAuthor by vm.selectedAuthor.collectAsState()
-    val totalPrice by vm.totalPrice.collectAsState()
-    val recordList by vm.recordList.collectAsState()
-    val recordGroups by vm.recordGroups.collectAsState()
+    val mode by vm.mode.collectAsStateWithLifecycle()
+    val type by vm.type.collectAsStateWithLifecycle()
+    val selectedAuthor by vm.selectedAuthor.collectAsStateWithLifecycle()
+    val totalPrice by vm.totalPrice.collectAsStateWithLifecycle()
+    val recordList by vm.recordList.collectAsStateWithLifecycle()
+    val recordGroups by vm.recordGroups.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
@@ -37,9 +37,9 @@ fun TimePeriodSelector() {
 
     val vm = hiltViewModel<OverviewViewModel>()
 
-    val timePeriod by vm.timePeriod.collectAsState()
-    val fromDate by vm.fromDate.collectAsState()
-    val untilDate by vm.untilDate.collectAsState()
+    val timePeriod by vm.timePeriod.collectAsStateWithLifecycle()
+    val fromDate by vm.fromDate.collectAsStateWithLifecycle()
+    val untilDate by vm.untilDate.collectAsStateWithLifecycle()
 
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showUntilDatePicker by remember { mutableStateOf(false) }

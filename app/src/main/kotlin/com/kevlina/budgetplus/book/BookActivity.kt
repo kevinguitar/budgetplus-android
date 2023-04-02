@@ -86,6 +86,6 @@ class BookActivity : ComponentActivity() {
     @EntryPoint
     @InstallIn(ActivityComponent::class)
     interface VmFactoryProvider {
-        fun detailsVmFactory(): RecordsViewModel.Factory
+        fun recordsVmFactory(): RecordsViewModel.Factory
     }
 }

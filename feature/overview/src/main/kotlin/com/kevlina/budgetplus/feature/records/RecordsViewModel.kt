@@ -60,7 +60,7 @@ class RecordsViewModel @AssistedInject constructor(
                 }
             }
             .toList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     fun setSortMode(sortMode: RecordsSortMode) {
         _sortMode.value = sortMode
@@ -89,6 +89,8 @@ class RecordsViewModel @AssistedInject constructor(
         ): RecordsViewModel
     }
 
+    // Assist inject doesn't work with @HiltViewModel
+    // https://github.com/google/dagger/issues/2287
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun provideFactory(

@@ -12,7 +12,7 @@ import dagger.hilt.android.EntryPointAccessors
 fun recordsVm(type: RecordType, category: String, authorId: String?): RecordsViewModel {
     val factory = EntryPointAccessors
         .fromActivity<BookActivity.VmFactoryProvider>(LocalContext.current as Activity)
-        .detailsVmFactory()
+        .recordsVmFactory()
 
     return viewModel(factory = RecordsViewModel.provideFactory(
         assistedFactory = factory,

@@ -34,7 +34,7 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-desugar = "com.android.tools:desugar_jdk_libs:2.0.2"
+desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 facebook-auth = "com.facebook.android:facebook-login:16.0.0"
@@ -44,7 +44,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:21.5.0"
+google-ads = "com.google.android.gms:play-services-ads:22.0.0"
 google-auth = "com.google.android.gms:play-services-auth:20.4.1"
 google-billing = "com.android.billingclient:billing-ktx:5.1.0"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"

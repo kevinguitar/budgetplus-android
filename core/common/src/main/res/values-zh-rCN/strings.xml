@@ -141,6 +141,8 @@
     <string name="settings_leave_book">离开帐本</string>
     <string name="settings_confirm_delete">确定要删除“%s”吗？</string>
     <string name="settings_confirm_leave">确定要离开“%s”吗？</string>
+    <string name="settings_book_deleted">%s已被删除</string>
+    <string name="settings_book_left">您已离开%s</string>
     <string name="settings_language">语言</string>
     <string name="settings_input_vibration">输入震动反馈</string>
     <string name="settings_rate_us">在 Google Play 上评价</string>

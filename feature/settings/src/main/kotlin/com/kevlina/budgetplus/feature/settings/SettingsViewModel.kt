@@ -115,8 +115,14 @@ internal class SettingsViewModel @Inject constructor(
 
     fun deleteOrLeave() {
         viewModelScope.launch {
+            val isBookOwner = isBookOwner.value
             try {
                 bookRepo.leaveOrDeleteBook()
+                toaster.showMessage(if (isBookOwner) {
+                    R.string.settings_book_deleted
+                } else {
+                    R.string.settings_book_left
+                })
             } catch (e: Exception) {
                 toaster.showError(e)
             }

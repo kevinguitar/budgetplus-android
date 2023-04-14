@@ -141,6 +141,8 @@
     <string name="settings_leave_book">Leave Book</string>
     <string name="settings_confirm_delete">Are you sure you want to delete %s?</string>
     <string name="settings_confirm_leave">Are you sure you want to leave %s?</string>
+    <string name="settings_book_deleted">You have deleted %s</string>
+    <string name="settings_book_left">You have left %s</string>
     <string name="settings_language">Language</string>
     <string name="settings_input_vibration">Input Vibration</string>
     <string name="settings_rate_us">Rate Us on Google Play</string>

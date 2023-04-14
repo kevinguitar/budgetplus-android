@@ -98,7 +98,8 @@ fun RecordsScreen(
                     item = item,
                     isLast = index == records?.lastIndex,
                     canEdit = vm.canEditRecord(item),
-                    showCategory = false
+                    showCategory = false,
+                    showAuthor = true
                 ) {
                     editRecordDialog = item
                 }

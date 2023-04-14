@@ -40,6 +40,7 @@ fun OverviewList(
     val totalPrice by vm.totalPrice.collectAsStateWithLifecycle()
     val recordList by vm.recordList.collectAsStateWithLifecycle()
     val recordGroups by vm.recordGroups.collectAsStateWithLifecycle()
+    val isSoloAuthor by vm.isSoloAuthor.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
 
@@ -82,7 +83,8 @@ fun OverviewList(
                     item = record,
                     isLast = index == records.lastIndex,
                     canEdit = vm.canEditRecord(record),
-                    showCategory = true
+                    showCategory = true,
+                    showAuthor = !isSoloAuthor
                 ) {
                     editRecordDialog = record
                 }

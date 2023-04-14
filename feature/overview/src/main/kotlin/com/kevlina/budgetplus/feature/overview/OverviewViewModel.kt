@@ -53,6 +53,7 @@ internal class OverviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
+    val isSoloAuthor = bookRepo.bookState.mapState { it?.authors?.size == 1 }
 
     private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
     private val _type = MutableStateFlow(typeCache)

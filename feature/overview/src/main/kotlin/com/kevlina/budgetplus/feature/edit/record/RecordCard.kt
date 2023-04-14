@@ -39,6 +39,7 @@ internal fun RecordCard(
     isLast: Boolean,
     canEdit: Boolean,
     showCategory: Boolean,
+    showAuthor: Boolean,
     onEdit: () -> Unit,
 ) {
 
@@ -100,7 +101,9 @@ internal fun RecordCard(
                         PillLabel(text = item.category)
                     }
 
-                    PillLabel(text = item.author?.name.orEmpty())
+                    if (showAuthor) {
+                        PillLabel(text = item.author?.name.orEmpty())
+                    }
                 }
             }
 
@@ -154,6 +157,7 @@ private fun RecordCard_Preview() = AppTheme {
         isLast = false,
         canEdit = true,
         showCategory = true,
+        showAuthor = true,
         onEdit = {}
     )
 }

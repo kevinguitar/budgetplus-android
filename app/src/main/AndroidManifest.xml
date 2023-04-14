@@ -59,6 +59,7 @@
                 <data android:pathPrefix="/record" />
                 <data android:pathPrefix="/overview" />
                 <data android:pathPrefix="/settings" />
+                <data android:pathPrefix="/unlockPremium" />
             </intent-filter>
         </activity>
 

@@ -164,7 +164,12 @@ fun NavGraphBuilder.addTabGraph(navController: NavController) {
             )
         }
 
-        composable(route = AddDest.UnlockPremium.route) {
+        composable(
+            route = AddDest.UnlockPremium.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.UnlockPremium.route}" }
+            )
+        ) {
             PremiumScreen(navigator = navController.toNavigator())
         }
 

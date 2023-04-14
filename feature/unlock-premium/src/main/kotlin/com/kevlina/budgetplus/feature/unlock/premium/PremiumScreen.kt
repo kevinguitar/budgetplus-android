@@ -21,9 +21,16 @@ import com.kevlina.budgetplus.core.ui.TopBar
 @Composable
 fun PremiumScreen(navigator: Navigator) {
 
-    val viewModel = hiltViewModel<PremiumViewModel>()
-    val isPaymentProcessing by viewModel.isPaymentProcessing.collectAsStateWithLifecycle(initialValue = false)
-    val purchaseDone by viewModel.purchaseDoneFlow.collectAsStateWithLifecycle(initialValue = false)
+    val vm = hiltViewModel<PremiumViewModel>()
+    val isPaymentProcessing by vm.isPaymentProcessing.collectAsStateWithLifecycle(initialValue = false)
+    val purchaseDone by vm.purchaseDoneFlow.collectAsStateWithLifecycle(initialValue = false)
+
+    // Close the screen in case user enters it from the deeplink
+    LaunchedEffect(key1 = Unit) {
+        if (vm.isPremium.value) {
+            navigator.navigateUp()
+        }
+    }
 
     LaunchedEffect(key1 = purchaseDone) {
         if (purchaseDone) {

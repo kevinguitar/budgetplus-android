@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,8 +18,11 @@ import javax.inject.Inject
 class PremiumViewModel @Inject constructor(
     private val billingController: BillingController,
     private val toaster: Toaster,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    authManager: AuthManager,
 ) : ViewModel() {
+
+    val isPremium = authManager.isPremium
 
     val premiumPricing = billingController.premiumPricing
 
@@ -32,15 +36,18 @@ class PremiumViewModel @Inject constructor(
                     toaster.showMessage(R.string.premium_acknowledge_fail)
                     return@map true
                 }
+
                 PurchaseState.Success -> {
                     tracker.logEvent("buy_premium_success")
                     toaster.showMessage(R.string.premium_unlocked)
                     return@map true
                 }
+
                 is PurchaseState.Fail -> {
                     tracker.logEvent("buy_premium_fail")
                     toaster.showMessage(state.error)
                 }
+
                 PurchaseState.Canceled -> tracker.logEvent("buy_premium_cancel")
                 else -> Unit
             }

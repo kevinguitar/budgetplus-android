@@ -2,8 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ForbiddenComment:DatePickerDialog.kt$//TODO: LocalDate type is unstable</ID>
-    <ID>ForbiddenComment:OverviewGroup.kt$//TODO: records param is unstable</ID>
+    <ID>LongParameterList:OverviewViewModel.kt$OverviewViewModel$( private val bookRepo: BookRepo, private val recordsObserver: RecordsObserver, private val tracker: Tracker, private val authManager: AuthManager, private val userRepo: UserRepo, private val bubbleRepo: BubbleRepo, private val csvWriter: CsvWriter, private val toaster: Toaster, val timeModel: OverviewTimeViewModel, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:RecordViewModel.kt$RecordViewModel$( val calculator: CalculatorViewModel, private val bookRepo: BookRepo, private val recordRepo: RecordRepo, private val bubbleRepo: BubbleRepo, private val authManager: AuthManager, private val fullScreenAdsLoader: FullScreenAdsLoader, private val inAppReviewManager: InAppReviewManager, private val toaster: Toaster, private val tracker: Tracker, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:RecordsViewModel.kt$RecordsViewModel$( @Assisted type: RecordType, @Assisted("category") val category: String, @Assisted("authorId") private val authorId: String?, private val userRepo: UserRepo, private val bookRepo: BookRepo, private val bubbleRepo: BubbleRepo, private val tracker: Tracker, private val authManager: AuthManager, recordsObserver: RecordsObserver, preferenceHolder: PreferenceHolder, )</ID>
     <ID>MagicNumber:AndroidAppConventionPlugin.kt$AndroidAppConventionPlugin$3</ID>
@@ -26,7 +25,6 @@
     <ID>MagicNumber:OverviewColors.kt$0xFFFAD5A4</ID>
     <ID>MagicNumber:OverviewGroup.kt$1.2F</ID>
     <ID>MagicNumber:OverviewGroup.kt$100</ID>
-    <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$3</ID>
     <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$4</ID>
     <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$5</ID>
     <ID>MagicNumber:Utils.kt$3_000</ID>

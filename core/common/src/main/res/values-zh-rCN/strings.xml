@@ -176,6 +176,7 @@
     <string name="cta_cancel">取消</string>
     <string name="cta_back">返回</string>
     <string name="cta_delete">删除</string>
+    <string name="cta_complete">完成</string>
     <string name="select_date">选择日期</string>
     <string name="date_to">至</string>
     <string name="today">今天</string>
@@ -187,4 +188,5 @@
     <string name="ads_not_available">暂无广告</string>
     <string name="fallback_error_message">出错了，请稍后再试</string>
     <string name="permission_hint">如果您改变主意，请在设定中打开权限</string>
+    <string name="app_update_downloaded">极简记帐的更新已就绪！</string>
 </resources>

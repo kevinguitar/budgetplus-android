@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_URL
 import com.kevlina.budgetplus.core.common.nav.AddDest
@@ -18,6 +20,7 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.feature.auth.AuthActivity
 import com.kevlina.budgetplus.feature.records.RecordsViewModel
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
+import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,11 +30,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BookActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var authManager: AuthManager
-
-    @Inject
-    lateinit var bookRepo: BookRepo
+    @Inject lateinit var authManager: AuthManager
+    @Inject lateinit var bookRepo: BookRepo
+    @Inject lateinit var inAppUpdateManager: InAppUpdateManager
 
     private val viewModel by viewModels<BookViewModel>()
 
@@ -65,8 +66,15 @@ class BookActivity : ComponentActivity() {
         }
 
         setContent {
+
+            val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()
+
             AppTheme {
-                BookBinding(viewModel = viewModel, newIntent = newIntent)
+                BookBinding(
+                    viewModel = viewModel,
+                    newIntent = newIntent,
+                    appUpdateState = appUpdateState
+                )
             }
         }
     }

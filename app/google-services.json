@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "919948371655-cqu4q9dlhogkmskdn7hor38mksbusibr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kevlina.budgetplus",
+            "certificate_hash": "378addc2e32a74cf9a1fb6fcba9858a2215961ac"
+          }
+        },
+        {
           "client_id": "919948371655-vip5a87vjtcee7ks2l4jljbmkectc0lg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

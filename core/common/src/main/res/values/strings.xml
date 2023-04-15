@@ -176,6 +176,7 @@
     <string name="cta_cancel">Cancel</string>
     <string name="cta_back">Back</string>
     <string name="cta_delete">Delete</string>
+    <string name="cta_complete">Complete</string>
     <string name="select_date">Select Date</string>
     <string name="date_to">to</string>
     <string name="today">Today</string>
@@ -187,4 +188,5 @@
     <string name="ads_not_available">No ads available</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
     <string name="permission_hint">Turn on the permission in the settings if you change your mind</string>
+    <string name="app_update_downloaded">The update is ready!</string>
 </resources>

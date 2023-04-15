@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":core:billing"))
     implementation(project(":core:common"))
     implementation(project(":core:data"))
+    implementation(project(":core:inapp-update"))
     implementation(project(":core:notification"))
     implementation(project(":core:ui"))
     implementation(project(":feature:add-record"))

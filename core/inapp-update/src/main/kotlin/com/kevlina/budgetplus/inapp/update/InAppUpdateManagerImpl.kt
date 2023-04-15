@@ -1,0 +1,110 @@
+package com.kevlina.budgetplus.inapp.update
+
+import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.AppUpdateResult
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.android.play.core.ktx.requestUpdateFlow
+import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import dagger.hilt.android.qualifiers.ActivityContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+internal class InAppUpdateManagerImpl @Inject constructor(
+    @ActivityContext private val context: Context,
+    private val tracker: Tracker,
+    preferenceHolder: PreferenceHolder,
+) : InAppUpdateManager {
+
+    private val _updateState = MutableStateFlow<InAppUpdateState>(InAppUpdateState.NotStarted)
+    override val updateState: StateFlow<InAppUpdateState> = _updateState.asStateFlow()
+
+    private val appUpdateManager = AppUpdateManagerFactory.create(context)
+    private val activity = context as ComponentActivity
+    private val scope = activity.lifecycleScope
+
+    // The version code when we requested the update last time.
+    private var lastRequestedVersionCode by preferenceHolder.bindInt(0)
+
+    init {
+        appUpdateManager.requestUpdateFlow()
+            .onEach(::processResult)
+            .launchIn(scope)
+    }
+
+    private fun processResult(result: AppUpdateResult) {
+        when (result) {
+            is AppUpdateResult.Available -> {
+                val updateInfo = result.updateInfo
+                when {
+                    updateInfo.shouldRequestImmediateUpdate -> {
+                        lastRequestedVersionCode = updateInfo.availableVersionCode()
+                        result.startImmediateUpdate(activity, REQ_APP_UPDATE)
+                        tracker.logEvent("inapp_update_immediate")
+                    }
+
+                    updateInfo.shouldRequestFlexibleUpdate -> {
+                        lastRequestedVersionCode = updateInfo.availableVersionCode()
+                        result.startFlexibleUpdate(activity, REQ_APP_UPDATE)
+                        tracker.logEvent("inapp_update_flexible")
+                    }
+                }
+            }
+
+            is AppUpdateResult.InProgress -> {
+                _updateState.value = InAppUpdateState.Downloading
+            }
+
+            is AppUpdateResult.Downloaded -> {
+                _updateState.value = InAppUpdateState.Downloaded {
+                    completeUpdate(result)
+                }
+            }
+
+            AppUpdateResult.NotAvailable -> {
+                _updateState.value = InAppUpdateState.NotAvailable
+            }
+        }
+    }
+
+    private fun completeUpdate(result: AppUpdateResult.Downloaded) {
+        scope.launch {
+            tracker.logEvent("inapp_update_flexible_complete")
+            result.completeUpdate()
+        }
+    }
+
+    private val AppUpdateInfo.shouldRequestImmediateUpdate: Boolean
+        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            && isImmediateUpdateAllowed
+            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_IMMEDIATE_UPDATE
+            && availableVersionCode() > lastRequestedVersionCode
+
+    private val AppUpdateInfo.shouldRequestFlexibleUpdate: Boolean
+        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            && isFlexibleUpdateAllowed
+            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_FLEXIBLE_UPDATE
+            && availableVersionCode() > lastRequestedVersionCode
+
+    /**
+     *  If the latest version is already available on Google Play for [DAYS_FOR_FLEXIBLE_UPDATE]
+     *  days, then request a flexible update. If it's already available more than
+     *  [DAYS_FOR_IMMEDIATE_UPDATE] days, then request a immediate update.
+     */
+    private companion object {
+        const val DAYS_FOR_FLEXIBLE_UPDATE = 3
+        const val DAYS_FOR_IMMEDIATE_UPDATE = 30
+        const val REQ_APP_UPDATE = 4820
+    }
+}

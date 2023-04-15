@@ -178,7 +178,7 @@ class RecordViewModel @Inject constructor(
 
         when (recordCount % fullScreenAdRecords) {
             0 -> fullScreenAdsLoader.showAd(activity)
-            3 -> _requestPermissionEvent.sendEvent()
+            2 -> _requestPermissionEvent.sendEvent()
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
             4 -> if (inAppReviewManager.isEligibleForReview()) {

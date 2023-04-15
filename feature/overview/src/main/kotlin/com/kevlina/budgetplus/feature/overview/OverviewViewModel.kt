@@ -17,7 +17,6 @@ import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
@@ -49,6 +48,7 @@ internal class OverviewViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val csvWriter: CsvWriter,
     private val toaster: Toaster,
+    val timeModel: OverviewTimeViewModel,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
@@ -66,11 +66,7 @@ internal class OverviewViewModel @Inject constructor(
     private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
     private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
 
-    val timePeriod = recordsObserver.timePeriod
     val isHideAds = authManager.isPremium
-
-    val fromDate = timePeriod.mapState { it.from }
-    val untilDate = timePeriod.mapState { it.until }
 
     val authors = bookRepo.bookState.mapState {
         it?.authors.orEmpty().mapNotNull(userRepo::getUser)
@@ -141,7 +137,10 @@ internal class OverviewViewModel @Inject constructor(
         tracker.logEvent("overview_export_to_csv")
         viewModelScope.launch {
             try {
-                val name = "${bookName.value}_${fromDate.value.mediumFormatted}_${untilDate.value.mediumFormatted}"
+                val fromDate = recordsObserver.timePeriod.value.from
+                val untilDate = recordsObserver.timePeriod.value.until
+
+                val name = "${bookName.value}_${fromDate.mediumFormatted}_${untilDate.mediumFormatted}"
                 val fileUri = csvWriter.writeRecordsToCsv(name)
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_STREAM, fileUri)
@@ -164,23 +163,6 @@ internal class OverviewViewModel @Inject constructor(
         _type.value = type
         typeCache = type
         tracker.logEvent("overview_type_changed")
-    }
-
-    fun setTimePeriod(timePeriod: TimePeriod) {
-        val bookId = bookRepo.currentBookId ?: return
-        val isAboveOneMonth = timePeriod.from.isBefore(timePeriod.until.minusMonths(1))
-        val period = if (!authManager.isPremium.value && isAboveOneMonth) {
-            toaster.showMessage(R.string.overview_exceed_max_period)
-            tracker.logEvent("overview_exceed_max_period")
-            TimePeriod.Custom(
-                from = timePeriod.from,
-                until = timePeriod.from.plusMonths(1)
-            )
-        } else {
-            timePeriod
-        }
-
-        recordsObserver.setTimePeriod(bookId, period)
     }
 
     fun setAuthor(author: User?) {

@@ -118,8 +118,8 @@ fun OverviewScreen(navigator: Navigator) {
         )
     }
 
-    val fromDate by vm.fromDate.collectAsStateWithLifecycle()
-    val untilDate by vm.untilDate.collectAsStateWithLifecycle()
+    val fromDate by vm.timeModel.fromDate.collectAsStateWithLifecycle()
+    val untilDate by vm.timeModel.untilDate.collectAsStateWithLifecycle()
     val activity = LocalContext.current as Activity
     val writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
 

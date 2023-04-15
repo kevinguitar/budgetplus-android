@@ -40,7 +40,7 @@ fun OverviewHeader(modifier: Modifier) {
 
         AuthorSelector()
 
-        TimePeriodSelector()
+        TimePeriodSelector(vm.timeModel)
 
         if (recordGroups?.isNotEmpty() == true) {
 

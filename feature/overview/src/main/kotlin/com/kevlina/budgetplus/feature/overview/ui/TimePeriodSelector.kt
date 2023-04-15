@@ -3,10 +3,13 @@ package com.kevlina.budgetplus.feature.overview.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.rounded.ChevronLeft
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -30,24 +32,35 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.feature.overview.OverviewViewModel
+import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
 
 @Composable
-fun TimePeriodSelector() {
-
-    val vm = hiltViewModel<OverviewViewModel>()
+internal fun TimePeriodSelector(vm: OverviewTimeViewModel) {
 
     val timePeriod by vm.timePeriod.collectAsStateWithLifecycle()
     val fromDate by vm.fromDate.collectAsStateWithLifecycle()
     val untilDate by vm.untilDate.collectAsStateWithLifecycle()
+    val isOneDayPeriod by vm.isOneDayPeriod.collectAsStateWithLifecycle()
 
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showUntilDatePicker by remember { mutableStateOf(false) }
+
+    val arrowPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
     ) {
+
+        if (isOneDayPeriod) {
+            Icon(
+                imageVector = Icons.Rounded.ChevronLeft,
+                tint = LocalAppColors.current.dark,
+                modifier = Modifier
+                    .padding(arrowPadding)
+                    .rippleClick(borderless = true, onClick = vm::previousDay)
+            )
+        }
 
         Icon(
             imageVector = Icons.Filled.DateRange,
@@ -62,14 +75,26 @@ fun TimePeriodSelector() {
                 .padding(all = 8.dp)
         )
 
-        Text(text = stringResource(id = R.string.date_to))
+        if (isOneDayPeriod) {
 
-        Text(
-            text = untilDate.mediumFormatted,
-            modifier = Modifier
-                .rippleClick { showUntilDatePicker = true }
-                .padding(all = 8.dp)
-        )
+            Icon(
+                imageVector = Icons.Rounded.ChevronRight,
+                tint = LocalAppColors.current.dark,
+                modifier = Modifier
+                    .padding(arrowPadding)
+                    .rippleClick(borderless = true, onClick = vm::nextDay)
+            )
+        } else {
+
+            Text(text = stringResource(id = R.string.date_to))
+
+            Text(
+                text = untilDate.mediumFormatted,
+                modifier = Modifier
+                    .rippleClick { showUntilDatePicker = true }
+                    .padding(all = 8.dp)
+            )
+        }
     }
 
     FlowRow(
@@ -87,7 +112,7 @@ fun TimePeriodSelector() {
             .forEach { period ->
                 TimePeriodPill(
                     timePeriod = period,
-                    isSelected = timePeriod == period,
+                    isSelected = timePeriod.from == period.from && timePeriod.until == period.until,
                     onClick = { vm.setTimePeriod(period) }
                 )
             }
@@ -98,18 +123,7 @@ fun TimePeriodSelector() {
         DatePickerDialog(
             date = fromDate,
             onDismiss = { showFromDatePicker = false },
-            onDatePicked = { from ->
-                vm.setTimePeriod(
-                    TimePeriod.Custom(
-                        from = from,
-                        until = if (from.isAfter(untilDate)) {
-                            from
-                        } else {
-                            untilDate
-                        }
-                    )
-                )
-            }
+            onDatePicked = vm::setFromDate
         )
     }
 
@@ -119,9 +133,7 @@ fun TimePeriodSelector() {
             date = untilDate,
             minDate = fromDate,
             onDismiss = { showUntilDatePicker = false },
-            onDatePicked = { until ->
-                vm.setTimePeriod(TimePeriod.Custom(from = fromDate, until = until))
-            }
+            onDatePicked = vm::setUntilDate
         )
     }
 }

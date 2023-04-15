@@ -18,11 +18,12 @@ inline fun Modifier.thenIf(condition: Boolean, modifierProvider: () -> Modifier)
 
 fun Modifier.rippleClick(
     color: Color = Color.Unspecified,
-    onClick: () -> Unit
+    borderless: Boolean = false,
+    onClick: () -> Unit,
 ) = composed {
     clickable(
         interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(color = color),
+        indication = rememberRipple(bounded = !borderless, color = color),
         onClick = onClick
     )
 }

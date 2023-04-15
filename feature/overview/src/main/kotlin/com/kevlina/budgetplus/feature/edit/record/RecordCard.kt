@@ -60,7 +60,7 @@ internal fun RecordCard(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = 10.dp)
         ) {
 
             Column(

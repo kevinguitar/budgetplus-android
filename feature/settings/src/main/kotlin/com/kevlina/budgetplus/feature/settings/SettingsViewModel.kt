@@ -23,6 +23,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.VibratorManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -35,6 +36,7 @@ internal class SettingsViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
+    @ApplicationContext private val context: Context,
     @Named("app_package") private val appPackage: String,
     @Named("auth") private val authDest: KClass<out Activity>,
 ) : ViewModel() {
@@ -116,13 +118,14 @@ internal class SettingsViewModel @Inject constructor(
     fun deleteOrLeave() {
         viewModelScope.launch {
             val isBookOwner = isBookOwner.value
+            val bookName = bookName.value
             try {
                 bookRepo.leaveOrDeleteBook()
-                toaster.showMessage(if (isBookOwner) {
+                toaster.showMessage(context.getString(if (isBookOwner) {
                     R.string.settings_book_deleted
                 } else {
                     R.string.settings_book_left
-                })
+                }, bookName))
             } catch (e: Exception) {
                 toaster.showError(e)
             }

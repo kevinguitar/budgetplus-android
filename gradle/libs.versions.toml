@@ -4,7 +4,7 @@ gradle-plugin = "7.4.2"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.8.10"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.03.00"
+compose-bom = "2023.04.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.4.4"
 # https://github.com/google/accompanist/releases
@@ -19,7 +19,7 @@ coil = "2.2.2"
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
-android-core = "androidx.core:core-ktx:1.9.0"
+android-core = "androidx.core:core-ktx:1.10.0"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -45,23 +45,23 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx"
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-ads = "com.google.android.gms:play-services-ads:22.0.0"
-google-auth = "com.google.android.gms:play-services-auth:20.4.1"
-google-billing = "com.android.billingclient:billing-ktx:5.1.0"
+google-auth = "com.google.android.gms:play-services-auth:20.5.0"
+google-billing = "com.android.billingclient:billing-ktx:5.2.0"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.0"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.1"
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.0.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha12"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha13"
 mockk = "io.mockk:mockk:1.13.4"
-navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha08"
+navigation-compose = "androidx.navigation:navigation-compose:2.6.0-alpha09"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.0"
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"

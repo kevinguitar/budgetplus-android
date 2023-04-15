@@ -16,9 +16,11 @@ import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class InAppUpdateManagerImpl @Inject constructor(
@@ -40,6 +42,7 @@ internal class InAppUpdateManagerImpl @Inject constructor(
     init {
         appUpdateManager.requestUpdateFlow()
             .onEach(::processResult)
+            .catch { e -> Timber.e(e) }
             .launchIn(scope)
     }
 

@@ -5,6 +5,8 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
 internal fun Project.configureComposeAndroid(
@@ -21,8 +23,10 @@ internal fun Project.configureComposeAndroid(
             kotlinCompilerExtensionVersion = libs.findVersion("compose.compiler").get().toString()
         }
 
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
+        tasks.withType<KotlinCompile>().configureEach {
+            kotlinOptions {
+                freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
+            }
         }
     }
 

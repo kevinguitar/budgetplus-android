@@ -1,12 +1,13 @@
 package common
 
 import com.android.build.api.dsl.CommonExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *>,
@@ -30,24 +31,25 @@ internal fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = Constants.javaVersion
+            targetCompatibility = Constants.javaVersion
             isCoreLibraryDesugaringEnabled = true
         }
 
-        kotlinOptions {
-            // Treat all Kotlin warnings as errors (disabled by default)
-            // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-            val warningsAsErrors: String? by project
-            allWarningsAsErrors = warningsAsErrors.toBoolean()
+        tasks.withType<KotlinCompile>().configureEach {
+            kotlinOptions {
+                // Treat all Kotlin warnings as errors (disabled by default)
+                // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
+                val warningsAsErrors: String? by project
+                allWarningsAsErrors = warningsAsErrors.toBoolean()
 
-            freeCompilerArgs = freeCompilerArgs + listOf(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            )
+                freeCompilerArgs = freeCompilerArgs + listOf(
+                    "-opt-in=kotlin.RequiresOptIn",
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                )
 
-            // Set JVM target to 1.8
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+                jvmTarget = Constants.javaVersion.toString()
+            }
         }
     }
 

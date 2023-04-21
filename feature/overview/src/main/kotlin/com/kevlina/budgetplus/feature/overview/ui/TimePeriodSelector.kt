@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,7 +25,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.mediumFormatted
+import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
@@ -33,9 +37,13 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
+import kotlinx.coroutines.flow.launchIn
 
 @Composable
-internal fun TimePeriodSelector(vm: OverviewTimeViewModel) {
+internal fun TimePeriodSelector(
+    vm: OverviewTimeViewModel,
+    navigator: Navigator,
+) {
 
     val timePeriod by vm.timePeriod.collectAsStateWithLifecycle()
     val fromDate by vm.fromDate.collectAsStateWithLifecycle()
@@ -46,6 +54,12 @@ internal fun TimePeriodSelector(vm: OverviewTimeViewModel) {
     var showUntilDatePicker by remember { mutableStateOf(false) }
 
     val arrowPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
+
+    LaunchedEffect(key1 = vm) {
+        vm.openPremiumEvent
+            .consumeEach { navigator.navigate(AddDest.UnlockPremium.route) }
+            .launchIn(this)
+    }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,

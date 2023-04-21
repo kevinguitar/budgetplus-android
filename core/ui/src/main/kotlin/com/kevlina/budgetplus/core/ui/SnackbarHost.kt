@@ -55,8 +55,8 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
 class SnackbarData(
     val message: String,
     val actionLabel: String?,
-    val canDismiss: Boolean,
-    val duration: SnackbarDuration,
+    val canDismiss: Boolean = false,
+    val duration: SnackbarDuration = SnackbarDuration.Short,
     val action: () -> Unit,
 )
 

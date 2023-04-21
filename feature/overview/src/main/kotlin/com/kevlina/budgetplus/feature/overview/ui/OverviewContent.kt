@@ -30,7 +30,12 @@ fun OverviewContent(
 
             OverviewList(
                 navigator = navigator,
-                header = { OverviewHeader(modifier = Modifier.padding(horizontal = 16.dp)) },
+                header = {
+                    OverviewHeader(
+                        navigator = navigator,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                },
             )
 
             BalanceFloatingLabel(

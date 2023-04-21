@@ -110,7 +110,8 @@ class OverviewTimeViewModelTest {
         recordsObserver = recordsObserver,
         bookRepo = bookRepo,
         authManager = authManager,
-        toaster = mockk(relaxUnitFun = true),
-        tracker = mockk(relaxUnitFun = true)
+        snackbarSender = mockk(relaxUnitFun = true),
+        tracker = mockk(relaxUnitFun = true),
+        context = mockk(relaxed = true)
     )
 }

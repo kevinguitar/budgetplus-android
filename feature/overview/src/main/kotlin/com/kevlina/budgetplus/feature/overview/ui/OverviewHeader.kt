@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.roundUpPriceText
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
@@ -19,7 +20,10 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewHeader(modifier: Modifier) {
+fun OverviewHeader(
+    navigator: Navigator,
+    modifier: Modifier,
+) {
 
     val vm = hiltViewModel<OverviewViewModel>()
 
@@ -40,7 +44,7 @@ fun OverviewHeader(modifier: Modifier) {
 
         AuthorSelector()
 
-        TimePeriodSelector(vm.timeModel)
+        TimePeriodSelector(vm = vm.timeModel, navigator = navigator)
 
         if (recordGroups?.isNotEmpty() == true) {
 

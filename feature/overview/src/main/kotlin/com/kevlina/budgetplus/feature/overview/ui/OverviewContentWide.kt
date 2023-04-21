@@ -38,6 +38,7 @@ fun OverviewContentWide(
         ) {
 
             OverviewHeader(
+                navigator = navigator,
                 modifier = Modifier
                     .weight(1F)
                     .verticalScroll(rememberScrollState())

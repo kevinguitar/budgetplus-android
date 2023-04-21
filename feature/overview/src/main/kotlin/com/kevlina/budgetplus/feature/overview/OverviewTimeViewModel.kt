@@ -1,14 +1,21 @@
 package com.kevlina.budgetplus.feature.overview
 
+import android.content.Context
 import androidx.compose.runtime.Stable
+import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import com.kevlina.budgetplus.core.ui.Book
+import com.kevlina.budgetplus.core.ui.SnackbarData
+import com.kevlina.budgetplus.core.ui.SnackbarSender
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -18,8 +25,9 @@ internal class OverviewTimeViewModel @Inject constructor(
     private val recordsObserver: RecordsObserver,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
-    private val toaster: Toaster,
     private val tracker: Tracker,
+    @Book private val snackbarSender: SnackbarSender,
+    @ApplicationContext private val context: Context,
 ) {
 
     val timePeriod = recordsObserver.timePeriod
@@ -27,12 +35,23 @@ internal class OverviewTimeViewModel @Inject constructor(
     val untilDate = timePeriod.mapState { it.until }
     val isOneDayPeriod = timePeriod.mapState { it.from == it.until }
 
+    private val _openPremiumEvent = MutableEventFlow<Unit>()
+    val openPremiumEvent: EventFlow<Unit> get() = _openPremiumEvent
+
     fun setTimePeriod(timePeriod: TimePeriod) {
         val bookId = bookRepo.currentBookId ?: return
         val isAboveOneMonth = timePeriod.from.isBefore(timePeriod.until.minusMonths(1))
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
-            toaster.showMessage(R.string.overview_exceed_max_period)
             tracker.logEvent("overview_exceed_max_period")
+            snackbarSender.showSnackbar(SnackbarData(
+                message = context.getString(R.string.overview_exceed_max_period),
+                actionLabel = context.getString(R.string.cta_go),
+                action = {
+                    tracker.logEvent("overview_exceed_max_period_unlock")
+                    _openPremiumEvent.sendEvent()
+                }
+            ))
+
             TimePeriod.Custom(
                 from = timePeriod.from,
                 until = timePeriod.from.plusMonths(1)

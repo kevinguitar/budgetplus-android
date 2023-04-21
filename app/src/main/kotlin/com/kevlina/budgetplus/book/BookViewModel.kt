@@ -25,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 @Stable
 class BookViewModel @Inject constructor(
+    val snackbarSender: BookSnackbarSender,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     @ApplicationContext private val context: Context,

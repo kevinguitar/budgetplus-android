@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.benchmark
 
-import android.os.Build
 import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
@@ -8,7 +7,6 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.filters.SdkSuppress
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,10 +35,6 @@ class AppStartupBenchmark {
         startup(CompilationMode.None())
     }
 
-    // Macrobenchmark is incompatible with Baseline Profiles on Android 12L (API 32) and Android 13 (API 33).
-    // https://issuetracker.google.com/issues/232104540
-    // https://issuetracker.google.com/issues/232104548
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.S)
     @Test
     fun startupBaselineProfile() {
         startup(
@@ -54,7 +48,7 @@ class AppStartupBenchmark {
         benchmarkRule.measureRepeated(
             packageName = APP_PACKAGE,
             metrics = listOf(StartupTimingMetric()),
-            iterations = 10,
+            iterations = 5,
             startupMode = StartupMode.COLD,
             compilationMode = compilationMode
         ) {

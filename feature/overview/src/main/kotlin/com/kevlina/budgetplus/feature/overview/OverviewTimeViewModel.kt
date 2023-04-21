@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @Stable
@@ -44,17 +45,14 @@ internal class OverviewTimeViewModel @Inject constructor(
     }
 
     fun setFromDate(from: LocalDate) {
-        val newPeriod = if (isOneDayPeriod.value) {
-            TimePeriod.Custom(from = from, until = from)
-        } else {
-            TimePeriod.Custom(
-                from = from,
-                until = if (from.isAfter(untilDate.value)) {
-                    from
-                } else {
-                    untilDate.value
-                }
-            )
+        val newPeriod = when {
+            isOneDayPeriod.value -> TimePeriod.Custom(from = from, until = from)
+            from.isAfter(untilDate.value) -> {
+                val daysInBetween = ChronoUnit.DAYS.between(fromDate.value, untilDate.value)
+                TimePeriod.Custom(from = from, until = from.plusDays(daysInBetween))
+            }
+
+            else -> TimePeriod.Custom(from = from, until = untilDate.value)
         }
         setTimePeriod(newPeriod)
     }

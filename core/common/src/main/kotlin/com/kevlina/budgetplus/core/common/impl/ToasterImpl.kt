@@ -2,8 +2,6 @@ package com.kevlina.budgetplus.core.common.impl
 
 import android.content.Context
 import android.widget.Toast
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -36,7 +34,6 @@ internal class ToasterImpl @Inject constructor(
 
     override fun showError(e: Exception) {
         Timber.e(e)
-        Firebase.crashlytics.recordException(e)
         val error = e.localizedMessage ?: e.message
         if (error != null) {
             showMessage(error)

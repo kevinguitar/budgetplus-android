@@ -6,6 +6,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.AppStartAction
+import com.kevlina.budgetplus.core.common.CrashReportingTree
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class BudgetPlusApp : Application() {
 
         MobileAds.initialize(this)
 
-        Timber.plant(Timber.DebugTree())
+        Timber.plant(if (isDebug) Timber.DebugTree() else CrashReportingTree())
         Firebase.analytics.setAnalyticsCollectionEnabled(!isDebug)
         Firebase.crashlytics.setCrashlyticsCollectionEnabled(!isDebug)
 

@@ -6,6 +6,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.ktx.Firebase
@@ -105,6 +106,9 @@ internal class AuthManagerImpl @Inject constructor(
             currentUser = null
             return
         }
+
+        // Associate the crash report with Budget+ user
+        Firebase.crashlytics.setUserId(user.id)
 
         val userWithExclusiveFields = user.copy(
             premium = currentUser?.premium,

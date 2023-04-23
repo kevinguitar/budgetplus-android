@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Toaster
@@ -33,7 +34,8 @@ class BookViewModel @Inject constructor(
 
     val navigation = NavigationFlow()
 
-    val unlockPremiumEvent = MutableEventFlow<Unit>()
+    private val _unlockPremiumEvent = MutableEventFlow<Unit>()
+    val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent
 
     init {
         if (bookRepo.currentBookId != null) {
@@ -66,7 +68,7 @@ class BookViewModel @Inject constructor(
                 val bookName = bookRepo.handlePendingJoinRequest()
                 toaster.showMessage(context.getString(R.string.book_join_success, bookName))
             } catch (e: JoinBookException.ExceedFreeLimit) {
-                unlockPremiumEvent.sendEvent()
+                _unlockPremiumEvent.sendEvent()
                 toaster.showMessage(e.errorRes)
             } catch (e: JoinBookException.General) {
                 toaster.showMessage(e.errorRes)

@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.data.impl
 
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.UserRepo
@@ -24,13 +25,13 @@ import javax.inject.Singleton
 internal class UserRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
-    @AppScope appScope: CoroutineScope,
-    bookRepo: BookRepo
-) : UserRepo {
+    @AppScope private val appScope: CoroutineScope,
+    private val bookRepo: BookRepo,
+) : UserRepo, AppStartAction {
 
     private val userMapping = hashMapOf<String, User>()
 
-    init {
+    override fun onAppStart() {
         combine(
             bookRepo.bookState.filterNotNull(),
             authManager.userState.filterNotNull(),

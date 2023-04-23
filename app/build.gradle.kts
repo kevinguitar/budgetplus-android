@@ -18,7 +18,6 @@ dependencies {
     implementation(libs.profile.installer)
 
     implementation(project(":core:billing"))
-    implementation(project(":core:common"))
     implementation(project(":core:data"))
     implementation(project(":core:inapp-update"))
     implementation(project(":core:notification"))

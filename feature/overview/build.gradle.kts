@@ -11,6 +11,4 @@ dependencies {
     implementation(libs.accompanist.flowlayout)
     implementation(libs.kotlin.csv)
     implementation(libs.lottie.compose)
-
-    testImplementation(libs.bundles.test)
 }

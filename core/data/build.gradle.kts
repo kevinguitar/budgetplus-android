@@ -13,6 +13,4 @@ dependencies {
 
     implementation(libs.google.ads)
     implementation(libs.google.auth)
-
-    testImplementation(libs.bundles.test)
 }

@@ -7,6 +7,4 @@ plugins {
 dependencies {
     implementation(project(":core:data"))
     implementation(libs.google.play.review)
-
-    testImplementation(libs.bundles.test)
 }

@@ -79,7 +79,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
             }
 
             packaging {
-                resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+                resources.excludes.add("META-INF/*")
             }
 
             bundle {

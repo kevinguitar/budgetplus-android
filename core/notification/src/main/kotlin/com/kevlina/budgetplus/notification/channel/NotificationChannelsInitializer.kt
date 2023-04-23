@@ -7,15 +7,16 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.os.Build
 import androidx.annotation.StringRes
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NotificationChannelsInitializer @Inject constructor(
+internal class NotificationChannelsInitializer @Inject constructor(
     @ApplicationContext private val context: Context,
-) {
+): AppStartAction {
 
-    init {
+    override fun onAppStart() {
         initNotificationChannels()
     }
 

@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.impl.AppPreference
 import com.kevlina.budgetplus.core.data.impl.AuthManagerImpl
@@ -14,6 +15,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -46,6 +48,9 @@ internal interface DataModule {
 
     @Binds
     fun provideUserRepo(impl: UserRepoImpl): UserRepo
+
+    @Binds @IntoSet
+    fun provideUserRepoOnAppStart(impl: UserRepoImpl): AppStartAction
 
     @Binds
     fun provideTracker(impl: TrackerImpl): Tracker

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
@@ -117,6 +118,7 @@ fun RecordInfo(
                 value = priceText,
                 onValueChange = {},
                 fontSize = FontSize.Header,
+                letterSpacing = 0.5.sp,
                 readOnly = true,
                 title = "$",
                 modifier = Modifier

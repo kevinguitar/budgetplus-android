@@ -36,6 +36,7 @@ fun TextField(
     placeholder: String? = null,
     readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
@@ -51,7 +52,8 @@ fun TextField(
         textStyle = TextStyle(
             color = LocalAppColors.current.dark,
             textAlign = TextAlign.End,
-            fontSize = fontSize
+            fontSize = fontSize,
+            letterSpacing = letterSpacing
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = onDone),

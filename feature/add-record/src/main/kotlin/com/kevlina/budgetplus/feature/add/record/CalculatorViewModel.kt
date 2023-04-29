@@ -32,41 +32,67 @@ class CalculatorViewModel @Inject constructor(
     val price: StateFlow<Double> = _price.asStateFlow()
 
     val needEvaluate: StateFlow<Boolean> = priceText.mapState { text ->
-        CalculatorButton.Plus.text in text ||
-            CalculatorButton.Minus.text in text ||
-            CalculatorButton.Multiply.text in text ||
-            CalculatorButton.Divide.text in text
+        text.any { it in operatorChars }
     }
 
     private val _recordFlow = MutableEventFlow<Context>()
     val recordFlow: EventFlow<Context> = _recordFlow.asStateFlow()
 
+    private val operatorChars = listOf(
+        CalculatorButton.Plus,
+        CalculatorButton.Minus,
+        CalculatorButton.Multiply,
+        CalculatorButton.Divide
+    ).map { it.text }
+
     fun onInput(btn: CalculatorButton) {
         vibrator?.vibrate()
 
-        val currentPrice = priceText.value
+        val currentText = priceText.value
         when (btn) {
             CalculatorButton.Back -> delete()
+
+            // Replace the latest operator
             CalculatorButton.Plus, CalculatorButton.Minus,
             CalculatorButton.Multiply, CalculatorButton.Divide,
-            -> {
-                if (currentPrice != EMPTY_PRICE) {
-                    _priceText.value = currentPrice + btn.text
+            -> when {
+                currentText == EMPTY_PRICE -> Unit
+                currentText.last() in operatorChars -> {
+                    _priceText.value = currentText.dropLast(1) + btn.text
                 }
+
+                else -> appendText(btn)
             }
 
-            else -> _priceText.value = if (currentPrice == EMPTY_PRICE) {
-                btn.text
+            // Do not allow multiple dots in the same number
+            CalculatorButton.Dot -> when {
+                currentText.any { it in operatorChars } -> {
+                    val lastNumber = currentText.split(*operatorChars.toCharArray()).last()
+                    if (!lastNumber.contains(CalculatorButton.Dot.text)) {
+                        appendText(btn)
+                    }
+                }
+
+                currentText.contains(CalculatorButton.Dot.text) -> Unit
+                else -> appendText(btn)
+            }
+
+            else -> if (currentText == EMPTY_PRICE) {
+                _priceText.value = btn.text.toString()
             } else {
-                currentPrice + btn.text
+                appendText(btn)
             }
         }
     }
 
+    private fun appendText(btn: CalculatorButton) {
+        _priceText.value = priceText.value + btn.text
+    }
+
     private fun evaluate() {
         val text = priceText.value
-            .replace(CalculatorButton.Multiply.text, "*")
-            .replace(CalculatorButton.Divide.text, "/")
+            .replace(CalculatorButton.Multiply.text, '*')
+            .replace(CalculatorButton.Divide.text, '/')
 
         val rawResult: Double = try {
             val expression = ExpressionBuilder(text).build()

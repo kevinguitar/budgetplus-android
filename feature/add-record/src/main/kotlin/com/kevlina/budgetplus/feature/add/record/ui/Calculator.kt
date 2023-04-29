@@ -34,16 +34,16 @@ import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 
-enum class CalculatorButton(val text: String) {
-    Seven("7"), Four("4"),
-    Eight("8"), Five("5"),
-    Nine("9"), Six("6"),
-    Divide("÷"), Multiply("×"),
+enum class CalculatorButton(val text: Char) {
+    Seven('7'), Four('4'),
+    Eight('8'), Five('5'),
+    Nine('9'), Six('6'),
+    Divide('÷'), Multiply('×'),
 
-    One("1"), Zero("0"),
-    Two("2"), Dot("."),
-    Three("3"), Back("<-"),
-    Minus("-"), Plus("+");
+    One('1'), Zero('0'),
+    Two('2'), Dot('.'),
+    Three('3'), Back('<'),
+    Minus('-'), Plus('+');
 }
 
 enum class CalculatorAction {
@@ -148,7 +148,7 @@ private fun ColumnScope.CalculatorBtn(
                 )
 
                 else -> Text(
-                    text = button.text,
+                    text = button.text.toString(),
                     textAlign = TextAlign.Center,
                     fontSize = FontSize.HeaderLarge,
                     fontWeight = FontWeight.Bold,

@@ -6,15 +6,15 @@ kotlin = "1.8.20"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.04.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.4.5"
+compose-compiler = "1.4.6"
 # https://github.com/google/accompanist/releases
-accompanist = "0.30.0"
+accompanist = "0.30.1"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "31.5.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.45"
 # https://github.com/coil-kt/coil/releases
-coil = "2.2.2"
+coil = "2.3.0"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
@@ -54,7 +54,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.1"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.2"
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

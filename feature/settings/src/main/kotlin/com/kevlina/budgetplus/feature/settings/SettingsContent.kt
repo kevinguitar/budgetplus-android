@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.ForwardToInbox
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Logout
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material.icons.rounded.Vibration
@@ -144,6 +145,12 @@ internal fun SettingsContent(
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput
+        )
+
+        SettingsItem(
+            text = stringResource(id = R.string.settings_share_app),
+            icon = Icons.Rounded.Share,
+            onClick = { vm.share(context) }
         )
 
         SettingsItem(

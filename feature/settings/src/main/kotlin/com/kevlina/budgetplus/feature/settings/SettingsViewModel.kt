@@ -38,6 +38,7 @@ internal class SettingsViewModel @Inject constructor(
     val vibrator: VibratorManager,
     @ApplicationContext private val context: Context,
     @Named("app_package") private val appPackage: String,
+    @Named("google_play_url") private val googlePlayUrl: String,
     @Named("auth") private val authDest: KClass<out Activity>,
 ) : ViewModel() {
 
@@ -92,9 +93,18 @@ internal class SettingsViewModel @Inject constructor(
         tracker.logEvent("settings_language_click")
     }
 
+    fun share(context: Context) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settings_share_app_message, googlePlayUrl))
+        }
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.settings_share_app)))
+        tracker.logEvent("settings_share_app_click")
+    }
+
     fun rateUs(context: Context) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = "https://play.google.com/store/apps/details?id=$appPackage".toUri()
+            data = googlePlayUrl.toUri()
         }
         context.startActivity(intent)
         tracker.logEvent("settings_rate_us_click")

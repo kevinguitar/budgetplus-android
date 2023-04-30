@@ -54,10 +54,10 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
 
 class SnackbarData(
     val message: String,
-    val actionLabel: String?,
+    val actionLabel: String? = null,
     val canDismiss: Boolean = false,
     val duration: SnackbarDuration = SnackbarDuration.Short,
-    val action: () -> Unit,
+    val action: () -> Unit = {},
 )
 
 enum class SnackbarDuration {

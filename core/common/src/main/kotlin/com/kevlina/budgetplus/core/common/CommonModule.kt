@@ -37,5 +37,13 @@ internal interface CommonModule {
         fun provideAppPackage(): String {
             return "com.kevlina.budgetplus"
         }
+
+        @Provides
+        @Named("google_play_url")
+        fun provideGooglePlayUrl(
+            @Named("app_package") appPackage: String,
+        ): String {
+            return "https://play.google.com/store/apps/details?id=$appPackage"
+        }
     }
 }

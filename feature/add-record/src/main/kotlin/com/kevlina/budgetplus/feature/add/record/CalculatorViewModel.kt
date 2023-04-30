@@ -43,7 +43,9 @@ class CalculatorViewModel @Inject constructor(
         CalculatorButton.Minus,
         CalculatorButton.Multiply,
         CalculatorButton.Divide
-    ).map { it.text }
+    )
+        .map { it.text }
+        .toCharArray()
 
     fun onInput(btn: CalculatorButton) {
         vibrator?.vibrate()
@@ -67,7 +69,7 @@ class CalculatorViewModel @Inject constructor(
             // Do not allow multiple dots in the same number
             CalculatorButton.Dot -> when {
                 currentText.any { it in operatorChars } -> {
-                    val lastNumber = currentText.split(*operatorChars.toCharArray()).last()
+                    val lastNumber = currentText.split(*operatorChars).last()
                     if (!lastNumber.contains(CalculatorButton.Dot.text)) {
                         appendText(btn)
                     }

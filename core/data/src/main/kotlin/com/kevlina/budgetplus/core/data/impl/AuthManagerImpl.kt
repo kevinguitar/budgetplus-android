@@ -148,12 +148,12 @@ internal class AuthManagerImpl @Inject constructor(
 
                 usersDb.get().document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
-                Timber.e(e)
+                Timber.i(e)
                 // Can't find user in the db yet, set it with the data what we have in place.
                 usersDb.get().document(user.id)
                     .set(userWithExclusiveFields.copy(fcmToken = fcmToken))
             } catch (e: Exception) {
-                Timber.e(e)
+                Timber.w(e)
             }
         }
     }

@@ -83,7 +83,7 @@ class PreferenceHolder @Inject constructor(
 
         override operator fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
             try {
-                val json = formatter.encodeToString(value)
+                val json = value?.let(formatter::encodeToString)
                 preference.editor.putString(property.name, json).apply()
             } catch (e: Exception) {
                 Timber.e(e)

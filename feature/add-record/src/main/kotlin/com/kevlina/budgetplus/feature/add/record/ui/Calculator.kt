@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,14 +19,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
@@ -33,6 +35,8 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
+import com.kevlina.budgetplus.feature.add.record.R
+import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 enum class CalculatorButton(val text: Char) {
     Seven('7'), Four('4'),
@@ -47,11 +51,12 @@ enum class CalculatorButton(val text: Char) {
 }
 
 enum class CalculatorAction {
-    Clear, Ok;
+    Clear, Evaluate, Ok;
 }
 
 private val horizontalSpacing = 12.dp
 private val verticalSpacing = 8.dp
+private val calcButtons = CalculatorButton.values().toList()
 
 @Composable
 fun Calculator(
@@ -68,7 +73,7 @@ fun Calculator(
         modifier = modifier
     ) {
 
-        CalculatorButton.values().toList().chunked(8).forEachIndexed { index, rows ->
+        calcButtons.chunked(calcButtons.size / 2).forEachIndexed { index, rows ->
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
@@ -101,16 +106,22 @@ fun Calculator(
                     }
                 }
 
-                val action = CalculatorAction.values()[index]
+                when (index) {
+                    0 -> ClearBtn(onClick = {
+                        viewModel.onCalculatorAction(context, CalculatorAction.Clear)
+                    })
 
-                CalculatorActionBtn(
-                    text = when {
-                        action == CalculatorAction.Clear -> "AC"
-                        needEvaluate -> "="
-                        else -> "OK"
-                    },
-                    onClick = { viewModel.onCalculatorAction(context, action) },
-                )
+                    1 -> DoneBtn(
+                        needEvaluate = needEvaluate,
+                        onClick = {
+                            viewModel.onCalculatorAction(context, if (needEvaluate) {
+                                CalculatorAction.Evaluate
+                            } else {
+                                CalculatorAction.Ok
+                            })
+                        }
+                    )
+                }
             }
         }
     }
@@ -143,8 +154,32 @@ private fun ColumnScope.CalculatorBtn(
             when (button) {
                 CalculatorButton.Back -> Icon(
                     imageVector = Icons.Rounded.Backspace,
-                    contentDescription = stringResource(id = R.string.cta_delete),
+                    contentDescription = stringResource(id = coreCommonR.string.cta_delete),
                     tint = LocalAppColors.current.light
+                )
+
+                CalculatorButton.Plus -> Image(
+                    painter = painterResource(id = R.drawable.ic_plus),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+                )
+
+                CalculatorButton.Minus -> Image(
+                    painter = painterResource(id = R.drawable.ic_minus),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+                )
+
+                CalculatorButton.Multiply -> Image(
+                    painter = painterResource(id = R.drawable.ic_multiply),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+                )
+
+                CalculatorButton.Divide -> Image(
+                    painter = painterResource(id = R.drawable.ic_divide),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
                 )
 
                 else -> Text(
@@ -160,8 +195,33 @@ private fun ColumnScope.CalculatorBtn(
 }
 
 @Composable
-private fun RowScope.CalculatorActionBtn(
-    text: String,
+private fun RowScope.ClearBtn(onClick: () -> Unit) {
+
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .weight(1F)
+            .fillMaxHeight(),
+        shape = CircleShape,
+        color = LocalAppColors.current.dark
+    ) {
+
+        Box(contentAlignment = Alignment.Center) {
+
+            Text(
+                text = "AC",
+                textAlign = TextAlign.Center,
+                fontSize = FontSize.Header,
+                fontWeight = FontWeight.Bold,
+                color = LocalAppColors.current.light
+            )
+        }
+    }
+}
+
+@Composable
+private fun RowScope.DoneBtn(
+    needEvaluate: Boolean,
     onClick: () -> Unit,
 ) {
 
@@ -176,13 +236,21 @@ private fun RowScope.CalculatorActionBtn(
 
         Box(contentAlignment = Alignment.Center) {
 
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontSize = FontSize.Header,
-                fontWeight = FontWeight.Bold,
-                color = LocalAppColors.current.light
-            )
+            if (needEvaluate) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_equal),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+                )
+            } else {
+                Text(
+                    text = "OK",
+                    textAlign = TextAlign.Center,
+                    fontSize = FontSize.Header,
+                    fontWeight = FontWeight.Bold,
+                    color = LocalAppColors.current.light
+                )
+            }
         }
     }
 }

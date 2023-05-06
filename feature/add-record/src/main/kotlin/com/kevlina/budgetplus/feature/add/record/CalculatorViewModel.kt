@@ -125,10 +125,10 @@ class CalculatorViewModel @Inject constructor(
 
     fun onCalculatorAction(context: Context, action: CalculatorAction) {
         vibrator?.vibrate()
-        when {
-            action == CalculatorAction.Clear -> clearPrice()
-            needEvaluate.value -> evaluate()
-            else -> {
+        when (action) {
+            CalculatorAction.Clear -> clearPrice()
+            CalculatorAction.Evaluate -> evaluate()
+            CalculatorAction.Ok -> {
                 evaluate()
                 _recordFlow.sendEvent(context)
             }

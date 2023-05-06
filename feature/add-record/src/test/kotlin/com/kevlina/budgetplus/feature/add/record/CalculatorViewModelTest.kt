@@ -53,6 +53,16 @@ class CalculatorViewModelTest {
         assertThat(calculator.priceText.value).isEqualTo("1.54+2.12")
     }
 
+    @Test
+    fun `delete button should work correctly`() {
+        input("123")
+        calculator.onInput(CalculatorButton.Back)
+        input("+321")
+        calculator.onInput(CalculatorButton.Back)
+        evaluate()
+        assertThat(calculator.priceText.value).isEqualTo("44")
+    }
+
     private val calculator = CalculatorViewModel(vibrator = null, toaster = null)
     private val buttons = CalculatorButton.values()
 

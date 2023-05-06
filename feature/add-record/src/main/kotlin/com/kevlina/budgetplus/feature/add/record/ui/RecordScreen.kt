@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -55,7 +55,7 @@ fun RecordScreen(navigator: Navigator) {
                     imageVector = Icons.Rounded.GroupAdd,
                     description = stringResource(id = R.string.cta_invite),
                     onClick = { vm.shareJoinLink(context) },
-                    modifier = Modifier.onGloballyPositioned {
+                    modifier = Modifier.onPlaced {
                         vm.highlightInviteButton(
                             BubbleDest.Invite(
                                 size = it.size,

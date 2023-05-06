@@ -16,7 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -59,7 +59,7 @@ fun RecordsScreen(
             title = stringResource(id = R.string.overview_details_title, vm.category, totalPrice),
             navigateUp = navigator::navigateUp,
             menuActions = {
-                val modifier = Modifier.onGloballyPositioned {
+                val modifier = Modifier.onPlaced {
                     vm.highlightSortingButton(
                         BubbleDest.RecordsSorting(
                             size = it.size,

@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -71,7 +71,7 @@ fun OverviewScreen(navigator: Navigator) {
                     },
                     description = stringResource(id = R.string.overview_details_title),
                     onClick = vm::toggleMode,
-                    modifier = Modifier.onGloballyPositioned {
+                    modifier = Modifier.onPlaced {
                         vm.highlightModeButton(
                             BubbleDest.OverviewMode(
                                 size = it.size,
@@ -85,7 +85,7 @@ fun OverviewScreen(navigator: Navigator) {
                     imageVector = Icons.Rounded.FileDownload,
                     description = stringResource(id = R.string.export_cta),
                     onClick = { isExportDialogShown = true },
-                    modifier = Modifier.onGloballyPositioned {
+                    modifier = Modifier.onPlaced {
                         vm.highlightExportButton(
                             BubbleDest.OverviewExport(
                                 size = it.size,

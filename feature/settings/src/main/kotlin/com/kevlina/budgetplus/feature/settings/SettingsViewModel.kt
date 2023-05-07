@@ -68,6 +68,7 @@ internal class SettingsViewModel @Inject constructor(
             try {
                 authManager.renameUser(newName)
                 tracker.logEvent("user_renamed")
+                toaster.showMessage(context.getString(R.string.settings_rename_user_success, newName))
             } catch (e: Exception) {
                 toaster.showError(e)
             }
@@ -78,6 +79,7 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.renameBook(newName)
+                toaster.showMessage(context.getString(R.string.settings_rename_book_success, newName))
             } catch (e: Exception) {
                 toaster.showError(e)
             }

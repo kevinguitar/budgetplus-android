@@ -59,7 +59,7 @@
     <!-- Category -->
     <string name="category_title">类别名称</string>
     <string name="category_edit_title">编辑类别</string>
-    <string name="category_edit_unsave_message">尚有未储存的变更，确定要离开吗？</string>
+    <string name="category_edit_unsaved_message">尚有未储存的变更，确定要离开吗？</string>
     <string name="category_edit_successful">类别清单已储存</string>
     <string name="category_already_exist">类别%s已存在</string>
     <string name="category_food">饮食</string>
@@ -134,7 +134,9 @@
     <string name="settings_title">%s设定</string>
     <string name="settings_description">设定</string>
     <string name="settings_rename_user">编辑使用者名称</string>
+    <string name="settings_rename_user_success">使用者名称已更改为%s</string>
     <string name="settings_rename_book">重新命名帐本</string>
+    <string name="settings_rename_book_success">帐本名称已更改为%s</string>
     <string name="settings_view_members">查看成员</string>
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">删除帐本</string>

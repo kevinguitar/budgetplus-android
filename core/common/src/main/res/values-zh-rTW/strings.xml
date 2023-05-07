@@ -59,7 +59,7 @@
     <!-- Category -->
     <string name="category_title">類別名稱</string>
     <string name="category_edit_title">編輯類別</string>
-    <string name="category_edit_unsave_message">尚有未儲存的變更，確定要離開嗎？</string>
+    <string name="category_edit_unsaved_message">尚有未儲存的變更，確定要離開嗎？</string>
     <string name="category_edit_successful">類別清單已儲存</string>
     <string name="category_already_exist">類別%s已存在</string>
     <string name="category_food">飲食</string>
@@ -142,7 +142,9 @@
     <string name="settings_title">%s設定</string>
     <string name="settings_description">設定</string>
     <string name="settings_rename_user">編輯使用者名稱</string>
+    <string name="settings_rename_user_success">使用者名稱已更改為%s</string>
     <string name="settings_rename_book">重新命名帳本</string>
+    <string name="settings_rename_book_success">帳本名稱已更改為%s</string>
     <string name="settings_view_members">查看成員</string>
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">刪除帳本</string>

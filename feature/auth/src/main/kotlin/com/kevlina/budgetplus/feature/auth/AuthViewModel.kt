@@ -29,6 +29,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -48,6 +49,7 @@ class AuthViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
+    private val stringProvider: StringProvider,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @ActivityContext private val context: Context,
     @Named("welcome") private val welcomeDest: KClass<out Activity>,
@@ -114,7 +116,7 @@ class AuthViewModel @Inject constructor(
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    .setServerClientId(context.getString(R.string.google_cloud_client_id))
+                    .setServerClientId(stringProvider[R.string.google_cloud_client_id])
                     .setFilterByAuthorizedAccounts(true)
                     .build()
             )
@@ -172,7 +174,7 @@ class AuthViewModel @Inject constructor(
             val isNewUser = task.result.additionalUserInfo?.isNewUser == true
             tracker.logEvent(if (isNewUser) "sign_up" else "login")
 
-            val message = context.getString(R.string.auth_success, task.result.user?.displayName)
+            val message = stringProvider[R.string.auth_success, task.result.user?.displayName.orEmpty()]
             toaster.showMessage(message)
             checkBookAvailability()
         } else {

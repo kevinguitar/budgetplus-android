@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.common
 
 import android.content.Context
+import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
 import com.kevlina.budgetplus.core.common.impl.ToasterImpl
 import dagger.Binds
 import dagger.Module
@@ -15,6 +16,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal interface CommonModule {
+
+    @Binds
+    fun provideStringProvider(impl: StringProviderImpl): StringProvider
 
     @Binds
     fun provideToaster(impl: ToasterImpl): Toaster

@@ -43,6 +43,7 @@ fun AdsBanner() {
     ) {
 
         val boxWidth = maxWidth.value.roundToInt()
+        val bannerId = stringResource(id = R.string.admob_banner_id)
         var showNoAdsHint by remember { mutableStateOf(false) }
 
         if (showNoAdsHint) {
@@ -75,7 +76,7 @@ fun AdsBanner() {
                             /* width = */ boxWidth
                         )
                     )
-                    adUnitId = context.getString(R.string.admob_banner_id)
+                    adUnitId = bannerId
                     adListener = object : AdListener() {
                         override fun onAdFailedToLoad(p0: LoadAdError) {
                             showNoAdsHint = true

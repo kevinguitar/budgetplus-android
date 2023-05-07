@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.common.impl
 import android.content.Context
 import android.widget.Toast
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 @Singleton
 internal class ToasterImpl @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val stringProvider: StringProvider,
 ) : Toaster {
 
     private var toast: Toast? = null
@@ -29,7 +31,7 @@ internal class ToasterImpl @Inject constructor(
     }
 
     override fun showMessage(resId: Int) {
-        showMessage(context.getString(resId))
+        showMessage(stringProvider[resId])
     }
 
     override fun showError(e: Exception) {

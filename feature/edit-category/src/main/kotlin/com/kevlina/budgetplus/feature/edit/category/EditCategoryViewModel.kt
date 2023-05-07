@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.feature.edit.category
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -11,7 +11,6 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +19,8 @@ class EditCategoryViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
+    private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     val expenseCategories
@@ -54,6 +53,6 @@ class EditCategoryViewModel @Inject constructor(
     }
 
     fun showCategoryExistError(category: String) {
-        toaster.showMessage(context.getString(R.string.category_already_exist, category))
+        toaster.showMessage(stringProvider[R.string.category_already_exist, category])
     }
 }

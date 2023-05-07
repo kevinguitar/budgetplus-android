@@ -11,6 +11,7 @@ import androidx.core.content.FileProvider
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
@@ -34,6 +35,7 @@ internal class CsvWriter @Inject constructor(
     @Named("app_package") private val appPackage: String,
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
+    private val stringProvider: StringProvider,
 ) {
 
     private val contentResolver get() = context.contentResolver
@@ -76,12 +78,12 @@ internal class CsvWriter @Inject constructor(
             outputStream.use { stream ->
                 csvWriter().open(stream) {
                     writeRow(listOf(
-                        context.getString(R.string.export_column_created_on),
-                        context.getString(R.string.export_column_name),
-                        context.getString(R.string.export_column_price),
-                        context.getString(R.string.export_column_type),
-                        context.getString(R.string.export_column_category),
-                        context.getString(R.string.export_column_author),
+                        stringProvider[R.string.export_column_created_on],
+                        stringProvider[R.string.export_column_name],
+                        stringProvider[R.string.export_column_price],
+                        stringProvider[R.string.export_column_type],
+                        stringProvider[R.string.export_column_category],
+                        stringProvider[R.string.export_column_author],
                     ))
                     writeRows(recordRows)
                 }
@@ -111,8 +113,8 @@ internal class CsvWriter @Inject constructor(
 
     private val Record.typeString: String
         get() = when (type) {
-            RecordType.Expense -> context.getString(R.string.record_expense)
-            RecordType.Income -> context.getString(R.string.record_income)
+            RecordType.Expense -> stringProvider[R.string.record_expense]
+            RecordType.Income -> stringProvider[R.string.record_income]
         }
 
     private fun Record.parseDatetime(formatter: DateTimeFormatter): String {

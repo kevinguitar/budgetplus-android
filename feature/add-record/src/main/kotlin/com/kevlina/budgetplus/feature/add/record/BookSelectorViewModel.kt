@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.remote.Book
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +24,8 @@ class BookSelectorViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
+    private val stringProvider: StringProvider,
     authManager: AuthManager,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     val book = bookRepo.bookState
@@ -53,7 +52,7 @@ class BookSelectorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name)
-                toaster.showMessage(context.getString(R.string.book_create_success, name))
+                toaster.showMessage(stringProvider[R.string.book_create_success, name])
                 tracker.logEvent("book_created_from_selector")
             } catch (e: Exception) {
                 toaster.showError(e)

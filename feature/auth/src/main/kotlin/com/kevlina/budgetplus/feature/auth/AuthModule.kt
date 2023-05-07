@@ -1,13 +1,12 @@
 package com.kevlina.budgetplus.feature.auth
 
 import android.app.Activity
-import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import kotlin.reflect.KClass
@@ -17,10 +16,10 @@ import kotlin.reflect.KClass
 object AuthModule {
 
     @Provides
-    fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
+    fun provideGoogleSignInOptions(stringProvider: StringProvider): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
-            .requestIdToken(context.getString(R.string.google_cloud_client_id))
+            .requestIdToken(stringProvider[R.string.google_cloud_client_id])
             .build()
     }
 

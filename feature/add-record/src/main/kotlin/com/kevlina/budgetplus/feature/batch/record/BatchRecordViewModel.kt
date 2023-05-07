@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.batch.record
 
-import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +7,7 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -18,7 +18,6 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.EMPTY_PRICE
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +34,7 @@ internal class BatchRecordViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val toaster: Toaster,
     private val tracker: Tracker,
-    @ApplicationContext private val context: Context,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     private val _type = MutableStateFlow(RecordType.Expense)
@@ -123,7 +122,7 @@ internal class BatchRecordViewModel @Inject constructor(
             times = times.value
         )
         _recordEvent.sendEvent()
-        toaster.showMessage(context.getString(R.string.batch_record_created, times.value.toString(), category))
+        toaster.showMessage(stringProvider[R.string.batch_record_created, times.value.toString(), category])
         tracker.logEvent("record_batched")
         resetScreen()
     }

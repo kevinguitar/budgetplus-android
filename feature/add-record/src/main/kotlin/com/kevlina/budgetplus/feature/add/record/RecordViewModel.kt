@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.consumeEach
@@ -46,6 +47,7 @@ class RecordViewModel @Inject constructor(
     private val inAppReviewManager: InAppReviewManager,
     private val toaster: Toaster,
     private val tracker: Tracker,
+    private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
@@ -101,9 +103,9 @@ class RecordViewModel @Inject constructor(
         val joinLink = bookRepo.generateJoinLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.menu_share_book, joinLink))
+            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_share_book, joinLink])
         }
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.cta_invite)))
+        context.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
         _requestPermissionEvent.sendEvent()
     }
 
@@ -154,7 +156,7 @@ class RecordViewModel @Inject constructor(
 
         recordRepo.createRecord(record)
         _recordEvent.sendEvent()
-        toaster.showMessage(context.getString(R.string.record_created, category))
+        toaster.showMessage(stringProvider[R.string.record_created, category])
         tracker.logEvent("record_created")
         recordCount += 1
 

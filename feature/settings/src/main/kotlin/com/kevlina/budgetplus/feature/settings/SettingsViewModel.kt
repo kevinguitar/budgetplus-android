@@ -11,6 +11,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
@@ -23,7 +24,6 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.VibratorManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -33,10 +33,10 @@ import kotlin.reflect.KClass
 internal class SettingsViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
+    private val stringProvider: StringProvider,
     private val toaster: Toaster,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
-    @ApplicationContext private val context: Context,
     @Named("app_package") private val appPackage: String,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("auth") private val authDest: KClass<out Activity>,
@@ -68,7 +68,7 @@ internal class SettingsViewModel @Inject constructor(
             try {
                 authManager.renameUser(newName)
                 tracker.logEvent("user_renamed")
-                toaster.showMessage(context.getString(R.string.settings_rename_user_success, newName))
+                toaster.showMessage(stringProvider[R.string.settings_rename_user_success, newName])
             } catch (e: Exception) {
                 toaster.showError(e)
             }
@@ -79,7 +79,7 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.renameBook(newName)
-                toaster.showMessage(context.getString(R.string.settings_rename_book_success, newName))
+                toaster.showMessage(stringProvider[R.string.settings_rename_book_success, newName])
             } catch (e: Exception) {
                 toaster.showError(e)
             }
@@ -98,9 +98,9 @@ internal class SettingsViewModel @Inject constructor(
     fun share(context: Context) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.settings_share_app_message, googlePlayUrl))
+            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.settings_share_app_message, googlePlayUrl])
         }
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.settings_share_app)))
+        context.startActivity(Intent.createChooser(intent, stringProvider[R.string.settings_share_app]))
         tracker.logEvent("settings_share_app_click")
     }
 
@@ -117,7 +117,7 @@ internal class SettingsViewModel @Inject constructor(
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf("budgetplussg@gmail.com"))
-            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.settings_contact_us))
+            putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
         }
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)
@@ -133,11 +133,11 @@ internal class SettingsViewModel @Inject constructor(
             val bookName = bookName.value
             try {
                 bookRepo.leaveOrDeleteBook()
-                toaster.showMessage(context.getString(if (isBookOwner) {
+                toaster.showMessage(stringProvider[if (isBookOwner) {
                     R.string.settings_book_deleted
                 } else {
                     R.string.settings_book_left
-                }, bookName))
+                }, bookName.orEmpty()])
             } catch (e: Exception) {
                 toaster.showError(e)
             }

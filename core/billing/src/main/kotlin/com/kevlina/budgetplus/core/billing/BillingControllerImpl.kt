@@ -17,6 +17,7 @@ import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,6 +33,7 @@ internal class BillingControllerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
+    private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
     private val _premiumProduct = MutableStateFlow<ProductDetails?>(null)
@@ -200,7 +202,7 @@ internal class BillingControllerImpl @Inject constructor(
 
                 else -> {
                     Timber.w("BillingClient: Cannot process the purchase. Purchase state: ${purchase.purchaseState}")
-                    _purchaseState.value = PurchaseState.Fail(context.getString(R.string.premium_payment_pending))
+                    _purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
                 }
             }
         }

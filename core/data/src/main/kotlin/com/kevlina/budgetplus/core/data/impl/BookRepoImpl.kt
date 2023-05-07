@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data.impl
 
-import android.content.Context
 import androidx.core.net.toUri
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
@@ -10,6 +9,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -23,7 +23,6 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.requireValue
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,10 +42,10 @@ import kotlin.time.Duration.Companion.days
 internal class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
+    private val stringProvider: StringProvider,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppScope appScope: CoroutineScope,
-    @ApplicationContext private val context: Context,
     @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
 ) : BookRepo {
 
@@ -179,12 +178,12 @@ internal class BookRepoImpl @Inject constructor(
         if ((!isPremium && bookCount >= FREE_BOOKS_LIMIT) ||
             (isPremium && bookCount >= PREMIUM_BOOKS_LIMIT)
         ) {
-            error(context.getString(R.string.book_exceed_maximum))
+            error(stringProvider[R.string.book_exceed_maximum])
         }
 
         val userId = authManager.requireUserId()
-        val expenses = context.resources.getStringArray(R.array.default_expense_categories)
-        val incomes = context.resources.getStringArray(R.array.default_income_categories)
+        val expenses = stringProvider.getArray(R.array.default_expense_categories)
+        val incomes = stringProvider.getArray(R.array.default_income_categories)
         val newBook = Book(
             name = name,
             ownerId = userId,

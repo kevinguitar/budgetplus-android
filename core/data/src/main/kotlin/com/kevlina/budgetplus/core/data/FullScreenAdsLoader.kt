@@ -8,6 +8,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class FullScreenAdsLoader @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val stringProvider: StringProvider,
     private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
@@ -45,7 +47,7 @@ class FullScreenAdsLoader @Inject constructor(
     private fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
-            /* adUnitId = */ context.getString(R.string.admob_interstitial_id),
+            /* adUnitId = */ stringProvider[R.string.admob_interstitial_id],
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {

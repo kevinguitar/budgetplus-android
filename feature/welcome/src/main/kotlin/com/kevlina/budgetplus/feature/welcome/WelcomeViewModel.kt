@@ -1,11 +1,11 @@
 package com.kevlina.budgetplus.feature.welcome
 
 import android.app.Activity
-import android.content.Context
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,7 +27,7 @@ class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
-    @ApplicationContext private val context: Context,
+    private val stringProvider: StringProvider,
     @Named("book") private val bookDest: KClass<out Activity>,
 ) : ViewModel() {
 
@@ -44,7 +43,7 @@ class WelcomeViewModel @Inject constructor(
         createBookJob = viewModelScope.launch {
             try {
                 bookRepo.createBook(name)
-                toaster.showMessage(context.getString(R.string.book_create_success, name))
+                toaster.showMessage(stringProvider[R.string.book_create_success, name])
                 tracker.logEvent("book_created_from_welcome")
 
                 val navInfo = NavigationInfo(destination = bookDest)
@@ -61,7 +60,7 @@ class WelcomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest()
-                toaster.showMessage(context.getString(R.string.book_join_success, bookName))
+                toaster.showMessage(stringProvider[R.string.book_join_success, bookName])
 
                 val navInfo = NavigationInfo(destination = bookDest)
                 navigation.sendEvent(navInfo)

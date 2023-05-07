@@ -1,15 +1,14 @@
 package com.kevlina.budgetplus.feature.edit.record
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -19,7 +18,7 @@ class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
-    @ApplicationContext private val context: Context,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     fun editRecord(
@@ -33,7 +32,7 @@ class EditRecordViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     val count = recordRepo.editBatch(record, newDate, newName, newPriceText)
-                    toaster.showMessage(context.getString(R.string.batch_record_edited, count.toString()))
+                    toaster.showMessage(stringProvider[R.string.batch_record_edited, count.toString()])
                     tracker.logEvent("record_batch_edited")
                 } catch (e: Exception) {
                     toaster.showError(e)
@@ -51,7 +50,7 @@ class EditRecordViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     val count = recordRepo.deleteBatch(record)
-                    toaster.showMessage(context.getString(R.string.batch_record_deleted, count.toString()))
+                    toaster.showMessage(stringProvider[R.string.batch_record_deleted, count.toString()])
                     tracker.logEvent("record_batch_deleted")
                 } catch (e: Exception) {
                     toaster.showError(e)

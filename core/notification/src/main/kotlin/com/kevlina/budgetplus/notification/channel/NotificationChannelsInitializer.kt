@@ -9,12 +9,14 @@ import android.os.Build
 import androidx.annotation.StringRes
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 internal class NotificationChannelsInitializer @Inject constructor(
     @ApplicationContext private val context: Context,
-): AppStartAction {
+    private val stringProvider: StringProvider,
+) : AppStartAction {
 
     override fun onAppStart() {
         initNotificationChannels()
@@ -48,8 +50,8 @@ internal class NotificationChannelsInitializer @Inject constructor(
         @StringRes descriptionRes: Int,
         importance: Int = NotificationManager.IMPORTANCE_DEFAULT,
     ): NotificationChannel {
-        val name = context.getString(nameRes)
-        val descriptionText = context.getString(descriptionRes)
+        val name = stringProvider[nameRes]
+        val descriptionText = stringProvider[descriptionRes]
 
         return NotificationChannel(channelId, name, importance)
             .apply { description = descriptionText }

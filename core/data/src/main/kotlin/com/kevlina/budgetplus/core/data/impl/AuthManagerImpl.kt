@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.DocNotExistsException
@@ -35,6 +36,7 @@ import javax.inject.Singleton
 internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
+    private val stringProvider: StringProvider,
     @AppScope private val appScope: CoroutineScope,
     @ApplicationContext private val context: Context,
     @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
@@ -114,7 +116,7 @@ internal class AuthManagerImpl @Inject constructor(
             premium = currentUser?.premium,
             createdOn = currentUser?.createdOn ?: System.currentTimeMillis(),
             lastActiveOn = System.currentTimeMillis(),
-            language = context.getString(R.string.app_language),
+            language = stringProvider[R.string.app_language],
         )
         _userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields

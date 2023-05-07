@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.feature.overview
 
-import android.content.Context
 import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -15,7 +15,6 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.ui.Book
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarSender
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -26,8 +25,8 @@ internal class OverviewTimeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val tracker: Tracker,
+    private val stringProvider: StringProvider,
     @Book private val snackbarSender: SnackbarSender,
-    @ApplicationContext private val context: Context,
 ) {
 
     val timePeriod = recordsObserver.timePeriod
@@ -44,8 +43,8 @@ internal class OverviewTimeViewModel @Inject constructor(
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
             tracker.logEvent("overview_exceed_max_period")
             snackbarSender.showSnackbar(SnackbarData(
-                message = context.getString(R.string.overview_exceed_max_period),
-                actionLabel = context.getString(R.string.cta_go),
+                message = stringProvider[R.string.overview_exceed_max_period],
+                actionLabel = stringProvider[R.string.cta_go],
                 action = {
                     tracker.logEvent("overview_exceed_max_period_unlock")
                     _openPremiumEvent.sendEvent()

@@ -32,7 +32,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
             .split(".")
             .reversed()
             .mapIndexed { index, num ->
-                num.toInt() * 10.0.pow(index * 3).toInt()
+                num.toInt() * 10.0.pow(index * VERSION_DIGIT).toInt()
             }
             .sum()
 
@@ -86,5 +86,9 @@ class AndroidAppConventionPlugin : Plugin<Project> {
                 storeArchive.enable = false
             }
         }
+    }
+
+    private companion object {
+        const val VERSION_DIGIT = 3
     }
 }

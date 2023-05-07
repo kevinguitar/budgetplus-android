@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.ui.graphics.Color
 
+@Suppress("MagicNumber")
 val overviewColors = listOf(
     Color(0xFFFAD5A4),
     Color(0xFFF4DCCE),

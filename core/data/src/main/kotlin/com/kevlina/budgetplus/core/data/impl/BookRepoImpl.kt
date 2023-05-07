@@ -175,9 +175,10 @@ internal class BookRepoImpl @Inject constructor(
     override suspend fun createBook(name: String) {
         val isPremium = authManager.userState.value?.premium == true
         val bookCount = booksState.filterNotNull().first().size
-        if ((!isPremium && bookCount >= FREE_BOOKS_LIMIT) ||
-            (isPremium && bookCount >= PREMIUM_BOOKS_LIMIT)
-        ) {
+
+        val exceedFreeLimit = !isPremium && bookCount >= FREE_BOOKS_LIMIT
+        val exceedPremiumLimit = isPremium && bookCount >= PREMIUM_BOOKS_LIMIT
+        if (exceedFreeLimit || exceedPremiumLimit) {
             error(stringProvider[R.string.book_exceed_maximum])
         }
 

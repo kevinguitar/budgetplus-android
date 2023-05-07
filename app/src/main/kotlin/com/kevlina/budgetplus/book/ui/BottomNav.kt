@@ -51,7 +51,7 @@ internal fun BottomNav(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .alpha(AppTheme.dividerAlpha)
+                .alpha(AppTheme.DIVIDER_ALPHA)
                 .background(color = LocalAppColors.current.dark)
         )
 

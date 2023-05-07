@@ -55,7 +55,7 @@ internal class BatchRecordViewModel @Inject constructor(
     private val _frequency = MutableStateFlow(BatchFrequency.Monthly)
     val frequency: StateFlow<BatchFrequency> = _frequency.asStateFlow()
 
-    val batchTimes = (2..30).toList()
+    val batchTimes = (BATCH_TIMES_MIN..BATCH_TIMES_MAX).toList()
     private val _times = MutableStateFlow(batchTimes.first())
     val times: StateFlow<Int> = _times.asStateFlow()
 
@@ -131,5 +131,10 @@ internal class BatchRecordViewModel @Inject constructor(
         _category.value = null
         _note.value = ""
         _priceText.value = EMPTY_PRICE
+    }
+
+    private companion object {
+        const val BATCH_TIMES_MIN = 2
+        const val BATCH_TIMES_MAX = 30
     }
 }

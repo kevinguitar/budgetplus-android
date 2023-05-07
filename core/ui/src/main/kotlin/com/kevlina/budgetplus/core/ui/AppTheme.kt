@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
 
+    @Suppress("MagicNumber")
     val customColors = CustomColors(
         light = Color(0xFFFFF3E0),
         lightBg = Color(0xFFF2E2CD),
@@ -59,6 +60,7 @@ object AppTheme {
     val packedMaxHeight: Dp get() = 480.dp
     val dialogShape: Shape get() = RoundedCornerShape(12.dp)
     val cardShape: Shape get() = RoundedCornerShape(12.dp)
-    val dividerAlpha: Float get() = 0.4F
+
+    const val DIVIDER_ALPHA: Float = 0.4F
 
 }

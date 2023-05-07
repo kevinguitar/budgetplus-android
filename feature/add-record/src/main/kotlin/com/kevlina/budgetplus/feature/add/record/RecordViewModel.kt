@@ -170,22 +170,27 @@ class RecordViewModel @Inject constructor(
         calculator.clearPrice()
     }
 
-    /**
-     *  Show full screen Ad on every [fullScreenAdRecords] records
-     */
-    private val fullScreenAdRecords: Int get() = 5
-
     private fun onRecordCreated(context: Context) {
         val activity = context as? Activity ?: return
 
-        when (recordCount % fullScreenAdRecords) {
-            0 -> fullScreenAdsLoader.showAd(activity)
-            2 -> _requestPermissionEvent.sendEvent()
+        when (recordCount % FULLSCREEN_AD_RECORDS) {
+            RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
+            RECORD_REQUEST_PERMISSION -> _requestPermissionEvent.sendEvent()
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
-            4 -> if (inAppReviewManager.isEligibleForReview()) {
+            RECORD_REQUEST_REVIEW -> if (inAppReviewManager.isEligibleForReview()) {
                 _requestReviewEvent.sendEvent()
             }
         }
+    }
+
+    private companion object {
+        /**
+         *  Show full screen Ad on every [FULLSCREEN_AD_RECORDS] records
+         */
+        const val FULLSCREEN_AD_RECORDS = 5
+        const val RECORD_SHOW_AD = 0
+        const val RECORD_REQUEST_PERMISSION = 2
+        const val RECORD_REQUEST_REVIEW = 4
     }
 }

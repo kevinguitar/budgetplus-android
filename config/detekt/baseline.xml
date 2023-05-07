@@ -2,34 +2,11 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ComplexCondition:BookRepoImpl.kt$BookRepoImpl$(!isPremium &amp;&amp; bookCount &gt;= FREE_BOOKS_LIMIT) || (isPremium &amp;&amp; bookCount &gt;= PREMIUM_BOOKS_LIMIT)</ID>
+    <ID>LongParameterList:AuthViewModel.kt$AuthViewModel$( private val bookRepo: BookRepo, private val toaster: Toaster, private val tracker: Tracker, private val stringProvider: StringProvider, private val gso: dagger.Lazy&lt;GoogleSignInOptions&gt;, @ActivityContext private val context: Context, @Named("welcome") private val welcomeDest: KClass&lt;out Activity&gt;, @Named("book") private val bookDest: KClass&lt;out Activity&gt;, referrerHandler: ReferrerHandler, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:OverviewViewModel.kt$OverviewViewModel$( private val bookRepo: BookRepo, private val recordsObserver: RecordsObserver, private val tracker: Tracker, private val authManager: AuthManager, private val userRepo: UserRepo, private val bubbleRepo: BubbleRepo, private val csvWriter: CsvWriter, private val toaster: Toaster, val timeModel: OverviewTimeViewModel, preferenceHolder: PreferenceHolder, )</ID>
-    <ID>LongParameterList:RecordViewModel.kt$RecordViewModel$( val calculator: CalculatorViewModel, private val bookRepo: BookRepo, private val recordRepo: RecordRepo, private val bubbleRepo: BubbleRepo, private val authManager: AuthManager, private val fullScreenAdsLoader: FullScreenAdsLoader, private val inAppReviewManager: InAppReviewManager, private val toaster: Toaster, private val tracker: Tracker, preferenceHolder: PreferenceHolder, )</ID>
+    <ID>LongParameterList:RecordViewModel.kt$RecordViewModel$( val calculator: CalculatorViewModel, private val bookRepo: BookRepo, private val recordRepo: RecordRepo, private val bubbleRepo: BubbleRepo, private val authManager: AuthManager, private val fullScreenAdsLoader: FullScreenAdsLoader, private val inAppReviewManager: InAppReviewManager, private val toaster: Toaster, private val tracker: Tracker, private val stringProvider: StringProvider, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:RecordsViewModel.kt$RecordsViewModel$( @Assisted type: RecordType, @Assisted("category") val category: String, @Assisted("authorId") private val authorId: String?, private val userRepo: UserRepo, private val bookRepo: BookRepo, private val bubbleRepo: BubbleRepo, private val tracker: Tracker, private val authManager: AuthManager, recordsObserver: RecordsObserver, preferenceHolder: PreferenceHolder, )</ID>
     <ID>LongParameterList:TextField.kt$( value: String, onValueChange: (String) -&gt; Unit, modifier: Modifier = Modifier, title: String, placeholder: String? = null, readOnly: Boolean = false, fontSize: TextUnit = TextUnit.Unspecified, letterSpacing: TextUnit = TextUnit.Unspecified, keyboardOptions: KeyboardOptions = KeyboardOptions( capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done ), onDone: (KeyboardActionScope.() -&gt; Unit)? = null )</ID>
-    <ID>MagicNumber:AndroidAppConventionPlugin.kt$AndroidAppConventionPlugin$3</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFF7E8072</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFF907258</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFFB0836B</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFFC1A185</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFFE0CCB1</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFFF2E2CD</ID>
-    <ID>MagicNumber:AppTheme.kt$0xFFFFF3E0</ID>
-    <ID>MagicNumber:AppTheme.kt$AppTheme$0.4F</ID>
-    <ID>MagicNumber:BatchRecordViewModel.kt$BatchRecordViewModel$30</ID>
-    <ID>MagicNumber:Calculator.kt$8</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFCCC8AD</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFCCCCCC</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFEBD8CC</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFF0E5D5</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFF1E3A7</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFF4DCCE</ID>
-    <ID>MagicNumber:OverviewColors.kt$0xFFFAD5A4</ID>
-    <ID>MagicNumber:OverviewGroup.kt$1.2F</ID>
-    <ID>MagicNumber:OverviewGroup.kt$100</ID>
-    <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$4</ID>
-    <ID>MagicNumber:RecordViewModel.kt$RecordViewModel$5</ID>
-    <ID>MagicNumber:Utils.kt$3_000</ID>
     <ID>SpreadOperator:CalculatorViewModel.kt$CalculatorViewModel$(*operatorChars)</ID>
     <ID>TooManyFunctions:BookRepoImpl.kt$BookRepoImpl : BookRepo</ID>
     <ID>TooManyFunctions:RecordViewModel.kt$RecordViewModel : ViewModel</ID>

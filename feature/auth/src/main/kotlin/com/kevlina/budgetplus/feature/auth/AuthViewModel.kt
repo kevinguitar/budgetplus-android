@@ -143,7 +143,6 @@ class AuthViewModel @Inject constructor(
         }
 
         when {
-
             requestCode == REQ_ONE_TAP -> try {
                 val credential = oneTapClient.getSignInCredentialFromIntent(data)
                 val idToken = credential.googleIdToken

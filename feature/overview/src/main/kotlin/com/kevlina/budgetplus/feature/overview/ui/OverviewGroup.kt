@@ -34,6 +34,9 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
 
+private const val TEXT_DARKEN_FACTOR = 1.2F
+private const val A_HUNDRED = 100
+
 @Composable
 fun OverviewGroup(
     category: String,
@@ -102,13 +105,13 @@ fun OverviewGroup(
             }
 
             Text(
-                text = "${(percentage * 100).roundUpPercentageText}%",
+                text = "${(percentage * A_HUNDRED).roundUpPercentageText}%",
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Small,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(
-                        color = color.darken(1.2F),
+                        color = color.darken(TEXT_DARKEN_FACTOR),
                         shape = CircleShape
                     )
                     .width(48.dp)

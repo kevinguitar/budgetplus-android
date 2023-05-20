@@ -9,8 +9,8 @@ import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 class HiltAndroidConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply {
-            apply("org.jetbrains.kotlin.kapt")
             apply("com.google.dagger.hilt.android")
+            apply("org.jetbrains.kotlin.kapt")
         }
 
         extensions.configure<KaptExtension> {

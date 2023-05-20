@@ -77,7 +77,7 @@ class BookActivity : ComponentActivity() {
 
             AppTheme {
                 BookBinding(
-                    viewModel = viewModel,
+                    vm = viewModel,
                     newIntent = newIntent,
                 )
             }

@@ -4,7 +4,7 @@ gradle-plugin = "8.0.1"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.8.21"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.05.00"
+compose-bom = "2023.05.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.4.7"
 # https://github.com/google/accompanist/releases
@@ -12,14 +12,14 @@ accompanist = "0.30.1"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.0.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
-hilt = "2.45"
+hilt = "2.46.1"
 # https://github.com/coil-kt/coil/releases
 coil = "2.3.0"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
-android-core = "androidx.core:core-ktx:1.10.0"
+android-core = "androidx.core:core-ktx:1.10.1"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -44,9 +44,9 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:22.0.0"
+google-ads = "com.google.android.gms:play-services-ads:22.1.0"
 google-auth = "com.google.android.gms:play-services-auth:20.5.0"
-google-billing = "com.android.billingclient:billing-ktx:5.2.0"
+google-billing = "com.android.billingclient:billing-ktx:6.0.0"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
 google-play-update = "com.google.android.play:app-update-ktx:2.0.1"
@@ -62,7 +62,7 @@ kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.0.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha14"
 mockk = "io.mockk:mockk:1.13.4"
-navigation-compose = "androidx.navigation:navigation-compose:2.6.0-beta01"
+navigation-compose = "androidx.navigation:navigation-compose:2.6.0-rc01"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"

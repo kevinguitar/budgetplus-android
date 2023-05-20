@@ -10,7 +10,6 @@ import com.kevlina.budgetplus.core.billing.BillingStatus.ITEM_NOT_OWNED
 import com.kevlina.budgetplus.core.billing.BillingStatus.ITEM_UNAVAILABLE
 import com.kevlina.budgetplus.core.billing.BillingStatus.OK
 import com.kevlina.budgetplus.core.billing.BillingStatus.SERVICE_DISCONNECTED
-import com.kevlina.budgetplus.core.billing.BillingStatus.SERVICE_TIMEOUT
 import com.kevlina.budgetplus.core.billing.BillingStatus.SERVICE_UNAVAILABLE
 import com.kevlina.budgetplus.core.billing.BillingStatus.UNKNOWN
 import com.kevlina.budgetplus.core.billing.BillingStatus.USER_CANCELED
@@ -19,7 +18,6 @@ internal fun BillingStatus(code: Int) = codes.getValue(code)
 
 private val codes = mapOf(
     null to UNKNOWN,
-    BillingResponseCode.SERVICE_TIMEOUT to SERVICE_TIMEOUT,
     BillingResponseCode.FEATURE_NOT_SUPPORTED to FEATURE_NOT_SUPPORTED,
     BillingResponseCode.SERVICE_DISCONNECTED to SERVICE_DISCONNECTED,
     BillingResponseCode.OK to OK,

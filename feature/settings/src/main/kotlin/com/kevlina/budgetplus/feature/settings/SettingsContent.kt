@@ -18,7 +18,6 @@ import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material.icons.rounded.Vibration
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +33,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.nav.consume
+import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
-import kotlinx.coroutines.flow.launchIn
 
 private const val VIBRATE_SWITCH_SCALE = 0.7F
 
@@ -50,13 +48,9 @@ internal fun SettingsContent(
 ) {
 
     val vm = hiltViewModel<SettingsViewModel>()
+    vm.navigation.consumeAsEffect()
 
     val context = LocalContext.current
-    LaunchedEffect(vm) {
-        vm.navigation
-            .consume(context)
-            .launchIn(this)
-    }
 
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()

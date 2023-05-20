@@ -24,7 +24,7 @@ class AuthActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                AuthBinding(viewModel = viewModel.get())
+                AuthBinding(vm = viewModel.get())
             }
         }
 

@@ -8,9 +8,6 @@ package com.kevlina.budgetplus.core.billing
 enum class BillingStatus {
     UNKNOWN,
 
-    /** The request has reached the maximum timeout before Google Play responds. */
-    SERVICE_TIMEOUT,
-
     /** Requested feature is not supported by Play Store on the current device. */
     FEATURE_NOT_SUPPORTED,
 

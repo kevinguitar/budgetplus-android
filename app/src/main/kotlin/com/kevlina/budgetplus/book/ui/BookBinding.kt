@@ -12,14 +12,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.kevlina.budgetplus.book.BookViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
-import com.kevlina.budgetplus.core.common.nav.consume
+import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
@@ -29,25 +28,22 @@ import kotlinx.coroutines.flow.launchIn
 
 @Composable
 internal fun BookBinding(
-    viewModel: BookViewModel,
+    vm: BookViewModel,
     newIntent: Intent?,
 ) {
 
     val navController = rememberNavController()
-    val context = LocalContext.current
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
 
-    LaunchedEffect(viewModel) {
-        viewModel.navigation
-            .consume(context)
-            .launchIn(this)
+    vm.navigation.consumeAsEffect()
 
-        viewModel.unlockPremiumEvent
+    LaunchedEffect(vm) {
+        vm.unlockPremiumEvent
             .consumeEach { navController.navigate(AddDest.UnlockPremium.route) }
             .launchIn(this)
 
-        viewModel.snackbarSender.snackbarEvent
+        vm.snackbarSender.snackbarEvent
             .consumeEach { snackbarData = it }
             .launchIn(this)
     }

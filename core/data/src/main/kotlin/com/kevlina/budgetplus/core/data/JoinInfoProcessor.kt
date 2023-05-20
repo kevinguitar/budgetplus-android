@@ -22,6 +22,11 @@ class JoinInfoProcessor @Inject constructor(
     }
 
     suspend fun resolveJoinId(joinId: String): JoinInfo {
-        return joinInfoDb.get().document(joinId).get().requireValue()
+        return try {
+            joinInfoDb.get().document(joinId).get().requireValue()
+        } catch (e: Exception) {
+            // Do not show any error on UI, the joinId could be the random referral from GP
+            throw JoinBookException.JoinInfoNotFound("Couldn't resolve the join id. $joinId")
+        }
     }
 }

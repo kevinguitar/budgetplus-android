@@ -9,7 +9,7 @@ sealed class JoinBookException : IllegalStateException() {
 
     class ExceedFreeLimit(@StringRes val errorRes: Int) : JoinBookException()
 
-    object JoinInfoNotFound : JoinBookException()
+    class JoinInfoNotFound(override val message: String) : JoinBookException()
 
     class General(@StringRes val errorRes: Int) : JoinBookException()
 }

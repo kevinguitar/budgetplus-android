@@ -103,13 +103,7 @@ internal class BookRepoImpl @Inject constructor(
 
     override suspend fun handlePendingJoinRequest(): String {
         val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
-        val joinInfo = try {
-            joinInfoProcessor.resolveJoinId(joinId)
-        } catch (e: Exception) {
-            Timber.e(e, "Couldn't resolve the join id. $joinId")
-            // Do not show any error on UI, the joinId could be the random referral from GP
-            throw JoinBookException.JoinInfoNotFound
-        }
+        val joinInfo = joinInfoProcessor.resolveJoinId(joinId)
         val bookId = joinInfo.bookId
         val validBefore = joinInfo.generatedOn + linkExpirationMillis
         pendingJoinId.value = null

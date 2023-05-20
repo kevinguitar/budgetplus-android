@@ -16,8 +16,8 @@ import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_SHOW_MEMBERS
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.notification.channel.CHANNEL_GENERAL
-import com.kevlina.budgetplus.notification.channel.CHANNEL_NEW_MEMBER
+import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_GENERAL
+import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_NEW_MEMBER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -207,4 +207,8 @@ internal class BillingControllerImpl @Inject constructor(
             }
         }
     }
+
+    private companion object {
+        const val PRODUCT_PREMIUM_ID: String = "budgetplus.premium"
+    }
 }

@@ -56,4 +56,9 @@ internal class NotificationChannelsInitializer @Inject constructor(
         return NotificationChannel(channelId, name, importance)
             .apply { description = descriptionText }
     }
+
+    companion object {
+        const val CHANNEL_GENERAL = "general"
+        const val CHANNEL_NEW_MEMBER = "new_member"
+    }
 }

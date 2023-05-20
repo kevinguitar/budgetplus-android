@@ -25,6 +25,7 @@ class JoinInfoProcessor @Inject constructor(
         return try {
             joinInfoDb.get().document(joinId).get().requireValue()
         } catch (e: Exception) {
+            e.toString()
             // Do not show any error on UI, the joinId could be the random referral from GP
             throw JoinBookException.JoinInfoNotFound("Couldn't resolve the join id. $joinId")
         }

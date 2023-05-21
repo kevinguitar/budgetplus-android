@@ -112,6 +112,6 @@ class OverviewTimeViewModelTest {
         authManager = authManager,
         snackbarSender = mockk(relaxUnitFun = true),
         tracker = mockk(relaxUnitFun = true),
-        context = mockk(relaxed = true)
+        stringProvider = mockk(relaxed = true),
     )
 }

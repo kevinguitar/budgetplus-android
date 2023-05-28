@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,6 +74,11 @@ internal fun EditRecordDialog(
     var showDeleteBatchDialog by remember { mutableStateOf(false) }
 
     val (nameFocus, priceFocus) = remember { FocusRequester.createRefs() }
+    val isSaveEnabled by remember {
+        derivedStateOf {
+            name.text.isNotBlank() && priceText.text.isNotBlank()
+        }
+    }
 
     fun confirmEdit(editBatch: Boolean = false) {
         vm.editRecord(
@@ -151,14 +157,17 @@ internal fun EditRecordDialog(
                         )
                     }
 
-                    Button(onClick = {
-                        if (editRecord.isBatched) {
-                            showEditBatchDialog = true
-                        } else {
-                            confirmEdit()
-                            onDismiss()
+                    Button(
+                        enabled = isSaveEnabled,
+                        onClick = {
+                            if (editRecord.isBatched) {
+                                showEditBatchDialog = true
+                            } else {
+                                confirmEdit()
+                                onDismiss()
+                            }
                         }
-                    }) {
+                    ) {
                         Text(
                             text = stringResource(id = R.string.cta_save),
                             color = LocalAppColors.current.light,

@@ -118,9 +118,7 @@ fun OverviewList(
         }
     }
 
-    val editRecord = editRecordDialog
-    if (editRecord != null) {
-
+    editRecordDialog?.let { editRecord ->
         EditRecordDialog(
             editRecord = editRecord,
             onDismiss = {

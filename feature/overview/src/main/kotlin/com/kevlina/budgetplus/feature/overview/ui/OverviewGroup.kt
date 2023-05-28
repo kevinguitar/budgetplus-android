@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,8 +48,8 @@ fun OverviewGroup(
     onClick: () -> Unit,
 ) {
 
-    val sum = records.sumOf { it.price }
-    val percentage = sum / totalPrice
+    val sum = remember(records) { records.sumOf { it.price } }
+    val percentage = remember(sum, totalPrice) { sum / totalPrice }
 
     Box(
         modifier = Modifier
@@ -68,7 +69,9 @@ fun OverviewGroup(
                     .padding(vertical = 16.dp)
             ) {
 
-                val progress = calcProgressWidth(maxWidth, percentage)
+                val progress = remember(percentage) {
+                    calcProgressWidth(maxWidth, percentage)
+                }
                 val width by animateDpAsState(
                     targetValue = progress,
                     animationSpec = tween(durationMillis = 500),

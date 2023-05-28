@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +22,7 @@ import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.blockClicks
 import kotlinx.coroutines.delay
 
 private const val LABEL_SCALE_ZOOM = 1.5F
@@ -52,10 +54,9 @@ fun BalanceFloatingLabel(
                 scaleY = scale
                 translationY = LABEL_TRANSLATION_Y * (scale - 1F)
             }
-            .background(
-                color = LocalAppColors.current.dark,
-                shape = CircleShape
-            )
+            .clip(CircleShape)
+            .background(LocalAppColors.current.dark)
+            .blockClicks()
     ) {
 
         Text(

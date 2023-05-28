@@ -27,3 +27,12 @@ fun Modifier.rippleClick(
         onClick = onClick
     )
 }
+
+fun Modifier.blockClicks() = composed {
+    clickable(
+        enabled = true,
+        interactionSource = remember { MutableInteractionSource() },
+        indication = null,
+        onClick = {}
+    )
+}

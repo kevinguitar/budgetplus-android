@@ -136,4 +136,21 @@ internal class RecordRepoImpl @Inject constructor(
             .get()
             .await()
     }
+
+    override suspend fun searchRecords(query: String): List<Record> {
+        val price = query.toDoubleOrNull()
+        return if (price != null) {
+            recordsDb.get().whereEqualTo("price", price)
+        } else {
+            // https://stackoverflow.com/a/56815787
+            recordsDb.get()
+                .whereGreaterThanOrEqualTo("name", query)
+                .whereLessThanOrEqualTo("name", "$query~")
+        }
+            .get()
+            .await()
+            .map { doc ->
+                doc.toObject<Record>().copy(id = doc.id)
+            }
+    }
 }

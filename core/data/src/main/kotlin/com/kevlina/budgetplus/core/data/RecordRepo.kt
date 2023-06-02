@@ -38,4 +38,9 @@ interface RecordRepo {
      */
     suspend fun deleteBatch(record: Record): Int
 
+    /**
+     *  @param query The prefix of [Record.name] or the [Record.price].
+     */
+    suspend fun searchRecords(query: String): List<Record>
+
 }

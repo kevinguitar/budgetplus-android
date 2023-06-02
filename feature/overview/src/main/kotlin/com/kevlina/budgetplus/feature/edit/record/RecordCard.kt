@@ -35,6 +35,7 @@ import java.time.LocalDate
 
 @Composable
 internal fun RecordCard(
+    modifier: Modifier = Modifier,
     item: Record,
     isLast: Boolean,
     canEdit: Boolean,
@@ -44,7 +45,7 @@ internal fun RecordCard(
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .thenIf(canEdit) {
                 Modifier.rippleClick(

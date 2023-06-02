@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +22,7 @@ import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.navKey
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.edit.record.EditRecordDialog
 import com.kevlina.budgetplus.feature.edit.record.RecordCard
 import com.kevlina.budgetplus.feature.overview.OverviewMode
@@ -29,6 +31,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 @Composable
 fun OverviewList(
     navigator: Navigator,
+    listState: LazyListState,
     header: (@Composable () -> Unit)? = null,
 ) {
 
@@ -47,6 +50,7 @@ fun OverviewList(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(bottom = 48.dp),
+        state = listState,
         modifier = Modifier.fillMaxSize()
     ) {
 
@@ -80,6 +84,9 @@ fun OverviewList(
             ) { index, record ->
 
                 RecordCard(
+                    modifier = Modifier.thenIf(index == 0) {
+                        Modifier.padding(top = 8.dp)
+                    },
                     item = record,
                     isLast = index == records.lastIndex,
                     canEdit = vm.canEditRecord(record),
@@ -97,6 +104,9 @@ fun OverviewList(
             ) { index, key ->
 
                 OverviewGroup(
+                    modifier = Modifier.thenIf(index == 0) {
+                        Modifier.padding(top = 8.dp)
+                    },
                     category = key,
                     records = recordGroups.orEmpty()[key].orEmpty(),
                     totalPrice = totalPrice,

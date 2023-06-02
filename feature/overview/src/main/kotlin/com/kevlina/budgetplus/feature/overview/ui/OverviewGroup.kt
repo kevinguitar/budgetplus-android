@@ -40,6 +40,7 @@ private const val A_HUNDRED = 100
 
 @Composable
 fun OverviewGroup(
+    modifier: Modifier = Modifier,
     category: String,
     records: List<Record>,
     totalPrice: Double,
@@ -52,7 +53,7 @@ fun OverviewGroup(
     val percentage = remember(sum, totalPrice) { sum / totalPrice }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .rippleClick(onClick = onClick)
             .padding(horizontal = 16.dp)

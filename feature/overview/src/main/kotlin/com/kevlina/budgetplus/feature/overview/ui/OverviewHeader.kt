@@ -70,7 +70,6 @@ fun OverviewHeader(
             BalanceCard(
                 totalPrice = totalPriceText,
                 balance = balanceText,
-                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
     }

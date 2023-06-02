@@ -152,6 +152,10 @@
     <string name="settings_contact_us">Contact Us</string>
     <string name="settings_no_email_app_found">No email app found</string>
 
+    <!-- Search -->
+    <string name="search_title">Search Records</string>
+    <string name="search_description">Search</string>
+
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>
     <string name="bubble_edit_category">Click to rename or delete, long click to reorder</string>

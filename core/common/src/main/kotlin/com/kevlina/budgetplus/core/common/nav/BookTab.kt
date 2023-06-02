@@ -13,7 +13,7 @@ enum class AddDest {
 }
 
 enum class HistoryDest {
-    Overview, Records;
+    Overview, Records, Search;
 
     val route get() = name.navRoute
 }

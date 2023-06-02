@@ -26,6 +26,7 @@ dependencies {
     implementation(project(":feature:auth"))
     implementation(project(":feature:edit-category"))
     implementation(project(":feature:overview"))
+    implementation(project(":feature:records"))
     implementation(project(":feature:search"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:unlock-premium"))

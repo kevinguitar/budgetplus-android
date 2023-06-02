@@ -23,10 +23,10 @@ import com.kevlina.budgetplus.core.common.nav.navKey
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.thenIf
-import com.kevlina.budgetplus.feature.edit.record.EditRecordDialog
-import com.kevlina.budgetplus.feature.edit.record.RecordCard
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
+import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
+import com.kevlina.budgetplus.feature.record.card.RecordCard
 
 @Composable
 fun OverviewList(

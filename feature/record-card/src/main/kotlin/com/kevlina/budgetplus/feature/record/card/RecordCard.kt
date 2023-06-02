@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.edit.record
+package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +34,7 @@ import com.kevlina.budgetplus.core.ui.thenIf
 import java.time.LocalDate
 
 @Composable
-internal fun RecordCard(
+fun RecordCard(
     modifier: Modifier = Modifier,
     item: Record,
     isLast: Boolean,

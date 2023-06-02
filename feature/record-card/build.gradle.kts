@@ -7,9 +7,4 @@ plugins {
 dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:record-card"))
-
-    implementation(libs.accompanist.flowlayout)
-    implementation(libs.kotlin.csv)
-    implementation(libs.lottie.compose)
 }

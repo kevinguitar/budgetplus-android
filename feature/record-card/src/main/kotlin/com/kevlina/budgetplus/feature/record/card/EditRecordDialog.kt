@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.edit.record
+package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,7 +42,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun EditRecordDialog(
+fun EditRecordDialog(
     editRecord: Record,
     onDismiss: () -> Unit,
 ) {

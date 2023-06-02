@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.edit.record
+package com.kevlina.budgetplus.feature.record.card
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class EditRecordViewModel @Inject constructor(
+internal class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.edit.record
+package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

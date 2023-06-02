@@ -1,22 +1,21 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.roundUpPriceText
-import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
-import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
@@ -29,7 +28,20 @@ fun OverviewHeader(
 
     val type by vm.type.collectAsStateWithLifecycle()
     val totalPrice by vm.totalPrice.collectAsStateWithLifecycle()
+    val balance by vm.balance.collectAsStateWithLifecycle()
     val recordGroups by vm.recordGroups.collectAsStateWithLifecycle()
+
+    val totalPriceText = remember(totalPrice) {
+        totalPrice.dollar
+    }
+
+    val balanceText = remember(balance) {
+        balance.dollar
+    }
+
+    val isBalanceCardVisible = remember(recordGroups) {
+        recordGroups?.isNotEmpty() == true
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,18 +56,21 @@ fun OverviewHeader(
 
         AuthorSelector()
 
-        TimePeriodSelector(vm = vm.timeModel, navigator = navigator)
+        TimePeriodSelector(
+            vm = vm.timeModel,
+            navigator = navigator,
+        )
 
-        if (recordGroups?.isNotEmpty() == true) {
+        AnimatedVisibility(
+            visible = isBalanceCardVisible,
+            enter = expandVertically(expandFrom = Alignment.Top),
+            exit = shrinkVertically()
+        ) {
 
-            Text(
-                text = stringResource(
-                    id = R.string.overview_total_price,
-                    totalPrice.roundUpPriceText
-                ),
-                fontSize = FontSize.Large,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(top = 16.dp)
+            BalanceCard(
+                totalPrice = totalPriceText,
+                balance = balanceText,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
     }

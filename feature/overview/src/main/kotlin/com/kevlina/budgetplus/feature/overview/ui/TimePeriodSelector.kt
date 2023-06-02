@@ -115,7 +115,7 @@ internal fun TimePeriodSelector(
         mainAxisSpacing = 12.dp,
         crossAxisSpacing = 12.dp,
         mainAxisAlignment = FlowMainAxisAlignment.Center,
-        modifier = Modifier.padding(top = 16.dp)
+        modifier = Modifier.padding(vertical = 16.dp)
     ) {
         setOf(
             TimePeriod.Today,

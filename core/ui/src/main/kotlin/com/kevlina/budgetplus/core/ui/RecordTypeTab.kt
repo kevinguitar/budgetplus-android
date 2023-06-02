@@ -43,7 +43,7 @@ fun RecordTypeTab(
 
         Spacer(
             modifier = Modifier
-                .size(2.dp, 24.dp)
+                .size(width = 2.dp, height = 24.dp)
                 .background(
                     color = LocalAppColors.current.dark,
                     shape = CircleShape

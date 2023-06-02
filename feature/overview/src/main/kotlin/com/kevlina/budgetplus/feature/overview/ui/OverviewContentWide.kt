@@ -19,7 +19,6 @@ import com.kevlina.budgetplus.core.common.nav.Navigator
 @Composable
 fun OverviewContentWide(
     navigator: Navigator,
-    balance: Double,
     isHideAds: Boolean,
 ) {
 
@@ -54,12 +53,7 @@ fun OverviewContentWide(
 
             OverviewList(navigator = navigator)
 
-            BalanceFloatingLabel(
-                balance = balance,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .align(Alignment.BottomCenter)
-            )
+            //TODO: Search button
         }
     }
 }

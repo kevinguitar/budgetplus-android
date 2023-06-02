@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
@@ -16,7 +15,6 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 @Composable
 fun OverviewContent(
     navigator: Navigator,
-    balance: Double,
     isHideAds: Boolean,
 ) {
 
@@ -38,12 +36,7 @@ fun OverviewContent(
                 },
             )
 
-            BalanceFloatingLabel(
-                balance = balance,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .align(Alignment.BottomCenter)
-            )
+            //TODO: Search button
         }
 
         if (!isHideAds) {

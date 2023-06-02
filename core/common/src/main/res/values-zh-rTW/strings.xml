@@ -90,7 +90,7 @@
 
     <!-- Overview -->
     <string name="overview_title">%s總覽</string>
-    <string name="overview_total_price">合計：$%s</string>
+    <string name="overview_total_price">合計</string>
     <string name="overview_period_day">本日</string>
     <string name="overview_period_week">本週</string>
     <string name="overview_period_month">本月</string>
@@ -98,7 +98,7 @@
     <string name="overview_exceed_max_period">解鎖進階版以篩選大於一個月的帳目</string>
     <string name="overview_sort_by_date">依日期排序</string>
     <string name="overview_sort_by_price">依金額排序</string>
-    <string name="overview_balance">結餘：%s</string>
+    <string name="overview_balance">結餘</string>
     <string name="overview_details_title">%1$s：%2$s</string>
     <string name="overview_author_everyone">所有人</string>
     <string name="overview_author_anonymous">匿名</string>

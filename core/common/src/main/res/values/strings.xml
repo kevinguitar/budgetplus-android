@@ -90,7 +90,7 @@
 
     <!-- Overview -->
     <string name="overview_title">%s\'s Overview</string>
-    <string name="overview_total_price">Total: $%s</string>
+    <string name="overview_total_price">Total</string>
     <string name="overview_period_day">Today</string>
     <string name="overview_period_week">Week</string>
     <string name="overview_period_month">Month</string>
@@ -98,7 +98,7 @@
     <string name="overview_exceed_max_period">Unlock premium to set the period above one month</string>
     <string name="overview_sort_by_date">Sort by date</string>
     <string name="overview_sort_by_price">Sort by price</string>
-    <string name="overview_balance">Balance: %s</string>
+    <string name="overview_balance">Balance</string>
     <string name="overview_details_title">%1$s: %2$s</string>
     <string name="overview_author_everyone">Everyone</string>
     <string name="overview_author_anonymous">Anonymous</string>

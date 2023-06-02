@@ -43,7 +43,6 @@ fun OverviewScreen(navigator: Navigator) {
 
     val mode by vm.mode.collectAsStateWithLifecycle()
     val bookName by vm.bookName.collectAsStateWithLifecycle()
-    val balance by vm.balance.collectAsStateWithLifecycle()
     val isHideAds by vm.isHideAds.collectAsStateWithLifecycle()
 
     var isExportDialogShown by remember { mutableStateOf(false) }
@@ -104,14 +103,12 @@ fun OverviewScreen(navigator: Navigator) {
             regularContent = {
                 OverviewContent(
                     navigator = navigator,
-                    balance = balance,
                     isHideAds = isHideAds,
                 )
             },
             wideContent = {
                 OverviewContentWide(
                     navigator = navigator,
-                    balance = balance,
                     isHideAds = isHideAds,
                 )
             }

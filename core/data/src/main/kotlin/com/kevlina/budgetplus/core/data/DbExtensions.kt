@@ -7,12 +7,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-//TODO: Replace it with the kotlin one
-suspend fun <T> Task<T>.await() = suspendCoroutine<T> { cont ->
-    addOnSuccessListener { cont.resume(it) }
-    addOnFailureListener { cont.resumeWithException(it) }
-}
-
 suspend inline fun <reified T : Any> Task<DocumentSnapshot>.requireValue(): T =
     suspendCoroutine { cont ->
         addOnSuccessListener {

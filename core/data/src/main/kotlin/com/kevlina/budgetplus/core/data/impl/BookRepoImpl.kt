@@ -18,7 +18,6 @@ import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.core.data.JoinInfoProcessor
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
-import com.kevlina.budgetplus.core.data.await
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
@@ -33,6 +32,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton

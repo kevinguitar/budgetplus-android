@@ -8,9 +8,9 @@ import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.RecordRepo
-import com.kevlina.budgetplus.core.data.await
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset

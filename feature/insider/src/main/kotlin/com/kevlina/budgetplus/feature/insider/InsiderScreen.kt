@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -19,8 +18,6 @@ import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
 fun InsiderScreen(
     navigator: Navigator,
 ) {
-
-    val vm = hiltViewModel<InsiderViewModel>()
 
     Column(
         modifier = Modifier.fillMaxSize()

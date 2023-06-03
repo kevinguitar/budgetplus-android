@@ -27,7 +27,7 @@ internal class InsiderViewModel @Inject constructor(
             val totalUsers = async { insiderRepo.getTotalUsers() }
             val totalPremiumUsers = async { insiderRepo.getTotalPremiumUsers() }
             val dailyActiveUsers = async { insiderRepo.getDailyActiveUsers() }
-            val newUsers = async { insiderRepo.getNewUsers(10) }
+            val newUsers = async { insiderRepo.getNewUsers(NEW_USERS_COUNT) }
 
             InsiderData(
                 totalUsers = totalUsers.await(),
@@ -39,5 +39,9 @@ internal class InsiderViewModel @Inject constructor(
     } catch (e: Exception) {
         toaster.showError(e)
         null
+    }
+
+    private companion object {
+        const val NEW_USERS_COUNT = 10
     }
 }

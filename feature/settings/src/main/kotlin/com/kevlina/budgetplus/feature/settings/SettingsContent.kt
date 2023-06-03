@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.ForwardToInbox
+import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material.icons.rounded.Share
@@ -54,6 +55,7 @@ internal fun SettingsContent(
 
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
+    val isInsider by vm.isInsider.collectAsStateWithLifecycle()
     val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
 
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
@@ -140,6 +142,14 @@ internal fun SettingsContent(
             },
             onClick = vm.vibrator::toggleVibrateOnInput
         )
+
+        if (isInsider) {
+            SettingsItem(
+                text = stringResource(id = R.string.insider_title),
+                icon = Icons.Rounded.Insights,
+                onClick = { navigator.navigate(AddDest.Insider.route) }
+            )
+        }
 
         SettingsItem(
             text = stringResource(id = R.string.settings_share_app),

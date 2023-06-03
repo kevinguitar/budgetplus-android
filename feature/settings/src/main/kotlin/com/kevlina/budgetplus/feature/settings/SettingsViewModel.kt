@@ -56,6 +56,10 @@ internal class SettingsViewModel @Inject constructor(
     val canSelectLanguage: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
+    val isInsider = authManager.userState.mapState {
+        it?.internal == true
+    }
+
     val currentUsername get() = authManager.userState.value?.name
     val currentBookName get() = bookRepo.bookState.value?.name
 

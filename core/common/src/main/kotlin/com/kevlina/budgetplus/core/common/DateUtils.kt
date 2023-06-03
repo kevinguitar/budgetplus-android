@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.common
 
-import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -17,9 +16,3 @@ val LocalDate.mediumFormatted: String
 
 val LocalDate.withCurrentTime: Long
     get() = LocalDateTime.of(this, LocalTime.now()).toEpochSecond(ZoneOffset.UTC)
-
-val LocalDate.utcMillis: Long
-    get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
-
-val Long.utcLocaleDate: LocalDate
-    get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()

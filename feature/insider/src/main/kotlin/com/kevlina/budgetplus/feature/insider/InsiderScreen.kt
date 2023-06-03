@@ -13,6 +13,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
 
 @Composable
 fun InsiderScreen(

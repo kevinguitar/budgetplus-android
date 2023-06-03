@@ -154,6 +154,15 @@
 
     <!-- Insider -->
     <string name="insider_title">Insider</string>
+    <string name="insider_total_users">Total users</string>
+    <string name="insider_total_premium_users">Total premium users</string>
+    <string name="insider_daily_active_users">Daily active users</string>
+    <string name="insider_new_users">New Users</string>
+    <string name="insider_language_zh_tw">Traditional Chinese</string>
+    <string name="insider_language_zh_cn">Simplified Chinese</string>
+    <string name="insider_language_en">English</string>
+    <string name="insider_user_created_on">Created on: %s</string>
+    <string name="insider_user_last_active_on">Last active on: %s</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>

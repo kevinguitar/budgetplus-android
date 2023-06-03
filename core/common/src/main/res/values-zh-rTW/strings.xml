@@ -129,14 +129,6 @@
     <string name="premium_acknowledge_fail">無法確認款項，請稍後再試</string>
     <string name="premium_payment_pending">您的款項正在處理中，請稍後再回來</string>
 
-    <!-- Bubble -->
-    <string name="bubble_invite">點擊分享連結，邀請好友們一起記帳！</string>
-    <string name="bubble_edit_category">點擊以重新命名或刪除，長按拖曳排序</string>
-    <string name="bubble_save_category">編輯完成後，記得儲存喔！</string>
-    <string name="bubble_overview_mode">你可以選擇用類別或明細顯示帳目</string>
-    <string name="bubble_overview_export">輸出帳目成 CSV 檔保存</string>
-    <string name="bubble_records_sorting">你可以選擇用日期或是金額排序帳目</string>
-
     <!-- Settings -->
     <string name="settings_title">%s設定</string>
     <string name="settings_description">設定</string>
@@ -159,6 +151,26 @@
     <string name="settings_rate_us">在 Google Play 上評價</string>
     <string name="settings_contact_us">與我們聯繫</string>
     <string name="settings_no_email_app_found">找不到 email 應用程式</string>
+
+    <!-- Insider -->
+    <string name="insider_title">商業機密</string>
+    <string name="insider_total_users">總用戶</string>
+    <string name="insider_total_premium_users">付費用戶</string>
+    <string name="insider_daily_active_users">日活躍用戶</string>
+    <string name="insider_new_users">新用戶</string>
+    <string name="insider_language_zh_tw">繁體中文</string>
+    <string name="insider_language_zh_cn">簡體中文</string>
+    <string name="insider_language_en">英文</string>
+    <string name="insider_user_created_on">創建時間：%s</string>
+    <string name="insider_user_last_active_on">最後上線：%s</string>
+
+    <!-- Bubble -->
+    <string name="bubble_invite">點擊分享連結，邀請好友們一起記帳！</string>
+    <string name="bubble_edit_category">點擊以重新命名或刪除，長按拖曳排序</string>
+    <string name="bubble_save_category">編輯完成後，記得儲存喔！</string>
+    <string name="bubble_overview_mode">你可以選擇用類別或明細顯示帳目</string>
+    <string name="bubble_overview_export">輸出帳目成 CSV 檔保存</string>
+    <string name="bubble_records_sorting">你可以選擇用日期或是金額排序帳目</string>
 
     <!-- Notification -->
     <string name="notification_channel_general">一般</string>

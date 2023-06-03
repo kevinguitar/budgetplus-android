@@ -1,10 +1,8 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +29,7 @@ import com.kevlina.budgetplus.feature.record.card.RecordCard
 @Composable
 fun OverviewList(
     navigator: Navigator,
-    listState: LazyListState,
+    modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
 
@@ -50,8 +48,7 @@ fun OverviewList(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(bottom = 48.dp),
-        state = listState,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
 
         if (header != null) {

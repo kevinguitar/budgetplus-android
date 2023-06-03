@@ -21,7 +21,6 @@ import com.kevlina.budgetplus.core.common.nav.originalNavValue
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
-import com.kevlina.budgetplus.feature.search.SearchScreen
 
 internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 
@@ -59,12 +58,6 @@ internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
                     authorId = args.getString(ARG_AUTHOR_ID)
                 )
             )
-        }
-
-        composable(
-            route = HistoryDest.Search.route,
-        ) {
-            SearchScreen(navigator = navController.toNavigator())
         }
     }
 }

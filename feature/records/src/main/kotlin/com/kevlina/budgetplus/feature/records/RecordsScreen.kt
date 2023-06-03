@@ -44,7 +44,9 @@ fun RecordsScreen(
     val sortMode by vm.sortMode.collectAsStateWithLifecycle()
     val isHideAds by vm.isHideAds.collectAsStateWithLifecycle()
 
-    val totalPrice = records.orEmpty().sumOf { it.price }.dollar
+    val totalPrice = remember(records) {
+        records.orEmpty().sumOf { it.price }.dollar
+    }
 
     // Observe the records, when the last record get deleted, navigate back to the overview screen.
     LaunchedEffect(key1 = records) {

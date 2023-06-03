@@ -5,6 +5,7 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.impl.AppPreference
 import com.kevlina.budgetplus.core.data.impl.AuthManagerImpl
 import com.kevlina.budgetplus.core.data.impl.BookRepoImpl
+import com.kevlina.budgetplus.core.data.impl.InsiderRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordsObserverImpl
 import com.kevlina.budgetplus.core.data.impl.TrackerImpl
@@ -48,6 +49,9 @@ internal interface DataModule {
 
     @Binds
     fun provideUserRepo(impl: UserRepoImpl): UserRepo
+
+    @Binds
+    fun provideInsiderRepo(impl: InsiderRepoImpl): InsiderRepo
 
     @Binds @IntoSet
     fun provideUserRepoOnAppStart(impl: UserRepoImpl): AppStartAction

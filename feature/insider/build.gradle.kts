@@ -7,5 +7,6 @@ plugins {
 dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
-    implementation(project(":feature:record-card"))
+
+    implementation(libs.coil.compose)
 }

@@ -86,6 +86,7 @@ private fun BalanceItem(
             color = LocalAppColors.current.dark,
             fontWeight = FontWeight.SemiBold,
             fontSize = FontSize.SemiLarge,
+            singleLine = true
         )
     }
 }

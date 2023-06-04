@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material.icons.rounded.WorkspacePremium
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +37,7 @@ internal fun InsiderContent() {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(vertical = 12.dp)
     ) {
 

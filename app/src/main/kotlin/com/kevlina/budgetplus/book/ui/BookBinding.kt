@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.book.ui
 
 import android.content.Intent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,6 +63,8 @@ internal fun BookBinding(
             NavHost(
                 navController = navController,
                 startDestination = BookTab.Add.route,
+                enterTransition = { fadeIn() },
+                exitTransition = { fadeOut() },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)

@@ -20,6 +20,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
+import com.kevlina.budgetplus.core.data.PurchaseRecorder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +34,7 @@ internal class BillingControllerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
+    private val purchaseRecorder: PurchaseRecorder,
     private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
@@ -193,6 +195,7 @@ internal class BillingControllerImpl @Inject constructor(
 
                     if (status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products) {
                         authManager.markPremium()
+                        purchaseRecorder.recordPurchase(purchase.orderId, purchase.products.first())
                         _purchaseState.value = PurchaseState.Success
                     } else {
                         Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")

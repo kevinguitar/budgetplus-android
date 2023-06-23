@@ -4,10 +4,6 @@ plugins {
     id("budgetplus.compose.app")
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

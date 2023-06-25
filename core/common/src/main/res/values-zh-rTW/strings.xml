@@ -150,6 +150,7 @@
     <string name="settings_share_app_message">我發現了一款超好用的記帳 App，快下載來試試吧！\n%s</string>
     <string name="settings_rate_us">在 Google Play 上評價</string>
     <string name="settings_contact_us">與我們聯繫</string>
+    <string name="settings_privacy_policy">隱私權條款</string>
     <string name="settings_no_email_app_found">找不到 email 應用程式</string>
 
     <!-- Insider -->

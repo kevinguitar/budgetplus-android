@@ -39,6 +39,7 @@ internal class SettingsViewModel @Inject constructor(
     val vibrator: VibratorManager,
     @Named("app_package") private val appPackage: String,
     @Named("google_play_url") private val googlePlayUrl: String,
+    @Named("privacy_policy_url") private val privacyPolicyUrl: String,
     @Named("auth") private val authDest: KClass<out Activity>,
 ) : ViewModel() {
 
@@ -129,6 +130,14 @@ internal class SettingsViewModel @Inject constructor(
         } else {
             toaster.showMessage(R.string.settings_no_email_app_found)
         }
+    }
+
+    fun viewPrivacyPolicy(context: Context) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = privacyPolicyUrl.toUri()
+        }
+        context.startActivity(intent)
+        tracker.logEvent("settings_privacy_policy_click")
     }
 
     fun deleteOrLeave() {

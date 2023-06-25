@@ -150,6 +150,7 @@
     <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%s</string>
     <string name="settings_rate_us">Rate Us on Google Play</string>
     <string name="settings_contact_us">Contact Us</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_no_email_app_found">No email app found</string>
 
     <!-- Insider -->

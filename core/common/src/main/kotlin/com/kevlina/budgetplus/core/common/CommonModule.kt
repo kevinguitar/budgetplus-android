@@ -49,5 +49,11 @@ internal interface CommonModule {
         ): String {
             return "https://play.google.com/store/apps/details?id=$appPackage"
         }
+
+        @Provides
+        @Named("privacy_policy_url")
+        fun providePrivacyPolicyUrl(): String {
+            return "https://www.privacypolicygenerator.info/live.php?token=uUzTqhsT9MKWC1QVBjZhUULB1xnmhiJg"
+        }
     }
 }

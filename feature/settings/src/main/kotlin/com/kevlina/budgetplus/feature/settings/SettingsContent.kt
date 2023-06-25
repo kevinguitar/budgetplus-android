@@ -14,6 +14,7 @@ import androidx.compose.material.icons.rounded.ForwardToInbox
 import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Logout
+import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.SupervisedUserCircle
@@ -166,8 +167,14 @@ internal fun SettingsContent(
         SettingsItem(
             text = stringResource(id = R.string.settings_contact_us),
             icon = Icons.Rounded.ForwardToInbox,
-            roundBottom = true,
             onClick = { vm.contactUs(context) }
+        )
+
+        SettingsItem(
+            text = stringResource(id = R.string.settings_privacy_policy),
+            icon = Icons.Rounded.PrivacyTip,
+            roundBottom = true,
+            onClick = { vm.viewPrivacyPolicy(context) }
         )
 
         // Danger section

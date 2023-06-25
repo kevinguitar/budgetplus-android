@@ -13,7 +13,7 @@ import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.shouldShowRationale
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun NotificationPermissionHandler() {
@@ -36,6 +36,6 @@ fun NotificationPermissionHandler() {
                     permissionRequester.launch(permission)
                 }
             }
-            .launchIn(this)
+            .collect()
     }
 }

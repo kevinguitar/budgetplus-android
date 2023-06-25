@@ -29,7 +29,7 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun RecordScreen(navigator: Navigator) {
@@ -42,7 +42,7 @@ fun RecordScreen(navigator: Navigator) {
     LaunchedEffect(key1 = vm) {
         vm.requestReviewEvent
             .consumeEach { isRequestingReview = true }
-            .launchIn(this)
+            .collect()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {

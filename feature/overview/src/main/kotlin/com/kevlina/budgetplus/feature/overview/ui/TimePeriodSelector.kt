@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 
 @Composable
 internal fun TimePeriodSelector(
@@ -58,7 +58,7 @@ internal fun TimePeriodSelector(
     LaunchedEffect(key1 = vm) {
         vm.openPremiumEvent
             .consumeEach { navigator.navigate(AddDest.UnlockPremium.route) }
-            .launchIn(this)
+            .collect()
     }
 
     Row(

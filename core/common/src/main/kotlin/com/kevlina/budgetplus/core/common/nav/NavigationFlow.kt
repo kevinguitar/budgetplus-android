@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.consumeEach
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 
 @Suppress("FunctionName")
 fun NavigationFlow() = MutableEventFlow<NavigationInfo>()
@@ -27,6 +27,6 @@ fun EventFlow<NavigationInfo>.consumeAsEffect() {
             if (info.finishCurrent) {
                 (context as Activity).finish()
             }
-        }.launchIn(this)
+        }.collect()
     }
 }

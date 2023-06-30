@@ -23,6 +23,8 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.utils.CsvWriter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -114,13 +116,15 @@ internal class OverviewViewModel @Inject constructor(
             ?.toList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
+    val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?> = records.map { records ->
         records ?: return@map null
         withContext(Dispatchers.Default) {
-            records.groupBy { it.category }
+            records
+                .groupBy { it.category }
                 .toList()
                 .sortedByDescending { (_, v) -> v.sumOf { it.price } }
                 .toMap()
+                .mapValues { it.value.toImmutableList() }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 

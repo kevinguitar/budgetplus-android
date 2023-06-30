@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -25,6 +24,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun OverviewList(
@@ -47,7 +47,6 @@ fun OverviewList(
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(bottom = 48.dp),
         modifier = modifier
     ) {
 
@@ -105,7 +104,7 @@ fun OverviewList(
                         Modifier.padding(top = 8.dp)
                     },
                     category = key,
-                    records = recordGroups.orEmpty()[key].orEmpty(),
+                    records = recordGroups.orEmpty()[key] ?: persistentListOf(),
                     totalPrice = totalPrice,
                     color = overviewColors[(index) % overviewColors.size],
                     isLast = index == recordGroups.orEmpty().size - 1,

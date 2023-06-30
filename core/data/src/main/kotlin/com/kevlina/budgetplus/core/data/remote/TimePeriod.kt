@@ -1,9 +1,11 @@
 package com.kevlina.budgetplus.core.data.remote
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
+@Immutable
 @Serializable
 sealed class TimePeriod {
 

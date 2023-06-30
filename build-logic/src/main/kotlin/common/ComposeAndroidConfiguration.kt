@@ -33,6 +33,7 @@ internal fun Project.configureComposeAndroid(
     dependencies {
         add("implementation", platform(libs.findLibrary("compose.bom").get()))
         add("implementation", libs.findBundle("compose").get())
+        add("implementation", libs.findLibrary("kotlin.immutable.collections").get())
     }
 }
 

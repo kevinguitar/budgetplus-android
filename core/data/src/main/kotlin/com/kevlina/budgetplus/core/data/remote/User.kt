@@ -1,7 +1,9 @@
 package com.kevlina.budgetplus.core.data.remote
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
+@Immutable
 @Serializable
 data class User(
     val id: String = "",

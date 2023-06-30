@@ -34,6 +34,8 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 private const val TEXT_DARKEN_FACTOR = 1.2F
 private const val A_HUNDRED = 100
@@ -42,7 +44,7 @@ private const val A_HUNDRED = 100
 fun OverviewGroup(
     modifier: Modifier = Modifier,
     category: String,
-    records: List<Record>,
+    records: ImmutableList<Record>,
     totalPrice: Double,
     color: Color,
     isLast: Boolean,
@@ -148,7 +150,7 @@ private fun calcProgressWidth(maxWidth: Dp, ratio: Double): Dp {
 private fun OverviewGroup_Preview() = AppTheme {
     OverviewGroup(
         category = "日常",
-        records = listOf(
+        records = persistentListOf(
             Record(price = 10.3),
             Record(price = 42.43),
             Record(price = 453.1),

@@ -19,7 +19,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun BoxScope.DoneAnimator(event: EventFlow<Unit>) {
@@ -40,7 +40,7 @@ fun BoxScope.DoneAnimator(event: EventFlow<Unit>) {
                 speed = 1.2F
             )
             showAnimation = false
-        }.launchIn(this)
+        }.collect()
     }
 
     if (showAnimation) {

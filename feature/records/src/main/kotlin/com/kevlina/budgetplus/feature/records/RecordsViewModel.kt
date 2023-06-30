@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.records
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
+@Stable
 class RecordsViewModel @AssistedInject constructor(
     @Assisted type: RecordType,
     @Assisted("category") val category: String,

@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.core.common.nav
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 import androidx.navigation.NavController
 
 /**
  *  Internal version of NavController, mark it as stable to improve the composable performance.
  */
-@Stable
+@Immutable
 class Navigator(
     private val doNavigate: (String) -> Unit,
     private val doUp: () -> Boolean

@@ -1,6 +1,6 @@
 package com.kevlina.budgetplus.core.data.remote
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 import com.google.firebase.firestore.Exclude
 import com.kevlina.budgetplus.core.common.RecordType
 import kotlinx.serialization.Serializable
@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
-@Stable
+@Immutable
 @Serializable
 data class Record(
     val id: String = "",

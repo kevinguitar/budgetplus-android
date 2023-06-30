@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.insider.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -79,7 +80,9 @@ internal fun InsiderContent() {
                     text = stringResource(id = R.string.insider_new_users),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = FontSize.Large,
-                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp, start = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, bottom = 8.dp, start = 16.dp)
                 )
             }
 

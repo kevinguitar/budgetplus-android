@@ -22,7 +22,6 @@ val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.Detek
     parallel.set(true)
     setSource(files(rootDir))
     config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
-    baseline.set(file("$rootDir/config/detekt/baseline.xml"))
     include("**/*.kt")
     include("**/*.kts")
     exclude("**/resources/**")
@@ -36,7 +35,4 @@ detekt {
 
 subprojects {
     pluginManager.apply("io.gitlab.arturbosch.detekt")
-    detekt {
-        baseline = file("${rootProject.projectDir}/config/detekt/baseline.xml")
-    }
 }

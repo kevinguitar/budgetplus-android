@@ -69,7 +69,8 @@ class CalculatorViewModel @Inject constructor(
             // Do not allow multiple dots in the same number
             CalculatorButton.Dot -> when {
                 currentText.any { it in operatorChars } -> {
-                    val lastNumber = currentText.split(*operatorChars).last()
+                    val indexOfLastOp = currentText.indexOfLast { it in operatorChars }
+                    val lastNumber = currentText.takeLast(currentText.length - indexOfLastOp - 1)
                     if (!lastNumber.contains(CalculatorButton.Dot.text)) {
                         appendText(btn)
                     }

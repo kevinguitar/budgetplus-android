@@ -89,7 +89,7 @@ fun RecordScreen(navigator: Navigator) {
                 RecordContentPacked(navigator = navigator)
             },
             extraContent = {
-                DoneAnimator(event = vm.recordEvent)
+                DoneAnimator(eventTrigger = vm.recordEvent)
             }
         )
 

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
@@ -63,8 +64,7 @@ class RecordViewModel @Inject constructor(
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
 
-    private val _recordEvent = MutableEventFlow<Unit>()
-    val recordEvent: EventFlow<Unit> = _recordEvent.asStateFlow()
+    val recordEvent = EventTrigger<Unit>()
 
     private val _requestReviewEvent = MutableEventFlow<Unit>()
     val requestReviewEvent: EventFlow<Unit> = _requestReviewEvent.asStateFlow()
@@ -155,7 +155,7 @@ class RecordViewModel @Inject constructor(
         )
 
         recordRepo.createRecord(record)
-        _recordEvent.sendEvent()
+        recordEvent.sendEvent(Unit)
         toaster.showMessage(stringProvider[R.string.record_created, category])
         tracker.logEvent("record_created")
         recordCount += 1

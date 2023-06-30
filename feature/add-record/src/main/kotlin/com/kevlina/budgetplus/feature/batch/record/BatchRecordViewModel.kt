@@ -3,14 +3,12 @@ package com.kevlina.budgetplus.feature.batch.record
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.EventFlow
-import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -60,8 +58,7 @@ internal class BatchRecordViewModel @Inject constructor(
     private val _times = MutableStateFlow(batchTimes.first())
     val times: StateFlow<Int> = _times.asStateFlow()
 
-    private val _recordEvent = MutableEventFlow<Unit>()
-    val recordEvent: EventFlow<Unit> = _recordEvent.asStateFlow()
+    val recordEvent = EventTrigger<Unit>()
 
     val isBatchButtonEnabled: StateFlow<Boolean> = combine(
         category,
@@ -122,7 +119,7 @@ internal class BatchRecordViewModel @Inject constructor(
             frequency = frequency.value,
             times = times.value
         )
-        _recordEvent.sendEvent()
+        recordEvent.sendEvent(Unit)
         toaster.showMessage(stringProvider[R.string.batch_record_created, times.value.toString(), category])
         tracker.logEvent("record_batched")
         resetScreen()

@@ -42,7 +42,6 @@ data class Event<out T>(private val content: T) {
 }
 
 typealias EventFlow<T> = StateFlow<Event<T>>
-typealias MutableEventFlow<T> = MutableStateFlow<Event<T>>
 
 @Suppress("FunctionName")
 fun <T> MutableEventFlow() = MutableStateFlow<Event<T>>(Event.CONSUMED)

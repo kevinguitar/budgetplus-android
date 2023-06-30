@@ -16,13 +16,13 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun BoxScope.DoneAnimator(event: EventFlow<Unit>) {
+fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
 
     val focusManager = LocalFocusManager.current
 
@@ -30,8 +30,8 @@ fun BoxScope.DoneAnimator(event: EventFlow<Unit>) {
     val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
     val lottieAnimatable = rememberLottieAnimatable()
 
-    LaunchedEffect(key1 = event) {
-        event.consumeEach {
+    LaunchedEffect(key1 = eventTrigger) {
+        eventTrigger.event.consumeEach {
             focusManager.clearFocus()
 
             showAnimation = true

@@ -38,7 +38,7 @@ fun BatchRecordScreen(navigator: Navigator) {
 
             BatchRecordContent()
 
-            DoneAnimator(event = vm.recordEvent)
+            DoneAnimator(eventTrigger = vm.recordEvent)
         }
     }
 }

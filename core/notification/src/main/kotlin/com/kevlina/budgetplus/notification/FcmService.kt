@@ -41,6 +41,12 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         Timber.d("RemoteMessage: ${message.data}")
+        val recipientId = message.data["recipientId"]
+        if (recipientId != null && recipientId != authManager.userState.value?.id) {
+            // Do not show it if the recipient isn't targeting the current logged-in user.
+            return
+        }
+
         val channelId = when (message.data["type"]) {
             CHANNEL_NEW_MEMBER -> CHANNEL_NEW_MEMBER
             CHANNEL_GENERAL -> CHANNEL_GENERAL

@@ -51,6 +51,12 @@ internal interface CommonModule {
         }
 
         @Provides
+        @Named("instagram_url")
+        fun provideInstagramUrl(): String {
+            return "https://www.instagram.com/budget.plus.tw/"
+        }
+
+        @Provides
         @Named("privacy_policy_url")
         fun providePrivacyPolicyUrl(): String {
             return "https://www.privacypolicygenerator.info/live.php?token=uUzTqhsT9MKWC1QVBjZhUULB1xnmhiJg"

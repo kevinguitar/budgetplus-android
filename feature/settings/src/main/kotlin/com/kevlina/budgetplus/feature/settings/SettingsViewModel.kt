@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.settings
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -39,6 +40,7 @@ internal class SettingsViewModel @Inject constructor(
     val vibrator: VibratorManager,
     @Named("app_package") private val appPackage: String,
     @Named("google_play_url") private val googlePlayUrl: String,
+    @Named("instagram_url") private val instagramUrl: String,
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
     @Named("auth") private val authDest: KClass<out Activity>,
 ) : ViewModel() {
@@ -54,6 +56,8 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     val isPremium = authManager.isPremium
+
+    @get:SuppressLint("AnnotateVersionCheck")
     val canSelectLanguage: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
@@ -110,11 +114,13 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     fun rateUs(context: Context) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = googlePlayUrl.toUri()
-        }
-        context.startActivity(intent)
+        context.visitUrl(googlePlayUrl)
         tracker.logEvent("settings_rate_us_click")
+    }
+
+    fun followOnInstagram(context: Context) {
+        context.visitUrl(instagramUrl)
+        tracker.logEvent("settings_follow_instagram_click")
     }
 
     fun contactUs(context: Context) {
@@ -133,10 +139,7 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     fun viewPrivacyPolicy(context: Context) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = privacyPolicyUrl.toUri()
-        }
-        context.startActivity(intent)
+        context.visitUrl(privacyPolicyUrl)
         tracker.logEvent("settings_privacy_policy_click")
     }
 
@@ -166,5 +169,12 @@ internal class SettingsViewModel @Inject constructor(
             bundle = Bundle().apply { putBoolean(ARG_ENABLE_ONE_TAP, false) }
         )
         navigation.sendEvent(navInfo)
+    }
+
+    private fun Context.visitUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = url.toUri()
+        }
+        startActivity(intent)
     }
 }

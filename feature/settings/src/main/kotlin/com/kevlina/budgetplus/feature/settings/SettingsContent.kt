@@ -41,7 +41,7 @@ import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 
-private const val VIBRATE_SWITCH_SCALE = 0.7F
+private const val SWITCH_SCALE = 0.7F
 
 @Composable
 internal fun SettingsContent(
@@ -71,12 +71,11 @@ internal fun SettingsContent(
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
 
-        // Premium section
+        // Content section
         SettingsItem(
             text = stringResource(id = R.string.batch_record_title),
             showCrownAnimation = true,
             roundTop = true,
-            roundBottom = isPremium,
             onClick = {
                 vm.trackBatchRecordClicked()
                 if (isPremium) {
@@ -91,16 +90,13 @@ internal fun SettingsContent(
             SettingsItem(
                 text = stringResource(id = R.string.premium_hide_ads),
                 showCrownAnimation = true,
-                roundBottom = true,
                 onClick = { navigator.navigate(AddDest.UnlockPremium.route) }
             )
         }
 
-        // Content section
         SettingsItem(
             text = stringResource(id = R.string.settings_rename_user),
             icon = Icons.Rounded.AccountCircle,
-            roundTop = true,
             onClick = { isRenameUserDialogShown = true }
         )
 
@@ -138,7 +134,7 @@ internal fun SettingsContent(
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .scale(VIBRATE_SWITCH_SCALE)
+                        .scale(SWITCH_SCALE)
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput
@@ -162,6 +158,12 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.settings_rate_us),
             icon = Icons.Rounded.Star,
             onClick = { vm.rateUs(context) }
+        )
+
+        SettingsItem(
+            text = stringResource(id = R.string.settings_follow_on_instagram),
+            iconRes = R.drawable.ic_instagram,
+            onClick = { vm.followOnInstagram(context) }
         )
 
         SettingsItem(

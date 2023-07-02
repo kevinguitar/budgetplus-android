@@ -2,11 +2,11 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.0.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.8.21"
+kotlin = "1.8.22"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.06.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.4.7"
+compose-compiler = "1.4.8"
 # https://github.com/google/accompanist/releases
 accompanist = "0.30.1"
 # https://firebase.google.com/support/release-notes/android
@@ -45,7 +45,7 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx"
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-ads = "com.google.android.gms:play-services-ads:22.1.0"
-google-auth = "com.google.android.gms:play-services-auth:20.5.0"
+google-auth = "com.google.android.gms:play-services-auth:20.6.0"
 google-billing = "com.android.billingclient:billing-ktx:6.0.1"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.18.0"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"

@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewContentWide(
+internal fun OverviewContentWide(
+    vm: OverviewViewModel,
     navigator: Navigator,
     isHideAds: Boolean,
 ) {
@@ -36,6 +38,7 @@ fun OverviewContentWide(
         ) {
 
             OverviewHeader(
+                vm = vm,
                 navigator = navigator,
                 modifier = Modifier
                     .weight(1F)
@@ -49,6 +52,7 @@ fun OverviewContentWide(
         }
 
         OverviewList(
+            vm = vm,
             navigator = navigator,
             modifier = Modifier
                 .fillMaxHeight()

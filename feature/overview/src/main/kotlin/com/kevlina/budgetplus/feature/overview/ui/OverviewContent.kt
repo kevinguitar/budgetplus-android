@@ -11,9 +11,11 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewContent(
+internal fun OverviewContent(
+    vm: OverviewViewModel,
     navigator: Navigator,
     isHideAds: Boolean,
 ) {
@@ -25,9 +27,11 @@ fun OverviewContent(
     ) {
 
         OverviewList(
+            vm = vm,
             navigator = navigator,
             header = {
                 OverviewHeader(
+                    vm = vm,
                     navigator = navigator,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )

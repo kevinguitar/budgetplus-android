@@ -102,12 +102,14 @@ fun OverviewScreen(navigator: Navigator) {
                 .weight(1F),
             regularContent = {
                 OverviewContent(
+                    vm = vm,
                     navigator = navigator,
                     isHideAds = isHideAds,
                 )
             },
             wideContent = {
                 OverviewContentWide(
+                    vm = vm,
                     navigator = navigator,
                     isHideAds = isHideAds,
                 )

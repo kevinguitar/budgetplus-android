@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
@@ -27,13 +26,12 @@ import com.kevlina.budgetplus.feature.record.card.RecordCard
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun OverviewList(
+internal fun OverviewList(
+    vm: OverviewViewModel,
     navigator: Navigator,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
-
-    val vm = hiltViewModel<OverviewViewModel>()
 
     val mode by vm.mode.collectAsStateWithLifecycle()
     val type by vm.type.collectAsStateWithLifecycle()

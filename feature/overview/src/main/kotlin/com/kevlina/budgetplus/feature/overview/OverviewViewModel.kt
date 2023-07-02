@@ -24,6 +24,7 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.utils.CsvWriter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -71,9 +72,15 @@ internal class OverviewViewModel @Inject constructor(
 
     val isHideAds = authManager.isPremium
 
-    val authors = bookRepo.bookState.mapState {
-        it?.authors.orEmpty().mapNotNull(userRepo::getUser)
-    }
+    val authors = bookRepo.bookState
+        .map {
+            withContext(Dispatchers.Default) {
+                it?.authors.orEmpty()
+                    .mapNotNull(userRepo::getUser)
+                    .toImmutableList()
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), persistentListOf())
 
     private val _selectedAuthor = MutableStateFlow<User?>(null)
     val selectedAuthor: StateFlow<User?> = _selectedAuthor.asStateFlow()

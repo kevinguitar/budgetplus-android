@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -19,17 +18,18 @@ import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewHeader(
+internal fun OverviewHeader(
+    vm: OverviewViewModel,
     navigator: Navigator,
     modifier: Modifier,
 ) {
-
-    val vm = hiltViewModel<OverviewViewModel>()
 
     val type by vm.type.collectAsStateWithLifecycle()
     val totalPrice by vm.totalPrice.collectAsStateWithLifecycle()
     val balance by vm.balance.collectAsStateWithLifecycle()
     val recordGroups by vm.recordGroups.collectAsStateWithLifecycle()
+    val authors by vm.authors.collectAsStateWithLifecycle()
+    val selectedAuthor by vm.selectedAuthor.collectAsStateWithLifecycle()
 
     val totalPriceText = remember(totalPrice) {
         totalPrice.dollar
@@ -54,7 +54,13 @@ fun OverviewHeader(
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
-        AuthorSelector()
+        if (authors.size > 1) {
+            AuthorSelector(
+                authors = authors,
+                selectedAuthor = selectedAuthor,
+                setAuthor = vm::setAuthor
+            )
+        }
 
         TimePeriodSelector(
             vm = vm.timeModel,

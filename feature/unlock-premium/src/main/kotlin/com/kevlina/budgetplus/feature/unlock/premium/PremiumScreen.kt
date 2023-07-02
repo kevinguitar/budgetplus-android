@@ -22,6 +22,7 @@ import com.kevlina.budgetplus.core.ui.TopBar
 fun PremiumScreen(navigator: Navigator) {
 
     val vm = hiltViewModel<PremiumViewModel>()
+    val premiumPricing by vm.premiumPricing.collectAsStateWithLifecycle()
     val isPaymentProcessing by vm.isPaymentProcessing.collectAsStateWithLifecycle(initialValue = false)
     val purchaseDone by vm.purchaseDoneFlow.collectAsStateWithLifecycle(initialValue = false)
 
@@ -54,7 +55,10 @@ fun PremiumScreen(navigator: Navigator) {
                 .align(Alignment.CenterHorizontally)
                 .weight(1F)
         ) {
-            PremiumContent()
+            PremiumContent(
+                premiumPricing = premiumPricing,
+                getPremium = vm::getPremium
+            )
 
             if (isPaymentProcessing) {
                 InfiniteCircularProgress()

@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.unlock.premium
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,8 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -34,13 +33,13 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
-fun PremiumContent() {
+fun PremiumContent(
+    premiumPricing: String?,
+    getPremium: (Context) -> Unit,
+) {
 
-    val viewModel = hiltViewModel<PremiumViewModel>()
     val context = LocalContext.current
-
     val imgInvest by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_invest))
-    val premiumPricing by viewModel.premiumPricing.collectAsStateWithLifecycle()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -76,7 +75,7 @@ fun PremiumContent() {
         } else {
 
             Text(
-                text = stringResource(id = R.string.premium_pricing, premiumPricing.orEmpty()),
+                text = stringResource(id = R.string.premium_pricing, premiumPricing),
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
@@ -97,7 +96,7 @@ fun PremiumContent() {
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             enabled = premiumPricing != null,
-            onClick = { viewModel.getPremium(context) }
+            onClick = { getPremium(context) }
         ) {
             Text(
                 text = stringResource(id = R.string.premium_unlock_cta),

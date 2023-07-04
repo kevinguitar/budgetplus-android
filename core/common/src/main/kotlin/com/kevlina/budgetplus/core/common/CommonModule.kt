@@ -59,7 +59,7 @@ internal interface CommonModule {
         @Provides
         @Named("privacy_policy_url")
         fun providePrivacyPolicyUrl(): String {
-            return "https://www.privacypolicygenerator.info/live.php?token=uUzTqhsT9MKWC1QVBjZhUULB1xnmhiJg"
+            return "https://budgetplus.cchi.tw/privacy-policy/"
         }
     }
 }

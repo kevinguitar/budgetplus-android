@@ -18,10 +18,10 @@ interface BookRepo {
     fun setPendingJoinRequest(joinId: String?)
 
     /**
-     *  @return The book's name that the user just joined.
+     *  @return The book's name if the user joined successfully.
      *  @throws JoinBookException
      */
-    suspend fun handlePendingJoinRequest(): String
+    suspend fun handlePendingJoinRequest(): String?
 
     suspend fun removeMember(userId: String)
 

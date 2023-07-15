@@ -21,12 +21,16 @@ class JoinInfoProcessor @Inject constructor(
         return joinId
     }
 
-    suspend fun resolveJoinId(joinId: String): JoinInfo {
+    suspend fun resolveJoinId(joinId: String): JoinInfo? {
+        // joinId could be the random referral from GP, ignore these cases.
+        if (joinId.startsWith("utm_source") || joinId.startsWith("gclid")) {
+            return null
+        }
+
         return try {
             joinInfoDb.get().document(joinId).get().requireValue()
         } catch (e: Exception) {
             e.toString()
-            // Do not show any error on UI, the joinId could be the random referral from GP
             throw JoinBookException.JoinInfoNotFound("Couldn't resolve the join id. $joinId")
         }
     }

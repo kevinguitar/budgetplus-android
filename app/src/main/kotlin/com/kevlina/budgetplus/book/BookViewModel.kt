@@ -64,7 +64,7 @@ class BookViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val bookName = bookRepo.handlePendingJoinRequest()
+                val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
                 toaster.showMessage(stringProvider[R.string.book_join_success, bookName])
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 _unlockPremiumEvent.sendEvent()

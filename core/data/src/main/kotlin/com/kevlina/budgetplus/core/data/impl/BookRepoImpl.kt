@@ -101,9 +101,9 @@ internal class BookRepoImpl @Inject constructor(
     // The join link will expire in 1 day
     private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
 
-    override suspend fun handlePendingJoinRequest(): String {
+    override suspend fun handlePendingJoinRequest(): String? {
         val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
-        val joinInfo = joinInfoProcessor.resolveJoinId(joinId)
+        val joinInfo = joinInfoProcessor.resolveJoinId(joinId) ?: return null
         val bookId = joinInfo.bookId
         val validBefore = joinInfo.generatedOn + linkExpirationMillis
         pendingJoinId.value = null

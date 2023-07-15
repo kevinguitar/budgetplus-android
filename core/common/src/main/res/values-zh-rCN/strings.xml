@@ -26,7 +26,7 @@
     <string name="record_created">已新增至%s</string>
     <string name="record_edit_title">编辑纪录</string>
     <string name="record_edited">已储存</string>
-    <string name="record_deleted">已删除</string>
+    <string name="record_deleted">已删除%s</string>
     <string name="record_confirm_delete">确认删除此笔纪录吗？</string>
 
     <!-- Batch Record -->

@@ -103,10 +103,11 @@ internal class BookRepoImpl @Inject constructor(
 
     override suspend fun handlePendingJoinRequest(): String? {
         val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
+        pendingJoinId.value = null
+
         val joinInfo = joinInfoProcessor.resolveJoinId(joinId) ?: return null
         val bookId = joinInfo.bookId
         val validBefore = joinInfo.generatedOn + linkExpirationMillis
-        pendingJoinId.value = null
 
         val userId = authManager.requireUserId()
         val isPremium = authManager.userState.value?.premium == true

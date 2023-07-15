@@ -58,7 +58,7 @@ internal class EditRecordViewModel @Inject constructor(
             }
         } else {
             recordRepo.deleteRecord(record.id)
-            toaster.showMessage(R.string.record_deleted)
+            toaster.showMessage(stringProvider[R.string.record_deleted, record.name])
             tracker.logEvent("record_deleted")
         }
     }

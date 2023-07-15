@@ -26,7 +26,7 @@
     <string name="record_created">Record added to %s</string>
     <string name="record_edit_title">Edit Record</string>
     <string name="record_edited">Record edited</string>
-    <string name="record_deleted">Record deleted</string>
+    <string name="record_deleted">Record %s is deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
 
     <!-- Batch Record -->

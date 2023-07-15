@@ -26,7 +26,7 @@
     <string name="record_created">已新增至%s</string>
     <string name="record_edit_title">編輯紀錄</string>
     <string name="record_edited">已儲存</string>
-    <string name="record_deleted">已刪除</string>
+    <string name="record_deleted">已刪除%s</string>
     <string name="record_confirm_delete">確認刪除此筆紀錄嗎？</string>
 
     <!-- Batch Record -->

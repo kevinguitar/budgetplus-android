@@ -68,7 +68,7 @@ class PreferenceHolder @Inject constructor(
     }
 
     inline fun <reified T : Any?> bindObjectOptional(
-        default: T? = null
+        default: T? = null,
     ) = object : ReadWriteProperty<Any, T?> {
 
         override operator fun getValue(thisRef: Any, property: KProperty<*>): T? {

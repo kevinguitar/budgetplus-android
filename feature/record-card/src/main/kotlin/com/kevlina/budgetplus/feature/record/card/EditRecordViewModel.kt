@@ -14,7 +14,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-internal class EditRecordViewModel @Inject constructor(
+class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
@@ -24,6 +24,7 @@ internal class EditRecordViewModel @Inject constructor(
     fun editRecord(
         record: Record,
         newDate: LocalDate,
+        newCategory: String,
         newName: String,
         newPriceText: String,
         editBatch: Boolean,
@@ -31,7 +32,13 @@ internal class EditRecordViewModel @Inject constructor(
         if (editBatch) {
             viewModelScope.launch {
                 try {
-                    val count = recordRepo.editBatch(record, newDate, newName, newPriceText)
+                    val count = recordRepo.editBatch(
+                        oldRecord = record,
+                        newDate = newDate,
+                        newCategory = newCategory,
+                        newName = newName,
+                        newPriceText = newPriceText
+                    )
                     toaster.showMessage(stringProvider[R.string.batch_record_edited, count.toString()])
                     tracker.logEvent("record_batch_edited")
                 } catch (e: Exception) {
@@ -39,7 +46,13 @@ internal class EditRecordViewModel @Inject constructor(
                 }
             }
         } else {
-            recordRepo.editRecord(record, newDate, newName, newPriceText)
+            recordRepo.editRecord(
+                oldRecord = record,
+                newDate = newDate,
+                newCategory = newCategory,
+                newName = newName,
+                newPriceText = newPriceText
+            )
             toaster.showMessage(R.string.record_edited)
             tracker.logEvent("record_edited")
         }

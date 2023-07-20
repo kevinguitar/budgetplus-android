@@ -17,6 +17,7 @@ interface RecordRepo {
     fun editRecord(
         oldRecord: Record,
         newDate: LocalDate,
+        newCategory: String,
         newName: String,
         newPriceText: String,
     )
@@ -27,6 +28,7 @@ interface RecordRepo {
     suspend fun editBatch(
         oldRecord: Record,
         newDate: LocalDate,
+        newCategory: String,
         newName: String,
         newPriceText: String,
     ): Int

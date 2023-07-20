@@ -57,6 +57,7 @@ internal class RecordRepoImpl @Inject constructor(
     override fun editRecord(
         oldRecord: Record,
         newDate: LocalDate,
+        newCategory: String,
         newName: String,
         newPriceText: String,
     ) {
@@ -69,6 +70,7 @@ internal class RecordRepoImpl @Inject constructor(
             oldRecord.copy(
                 date = newDate.toEpochDay(),
                 timestamp = LocalDateTime.of(newDate, originalTime).toEpochSecond(ZoneOffset.UTC),
+                category = newCategory,
                 name = newName,
                 price = newPriceText.parseToPrice
             )
@@ -83,12 +85,19 @@ internal class RecordRepoImpl @Inject constructor(
     override suspend fun editBatch(
         oldRecord: Record,
         newDate: LocalDate,
+        newCategory: String,
         newName: String,
         newPriceText: String,
     ): Int {
         // If record isn't batched for some reason, simply delete it.
         if (!oldRecord.isBatched) {
-            editRecord(oldRecord, newDate, newName, newPriceText)
+            editRecord(
+                oldRecord = oldRecord,
+                newDate = newDate,
+                newCategory = newCategory,
+                newName = newName,
+                newPriceText = newPriceText
+            )
             return 1
         }
 
@@ -102,6 +111,7 @@ internal class RecordRepoImpl @Inject constructor(
             editRecord(
                 oldRecord = record,
                 newDate = date.plusDays(daysDiff),
+                newCategory = newCategory,
                 newName = newName,
                 newPriceText = newPriceText
             )

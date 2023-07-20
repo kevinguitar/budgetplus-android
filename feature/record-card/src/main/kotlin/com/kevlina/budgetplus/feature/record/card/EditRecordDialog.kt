@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.record.card
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,19 +39,24 @@ import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import java.time.LocalDate
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditRecordDialog(
     editRecord: Record,
+    vm: EditRecordViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
 
-    val vm = hiltViewModel<EditRecordViewModel>()
-
     var date by remember {
         mutableStateOf(LocalDate.ofEpochDay(editRecord.date))
+    }
+
+    var category by remember {
+        mutableStateOf(editRecord.category)
     }
 
     var name by remember {
@@ -69,6 +75,7 @@ fun EditRecordDialog(
     }
 
     var showDatePickerDialog by remember { mutableStateOf(false) }
+    var showCategoryPickerDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     var showEditBatchDialog by remember { mutableStateOf(false) }
     var showDeleteBatchDialog by remember { mutableStateOf(false) }
@@ -84,14 +91,19 @@ fun EditRecordDialog(
         vm.editRecord(
             record = editRecord,
             newDate = date,
+            newCategory = category,
             newName = name.text,
             newPriceText = priceText.text,
             editBatch = editBatch
         )
     }
 
-    // Do not stack the dialog, it causes some weird ui issue
-    if (!showDeleteConfirmationDialog && !showEditBatchDialog && !showDeleteBatchDialog) {
+    // Do not stack the dialogs
+    if (!showCategoryPickerDialog
+        && !showDeleteConfirmationDialog
+        && !showEditBatchDialog
+        && !showDeleteBatchDialog
+    ) {
 
         AppDialog(onDismissRequest = onDismiss) {
 
@@ -106,10 +118,24 @@ fun EditRecordDialog(
                     fontWeight = FontWeight.SemiBold
                 )
 
-                SingleDatePicker(
-                    date = date,
-                    modifier = Modifier.rippleClick { showDatePickerDialog = true }
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+
+                    SingleDatePicker(
+                        date = date,
+                        modifier = Modifier
+                            .rippleClick { showDatePickerDialog = true }
+                            .padding(vertical = 4.dp)
+                    )
+
+                    CategoryCard(
+                        category = category,
+                        isSelected = false,
+                        onClick = { showCategoryPickerDialog = true }
+                    )
+                }
 
                 TextField(
                     value = name,
@@ -186,6 +212,23 @@ fun EditRecordDialog(
             onDatePicked = { date = it },
             onDismiss = { showDatePickerDialog = false }
         )
+    }
+
+    if (showCategoryPickerDialog) {
+
+        AppDialog(
+            onDismissRequest = { showCategoryPickerDialog = false }
+        ) {
+
+            CategoriesGrid(
+                type = editRecord.type,
+                onCategorySelected = {
+                    category = it
+                    showCategoryPickerDialog = false
+                },
+                selectedCategory = category
+            )
+        }
     }
 
     if (showDeleteConfirmationDialog) {

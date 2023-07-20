@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.add.record.ui
+package com.kevlina.budgetplus.feature.category.pills
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,9 +31,9 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 @Composable
 fun CategoriesGrid(
     type: RecordType,
+    modifier: Modifier = Modifier,
     onCategorySelected: (String) -> Unit,
     onEditClicked: (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
     selectedCategory: String? = null
 ) {
 

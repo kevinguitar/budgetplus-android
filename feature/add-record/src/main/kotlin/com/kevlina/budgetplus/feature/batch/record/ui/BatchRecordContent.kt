@@ -27,8 +27,8 @@ import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
-import com.kevlina.budgetplus.feature.add.record.ui.CategoriesGrid
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 
 @Composable
 internal fun BatchRecordContent() {

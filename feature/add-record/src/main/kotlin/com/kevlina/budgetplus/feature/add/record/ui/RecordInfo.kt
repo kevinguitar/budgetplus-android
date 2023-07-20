@@ -36,6 +36,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 
 @Composable
 fun RecordInfo(

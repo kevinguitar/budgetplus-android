@@ -123,17 +123,17 @@ fun EditRecordDialog(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
 
+                    CategoryCard(
+                        category = category,
+                        isSelected = false,
+                        onClick = { showCategoryPickerDialog = true }
+                    )
+
                     SingleDatePicker(
                         date = date,
                         modifier = Modifier
                             .rippleClick { showDatePickerDialog = true }
                             .padding(vertical = 4.dp)
-                    )
-
-                    CategoryCard(
-                        category = category,
-                        isSelected = false,
-                        onClick = { showCategoryPickerDialog = true }
                     )
                 }
 

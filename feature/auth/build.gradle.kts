@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
+    implementation(projects.core.data)
+    implementation(projects.core.ui)
 
     implementation(libs.install.referrer)
     implementation(libs.facebook.auth)

@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:data"))
+    implementation(projects.core.common)
+    implementation(projects.core.data)
 
     implementation(platform(libs.firebase.bom))
     api(libs.firebase.messaging)

@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:data"))
+    implementation(projects.core.data)
 
     implementation(libs.compose.activity)
     implementation(libs.google.billing)

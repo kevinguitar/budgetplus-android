@@ -5,6 +5,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:data"))
+    implementation(projects.core.data)
     implementation(libs.google.play.review)
 }

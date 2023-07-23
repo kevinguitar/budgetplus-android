@@ -5,9 +5,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:billing"))
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
+    implementation(projects.core.billing)
+    implementation(projects.core.data)
+    implementation(projects.core.ui)
 
     implementation(libs.lottie.compose)
 }

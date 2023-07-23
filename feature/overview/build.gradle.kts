@@ -5,9 +5,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:record-card"))
+    implementation(projects.core.data)
+    implementation(projects.core.ui)
+    implementation(projects.feature.recordCard)
 
     implementation(libs.accompanist.flowlayout)
     implementation(libs.kotlin.csv)

@@ -5,10 +5,10 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:inapp-review"))
-    implementation(project(":core:ui"))
-    implementation(project(":feature:category-pills"))
+    implementation(projects.core.data)
+    implementation(projects.core.inappReview)
+    implementation(projects.core.ui)
+    implementation(projects.feature.categoryPills)
 
     implementation(libs.lottie.compose)
     implementation(libs.exp4j)

@@ -167,7 +167,7 @@ private fun FrequencySelector(
                 modifier = Modifier.background(color = LocalAppColors.current.light)
             ) {
 
-                BatchFrequency.values().forEach { freq ->
+                BatchFrequency.entries.forEach { freq ->
                     DropdownItem(
                         name = stringResource(id = freq.stringRes),
                         onClick = {

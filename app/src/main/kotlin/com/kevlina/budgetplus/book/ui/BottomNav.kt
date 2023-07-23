@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.book.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
@@ -61,7 +60,7 @@ internal fun BottomNav(navController: NavController) {
                 .fillMaxWidth()
         ) {
 
-            BookTab.values().forEach { tab ->
+            BookTab.entries.forEach { tab ->
                 BottomNavItem(
                     navController = navController,
                     tab = tab,
@@ -72,7 +71,6 @@ internal fun BottomNav(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun RowScope.BottomNavItem(
     navController: NavController,

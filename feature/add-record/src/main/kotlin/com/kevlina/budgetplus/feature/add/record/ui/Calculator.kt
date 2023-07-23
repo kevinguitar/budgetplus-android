@@ -56,7 +56,7 @@ enum class CalculatorAction {
 
 private val horizontalSpacing = 12.dp
 private val verticalSpacing = 8.dp
-private val calcButtons = CalculatorButton.values().toList()
+private val calcButtons = CalculatorButton.entries.toList()
 
 @Composable
 fun Calculator(

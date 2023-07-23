@@ -30,16 +30,13 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
-import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import java.time.LocalDate
 
@@ -74,11 +71,7 @@ fun EditRecordDialog(
         ))
     }
 
-    var showDatePickerDialog by remember { mutableStateOf(false) }
-    var showCategoryPickerDialog by remember { mutableStateOf(false) }
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
-    var showEditBatchDialog by remember { mutableStateOf(false) }
-    var showDeleteBatchDialog by remember { mutableStateOf(false) }
+    var dialogState by remember { mutableStateOf(EditRecordDialogState.ShowRecord) }
 
     val (nameFocus, priceFocus) = remember { FocusRequester.createRefs() }
     val isSaveEnabled by remember {
@@ -98,189 +91,160 @@ fun EditRecordDialog(
         )
     }
 
-    // Do not stack the dialogs
-    if (!showCategoryPickerDialog
-        && !showDeleteConfirmationDialog
-        && !showEditBatchDialog
-        && !showDeleteBatchDialog
-    ) {
-
-        AppDialog(onDismissRequest = onDismiss) {
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-
-                Text(
-                    text = stringResource(id = R.string.record_edit_title),
-                    fontSize = FontSize.Large,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+    when (dialogState) {
+        EditRecordDialogState.ShowRecord -> {
+            AppDialog(onDismissRequest = onDismiss) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
 
-                    CategoryCard(
-                        category = category,
-                        isSelected = false,
-                        onClick = { showCategoryPickerDialog = true }
+                    Text(
+                        text = stringResource(id = R.string.record_edit_title),
+                        fontSize = FontSize.Large,
+                        fontWeight = FontWeight.SemiBold
                     )
 
-                    SingleDatePicker(
-                        date = date,
-                        modifier = Modifier
-                            .rippleClick { showDatePickerDialog = true }
-                            .padding(vertical = 4.dp)
-                    )
-                }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
 
-                TextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    modifier = Modifier.focusRequester(nameFocus),
-                    title = stringResource(id = R.string.record_note),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        imeAction = ImeAction.Next
-                    )
-                )
+                        CategoryCard(
+                            category = category,
+                            isSelected = false,
+                            onClick = { dialogState = EditRecordDialogState.PickingCategory }
+                        )
 
-                TextField(
-                    value = priceText,
-                    onValueChange = { priceText = it },
-                    modifier = Modifier.focusRequester(priceFocus),
-                    title = stringResource(id = R.string.record_price),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
-                    ),
-                    onDone = {
-                        if (editRecord.isBatched) {
-                            showEditBatchDialog = true
-                        } else {
-                            confirmEdit()
-                            onDismiss()
-                        }
-                    }
-                )
-
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-
-                    Button(onClick = {
-                        if (editRecord.isBatched) {
-                            showDeleteBatchDialog = true
-                        } else {
-                            showDeleteConfirmationDialog = true
-                        }
-                    }) {
-                        Text(
-                            text = stringResource(id = R.string.cta_delete),
-                            color = LocalAppColors.current.light,
-                            fontWeight = FontWeight.Medium
+                        SingleDatePicker(
+                            date = date,
+                            modifier = Modifier
+                                .rippleClick { dialogState = EditRecordDialogState.PickingDate }
+                                .padding(vertical = 4.dp)
                         )
                     }
 
-                    Button(
-                        enabled = isSaveEnabled,
-                        onClick = {
+                    TextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        modifier = Modifier.focusRequester(nameFocus),
+                        title = stringResource(id = R.string.record_note),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            imeAction = ImeAction.Next
+                        )
+                    )
+
+                    TextField(
+                        value = priceText,
+                        onValueChange = { priceText = it },
+                        modifier = Modifier.focusRequester(priceFocus),
+                        title = stringResource(id = R.string.record_price),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        onDone = {
                             if (editRecord.isBatched) {
-                                showEditBatchDialog = true
+                                dialogState = EditRecordDialogState.BatchEditing
                             } else {
                                 confirmEdit()
                                 onDismiss()
                             }
                         }
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.cta_save),
-                            color = LocalAppColors.current.light,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
+                    )
+
+                    EditRecordActions(
+                        onDeleteClicked = {
+                            dialogState = if (editRecord.isBatched) {
+                                EditRecordDialogState.BatchDeleting
+                            } else {
+                                EditRecordDialogState.DeleteConfirmation
+                            }
+                        },
+                        isSaveEnabled = isSaveEnabled,
+                        onSaveClicked = {
+                            if (editRecord.isBatched) {
+                                dialogState = EditRecordDialogState.BatchEditing
+                            } else {
+                                confirmEdit()
+                                onDismiss()
+                            }
+                        }
+                    )
                 }
             }
         }
-    }
 
-    if (showDatePickerDialog) {
-
-        DatePickerDialog(
-            date = date,
-            onDatePicked = { date = it },
-            onDismiss = { showDatePickerDialog = false }
-        )
-    }
-
-    if (showCategoryPickerDialog) {
-
-        AppDialog(
-            onDismissRequest = { showCategoryPickerDialog = false }
-        ) {
-
-            CategoriesGrid(
-                type = editRecord.type,
-                onCategorySelected = {
-                    category = it
-                    showCategoryPickerDialog = false
-                },
-                selectedCategory = category
+        EditRecordDialogState.PickingDate -> {
+            DatePickerDialog(
+                date = date,
+                onDatePicked = { date = it },
+                onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
             )
         }
-    }
 
-    if (showDeleteConfirmationDialog) {
+        EditRecordDialogState.PickingCategory -> {
+            EditCategoryDialog(
+                type = editRecord.type,
+                category = category,
+                onCategorySelected = { category = it },
+                onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
+            )
+        }
 
-        ConfirmDialog(
-            message = stringResource(id = R.string.record_confirm_delete),
-            onConfirm = {
-                vm.deleteRecord(editRecord)
-                showDeleteConfirmationDialog = false
-                onDismiss()
-            },
-            onDismiss = { showDeleteConfirmationDialog = false }
-        )
-    }
+        EditRecordDialogState.DeleteConfirmation -> {
+            ConfirmDialog(
+                message = stringResource(id = R.string.record_confirm_delete),
+                onConfirm = {
+                    vm.deleteRecord(editRecord)
+                    onDismiss()
+                },
+                onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
+            )
+        }
 
-    if (showEditBatchDialog) {
+        EditRecordDialogState.BatchEditing -> {
+            EditBatchDialog(
+                onDismiss = { dialogState = EditRecordDialogState.ShowRecord },
+                text = stringResource(id = R.string.batch_record_edit_confirmation),
+                onSelectOne = {
+                    confirmEdit()
+                    onDismiss()
+                },
+                onSelectAll = {
+                    confirmEdit(editBatch = true)
+                    onDismiss()
+                }
+            )
+        }
 
-        EditBatchDialog(
-            onDismiss = { showEditBatchDialog = false },
-            text = stringResource(id = R.string.batch_record_edit_confirmation),
-            onSelectOne = {
-                confirmEdit()
-                showEditBatchDialog = false
-                onDismiss()
-            },
-            onSelectAll = {
-                confirmEdit(editBatch = true)
-                showEditBatchDialog = false
-                onDismiss()
-            }
-        )
-    }
-
-    if (showDeleteBatchDialog) {
-
-        EditBatchDialog(
-            onDismiss = { showDeleteBatchDialog = false },
-            text = stringResource(id = R.string.batch_record_delete_confirmation),
-            onSelectOne = {
-                vm.deleteRecord(editRecord)
-                showDeleteBatchDialog = false
-                onDismiss()
-            },
-            onSelectAll = {
-                vm.deleteRecord(editRecord, deleteBatch = true)
-                showDeleteBatchDialog = false
-                onDismiss()
-            }
-        )
+        EditRecordDialogState.BatchDeleting -> {
+            EditBatchDialog(
+                onDismiss = { dialogState = EditRecordDialogState.ShowRecord },
+                text = stringResource(id = R.string.batch_record_delete_confirmation),
+                onSelectOne = {
+                    vm.deleteRecord(editRecord)
+                    onDismiss()
+                },
+                onSelectAll = {
+                    vm.deleteRecord(editRecord, deleteBatch = true)
+                    onDismiss()
+                }
+            )
+        }
     }
 
     LaunchedEffect(Unit) {
         nameFocus.requestFocus()
     }
+}
+
+internal enum class EditRecordDialogState {
+    ShowRecord,
+    PickingDate,
+    PickingCategory,
+    DeleteConfirmation,
+    BatchEditing,
+    BatchDeleting,
 }

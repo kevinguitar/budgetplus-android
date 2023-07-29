@@ -3,14 +3,22 @@ package com.kevlina.budgetplus.core.data.impl
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
+import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.BatchFrequency
+import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -23,6 +31,8 @@ import javax.inject.Singleton
 @Singleton
 internal class RecordRepoImpl @Inject constructor(
     @RecordsDb private val recordsDb: Provider<CollectionReference>,
+    @AppScope private val appScope: CoroutineScope,
+    private val tracker: Tracker,
     private val toaster: Toaster,
 ) : RecordRepo {
 
@@ -145,5 +155,36 @@ internal class RecordRepoImpl @Inject constructor(
             .whereGreaterThanOrEqualTo("date", record.date)
             .get()
             .await()
+    }
+
+    override fun renameCategories(
+        events: List<CategoryRenameEvent>,
+    ) = appScope.launch(Dispatchers.IO) {
+        val db = recordsDb.get()
+        var dbUpdateCount = 0
+
+        events.forEach { event ->
+            try {
+                val records = db
+                    .whereEqualTo("category", event.from)
+                    .get()
+                    .await()
+
+                records.forEach { doc ->
+                    val newRecord = doc.toObject<Record>().copy(category = event.to)
+                    db.document(doc.id).set(newRecord)
+                }
+                dbUpdateCount += records.size()
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+
+        if (dbUpdateCount > 0) {
+            tracker.logEvent(
+                event = "categories_renamed",
+                params = bundle { putInt("db_update_count", dbUpdateCount) }
+            )
+        }
     }
 }

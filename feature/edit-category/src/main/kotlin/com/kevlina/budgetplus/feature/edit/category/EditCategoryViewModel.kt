@@ -7,15 +7,19 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.CategoryRenameEvent
+import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
 
 @HiltViewModel
 class EditCategoryViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
@@ -34,6 +38,9 @@ class EditCategoryViewModel @Inject constructor(
 
     fun updateCategories(type: RecordType, newCategories: List<String>) {
         bookRepo.updateCategories(type, newCategories)
+        if (categoryRenameEvents.isNotEmpty()) {
+            recordRepo.renameCategories(categoryRenameEvents)
+        }
         toaster.showMessage(R.string.category_edit_successful)
         tracker.logEvent("categories_updated")
     }
@@ -54,5 +61,29 @@ class EditCategoryViewModel @Inject constructor(
 
     fun showCategoryExistError(category: String) {
         toaster.showMessage(stringProvider[R.string.category_already_exist, category])
+    }
+
+    @VisibleForTesting
+    val categoryRenameEvents = mutableListOf<CategoryRenameEvent>()
+
+    fun onCategoryRenamed(oldName: String, newName: String) {
+        if (oldName == newName) return
+
+        val eventToReplace = categoryRenameEvents.find { it.to == oldName }
+        if (eventToReplace == null) {
+            categoryRenameEvents.add(CategoryRenameEvent(oldName, newName))
+        } else {
+            categoryRenameEvents.remove(eventToReplace)
+            val newEvent = eventToReplace.copy(to = newName)
+            if (newEvent.from != newEvent.to) {
+                categoryRenameEvents.add(newEvent)
+            }
+        }
+    }
+
+    fun onCategoryDeleted(name: String) {
+        categoryRenameEvents.removeIf { event ->
+            event.to == name
+        }
     }
 }

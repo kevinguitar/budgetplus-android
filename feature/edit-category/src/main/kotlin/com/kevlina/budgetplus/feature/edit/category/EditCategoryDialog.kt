@@ -113,7 +113,7 @@ fun EditCategoryDialog(
 @Serializable
 sealed class CategoryEditMode {
 
-    object Add : CategoryEditMode()
+    data object Add : CategoryEditMode()
 
     data class Rename(val currentName: String) : CategoryEditMode()
 

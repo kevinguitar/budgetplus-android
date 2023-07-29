@@ -50,15 +50,14 @@ import org.burnoutcrew.reorderable.reorderable
 
 @Composable
 fun EditCategoryScreen(
+    vm: EditCategoryViewModel = hiltViewModel(),
     navigator: Navigator,
     type: RecordType,
 ) {
 
-    val viewModel = hiltViewModel<EditCategoryViewModel>()
-
     val originalCategories = when (type) {
-        RecordType.Expense -> viewModel.expenseCategories
-        RecordType.Income -> viewModel.incomeCategories
+        RecordType.Expense -> vm.expenseCategories
+        RecordType.Income -> vm.incomeCategories
     }
 
     var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
@@ -90,7 +89,7 @@ fun EditCategoryScreen(
                     description = stringResource(id = R.string.cta_save),
                     enabled = originalCategories != list,
                     modifier = Modifier.onPlaced {
-                        viewModel.highlightSaveButton(
+                        vm.highlightSaveButton(
                             BubbleDest.SaveCategories(
                                 size = it.size,
                                 offset = it.positionInRoot()
@@ -98,7 +97,7 @@ fun EditCategoryScreen(
                         )
                     },
                     onClick = {
-                        viewModel.updateCategories(type, list)
+                        vm.updateCategories(type, list)
                         navigator.navigateUp()
                     }
                 )
@@ -146,7 +145,7 @@ fun EditCategoryScreen(
                                 }
 
                                 Modifier.onPlaced {
-                                    viewModel.highlightCategoryHint(
+                                    vm.highlightCategoryHint(
                                         BubbleDest.EditCategoriesHint(
                                             size = it.size,
                                             offset = it.positionInRoot(),
@@ -185,18 +184,21 @@ fun EditCategoryScreen(
 
         EditCategoryDialog(
             mode = dialogMode,
-            onConfirm = { name ->
-                if (name in list) {
-                    viewModel.showCategoryExistError(name)
+            onConfirm = { newName ->
+                if (newName in list) {
+                    vm.showCategoryExistError(newName)
                     return@EditCategoryDialog
                 }
 
                 list = list.toMutableList().apply {
                     when (dialogMode) {
-                        CategoryEditMode.Add -> add(name)
+                        CategoryEditMode.Add -> add(newName)
                         is CategoryEditMode.Rename -> {
+                            vm.onCategoryRenamed(dialogMode.currentName, newName)
                             val index = indexOf(dialogMode.currentName)
-                            if (index != -1) this[index] = name
+                            if (index != -1) {
+                                this[index] = newName
+                            }
                         }
                     }
                 }
@@ -204,6 +206,7 @@ fun EditCategoryScreen(
             onDismiss = { editDialogMode = null },
             onDelete = {
                 val name = (dialogMode as CategoryEditMode.Rename).currentName
+                vm.onCategoryDeleted(name)
                 list = list.toMutableList().apply { remove(name) }
             }
         )

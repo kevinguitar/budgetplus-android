@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
 import com.kevlina.budgetplus.core.data.remote.Record
+import kotlinx.coroutines.Job
 import java.time.LocalDate
 
 interface RecordRepo {
@@ -40,4 +41,11 @@ interface RecordRepo {
      */
     suspend fun deleteBatch(record: Record): Int
 
+    fun renameCategories(events: List<CategoryRenameEvent>): Job
+
 }
+
+data class CategoryRenameEvent(
+    val from: String,
+    val to: String,
+)

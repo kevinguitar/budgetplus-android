@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @Stable
-internal class OverviewTimeViewModel @Inject constructor(
+class OverviewTimeViewModel @Inject constructor(
     private val recordsObserver: RecordsObserver,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,

@@ -45,6 +45,7 @@ internal fun Project.configureKotlinAndroid(
 
                 freeCompilerArgs = freeCompilerArgs + listOf(
                     "-opt-in=kotlin.RequiresOptIn",
+                    "-opt-in=kotlin.contracts.ExperimentalContracts",
                     "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 )
 

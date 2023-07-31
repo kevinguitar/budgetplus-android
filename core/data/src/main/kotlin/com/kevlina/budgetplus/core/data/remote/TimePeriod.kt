@@ -48,7 +48,8 @@ sealed class TimePeriod {
         private val now get() = LocalDate.now()
         private val monthDays
             get() = now
-                .minusMonths(1).month
+                .minusMonths(1)
+                .month
                 .length(now.isLeapYear)
 
         override val from: LocalDate
@@ -65,7 +66,7 @@ sealed class TimePeriod {
     @Serializable
     data class Custom(
         @Contextual override val from: LocalDate,
-        @Contextual override val until: LocalDate
+        @Contextual override val until: LocalDate,
     ) : TimePeriod() {
 
         init {

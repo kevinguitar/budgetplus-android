@@ -33,6 +33,9 @@ class EditCategoryViewModel @Inject constructor(
     val incomeCategories
         get() = bookRepo.bookState.value?.incomeCategories.orEmpty()
 
+    @VisibleForTesting
+    val categoryRenameEvents = mutableListOf<CategoryRenameEvent>()
+
     private var isEditHintBubbleShown by preferenceHolder.bindBoolean(false)
     private var isSaveBubbleShown by preferenceHolder.bindBoolean(false)
 
@@ -62,9 +65,6 @@ class EditCategoryViewModel @Inject constructor(
     fun showCategoryExistError(category: String) {
         toaster.showMessage(stringProvider[R.string.category_already_exist, category])
     }
-
-    @VisibleForTesting
-    val categoryRenameEvents = mutableListOf<CategoryRenameEvent>()
 
     fun onCategoryRenamed(oldName: String, newName: String) {
         if (oldName == newName) return

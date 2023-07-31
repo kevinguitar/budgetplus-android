@@ -33,6 +33,8 @@ class FcmService : FirebaseMessagingService() {
     @Inject lateinit var imageLoader: ImageLoader
     @Inject @AppScope lateinit var appScope: CoroutineScope
 
+    private var notificationId: Int = 0
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         authManager.updateFcmToken(newToken = token)
@@ -96,8 +98,6 @@ class FcmService : FirebaseMessagingService() {
             }
         }
     }
-
-    private var notificationId: Int = 0
 
     @SuppressLint("MissingPermission")
     private fun showNotification(notification: Notification) {

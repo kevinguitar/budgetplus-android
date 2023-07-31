@@ -69,6 +69,11 @@ internal class BookRepoImpl @Inject constructor(
     private val createdOnField get() = "createdOn"
     private val archivedField get() = "archived"
 
+    // The join link will expire in 1 day
+    private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
+
+    private var bookRegistration: ListenerRegistration? = null
+
     init {
         authManager.userState
             .map { it?.id }
@@ -97,9 +102,6 @@ internal class BookRepoImpl @Inject constructor(
             .requireValue<Book>()
             .copy(id = bookId)
     }
-
-    // The join link will expire in 1 day
-    private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
 
     override suspend fun handlePendingJoinRequest(): String? {
         val joinId = requireNotNull(pendingJoinId.value) { "Doesn't have pending join request" }
@@ -217,8 +219,6 @@ internal class BookRepoImpl @Inject constructor(
     override fun selectBook(book: Book) {
         setBook(book)
     }
-
-    private var bookRegistration: ListenerRegistration? = null
 
     private fun observeBooks(userId: String?) {
         if (userId == null) {

@@ -499,14 +499,15 @@ potential-bugs:
 style:
   active: true
   AlsoCouldBeApply:
-    active: false
+    active: true
   CanBeNonNullable:
-    active: false
+    active: true
   CascadingCallWrapping:
-    active: false
+    active: true
     includeElvis: true
   ClassOrdering:
-    active: false
+    active: true
+  excludes: ['**/test/**', '**/*Test.kt']
   CollapsibleIfStatements:
     active: false
   DataClassContainsFunctions:

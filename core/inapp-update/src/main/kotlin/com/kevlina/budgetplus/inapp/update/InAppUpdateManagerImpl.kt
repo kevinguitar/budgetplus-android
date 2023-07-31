@@ -39,6 +39,18 @@ internal class InAppUpdateManagerImpl @Inject constructor(
     // The version code when we requested the update last time.
     private var lastRequestedVersionCode by preferenceHolder.bindInt(0)
 
+    private val AppUpdateInfo.shouldRequestImmediateUpdate: Boolean
+        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            && isImmediateUpdateAllowed
+            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_IMMEDIATE_UPDATE
+            && availableVersionCode() > lastRequestedVersionCode
+
+    private val AppUpdateInfo.shouldRequestFlexibleUpdate: Boolean
+        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            && isFlexibleUpdateAllowed
+            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_FLEXIBLE_UPDATE
+            && availableVersionCode() > lastRequestedVersionCode
+
     init {
         appUpdateManager.requestUpdateFlow()
             .onEach(::processResult)
@@ -87,18 +99,6 @@ internal class InAppUpdateManagerImpl @Inject constructor(
             result.completeUpdate()
         }
     }
-
-    private val AppUpdateInfo.shouldRequestImmediateUpdate: Boolean
-        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-            && isImmediateUpdateAllowed
-            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_IMMEDIATE_UPDATE
-            && availableVersionCode() > lastRequestedVersionCode
-
-    private val AppUpdateInfo.shouldRequestFlexibleUpdate: Boolean
-        get() = updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-            && isFlexibleUpdateAllowed
-            && (clientVersionStalenessDays() ?: 0) >= DAYS_FOR_FLEXIBLE_UPDATE
-            && availableVersionCode() > lastRequestedVersionCode
 
     /**
      *  If the latest version is already available on Google Play for [DAYS_FOR_FLEXIBLE_UPDATE]

@@ -39,9 +39,15 @@ internal class CsvWriter @Inject constructor(
     private val stringProvider: StringProvider,
 ) {
 
+    val mimeType get() = "text/csv"
+
     private val contentResolver get() = context.contentResolver
 
-    val mimeType get() = "text/csv"
+    private val Record.typeString: String
+        get() = when (type) {
+            RecordType.Expense -> stringProvider[R.string.record_expense]
+            RecordType.Income -> stringProvider[R.string.record_income]
+        }
 
     suspend fun writeRecordsToCsv(name: String): Uri {
 
@@ -111,12 +117,6 @@ internal class CsvWriter @Inject constructor(
         val file = File(dir, filename)
         return FileProvider.getUriForFile(context, "$appPackage.provider", file)
     }
-
-    private val Record.typeString: String
-        get() = when (type) {
-            RecordType.Expense -> stringProvider[R.string.record_expense]
-            RecordType.Income -> stringProvider[R.string.record_income]
-        }
 
     private fun Record.parseDatetime(formatter: DateTimeFormatter): String {
         return LocalDateTime

@@ -30,6 +30,7 @@ compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
 compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }

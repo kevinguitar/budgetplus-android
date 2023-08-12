@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.kevlina.budgetplus.core.adaptive.WindowSizeClass
 
 @Composable
 fun AdaptiveScreen(
@@ -12,7 +13,7 @@ fun AdaptiveScreen(
     regularContent: @Composable () -> Unit,
     wideContent: @Composable () -> Unit,
     packedContent: @Composable () -> Unit = regularContent,
-    extraContent: @Composable (BoxScope.() -> Unit)? = null
+    extraContent: @Composable (BoxScope.() -> Unit)? = null,
 ) {
 
     BoxWithConstraints(
@@ -20,9 +21,10 @@ fun AdaptiveScreen(
         contentAlignment = Alignment.Center
     ) {
 
+        val windowSizeClass = WindowSizeClass.calculate()
         when {
-            maxWidth > AppTheme.twoPanelMinWidth && maxWidth > maxHeight -> wideContent()
-            maxHeight < AppTheme.packedMaxHeight -> packedContent()
+            windowSizeClass.width >= WindowSizeClass.Size.Medium -> wideContent()
+            windowSizeClass.height == WindowSizeClass.Size.Compat -> packedContent()
             else -> regularContent()
         }
 

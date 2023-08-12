@@ -20,7 +20,7 @@ class BaselineProfileGenerator {
 
     @Test
     fun startup() {
-        baselineProfileRule.collectBaselineProfile(
+        baselineProfileRule.collect(
             packageName = APP_PACKAGE,
             profileBlock = {
                 // This block defines the app's critical user journey. Here we are interested in

@@ -30,7 +30,7 @@ val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.Detek
 
 detekt {
     buildUponDefaultConfig = true
-    config = files("$projectDir/config/detekt/detekt.yml")
+    config.setFrom(files("$projectDir/config/detekt/detekt.yml"))
 }
 
 subprojects {

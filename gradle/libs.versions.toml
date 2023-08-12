@@ -1,10 +1,10 @@
 [versions]
 # https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "8.1.0"
+gradle-plugin = "8.2.0-alpha14"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.9.0"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.06.01"
+compose-bom = "2023.08.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.1"
 # https://github.com/google/accompanist/releases
@@ -18,8 +18,7 @@ coil = "2.4.0"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-# Migration requires API 34
-android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
+android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"
 android-core = "androidx.core:core-ktx:1.10.1"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
@@ -34,7 +33,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui = { module = "androidx.compose.ui:ui" }
-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2"
+coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
@@ -55,24 +54,21 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.4.3"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.5.0"
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
-# Migration requires API 34
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha14"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-beta03"
 mockk = "io.mockk:mockk:1.13.5"
-# Migration requires API 34
-navigation-compose = "androidx.navigation:navigation-compose:2.7.0-beta01"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.0"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
 # Official feature request: https://issuetracker.google.com/issues/181282427
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
-# Migration requires API 34
-test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha03"
+test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha04"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.1.5"
 

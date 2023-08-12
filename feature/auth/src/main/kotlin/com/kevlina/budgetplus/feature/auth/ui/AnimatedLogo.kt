@@ -8,7 +8,6 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +26,7 @@ private const val LOGO_ANIMATE_DURATION = 1_000
 @Composable
 fun AnimatedLogo() {
 
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "logo_transition")
 
     val bgRotation by transition.animateFloat(
         initialValue = 0F,
@@ -35,7 +34,8 @@ fun AnimatedLogo() {
         animationSpec = infiniteRepeatable(
             animation = tween(LOGO_BG_ANIMATE_DURATION, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        )
+        ),
+        label = "bg_rotation"
     )
 
     val logoTranslationY by transition.animateFloat(
@@ -44,7 +44,8 @@ fun AnimatedLogo() {
         animationSpec = infiniteRepeatable(
             animation = tween(LOGO_ANIMATE_DURATION),
             repeatMode = RepeatMode.Reverse
-        )
+        ),
+        label = "logo_transition_y"
     )
 
     Box(contentAlignment = Alignment.Center) {
@@ -58,11 +59,10 @@ fun AnimatedLogo() {
         )
 
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_logo_24dp),
             contentDescription = null,
             modifier = Modifier
-                .padding(start = 12.dp)
-                .size(160.dp)
+                .size(150.dp)
                 .graphicsLayer {
                     translationY = logoTranslationY - LOGO_TRANSLATION_Y_TOTAL / 2
                 }

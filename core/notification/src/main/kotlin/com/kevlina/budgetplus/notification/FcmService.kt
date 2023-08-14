@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_GENERAL
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_NEW_MEMBER
+import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FcmService : FirebaseMessagingService() {
 
-    @Inject lateinit var authManager: AuthManager
+    @Inject lateinit var authManager: Lazy<AuthManager>
     @Inject lateinit var imageLoader: ImageLoader
     @Inject @AppScope lateinit var appScope: CoroutineScope
 
@@ -37,17 +38,12 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        authManager.updateFcmToken(newToken = token)
+        authManager.get().updateFcmToken(newToken = token)
         Timber.d("New fcm token: $token")
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         Timber.d("RemoteMessage: ${message.data}")
-        val recipientId = message.data["recipientId"]
-        if (recipientId != null && recipientId != authManager.userState.value?.id) {
-            // Do not show it if the recipient isn't targeting the current logged-in user.
-            return
-        }
 
         val channelId = when (message.data["type"]) {
             CHANNEL_NEW_MEMBER -> CHANNEL_NEW_MEMBER

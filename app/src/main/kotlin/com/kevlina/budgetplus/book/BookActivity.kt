@@ -69,7 +69,7 @@ class BookActivity : ComponentActivity() {
         }
 
         if (destination != null) {
-            startActivity(Intent(this, destination))
+            startActivity(Intent(this, destination).setAction(Intent.ACTION_VIEW))
             finish()
         }
 

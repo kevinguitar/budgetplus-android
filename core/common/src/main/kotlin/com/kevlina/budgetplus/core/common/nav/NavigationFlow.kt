@@ -20,7 +20,7 @@ fun EventFlow<NavigationInfo>.consumeAsEffect() {
     val context = LocalContext.current
     LaunchedEffect(this) {
         consumeEach { info ->
-            val intent = Intent(context, info.destination.java)
+            val intent = Intent(context, info.destination.java).setAction(Intent.ACTION_VIEW)
             intent.putExtras(info.bundle)
             context.startActivity(intent)
 

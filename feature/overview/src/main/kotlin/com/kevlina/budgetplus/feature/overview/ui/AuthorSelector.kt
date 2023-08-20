@@ -18,10 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
-import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import kotlinx.collections.immutable.ImmutableList

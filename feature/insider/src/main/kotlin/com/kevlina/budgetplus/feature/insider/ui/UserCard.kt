@@ -27,9 +27,9 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.millisToDateTime
 import com.kevlina.budgetplus.core.common.shortFormat
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
-import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import java.util.concurrent.TimeUnit
 

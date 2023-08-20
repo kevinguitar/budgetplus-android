@@ -3,53 +3,27 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.theme.ColorTone
+import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
+fun AppTheme(
+    colorTone: ColorTone = ColorTone.Test,
+    content: @Composable () -> Unit,
+) {
 
-    @Suppress("MagicNumber")
-    val customColors = CustomColors(
-        light = Color(0xFFFFF3E0),
-        lightBg = Color(0xFFF2E2CD),
-        primaryLight = Color(0xFFE0CCB1),
-        primary = Color(0xFFC1A185),
-        primarySemiDark = Color(0xFFB0836B),
-        primaryDark = Color(0xFF907258),
-        dark = Color(0xFF7E8072)
-    )
+    val themeColors = when (colorTone) {
+        ColorTone.MilkTea -> ThemeColors.MilkTea
+        ColorTone.Test -> ThemeColors.Test
+    }
 
     CompositionLocalProvider(
-        LocalAppColors provides customColors,
+        LocalAppColors provides themeColors,
         content = content
-    )
-}
-
-@Immutable
-data class CustomColors(
-    val light: Color,
-    val lightBg: Color,
-    val primaryLight: Color,
-    val primary: Color,
-    val primarySemiDark: Color,
-    val primaryDark: Color,
-    val dark: Color,
-)
-
-val LocalAppColors = staticCompositionLocalOf {
-    CustomColors(
-        light = Color.Unspecified,
-        lightBg = Color.Unspecified,
-        primaryLight = Color.Unspecified,
-        primary = Color.Unspecified,
-        primarySemiDark = Color.Unspecified,
-        primaryDark = Color.Unspecified,
-        dark = Color.Unspecified,
     )
 }
 

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 private const val PLACEHOLDER_ALPHA = 0.5F
 

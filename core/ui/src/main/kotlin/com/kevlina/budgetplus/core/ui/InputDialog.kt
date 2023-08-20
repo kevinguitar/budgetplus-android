@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 @Composable
 fun InputDialog(

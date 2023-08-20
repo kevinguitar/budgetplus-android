@@ -21,7 +21,7 @@ import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
-import com.kevlina.budgetplus.core.ui.LocalAppColors
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarHost

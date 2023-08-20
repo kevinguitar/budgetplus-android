@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarDuration as MaterialSnackbarDuration
 import androidx.compose.material3.SnackbarHost as MaterialSnackbarHost

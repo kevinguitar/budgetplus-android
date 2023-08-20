@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import androidx.compose.material3.DropdownMenu as MaterialDropdownMenu
 import androidx.compose.material3.DropdownMenuItem as MaterialDropdownMenuItem
 

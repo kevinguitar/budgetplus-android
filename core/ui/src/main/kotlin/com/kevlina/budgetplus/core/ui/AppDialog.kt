@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 @Composable
 fun AppDialog(

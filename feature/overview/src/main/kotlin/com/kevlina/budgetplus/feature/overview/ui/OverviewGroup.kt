@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.roundUpPercentageText
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
-import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick

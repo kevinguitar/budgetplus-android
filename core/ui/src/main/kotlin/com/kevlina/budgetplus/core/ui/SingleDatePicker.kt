@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mediumFormatted
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import java.time.LocalDate
 
 @Composable

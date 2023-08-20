@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
-import com.kevlina.budgetplus.core.ui.LocalAppColors
 import com.kevlina.budgetplus.feature.auth.AuthViewModel
 
 @Composable

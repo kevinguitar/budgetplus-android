@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import androidx.compose.material3.Surface as MaterialSurface
 
 @Composable

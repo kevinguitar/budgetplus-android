@@ -10,11 +10,11 @@ interface InAppUpdateManager {
 
 sealed class InAppUpdateState {
 
-    object NotStarted : InAppUpdateState()
+    data object NotStarted : InAppUpdateState()
 
-    object NotAvailable : InAppUpdateState()
+    data object NotAvailable : InAppUpdateState()
 
-    object Downloading : InAppUpdateState()
+    data object Downloading : InAppUpdateState()
 
     data class Downloaded(val complete: () -> Unit) : InAppUpdateState()
 

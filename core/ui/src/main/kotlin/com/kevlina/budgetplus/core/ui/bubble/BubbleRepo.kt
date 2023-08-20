@@ -124,6 +124,6 @@ enum class BubbleTextDirection {
 }
 
 sealed class BubbleShape {
-    object Circle : BubbleShape()
+    data object Circle : BubbleShape()
     data class RoundedRect(val corner: Float) : BubbleShape()
 }

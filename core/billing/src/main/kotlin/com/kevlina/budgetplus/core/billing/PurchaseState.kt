@@ -2,15 +2,15 @@ package com.kevlina.budgetplus.core.billing
 
 sealed class PurchaseState {
 
-    object Inactive : PurchaseState()
+    data object Inactive : PurchaseState()
 
-    object PaymentProcessing : PurchaseState()
+    data object PaymentProcessing : PurchaseState()
 
-    object PaymentAcknowledgeFailed : PurchaseState()
+    data object PaymentAcknowledgeFailed : PurchaseState()
 
-    object Success : PurchaseState()
+    data object Success : PurchaseState()
 
-    object Canceled : PurchaseState()
+    data object Canceled : PurchaseState()
 
     data class Fail(val error: String) : PurchaseState()
 }

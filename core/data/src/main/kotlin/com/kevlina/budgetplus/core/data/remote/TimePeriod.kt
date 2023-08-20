@@ -13,7 +13,7 @@ sealed class TimePeriod {
     abstract val until: LocalDate
 
     @Serializable
-    object Today : TimePeriod() {
+    data object Today : TimePeriod() {
 
         private val now get() = LocalDate.now()
 
@@ -22,7 +22,7 @@ sealed class TimePeriod {
     }
 
     @Serializable
-    object Week : TimePeriod() {
+    data object Week : TimePeriod() {
 
         private val now get() = LocalDate.now()
         private val dayOfWeek get() = now.dayOfWeek.value
@@ -33,7 +33,7 @@ sealed class TimePeriod {
     }
 
     @Serializable
-    object Month : TimePeriod() {
+    data object Month : TimePeriod() {
 
         private val now get() = LocalDate.now()
         private val monthDays get() = now.month.length(now.isLeapYear)
@@ -43,7 +43,7 @@ sealed class TimePeriod {
     }
 
     @Serializable
-    object LastMonth : TimePeriod() {
+    data object LastMonth : TimePeriod() {
 
         private val now get() = LocalDate.now()
         private val monthDays

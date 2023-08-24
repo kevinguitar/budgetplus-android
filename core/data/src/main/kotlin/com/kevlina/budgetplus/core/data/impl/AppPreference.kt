@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 internal class AppPreference @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
 ) : Preference {
 
     override val pref: SharedPreferences = context.getSharedPreferences(

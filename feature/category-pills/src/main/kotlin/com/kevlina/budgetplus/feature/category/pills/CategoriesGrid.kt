@@ -34,7 +34,7 @@ fun CategoriesGrid(
     modifier: Modifier = Modifier,
     onCategorySelected: (String) -> Unit,
     onEditClicked: (() -> Unit)? = null,
-    selectedCategory: String? = null
+    selectedCategory: String? = null,
 ) {
 
     val viewModel = hiltViewModel<CategoriesViewModel>()
@@ -54,6 +54,7 @@ fun CategoriesGrid(
                     onCategorySelected(item)
                 }
             }
+
             RecordType.Income -> incomeCategories.forEach { item ->
                 CategoryCard(category = item, isSelected = selectedCategory == item) {
                     onCategorySelected(item)
@@ -73,7 +74,7 @@ private val cardPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)
 fun CategoryCard(
     category: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Box(

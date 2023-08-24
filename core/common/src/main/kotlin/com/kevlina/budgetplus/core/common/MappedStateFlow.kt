@@ -21,7 +21,7 @@ fun <T, R> StateFlow<T>.mapState(transform: (T) -> R): StateFlow<R> {
 
 private class MappedStateFlow<T, R>(
     private val source: StateFlow<T>,
-    private val transform: (T) -> R
+    private val transform: (T) -> R,
 ) : StateFlow<R> {
 
     override val value: R

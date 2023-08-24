@@ -10,7 +10,7 @@ import androidx.compose.material3.Switch as MaterialSwitch
 fun Switch(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
     MaterialSwitch(

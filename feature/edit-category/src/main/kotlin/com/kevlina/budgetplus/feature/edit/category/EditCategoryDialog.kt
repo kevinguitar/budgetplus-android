@@ -33,7 +33,7 @@ fun EditCategoryDialog(
     mode: CategoryEditMode,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
 ) {
 
     val currentName = (mode as? CategoryEditMode.Rename)?.currentName.orEmpty()

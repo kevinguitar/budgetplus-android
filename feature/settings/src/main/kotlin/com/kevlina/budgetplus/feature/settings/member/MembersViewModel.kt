@@ -19,7 +19,7 @@ internal class MembersViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val userRepo: UserRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker
+    private val tracker: Tracker,
 ) : ViewModel() {
 
     val bookMembers = MutableStateFlow<List<User>>(emptyList())

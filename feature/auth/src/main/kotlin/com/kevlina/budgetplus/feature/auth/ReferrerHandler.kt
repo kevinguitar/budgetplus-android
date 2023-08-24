@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class ReferrerHandler @Inject constructor(
     @ActivityContext private val context: Context,
-    private val bookRepo: BookRepo
+    private val bookRepo: BookRepo,
 ) : InstallReferrerStateListener {
 
     private val referrerClient by lazy {

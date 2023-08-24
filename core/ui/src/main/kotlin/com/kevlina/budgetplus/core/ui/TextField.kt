@@ -42,7 +42,7 @@ fun TextField(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
     ),
-    onDone: (KeyboardActionScope.() -> Unit)? = null
+    onDone: (KeyboardActionScope.() -> Unit)? = null,
 ) = TextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
@@ -88,7 +88,7 @@ fun TextField(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
     ),
-    onDone: (KeyboardActionScope.() -> Unit)? = null
+    onDone: (KeyboardActionScope.() -> Unit)? = null,
 ) = TextFieldInternal(modifier, title, fontSize) {
 
     BasicTextField(
@@ -125,7 +125,7 @@ private fun TextFieldInternal(
     modifier: Modifier,
     title: String,
     fontSize: TextUnit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
 
     Row(

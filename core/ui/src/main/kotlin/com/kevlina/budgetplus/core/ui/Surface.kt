@@ -23,7 +23,7 @@ fun Surface(
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialSurface(
         onClick = onClick,

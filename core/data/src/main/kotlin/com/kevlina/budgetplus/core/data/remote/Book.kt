@@ -11,5 +11,5 @@ data class Book(
     val createdOn: Long = System.currentTimeMillis(),
     val expenseCategories: List<String> = emptyList(),
     val incomeCategories: List<String> = emptyList(),
-    val archived: Boolean = false
+    val archived: Boolean = false,
 )

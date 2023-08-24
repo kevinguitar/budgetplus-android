@@ -8,7 +8,7 @@ import javax.inject.Inject
 @HiltViewModel
 @Stable
 class BubbleViewModel @Inject constructor(
-    private val bubbleRepo: BubbleRepo
+    private val bubbleRepo: BubbleRepo,
 ) : ViewModel() {
 
     val destination = bubbleRepo.bubble

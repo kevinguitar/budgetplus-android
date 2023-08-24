@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class BubbleRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope
+    @AppScope private val appScope: CoroutineScope,
 ) {
 
     private val bubblesQueue = arrayListOf<BubbleDest>()
@@ -73,7 +73,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_invite,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
     data class EditCategoriesHint(
@@ -81,7 +81,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape,
         override val textRes: Int = R.string.bubble_edit_category,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
     ) : BubbleDest()
 
     data class SaveCategories(
@@ -89,7 +89,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_save_category,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
     data class OverviewMode(
@@ -97,7 +97,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_mode,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
     data class OverviewExport(
@@ -105,7 +105,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_export,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
     data class RecordsSorting(
@@ -113,7 +113,7 @@ sealed class BubbleDest {
         override val offset: Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_records_sorting,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
 }

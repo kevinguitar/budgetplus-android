@@ -7,5 +7,5 @@ import kotlin.reflect.KClass
 data class NavigationInfo(
     val destination: KClass<out Activity>,
     val bundle: Bundle = Bundle.EMPTY,
-    val finishCurrent: Boolean = true
+    val finishCurrent: Boolean = true,
 )

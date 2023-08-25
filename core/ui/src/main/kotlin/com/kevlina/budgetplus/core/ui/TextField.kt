@@ -35,6 +35,7 @@ fun TextField(
     modifier: Modifier = Modifier,
     title: String,
     placeholder: String? = null,
+    enabled: Boolean = true,
     readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
     letterSpacing: TextUnit = TextUnit.Unspecified,
@@ -48,6 +49,7 @@ fun TextField(
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
+        enabled = enabled,
         readOnly = readOnly,
         modifier = Modifier.weight(1F),
         textStyle = TextStyle(
@@ -83,6 +85,7 @@ fun TextField(
     title: String,
     placeholder: String? = null,
     enabled: Boolean = true,
+    readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         capitalization = KeyboardCapitalization.Sentences,
@@ -95,6 +98,7 @@ fun TextField(
         value = value,
         onValueChange = onValueChange,
         enabled = enabled,
+        readOnly = readOnly,
         modifier = Modifier.weight(1F),
         textStyle = TextStyle(
             color = LocalAppColors.current.dark,

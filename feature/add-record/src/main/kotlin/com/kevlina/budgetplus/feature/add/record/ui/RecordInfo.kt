@@ -59,10 +59,11 @@ fun RecordInfo(
 
     if (scrollable) {
         LaunchedEffect(key1 = priceText) {
-            if (priceText != CalculatorViewModel.EMPTY_PRICE
-                && scrollState.value != scrollState.maxValue
-            ) {
-                scrollState.animateScrollTo(scrollState.maxValue)
+            if (priceText != CalculatorViewModel.EMPTY_PRICE) {
+                focusManager.clearFocus()
+                if (scrollState.value != scrollState.maxValue) {
+                    scrollState.animateScrollTo(scrollState.maxValue)
+                }
             }
         }
     }
@@ -120,7 +121,7 @@ fun RecordInfo(
                 onValueChange = {},
                 fontSize = FontSize.Header,
                 letterSpacing = 0.5.sp,
-                readOnly = true,
+                enabled = false,
                 title = "$",
                 modifier = Modifier
                     .weight(1F)

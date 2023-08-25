@@ -12,7 +12,7 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
 fun AppTheme(
-    colorTone: ColorTone = ColorTone.Test,
+    colorTone: ColorTone = ColorTone.MilkTea,
     content: @Composable () -> Unit,
 ) {
 

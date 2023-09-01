@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.core.ads
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,20 +29,18 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
-import kotlin.math.roundToInt
 
 @SuppressLint("VisibleForTests")
 @Composable
 fun AdsBanner() {
 
-    BoxWithConstraints(
+    Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .height(50.dp)
             .fillMaxWidth()
     ) {
 
-        val boxWidth = maxWidth.value.roundToInt()
         val bannerId = stringResource(id = R.string.admob_banner_id)
         var showNoAdsHint by remember { mutableStateOf(false) }
 
@@ -70,12 +68,7 @@ fun AdsBanner() {
             modifier = Modifier.fillMaxSize(),
             factory = { context ->
                 AdView(context).apply {
-                    setAdSize(
-                        AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-                            /* context = */ context,
-                            /* width = */ boxWidth
-                        )
-                    )
+                    setAdSize(AdSize.BANNER)
                     adUnitId = bannerId
                     adListener = object : AdListener() {
                         override fun onAdFailedToLoad(p0: LoadAdError) {

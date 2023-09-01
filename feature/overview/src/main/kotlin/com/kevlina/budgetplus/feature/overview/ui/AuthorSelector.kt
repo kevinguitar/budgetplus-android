@@ -63,7 +63,6 @@ internal fun AuthorSelector(
 
                 DropdownItem(
                     name = stringResource(id = R.string.overview_author_everyone),
-                    textColor = LocalAppColors.current.dark
                 ) {
                     isAuthorPickerShown = false
                     setAuthor(null)
@@ -73,7 +72,6 @@ internal fun AuthorSelector(
                     DropdownItem(
                         name = author.name
                             ?: stringResource(id = R.string.overview_author_anonymous),
-                        textColor = LocalAppColors.current.dark
                     ) {
                         isAuthorPickerShown = false
                         setAuthor(author)

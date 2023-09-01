@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
@@ -61,7 +60,6 @@ fun DropdownMenuItem(
 fun DropdownItem(
     name: String,
     icon: @Composable (() -> Unit)? = null,
-    textColor: Color = LocalAppColors.current.primarySemiDark,
     onClick: () -> Unit,
 ) {
 
@@ -75,7 +73,7 @@ fun DropdownItem(
 
                 Text(
                     text = name,
-                    color = textColor,
+                    color = LocalAppColors.current.dark,
                     fontSize = FontSize.SemiLarge
                 )
             }

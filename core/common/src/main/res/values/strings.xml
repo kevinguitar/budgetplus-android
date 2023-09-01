@@ -145,6 +145,7 @@
     <string name="settings_book_deleted">You have deleted %s</string>
     <string name="settings_book_left">You have left %s</string>
     <string name="settings_language">Language</string>
+    <string name="settings_color_tone">Color Tone</string>
     <string name="settings_input_vibration">Input Vibration</string>
     <string name="settings_share_app">Share the app with friends</string>
     <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%s</string>
@@ -153,6 +154,11 @@
     <string name="settings_contact_us">Contact Us</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_no_email_app_found">No email app found</string>
+
+    <!-- Color Tone Picker -->
+    <string name="color_tone_picker_title">Color Tone Picker</string>
+    <string name="color_tone_preview_title">Color Preview</string>
+    <string name="color_tone_milktea">Milk Tea</string>
 
     <!-- Insider -->
     <string name="insider_title">Insider</string>

@@ -36,6 +36,10 @@ internal fun Project.configureKotlinAndroid(
             isCoreLibraryDesugaringEnabled = true
         }
 
+        packaging {
+            resources.excludes.add("META-INF/*")
+        }
+
         tasks.withType<KotlinCompile>().configureEach {
             kotlinOptions {
                 // Treat all Kotlin warnings as errors (disabled by default)

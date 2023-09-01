@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.kevlina.budgetplus.book.BookViewModel
@@ -36,6 +37,7 @@ internal fun BookBinding(
 
     val navController = rememberNavController()
 
+    val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
 
     vm.navigation.consumeAsEffect()
@@ -57,7 +59,7 @@ internal fun BookBinding(
     Box(modifier = Modifier.fillMaxSize()) {
 
         Scaffold(
-            bottomBar = { BottomNav(navController) },
+            bottomBar = { BottomNav(navController, previewColors) },
             snackbarHost = { SnackbarHost(snackbarData) },
         ) { innerPadding ->
             NavHost(

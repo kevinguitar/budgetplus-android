@@ -96,7 +96,7 @@ fun BookSelector(navigator: Navigator) {
 
                         Text(
                             text = book.name,
-                            color = LocalAppColors.current.primarySemiDark,
+                            color = LocalAppColors.current.dark,
                             fontSize = FontSize.SemiLarge
                         )
 
@@ -104,7 +104,7 @@ fun BookSelector(navigator: Navigator) {
                             Icon(
                                 imageVector = Icons.Rounded.Check,
                                 contentDescription = null,
-                                tint = LocalAppColors.current.primarySemiDark,
+                                tint = LocalAppColors.current.dark,
                                 modifier = Modifier.padding(horizontal = 4.dp)
                             )
                         }
@@ -121,7 +121,7 @@ fun BookSelector(navigator: Navigator) {
                         Icon(
                             imageVector = Icons.Rounded.Lock,
                             contentDescription = null,
-                            tint = LocalAppColors.current.primarySemiDark,
+                            tint = LocalAppColors.current.dark,
                             modifier = Modifier
                                 .padding(end = 4.dp)
                                 .size(20.dp)

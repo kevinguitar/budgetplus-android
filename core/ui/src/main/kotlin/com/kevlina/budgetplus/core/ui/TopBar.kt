@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 
+const val TOP_BAR_DARKEN_FACTOR = 0.8F
+
 @Composable
 fun TopBar(
     title: String?,
@@ -36,7 +38,7 @@ fun TopBar(
         modifier = Modifier
             .height(56.dp)
             .fillMaxWidth()
-            .background(color = LocalAppColors.current.primaryDark)
+            .background(color = LocalAppColors.current.primary.darken(TOP_BAR_DARKEN_FACTOR))
     ) {
 
         if (navigateUp != null) {

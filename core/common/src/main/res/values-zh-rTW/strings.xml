@@ -145,6 +145,7 @@
     <string name="settings_book_deleted">%s已被刪除</string>
     <string name="settings_book_left">您已離開%s</string>
     <string name="settings_language">語言</string>
+    <string name="settings_color_tone">色調</string>
     <string name="settings_input_vibration">輸入震動反饋</string>
     <string name="settings_share_app">分享 App 給好友</string>
     <string name="settings_share_app_message">我發現了一款超好用的記帳 App，快下載來試試吧！\n%s</string>

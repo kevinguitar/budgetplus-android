@@ -45,7 +45,11 @@ fun SettingsScreen(
                 .weight(1F)
         ) {
 
-            SettingsContent(navigator = navigator, showMembers = showMembers)
+            SettingsContent(
+                navigator = navigator,
+                vm = vm,
+                showMembers = showMembers
+            )
         }
 
         if (!isPremium) {

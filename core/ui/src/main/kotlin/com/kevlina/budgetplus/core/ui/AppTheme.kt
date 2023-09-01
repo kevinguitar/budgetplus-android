@@ -8,21 +8,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
-import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
 fun AppTheme(
     colorTone: ColorTone = ColorTone.MilkTea,
     content: @Composable () -> Unit,
 ) {
-
-    val themeColors = when (colorTone) {
-        ColorTone.MilkTea -> ThemeColors.MilkTea
-        ColorTone.Test -> ThemeColors.Test
-    }
-
     CompositionLocalProvider(
-        LocalAppColors provides themeColors,
+        LocalAppColors provides colorTone.themeColors,
         content = content
     )
 }

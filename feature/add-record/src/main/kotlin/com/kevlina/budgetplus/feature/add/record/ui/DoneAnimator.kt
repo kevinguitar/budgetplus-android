@@ -16,9 +16,13 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.lottie.rememberColorProperty
+import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -29,6 +33,17 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
     var showAnimation by remember { mutableStateOf(false) }
     val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
     val lottieAnimatable = rememberLottieAnimatable()
+
+    val bgColor = LocalAppColors.current.dark
+    val strokeColor = LocalAppColors.current.light
+    val dynamicProperties = rememberLottieDynamicProperties(
+        // The big circle outline
+        rememberStrokeColorProperty(color = bgColor, "Rectangle 6 Copy", "Rectangle 6 Copy", "Stroke 1"),
+        // The big circle filled color
+        rememberColorProperty(color = bgColor, "Rectangle 6 Copy", "Rectangle 6 Copy", "Fill 1"),
+        // The check mark stroke
+        rememberStrokeColorProperty(color = strokeColor, "Path 2", "Path 2", "Stroke 1"),
+    )
 
     LaunchedEffect(key1 = eventTrigger) {
         eventTrigger.event.consumeEach {
@@ -48,6 +63,7 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
         LottieAnimation(
             composition = imgDone,
             progress = { lottieAnimatable.progress },
+            dynamicProperties = dynamicProperties,
             modifier = Modifier
                 .size(160.dp)
                 .align(Alignment.Center),

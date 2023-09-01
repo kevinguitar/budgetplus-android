@@ -4,6 +4,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 
@@ -14,6 +15,7 @@ fun MenuAction(
     imageVector: ImageVector,
     description: String,
     modifier: Modifier = Modifier,
+    imageTintColor: Color = LocalAppColors.current.light,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
 ) {
@@ -26,7 +28,7 @@ fun MenuAction(
         Icon(
             imageVector = imageVector,
             contentDescription = description,
-            tint = LocalAppColors.current.light,
+            tint = imageTintColor,
             modifier = Modifier.thenIf(!enabled) {
                 Modifier.alpha(DISABLED_ALPHA)
             }

@@ -67,19 +67,21 @@ private fun TypePill(
 ) {
 
     val bgColor by animateColorAsState(
-        if (isSelected) {
+        targetValue = if (isSelected) {
             LocalAppColors.current.dark
         } else {
             LocalAppColors.current.light
-        }
+        },
+        label = "bgColor"
     )
 
     val textColor by animateColorAsState(
-        if (isSelected) {
+        targetValue = if (isSelected) {
             LocalAppColors.current.light
         } else {
             LocalAppColors.current.dark
-        }
+        },
+        label = "textColor"
     )
 
     Surface(

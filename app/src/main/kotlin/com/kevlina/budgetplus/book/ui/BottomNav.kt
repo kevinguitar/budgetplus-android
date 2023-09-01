@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -29,21 +30,28 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.rippleClick
 
 @Composable
-internal fun BottomNav(navController: NavController) {
+internal fun BottomNav(
+    navController: NavController,
+    previewColors: ThemeColors?,
+) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
+    val lightColor = previewColors?.light ?: LocalAppColors.current.light
+    val darkColor = previewColors?.dark ?: LocalAppColors.current.dark
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(color = LocalAppColors.current.light)
+            .background(color = lightColor)
     ) {
 
         Spacer(
@@ -51,7 +59,7 @@ internal fun BottomNav(navController: NavController) {
                 .fillMaxWidth()
                 .height(1.dp)
                 .alpha(AppTheme.DIVIDER_ALPHA)
-                .background(color = LocalAppColors.current.dark)
+                .background(color = darkColor)
         )
 
         Row(
@@ -64,7 +72,9 @@ internal fun BottomNav(navController: NavController) {
                 BottomNavItem(
                     navController = navController,
                     tab = tab,
-                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.route } == true
+                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
+                    darkColor = darkColor,
+                    lightColor = lightColor
                 )
             }
         }
@@ -76,6 +86,8 @@ private fun RowScope.BottomNavItem(
     navController: NavController,
     tab: BookTab,
     isSelected: Boolean,
+    darkColor: Color,
+    lightColor: Color,
 ) {
 
     Box(
@@ -110,7 +122,7 @@ private fun RowScope.BottomNavItem(
                 modifier = Modifier
                     .size(width = 60.dp, height = 36.dp)
                     .background(
-                        color = LocalAppColors.current.dark,
+                        color = darkColor,
                         shape = CircleShape
                     )
             )
@@ -121,11 +133,7 @@ private fun RowScope.BottomNavItem(
                 BookTab.Add -> Icons.Rounded.PostAdd
                 BookTab.History -> Icons.Rounded.FormatListBulleted
             },
-            tint = if (isSelected) {
-                LocalAppColors.current.light
-            } else {
-                LocalAppColors.current.dark
-            },
+            tint = if (isSelected) lightColor else darkColor,
             modifier = Modifier.size(28.dp)
         )
     }

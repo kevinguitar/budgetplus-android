@@ -2,19 +2,23 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.ColorUtils
 
-fun Color.lighten(@FloatRange(from = 1.0) factor: Float): Color {
-    return copy(
-        red = (red * factor).coerceAtMost(1F),
-        green = (green * factor).coerceAtMost(1F),
-        blue = (blue * factor).coerceAtMost(1F),
-    )
+fun Color.darken(@FloatRange(from = 0.0, to = 1.0) factor: Float): Color {
+    @Suppress("MagicNumber")
+    val hsl = FloatArray(3)
+    ColorUtils.colorToHSL(toArgb(), hsl)
+    // Lower the saturation and the lightness
+    hsl[1] *= factor
+    hsl[2] *= factor
+    return Color(ColorUtils.HSLToColor(hsl))
 }
 
-fun Color.darken(@FloatRange(from = 1.0) factor: Float): Color {
-    return copy(
-        red = (red * (2 - factor)).coerceAtLeast(0F),
-        green = (green * (2 - factor)).coerceAtLeast(0F),
-        blue = (blue * (2 - factor)).coerceAtLeast(0F),
-    )
+fun Color.blend(
+    target: Color,
+    @FloatRange(from = 0.0, to = 1.0)
+    ratio: Float,
+): Color {
+    return Color(ColorUtils.blendARGB(toArgb(), target.toArgb(), ratio))
 }

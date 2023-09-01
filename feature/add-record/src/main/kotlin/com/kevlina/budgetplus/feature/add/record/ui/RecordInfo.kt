@@ -36,7 +36,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridBinding
 
 @Composable
 fun RecordInfo(
@@ -81,7 +81,7 @@ fun RecordInfo(
             modifier = Modifier.padding(top = 16.dp)
         )
 
-        CategoriesGrid(
+        CategoriesGridBinding(
             type = type,
             onCategorySelected = vm::setCategory,
             onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },

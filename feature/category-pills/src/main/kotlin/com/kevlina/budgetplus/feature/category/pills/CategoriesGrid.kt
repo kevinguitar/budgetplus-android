@@ -3,7 +3,6 @@ package com.kevlina.budgetplus.feature.category.pills
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,15 +11,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DriveFileRenameOutline
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -28,21 +24,19 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategoriesGrid(
     type: RecordType,
+    expenseCategories: ImmutableList<String>,
+    incomeCategories: ImmutableList<String>,
     modifier: Modifier = Modifier,
     onCategorySelected: (String) -> Unit,
     onEditClicked: (() -> Unit)? = null,
     selectedCategory: String? = null,
 ) {
-
-    val viewModel = hiltViewModel<CategoriesViewModel>()
-
-    val expenseCategories by viewModel.expenseCategories.collectAsStateWithLifecycle()
-    val incomeCategories by viewModel.incomeCategories.collectAsStateWithLifecycle()
 
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
@@ -139,12 +133,13 @@ private fun EditCategoryButton(onClick: () -> Unit) {
 
 @Preview
 @Composable
-private fun CategoryCard_Preview() = AppTheme {
-    CategoryCard(category = "Food", isSelected = true, onClick = {})
-}
-
-@Preview
-@Composable
-private fun EditCategoriesCard_Preview() = AppTheme {
-    EditCategoryButton {}
+private fun CategoryGrid_Preview() = AppTheme {
+    CategoriesGrid(
+        type = RecordType.Income,
+        expenseCategories = persistentListOf(),
+        incomeCategories = persistentListOf("Salary", "Bonus", "Cashback", "Others"),
+        onCategorySelected = {},
+        onEditClicked = {},
+        selectedCategory = "Bonus"
+    )
 }

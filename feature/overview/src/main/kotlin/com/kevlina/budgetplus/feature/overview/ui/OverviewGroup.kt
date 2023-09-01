@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-private const val TEXT_DARKEN_FACTOR = 1.2F
+private const val TEXT_DARKEN_FACTOR = 0.7F
 private const val A_HUNDRED = 100
 
 @Composable
@@ -87,7 +87,7 @@ fun OverviewGroup(
                         .height(24.dp)
                         .align(Alignment.CenterStart)
                         .background(
-                            color = color.copy(alpha = 0.7F),
+                            color = color.copy(alpha = 0.5F),
                             shape = RoundedCornerShape(
                                 topEndPercent = 50,
                                 bottomEndPercent = 50
@@ -117,7 +117,7 @@ fun OverviewGroup(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(
-                        color = color.darken(TEXT_DARKEN_FACTOR),
+                        color = color.darken(TEXT_DARKEN_FACTOR).copy(alpha = 0.7F),
                         shape = CircleShape
                     )
                     .width(48.dp)

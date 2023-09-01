@@ -17,8 +17,17 @@ class ThemeManager @Inject constructor(
     private val _colorTone = MutableStateFlow(colorToneCache)
     val colorTone: StateFlow<ColorTone> = _colorTone.asStateFlow()
 
+    private val _previewColors = MutableStateFlow<ThemeColors?>(null)
+    val previewColors: StateFlow<ThemeColors?> = _previewColors.asStateFlow()
+
     fun setColorTone(colorTone: ColorTone) {
         colorToneCache = colorTone
         _colorTone.value = colorTone
+        // Clear the preview colors and always use the theme colors.
+        _previewColors.value = null
+    }
+
+    fun setPreviewColors(previewColors: ThemeColors) {
+        _previewColors.value = previewColors
     }
 }

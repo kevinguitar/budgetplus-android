@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.ExitToApp
@@ -30,7 +31,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
@@ -46,10 +46,10 @@ private const val SWITCH_SCALE = 0.7F
 @Composable
 internal fun SettingsContent(
     navigator: Navigator,
+    vm: SettingsViewModel,
     showMembers: Boolean,
 ) {
 
-    val vm = hiltViewModel<SettingsViewModel>()
     vm.navigation.consumeAsEffect()
 
     val context = LocalContext.current
@@ -124,9 +124,15 @@ internal fun SettingsContent(
         }
 
         SettingsItem(
+            text = stringResource(id = R.string.settings_color_tone),
+            icon = Icons.Rounded.ColorLens,
+            roundTop = !vm.canSelectLanguage,
+            onClick = { navigator.navigate(AddDest.ColorTonePicker.route) }
+        )
+
+        SettingsItem(
             text = stringResource(id = R.string.settings_input_vibration),
             icon = Icons.Rounded.Vibration,
-            roundTop = !vm.canSelectLanguage,
             verticalPadding = 4.dp,
             action = {
                 Switch(
@@ -204,7 +210,6 @@ internal fun SettingsContent(
     }
 
     if (isRenameUserDialogShown) {
-
         InputDialog(
             currentInput = vm.currentUsername,
             title = stringResource(id = R.string.username_title),
@@ -215,7 +220,6 @@ internal fun SettingsContent(
     }
 
     if (isRenameBookDialogShown) {
-
         InputDialog(
             currentInput = vm.currentBookName,
             title = stringResource(id = R.string.book_name_title),
@@ -226,7 +230,6 @@ internal fun SettingsContent(
     }
 
     if (isMembersDialogShown) {
-
         MembersDialog(
             onDismiss = { isMembersDialogShown = false }
         )

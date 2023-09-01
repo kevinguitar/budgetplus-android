@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_URL
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Book
 import com.kevlina.budgetplus.core.ui.SnackbarData
@@ -39,6 +40,7 @@ class BookActivity : ComponentActivity() {
 
     @Inject lateinit var authManager: AuthManager
     @Inject lateinit var bookRepo: BookRepo
+    @Inject lateinit var themeManager: ThemeManager
     @Inject lateinit var inAppUpdateManager: InAppUpdateManager
     @Inject @Book lateinit var snackbarSender: SnackbarSender
 
@@ -75,7 +77,8 @@ class BookActivity : ComponentActivity() {
 
         setContent {
 
-            AppTheme {
+            val colorTone by themeManager.colorTone.collectAsStateWithLifecycle()
+            AppTheme(colorTone) {
                 BookBinding(
                     vm = viewModel,
                     newIntent = newIntent,

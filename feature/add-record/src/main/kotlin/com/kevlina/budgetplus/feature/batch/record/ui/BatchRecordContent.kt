@@ -28,7 +28,7 @@ import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridBinding
 
 @Composable
 internal fun BatchRecordContent() {
@@ -57,7 +57,7 @@ internal fun BatchRecordContent() {
             modifier = Modifier.padding(top = 16.dp)
         )
 
-        CategoriesGrid(
+        CategoriesGridBinding(
             type = type,
             onCategorySelected = vm::setCategory,
             selectedCategory = category,

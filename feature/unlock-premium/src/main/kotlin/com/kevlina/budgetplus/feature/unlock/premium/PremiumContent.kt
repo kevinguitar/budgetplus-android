@@ -10,20 +10,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -39,7 +33,6 @@ fun PremiumContent(
 ) {
 
     val context = LocalContext.current
-    val imgInvest by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_invest))
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -53,12 +46,7 @@ fun PremiumContent(
             .padding(16.dp)
     ) {
 
-        LottieAnimation(
-            composition = imgInvest,
-            iterations = LottieConstants.IterateForever,
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier.size(280.dp, 200.dp)
-        )
+        InvestAnimation(modifier = Modifier.size(280.dp, 200.dp))
 
         Text(
             text = stringResource(id = R.string.premium_unlock),

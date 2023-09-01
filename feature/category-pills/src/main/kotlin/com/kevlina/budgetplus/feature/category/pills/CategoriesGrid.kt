@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.feature.category.pills
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -28,6 +29,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategoriesGrid(
     type: RecordType,
@@ -43,8 +45,8 @@ fun CategoriesGrid(
     val incomeCategories by viewModel.incomeCategories.collectAsStateWithLifecycle()
 
     FlowRow(
-        mainAxisSpacing = 12.dp,
-        crossAxisSpacing = 12.dp,
+        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
         modifier = modifier
     ) {
 

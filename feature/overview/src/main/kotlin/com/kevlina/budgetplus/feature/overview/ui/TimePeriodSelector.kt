@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.feature.overview.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -22,8 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.mediumFormatted
@@ -39,6 +39,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
 import kotlinx.coroutines.flow.collect
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun TimePeriodSelector(
     vm: OverviewTimeViewModel,
@@ -112,9 +113,8 @@ internal fun TimePeriodSelector(
     }
 
     FlowRow(
-        mainAxisSpacing = 12.dp,
-        crossAxisSpacing = 12.dp,
-        mainAxisAlignment = FlowMainAxisAlignment.Center,
+        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
         setOf(

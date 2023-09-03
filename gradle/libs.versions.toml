@@ -2,11 +2,11 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.2.0-beta01"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.08.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.5.2"
+compose-compiler = "1.5.3"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.2.3"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
@@ -43,7 +43,7 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx"
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 google-ads = "com.google.android.gms:play-services-ads:22.3.0"
-google-auth = "com.google.android.gms:play-services-auth:20.6.0"
+google-auth = "com.google.android.gms:play-services-auth:20.7.0"
 google-billing = "com.android.billingclient:billing-ktx:6.0.1"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.19.1"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
@@ -59,7 +59,7 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-beta04"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-beta05"
 mockk = "io.mockk:mockk:1.13.5"
 navigation-compose = "androidx.navigation:navigation-compose:2.7.1"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"

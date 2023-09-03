@@ -215,7 +215,7 @@ fun EditCategoryScreen(
     if (isExitDialogShown) {
 
         ConfirmDialog(
-            message = stringResource(id = R.string.category_edit_unsaved_message),
+            message = stringResource(id = R.string.unsaved_warning_message),
             onConfirm = {
                 navigator.navigateUp()
                 isExitDialogShown = false

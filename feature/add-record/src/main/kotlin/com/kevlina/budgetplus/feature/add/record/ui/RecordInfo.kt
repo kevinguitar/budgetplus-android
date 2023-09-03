@@ -1,7 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +30,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.TextField
+import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
@@ -125,11 +124,7 @@ fun RecordInfo(
                 title = "$",
                 modifier = Modifier
                     .weight(1F)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { focusManager.clearFocus() }
-                    )
+                    .clickableWithoutRipple { focusManager.clearFocus() }
             )
         }
     }

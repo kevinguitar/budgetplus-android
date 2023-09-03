@@ -59,7 +59,6 @@
     <!-- Category -->
     <string name="category_title">类别名称</string>
     <string name="category_edit_title">编辑类别</string>
-    <string name="category_edit_unsaved_message">尚有未储存的变更，确定要离开吗？</string>
     <string name="category_edit_successful">类别清单已储存</string>
     <string name="category_already_exist">类别%s已存在</string>
     <string name="category_food">饮食</string>
@@ -145,8 +144,6 @@
     <string name="settings_book_deleted">%s已被删除</string>
     <string name="settings_book_left">您已离开%s</string>
     <string name="settings_language">语言</string>
-    <!-- TODO -->
-    <string name="settings_color_tone"></string>
     <string name="settings_input_vibration">输入震动反馈</string>
     <string name="settings_share_app">分享 App 给好友</string>
     <string name="settings_share_app_message">我发现了一款超好用的记帐 App，快下载来试试吧！\n%s</string>
@@ -155,6 +152,16 @@
     <string name="settings_contact_us">与我们联系</string>
     <string name="settings_privacy_policy">隐私权条款</string>
     <string name="settings_no_email_app_found">找不到 email 应用程式</string>
+
+    <!-- Color Tone Picker -->
+    <string name="color_tone_picker_title">主题调色盘</string>
+    <string name="color_tone_preview_title">色调预览</string>
+    <string name="color_tone_milk_tea">乌龙奶茶</string>
+    <string name="color_tone_countryside">田野乡村</string>
+    <string name="color_tone_barbie">芭比与肯尼</string>
+    <string name="color_tone_lavender">薰黄阳光</string>
+    <string name="color_tone_nemo_sea">尼莫与海</string>
+    <string name="color_tone_taiwan_lv">台湾 LV</string>
 
     <!-- Insider -->
     <string name="insider_title">商业机密</string>
@@ -208,4 +215,5 @@
     <string name="fallback_error_message">出错了，请稍后再试</string>
     <string name="permission_hint">如果您改变主意，请在设定中打开权限</string>
     <string name="app_update_downloaded">极简记帐的更新已就绪！</string>
+    <string name="unsaved_warning_message">尚有未储存的变更，确定要离开吗？</string>
 </resources>

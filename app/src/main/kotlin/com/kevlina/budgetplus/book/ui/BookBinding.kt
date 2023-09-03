@@ -27,7 +27,9 @@ import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarHost
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun BookBinding(
@@ -54,6 +56,18 @@ internal fun BookBinding(
 
     LaunchedEffect(newIntent) {
         navController.handleDeepLink(newIntent)
+    }
+
+    // Clear the preview colors if the user navigates out of the picker screen.
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow
+            .onEach { entry ->
+                val currentRoute = entry.destination.route
+                if (currentRoute != AddDest.ColorTonePicker.route) {
+                    vm.themeManager.clearPreviewColors()
+                }
+            }
+            .collect()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

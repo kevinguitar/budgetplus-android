@@ -20,12 +20,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
+import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
-import com.kevlina.budgetplus.feature.color.tone.picker.ui.TonePickerContent
+import com.kevlina.budgetplus.feature.color.tone.picker.ui.TonePickerContentRegular
+import com.kevlina.budgetplus.feature.color.tone.picker.ui.TonePickerContentWide
 import com.kevlina.budgetplus.feature.color.tone.picker.ui.colorTones
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -62,6 +65,7 @@ fun ColorTonePickerScreen(
                 val currentIndex = pagerState.currentPage
                 val currentColors = colorTones[currentIndex].themeColors
                 if (fraction == 0F) {
+                    vm.setPreviewColors(currentColors)
                     return@map currentColors
                 }
 
@@ -78,6 +82,10 @@ fun ColorTonePickerScreen(
         snapshotFlow { pagerState.currentPage }.collect { page ->
             selectedColorTone = colorTones[page]
         }
+    }
+
+    fun unlockPremium() {
+        navigator.navigate(AddDest.UnlockPremium.route)
     }
 
     // Override the app-level local colors with the state of color tone picker.
@@ -106,8 +114,12 @@ fun ColorTonePickerScreen(
                         description = stringResource(id = R.string.cta_save),
                         enabled = currentColorTone != selectedColorTone,
                         onClick = {
-                            vm.setColorTone(selectedColorTone)
-                            navigator.navigateUp()
+                            if (!selectedColorTone.requiresPremium || isPremium) {
+                                vm.setColorTone(selectedColorTone)
+                                navigator.navigateUp()
+                            } else {
+                                unlockPremium()
+                            }
                         }
                     )
                 }
@@ -118,17 +130,33 @@ fun ColorTonePickerScreen(
                     .align(Alignment.CenterHorizontally)
                     .weight(1F),
                 regularContent = {
-                    TonePickerContent(
+                    TonePickerContentRegular(
+                        selectedColorTone = selectedColorTone,
                         pagerState = pagerState,
                         isPremium = isPremium,
+                        unlockPremium = ::unlockPremium
                     )
                 },
-                wideContent = { }
+                wideContent = {
+                    TonePickerContentWide(
+                        selectedColorTone = selectedColorTone,
+                        pagerState = pagerState,
+                        isPremium = isPremium,
+                        unlockPremium = ::unlockPremium
+                    )
+                }
             )
         }
 
         if (isExitDialogShown) {
-            //TODO:
+            ConfirmDialog(
+                message = stringResource(id = R.string.unsaved_warning_message),
+                onConfirm = {
+                    navigator.navigateUp()
+                    isExitDialogShown = false
+                },
+                onDismiss = { isExitDialogShown = false }
+            )
         }
     }
 }

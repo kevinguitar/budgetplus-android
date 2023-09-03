@@ -4,8 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -39,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 
 @Composable
 fun Bubble() {
@@ -63,14 +62,10 @@ fun Bubble() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable(
-                        interactionSource = MutableInteractionSource(),
-                        indication = null,
-                        onClick = {
-                            isBubbleVisible = false
-                            viewModel.dismissBubble()
-                        }
-                    )
+                    .clickableWithoutRipple {
+                        isBubbleVisible = false
+                        viewModel.dismissBubble()
+                    }
             ) {
 
                 Box(

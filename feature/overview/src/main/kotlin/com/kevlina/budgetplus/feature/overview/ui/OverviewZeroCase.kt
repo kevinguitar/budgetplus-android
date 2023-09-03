@@ -16,13 +16,15 @@ import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.blend
 
+private const val BG_DARKEN_FACTOR = 0.5F
+
 @Composable
 fun OverviewZeroCase() {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_empty))
 
     val bgColor = LocalAppColors.current.lightBg
-    val bgDarkenColor = bgColor.blend(LocalAppColors.current.light, 0.5F)
+    val bgDarkenColor = bgColor.blend(LocalAppColors.current.light, BG_DARKEN_FACTOR)
     val strokeColor = LocalAppColors.current.dark
     val dynamicProperties = rememberLottieDynamicProperties(
         // The X icon

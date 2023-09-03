@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,11 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.lottie.PremiumCrown
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
@@ -92,12 +87,7 @@ internal fun SettingsItem(
             }
 
             if (showCrownAnimation) {
-                val icPremium by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_premium))
-                LottieAnimation(
-                    composition = icPremium,
-                    iterations = LottieConstants.IterateForever,
-                    modifier = Modifier.size(24.dp)
-                )
+                PremiumCrown(modifier = Modifier.size(24.dp))
             }
 
             Text(

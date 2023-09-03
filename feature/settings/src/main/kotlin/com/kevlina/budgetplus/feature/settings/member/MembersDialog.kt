@@ -32,12 +32,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.lottie.PremiumCrown
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -120,8 +117,6 @@ private fun MemberCard(
     removeUser: () -> Unit,
 ) {
 
-    val icPremium by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.ic_premium))
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -144,9 +139,7 @@ private fun MemberCard(
         Spacer(modifier = Modifier.width(16.dp))
 
         if (member.premium == true) {
-            LottieAnimation(
-                composition = icPremium,
-                iterations = LottieConstants.IterateForever,
+            PremiumCrown(
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .size(24.dp)

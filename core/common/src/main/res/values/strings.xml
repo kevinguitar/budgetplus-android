@@ -59,7 +59,6 @@
     <!-- Category -->
     <string name="category_title">Category</string>
     <string name="category_edit_title">Edit Categories</string>
-    <string name="category_edit_unsaved_message">Do you want to leave without saving the changes?</string>
     <string name="category_edit_successful">Category list has been saved</string>
     <string name="category_already_exist">Category %s already exist</string>
     <string name="category_food">Food</string>
@@ -145,7 +144,6 @@
     <string name="settings_book_deleted">You have deleted %s</string>
     <string name="settings_book_left">You have left %s</string>
     <string name="settings_language">Language</string>
-    <string name="settings_color_tone">Color Tone</string>
     <string name="settings_input_vibration">Input Vibration</string>
     <string name="settings_share_app">Share the app with friends</string>
     <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%s</string>
@@ -158,7 +156,12 @@
     <!-- Color Tone Picker -->
     <string name="color_tone_picker_title">Color Tone Picker</string>
     <string name="color_tone_preview_title">Color Preview</string>
-    <string name="color_tone_milktea">Milk Tea</string>
+    <string name="color_tone_milk_tea">Oolong Milk Tea</string>
+    <string name="color_tone_countryside">Countryside</string>
+    <string name="color_tone_barbie">Barbie and Ken</string>
+    <string name="color_tone_lavender">Lavender with Sun</string>
+    <string name="color_tone_nemo_sea">Nemo and the Sea</string>
+    <string name="color_tone_taiwan_lv">Taiwan LV</string>
 
     <!-- Insider -->
     <string name="insider_title">Insider</string>
@@ -212,4 +215,5 @@
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
     <string name="permission_hint">Turn on the permission in the settings if you change your mind</string>
     <string name="app_update_downloaded">The update is ready!</string>
+    <string name="unsaved_warning_message">Do you want to leave without saving the changes?</string>
 </resources>

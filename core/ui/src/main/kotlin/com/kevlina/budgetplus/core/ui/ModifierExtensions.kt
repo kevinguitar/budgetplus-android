@@ -28,11 +28,10 @@ fun Modifier.rippleClick(
     )
 }
 
-fun Modifier.blockClicks() = composed {
+fun Modifier.clickableWithoutRipple(onClick: () -> Unit) = composed {
     clickable(
-        enabled = true,
         interactionSource = remember { MutableInteractionSource() },
         indication = null,
-        onClick = {}
+        onClick = onClick
     )
 }

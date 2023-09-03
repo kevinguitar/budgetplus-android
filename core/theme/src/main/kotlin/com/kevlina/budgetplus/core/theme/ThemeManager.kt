@@ -24,10 +24,14 @@ class ThemeManager @Inject constructor(
         colorToneCache = colorTone
         _colorTone.value = colorTone
         // Clear the preview colors and always use the theme colors.
-        _previewColors.value = null
+        clearPreviewColors()
     }
 
     fun setPreviewColors(previewColors: ThemeColors) {
         _previewColors.value = previewColors
+    }
+
+    fun clearPreviewColors() {
+        _previewColors.value = null
     }
 }

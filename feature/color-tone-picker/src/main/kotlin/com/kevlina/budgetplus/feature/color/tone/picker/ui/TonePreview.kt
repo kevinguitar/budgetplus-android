@@ -56,7 +56,7 @@ internal fun TonePreview(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.settings_color_tone),
+            title = stringResource(id = R.string.color_tone_preview_title),
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.GroupAdd,

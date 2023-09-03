@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,17 +30,9 @@ internal fun OverviewHeader(
     val authors by vm.authors.collectAsStateWithLifecycle()
     val selectedAuthor by vm.selectedAuthor.collectAsStateWithLifecycle()
 
-    val totalPriceText = remember(totalPrice) {
-        totalPrice.dollar
-    }
-
-    val balanceText = remember(balance) {
-        balance.dollar
-    }
-
-    val isBalanceCardVisible = remember(recordGroups) {
-        recordGroups?.isNotEmpty() == true
-    }
+    val totalPriceText = totalPrice.dollar
+    val balanceText = balance.dollar
+    val isBalanceCardVisible = recordGroups?.isNotEmpty() == true
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

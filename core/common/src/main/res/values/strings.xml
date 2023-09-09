@@ -161,7 +161,7 @@
     <string name="color_tone_barbie">Barbie and Ken</string>
     <string name="color_tone_lavender">Lavender with Sun</string>
     <string name="color_tone_nemo_sea">Nemo and the Sea</string>
-    <string name="color_tone_taiwan_lv">Taiwan LV</string>
+    <string name="color_tone_customized">Customized</string>
 
     <!-- Insider -->
     <string name="insider_title">Insider</string>

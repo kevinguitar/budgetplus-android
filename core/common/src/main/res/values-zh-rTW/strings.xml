@@ -161,7 +161,7 @@
     <string name="color_tone_barbie">芭比與肯尼</string>
     <string name="color_tone_lavender">薰黃陽光</string>
     <string name="color_tone_nemo_sea">尼莫與海</string>
-    <string name="color_tone_taiwan_lv">台灣 LV</string>
+    <string name="color_tone_customized">我的調色盤</string>
 
     <!-- Insider -->
     <string name="insider_title">商業機密</string>

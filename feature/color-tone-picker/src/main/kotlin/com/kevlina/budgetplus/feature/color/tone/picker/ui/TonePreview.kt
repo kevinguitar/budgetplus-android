@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GroupAdd
 import androidx.compose.material.icons.rounded.Settings
@@ -51,7 +52,7 @@ internal fun TonePreview(
             .border(
                 width = 1.dp,
                 color = LocalAppColors.current.primary.darken(TOP_BAR_DARKEN_FACTOR),
-                shape = AppTheme.cardShape
+                shape = RoundedCornerShape(ColorToneConstants.CardCornerRadius)
             )
     ) {
 

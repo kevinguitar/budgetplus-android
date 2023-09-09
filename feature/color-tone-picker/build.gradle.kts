@@ -11,4 +11,5 @@ dependencies {
     implementation(projects.feature.categoryPills)
 
     implementation(libs.lottie.compose)
+    implementation(libs.orchestra.colorpicker)
 }

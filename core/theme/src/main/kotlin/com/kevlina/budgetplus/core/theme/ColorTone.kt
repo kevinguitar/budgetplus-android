@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import com.kevlina.budgetplus.core.common.R
 
 enum class ColorTone {
-    MilkTea, Countryside, Barbie, Lavender, NemoSea, TaiwanLv;
+    MilkTea, Countryside, Barbie, Lavender, NemoSea, Customized;
 
     val themeColors: ThemeColors
         get() = when (this) {
@@ -16,9 +16,8 @@ enum class ColorTone {
             Barbie -> ThemeColors.Barbie
             Lavender -> ThemeColors.Lavender
             NemoSea -> ThemeColors.NemoSea
-            TaiwanLv -> ThemeColors.TaiwanLv
+            Customized -> ThemeColors.Customized
         }
-
 
     val nameRes: Int
         @StringRes get() = when (this) {
@@ -27,13 +26,13 @@ enum class ColorTone {
             Barbie -> R.string.color_tone_barbie
             Lavender -> R.string.color_tone_lavender
             NemoSea -> R.string.color_tone_nemo_sea
-            TaiwanLv -> R.string.color_tone_taiwan_lv
+            Customized -> R.string.color_tone_customized
         }
 
     val requiresPremium: Boolean
         get() = when (this) {
             MilkTea, Countryside -> false
-            Barbie, Lavender, NemoSea, TaiwanLv -> true
+            Barbie, Lavender, NemoSea, Customized -> true
         }
 }
 
@@ -82,12 +81,8 @@ data class ThemeColors(
             dark = Color(0xFFEC7C1E)
         )
 
-        val TaiwanLv = ThemeColors(
-            light = Color(0xFFFDFFFD),
-            lightBg = Color(0xFFd1ede4),
-            primary = Color(0xFF65B4E6),
-            dark = Color(0xFFE34F6E)
-        )
+        // Assign on runtime, using MilkTea as default colors.
+        var Customized = MilkTea
     }
 }
 

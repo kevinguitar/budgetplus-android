@@ -43,19 +43,17 @@ internal fun ColorToneCard(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        val cornerRadius = 16.dp
-
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
                 .border(
                     width = 1.dp,
                     color = themeColors.primary.darken(TOP_BAR_DARKEN_FACTOR),
-                    shape = RoundedCornerShape(cornerRadius)
+                    shape = RoundedCornerShape(ColorToneConstants.CardCornerRadius)
                 )
         ) {
             val itemWidth = size.width / colors.size
-            val cornerRadiusPx = CornerRadius(cornerRadius.toPx())
+            val cornerRadiusPx = CornerRadius(ColorToneConstants.CardCornerRadius.toPx())
 
             colors.forEachIndexed { index, color ->
                 when (index) {
@@ -98,7 +96,7 @@ internal fun ColorToneCard(
             UnlockAnimator(
                 color = themeColors.dark,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(90.dp)
                     .clickableWithoutRipple(onClick = unlockPremium)
             )
         }

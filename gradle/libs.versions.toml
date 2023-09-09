@@ -1,10 +1,10 @@
 [versions]
 # https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "8.2.0-beta01"
+gradle-plugin = "8.2.0-beta03"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.9.10"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.08.00"
+compose-bom = "2023.09.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.3"
 # https://firebase.google.com/support/release-notes/android
@@ -16,7 +16,7 @@ coil = "2.4.0"
 
 [libraries]
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"
-android-core = "androidx.core:core-ktx:1.10.1"
+android-core = "androidx.core:core-ktx:1.12.0"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -25,7 +25,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -52,7 +52,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt"
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
-junit-compose = "androidx.compose.ui:ui-test-junit4:1.5.0"
+junit-compose = "androidx.compose.ui:ui-test-junit4:1.5.1"
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -61,8 +61,9 @@ kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-beta05"
 mockk = "io.mockk:mockk:1.13.5"
-navigation-compose = "androidx.navigation:navigation-compose:2.7.1"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.2"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
+orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
 # Official feature request: https://issuetracker.google.com/issues/181282427
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"

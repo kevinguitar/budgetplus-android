@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.color.tone.picker.ui
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -83,6 +84,7 @@ internal fun TonePreview(
             incomeCategories = persistentListOf(),
             onCategorySelected = { },
             selectedCategory = expenseCategories.first(),
+            cardPaddingValues = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

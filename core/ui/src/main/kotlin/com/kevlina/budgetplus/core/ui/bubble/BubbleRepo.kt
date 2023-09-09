@@ -116,6 +116,14 @@ sealed class BubbleDest {
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
+    data class ColorsSharing(
+        override val size: IntSize,
+        override val offset: Offset,
+        override val shape: BubbleShape = BubbleShape.Circle,
+        override val textRes: Int = R.string.bubble_colors_sharing,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
+    ) : BubbleDest()
+
 }
 
 enum class BubbleTextDirection {

@@ -84,8 +84,9 @@
     <string name="review_request_no">先不要</string>
 
     <!-- Menu -->
-    <string name="menu_share_book">點擊下面的連結跟我一起記帳吧！\n%s</string>
+    <string name="menu_invite_to_book">點擊下面的連結跟我一起記帳吧！\n%s</string>
     <string name="menu_create_book">創建新帳本</string>
+    <string name="menu_share_colors">試試看我調的主題色調！\n%s</string>
 
     <!-- Overview -->
     <string name="overview_title">%s總覽</string>
@@ -121,6 +122,7 @@
         ✔ 不受任何廣告打擾
         \n✔ 擴充至十本記帳本
         \n✔ 批次新增您的固定支出收入
+        \n✔ 解鎖所有主題色調及調色盤
         \n✔ 篩選大於一個月的帳目
     </string>
     <string name="premium_unlock_cta">取得進階版</string>
@@ -162,6 +164,8 @@
     <string name="color_tone_lavender">薰黃陽光</string>
     <string name="color_tone_nemo_sea">尼莫與海</string>
     <string name="color_tone_customized">我的調色盤</string>
+    <string name="color_tone_color_hex_code">Hex 色碼</string>
+    <string name="color_tone_applied_from_link">已套用主題色調，喜歡記得儲存！</string>
 
     <!-- Insider -->
     <string name="insider_title">商業機密</string>
@@ -182,6 +186,7 @@
     <string name="bubble_overview_mode">你可以選擇用類別或明細顯示帳目</string>
     <string name="bubble_overview_export">輸出帳目成 CSV 檔保存</string>
     <string name="bubble_records_sorting">你可以選擇用日期或是金額排序帳目</string>
+    <string name="bubble_colors_sharing">點擊分享你的調色盤給好友們！</string>
 
     <!-- Notification -->
     <string name="notification_channel_general">一般</string>
@@ -196,6 +201,7 @@
     <string name="cta_invite">邀請</string>
     <string name="cta_edit">編輯</string>
     <string name="cta_save">儲存</string>
+    <string name="cta_share">分享</string>
     <string name="cta_confirm">確認</string>
     <string name="cta_ok">確認</string>
     <string name="cta_go">Go</string>

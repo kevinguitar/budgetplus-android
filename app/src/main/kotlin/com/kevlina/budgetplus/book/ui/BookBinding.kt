@@ -63,7 +63,7 @@ internal fun BookBinding(
         navController.currentBackStackEntryFlow
             .onEach { entry ->
                 val currentRoute = entry.destination.route
-                if (currentRoute != AddDest.ColorTonePicker.route) {
+                if (currentRoute != AddDest.Colors.route) {
                     vm.themeManager.clearPreviewColors()
                 }
             }

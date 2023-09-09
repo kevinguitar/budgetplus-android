@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data.local
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import timber.log.Timber
@@ -42,6 +41,16 @@ class PreferenceHolder @Inject constructor(
 
         override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
             preference.editor.putBoolean(property.name, value).apply()
+        }
+    }
+
+    fun bindString(default: String) = object : ReadWriteProperty<Any, String> {
+        override fun getValue(thisRef: Any, property: KProperty<*>): String {
+            return preference.pref.getString(property.name, default) ?: default
+        }
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
+            preference.editor.putString(property.name, value).apply()
         }
     }
 

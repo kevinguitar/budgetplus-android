@@ -9,16 +9,6 @@ import com.kevlina.budgetplus.core.common.R
 enum class ColorTone {
     MilkTea, Countryside, Barbie, Lavender, NemoSea, Customized;
 
-    val themeColors: ThemeColors
-        get() = when (this) {
-            MilkTea -> ThemeColors.MilkTea
-            Countryside -> ThemeColors.Countryside
-            Barbie -> ThemeColors.Barbie
-            Lavender -> ThemeColors.Lavender
-            NemoSea -> ThemeColors.NemoSea
-            Customized -> ThemeColors.Customized
-        }
-
     val nameRes: Int
         @StringRes get() = when (this) {
             MilkTea -> R.string.color_tone_milk_tea
@@ -34,6 +24,10 @@ enum class ColorTone {
             MilkTea, Countryside -> false
             Barbie, Lavender, NemoSea, Customized -> true
         }
+}
+
+enum class ThemeColorSemantic {
+    Light, LightBg, Primary, Dark
 }
 
 @Immutable
@@ -80,9 +74,6 @@ data class ThemeColors(
             primary = Color(0xFF61c7f0),
             dark = Color(0xFFEC7C1E)
         )
-
-        // Assign on runtime, using MilkTea as default colors.
-        var Customized = MilkTea
     }
 }
 

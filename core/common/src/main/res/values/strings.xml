@@ -84,8 +84,9 @@
     <string name="review_request_no">No</string>
 
     <!-- Menu -->
-    <string name="menu_share_book">Click the link to track expenses with me!\n%s</string>
+    <string name="menu_invite_to_book">Click the link to track expenses with me!\n%s</string>
     <string name="menu_create_book">Create A New Book</string>
+    <string name="menu_share_colors">Check out the colors that I picked!\n%s</string>
 
     <!-- Overview -->
     <string name="overview_title">%s\'s Overview</string>
@@ -121,6 +122,7 @@
         ✔ Enjoy Ads-free experience
         \n✔ Hold up to 10 accounting books
         \n✔ Batch record your regular expenses
+        \n✔ Unlock all color tones and custom picker
         \n✔ Filter records without period limitation
     </string>
     <string name="premium_unlock_cta">Get Premium</string>
@@ -162,6 +164,8 @@
     <string name="color_tone_lavender">Lavender with Sun</string>
     <string name="color_tone_nemo_sea">Nemo and the Sea</string>
     <string name="color_tone_customized">Customized</string>
+    <string name="color_tone_color_hex_code">Color Hex</string>
+    <string name="color_tone_applied_from_link">Applied the colors, save it if you like it!</string>
 
     <!-- Insider -->
     <string name="insider_title">Insider</string>
@@ -182,6 +186,7 @@
     <string name="bubble_overview_mode">Tap to group the records by category</string>
     <string name="bubble_overview_export">You can export the records to csv</string>
     <string name="bubble_records_sorting">Change the records sorting by date or price</string>
+    <string name="bubble_colors_sharing">Share the colors with your friends!</string>
 
     <!-- Notification -->
     <string name="notification_channel_general">General</string>
@@ -196,6 +201,7 @@
     <string name="cta_invite">Invite</string>
     <string name="cta_edit">Edit</string>
     <string name="cta_save">Save</string>
+    <string name="cta_share">Share</string>
     <string name="cta_confirm">Confirm</string>
     <string name="cta_ok">OK</string>
     <string name="cta_go">Go</string>

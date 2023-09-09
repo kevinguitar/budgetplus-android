@@ -15,13 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.theme.ColorTone
+import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
+import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
 internal fun TonePickerContentWide(
     selectedColorTone: ColorTone,
     pagerState: PagerState,
     isPremium: Boolean,
+    getThemeColors: (ColorTone) -> ThemeColors,
     unlockPremium: () -> Unit,
+    onColorPicked: (ThemeColorSemantic, String) -> Unit,
 ) {
 
     Row(
@@ -50,7 +54,9 @@ internal fun TonePickerContentWide(
             selectedColorTone = selectedColorTone,
             pagerState = pagerState,
             isPremium = isPremium,
+            getThemeColors = getThemeColors,
             unlockPremium = unlockPremium,
+            onColorPicked = onColorPicked,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)

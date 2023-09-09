@@ -22,55 +22,71 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.theme.ColorTone
+import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.thenIf
+
+private val MinColorCarouselHeight = 200.dp
 
 @Composable
 internal fun TonePickerContentRegular(
     selectedColorTone: ColorTone,
     pagerState: PagerState,
     isPremium: Boolean,
+    getThemeColors: (ColorTone) -> ThemeColors,
     unlockPremium: () -> Unit,
+    onColorPicked: (ThemeColorSemantic, String) -> Unit,
 ) {
 
-    var previewSize by remember { mutableStateOf(IntSize.Zero) }
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(AppTheme.maxContentWidth)
+    ) {
 
-    BoxWithConstraints {
-
-        val previewHeight = with(LocalDensity.current) { previewSize.height.toDp() }
-        val needScroll = maxHeight - previewHeight <= 100.dp
-
-        Column(
+        BoxWithConstraints(
             modifier = Modifier
-                .fillMaxHeight()
-                .width(AppTheme.maxContentWidth)
-                .thenIf(needScroll) {
-                    Modifier.verticalScroll(rememberScrollState())
-                }
+                .weight(1F)
+                .fillMaxWidth()
         ) {
 
-            TonePreview(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 16.dp)
-                    .onPlaced { previewSize = it.size }
-            )
+            var previewSize by remember { mutableStateOf(IntSize.Zero) }
 
-            ColorToneCarousel(
-                selectedColorTone = selectedColorTone,
-                pagerState = pagerState,
-                isPremium = isPremium,
-                unlockPremium = unlockPremium,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .fillMaxWidth()
-                    .thenIf(needScroll) { Modifier.height(200.dp) }
-                    .thenIf(!needScroll) { Modifier.weight(1F) }
-            )
+            val previewHeight = with(LocalDensity.current) { previewSize.height.toDp() }
+            val needScroll = maxHeight - previewHeight < MinColorCarouselHeight
 
-            if (!isPremium) {
-                AdsBanner()
+            Column(
+                modifier = Modifier.thenIf(needScroll) {
+                    Modifier.verticalScroll(rememberScrollState())
+                }
+            ) {
+
+                TonePreview(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 16.dp)
+                        .onPlaced { previewSize = it.size }
+                )
+
+                ColorToneCarousel(
+                    selectedColorTone = selectedColorTone,
+                    pagerState = pagerState,
+                    isPremium = isPremium,
+                    getThemeColors = getThemeColors,
+                    unlockPremium = unlockPremium,
+                    onColorPicked = onColorPicked,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth()
+                        .thenIf(needScroll) { Modifier.height(MinColorCarouselHeight) }
+                        .thenIf(!needScroll) { Modifier.weight(1F) }
+                )
             }
+        }
+
+        if (!isPremium) {
+            AdsBanner()
         }
     }
 }

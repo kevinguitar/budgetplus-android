@@ -26,8 +26,8 @@ class AuthActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val colorTone by themeManager.colorTone.collectAsStateWithLifecycle()
-            AppTheme(colorTone) {
+            val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
+            AppTheme(themeColors) {
                 AuthBinding(vm = viewModel.get())
             }
         }

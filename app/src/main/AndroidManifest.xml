@@ -60,6 +60,7 @@
                 <data android:pathPrefix="/overview" />
                 <data android:pathPrefix="/settings" />
                 <data android:pathPrefix="/unlockPremium" />
+                <data android:pathPrefix="/colors" />
             </intent-filter>
         </activity>
 

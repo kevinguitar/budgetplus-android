@@ -103,7 +103,7 @@ class RecordViewModel @Inject constructor(
         val joinLink = bookRepo.generateJoinLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_share_book, joinLink])
+            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_invite_to_book, joinLink])
         }
         context.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
         _requestPermissionEvent.sendEvent()

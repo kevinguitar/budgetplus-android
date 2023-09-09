@@ -36,6 +36,7 @@ fun CategoriesGrid(
     onCategorySelected: (String) -> Unit,
     onEditClicked: (() -> Unit)? = null,
     selectedCategory: String? = null,
+    cardPaddingValues: PaddingValues = cardPadding,
 ) {
 
     FlowRow(
@@ -46,13 +47,21 @@ fun CategoriesGrid(
 
         when (type) {
             RecordType.Expense -> expenseCategories.forEach { item ->
-                CategoryCard(category = item, isSelected = selectedCategory == item) {
+                CategoryCard(
+                    category = item,
+                    isSelected = selectedCategory == item,
+                    paddingValues = cardPaddingValues
+                ) {
                     onCategorySelected(item)
                 }
             }
 
             RecordType.Income -> incomeCategories.forEach { item ->
-                CategoryCard(category = item, isSelected = selectedCategory == item) {
+                CategoryCard(
+                    category = item,
+                    isSelected = selectedCategory == item,
+                    paddingValues = cardPaddingValues
+                ) {
                     onCategorySelected(item)
                 }
             }
@@ -70,6 +79,7 @@ private val cardPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)
 fun CategoryCard(
     category: String,
     isSelected: Boolean,
+    paddingValues: PaddingValues = cardPadding,
     onClick: () -> Unit,
 ) {
 
@@ -91,7 +101,7 @@ fun CategoryCard(
             text = category,
             singleLine = true,
             color = LocalAppColors.current.light,
-            modifier = Modifier.padding(cardPadding)
+            modifier = Modifier.padding(paddingValues)
         )
     }
 }

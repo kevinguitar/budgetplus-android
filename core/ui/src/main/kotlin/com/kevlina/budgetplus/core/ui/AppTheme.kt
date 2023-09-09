@@ -6,16 +6,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
 fun AppTheme(
-    colorTone: ColorTone = ColorTone.MilkTea,
+    themeColors: ThemeColors = ThemeColors.MilkTea,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        LocalAppColors provides colorTone.themeColors,
+        LocalAppColors provides themeColors,
         content = content
     )
 }

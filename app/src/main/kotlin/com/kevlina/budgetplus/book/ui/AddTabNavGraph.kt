@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_TYPE
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.common.nav.toNavigator
+import com.kevlina.budgetplus.core.theme.ThemeManager.Companion.COLORS_LINK_QUERY
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
@@ -54,7 +55,6 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
         }
 
         val settingsRoute = "${AddDest.Settings.route}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
-
         composable(
             route = settingsRoute,
             arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
@@ -89,8 +89,22 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             InsiderScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.ColorTonePicker.route) {
-            ColorTonePickerScreen(navigator = navController.toNavigator())
+        val colorToneRoute = "${AddDest.Colors.route}?$COLORS_LINK_QUERY={$COLORS_LINK_QUERY}"
+        composable(
+            route = colorToneRoute,
+            arguments = listOf(navArgument(COLORS_LINK_QUERY) {
+                type = NavType.StringType
+                nullable = true
+            }),
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "$APP_DEEPLINK/$colorToneRoute" }
+            )
+        ) { entry ->
+            val args = entry.arguments ?: Bundle.EMPTY
+            ColorTonePickerScreen(
+                navigator = navController.toNavigator(),
+                hexFromLink = args.getString(COLORS_LINK_QUERY)
+            )
         }
     }
 }

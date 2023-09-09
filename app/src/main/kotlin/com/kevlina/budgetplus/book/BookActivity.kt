@@ -77,8 +77,8 @@ class BookActivity : ComponentActivity() {
 
         setContent {
 
-            val colorTone by themeManager.colorTone.collectAsStateWithLifecycle()
-            AppTheme(colorTone) {
+            val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
+            AppTheme(themeColors) {
                 BookBinding(
                     vm = viewModel,
                     newIntent = newIntent,

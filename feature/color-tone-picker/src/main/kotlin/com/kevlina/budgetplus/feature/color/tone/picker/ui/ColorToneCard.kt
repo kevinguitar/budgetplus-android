@@ -1,37 +1,50 @@
 package com.kevlina.budgetplus.feature.color.tone.picker.ui
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Colorize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.ColorTone
+import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.TOP_BAR_DARKEN_FACTOR
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.darken
+import com.kevlina.budgetplus.core.ui.rippleClick
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ColorToneCard(
     colorTone: ColorTone,
-    isPremium: Boolean,
+    themeColors: ThemeColors,
+    isLocked: Boolean,
     unlockPremium: () -> Unit,
+    onColorPicked: (ThemeColorSemantic, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val themeColors = colorTone.themeColors
+
+    var isPickingColor by remember { mutableStateOf<ThemeColorSemantic?>(null) }
+
     val colors = remember(themeColors) {
-        listOf(
+        persistentListOf(
             themeColors.light,
             themeColors.lightBg,
             themeColors.primary,
@@ -43,56 +56,13 @@ internal fun ColorToneCard(
         contentAlignment = Alignment.Center,
         modifier = modifier
     ) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(
-                    width = 1.dp,
-                    color = themeColors.primary.darken(TOP_BAR_DARKEN_FACTOR),
-                    shape = RoundedCornerShape(ColorToneConstants.CardCornerRadius)
-                )
-        ) {
-            val itemWidth = size.width / colors.size
-            val cornerRadiusPx = CornerRadius(ColorToneConstants.CardCornerRadius.toPx())
 
-            colors.forEachIndexed { index, color ->
-                when (index) {
-                    0 -> drawRoundRect(
-                        color = color,
-                        topLeft = Offset.Zero,
-                        size = Size(
-                            width = itemWidth * 2,
-                            height = size.height
-                        ),
-                        cornerRadius = cornerRadiusPx,
-                    )
+        ColorToneShowcase(
+            colors = colors,
+            outlineColor = themeColors.primary.darken(TOP_BAR_DARKEN_FACTOR)
+        )
 
-                    colors.lastIndex -> {
-                        drawRoundRect(
-                            color = color,
-                            topLeft = Offset(x = itemWidth * (colors.size - 1), y = 0f),
-                            size = Size(width = itemWidth, height = size.height),
-                            cornerRadius = cornerRadiusPx,
-                        )
-
-                        // To cover the left part of the corners
-                        drawRect(
-                            color = color,
-                            topLeft = Offset(x = itemWidth * (colors.size - 1), y = 0f),
-                            size = Size(width = itemWidth / 2, height = size.height),
-                        )
-                    }
-
-                    else -> drawRect(
-                        color = color,
-                        topLeft = Offset(x = itemWidth * index, y = 0f),
-                        size = Size(width = itemWidth, height = size.height),
-                    )
-                }
-            }
-        }
-
-        if (colorTone.requiresPremium && !isPremium) {
+        if (isLocked) {
             UnlockAnimator(
                 color = themeColors.dark,
                 modifier = Modifier
@@ -100,16 +70,59 @@ internal fun ColorToneCard(
                     .clickableWithoutRipple(onClick = unlockPremium)
             )
         }
+
+        if (colorTone == ColorTone.Customized) {
+            Row(
+                horizontalArrangement = Arrangement.Absolute.SpaceAround,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(ColorToneConstants.CardCornerRadius))
+            ) {
+                EditColorButton(color = colors[3]) { isPickingColor = ThemeColorSemantic.Light }
+                EditColorButton(color = colors[2]) { isPickingColor = ThemeColorSemantic.LightBg }
+                EditColorButton(color = colors[1]) { isPickingColor = ThemeColorSemantic.Primary }
+                EditColorButton(color = colors[0]) { isPickingColor = ThemeColorSemantic.Dark }
+            }
+        }
+    }
+
+    isPickingColor?.let { semantic ->
+        ColorPickerDialog(
+            currentColor = when (semantic) {
+                ThemeColorSemantic.Light -> themeColors.light
+                ThemeColorSemantic.LightBg -> themeColors.lightBg
+                ThemeColorSemantic.Primary -> themeColors.primary
+                ThemeColorSemantic.Dark -> themeColors.dark
+            },
+            onColorPicked = { colorHexCode ->
+                onColorPicked(semantic, colorHexCode)
+                isPickingColor = null
+            },
+            onDismiss = { isPickingColor = null }
+        )
     }
 }
 
-@Preview
 @Composable
-private fun ColorToneCard_Preview() = ColorToneCard(
-    colorTone = ColorTone.MilkTea,
-    isPremium = false,
-    unlockPremium = {},
-    modifier = Modifier
-        .fillMaxWidth()
-        .height(200.dp)
-)
+private fun RowScope.EditColorButton(
+    color: Color,
+    onClick: () -> Unit,
+) {
+
+    Box(
+        modifier = Modifier
+            .weight(1F)
+            .fillMaxHeight()
+            .rippleClick(onClick = onClick)
+    ) {
+
+        Icon(
+            imageVector = Icons.Rounded.Colorize,
+            tint = color,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(8.dp)
+                .size(16.dp)
+        )
+    }
+}

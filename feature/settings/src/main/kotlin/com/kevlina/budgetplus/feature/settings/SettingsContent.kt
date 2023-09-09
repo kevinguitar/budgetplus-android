@@ -127,7 +127,7 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.color_tone_picker_title),
             icon = Icons.Rounded.ColorLens,
             roundTop = !vm.canSelectLanguage,
-            onClick = { navigator.navigate(AddDest.ColorTonePicker.route) }
+            onClick = { navigator.navigate(AddDest.Colors.route) }
         )
 
         SettingsItem(

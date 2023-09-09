@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.lottie.PremiumCrown
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.PagerIndicator
@@ -39,7 +41,9 @@ internal fun ColorToneCarousel(
     selectedColorTone: ColorTone,
     pagerState: PagerState,
     isPremium: Boolean,
+    getThemeColors: (ColorTone) -> ThemeColors,
     unlockPremium: () -> Unit,
+    onColorPicked: (ThemeColorSemantic, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -73,10 +77,14 @@ internal fun ColorToneCarousel(
             modifier = Modifier.weight(1F)
         ) { page ->
 
+            val colorTone = colorTones[page]
+
             ColorToneCard(
-                colorTone = colorTones[page],
-                isPremium = isPremium,
+                colorTone = colorTone,
+                themeColors = getThemeColors(colorTone),
+                isLocked = colorTone.requiresPremium && !isPremium,
                 unlockPremium = unlockPremium,
+                onColorPicked = onColorPicked,
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
@@ -112,7 +120,9 @@ private fun ColorToneCarousel_Preview() = AppTheme {
         selectedColorTone = ColorTone.MilkTea,
         pagerState = rememberPagerState { 1 },
         isPremium = false,
+        getThemeColors = { _ -> ThemeColors.MilkTea },
         unlockPremium = {},
+        onColorPicked = { _, _ -> },
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)

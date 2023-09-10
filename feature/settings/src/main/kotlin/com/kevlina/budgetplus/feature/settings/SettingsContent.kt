@@ -9,8 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.DirectionsRun
 import androidx.compose.material.icons.rounded.EditNote
-import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.ForwardToInbox
 import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Language
@@ -195,7 +195,7 @@ internal fun SettingsContent(
             icon = if (isBookOwner) {
                 Icons.Rounded.Delete
             } else {
-                Icons.Rounded.ExitToApp
+                Icons.Rounded.DirectionsRun
             },
             roundTop = true,
             onClick = { isDeleteOrLeaveDialogShown = true }

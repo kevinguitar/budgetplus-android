@@ -46,7 +46,7 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 private const val COLOR_BLEND_DEBOUNCE = 200
-private const val CUSTOM_COLOR_TRANSITION = 200L
+private const val CUSTOM_COLOR_TRANSITION = 100L
 
 @Composable
 fun ColorTonePickerScreen(

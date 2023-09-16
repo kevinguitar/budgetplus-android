@@ -84,9 +84,9 @@ internal fun ColorPickerDialog(
                     if (newHexCode == selectedColor.hexCode.drop(2)) {
                         return@TextField
                     }
-                    hexCode = newHexCode
+                    hexCode = newHexCode.trim()
                     try {
-                        userInputColor = newHexCode.convertHexToColor()
+                        userInputColor = hexCode.convertHexToColor()
                     } catch (e: Exception) {
                         Timber.d(e, "Failed to parse color hex from user input. $newHexCode")
                     }

@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.convertHexToColor
 import com.kevlina.budgetplus.core.ui.AppDialog
@@ -28,10 +27,12 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
+import com.kevlina.budgetplus.feature.color.tone.picker.R
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.orchestra.colorpicker.BrightnessSlideBar
 import com.skydoves.orchestra.colorpicker.ColorPicker
 import timber.log.Timber
+import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 @Composable
 internal fun ColorPickerDialog(
@@ -47,7 +48,6 @@ internal fun ColorPickerDialog(
     AppDialog(
         onDismissRequest = onDismiss
     ) {
-
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,9 +65,11 @@ internal fun ColorPickerDialog(
                 children = { colorPickerView ->
                     BrightnessSlideBar(
                         colorPickerView = colorPickerView,
+                        selector = R.drawable.ic_color_selector,
                         modifier = Modifier
-                            .fillMaxWidth()
                             .padding(top = 16.dp)
+                            .fillMaxWidth()
+                            .height(24.dp)
                             .clip(RoundedCornerShape(8.dp))
                     )
 
@@ -75,7 +77,10 @@ internal fun ColorPickerDialog(
                         userInputColor?.let(colorPickerView::selectByHsvColor)
                     }
                 }
-            )
+            ) {
+                val selector = it.context.getDrawable(R.drawable.ic_color_selector)
+                it.setSelectorDrawable(selector)
+            }
 
             TextField(
                 value = hexCode,
@@ -91,7 +96,7 @@ internal fun ColorPickerDialog(
                         Timber.d(e, "Failed to parse color hex from user input. $newHexCode")
                     }
                 },
-                title = stringResource(id = R.string.color_tone_color_hex_code),
+                title = stringResource(id = coreCommonR.string.color_tone_color_hex_code),
             )
 
             Row(
@@ -100,7 +105,7 @@ internal fun ColorPickerDialog(
 
                 Button(onClick = onDismiss) {
                     Text(
-                        text = stringResource(id = R.string.cta_cancel),
+                        text = stringResource(id = coreCommonR.string.cta_cancel),
                         color = LocalAppColors.current.light,
                     )
                 }
@@ -109,7 +114,7 @@ internal fun ColorPickerDialog(
                     onClick = { onColorPicked(selectedColor.hexCode) }
                 ) {
                     Text(
-                        text = stringResource(id = R.string.cta_confirm),
+                        text = stringResource(id = coreCommonR.string.cta_confirm),
                         color = LocalAppColors.current.light,
                     )
                 }

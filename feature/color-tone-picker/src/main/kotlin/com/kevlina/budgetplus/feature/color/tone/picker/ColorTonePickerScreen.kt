@@ -53,7 +53,6 @@ fun ColorTonePickerScreen(
     navigator: Navigator,
     hexFromLink: String?,
 ) {
-
     val vm = hiltViewModel<ColorTonePickerViewModel>()
 
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
@@ -71,7 +70,7 @@ fun ColorTonePickerScreen(
     val context = LocalContext.current
 
     LaunchedEffect(hexFromLink) {
-        if (hexFromLink != null) {
+        if (hexFromLink != null && vm.previousProcessedLink != hexFromLink) {
             pagerState.animateScrollToPage(colorTones.indexOf(ColorTone.Customized))
             // Apply a tiny delay to showcase the color transition.
             delay(CUSTOM_COLOR_TRANSITION)

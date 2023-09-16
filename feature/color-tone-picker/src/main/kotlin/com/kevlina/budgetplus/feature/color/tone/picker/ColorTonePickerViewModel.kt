@@ -39,6 +39,7 @@ internal class ColorTonePickerViewModel @Inject constructor(
     val isPremium = authManager.isPremium
 
     val previewColors = themeManager.previewColors
+    var previousProcessedLink: String? = null
 
     private val currentColorTone get() = themeManager.colorTone.value
 
@@ -95,6 +96,7 @@ internal class ColorTonePickerViewModel @Inject constructor(
     }
 
     fun processHexFromLink(hexFromLink: String) {
+        previousProcessedLink = hexFromLink
         if (themeManager.processHexFromLink(hexFromLink)) {
             toaster.showMessage(R.string.color_tone_applied_from_link)
         } else {

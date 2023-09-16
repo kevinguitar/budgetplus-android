@@ -62,15 +62,6 @@ internal fun ColorToneCard(
             outlineColor = themeColors.primary.darken(TOP_BAR_DARKEN_FACTOR)
         )
 
-        if (isLocked) {
-            UnlockAnimator(
-                color = themeColors.dark,
-                modifier = Modifier
-                    .size(90.dp)
-                    .clickableWithoutRipple(onClick = unlockPremium)
-            )
-        }
-
         if (colorTone == ColorTone.Customized) {
             Row(
                 horizontalArrangement = Arrangement.Absolute.SpaceAround,
@@ -83,6 +74,15 @@ internal fun ColorToneCard(
                 EditColorButton(color = colors[1]) { isPickingColor = ThemeColorSemantic.Primary }
                 EditColorButton(color = colors[0]) { isPickingColor = ThemeColorSemantic.Dark }
             }
+        }
+
+        if (isLocked) {
+            UnlockAnimator(
+                color = themeColors.dark,
+                modifier = Modifier
+                    .size(90.dp)
+                    .clickableWithoutRipple(onClick = unlockPremium)
+            )
         }
     }
 

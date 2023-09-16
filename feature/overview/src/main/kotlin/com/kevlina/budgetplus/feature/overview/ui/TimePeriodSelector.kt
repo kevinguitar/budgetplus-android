@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.common.fullFormatted
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -35,6 +36,7 @@ import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -82,10 +84,18 @@ internal fun TimePeriodSelector(
         )
 
         Text(
-            text = fromDate.mediumFormatted,
+            text = if (isOneDayPeriod) {
+                fromDate.fullFormatted
+            } else {
+                fromDate.mediumFormatted
+            },
+            singleLine = true,
             modifier = Modifier
                 .rippleClick { showFromDatePicker = true }
                 .padding(all = 8.dp)
+                .thenIf(isOneDayPeriod) {
+                    Modifier.weight(1F, fill = false)
+                }
         )
 
         if (isOneDayPeriod) {
@@ -103,9 +113,11 @@ internal fun TimePeriodSelector(
 
             Text(
                 text = untilDate.mediumFormatted,
+                singleLine = true,
                 modifier = Modifier
                     .rippleClick { showUntilDatePicker = true }
                     .padding(all = 8.dp)
+                    .weight(1F, fill = false)
             )
         }
     }

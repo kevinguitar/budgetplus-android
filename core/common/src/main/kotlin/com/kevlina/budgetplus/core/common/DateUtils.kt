@@ -14,5 +14,8 @@ val LocalDate.shortFormatted: String
 val LocalDate.mediumFormatted: String
     get() = format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault()))
 
+val LocalDate.fullFormatted: String
+    get() = format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.getDefault()))
+
 val LocalDate.withCurrentTime: Long
     get() = LocalDateTime.of(this, LocalTime.now()).toEpochSecond(ZoneOffset.UTC)

@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.core.common
 import android.content.Context
 import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
 import com.kevlina.budgetplus.core.common.impl.ToasterImpl
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
+import com.kevlina.budgetplus.core.common.nav.AddDest
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -60,6 +62,12 @@ internal interface CommonModule {
         @Named("privacy_policy_url")
         fun providePrivacyPolicyUrl(): String {
             return "https://budgetplus.cchi.tw/privacy-policy/"
+        }
+
+        @Provides
+        @Named("default_deeplink")
+        fun provideDefaultDeeplink(): String {
+            return "$APP_DEEPLINK/${AddDest.Record.route}"
         }
     }
 }

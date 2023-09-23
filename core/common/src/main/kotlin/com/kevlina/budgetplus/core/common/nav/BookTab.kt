@@ -7,7 +7,10 @@ enum class BookTab {
 }
 
 enum class AddDest {
-    Record, EditCategory, Settings, UnlockPremium, BatchRecord, Insider, Colors;
+    Record, EditCategory, Settings, UnlockPremium, BatchRecord, Colors,
+
+    // Internal screens
+    Insider, PushNotifications;
 
     val route get() = name.navRoute
 }

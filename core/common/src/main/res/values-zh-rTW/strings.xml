@@ -167,18 +167,6 @@
     <string name="color_tone_color_hex_code">Hex 色碼</string>
     <string name="color_tone_applied_from_link">已套用主題色調，喜歡記得儲存！</string>
 
-    <!-- Insider -->
-    <string name="insider_title">商業機密</string>
-    <string name="insider_total_users">總用戶</string>
-    <string name="insider_total_premium_users">付費用戶</string>
-    <string name="insider_daily_active_users">日活躍用戶</string>
-    <string name="insider_new_users">新用戶</string>
-    <string name="insider_language_zh_tw">繁體中文</string>
-    <string name="insider_language_zh_cn">簡體中文</string>
-    <string name="insider_language_en">英文</string>
-    <string name="insider_user_created_on">創建時間：%s</string>
-    <string name="insider_user_last_active_on">最後上線：%s</string>
-
     <!-- Bubble -->
     <string name="bubble_invite">點擊分享連結，邀請好友們一起記帳！</string>
     <string name="bubble_edit_category">點擊以重新命名或刪除，長按拖曳排序</string>

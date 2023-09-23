@@ -70,8 +70,7 @@ internal fun AuthorSelector(
 
                 authors.forEach { author ->
                     DropdownItem(
-                        name = author.name
-                            ?: stringResource(id = R.string.overview_author_anonymous),
+                        name = author.name ?: stringResource(id = R.string.overview_author_anonymous),
                     ) {
                         isAuthorPickerShown = false
                         setAuthor(author)

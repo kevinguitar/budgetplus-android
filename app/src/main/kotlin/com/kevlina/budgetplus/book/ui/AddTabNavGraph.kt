@@ -22,6 +22,7 @@ import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
 import com.kevlina.budgetplus.feature.insider.InsiderScreen
+import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsScreen
 import com.kevlina.budgetplus.feature.settings.SettingsScreen
 import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 
@@ -85,10 +86,6 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             BatchRecordScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.Insider.route) {
-            InsiderScreen(navigator = navController.toNavigator())
-        }
-
         val colorToneRoute = "${AddDest.Colors.route}?$COLORS_LINK_QUERY={$COLORS_LINK_QUERY}"
         composable(
             route = colorToneRoute,
@@ -105,6 +102,15 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
                 navigator = navController.toNavigator(),
                 hexFromLink = args.getString(COLORS_LINK_QUERY)
             )
+        }
+
+        // Internal screens
+        composable(route = AddDest.Insider.route) {
+            InsiderScreen(navigator = navController.toNavigator())
+        }
+
+        composable(route = AddDest.PushNotifications.route) {
+            PushNotificationsScreen(navigator = navController.toNavigator())
         }
     }
 }

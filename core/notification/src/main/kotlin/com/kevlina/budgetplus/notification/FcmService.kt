@@ -26,12 +26,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class FcmService : FirebaseMessagingService() {
 
     @Inject lateinit var authManager: Lazy<AuthManager>
     @Inject lateinit var imageLoader: ImageLoader
+    @Inject @Named("default_deeplink") lateinit var defaultDeeplink: String
     @Inject @AppScope lateinit var appScope: CoroutineScope
 
     private var notificationId: Int = 0
@@ -56,7 +58,7 @@ class FcmService : FirebaseMessagingService() {
             // Open the record screen and show the members dialog
             "$APP_DEEPLINK/${AddDest.Settings.route}?$ARG_SHOW_MEMBERS=true"
         } else {
-            message.data["url"] ?: "$APP_DEEPLINK/${AddDest.Record.route}"
+            message.data["url"] ?: defaultDeeplink
         }.toUri()
 
         val pendingIntent: PendingIntent? = PendingIntent.getActivity(

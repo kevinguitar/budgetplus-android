@@ -26,6 +26,9 @@ annotation class JoinInfoDb
 @Qualifier
 annotation class PurchasesDb
 
+@Qualifier
+annotation class PushNotificationsDb
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object FirestoreModule {
@@ -64,5 +67,12 @@ internal object FirestoreModule {
     @Provides
     fun providePurchasesDb(): CollectionReference {
         return Firebase.firestore.collection("purchases")
+    }
+
+    @PushNotificationsDb
+    @Singleton
+    @Provides
+    fun providePushNotificationsDb(): CollectionReference {
+        return Firebase.firestore.collection("push_notifications")
     }
 }

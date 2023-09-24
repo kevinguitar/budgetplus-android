@@ -24,7 +24,6 @@ internal fun LanguageBlock(
     onTitleUpdate: (String) -> Unit,
     description: String,
     onDescriptionUpdate: (String) -> Unit,
-    enabled: Boolean = true,
 ) {
 
     Column(
@@ -43,15 +42,13 @@ internal fun LanguageBlock(
         TextField(
             value = title,
             onValueChange = onTitleUpdate,
-            title = stringResource(id = R.string.push_notif_push_title),
-            enabled = enabled
+            title = stringResource(id = R.string.push_notif_push_title)
         )
 
         TextField(
             value = description,
             onValueChange = onDescriptionUpdate,
-            title = stringResource(id = R.string.push_notif_push_description),
-            enabled = enabled
+            title = stringResource(id = R.string.push_notif_push_description)
         )
     }
 }

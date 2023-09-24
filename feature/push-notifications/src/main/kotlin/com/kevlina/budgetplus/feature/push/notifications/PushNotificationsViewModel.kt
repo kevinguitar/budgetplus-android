@@ -10,11 +10,7 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.PushNotificationData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -22,7 +18,6 @@ import javax.inject.Named
 @HiltViewModel
 internal class PushNotificationsViewModel @Inject constructor(
     preferenceHolder: PreferenceHolder,
-    translator: Translator,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("default_deeplink") private val defaultDeeplink: String,
     private val pushDbMediator: PushDbMediator,
@@ -35,6 +30,11 @@ internal class PushNotificationsViewModel @Inject constructor(
         "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"
     )
 
+    private var titleCnCache by preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起编织理财梦！")
+    private var descCnCache by preferenceHolder.bindString(
+        "记得目标，存款不停歇！记帐确实，未来更悠游！将花费化为理财力！GO~"
+    )
+
     private var titleEnCache by preferenceHolder.bindString("It's a new month!")
     private var descEnCache by preferenceHolder.bindString(
         "Track your expenses starting from the beginning of the month \uD83D\uDE4C"
@@ -43,19 +43,13 @@ internal class PushNotificationsViewModel @Inject constructor(
     val titleTw = MutableStateFlow(titleTwCache)
     val descTw = MutableStateFlow(descTwCache)
 
-    val titleCn = titleTw
-        .debounce(INPUT_DEBOUNCE_MS)
-        .mapLatest { translator.translate(text = it, sourceLanCode = LAN_CODE_TW, targetLanCode = LAN_CODE_CN) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-
-    val descCn = descTw
-        .debounce(INPUT_DEBOUNCE_MS)
-        .mapLatest { translator.translate(text = it, sourceLanCode = LAN_CODE_TW, targetLanCode = LAN_CODE_CN) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+    val titleCn = MutableStateFlow(titleCnCache)
+    val descCn = MutableStateFlow(descCnCache)
 
     val titleEn = MutableStateFlow(titleEnCache)
     val descEn = MutableStateFlow(descEnCache)
 
+    val autoTranslateCn = MutableStateFlow(true)
     val navigateToGooglePlay = MutableStateFlow(false)
     val deeplink = MutableStateFlow("")
 
@@ -65,10 +59,10 @@ internal class PushNotificationsViewModel @Inject constructor(
 
     fun sendToEveryone() {
         recordToPushDb(isInternal = false)
+        saveToCache()
     }
 
     private fun recordToPushDb(isInternal: Boolean) {
-        saveToCache()
         viewModelScope.launch {
             try {
                 val user = authManager.userState.first()
@@ -100,13 +94,10 @@ internal class PushNotificationsViewModel @Inject constructor(
         titleTwCache = titleTw.value
         descTwCache = descTw.value
 
+        titleCnCache = titleCn.value
+        descCnCache = descCn.value
+
         titleEnCache = titleEn.value
         descEnCache = descEn.value
-    }
-
-    private companion object {
-        const val INPUT_DEBOUNCE_MS = 200L
-        const val LAN_CODE_TW = "zh-TW"
-        const val LAN_CODE_CN = "zh-CN"
     }
 }

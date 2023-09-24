@@ -6,7 +6,7 @@ kotlin = "1.9.10"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.10-1.0.13"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.09.01"
+compose-bom = "2023.09.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.3"
 # https://firebase.google.com/support/release-notes/android
@@ -44,13 +44,12 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:22.4.0"
+google-ads = "com.google.android.gms:play-services-ads:22.3.0"
 google-auth = "com.google.android.gms:play-services-auth:20.7.0"
 google-billing = "com.android.billingclient:billing-ktx:6.0.1"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.19.1"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
 google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
-google-translate = "com.google.cloud:google-cloud-translate:2.24.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
@@ -62,9 +61,9 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-rc01"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0-beta05"
 mockk = "io.mockk:mockk:1.13.5"
-navigation-compose = "androidx.navigation:navigation-compose:2.7.3"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.2"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
@@ -105,7 +104,7 @@ android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-test = { id = "com.android.test", version.ref = "gradle-plugin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.1"
 firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
-google-services = "com.google.gms.google-services:4.4.0"
+google-services = "com.google.gms.google-services:4.3.15"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

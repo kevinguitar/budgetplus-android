@@ -51,7 +51,6 @@ internal fun Project.configureKotlinAndroid(
                     "-opt-in=kotlin.RequiresOptIn",
                     "-opt-in=kotlin.contracts.ExperimentalContracts",
                     "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-opt-in=kotlinx.coroutines.FlowPreview",
                 )
 
                 jvmTarget = Constants.javaVersion.toString()

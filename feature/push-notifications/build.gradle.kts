@@ -5,6 +5,12 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.google.translate) {
+        // Excluding them for dependencies resolution collision
+        exclude(group = "com.google.api.grpc")
+        exclude(group = "com.google.protobuf")
+    }
+
     implementation(projects.core.data)
     implementation(projects.core.ui)
 }

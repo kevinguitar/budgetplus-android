@@ -8,6 +8,7 @@
 
     <!-- Google sdk-->
     <string name="google_cloud_client_id" translatable="false">919948371655-dpbbs6ip867jd9rcfa1s3p4u9eeu5j20.apps.googleusercontent.com</string>
+    <string name="google_cloud_translate_api_key" translatable="false">AIzaSyBPAGbdnjJMkA1sZzxdNtFYqcKWNIndezU</string>
 
     <!-- Admob -->
     <string name="admob_application_id" translatable="false">ca-app-pub-5636675608309788~9761727103</string>

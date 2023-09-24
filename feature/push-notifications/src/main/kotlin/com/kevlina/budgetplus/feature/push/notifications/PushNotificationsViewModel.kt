@@ -49,7 +49,6 @@ internal class PushNotificationsViewModel @Inject constructor(
     val titleEn = MutableStateFlow(titleEnCache)
     val descEn = MutableStateFlow(descEnCache)
 
-    val autoTranslateCn = MutableStateFlow(true)
     val navigateToGooglePlay = MutableStateFlow(false)
     val deeplink = MutableStateFlow("")
 
@@ -59,10 +58,10 @@ internal class PushNotificationsViewModel @Inject constructor(
 
     fun sendToEveryone() {
         recordToPushDb(isInternal = false)
-        saveToCache()
     }
 
     private fun recordToPushDb(isInternal: Boolean) {
+        saveToCache()
         viewModelScope.launch {
             try {
                 val user = authManager.userState.first()

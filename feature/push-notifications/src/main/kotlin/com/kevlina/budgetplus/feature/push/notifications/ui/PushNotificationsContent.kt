@@ -45,7 +45,6 @@ internal fun PushNotificationsContent(
     val titleEn by vm.titleEn.collectAsStateWithLifecycle()
     val descEn by vm.descEn.collectAsStateWithLifecycle()
 
-    val autoTranslateCn by vm.autoTranslateCn.collectAsStateWithLifecycle()
     val navigateToGooglePlay by vm.navigateToGooglePlay.collectAsStateWithLifecycle()
     val deeplink by vm.deeplink.collectAsStateWithLifecycle()
 
@@ -65,12 +64,6 @@ internal fun PushNotificationsContent(
             onTitleUpdate = { vm.titleTw.value = it },
             description = descTw,
             onDescriptionUpdate = { vm.descTw.value = it }
-        )
-
-        SwitchBlock(
-            title = stringResource(id = R.string.push_notif_auto_translate_to_cn),
-            checked = autoTranslateCn,
-            onCheckChanged = { vm.autoTranslateCn.value = it }
         )
 
         LanguageBlock(

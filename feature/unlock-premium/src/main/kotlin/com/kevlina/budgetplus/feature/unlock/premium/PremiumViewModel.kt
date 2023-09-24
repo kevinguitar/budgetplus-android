@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +45,10 @@ class PremiumViewModel @Inject constructor(
                 }
 
                 is PurchaseState.Fail -> {
-                    tracker.logEvent("buy_premium_fail")
+                    tracker.logEvent(
+                        event = "buy_premium_fail",
+                        params = bundle { putString("reason", state.error) }
+                    )
                     toaster.showMessage(state.error)
                 }
 

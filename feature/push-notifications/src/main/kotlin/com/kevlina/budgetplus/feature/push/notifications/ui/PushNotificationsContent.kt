@@ -42,6 +42,9 @@ internal fun PushNotificationsContent(
     val titleCn by vm.titleCn.collectAsStateWithLifecycle()
     val descCn by vm.descCn.collectAsStateWithLifecycle()
 
+    val titleJa by vm.titleJa.collectAsStateWithLifecycle()
+    val descJa by vm.descJa.collectAsStateWithLifecycle()
+
     val titleEn by vm.titleEn.collectAsStateWithLifecycle()
     val descEn by vm.descEn.collectAsStateWithLifecycle()
 
@@ -72,6 +75,14 @@ internal fun PushNotificationsContent(
             onTitleUpdate = { vm.titleCn.value = it },
             description = descCn,
             onDescriptionUpdate = { vm.descCn.value = it }
+        )
+
+        LanguageBlock(
+            textRes = R.string.push_notif_language_ja,
+            title = titleJa,
+            onTitleUpdate = { vm.titleJa.value = it },
+            description = descJa,
+            onDescriptionUpdate = { vm.descJa.value = it }
         )
 
         LanguageBlock(

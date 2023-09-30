@@ -95,6 +95,7 @@ internal fun UserCard(
                         Text(text = stringResource(id = when (language) {
                             "zh-tw" -> R.string.insider_language_zh_tw
                             "zh-cn" -> R.string.insider_language_zh_cn
+                            "ja" -> R.string.insider_language_ja
                             else -> R.string.insider_language_en
                         }))
                     }

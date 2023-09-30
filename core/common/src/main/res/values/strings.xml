@@ -191,7 +191,6 @@
     <string name="cta_save">Save</string>
     <string name="cta_share">Share</string>
     <string name="cta_confirm">Confirm</string>
-    <string name="cta_ok">OK</string>
     <string name="cta_go">Go</string>
     <string name="cta_cancel">Cancel</string>
     <string name="cta_back">Back</string>
@@ -223,6 +222,7 @@
     <string name="insider_new_users" translatable="false">新用戶</string>
     <string name="insider_language_zh_tw" translatable="false">繁體中文</string>
     <string name="insider_language_zh_cn" translatable="false">簡體中文</string>
+    <string name="insider_language_ja" translatable="false">日文</string>
     <string name="insider_language_en" translatable="false">英文</string>
     <string name="insider_user_created_on" translatable="false">創建時間：%s</string>
     <string name="insider_user_last_active_on" translatable="false">最後上線：%s</string>
@@ -231,6 +231,7 @@
     <string name="push_notif_title" translatable="false">通知推播</string>
     <string name="push_notif_language_zh_tw" translatable="false">繁體中文</string>
     <string name="push_notif_language_zh_cn" translatable="false">簡體中文</string>
+    <string name="push_notif_language_ja" translatable="false">日文</string>
     <string name="push_notif_language_en" translatable="false">英文</string>
     <string name="push_notif_push_title" translatable="false">標題</string>
     <string name="push_notif_push_description" translatable="false">內容</string>

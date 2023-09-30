@@ -37,6 +37,7 @@ internal class NotificationTopicSubscriber @Inject constructor(
         val generalTopic = when (user.language) {
             "zh-tw" -> "general_tw"
             "zh-cn" -> "general_cn"
+            "ja" -> "general_ja"
             else -> "general_en"
         }
         if (lastInfo == SubscribeInfo(userId = user.id, topic = generalTopic)) {

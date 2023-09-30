@@ -39,7 +39,7 @@ fun AuthContentWide(viewModel: AuthViewModel) {
 
             AuthTitle()
 
-            AuthDescription(modifier = Modifier.padding(vertical = 16.dp))
+            AuthDescription(modifier = Modifier.padding(all = 16.dp))
 
             SocialSignInButton(
                 onClick = viewModel::signInWithGoogle,

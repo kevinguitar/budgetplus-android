@@ -55,13 +55,11 @@ fun PremiumContent(
         )
 
         if (premiumPricing == null) {
-
             InfiniteCircularProgress(
                 modifier = Modifier.size(32.dp),
                 strokeWidth = 2.dp
             )
         } else {
-
             Text(
                 text = stringResource(id = R.string.premium_pricing, premiumPricing),
                 fontSize = FontSize.SemiLarge,
@@ -76,7 +74,7 @@ fun PremiumContent(
             text = stringResource(id = R.string.premium_description),
             fontSize = FontSize.SemiLarge,
             lineHeight = 32.sp,
-            modifier = Modifier.padding(vertical = 16.dp)
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
         )
 
         Button(

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ミニマリストな帳簿</string>
+    <string name="app_language">ja</string>
+
+    <!-- Auth -->
+    <string name="auth_welcome_title">ミニマリストな帳簿への参加を歓迎します。</string>
+    <string name="auth_welcome_description">高速な帳簿アプリ、開始から記帳完了までたった 5 秒、友達や親戚と一緒に記帳しましょう！</string>
+    <string name="auth_facebook">Facebook で続行</string>
+    <string name="auth_google">Google で続行</string>
+    <string name="auth_success">ようこそ、%sさん！</string>
+
+    <!-- Welcome -->
+    <string name="welcome_create_book_title">帳簿を作成できます</string>
+    <string name="welcome_join_instruction">または、友達と一緒に記帳したいですか？\n彼らに参加リンクをお願いしてみてください！</string>
+
+    <!-- Record -->
+    <string name="record_note">内容</string>
+    <string name="record_note_placeholder_expense">何にお金を使った？</string>
+    <string name="record_note_placeholder_income">収入源はどこから？</string>
+    <string name="record_price">金額</string>
+    <string name="record_expense">支出</string>
+    <string name="record_income">収入</string>
+    <string name="record_empty_category">カテゴリを選択してください</string>
+    <string name="record_empty_price">金額を入力してください</string>
+    <string name="record_created">%sに追加しました</string>
+    <string name="record_edit_title">記録を編集</string>
+    <string name="record_edited">保存済み</string>
+    <string name="record_deleted">%sを削除しました" となります</string>
+    <string name="record_confirm_delete">この記録を削除してもよろしいですか？</string>
+
+    <!-- Batch Record -->
+    <string name="batch_record_title">一括で記帳する</string>
+    <string name="batch_record_start_date">開始日</string>
+    <string name="batch_record_frequency">周期</string>
+    <string name="batch_record_frequency_monthly">毎月</string>
+    <string name="batch_record_frequency_weekly">毎週</string>
+    <string name="batch_record_frequency_daily">毎日</string>
+    <string name="batch_record_times">サイクル回数</string>
+    <string name="batch_record_cta">一括記帳</string>
+    <string name="batch_record_created">%1$sの記録が%2$sに追加されました</string>
+    <string name="batch_record_edit_confirmation">将来のすべての記録にも適用しますか？</string>
+    <string name="batch_record_delete_confirmation">将来のすべての記録を削除しますか？</string>
+    <string name="batch_record_only_this">これだけです</string>
+    <string name="batch_record_all_future_records">すべての記録</string>
+    <string name="batch_record_edited">%s件の記録を編集しました</string>
+    <string name="batch_record_deleted">%s件の記録を削除しました</string>
+
+    <!-- Book -->
+    <string name="book_selection">帳簿を選択する</string>
+    <string name="book_create_success">「%s」が追加されました</string>
+    <string name="book_join_success">「%s」に参加しました</string>
+    <string name="book_join_link_expired">リンクは無効です</string>
+    <string name="book_already_archived">しまった、帳簿はすでに削除されました</string>
+    <string name="book_already_joined">その帳簿は既に参加しました</string>
+    <string name="book_join_exceed_free_limit">進化版を取得して、さらに多くの帳簿を作成したり参加したりできます。</string>
+    <string name="book_exceed_maximum">帳簿の合計数が上限に達しました</string>
+
+    <!-- Category -->
+    <string name="category_title">カテゴリ名</string>
+    <string name="category_edit_title">カテゴリを編集する</string>
+    <string name="category_edit_successful">カテゴリリストが保存されました</string>
+    <string name="category_already_exist">カテゴリ%sは既に存在します</string>
+    <string name="category_food">飲食</string>
+    <string name="category_daily">日常</string>
+    <string name="category_transport">交通</string>
+    <string name="category_entertainment">娯楽</string>
+    <string name="category_rent">家賃</string>
+    <string name="category_mobile">通信</string>
+    <string name="category_utility">電気</string>
+    <string name="category_salary">給与</string>
+    <string name="category_bonus">賞金</string>
+    <string name="category_rebate">現金還元</string>
+    <string name="category_other">その他</string>
+
+    <!-- Members -->
+    <string name="members_title">メンバー</string>
+    <string name="members_owner_label">創設者</string>
+    <string name="members_confirm_remove">%1$sを「%2$s」から削除しますか？</string>
+
+    <!-- Review -->
+    <string name="review_request_message">アプリをお楽しみいただけましたでしょうか？もしよろしければ、評価をお願いできますでしょうか？</string>
+    <string name="review_request_yes">もちろん、喜んで！</string>
+    <string name="review_request_no">いいえ、結構です</string>
+
+    <!-- Menu -->
+    <string name="menu_invite_to_book">以下のリンクをクリックして、一緒に帳簿をつけましょう！\n%s</string>
+    <string name="menu_create_book">新しい帳簿を作成する</string>
+    <string name="menu_share_colors">私が調整したテーマカラーを試してみてください！\n%s</string>
+
+    <!-- Overview -->
+    <string name="overview_title">%sの概要</string>
+    <string name="overview_total_price">総計</string>
+    <string name="overview_period_day">今日</string>
+    <string name="overview_period_week">今週</string>
+    <string name="overview_period_month">今月</string>
+    <string name="overview_period_last_month">先月</string>
+    <string name="overview_exceed_max_period">1 か月以上前の記録を選別するためにプレミアム版をアンロックする</string>
+    <string name="overview_sort_by_date">日付で並べ替える</string>
+    <string name="overview_sort_by_price">金額で並べ替える</string>
+    <string name="overview_balance">残高</string>
+    <string name="overview_details_title">%1$s：%2$s</string>
+    <string name="overview_author_everyone">みんな</string>
+    <string name="overview_author_anonymous">匿名</string>
+
+    <!-- Export -->
+    <string name="export_cta">報告書を出力する</string>
+    <string name="export_csv_confirmation">%1$sから%2$sまでのすべての記録をエクスポートしますか？</string>
+    <string name="export_csv_success">CSVレポートはダウンロードフォルダに保存されました</string>
+    <string name="export_column_type">項目</string>
+    <string name="export_column_name">内容</string>
+    <string name="export_column_price">金額</string>
+    <string name="export_column_category">カテゴリ</string>
+    <string name="export_column_created_on">時刻</string>
+    <string name="export_column_author">記帳者</string>
+
+    <!-- Premium -->
+    <string name="premium_unlock">プレミアム版を解除する</string>
+    <string name="premium_hide_ads">広告を非表示にする</string>
+    <string name="premium_pricing">%s 一括支払い、高度な機能を解除\n心から安心してご利用いただけます</string>
+    <string name="premium_description">
+        ✔ 広告の干渉を受けません
+        \n✔ 10 冊の帳簿に拡張する
+        \n✔ 固定の支出と収入を一括で追加する
+        \n✔ すべてのテーマカラーを解除する
+        \n✔ 1 か月以上前の帳簿データを選別する
+    </string>
+    <string name="premium_unlock_cta">プレミアム版を入手する</string>
+    <string name="premium_unlocked">ミニマリストな帳簿アプレミアム版、解除！</string>
+    <string name="premium_acknowledge_fail">支払いを確認できません、後でもう一度試してください</string>
+    <string name="premium_payment_pending">お支払いは処理中です。しばらくお待ちください。</string>
+
+    <!-- Settings -->
+    <string name="settings_title">%s設定</string>
+    <string name="settings_description">設定</string>
+    <string name="settings_rename_user">ユーザー名を編集</string>
+    <string name="settings_rename_user_success">ユーザー名が%sに変更されました</string>
+    <string name="settings_rename_book">帳簿の名前を変更</string>
+    <string name="settings_rename_book_success">帳簿の名前が%sに変更されました</string>
+    <string name="settings_view_members">メンバーを表示</string>
+    <string name="settings_logout">ログアウト</string>
+    <string name="settings_delete_book">帳簿を削除</string>
+    <string name="settings_leave_book">帳簿を退出する</string>
+    <string name="settings_confirm_delete">「%s」を削除してもよろしいですか？</string>
+    <string name="settings_confirm_leave">「%s」を退出しますか？</string>
+    <string name="settings_book_deleted">%sは削除されました</string>
+    <string name="settings_book_left">あなたは%sから退出しました</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_input_vibration">入力時の振動フィードバック</string>
+    <string name="settings_share_app">友達にアプリを共有する</string>
+    <string name="settings_share_app_message">使いやすい記帳アプリを見つけました、ぜひダウンロードして試してみてください！\n%s</string>
+    <string name="settings_rate_us">Google Play で評価する</string>
+    <string name="settings_follow_on_instagram">インスタフォローしてください</string>
+    <string name="settings_contact_us">私たちに連絡する</string>
+    <string name="settings_privacy_policy">プライバシーポリシー</string>
+    <string name="settings_no_email_app_found">電子メールアプリが見当たりません</string>
+
+    <!-- Color Tone Picker -->
+    <string name="color_tone_picker_title">テーマカラーパレット</string>
+    <string name="color_tone_preview_title">カラープレビュー</string>
+    <string name="color_tone_milk_tea">ウーロンミルクティー</string>
+    <string name="color_tone_countryside">カントリーサイド</string>
+    <string name="color_tone_barbie">バービーとケン</string>
+    <string name="color_tone_lavender">ラベンダーイエロー</string>
+    <string name="color_tone_nemo_sea">ニモとオーシャン</string>
+    <string name="color_tone_customized">私のカラーパレット</string>
+    <string name="color_tone_color_hex_code">Hex カラーコード</string>
+    <string name="color_tone_applied_from_link">テーマカラーが適用されました、気に入ったら保存してください！</string>
+
+    <!-- Bubble -->
+    <string name="bubble_invite">リンクを共有し、友達を招待して一緒に記帳しましょう</string>
+    <string name="bubble_edit_category">クリックして名前を変更または削除し、長押しして並び替えます</string>
+    <string name="bubble_save_category">編集が完了したら、保存をお忘れなく！</string>
+    <string name="bubble_overview_mode">カテゴリまたは詳細で収支を表示することができます</string>
+    <string name="bubble_overview_export">収支データを CSV ファイルとしてエクスポートして保存する</string>
+    <string name="bubble_records_sorting">収支を日付または金額で並び替えることができます</string>
+    <string name="bubble_colors_sharing">友達にカラーパレットを共有しましょう！</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_general">一般の</string>
+    <string name="notification_channel_general_desc">リマインダーやアプリに関連する通知</string>
+    <string name="notification_channel_new_member">新メンバー</string>
+    <string name="notification_channel_new_member_desc">あなたの帳簿に新しいメンバーが参加した際にお知らせいたします</string>
+
+    <!-- General -->
+    <string name="cta_add">追加</string>
+    <string name="cta_create">作成する</string>
+    <string name="cta_rename">保存</string>
+    <string name="cta_invite">招待</string>
+    <string name="cta_edit">編集する</string>
+    <string name="cta_save">保存する</string>
+    <string name="cta_share">共有する</string>
+    <string name="cta_confirm">確認する</string>
+    <string name="cta_go">Go</string>
+    <string name="cta_cancel">取り消す</string>
+    <string name="cta_back">戻る</string>
+    <string name="cta_delete">削除する</string>
+    <string name="cta_complete">完了する</string>
+    <string name="select_date">日付を選択</string>
+    <string name="date_to">～</string>
+    <string name="today">今日</string>
+    <string name="yesterday">昨日</string>
+    <string name="tomorrow">明日</string>
+    <string name="username_title">ユーザー名</string>
+    <string name="book_name_title">帳簿の名前</string>
+    <string name="book_name_placeholder">私の帳簿</string>
+    <string name="ads_not_available">広告なし</string>
+    <string name="fallback_error_message">エラーが発生しました、後でもう一度お試しください</string>
+    <string name="permission_hint">もし、気が変わったら、設定で権限を有効にしてください</string>
+    <string name="app_update_downloaded">ミニマリストな帳簿を更新できます！</string>
+    <string name="unsaved_warning_message">未保存の変更があります、終了しますか？</string>
+</resources>

@@ -71,7 +71,7 @@ fun DatePickerDialog(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.cta_ok),
+                    text = stringResource(id = R.string.cta_confirm),
                     color = Color.White,
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(8.dp))
@@ -178,7 +178,7 @@ fun DatePickerDialog(
         },
         confirmButton = {
             Text(
-                text = stringResource(id = R.string.cta_ok),
+                text = stringResource(id = R.string.cta_confirm),
                 color = Color.Black,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier

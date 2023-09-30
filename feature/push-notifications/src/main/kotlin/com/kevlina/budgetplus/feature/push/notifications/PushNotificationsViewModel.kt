@@ -35,6 +35,11 @@ internal class PushNotificationsViewModel @Inject constructor(
         "记得目标，存款不停歇！记帐确实，未来更悠游！将花费化为理财力！GO~"
     )
 
+    private var titleJaCache by preferenceHolder.bindString("新しい月ですよ！")
+    private var descJaCache by preferenceHolder.bindString(
+        "月初めに支出の追跡を始めましょう \uD83D\uDE4C"
+    )
+
     private var titleEnCache by preferenceHolder.bindString("It's a new month!")
     private var descEnCache by preferenceHolder.bindString(
         "Track your expenses starting from the beginning of the month \uD83D\uDE4C"
@@ -45,6 +50,9 @@ internal class PushNotificationsViewModel @Inject constructor(
 
     val titleCn = MutableStateFlow(titleCnCache)
     val descCn = MutableStateFlow(descCnCache)
+
+    val titleJa = MutableStateFlow(titleJaCache)
+    val descJa = MutableStateFlow(descJaCache)
 
     val titleEn = MutableStateFlow(titleEnCache)
     val descEn = MutableStateFlow(descEnCache)
@@ -74,6 +82,8 @@ internal class PushNotificationsViewModel @Inject constructor(
                     descTw = descTw.value,
                     titleCn = titleCn.value,
                     descCn = descCn.value,
+                    titleJa = titleJa.value,
+                    descJa = descJa.value,
                     titleEn = titleEn.value,
                     descEn = descEn.value,
                     deeplink = when {
@@ -95,6 +105,9 @@ internal class PushNotificationsViewModel @Inject constructor(
 
         titleCnCache = titleCn.value
         descCnCache = descCn.value
+
+        titleJaCache = titleJa.value
+        descJaCache = descJa.value
 
         titleEnCache = titleEn.value
         descEnCache = descEn.value

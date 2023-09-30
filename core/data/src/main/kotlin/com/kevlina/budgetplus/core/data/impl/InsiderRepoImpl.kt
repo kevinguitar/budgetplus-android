@@ -33,6 +33,15 @@ internal class InsiderRepoImpl @Inject constructor(
             .count
     }
 
+    override suspend fun getTotalUsersByLanguage(language: String): Long {
+        return usersDb.get()
+            .whereEqualTo("language", language)
+            .count()
+            .get(AggregateSource.SERVER)
+            .await()
+            .count
+    }
+
     override suspend fun getDailyActiveUsers(): Long {
         val threshold = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)
         return usersDb.get()
@@ -46,6 +55,18 @@ internal class InsiderRepoImpl @Inject constructor(
     override suspend fun getNewUsers(count: Int): List<User> {
         return usersDb.get()
             .orderBy("createdOn", Query.Direction.DESCENDING)
+            .limit(count.toLong())
+            .get()
+            .await()
+            .toObjects(User::class.java)
+    }
+
+    override suspend fun getActivePremiumUsers(count: Int): List<User> {
+        return usersDb.get()
+            // Exclude internal users
+            .whereEqualTo("internal", false)
+            .whereEqualTo("premium", true)
+            .orderBy("lastActiveOn", Query.Direction.DESCENDING)
             .limit(count.toLong())
             .get()
             .await()

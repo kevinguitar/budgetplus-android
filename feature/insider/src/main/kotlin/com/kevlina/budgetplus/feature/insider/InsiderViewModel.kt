@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.InsiderRepo
+import com.kevlina.budgetplus.core.data.remote.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,18 +25,23 @@ internal class InsiderViewModel @Inject constructor(
     val insiderData: StateFlow<InsiderData?> = ::getInsiderData.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
+    val usersOverviewData: StateFlow<UsersOverviewData?> = ::getUsersOverviewData.asFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val newUsers: StateFlow<ImmutableList<User>?> = ::getNewUser.asFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val activePremiumUsers: StateFlow<ImmutableList<User>?> = ::getActivePremiumUser.asFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
     private suspend fun getInsiderData(): InsiderData? = try {
         coroutineScope {
-            val totalUsers = async { insiderRepo.getTotalUsers() }
             val totalPremiumUsers = async { insiderRepo.getTotalPremiumUsers() }
             val dailyActiveUsers = async { insiderRepo.getDailyActiveUsers() }
-            val newUsers = async { insiderRepo.getNewUsers(NEW_USERS_COUNT) }
 
             InsiderData(
-                totalUsers = totalUsers.await(),
                 totalPremiumUsers = totalPremiumUsers.await(),
                 dailyActiveUsers = dailyActiveUsers.await(),
-                newUsers = newUsers.await()
             )
         }
     } catch (e: Exception) {
@@ -41,7 +49,41 @@ internal class InsiderViewModel @Inject constructor(
         null
     }
 
+    private suspend fun getUsersOverviewData(): UsersOverviewData? = try {
+        coroutineScope {
+            val totalUsers = async { insiderRepo.getTotalUsers() }
+            val totalEnglishUsers = async { insiderRepo.getTotalUsersByLanguage("en") }
+            val totalJapaneseUsers = async { insiderRepo.getTotalUsersByLanguage("ja") }
+            val totalSimplifiedChineseUsers = async { insiderRepo.getTotalUsersByLanguage("zh-cn") }
+
+            UsersOverviewData(
+                totalUsers = totalUsers.await(),
+                totalEnglishUsers = totalEnglishUsers.await(),
+                totalJapaneseUsers = totalJapaneseUsers.await(),
+                totalSimplifiedChineseUsers = totalSimplifiedChineseUsers.await(),
+            )
+        }
+    } catch (e: Exception) {
+        toaster.showError(e)
+        null
+    }
+
+    private suspend fun getNewUser(): ImmutableList<User>? = try {
+        insiderRepo.getNewUsers(NEW_USERS_COUNT).toImmutableList()
+    } catch (e: Exception) {
+        toaster.showError(e)
+        null
+    }
+
+    private suspend fun getActivePremiumUser(): ImmutableList<User>? = try {
+        insiderRepo.getActivePremiumUsers(ACTIVE_PREMIUM_USERS_COUNT).toImmutableList()
+    } catch (e: Exception) {
+        toaster.showError(e)
+        null
+    }
+
     private companion object {
-        const val NEW_USERS_COUNT = 10
+        const val NEW_USERS_COUNT = 5
+        const val ACTIVE_PREMIUM_USERS_COUNT = 20
     }
 }

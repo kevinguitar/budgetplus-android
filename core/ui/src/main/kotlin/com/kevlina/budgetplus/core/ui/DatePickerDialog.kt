@@ -137,8 +137,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.utcLocaleDate
-import com.kevlina.budgetplus.core.common.utcMillis
 import java.time.LocalDate
 import androidx.compose.material3.DatePickerDialog as MaterialDatePickerDialog
 
@@ -216,4 +214,11 @@ fun DatePickerDialog(
             }
         )
     }
-}*/
+}
+
+private val LocalDate.utcMillis
+    get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+
+private val Long.utcLocaleDate: LocalDate
+    get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()
+*/

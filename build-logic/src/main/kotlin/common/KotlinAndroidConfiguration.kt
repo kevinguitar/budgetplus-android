@@ -37,7 +37,14 @@ internal fun Project.configureKotlinAndroid(
         }
 
         packaging {
-            resources.excludes.add("META-INF/*")
+            resources {
+                excludes.add("META-INF/*.kotlin_module")
+                excludes.add("META-INF/AL2.0")
+                excludes.add("META-INF/LICENSE.md")
+                excludes.add("META-INF/LICENSE-notice.md")
+                excludes.add("META-INF/LGPL2.1")
+                excludes.add("**/*.kotlin_metadata")
+            }
         }
 
         tasks.withType<KotlinCompile>().configureEach {

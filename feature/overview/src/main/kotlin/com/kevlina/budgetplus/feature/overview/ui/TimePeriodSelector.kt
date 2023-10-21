@@ -136,7 +136,7 @@ internal fun TimePeriodSelector(
             .forEach { period ->
                 TimePeriodPill(
                     timePeriod = period,
-                    isSelected = timePeriod.from == period.from && timePeriod.until == period.until,
+                    isSelected = timePeriod == period,
                     onClick = { vm.setTimePeriod(period) }
                 )
             }

@@ -61,8 +61,17 @@ internal class RecordsObserverImpl @Inject constructor(
     }
 
     override fun setTimePeriod(bookId: String, period: TimePeriod) {
+        // Check if the custom period matches the preset period
+        val normalizedPeriod = when (period) {
+            TimePeriod.Today -> TimePeriod.Today
+            TimePeriod.Week -> TimePeriod.Week
+            TimePeriod.Month -> TimePeriod.Month
+            TimePeriod.LastMonth -> TimePeriod.LastMonth
+            else -> period
+        }
+
         val newMapping = periodCache.toMutableMap()
-            .apply { this[bookId] = period }
+            .apply { this[bookId] = normalizedPeriod }
 
         timePeriodMap.value = newMapping
         periodCache = newMapping

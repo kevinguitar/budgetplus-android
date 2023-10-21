@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data.remote
 
 import androidx.compose.runtime.Immutable
+import com.kevlina.budgetplus.core.common.shortFormatted
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -74,6 +75,23 @@ sealed class TimePeriod {
                 "From date is later than until."
             }
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+
+            other as TimePeriod
+
+            return from == other.from && until == other.until
+        }
+
+        override fun hashCode(): Int {
+            var result = from.hashCode()
+            result = 31 * result + until.hashCode()
+            return result
+        }
     }
 
+    override fun toString(): String {
+        return "TimePeriod from ${from.shortFormatted} to ${until.shortFormatted}"
+    }
 }

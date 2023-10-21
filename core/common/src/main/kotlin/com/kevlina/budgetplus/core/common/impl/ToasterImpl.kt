@@ -6,6 +6,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,10 +38,11 @@ internal class ToasterImpl @Inject constructor(
     override fun showError(e: Exception) {
         Timber.e(e)
         val error = e.localizedMessage ?: e.message
-        if (error != null) {
-            showMessage(error)
-        } else {
-            showMessage(R.string.fallback_error_message)
+        when {
+            // Do not toast the cancellation error
+            e is CancellationException -> Unit
+            error != null -> showMessage(error)
+            else -> showMessage(R.string.fallback_error_message)
         }
     }
 }

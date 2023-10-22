@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.add.record.ui
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Backspace
@@ -31,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
@@ -282,8 +285,24 @@ internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = Ca
     onCalculatorAction = ::onCalculatorAction
 )
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun Calculator_Preview() = AppTheme {
-    Calculator(uiState = CalculatorUiState.preview)
+    Calculator(
+        uiState = CalculatorUiState.preview,
+        modifier = Modifier
+            .background(LocalAppColors.current.light)
+            .padding(all = 16.dp)
+    )
+}
+
+@Preview(widthDp = 400, heightDp = 600)
+@Composable
+private fun CalculatorAdaptive_Preview() = AppTheme(themeColors = ThemeColors.Lavender) {
+    Calculator(
+        uiState = CalculatorUiState.preview.copy(adaptiveButton = true),
+        modifier = Modifier
+            .background(LocalAppColors.current.light)
+            .padding(all = 16.dp)
+    )
 }

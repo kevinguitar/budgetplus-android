@@ -85,9 +85,9 @@ internal fun TimePeriodSelector(
 
         Text(
             text = if (isOneDayPeriod) {
-                fromDate.fullFormatted
+                fromDate.value.fullFormatted
             } else {
-                fromDate.mediumFormatted
+                fromDate.value.mediumFormatted
             },
             singleLine = true,
             modifier = Modifier
@@ -112,7 +112,7 @@ internal fun TimePeriodSelector(
             Text(text = stringResource(id = R.string.date_to))
 
             Text(
-                text = untilDate.mediumFormatted,
+                text = untilDate.value.mediumFormatted,
                 singleLine = true,
                 modifier = Modifier
                     .rippleClick { showUntilDatePicker = true }

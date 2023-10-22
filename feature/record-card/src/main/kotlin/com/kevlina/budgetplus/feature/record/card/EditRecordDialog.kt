@@ -36,6 +36,7 @@ import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toUiState
@@ -50,7 +51,7 @@ fun EditRecordDialog(
 ) {
 
     var date by remember {
-        mutableStateOf(LocalDate.ofEpochDay(editRecord.date))
+        mutableStateOf(LocalDate.ofEpochDay(editRecord.date).wrapped())
     }
 
     var category by remember {
@@ -84,7 +85,7 @@ fun EditRecordDialog(
     fun confirmEdit(editBatch: Boolean = false) {
         vm.editRecord(
             record = editRecord,
-            newDate = date,
+            newDate = date.value,
             newCategory = category,
             newName = name.text,
             newPriceText = priceText.text,
@@ -180,7 +181,7 @@ fun EditRecordDialog(
         EditRecordDialogState.PickingDate -> {
             DatePickerDialog(
                 date = date,
-                onDatePicked = { date = it },
+                onDatePicked = { date = it.wrapped() },
                 onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
             )
         }

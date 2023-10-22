@@ -66,7 +66,7 @@ internal fun BatchConfigSelector() {
             .padding(16.dp)
     ) {
 
-        DateSelector(dateWrapper = LocalDateWrapper(date), setStartDate = vm::setStartDate)
+        DateSelector(date = date, setStartDate = vm::setStartDate)
 
         FrequencySelector(frequency = frequency, setFrequency = vm::setFrequency)
 
@@ -76,7 +76,7 @@ internal fun BatchConfigSelector() {
 
 @Composable
 private fun DateSelector(
-    dateWrapper: LocalDateWrapper,
+    date: LocalDateWrapper,
     setStartDate: (LocalDate) -> Unit,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
@@ -101,7 +101,7 @@ private fun DateSelector(
         )
 
         SingleDatePicker(
-            date = dateWrapper.date,
+            date = date,
             showIcon = false,
             fontSize = fontSize,
             modifier = Modifier
@@ -113,7 +113,7 @@ private fun DateSelector(
     if (showDatePicker) {
 
         DatePickerDialog(
-            date = dateWrapper.date,
+            date = date,
             onDatePicked = setStartDate,
             onDismiss = { showDatePicker = false }
         )

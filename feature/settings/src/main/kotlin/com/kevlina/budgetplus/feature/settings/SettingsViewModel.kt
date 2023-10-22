@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Stable
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,6 +31,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlin.reflect.KClass
 
+@Stable
 @HiltViewModel
 internal class SettingsViewModel @Inject constructor(
     private val bookRepo: BookRepo,

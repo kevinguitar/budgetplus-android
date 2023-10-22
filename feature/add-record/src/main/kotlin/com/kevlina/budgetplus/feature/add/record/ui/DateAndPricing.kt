@@ -26,10 +26,12 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.LocalDateWrapper
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -97,14 +99,14 @@ internal fun ColumnScope.DateAndPricing(
 
 @Immutable
 internal class DateAndPricingUiState(
-    val date: StateFlow<LocalDate>,
+    val date: StateFlow<LocalDateWrapper>,
     val priceText: StateFlow<String>,
     val scrollable: Boolean,
     val setDate: (LocalDate) -> Unit,
 ) {
     companion object {
         val preview = DateAndPricingUiState(
-            date = MutableStateFlow(LocalDate.now()),
+            date = MutableStateFlow(LocalDate.now().wrapped()),
             priceText = MutableStateFlow("2344"),
             scrollable = false,
             setDate = {}

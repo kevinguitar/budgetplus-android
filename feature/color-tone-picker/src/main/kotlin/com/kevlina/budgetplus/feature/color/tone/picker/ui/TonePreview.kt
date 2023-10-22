@@ -33,6 +33,7 @@ import com.kevlina.budgetplus.core.ui.TOP_BAR_DARKEN_FACTOR
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.darken
+import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
 import kotlinx.collections.immutable.persistentListOf
@@ -112,7 +113,7 @@ internal fun TonePreview(
         ) {
 
             SingleDatePicker(
-                date = LocalDate.now(),
+                date = LocalDate.now().wrapped(),
                 modifier = Modifier.padding(vertical = 8.dp)
             )
 

@@ -162,7 +162,9 @@ private fun RecordViewModel.toUiState(
         scrollable = scrollable,
         categoriesGridUiState = categoriesVm.toUiState(
             type = type,
-            onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },
+            onEditClicked = {
+                navigator.navigate(route = "${AddDest.EditCategory.route}/${type.value}")
+            },
         ),
         dateAndPricingUiState = DateAndPricingUiState(
             date = date,

@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DriveFileRenameOutline
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -26,18 +29,19 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun CategoriesGrid(
-    type: RecordType,
-    expenseCategories: ImmutableList<String>,
-    incomeCategories: ImmutableList<String>,
+    uiState: CategoriesGridUiState,
     modifier: Modifier = Modifier,
-    onCategorySelected: (String) -> Unit,
-    onEditClicked: (() -> Unit)? = null,
-    selectedCategory: String? = null,
-    cardPaddingValues: PaddingValues = cardPadding,
 ) {
+
+    val type by uiState.type.collectAsStateWithLifecycle()
+    val expenseCategories by uiState.expenseCategories.collectAsStateWithLifecycle()
+    val incomeCategories by uiState.incomeCategories.collectAsStateWithLifecycle()
+    val selectedCategory by uiState.selectedCategory.collectAsStateWithLifecycle()
 
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
@@ -50,9 +54,9 @@ fun CategoriesGrid(
                 CategoryCard(
                     category = item,
                     isSelected = selectedCategory == item,
-                    paddingValues = cardPaddingValues
+                    paddingValues = uiState.cardPaddingValues
                 ) {
-                    onCategorySelected(item)
+                    uiState.onCategorySelected(item)
                 }
             }
 
@@ -60,15 +64,15 @@ fun CategoriesGrid(
                 CategoryCard(
                     category = item,
                     isSelected = selectedCategory == item,
-                    paddingValues = cardPaddingValues
+                    paddingValues = uiState.cardPaddingValues
                 ) {
-                    onCategorySelected(item)
+                    uiState.onCategorySelected(item)
                 }
             }
         }
 
-        if (onEditClicked != null) {
-            EditCategoryButton(onEditClicked)
+        if (uiState.onEditClicked != null) {
+            EditCategoryButton(uiState.onEditClicked)
         }
     }
 }
@@ -141,15 +145,53 @@ private fun EditCategoryButton(onClick: () -> Unit) {
     }
 }
 
+@Stable
+class CategoriesGridUiState(
+    val expenseCategories: StateFlow<ImmutableList<String>>,
+    val incomeCategories: StateFlow<ImmutableList<String>>,
+    val type: StateFlow<RecordType>,
+    val selectedCategory: StateFlow<String?>,
+    val onCategorySelected: (String) -> Unit,
+    val onEditClicked: (() -> Unit)? = null,
+    val cardPaddingValues: PaddingValues = cardPadding,
+) {
+    companion object {
+        val preview = CategoriesGridUiState(
+            type = MutableStateFlow(RecordType.Expense),
+            expenseCategories = MutableStateFlow(persistentListOf(
+                "Food", "Daily", "Transport", "Entertainment", "Rent", "Mobile", "Utility", "Other"
+            )),
+            incomeCategories = MutableStateFlow(persistentListOf()),
+            onCategorySelected = {},
+            onEditClicked = {},
+            selectedCategory = MutableStateFlow("Daily")
+        )
+    }
+}
+
+fun CategoriesViewModel.toUiState(
+    type: StateFlow<RecordType>,
+    selectedCategory: StateFlow<String?> = category,
+    onCategorySelected: (String) -> Unit = ::setCategory,
+    onEditClicked: (() -> Unit)? = null,
+    cardPaddingValues: PaddingValues = cardPadding,
+) = CategoriesGridUiState(
+    expenseCategories = expenseCategories,
+    incomeCategories = incomeCategories,
+    type = type,
+    selectedCategory = selectedCategory,
+    onCategorySelected = onCategorySelected,
+    onEditClicked = onEditClicked,
+    cardPaddingValues = cardPaddingValues
+)
+
 @Preview
 @Composable
 private fun CategoryGrid_Preview() = AppTheme {
     CategoriesGrid(
-        type = RecordType.Income,
-        expenseCategories = persistentListOf(),
-        incomeCategories = persistentListOf("Salary", "Bonus", "Cashback", "Others"),
-        onCategorySelected = {},
-        onEditClicked = {},
-        selectedCategory = "Bonus"
+        CategoriesGridUiState.preview,
+        modifier = Modifier
+            .background(LocalAppColors.current.light)
+            .padding(all = 16.dp)
     )
 }

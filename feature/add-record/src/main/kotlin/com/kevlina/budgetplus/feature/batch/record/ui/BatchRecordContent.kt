@@ -28,7 +28,8 @@ import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGridBinding
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import com.kevlina.budgetplus.feature.category.pills.toUiState
 
 @Composable
 internal fun BatchRecordContent() {
@@ -38,7 +39,6 @@ internal fun BatchRecordContent() {
 
     val type by vm.type.collectAsStateWithLifecycle()
     val note by vm.note.collectAsStateWithLifecycle()
-    val category by vm.category.collectAsStateWithLifecycle()
     val priceText by vm.priceText.collectAsStateWithLifecycle()
     val isBatchButtonEnabled by vm.isBatchButtonEnabled.collectAsStateWithLifecycle()
 
@@ -57,10 +57,8 @@ internal fun BatchRecordContent() {
             modifier = Modifier.padding(top = 16.dp)
         )
 
-        CategoriesGridBinding(
-            type = type,
-            onCategorySelected = vm::setCategory,
-            selectedCategory = category,
+        CategoriesGrid(
+            uiState = vm.categoriesVm.toUiState(type = vm.type),
             modifier = Modifier.fillMaxWidth()
         )
 

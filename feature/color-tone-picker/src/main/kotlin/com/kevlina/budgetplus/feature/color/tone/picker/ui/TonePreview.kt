@@ -34,8 +34,10 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
 @Composable
@@ -79,12 +81,14 @@ internal fun TonePreview(
         )
 
         CategoriesGrid(
-            type = RecordType.Expense,
-            expenseCategories = expenseCategories,
-            incomeCategories = persistentListOf(),
-            onCategorySelected = { },
-            selectedCategory = expenseCategories.first(),
-            cardPaddingValues = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            uiState = CategoriesGridUiState(
+                expenseCategories = MutableStateFlow(expenseCategories),
+                incomeCategories = MutableStateFlow(persistentListOf()),
+                type = MutableStateFlow(RecordType.Expense),
+                selectedCategory = MutableStateFlow(expenseCategories.first()),
+                onCategorySelected = {},
+                cardPaddingValues = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

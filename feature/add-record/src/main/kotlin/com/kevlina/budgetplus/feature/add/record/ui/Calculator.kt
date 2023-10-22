@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Backspace
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +38,8 @@ import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.R
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 enum class CalculatorButton(val text: Char) {
@@ -59,14 +63,13 @@ private val verticalSpacing = 8.dp
 private val calcButtons = CalculatorButton.entries.toList()
 
 @Composable
-fun Calculator(
-    viewModel: CalculatorViewModel,
+internal fun Calculator(
+    uiState: CalculatorUiState,
     modifier: Modifier = Modifier,
-    adaptiveButton: Boolean = false,
 ) {
 
     val context = LocalContext.current
-    val needEvaluate by viewModel.needEvaluate.collectAsStateWithLifecycle()
+    val needEvaluate by uiState.needEvaluate.collectAsStateWithLifecycle()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
@@ -77,7 +80,7 @@ fun Calculator(
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
-                modifier = if (adaptiveButton) {
+                modifier = if (uiState.adaptiveButton) {
                     Modifier
                         .weight(1F)
                         .fillMaxWidth()
@@ -99,8 +102,8 @@ fun Calculator(
 
                             CalculatorBtn(
                                 button = btn,
-                                isAdaptive = adaptiveButton,
-                                onClick = { viewModel.onInput(btn) }
+                                isAdaptive = uiState.adaptiveButton,
+                                onClick = { uiState.onInput(btn) }
                             )
                         }
                     }
@@ -108,13 +111,13 @@ fun Calculator(
 
                 when (index) {
                     0 -> ClearBtn(onClick = {
-                        viewModel.onCalculatorAction(context, CalculatorAction.Clear)
+                        uiState.onCalculatorAction(context, CalculatorAction.Clear)
                     })
 
                     1 -> DoneBtn(
                         needEvaluate = needEvaluate,
                         onClick = {
-                            viewModel.onCalculatorAction(context, if (needEvaluate) {
+                            uiState.onCalculatorAction(context, if (needEvaluate) {
                                 CalculatorAction.Evaluate
                             } else {
                                 CalculatorAction.Ok
@@ -255,8 +258,32 @@ private fun RowScope.DoneBtn(
     }
 }
 
+@Stable
+internal data class CalculatorUiState(
+    val needEvaluate: StateFlow<Boolean>,
+    val adaptiveButton: Boolean,
+    val onInput: (CalculatorButton) -> Unit,
+    val onCalculatorAction: (Context, CalculatorAction) -> Unit,
+) {
+    companion object {
+        val preview = CalculatorUiState(
+            needEvaluate = MutableStateFlow(false),
+            adaptiveButton = false,
+            onInput = {},
+            onCalculatorAction = { _, _ -> }
+        )
+    }
+}
+
+internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = CalculatorUiState(
+    needEvaluate = needEvaluate,
+    adaptiveButton = adaptiveButton,
+    onInput = ::onInput,
+    onCalculatorAction = ::onCalculatorAction
+)
+
 @Preview(showBackground = true)
 @Composable
 private fun Calculator_Preview() = AppTheme {
-    Calculator(viewModel = CalculatorViewModel(null, null))
+    Calculator(uiState = CalculatorUiState.preview)
 }

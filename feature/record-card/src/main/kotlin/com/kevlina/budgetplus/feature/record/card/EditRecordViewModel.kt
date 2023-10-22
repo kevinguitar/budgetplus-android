@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 @Stable
 class EditRecordViewModel @Inject constructor(
+    val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,

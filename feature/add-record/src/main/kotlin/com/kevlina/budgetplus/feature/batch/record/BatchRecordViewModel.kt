@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.EMPTY_PRICE
+import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 @Stable
 internal class BatchRecordViewModel @Inject constructor(
+    val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
@@ -41,9 +43,6 @@ internal class BatchRecordViewModel @Inject constructor(
 
     private val _startDate = MutableStateFlow(LocalDate.now())
     val startDate: StateFlow<LocalDate> = _startDate.asStateFlow()
-
-    private val _category = MutableStateFlow<String?>(null)
-    val category: StateFlow<String?> = _category.asStateFlow()
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
@@ -61,7 +60,7 @@ internal class BatchRecordViewModel @Inject constructor(
     val recordEvent = EventTrigger<Unit>()
 
     val isBatchButtonEnabled: StateFlow<Boolean> = combine(
-        category,
+        categoriesVm.category,
         priceText
     ) { category, priceText ->
         category != null && priceText.isNotEmpty() && priceText != EMPTY_PRICE
@@ -74,10 +73,6 @@ internal class BatchRecordViewModel @Inject constructor(
 
     fun setStartDate(date: LocalDate) {
         _startDate.value = date
-    }
-
-    fun setCategory(category: String) {
-        _category.value = category
     }
 
     fun setNote(note: String) {
@@ -97,7 +92,7 @@ internal class BatchRecordViewModel @Inject constructor(
     }
 
     fun batchRecord() {
-        val category = category.value ?: return
+        val category = categoriesVm.category.value ?: return
         val price = try {
             priceText.value.toDouble()
         } catch (e: Exception) {
@@ -126,7 +121,7 @@ internal class BatchRecordViewModel @Inject constructor(
     }
 
     private fun resetScreen() {
-        _category.value = null
+        categoriesVm.setCategory(null)
         _note.value = ""
         _priceText.value = EMPTY_PRICE
     }

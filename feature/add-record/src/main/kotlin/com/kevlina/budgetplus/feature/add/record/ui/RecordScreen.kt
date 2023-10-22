@@ -8,6 +8,7 @@ import androidx.compose.material.icons.rounded.GroupAdd
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,12 +30,16 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
+import com.kevlina.budgetplus.feature.category.pills.toUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 
 @Composable
 fun RecordScreen(navigator: Navigator) {
 
     val vm = hiltViewModel<RecordViewModel>()
+
     val context = LocalContext.current
 
     var isRequestingReview by remember { mutableStateOf(false) }
@@ -80,13 +85,28 @@ fun RecordScreen(navigator: Navigator) {
                 .align(Alignment.CenterHorizontally)
                 .weight(1F),
             regularContent = {
-                RecordContentRegular(navigator = navigator)
+                val recordInfoUiState = vm.toUiState(
+                    navigator = navigator,
+                    scrollable = true,
+                    adaptiveCalculatorButton = false
+                )
+                RecordContentRegular(recordInfoUiState)
             },
             wideContent = {
-                RecordContentWide(navigator = navigator)
+                val recordInfoUiState = vm.toUiState(
+                    navigator = navigator,
+                    scrollable = true,
+                    adaptiveCalculatorButton = true
+                )
+                RecordContentWide(recordInfoUiState)
             },
             packedContent = {
-                RecordContentPacked(navigator = navigator)
+                val recordInfoUiState = vm.toUiState(
+                    navigator = navigator,
+                    scrollable = false,
+                    adaptiveCalculatorButton = false
+                )
+                RecordContentPacked(recordInfoUiState)
             },
             extraContent = {
                 DoneAnimator(eventTrigger = vm.recordEvent)
@@ -113,3 +133,44 @@ fun RecordScreen(navigator: Navigator) {
     // Handle the runtime notification permission request
     NotificationPermissionHandler()
 }
+
+@Stable
+internal class RecordContentUiState(
+    val recordInfoUiState: RecordInfoUiState,
+    val calculatorUiState: CalculatorUiState,
+    val showAds: StateFlow<Boolean>,
+) {
+    companion object {
+        val preview = RecordContentUiState(
+            recordInfoUiState = RecordInfoUiState.preview,
+            calculatorUiState = CalculatorUiState.preview,
+            showAds = MutableStateFlow(false)
+        )
+    }
+}
+
+private fun RecordViewModel.toUiState(
+    navigator: Navigator,
+    scrollable: Boolean,
+    adaptiveCalculatorButton: Boolean,
+) = RecordContentUiState(
+    recordInfoUiState = RecordInfoUiState(
+        type = type,
+        note = note,
+        setType = ::setType,
+        setNote = ::setNote,
+        scrollable = scrollable,
+        categoriesGridUiState = categoriesVm.toUiState(
+            type = type,
+            onEditClicked = { navigator.navigate(route = "${AddDest.EditCategory.route}/$type") },
+        ),
+        dateAndPricingUiState = DateAndPricingUiState(
+            date = date,
+            priceText = calculatorVm.priceText,
+            scrollable = scrollable,
+            setDate = ::setDate
+        ),
+    ),
+    calculatorUiState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),
+    showAds = showAds
+)

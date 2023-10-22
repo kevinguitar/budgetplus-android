@@ -36,7 +36,10 @@ import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
+import com.kevlina.budgetplus.feature.category.pills.toUiState
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
 @Composable
@@ -183,12 +186,20 @@ fun EditRecordDialog(
         }
 
         EditRecordDialogState.PickingCategory -> {
-            EditCategoryDialog(
-                type = editRecord.type,
-                category = category,
-                onCategorySelected = { category = it },
-                onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
-            )
+            AppDialog(
+                onDismissRequest = { dialogState = EditRecordDialogState.ShowRecord }
+            ) {
+                CategoriesGrid(
+                    uiState = vm.categoriesVm.toUiState(
+                        type = MutableStateFlow(editRecord.type),
+                        selectedCategory = MutableStateFlow(category),
+                        onCategorySelected = {
+                            category = it
+                            dialogState = EditRecordDialogState.ShowRecord
+                        },
+                    )
+                )
+            }
         }
 
         EditRecordDialogState.DeleteConfirmation -> {

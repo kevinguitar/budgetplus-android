@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import android.content.Context
-import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.Toaster
@@ -19,7 +18,6 @@ import timber.log.Timber
 import java.math.RoundingMode
 import javax.inject.Inject
 
-@Stable
 class CalculatorViewModel @Inject constructor(
     private val vibrator: VibratorManager?,
     private val toaster: Toaster?,

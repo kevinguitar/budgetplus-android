@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -10,42 +11,52 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.ads.AdsBanner
-import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 
 @Composable
-fun RecordContentPacked(navigator: Navigator) {
+internal fun RecordContentPacked(
+    uiState: RecordContentUiState,
+    modifier: Modifier = Modifier,
+) {
 
-    val viewModel = hiltViewModel<RecordViewModel>()
-    val isHideAds by viewModel.isHideAds.collectAsStateWithLifecycle()
+    val showAds by uiState.showAds.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .width(AppTheme.maxContentWidth)
             .verticalScroll(rememberScrollState())
     ) {
 
         RecordInfo(
-            navigator = navigator,
-            scrollable = false,
+            uiState = uiState.recordInfoUiState,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
         Calculator(
-            viewModel = viewModel.calculator,
+            uiState = uiState.calculatorUiState,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
 
-        if (!isHideAds) {
+        if (showAds) {
             AdsBanner()
         }
     }
+}
+
+@Preview(heightDp = 700)
+@Composable
+private fun RecordContentPacked_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
+    RecordContentPacked(
+        uiState = RecordContentUiState.preview,
+        modifier = Modifier.background(LocalAppColors.current.light)
+    )
 }

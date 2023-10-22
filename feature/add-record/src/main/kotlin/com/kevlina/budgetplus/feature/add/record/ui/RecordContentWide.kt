@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,22 +10,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.ads.AdsBanner
-import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.feature.add.record.RecordViewModel
+import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun RecordContentWide(navigator: Navigator) {
+internal fun RecordContentWide(
+    uiState: RecordContentUiState,
+    modifier: Modifier = Modifier,
+) {
 
-    val viewModel = hiltViewModel<RecordViewModel>()
-    val isHideAds by viewModel.isHideAds.collectAsStateWithLifecycle()
+    val showAds by uiState.showAds.collectAsStateWithLifecycle()
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
@@ -32,23 +37,35 @@ fun RecordContentWide(navigator: Navigator) {
         Column(modifier = Modifier.weight(1F)) {
 
             RecordInfo(
-                navigator = navigator,
-                scrollable = true,
+                uiState = uiState.recordInfoUiState,
                 modifier = Modifier.weight(1F)
             )
 
-            if (!isHideAds) {
+            if (showAds) {
                 AdsBanner()
             }
         }
 
         Calculator(
-            viewModel = viewModel.calculator,
-            adaptiveButton = true,
+            uiState = uiState.calculatorUiState,
             modifier = Modifier
                 .weight(1F)
                 .fillMaxHeight()
                 .padding(vertical = 16.dp)
         )
     }
+}
+
+@Preview(widthDp = 800, heightDp = 360)
+@Preview(widthDp = 960, heightDp = 400)
+@Composable
+private fun RecordContentWide_Preview() = AppTheme(themeColors = ThemeColors.NemoSea) {
+    RecordContentWide(
+        uiState = RecordContentUiState(
+            recordInfoUiState = RecordInfoUiState.preview,
+            calculatorUiState = CalculatorUiState.preview.copy(adaptiveButton = true),
+            showAds = MutableStateFlow(false)
+        ),
+        modifier = Modifier.background(LocalAppColors.current.light)
+    )
 }

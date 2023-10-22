@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -26,6 +27,7 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +41,8 @@ import javax.inject.Inject
 @HiltViewModel
 @Stable
 class RecordViewModel @Inject constructor(
-    val calculator: CalculatorViewModel,
+    val calculatorVm: CalculatorViewModel,
+    val categoriesVm: CategoriesViewModel,
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
@@ -58,9 +61,6 @@ class RecordViewModel @Inject constructor(
     private val _date = MutableStateFlow(LocalDate.now())
     val date: StateFlow<LocalDate> = _date.asStateFlow()
 
-    private val _category = MutableStateFlow<String?>(null)
-    val category: StateFlow<String?> = _category.asStateFlow()
-
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
 
@@ -72,13 +72,13 @@ class RecordViewModel @Inject constructor(
     private val _requestPermissionEvent = MutableEventFlow<Unit>()
     val requestPermissionEvent: EventFlow<Unit> = _requestPermissionEvent.asStateFlow()
 
-    val isHideAds = authManager.isPremium
+    val showAds = authManager.isPremium.mapState { !it }
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
     private var recordCount by preferenceHolder.bindInt(0)
 
     init {
-        calculator.recordFlow
+        calculatorVm.recordFlow
             .consumeEach(::record)
             .launchIn(viewModelScope)
     }
@@ -89,10 +89,6 @@ class RecordViewModel @Inject constructor(
 
     fun setDate(date: LocalDate) {
         _date.value = date
-    }
-
-    fun setCategory(category: String) {
-        _category.value = category
     }
 
     fun setNote(note: String) {
@@ -131,8 +127,8 @@ class RecordViewModel @Inject constructor(
     }
 
     private fun record(context: Context) {
-        val category = category.value
-        val price = calculator.price.value
+        val category = categoriesVm.category.value
+        val price = calculatorVm.price.value
 
         if (category == null) {
             toaster.showMessage(R.string.record_empty_category)
@@ -150,7 +146,7 @@ class RecordViewModel @Inject constructor(
             timestamp = date.value.withCurrentTime,
             category = category,
             name = note.value.trim().ifEmpty { category },
-            price = calculator.price.value,
+            price = calculatorVm.price.value,
             author = authManager.userState.value?.toAuthor()
         )
 
@@ -165,9 +161,9 @@ class RecordViewModel @Inject constructor(
     }
 
     private fun resetScreen() {
-        _category.value = null
+        categoriesVm.setCategory(null)
         _note.value = ""
-        calculator.clearPrice()
+        calculatorVm.clearPrice()
     }
 
     private fun onRecordCreated(context: Context) {

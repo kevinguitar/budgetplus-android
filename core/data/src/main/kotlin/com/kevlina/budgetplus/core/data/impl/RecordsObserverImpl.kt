@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.core.data.impl
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.data.BookRepo

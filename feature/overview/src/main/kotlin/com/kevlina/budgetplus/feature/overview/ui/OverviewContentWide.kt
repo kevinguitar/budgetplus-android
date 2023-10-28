@@ -11,14 +11,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.feature.overview.OverviewViewModel
+import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContentWide(
-    vm: OverviewViewModel,
+    uiState: OverviewContentUiState,
     navigator: Navigator,
     isHideAds: Boolean,
 ) {
@@ -38,7 +39,7 @@ internal fun OverviewContentWide(
         ) {
 
             OverviewHeader(
-                vm = vm,
+                uiState = uiState.headerUiState,
                 navigator = navigator,
                 modifier = Modifier
                     .weight(1F)
@@ -52,11 +53,21 @@ internal fun OverviewContentWide(
         }
 
         OverviewList(
-            vm = vm,
+            uiState = uiState.listUiState,
             navigator = navigator,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)
         )
     }
+}
+
+@Preview
+@Composable
+private fun OverviewContentWide_Preview() = AppTheme {
+    OverviewContentWide(
+        uiState = OverviewContentUiState.preview,
+        navigator = Navigator.empty,
+        isHideAds = false
+    )
 }

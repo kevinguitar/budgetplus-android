@@ -3,16 +3,13 @@ package com.kevlina.budgetplus.feature.overview.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.rounded.ChevronLeft
-import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,107 +18,82 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.fullFormatted
-import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
-import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.LocalDateWrapper
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.core.ui.thenIf
+import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import java.time.LocalDate
 
 @Composable
-internal fun TimePeriodSelector(
-    vm: OverviewTimeViewModel,
+internal fun ColumnScope.TimePeriodSelector(
+    uiState: TimePeriodSelectorUiState,
     navigator: Navigator,
 ) {
 
-    val timePeriod by vm.timePeriod.collectAsStateWithLifecycle()
-    val fromDate by vm.fromDate.collectAsStateWithLifecycle()
-    val untilDate by vm.untilDate.collectAsStateWithLifecycle()
-    val isOneDayPeriod by vm.isOneDayPeriod.collectAsStateWithLifecycle()
+    val timePeriod by uiState.timePeriod.collectAsStateWithLifecycle()
+    val fromDate by uiState.fromDate.collectAsStateWithLifecycle()
+    val untilDate by uiState.untilDate.collectAsStateWithLifecycle()
 
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showUntilDatePicker by remember { mutableStateOf(false) }
 
-    val arrowPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
-
-    LaunchedEffect(key1 = vm) {
-        vm.openPremiumEvent
+    LaunchedEffect(key1 = uiState.openPremiumEvent) {
+        uiState.openPremiumEvent
             .consumeEach { navigator.navigate(AddDest.UnlockPremium.route) }
             .collect()
     }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
-    ) {
+    DateRange(
+        uiState = uiState,
+        showFromDatePicker = { showFromDatePicker = true },
+        showUntilDatePicker = { showUntilDatePicker = true }
+    )
 
-        if (isOneDayPeriod) {
-            Icon(
-                imageVector = Icons.Rounded.ChevronLeft,
-                tint = LocalAppColors.current.dark,
-                modifier = Modifier
-                    .padding(arrowPadding)
-                    .rippleClick(borderless = true, onClick = vm::previousDay)
-            )
-        }
+    TimePeriodPreset(
+        timePeriod = timePeriod,
+        setTimePeriod = uiState.setTimePeriod
+    )
 
-        Icon(
-            imageVector = Icons.Filled.DateRange,
-            contentDescription = stringResource(id = R.string.select_date),
-            tint = LocalAppColors.current.dark
+    if (showFromDatePicker) {
+        DatePickerDialog(
+            date = fromDate,
+            onDismiss = { showFromDatePicker = false },
+            onDatePicked = uiState.setFromDate
         )
-
-        Text(
-            text = if (isOneDayPeriod) {
-                fromDate.value.fullFormatted
-            } else {
-                fromDate.value.mediumFormatted
-            },
-            singleLine = true,
-            modifier = Modifier
-                .rippleClick { showFromDatePicker = true }
-                .padding(all = 8.dp)
-                .thenIf(isOneDayPeriod) {
-                    Modifier.weight(1F, fill = false)
-                }
-        )
-
-        if (isOneDayPeriod) {
-
-            Icon(
-                imageVector = Icons.Rounded.ChevronRight,
-                tint = LocalAppColors.current.dark,
-                modifier = Modifier
-                    .padding(arrowPadding)
-                    .rippleClick(borderless = true, onClick = vm::nextDay)
-            )
-        } else {
-
-            Text(text = stringResource(id = R.string.date_to))
-
-            Text(
-                text = untilDate.value.mediumFormatted,
-                singleLine = true,
-                modifier = Modifier
-                    .rippleClick { showUntilDatePicker = true }
-                    .padding(all = 8.dp)
-                    .weight(1F, fill = false)
-            )
-        }
     }
 
+    if (showUntilDatePicker) {
+        DatePickerDialog(
+            date = untilDate,
+            minDate = fromDate,
+            onDismiss = { showUntilDatePicker = false },
+            onDatePicked = uiState.setUntilDate
+        )
+    }
+}
+
+@Composable
+fun TimePeriodPreset(
+    timePeriod: TimePeriod,
+    setTimePeriod: (TimePeriod) -> Unit,
+) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.Top),
@@ -137,28 +109,9 @@ internal fun TimePeriodSelector(
                 TimePeriodPill(
                     timePeriod = period,
                     isSelected = timePeriod == period,
-                    onClick = { vm.setTimePeriod(period) }
+                    onClick = { setTimePeriod(period) }
                 )
             }
-    }
-
-    if (showFromDatePicker) {
-
-        DatePickerDialog(
-            date = fromDate,
-            onDismiss = { showFromDatePicker = false },
-            onDatePicked = vm::setFromDate
-        )
-    }
-
-    if (showUntilDatePicker) {
-
-        DatePickerDialog(
-            date = untilDate,
-            minDate = fromDate,
-            onDismiss = { showUntilDatePicker = false },
-            onDatePicked = vm::setUntilDate
-        )
     }
 }
 
@@ -168,7 +121,6 @@ private fun TimePeriodPill(
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
-
     Box(
         modifier = Modifier
             .background(
@@ -196,6 +148,62 @@ private fun TimePeriodPill(
             color = LocalAppColors.current.light,
             singleLine = true,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+    }
+}
+
+@Stable
+internal class TimePeriodSelectorUiState(
+    val timePeriod: StateFlow<TimePeriod>,
+    val fromDate: StateFlow<LocalDateWrapper>,
+    val untilDate: StateFlow<LocalDateWrapper>,
+    val isOneDayPeriod: StateFlow<Boolean>,
+    val openPremiumEvent: EventFlow<Unit>,
+    val previousDay: () -> Unit,
+    val nextDay: () -> Unit,
+    val setTimePeriod: (TimePeriod) -> Unit,
+    val setFromDate: (LocalDate) -> Unit,
+    val setUntilDate: (LocalDate) -> Unit,
+) {
+    companion object {
+        val preview = TimePeriodSelectorUiState(
+            timePeriod = MutableStateFlow(TimePeriod.Month),
+            fromDate = MutableStateFlow(TimePeriod.Month.from.wrapped()),
+            untilDate = MutableStateFlow(TimePeriod.Month.until.wrapped()),
+            isOneDayPeriod = MutableStateFlow(false),
+            openPremiumEvent = MutableEventFlow(),
+            previousDay = {},
+            nextDay = {},
+            setTimePeriod = {},
+            setFromDate = {},
+            setUntilDate = {}
+        )
+    }
+}
+
+internal fun OverviewTimeViewModel.toUiState() = TimePeriodSelectorUiState(
+    timePeriod = timePeriod,
+    fromDate = fromDate,
+    untilDate = untilDate,
+    isOneDayPeriod = isOneDayPeriod,
+    openPremiumEvent = openPremiumEvent,
+    previousDay = ::previousDay,
+    nextDay = ::nextDay,
+    setTimePeriod = ::setTimePeriod,
+    setFromDate = ::setFromDate,
+    setUntilDate = ::setUntilDate
+)
+
+@Preview
+@Composable
+private fun TimePeriodSelector_Preview() = AppTheme {
+    Column(
+        modifier = Modifier.background(LocalAppColors.current.lightBg),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TimePeriodSelector(
+            uiState = TimePeriodSelectorUiState.preview,
+            navigator = Navigator.empty
         )
     }
 }

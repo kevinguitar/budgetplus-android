@@ -40,6 +40,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 fun OverviewScreen(navigator: Navigator) {
 
     val vm = hiltViewModel<OverviewViewModel>()
+    val uiState = remember(key1 = vm) { vm.toUiState() }
 
     val mode by vm.mode.collectAsStateWithLifecycle()
     val bookName by vm.bookName.collectAsStateWithLifecycle()
@@ -102,14 +103,14 @@ fun OverviewScreen(navigator: Navigator) {
                 .weight(1F),
             regularContent = {
                 OverviewContent(
-                    vm = vm,
+                    uiState = uiState,
                     navigator = navigator,
                     isHideAds = isHideAds,
                 )
             },
             wideContent = {
                 OverviewContentWide(
-                    vm = vm,
+                    uiState = uiState,
                     navigator = navigator,
                     isHideAds = isHideAds,
                 )
@@ -145,3 +146,27 @@ fun OverviewScreen(navigator: Navigator) {
 enum class OverviewUiType {
     Header, Record, Group, ZeroCase, Loader
 }
+
+private fun OverviewViewModel.toUiState() = OverviewContentUiState(
+    headerUiState = OverviewHeaderUiState(
+        type = type,
+        totalPrice = totalPrice,
+        balance = balance,
+        recordGroups = recordGroups,
+        authors = authors,
+        selectedAuthor = selectedAuthor,
+        timePeriodSelectorUiState = timeModel.toUiState(),
+        setRecordType = ::setRecordType,
+        setAuthor = ::setAuthor
+    ),
+    listUiState = OverviewListUiState(
+        mode = mode,
+        type = type,
+        selectedAuthor = selectedAuthor,
+        totalPrice = totalPrice,
+        recordList = recordList,
+        recordGroups = recordGroups,
+        isSoloAuthor = isSoloAuthor,
+        canEditRecord = ::canEditRecord
+    )
+)

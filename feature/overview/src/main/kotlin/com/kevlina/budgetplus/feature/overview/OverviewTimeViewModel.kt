@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.overview
 
-import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
@@ -20,7 +19,6 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
-@Stable
 class OverviewTimeViewModel @Inject constructor(
     private val recordsObserver: RecordsObserver,
     private val bookRepo: BookRepo,

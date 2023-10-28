@@ -14,6 +14,10 @@ class Navigator(
 
     fun navigate(route: String) = doNavigate(route)
     fun navigateUp(): Boolean = doUp()
+
+    companion object {
+        val empty = Navigator(doNavigate = {}, doUp = { false })
+    }
 }
 
 fun NavController.toNavigator() = Navigator(

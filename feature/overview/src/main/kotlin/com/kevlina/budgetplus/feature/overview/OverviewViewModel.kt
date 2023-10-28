@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.feature.overview
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -42,7 +41,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-@Stable
 internal class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val recordsObserver: RecordsObserver,
@@ -116,11 +114,11 @@ internal class OverviewViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val recordList: StateFlow<List<Record>?> = records.map { records ->
+    val recordList: StateFlow<ImmutableList<Record>?> = records.map { records ->
         records
             ?.map(userRepo::resolveAuthor)
             ?.sortedByDescending { it.createdOn }
-            ?.toList()
+            ?.toImmutableList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?> = records.map { records ->

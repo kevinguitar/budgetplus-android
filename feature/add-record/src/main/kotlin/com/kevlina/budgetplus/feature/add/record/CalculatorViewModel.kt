@@ -19,8 +19,8 @@ import java.math.RoundingMode
 import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor(
-    private val vibrator: VibratorManager?,
-    private val toaster: Toaster?,
+    private val vibrator: VibratorManager,
+    private val toaster: Toaster,
 ) {
 
     private val _priceText = MutableStateFlow(EMPTY_PRICE)

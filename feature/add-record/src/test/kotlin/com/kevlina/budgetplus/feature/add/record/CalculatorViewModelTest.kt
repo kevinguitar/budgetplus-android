@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.impl.FakeToaster
+import com.kevlina.budgetplus.core.data.impl.FakeVibratorManager
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import io.mockk.mockk
@@ -63,8 +65,8 @@ class CalculatorViewModelTest {
         assertThat(calculator.priceText.value).isEqualTo("44")
     }
 
-    private val calculator = CalculatorViewModel(vibrator = null, toaster = null)
-    private val buttons = CalculatorButton.values()
+    private val calculator = CalculatorViewModel(vibrator = FakeVibratorManager(), toaster = FakeToaster())
+    private val buttons = CalculatorButton.entries
 
     private fun evaluate() {
         calculator.onCalculatorAction(mockk(), CalculatorAction.Ok)

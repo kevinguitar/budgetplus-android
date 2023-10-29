@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.core.data.impl.RecordRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordsObserverImpl
 import com.kevlina.budgetplus.core.data.impl.TrackerImpl
 import com.kevlina.budgetplus.core.data.impl.UserRepoImpl
+import com.kevlina.budgetplus.core.data.impl.VibratorManagerImpl
 import com.kevlina.budgetplus.core.data.local.Preference
 import dagger.Binds
 import dagger.Module
@@ -36,31 +37,34 @@ import javax.inject.Singleton
 internal interface DataModule {
 
     @Binds
-    fun provideAuthManager(impl: AuthManagerImpl): AuthManager
+    fun bindAuthManager(impl: AuthManagerImpl): AuthManager
 
     @Binds
-    fun provideBookRepo(impl: BookRepoImpl): BookRepo
+    fun bindVibratorManager(impl: VibratorManagerImpl): VibratorManager
 
     @Binds
-    fun providePreference(impl: AppPreference): Preference
+    fun bindBookRepo(impl: BookRepoImpl): BookRepo
 
     @Binds
-    fun provideRecordRepo(impl: RecordRepoImpl): RecordRepo
+    fun bindPreference(impl: AppPreference): Preference
 
     @Binds
-    fun provideUserRepo(impl: UserRepoImpl): UserRepo
+    fun bindRecordRepo(impl: RecordRepoImpl): RecordRepo
 
     @Binds
-    fun provideInsiderRepo(impl: InsiderRepoImpl): InsiderRepo
+    fun bindUserRepo(impl: UserRepoImpl): UserRepo
+
+    @Binds
+    fun bindInsiderRepo(impl: InsiderRepoImpl): InsiderRepo
 
     @Binds @IntoSet
-    fun provideUserRepoOnAppStart(impl: UserRepoImpl): AppStartAction
+    fun bindUserRepoOnAppStart(impl: UserRepoImpl): AppStartAction
 
     @Binds
-    fun provideTracker(impl: TrackerImpl): Tracker
+    fun bindTracker(impl: TrackerImpl): Tracker
 
     @Binds
-    fun provideRecordsObserver(impl: RecordsObserverImpl): RecordsObserver
+    fun bindRecordsObserver(impl: RecordsObserverImpl): RecordsObserver
 
     companion object {
 

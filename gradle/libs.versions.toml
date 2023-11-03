@@ -33,7 +33,7 @@ compose-material3-windowsizeclass = { module = "androidx.compose.material3:mater
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
-desugar = "com.android.tools:desugar_jdk_libs:2.0.3"
+desugar = "com.android.tools:desugar_jdk_libs:2.0.4"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 facebook-auth = "com.facebook.android:facebook-login:16.2.0"

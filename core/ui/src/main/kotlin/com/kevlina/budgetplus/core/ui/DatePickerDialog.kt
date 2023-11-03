@@ -122,7 +122,7 @@ private fun CustomDatePicker(
 }
 
 // Cannot use the new style because of this bug from desugaring library
-// see: https://issuetracker.google.com/issues/160113376
+// see: https://issuetracker.google.com/issues/300128109
 /*
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -137,14 +137,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.theme.LocalAppColors
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 import androidx.compose.material3.DatePickerDialog as MaterialDatePickerDialog
 
 @Composable
 fun DatePickerDialog(
-    date: LocalDate,
-    minDate: LocalDate? = null,
-    maxDate: LocalDate? = null,
+    date: LocalDateWrapper,
+    minDate: LocalDateWrapper? = null,
+    maxDate: LocalDateWrapper? = null,
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -152,12 +155,12 @@ fun DatePickerDialog(
     val dateState = rememberDatePickerState(initialSelectedDateMillis = date.utcMillis)
     val colors = DatePickerDefaults.colors(
         containerColor = LocalAppColors.current.light,
-        currentYearContentColor = LocalAppColors.current.primarySemiDark,
+        currentYearContentColor = LocalAppColors.current.dark,
         selectedYearContentColor = LocalAppColors.current.light,
-        selectedYearContainerColor = LocalAppColors.current.primarySemiDark,
-        selectedDayContainerColor = LocalAppColors.current.primarySemiDark,
-        todayContentColor = LocalAppColors.current.primarySemiDark,
-        todayDateBorderColor = LocalAppColors.current.primarySemiDark,
+        selectedYearContainerColor = LocalAppColors.current.dark,
+        selectedDayContainerColor = LocalAppColors.current.dark,
+        todayContentColor = LocalAppColors.current.dark,
+        todayDateBorderColor = LocalAppColors.current.dark,
     )
 
     MaterialDatePickerDialog(
@@ -183,7 +186,7 @@ fun DatePickerDialog(
                     .padding(end = 16.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
                     .rippleClick {
-                        onDatePicked(dateState.selectedDateMillis?.utcLocaleDate ?: date)
+                        onDatePicked(dateState.selectedDateMillis?.utcLocaleDate ?: date.value)
                         onDismiss()
                     }
                     .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -216,8 +219,8 @@ fun DatePickerDialog(
     }
 }
 
-private val LocalDate.utcMillis
-    get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+private val LocalDateWrapper.utcMillis
+    get() = value.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
 
 private val Long.utcLocaleDate: LocalDate
     get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()

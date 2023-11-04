@@ -125,7 +125,7 @@ internal class AuthManagerImpl @Inject constructor(
             val fcmToken = try {
                 Firebase.messaging.token.await()
             } catch (e: Exception) {
-                Timber.e(e, "Failed to retrieve the fcm token")
+                Timber.w(e, "Failed to retrieve the fcm token")
                 null
             }
             Timber.d("Fcm token: $fcmToken")

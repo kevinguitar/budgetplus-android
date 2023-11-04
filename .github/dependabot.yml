@@ -1,0 +1,27 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+registries:
+  maven-gradle-plugin:
+    type: maven-repository
+    url: https://plugins.gradle.org/m2/
+  maven-google:
+    type: maven-repository
+    url: https://dl.google.com/dl/android/maven2/
+  maven-apache:
+    type: maven-repository
+    url: https://repo.maven.apache.org/maven2/
+updates:
+  - package-ecosystem: "gradle" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    registries:
+      - maven-gradle-plugin
+      - maven-google
+      - maven-apache
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "kevinguitar"

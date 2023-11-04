@@ -10,7 +10,7 @@ compose-bom = "2023.10.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.3"
 # https://firebase.google.com/support/release-notes/android
-firebase-bom = "32.4.1"
+firebase-bom = "32.5.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.48"
 # https://github.com/coil-kt/coil/releases
@@ -43,7 +43,7 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:22.4.0"
+google-ads = "com.google.android.gms:play-services-ads:22.5.0"
 google-auth = "com.google.android.gms:play-services-auth:20.7.0"
 google-billing = "com.android.billingclient:billing-ktx:6.0.1"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.21.1"
@@ -62,13 +62,13 @@ kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.1.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.0"
 mockk = "io.mockk:mockk:1.13.5"
-navigation-compose = "androidx.navigation:navigation-compose:2.7.4"
-navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0-rc01"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.5"
+navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.1.0"
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
 # Official feature request: https://issuetracker.google.com/issues/181282427
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
-test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha04"
+test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-alpha05"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.1.5"
 

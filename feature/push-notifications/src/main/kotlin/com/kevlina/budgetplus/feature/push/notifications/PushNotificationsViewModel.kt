@@ -45,6 +45,8 @@ internal class PushNotificationsViewModel @Inject constructor(
         "Track your expenses starting from the beginning of the month \uD83D\uDE4C"
     )
 
+    private var deeplinkCache by preferenceHolder.bindString("")
+
     val titleTw = MutableStateFlow(titleTwCache)
     val descTw = MutableStateFlow(descTwCache)
 
@@ -58,7 +60,7 @@ internal class PushNotificationsViewModel @Inject constructor(
     val descEn = MutableStateFlow(descEnCache)
 
     val navigateToGooglePlay = MutableStateFlow(false)
-    val deeplink = MutableStateFlow("")
+    val deeplink = MutableStateFlow(deeplinkCache)
 
     fun sendToInternalTopic() {
         recordToPushDb(isInternal = true)
@@ -111,5 +113,7 @@ internal class PushNotificationsViewModel @Inject constructor(
 
         titleEnCache = titleEn.value
         descEnCache = descEn.value
+
+        deeplinkCache = deeplink.value
     }
 }

@@ -47,20 +47,20 @@ internal class RecordRepoImpl @Inject constructor(
         times: Int,
     ) {
         val batchId = UUID.randomUUID().toString()
-        var currentDate = startDate
+        var currentDate: LocalDate
 
-        repeat(times) {
+        repeat(times) { index ->
+            currentDate = when (frequency) {
+                BatchFrequency.Monthly -> startDate.plusMonths(index.toLong())
+                BatchFrequency.Weekly -> startDate.plusWeeks(index.toLong())
+                BatchFrequency.Daily -> startDate.plusDays(index.toLong())
+            }
+
             createRecord(record.copy(
                 date = currentDate.toEpochDay(),
                 timestamp = currentDate.withCurrentTime,
                 batchId = batchId
             ))
-
-            currentDate = when (frequency) {
-                BatchFrequency.Monthly -> currentDate.plusMonths(1)
-                BatchFrequency.Weekly -> currentDate.plusWeeks(1)
-                BatchFrequency.Daily -> currentDate.plusDays(1)
-            }
         }
     }
 

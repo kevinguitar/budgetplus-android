@@ -162,18 +162,20 @@ internal data class OverviewListUiState(
             Record(category = "Food", name = "Mix Vegi rice", price = 12.9, author = Author(name = "Alina"), id = "4"),
         )
 
+        private val recordGroupsMap = mapOf(
+            "Loan" to persistentListOf(Record(category = "Loan", price = 1033.0, author = Author(name = "Kevin"))),
+            "Daily" to persistentListOf(Record(category = "Daily", price = 342.1, author = Author(name = "Alina"))),
+            "Utility" to persistentListOf(Record(category = "Utility", price = 132.5, author = Author(name = "Kevin"))),
+            "Food" to foodRecords,
+        )
+
         val preview = OverviewListUiState(
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
             type = MutableStateFlow(RecordType.Expense),
             selectedAuthor = MutableStateFlow(User(name = "Kevin")),
             totalPrice = MutableStateFlow(1579.8),
             recordList = MutableStateFlow(foodRecords),
-            recordGroups = MutableStateFlow(mapOf(
-                "Loan" to persistentListOf(Record(category = "Loan", price = 1033.0, author = Author(name = "Kevin"))),
-                "Daily" to persistentListOf(Record(category = "Daily", price = 342.1, author = Author(name = "Alina"))),
-                "Utility" to persistentListOf(Record(category = "Utility", price = 132.5, author = Author(name = "Kevin"))),
-                "Food" to foodRecords,
-            )),
+            recordGroups = MutableStateFlow(recordGroupsMap),
             isSoloAuthor = MutableStateFlow(false),
             canEditRecord = { true }
         )

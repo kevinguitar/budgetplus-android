@@ -55,7 +55,7 @@ install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.1.5"
 junit-compose = { module = "androidx.compose.ui:ui-test-junit4" }
 junit-core = "junit:junit:4.13.2"
-kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.8.0"
+kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"

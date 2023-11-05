@@ -14,7 +14,7 @@ firebase-bom = "32.5.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.48"
 # https://github.com/coil-kt/coil/releases
-coil = "2.4.0"
+coil = "2.5.0"
 
 [libraries]
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"

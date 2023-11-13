@@ -46,7 +46,7 @@ class CalculatorViewModel @Inject constructor(
         .toCharArray()
 
     fun onInput(btn: CalculatorButton) {
-        vibrator?.vibrate()
+        vibrator.vibrate()
 
         val currentText = priceText.value
         when (btn) {
@@ -99,14 +99,14 @@ class CalculatorViewModel @Inject constructor(
             val expression = ExpressionBuilder(text).build()
             val validation = expression.validate()
             if (!validation.isValid) {
-                toaster?.showMessage(validation.errors.joinToString())
+                toaster.showMessage(validation.errors.joinToString())
                 Timber.e("Calculator validation error. Raw: $text")
                 return
             }
 
             expression.evaluate()
         } catch (e: Exception) {
-            toaster?.showError(e)
+            toaster.showError(e)
             Timber.e("Calculator evaluation error. Raw: $text")
             return
         }
@@ -123,7 +123,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun onCalculatorAction(context: Context, action: CalculatorAction) {
-        vibrator?.vibrate()
+        vibrator.vibrate()
         when (action) {
             CalculatorAction.Clear -> clearPrice()
             CalculatorAction.Evaluate -> evaluate()

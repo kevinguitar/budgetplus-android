@@ -9,11 +9,14 @@ import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.nav.NavigationInfo
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
+import com.kevlina.budgetplus.core.data.RemoteConfig
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,12 +34,24 @@ class BookViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val stringProvider: StringProvider,
+    authManager: AuthManager,
+    remoteConfig: RemoteConfig,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
 
     private val _unlockPremiumEvent = MutableEventFlow<Unit>()
     val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent
+
+    val showAds = authManager.isPremium.mapState { !it }
+    val bannerAdId = remoteConfig.observeString("ad_banner_mode", "default")
+        .mapState { value ->
+            when (value) {
+                "refresh_30_sec" -> R.string.admob_banner_id_30sec
+                "refresh_60_sec" -> R.string.admob_banner_id_60sec
+                else -> R.string.admob_banner_id_auto
+            }
+        }
 
     init {
         if (bookRepo.currentBookId != null) {

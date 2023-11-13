@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -71,8 +70,6 @@ class RecordViewModel @Inject constructor(
 
     private val _requestPermissionEvent = MutableEventFlow<Unit>()
     val requestPermissionEvent: EventFlow<Unit> = _requestPermissionEvent.asStateFlow()
-
-    val showAds = authManager.isPremium.mapState { !it }
 
     private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
     private var recordCount by preferenceHolder.bindInt(0)

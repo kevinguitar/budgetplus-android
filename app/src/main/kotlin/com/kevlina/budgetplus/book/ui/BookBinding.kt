@@ -5,7 +5,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,11 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.kevlina.budgetplus.book.BookViewModel
+import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
@@ -39,8 +44,12 @@ internal fun BookBinding(
 
     val navController = rememberNavController()
 
+    val showAds by vm.showAds.collectAsStateWithLifecycle()
+    val bannerAdId by vm.bannerAdId.collectAsStateWithLifecycle()
     val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
+
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
+    var isUnlockingPremium by remember { mutableStateOf(false) }
 
     vm.navigation.consumeAsEffect()
 
@@ -66,6 +75,8 @@ internal fun BookBinding(
                 if (currentRoute != AddDest.Colors.route) {
                     vm.themeManager.clearPreviewColors()
                 }
+
+                isUnlockingPremium = currentRoute == AddDest.UnlockPremium.route
             }
             .collect()
     }
@@ -76,18 +87,29 @@ internal fun BookBinding(
             bottomBar = { BottomNav(navController, previewColors) },
             snackbarHost = { SnackbarHost(snackbarData) },
         ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = BookTab.Add.route,
-                enterTransition = { fadeIn() },
-                exitTransition = { fadeOut() },
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .background(color = LocalAppColors.current.light)
+                    .background(color = previewColors?.light ?: LocalAppColors.current.light)
             ) {
-                addTabGraph(navController)
-                overviewTabGraph(navController)
+                NavHost(
+                    navController = navController,
+                    startDestination = BookTab.Add.route,
+                    enterTransition = { fadeIn() },
+                    exitTransition = { fadeOut() },
+                    modifier = Modifier
+                        .weight(1F)
+                        .fillMaxWidth()
+                ) {
+                    addTabGraph(navController)
+                    overviewTabGraph(navController)
+                }
+
+                if (showAds && !isUnlockingPremium) {
+                    AdsBanner(stringResource(id = bannerAdId))
+                }
             }
         }
 

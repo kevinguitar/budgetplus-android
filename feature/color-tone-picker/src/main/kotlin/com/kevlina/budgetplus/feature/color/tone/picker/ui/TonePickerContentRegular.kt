@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -83,10 +82,6 @@ internal fun TonePickerContentRegular(
                         .thenIf(!needScroll) { Modifier.weight(1F) }
                 )
             }
-        }
-
-        if (!isPremium) {
-            AdsBanner()
         }
     }
 }

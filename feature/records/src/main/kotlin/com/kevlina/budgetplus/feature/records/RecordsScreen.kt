@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.nav.Navigator
@@ -42,7 +41,6 @@ fun RecordsScreen(
 
     val records by vm.records.collectAsStateWithLifecycle()
     val sortMode by vm.sortMode.collectAsStateWithLifecycle()
-    val isHideAds by vm.isHideAds.collectAsStateWithLifecycle()
 
     val totalPrice = remember(records) {
         records.orEmpty().sumOf { it.price }.dollar
@@ -106,10 +104,6 @@ fun RecordsScreen(
                     editRecordDialog = item
                 }
             }
-        }
-
-        if (!isHideAds) {
-            AdsBanner()
         }
     }
 

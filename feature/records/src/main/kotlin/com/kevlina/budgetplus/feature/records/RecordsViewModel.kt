@@ -45,8 +45,6 @@ class RecordsViewModel @AssistedInject constructor(
 
     private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
-    val isHideAds = authManager.isPremium
-
     val records = combine(recordsObserver.records, sortMode) { records, sortMode ->
         records ?: return@combine null
         records

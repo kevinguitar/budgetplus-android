@@ -30,9 +30,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
-fun AdsBanner(
-    bannerId: String = stringResource(id = R.string.admob_banner_id),
-) {
+fun AdsBanner(bannerId: String) {
 
     Box(
         contentAlignment = Alignment.Center,

@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.ads.AdsBanner
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -24,8 +21,6 @@ internal fun RecordContentPacked(
     uiState: RecordContentUiState,
     modifier: Modifier = Modifier,
 ) {
-
-    val showAds by uiState.showAds.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -45,10 +40,6 @@ internal fun RecordContentPacked(
                 .align(Alignment.CenterHorizontally)
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
-
-        if (showAds) {
-            AdsBanner()
-        }
     }
 }
 

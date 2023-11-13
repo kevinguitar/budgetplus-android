@@ -68,8 +68,6 @@ internal class OverviewViewModel @Inject constructor(
     private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
     private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
 
-    val isHideAds = authManager.isPremium
-
     val authors = bookRepo.bookState
         .map {
             withContext(Dispatchers.Default) {

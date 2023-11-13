@@ -31,8 +31,6 @@ import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.toUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -138,13 +136,11 @@ fun RecordScreen(navigator: Navigator) {
 internal class RecordContentUiState(
     val recordInfoUiState: RecordInfoUiState,
     val calculatorUiState: CalculatorUiState,
-    val showAds: StateFlow<Boolean>,
 ) {
     companion object {
         val preview = RecordContentUiState(
             recordInfoUiState = RecordInfoUiState.preview,
             calculatorUiState = CalculatorUiState.preview,
-            showAds = MutableStateFlow(false)
         )
     }
 }
@@ -174,5 +170,4 @@ private fun RecordViewModel.toUiState(
         ),
     ),
     calculatorUiState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),
-    showAds = showAds
 )

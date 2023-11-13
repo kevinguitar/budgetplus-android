@@ -48,6 +48,7 @@ internal fun SettingsContent(
     navigator: Navigator,
     vm: SettingsViewModel,
     showMembers: Boolean,
+    modifier: Modifier = Modifier,
 ) {
 
     vm.navigation.consumeAsEffect()
@@ -65,7 +66,7 @@ internal fun SettingsContent(
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 8.dp)

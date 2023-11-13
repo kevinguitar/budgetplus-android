@@ -33,6 +33,7 @@ internal class RemoteConfigImpl @Inject constructor(
         if (isDebug) {
             // To be able to rapidly fetch config while debugging.
             remoteConfig.setConfigSettingsAsync(remoteConfigSettings {
+                @Suppress("MagicNumber")
                 minimumFetchIntervalInSeconds = 3600
             })
         }
@@ -48,8 +49,9 @@ internal class RemoteConfigImpl @Inject constructor(
             try {
                 remoteConfig.fetchAndActivate().await()
                 allConfigs.value = remoteConfig.all
+                Timber.d("RemoteConfig: Configs fetched ${allConfigs.value.keys}")
             } catch (e: Exception) {
-                Timber.e(e, "Remote config fetch failed")
+                Timber.e(e, "RemoteConfig: Fetch failed")
             }
         }
     }
@@ -57,7 +59,7 @@ internal class RemoteConfigImpl @Inject constructor(
     override fun observeString(key: String, defaultValue: String): StateFlow<String> {
         return allConfigs.mapState {
             it[key]?.asString() ?: run {
-                Timber.e("RemoteConfig: No config found, fallback to $defaultValue")
+                Timber.d("RemoteConfig: No config found, fallback to $defaultValue")
                 defaultValue
             }
         }

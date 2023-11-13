@@ -2,13 +2,13 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.1.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.9.10"
+kotlin = "1.9.20"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.10-1.0.13"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.10.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.5.3"
+compose-compiler = "1.5.4"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.5.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android

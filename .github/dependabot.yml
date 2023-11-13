@@ -25,3 +25,16 @@ updates:
       interval: "daily"
     reviewers:
       - "kevinguitar"
+    groups:
+      kotlin-and-compose-compiler:
+        patterns:
+          - "org.jetbrains.kotlin:*"
+          - "org.jetbrains.kotlin.*"
+          - "androidx.compose.compiler:compiler"
+      androidx:
+        patterns:
+          - "androidx.*"
+      google-play-services:
+        patterns:
+          - "com.google.android.gms:*"
+          - "com.google.android.play:*"

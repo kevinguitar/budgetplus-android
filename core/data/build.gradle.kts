@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.config)
 
     implementation(libs.google.ads)
     implementation(libs.google.auth)

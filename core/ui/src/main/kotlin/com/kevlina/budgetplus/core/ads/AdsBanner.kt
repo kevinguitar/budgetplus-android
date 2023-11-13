@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.ads
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,9 +29,10 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 
-@SuppressLint("VisibleForTests")
 @Composable
-fun AdsBanner() {
+fun AdsBanner(
+    bannerId: String = stringResource(id = R.string.admob_banner_id),
+) {
 
     Box(
         contentAlignment = Alignment.Center,
@@ -41,11 +41,9 @@ fun AdsBanner() {
             .fillMaxWidth()
     ) {
 
-        val bannerId = stringResource(id = R.string.admob_banner_id)
         var showNoAdsHint by remember { mutableStateOf(false) }
 
         if (showNoAdsHint) {
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically

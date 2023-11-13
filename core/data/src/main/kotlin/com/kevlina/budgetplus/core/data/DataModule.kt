@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.data.impl.BookRepoImpl
 import com.kevlina.budgetplus.core.data.impl.InsiderRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordRepoImpl
 import com.kevlina.budgetplus.core.data.impl.RecordsObserverImpl
+import com.kevlina.budgetplus.core.data.impl.RemoteConfigImpl
 import com.kevlina.budgetplus.core.data.impl.TrackerImpl
 import com.kevlina.budgetplus.core.data.impl.UserRepoImpl
 import com.kevlina.budgetplus.core.data.impl.VibratorManagerImpl
@@ -59,6 +60,9 @@ internal interface DataModule {
 
     @Binds @IntoSet
     fun bindUserRepoOnAppStart(impl: UserRepoImpl): AppStartAction
+
+    @Binds
+    fun bindRemoteConfig(impl: RemoteConfigImpl): RemoteConfig
 
     @Binds
     fun bindTracker(impl: TrackerImpl): Tracker

@@ -22,6 +22,6 @@ updates:
       - maven-google
       - maven-apache
     schedule:
-      interval: "weekly"
+      interval: "daily"
     reviewers:
       - "kevinguitar"

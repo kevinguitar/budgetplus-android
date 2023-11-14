@@ -234,7 +234,7 @@ internal class BookRepoImpl @Inject constructor(
             .orderBy(createdOnField, Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "Listen failed.")
+                    Timber.e(e, "BookRepo: Listen failed.")
                     return@addSnapshotListener
                 }
 

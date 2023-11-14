@@ -94,7 +94,7 @@ internal class RecordsObserverImpl @Inject constructor(
             .whereLessThanOrEqualTo("date", period.until.toEpochDay())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "Listen failed.")
+                    Timber.e(e, "RecordsObserver: Listen failed.")
                     return@addSnapshotListener
                 }
 

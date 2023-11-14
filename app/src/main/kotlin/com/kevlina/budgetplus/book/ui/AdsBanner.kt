@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.ads
+package com.kevlina.budgetplus.book.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +30,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
-fun AdsBanner(bannerId: String) {
+internal fun AdsBanner(bannerId: String) {
 
     Box(
         contentAlignment = Alignment.Center,

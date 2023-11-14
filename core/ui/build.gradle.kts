@@ -16,7 +16,6 @@ dependencies {
     implementation(libs.android.appcompat)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowsizeclass)
-    implementation(libs.google.ads)
     implementation(libs.lottie.compose)
 
     api(projects.core.theme)

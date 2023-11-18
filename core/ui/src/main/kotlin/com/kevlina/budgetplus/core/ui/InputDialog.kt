@@ -15,8 +15,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 
 @Composable
 fun InputDialog(
@@ -28,7 +30,7 @@ fun InputDialog(
     onDismiss: () -> Unit,
 ) {
 
-    var name by remember {
+    var input by remember {
         mutableStateOf(TextFieldValue(
             text = currentInput.orEmpty(),
             selection = TextRange(currentInput.orEmpty().length)
@@ -42,14 +44,14 @@ fun InputDialog(
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
             TextField(
-                value = name,
-                onValueChange = { name = it },
+                value = input,
+                onValueChange = { input = it },
                 title = title,
                 placeholder = placeholder,
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
-                    if (name.text.isNotBlank() && name.text != currentInput) {
-                        onButtonClicked(name.text.trim())
+                    if (input.text.isNotBlank() && input.text != currentInput) {
+                        onButtonClicked(input.text.trim())
                         onDismiss()
                     }
                 }
@@ -57,10 +59,10 @@ fun InputDialog(
 
             Button(
                 onClick = {
-                    onButtonClicked(name.text.trim())
+                    onButtonClicked(input.text.trim())
                     onDismiss()
                 },
-                enabled = name.text.isNotBlank() && name.text != currentInput,
+                enabled = input.text.isNotBlank() && input.text != currentInput,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
 
@@ -76,4 +78,17 @@ fun InputDialog(
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
+}
+
+@Preview
+@Composable
+private fun InputDialog_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
+    InputDialog(
+        currentInput = null,
+        title = "Username",
+        placeholder = "Your username",
+        buttonText = "Save",
+        onButtonClicked = {},
+        onDismiss = {}
+    )
 }

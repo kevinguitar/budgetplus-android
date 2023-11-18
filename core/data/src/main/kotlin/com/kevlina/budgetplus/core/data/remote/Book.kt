@@ -12,4 +12,5 @@ data class Book(
     val expenseCategories: List<String> = emptyList(),
     val incomeCategories: List<String> = emptyList(),
     val archived: Boolean = false,
+    val archivedOn: Long? = null,
 )

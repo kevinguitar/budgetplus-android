@@ -68,6 +68,7 @@ internal class BookRepoImpl @Inject constructor(
     private val authorsField get() = "authors"
     private val createdOnField get() = "createdOn"
     private val archivedField get() = "archived"
+    private val archivedOnField get() = "archivedOn"
 
     // The join link will expire in 1 day
     private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
@@ -202,7 +203,10 @@ internal class BookRepoImpl @Inject constructor(
         val book = bookState.value ?: return
         if (book.ownerId == authManager.requireUserId()) {
             booksDb.get().document(book.id)
-                .update(archivedField, true)
+                .update(
+                    archivedField, true,
+                    archivedOnField, System.currentTimeMillis()
+                )
                 .await()
             tracker.logEvent("book_deleted")
         } else {

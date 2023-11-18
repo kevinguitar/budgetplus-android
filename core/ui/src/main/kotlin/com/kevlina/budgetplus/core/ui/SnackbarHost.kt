@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.tooling.preview.Preview
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarDuration as MaterialSnackbarDuration
@@ -41,7 +42,6 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
     MaterialSnackbarHost(
         hostState = hostState,
     ) { data ->
-
         Snackbar(
             snackbarData = data,
             containerColor = LocalAppColors.current.dark,
@@ -63,4 +63,10 @@ class SnackbarData(
 
 enum class SnackbarDuration {
     Short, Long, Indefinite
+}
+
+@Preview
+@Composable
+private fun SnackbarHost_Preview() = AppTheme {
+    SnackbarHost(SnackbarData(message = "Update is ready!", actionLabel = "Continue"))
 }

@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 
@@ -48,6 +50,30 @@ fun Button(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             content = content
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Button_Preview() = AppTheme {
+    Button(onClick = {}) {
+        Text(
+            text = "Done",
+            color = LocalAppColors.current.light,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Button_Disabled_Preview() = AppTheme {
+    Button(onClick = {}, enabled = false) {
+        Text(
+            text = "Done",
+            color = LocalAppColors.current.light,
+            fontWeight = FontWeight.Medium
         )
     }
 }

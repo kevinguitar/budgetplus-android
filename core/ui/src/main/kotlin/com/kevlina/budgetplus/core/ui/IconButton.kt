@@ -5,12 +5,15 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -40,4 +43,23 @@ fun IconButton(
                 )
             )
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun IconButton_Preview() = AppTheme {
+    IconButton(onClick = {}) {
+        IconButton(
+            onClick = { },
+            rippleColor = LocalAppColors.current.dark,
+            size = 40.dp
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Delete,
+                contentDescription = null,
+                tint = LocalAppColors.current.dark,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
 }

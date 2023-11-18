@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material3.Icon
@@ -9,17 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import java.time.LocalDate
 
 @Composable
 fun SingleDatePicker(
     date: LocalDateWrapper,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     showIcon: Boolean = true,
     fontSize: TextUnit = FontSize.Normal,
 ) {
@@ -54,4 +57,13 @@ fun SingleDatePicker(
             fontSize = fontSize
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SingleDatePicker_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
+    SingleDatePicker(
+        date = LocalDate.now().wrapped(),
+        modifier = Modifier.padding(8.dp)
+    )
 }

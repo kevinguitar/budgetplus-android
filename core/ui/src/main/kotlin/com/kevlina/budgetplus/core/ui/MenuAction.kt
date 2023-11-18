@@ -1,11 +1,14 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ImageSearch
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 private const val DISABLED_ALPHA = 0.5F
@@ -34,4 +37,10 @@ fun MenuAction(
             }
         )
     }
+}
+
+@Preview
+@Composable
+private fun MenuAction_Preview() = AppTheme {
+    MenuAction(imageVector = Icons.Rounded.ImageSearch, description = "")
 }

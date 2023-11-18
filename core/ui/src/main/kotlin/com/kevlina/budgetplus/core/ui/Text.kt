@@ -22,7 +22,6 @@ fun Text(
     singleLine: Boolean = false,
     lineHeight: TextUnit = TextUnit.Unspecified,
 ) {
-
     BasicText(
         text = text,
         modifier = modifier,

@@ -2,7 +2,12 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import androidx.compose.material3.Switch as MaterialSwitch
 
@@ -24,4 +29,11 @@ fun Switch(
         ),
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun Switch_Preview() = AppTheme {
+    var checked by remember { mutableStateOf(false) }
+    Switch(checked = checked, onCheckedChange = { checked = !checked })
 }

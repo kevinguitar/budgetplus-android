@@ -11,10 +11,7 @@
 
     <!-- Admob -->
     <string name="admob_application_id" translatable="false">ca-app-pub-5636675608309788~9761727103</string>
-    <string name="admob_banner_id" translatable="false">ca-app-pub-5636675608309788/5822482090</string>
     <string name="admob_banner_id_30sec" translatable="false">ca-app-pub-5636675608309788/1982646025</string>
-    <string name="admob_banner_id_60sec" translatable="false">ca-app-pub-5636675608309788/7043401019</string>
-    <string name="admob_banner_id_auto" translatable="false">ca-app-pub-5636675608309788/5045839355</string>
     <string name="admob_interstitial_id" translatable="false">ca-app-pub-5636675608309788/3378219950</string>
 
     <!-- Others -->

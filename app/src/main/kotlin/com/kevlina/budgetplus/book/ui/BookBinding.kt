@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -44,7 +43,6 @@ internal fun BookBinding(
     val navController = rememberNavController()
 
     val showAds by vm.showAds.collectAsStateWithLifecycle()
-    val bannerAdId by vm.bannerAdId.collectAsStateWithLifecycle()
     val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
@@ -107,7 +105,7 @@ internal fun BookBinding(
                 }
 
                 if (showAds && !isUnlockingPremium) {
-                    AdsBanner(stringResource(id = bannerAdId))
+                    AdsBanner()
                 }
             }
         }

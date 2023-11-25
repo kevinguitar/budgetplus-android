@@ -51,7 +51,7 @@ internal class RemoteConfigImpl @Inject constructor(
                 allConfigs.value = remoteConfig.all
                 Timber.d("RemoteConfig: Configs fetched ${allConfigs.value.keys}")
             } catch (e: Exception) {
-                Timber.e(e, "RemoteConfig: Fetch failed")
+                Timber.w(e, "RemoteConfig: Fetch failed")
             }
         }
     }

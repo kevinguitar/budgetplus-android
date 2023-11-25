@@ -49,10 +49,6 @@ class AndroidAppConventionPlugin : Plugin<Project> {
                 vectorDrawables {
                     useSupportLibrary = true
                 }
-
-                resourceConfigurations.addAll(
-                    listOf("en", "zh-rCN", "zh-rTW", "ja-rJP")
-                )
             }
 
             signingConfigs {
@@ -84,6 +80,10 @@ class AndroidAppConventionPlugin : Plugin<Project> {
 
             bundle {
                 storeArchive.enable = false
+            }
+
+            androidResources {
+                generateLocaleConfig = true
             }
         }
     }

@@ -10,8 +10,10 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.navigation.compose)
-    implementation(libs.google.ads)
     implementation(libs.profile.installer)
+
+    implementation(libs.google.ads)
+    runtimeOnly(libs.google.ads.mediation.meta)
 
     implementation(projects.core.billing)
     implementation(projects.core.data)

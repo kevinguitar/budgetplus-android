@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import com.google.android.gms.ads.AdRequest
@@ -16,7 +15,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@SuppressLint("VisibleForTests")
 @Singleton
 class FullScreenAdsLoader @Inject constructor(
     @ApplicationContext private val context: Context,

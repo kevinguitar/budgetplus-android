@@ -69,7 +69,7 @@ internal fun AdsBanner(
                     setAdSize(AdSize.BANNER)
                     adUnitId = bannerId
                     adListener = object : AdListener() {
-                        override fun onAdFailedToLoad(p0: LoadAdError) {
+                        override fun onAdFailedToLoad(adError: LoadAdError) {
                             showNoAdsHint = true
                         }
                     }

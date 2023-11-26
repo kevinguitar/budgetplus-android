@@ -36,3 +36,5 @@
 -dontwarn org.openjsse.net.ssl.OpenJSSE
 -dontwarn org.apiguardian.api.API$Status
 -dontwarn org.apiguardian.api.API
+-dontwarn com.facebook.infer.annotation.Nullsafe$Mode
+-dontwarn com.facebook.infer.annotation.Nullsafe

@@ -4,7 +4,7 @@ gradle-plugin = "8.1.4"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "1.9.20"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
-ksp = "1.9.20-1.0.14"
+ksp = "1.9.21-1.0.15"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2023.10.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler

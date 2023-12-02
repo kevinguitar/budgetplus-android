@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -12,6 +13,8 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.lottie.rememberColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun InvestAnimation(
@@ -42,4 +45,10 @@ internal fun InvestAnimation(
         dynamicProperties = dynamicProperties,
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun InvestAnimation_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
+    InvestAnimation()
 }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -12,6 +13,8 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.lottie.rememberColorProperty
 import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
+import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun UnlockAnimator(
@@ -31,4 +34,10 @@ internal fun UnlockAnimator(
         dynamicProperties = dynamicProperties,
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun UnlockAnimator_Preview() = AppTheme {
+    UnlockAnimator(color = LocalAppColors.current.dark)
 }

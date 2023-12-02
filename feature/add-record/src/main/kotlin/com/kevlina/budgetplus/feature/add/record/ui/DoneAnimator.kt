@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -23,6 +25,9 @@ import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.lottie.rememberColorProperty
 import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -59,7 +64,6 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
     }
 
     if (showAnimation) {
-
         LottieAnimation(
             composition = imgDone,
             progress = { lottieAnimatable.progress },
@@ -68,5 +72,20 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
                 .size(160.dp)
                 .align(Alignment.Center),
         )
+    }
+}
+
+@Preview
+@Composable
+private fun DoneAnimator_Preview() = AppTheme(themeColors = ThemeColors.Lavender) {
+    val eventTrigger = remember { EventTrigger<Unit>() }
+    Box {
+        DoneAnimator(eventTrigger = eventTrigger)
+    }
+    LaunchedEffect(key1 = Unit) {
+        while (true) {
+            delay(1000)
+            eventTrigger.sendEvent(Unit)
+        }
     }
 }

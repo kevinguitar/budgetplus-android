@@ -78,7 +78,9 @@ internal fun OverviewList(
             records.isEmpty() -> item(
                 key = OverviewUiType.ZeroCase.name,
                 contentType = OverviewUiType.ZeroCase,
-                content = { OverviewZeroCase() }
+                content = {
+                    OverviewZeroCase(modifier = Modifier.padding(top = 32.dp))
+                }
             )
 
             mode == OverviewMode.AllRecords -> itemsIndexed(

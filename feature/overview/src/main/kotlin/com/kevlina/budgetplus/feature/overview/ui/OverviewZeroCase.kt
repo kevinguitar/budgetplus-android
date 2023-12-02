@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -14,12 +14,14 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.lottie.rememberColorProperty
 import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.blend
 
 private const val BG_DARKEN_FACTOR = 0.5F
 
 @Composable
-fun OverviewZeroCase() {
+fun OverviewZeroCase(modifier: Modifier = Modifier) {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_empty))
 
@@ -55,8 +57,12 @@ fun OverviewZeroCase() {
         composition = composition,
         speed = 1.5F,
         dynamicProperties = dynamicProperties,
-        modifier = Modifier
-            .padding(top = 32.dp)
-            .size(240.dp)
+        modifier = modifier.size(240.dp)
     )
+}
+
+@Preview
+@Composable
+private fun OverviewZeroCase_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
+    OverviewZeroCase()
 }

@@ -22,7 +22,7 @@ private fun MacrobenchmarkScope.hasText(text: String): Boolean {
 }
 
 private fun MacrobenchmarkScope.waitForTextAndClick(text: String) {
-    val isVisible = device.wait(Until.hasObject(By.text(text)), UI_TIMEOUT)
+    val isVisible = hasText(text)
     if (isVisible) {
         device.findObject(By.text(text)).click()
     }

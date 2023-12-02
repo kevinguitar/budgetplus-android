@@ -13,6 +13,7 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.nav.NavigationInfo
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.data.AdMobInitializer
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
@@ -33,6 +34,7 @@ class BookViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val stringProvider: StringProvider,
+    adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
 ) : ViewModel() {
 
@@ -42,6 +44,7 @@ class BookViewModel @Inject constructor(
     val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent
 
     val showAds = authManager.isPremium.mapState { !it }
+    val isAdMobInitialized = adMobInitializer.isInitialized
 
     init {
         if (bookRepo.currentBookId != null) {

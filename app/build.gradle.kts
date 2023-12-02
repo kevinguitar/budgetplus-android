@@ -11,9 +11,8 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.profile.installer)
-
     implementation(libs.google.ads)
-    runtimeOnly(libs.google.ads.mediation.meta)
+    implementation(libs.lottie.compose)
 
     implementation(projects.core.billing)
     implementation(projects.core.data)

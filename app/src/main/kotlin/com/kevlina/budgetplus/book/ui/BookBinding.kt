@@ -43,6 +43,7 @@ internal fun BookBinding(
     val navController = rememberNavController()
 
     val showAds by vm.showAds.collectAsStateWithLifecycle()
+    val isAdMobInitialized by vm.isAdMobInitialized.collectAsStateWithLifecycle()
     val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
@@ -105,7 +106,7 @@ internal fun BookBinding(
                 }
 
                 if (showAds && !isUnlockingPremium) {
-                    AdsBanner()
+                    AdsBanner(isAdMobInitialized = isAdMobInitialized)
                 }
             }
         }

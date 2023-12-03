@@ -84,6 +84,8 @@ internal fun AdsBanner(
     }
 }
 
+private const val LOADER_SCALE = 2.5F
+
 @Composable
 private fun AdsBannerLoader() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_loader))
@@ -98,7 +100,7 @@ private fun AdsBannerLoader() {
         dynamicProperties = dynamicProperties,
         modifier = Modifier
             .fillMaxHeight()
-            .scale(2.5F)
+            .scale(LOADER_SCALE)
     )
 }
 

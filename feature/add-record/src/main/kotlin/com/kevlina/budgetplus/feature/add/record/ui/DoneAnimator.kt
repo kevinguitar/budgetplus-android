@@ -29,6 +29,7 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
@@ -84,7 +85,7 @@ private fun DoneAnimator_Preview() = AppTheme(themeColors = ThemeColors.Lavender
     }
     LaunchedEffect(key1 = Unit) {
         while (true) {
-            delay(1000)
+            delay(1.seconds)
             eventTrigger.sendEvent(Unit)
         }
     }

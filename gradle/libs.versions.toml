@@ -10,7 +10,7 @@ compose-bom = "2023.10.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.6"
 # https://firebase.google.com/support/release-notes/android
-firebase-bom = "32.6.0"
+firebase-bom = "32.7.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.49"
 # https://github.com/coil-kt/coil/releases

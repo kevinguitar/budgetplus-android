@@ -61,7 +61,7 @@ kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
-lottie-compose = "com.airbnb.android:lottie-compose:6.2.0"
+lottie-compose = "com.airbnb.android:lottie-compose:6.3.0"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.2"
 mockk = "io.mockk:mockk:1.13.8"
 navigation-compose = "androidx.navigation:navigation-compose:2.7.6"

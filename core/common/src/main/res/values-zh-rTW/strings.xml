@@ -24,10 +24,11 @@
     <string name="record_empty_category">請選擇類別</string>
     <string name="record_empty_price">請輸入金額</string>
     <string name="record_created">已新增至%s</string>
-    <string name="record_edit_title">編輯紀錄</string>
+    <string name="record_edit_title">編輯帳目</string>
     <string name="record_edited">已儲存</string>
     <string name="record_deleted">已刪除%s</string>
-    <string name="record_confirm_delete">確認刪除此筆紀錄嗎？</string>
+    <string name="record_confirm_delete">確認刪除此筆帳目嗎？</string>
+    <string name="record_duplicated">帳目已複製</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">批次記帳</string>
@@ -38,13 +39,13 @@
     <string name="batch_record_frequency_daily">每天</string>
     <string name="batch_record_times">循環次數</string>
     <string name="batch_record_cta">批次記帳</string>
-    <string name="batch_record_created">%1$s筆紀錄已新增至%2$s</string>
-    <string name="batch_record_edit_confirmation">您要一併套用至未來的所有記錄嗎？</string>
-    <string name="batch_record_delete_confirmation">您要一併刪除未來的所有紀錄嗎？</string>
+    <string name="batch_record_created">%1$s筆帳目已新增至%2$s</string>
+    <string name="batch_record_edit_confirmation">您要一併套用至未來的所有帳目嗎？</string>
+    <string name="batch_record_delete_confirmation">您要一併刪除未來的所有帳目嗎？</string>
     <string name="batch_record_only_this">這筆就好</string>
-    <string name="batch_record_all_future_records">所有紀錄</string>
-    <string name="batch_record_edited">已編輯%s筆紀錄</string>
-    <string name="batch_record_deleted">已刪除%s筆紀錄</string>
+    <string name="batch_record_all_future_records">所有帳目</string>
+    <string name="batch_record_edited">已編輯%s筆帳目</string>
+    <string name="batch_record_deleted">已刪除%s筆帳目</string>
 
     <!-- Book -->
     <string name="book_selection">選擇帳本</string>
@@ -196,6 +197,7 @@
     <string name="cta_back">返回</string>
     <string name="cta_delete">刪除</string>
     <string name="cta_complete">完成</string>
+    <string name="cta_duplicate">複製</string>
     <string name="select_date">選擇日期</string>
     <string name="date_to">至</string>
     <string name="today">今天</string>

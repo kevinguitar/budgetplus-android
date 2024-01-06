@@ -28,8 +28,10 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.overview.OverviewMode
+import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
+import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,6 +54,7 @@ internal fun OverviewList(
     val isSoloAuthor by uiState.isSoloAuthor.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
+    var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,17 +93,20 @@ internal fun OverviewList(
             ) { index, record ->
 
                 RecordCard(
+                    uiState = RecordCardUiState(
+                        item = record,
+                        isLast = index == records.lastIndex,
+                        canEdit = uiState.canEditRecord(record),
+                        showCategory = true,
+                        showAuthor = !isSoloAuthor,
+                        onEdit = { editRecordDialog = record },
+                        onDuplicate = { uiState.duplicateRecord(record) },
+                        onDelete = { deleteRecordDialog = record }
+                    ),
                     modifier = Modifier.thenIf(index == 0) {
                         Modifier.padding(top = 8.dp)
-                    },
-                    item = record,
-                    isLast = index == records.lastIndex,
-                    canEdit = uiState.canEditRecord(record),
-                    showCategory = true,
-                    showAuthor = !isSoloAuthor
-                ) {
-                    editRecordDialog = record
-                }
+                    }
+                )
             }
 
             mode == OverviewMode.GroupByCategories -> itemsIndexed(
@@ -137,9 +143,14 @@ internal fun OverviewList(
     editRecordDialog?.let { editRecord ->
         EditRecordDialog(
             editRecord = editRecord,
-            onDismiss = {
-                editRecordDialog = null
-            }
+            onDismiss = { editRecordDialog = null }
+        )
+    }
+
+    deleteRecordDialog?.let { deleteRecord ->
+        DeleteRecordDialog(
+            editRecord = deleteRecord,
+            onDismiss = { deleteRecordDialog = null }
         )
     }
 }
@@ -154,6 +165,7 @@ internal data class OverviewListUiState(
     val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?>,
     val isSoloAuthor: StateFlow<Boolean>,
     val canEditRecord: (Record) -> Boolean,
+    val duplicateRecord: (Record) -> Unit,
 ) {
     companion object {
 
@@ -179,7 +191,8 @@ internal data class OverviewListUiState(
             recordList = MutableStateFlow(foodRecords),
             recordGroups = MutableStateFlow(recordGroupsMap),
             isSoloAuthor = MutableStateFlow(false),
-            canEditRecord = { true }
+            canEditRecord = { true },
+            duplicateRecord = { }
         )
     }
 }

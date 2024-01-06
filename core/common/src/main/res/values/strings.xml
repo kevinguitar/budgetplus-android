@@ -28,6 +28,7 @@
     <string name="record_edited">Record edited</string>
     <string name="record_deleted">Record %s is deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
+    <string name="record_duplicated">Record duplicated</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">Batch Record</string>
@@ -196,6 +197,7 @@
     <string name="cta_back">Back</string>
     <string name="cta_delete">Delete</string>
     <string name="cta_complete">Complete</string>
+    <string name="cta_duplicate">Duplicate</string>
     <string name="select_date">Select Date</string>
     <string name="date_to">to</string>
     <string name="today">Today</string>

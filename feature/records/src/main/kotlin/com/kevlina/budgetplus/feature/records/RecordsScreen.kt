@@ -28,8 +28,10 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
+import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 
 @Composable
 fun RecordsScreen(
@@ -38,6 +40,7 @@ fun RecordsScreen(
 ) {
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
+    var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     val records by vm.records.collectAsStateWithLifecycle()
     val sortMode by vm.sortMode.collectAsStateWithLifecycle()
@@ -94,15 +97,16 @@ fun RecordsScreen(
         ) {
 
             itemsIndexed(records.orEmpty()) { index, item ->
-                RecordCard(
+                RecordCard(uiState = RecordCardUiState(
                     item = item,
                     isLast = index == records?.lastIndex,
                     canEdit = vm.canEditRecord(item),
                     showCategory = false,
-                    showAuthor = true
-                ) {
-                    editRecordDialog = item
-                }
+                    showAuthor = true,
+                    onEdit = { editRecordDialog = item },
+                    onDuplicate = { vm.duplicateRecord(item) },
+                    onDelete = { deleteRecordDialog = item }
+                ))
             }
         }
     }
@@ -110,9 +114,14 @@ fun RecordsScreen(
     editRecordDialog?.let { editRecord ->
         EditRecordDialog(
             editRecord = editRecord,
-            onDismiss = {
-                editRecordDialog = null
-            }
+            onDismiss = { editRecordDialog = null }
+        )
+    }
+
+    deleteRecordDialog?.let { deleteRecord ->
+        DeleteRecordDialog(
+            editRecord = deleteRecord,
+            onDismiss = { deleteRecordDialog = null }
         )
     }
 }

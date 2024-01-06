@@ -12,6 +12,7 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -43,6 +44,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class OverviewViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     private val authManager: AuthManager,
@@ -180,6 +182,11 @@ internal class OverviewViewModel @Inject constructor(
     fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+    }
+
+    fun duplicateRecord(record: Record) {
+        recordRepo.duplicateRecord(record)
+        toaster.showMessage(R.string.record_duplicated)
     }
 
     fun highlightModeButton(dest: BubbleDest) {

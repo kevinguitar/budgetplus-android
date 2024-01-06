@@ -34,6 +34,8 @@ interface RecordRepo {
         newPriceText: String,
     ): Int
 
+    fun duplicateRecord(record: Record)
+
     fun deleteRecord(recordId: String)
 
     /**

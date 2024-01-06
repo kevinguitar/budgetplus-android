@@ -9,11 +9,13 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.common.withCurrentTime
+import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
+import com.kevlina.budgetplus.core.data.remote.toAuthor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +34,7 @@ import javax.inject.Singleton
 internal class RecordRepoImpl @Inject constructor(
     @RecordsDb private val recordsDb: Provider<CollectionReference>,
     @AppScope private val appScope: CoroutineScope,
+    private val authManager: AuthManager,
     private val tracker: Tracker,
     private val toaster: Toaster,
 ) : RecordRepo {
@@ -128,6 +131,17 @@ internal class RecordRepoImpl @Inject constructor(
         }
 
         return records.size()
+    }
+
+    override fun duplicateRecord(record: Record) {
+        val duplicatedRecord = record.copy(
+            id = "",
+            // The person who duplicate it should be the author
+            author = authManager.userState.value?.toAuthor(),
+            // Do not carry the batch info to duplicates
+            batchId = null
+        )
+        recordsDb.get().add(duplicatedRecord)
     }
 
     override fun deleteRecord(recordId: String) {

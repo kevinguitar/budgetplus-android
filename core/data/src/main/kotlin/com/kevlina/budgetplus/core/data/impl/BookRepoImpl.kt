@@ -270,6 +270,15 @@ internal class BookRepoImpl @Inject constructor(
         currentBook = book
     }
 
+    override fun addCategory(type: RecordType, category: String) {
+        val book = bookState.value ?: return
+        val currentCategories = when (type) {
+            RecordType.Expense -> book.expenseCategories
+            RecordType.Income -> book.incomeCategories
+        }
+        updateCategories(type, currentCategories + category)
+    }
+
     override fun updateCategories(type: RecordType, categories: List<String>) {
         booksDb.get().document(requireBookId)
             .update(

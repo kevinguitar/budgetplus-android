@@ -35,6 +35,8 @@ interface BookRepo {
 
     fun selectBook(book: Book)
 
+    fun addCategory(type: RecordType, category: String)
+
     fun updateCategories(type: RecordType, categories: List<String>)
 
 }

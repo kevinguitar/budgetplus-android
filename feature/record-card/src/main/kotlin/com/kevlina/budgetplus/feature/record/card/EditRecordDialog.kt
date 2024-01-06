@@ -32,6 +32,7 @@ import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
@@ -121,8 +122,8 @@ fun EditRecordDialog(
                         SingleDatePicker(
                             date = date,
                             modifier = Modifier
-                                .rippleClick { dialogState = EditRecordDialogState.PickingDate }
-                                .padding(vertical = 4.dp)
+                                    .rippleClick { dialogState = EditRecordDialogState.PickingDate }
+                                    .padding(vertical = 4.dp)
                         )
                     }
 
@@ -198,9 +199,23 @@ fun EditRecordDialog(
                             category = it
                             dialogState = EditRecordDialogState.ShowRecord
                         },
+                        onAddClicked = {
+                            dialogState = EditRecordDialogState.AddingCategory
+                        }
                     )
                 )
             }
+        }
+
+        EditRecordDialogState.AddingCategory -> {
+            InputDialog(
+                title = stringResource(id = R.string.category_title),
+                buttonText = stringResource(id = R.string.cta_add),
+                onButtonClicked = { newCategory ->
+                    vm.addCategory(editRecord.type, newCategory)
+                },
+                onDismiss = { dialogState = EditRecordDialogState.PickingCategory }
+            )
         }
 
         EditRecordDialogState.DeleteConfirmation -> {
@@ -254,6 +269,7 @@ internal enum class EditRecordDialogState {
     ShowRecord,
     PickingDate,
     PickingCategory,
+    AddingCategory,
     DeleteConfirmation,
     BatchEditing,
     BatchDeleting,

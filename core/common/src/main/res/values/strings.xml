@@ -28,6 +28,7 @@
     <string name="record_edited">Record edited</string>
     <string name="record_deleted">Record %s is deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
+    <string name="record_duplicated">Record duplicated</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">Batch Record</string>
@@ -173,6 +174,7 @@
     <string name="bubble_save_category">Click save after you finish editing</string>
     <string name="bubble_overview_mode">Tap to group the records by category</string>
     <string name="bubble_overview_export">You can export the records to csv</string>
+    <string name="bubble_overview_record_tap_hint">Tap to edit, long tap to duplicate or delete</string>
     <string name="bubble_records_sorting">Change the records sorting by date or price</string>
     <string name="bubble_colors_sharing">Share the colors with your friends!</string>
 
@@ -196,6 +198,7 @@
     <string name="cta_back">Back</string>
     <string name="cta_delete">Delete</string>
     <string name="cta_complete">Complete</string>
+    <string name="cta_duplicate">Duplicate</string>
     <string name="select_date">Select Date</string>
     <string name="date_to">to</string>
     <string name="today">Today</string>

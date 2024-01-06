@@ -68,14 +68,14 @@ internal fun Project.configureKotlinAndroid(
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     dependencies {
-        add("implementation", libs.findLibrary("android.core").get())
-        add("implementation", libs.findLibrary("coroutines").get())
-        add("implementation", libs.findLibrary("timber").get())
-        add("implementation", libs.findBundle("test").get())
-        add("coreLibraryDesugaring", libs.findLibrary("desugar").get())
+        implementation(libs.findLibrary("android.core").get())
+        implementation(libs.findLibrary("coroutines").get())
+        implementation(libs.findLibrary("timber").get())
+        implementation(libs.findBundle("test").get())
+        coreLibraryDesugaring(libs.findLibrary("desugar").get())
 
         if (path != ":core:common") {
-            add("implementation", project(":core:common"))
+            implementation(project(":core:common"))
         }
     }
 }

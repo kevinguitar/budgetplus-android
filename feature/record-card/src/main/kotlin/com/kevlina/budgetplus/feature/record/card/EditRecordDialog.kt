@@ -28,8 +28,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
-import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InputDialog
@@ -157,16 +158,9 @@ fun EditRecordDialog(
                         }
                     )
 
-                    EditRecordActions(
-                        onDeleteClicked = {
-                            dialogState = if (editRecord.isBatched) {
-                                EditRecordDialogState.BatchDeleting
-                            } else {
-                                EditRecordDialogState.DeleteConfirmation
-                            }
-                        },
-                        isSaveEnabled = isSaveEnabled,
-                        onSaveClicked = {
+                    Button(
+                        enabled = isSaveEnabled,
+                        onClick = {
                             if (editRecord.isBatched) {
                                 dialogState = EditRecordDialogState.BatchEditing
                             } else {
@@ -174,7 +168,13 @@ fun EditRecordDialog(
                                 onDismiss()
                             }
                         }
-                    )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.cta_save),
+                            color = LocalAppColors.current.light,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }
@@ -218,17 +218,6 @@ fun EditRecordDialog(
             )
         }
 
-        EditRecordDialogState.DeleteConfirmation -> {
-            ConfirmDialog(
-                message = stringResource(id = R.string.record_confirm_delete),
-                onConfirm = {
-                    vm.deleteRecord(editRecord)
-                    onDismiss()
-                },
-                onDismiss = { dialogState = EditRecordDialogState.ShowRecord }
-            )
-        }
-
         EditRecordDialogState.BatchEditing -> {
             EditBatchDialog(
                 onDismiss = { dialogState = EditRecordDialogState.ShowRecord },
@@ -239,21 +228,6 @@ fun EditRecordDialog(
                 },
                 onSelectAll = {
                     confirmEdit(editBatch = true)
-                    onDismiss()
-                }
-            )
-        }
-
-        EditRecordDialogState.BatchDeleting -> {
-            EditBatchDialog(
-                onDismiss = { dialogState = EditRecordDialogState.ShowRecord },
-                text = stringResource(id = R.string.batch_record_delete_confirmation),
-                onSelectOne = {
-                    vm.deleteRecord(editRecord)
-                    onDismiss()
-                },
-                onSelectAll = {
-                    vm.deleteRecord(editRecord, deleteBatch = true)
                     onDismiss()
                 }
             )
@@ -270,7 +244,5 @@ internal enum class EditRecordDialogState {
     PickingDate,
     PickingCategory,
     AddingCategory,
-    DeleteConfirmation,
     BatchEditing,
-    BatchDeleting,
 }

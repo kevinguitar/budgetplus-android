@@ -12,6 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,10 +29,14 @@ import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.overview.OverviewMode
+import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
+import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,6 +59,7 @@ internal fun OverviewList(
     val isSoloAuthor by uiState.isSoloAuthor.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
+    var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,17 +98,32 @@ internal fun OverviewList(
             ) { index, record ->
 
                 RecordCard(
+                    uiState = RecordCardUiState(
+                        item = record,
+                        isLast = index == records.lastIndex,
+                        canEdit = uiState.canEditRecord(record),
+                        showCategory = true,
+                        showAuthor = !isSoloAuthor,
+                        onEdit = { editRecordDialog = record },
+                        onDuplicate = { uiState.duplicateRecord(record) },
+                        onDelete = { deleteRecordDialog = record }
+                    ),
                     modifier = Modifier.thenIf(index == 0) {
-                        Modifier.padding(top = 8.dp)
-                    },
-                    item = record,
-                    isLast = index == records.lastIndex,
-                    canEdit = uiState.canEditRecord(record),
-                    showCategory = true,
-                    showAuthor = !isSoloAuthor
-                ) {
-                    editRecordDialog = record
-                }
+                        val bubbleShape = with(LocalDensity.current) {
+                            BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
+                        }
+
+                        Modifier
+                            .padding(top = 8.dp)
+                            .onPlaced {
+                                uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
+                                    size = it.size,
+                                    offset = it.positionInRoot(),
+                                    shape = bubbleShape
+                                ))
+                            }
+                    }
+                )
             }
 
             mode == OverviewMode.GroupByCategories -> itemsIndexed(
@@ -137,9 +160,14 @@ internal fun OverviewList(
     editRecordDialog?.let { editRecord ->
         EditRecordDialog(
             editRecord = editRecord,
-            onDismiss = {
-                editRecordDialog = null
-            }
+            onDismiss = { editRecordDialog = null }
+        )
+    }
+
+    deleteRecordDialog?.let { deleteRecord ->
+        DeleteRecordDialog(
+            editRecord = deleteRecord,
+            onDismiss = { deleteRecordDialog = null }
         )
     }
 }
@@ -153,7 +181,9 @@ internal data class OverviewListUiState(
     val recordList: StateFlow<ImmutableList<Record>?>,
     val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?>,
     val isSoloAuthor: StateFlow<Boolean>,
+    val highlightTapHint: (BubbleDest) -> Unit,
     val canEditRecord: (Record) -> Boolean,
+    val duplicateRecord: (Record) -> Unit,
 ) {
     companion object {
 
@@ -179,7 +209,9 @@ internal data class OverviewListUiState(
             recordList = MutableStateFlow(foodRecords),
             recordGroups = MutableStateFlow(recordGroupsMap),
             isSoloAuthor = MutableStateFlow(false),
-            canEditRecord = { true }
+            highlightTapHint = {},
+            canEditRecord = { true },
+            duplicateRecord = {}
         )
     }
 }

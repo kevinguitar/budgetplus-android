@@ -24,10 +24,11 @@
     <string name="record_empty_category">カテゴリを選択してください</string>
     <string name="record_empty_price">金額を入力してください</string>
     <string name="record_created">%sに追加しました</string>
-    <string name="record_edit_title">記録を編集</string>
+    <string name="record_edit_title">帳面を編集</string>
     <string name="record_edited">保存済み</string>
     <string name="record_deleted">%sを削除しました" となります</string>
-    <string name="record_confirm_delete">この記録を削除してもよろしいですか？</string>
+    <string name="record_confirm_delete">この帳面を削除してもよろしいですか？</string>
+    <string name="record_duplicated">帳面がコピーされました</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">一括で記帳する</string>
@@ -38,13 +39,13 @@
     <string name="batch_record_frequency_daily">毎日</string>
     <string name="batch_record_times">サイクル回数</string>
     <string name="batch_record_cta">一括記帳</string>
-    <string name="batch_record_created">%1$sの記録が%2$sに追加されました</string>
-    <string name="batch_record_edit_confirmation">将来のすべての記録にも適用しますか？</string>
-    <string name="batch_record_delete_confirmation">将来のすべての記録を削除しますか？</string>
+    <string name="batch_record_created">%1$sの帳面が%2$sに追加されました</string>
+    <string name="batch_record_edit_confirmation">将来のすべての帳面にも適用しますか？</string>
+    <string name="batch_record_delete_confirmation">将来のすべての帳面を削除しますか？</string>
     <string name="batch_record_only_this">これだけです</string>
-    <string name="batch_record_all_future_records">すべての記録</string>
-    <string name="batch_record_edited">%s件の記録を編集しました</string>
-    <string name="batch_record_deleted">%s件の記録を削除しました</string>
+    <string name="batch_record_all_future_records">すべての帳面</string>
+    <string name="batch_record_edited">%s件の帳面を編集しました</string>
+    <string name="batch_record_deleted">%s件の帳面を削除しました</string>
 
     <!-- Book -->
     <string name="book_selection">帳簿を選択する</string>
@@ -95,7 +96,7 @@
     <string name="overview_period_week">今週</string>
     <string name="overview_period_month">今月</string>
     <string name="overview_period_last_month">先月</string>
-    <string name="overview_exceed_max_period">1 か月以上前の記録を選別するためにプレミアム版をアンロックする</string>
+    <string name="overview_exceed_max_period">1 か月以上前の帳面を選別するためにプレミアム版をアンロックする</string>
     <string name="overview_sort_by_date">日付で並べ替える</string>
     <string name="overview_sort_by_price">金額で並べ替える</string>
     <string name="overview_balance">残高</string>
@@ -105,7 +106,7 @@
 
     <!-- Export -->
     <string name="export_cta">報告書を出力する</string>
-    <string name="export_csv_confirmation">%1$sから%2$sまでのすべての記録をエクスポートしますか？</string>
+    <string name="export_csv_confirmation">%1$sから%2$sまでのすべての帳面をエクスポートしますか？</string>
     <string name="export_csv_success">CSVレポートはダウンロードフォルダに保存されました</string>
     <string name="export_column_type">項目</string>
     <string name="export_column_name">内容</string>
@@ -173,6 +174,7 @@
     <string name="bubble_save_category">編集が完了したら、保存をお忘れなく！</string>
     <string name="bubble_overview_mode">カテゴリまたは詳細で収支を表示することができます</string>
     <string name="bubble_overview_export">収支データを CSV ファイルとしてエクスポートして保存する</string>
+    <string name="bubble_overview_record_tap_hint">タップして編集、長押ししてコピーまたは削除</string>
     <string name="bubble_records_sorting">収支を日付または金額で並び替えることができます</string>
     <string name="bubble_colors_sharing">友達にカラーパレットを共有しましょう！</string>
 
@@ -196,6 +198,7 @@
     <string name="cta_back">戻る</string>
     <string name="cta_delete">削除する</string>
     <string name="cta_complete">完了する</string>
+    <string name="cta_duplicate">コピー</string>
     <string name="select_date">日付を選択</string>
     <string name="date_to">～</string>
     <string name="today">今日</string>

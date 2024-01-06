@@ -24,10 +24,10 @@
     <string name="record_empty_category">请选择类别</string>
     <string name="record_empty_price">请输入金额</string>
     <string name="record_created">已新增至%s</string>
-    <string name="record_edit_title">编辑纪录</string>
+    <string name="record_edit_title">编辑帐目</string>
     <string name="record_edited">已储存</string>
     <string name="record_deleted">已删除%s</string>
-    <string name="record_confirm_delete">确认删除此笔纪录吗？</string>
+    <string name="record_confirm_delete">确认删除此笔帐目吗？</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">批次记帐</string>
@@ -38,13 +38,13 @@
     <string name="batch_record_frequency_daily">每天</string>
     <string name="batch_record_times">循环次数</string>
     <string name="batch_record_cta">批次记帐</string>
-    <string name="batch_record_created">%1$s笔纪录已新增至%2$s</string>
-    <string name="batch_record_edit_confirmation">您要一并套用至未来的所有记录吗？</string>
-    <string name="batch_record_delete_confirmation">您要一并删除未来的所有纪录吗？</string>
+    <string name="batch_record_created">%1$s笔帐目已新增至%2$s</string>
+    <string name="batch_record_edit_confirmation">您要一并套用至未来的所有帐目吗？</string>
+    <string name="batch_record_delete_confirmation">您要一并删除未来的所有帐目吗？</string>
     <string name="batch_record_only_this">这笔就好</string>
-    <string name="batch_record_all_future_records">所有纪录</string>
-    <string name="batch_record_edited">已编辑%s笔纪录</string>
-    <string name="batch_record_deleted">已删除%s笔纪录</string>
+    <string name="batch_record_all_future_records">所有帐目</string>
+    <string name="batch_record_edited">已编辑%s笔帐目</string>
+    <string name="batch_record_deleted">已删除%s笔帐目</string>
 
     <!-- Book -->
     <string name="book_selection">选择帐本</string>
@@ -173,6 +173,7 @@
     <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
     <string name="bubble_overview_mode">你可以选择用类别或明细显示帐目</string>
     <string name="bubble_overview_export">输出帐目成 CSV 档保存</string>
+    <string name="bubble_overview_record_tap_hint">点击编辑，长按以复制或删除</string>
     <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
     <string name="bubble_colors_sharing">点击分享你的调色盘给好友们！</string>
 

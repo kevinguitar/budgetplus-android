@@ -27,8 +27,10 @@ class BubbleRepo @Inject constructor(
     private var bubbleShownJob: Job? = null
 
     fun addBubbleToQueue(dest: BubbleDest) {
+        if (bubblesQueue.isEmpty()) {
+            showBubble(dest)
+        }
         bubblesQueue.add(dest)
-        showBubble(dest)
     }
 
     private fun showBubble(dest: BubbleDest) {
@@ -49,7 +51,7 @@ class BubbleRepo @Inject constructor(
             _bubble.value = null
 
             if (bubblesQueue.isNotEmpty()) {
-                showBubble(bubblesQueue.last())
+                showBubble(bubblesQueue.first())
             }
         }
     }
@@ -106,6 +108,14 @@ sealed class BubbleDest {
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_export,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
+    ) : BubbleDest()
+
+    data class OverviewRecordTapHint(
+        override val size: IntSize,
+        override val offset: Offset,
+        override val shape: BubbleShape,
+        override val textRes: Int = R.string.bubble_overview_record_tap_hint,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
     ) : BubbleDest()
 
     data class RecordsSorting(

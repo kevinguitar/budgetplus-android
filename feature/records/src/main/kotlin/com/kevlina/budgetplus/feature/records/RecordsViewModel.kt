@@ -4,10 +4,13 @@ import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -32,8 +35,10 @@ class RecordsViewModel @AssistedInject constructor(
     @Assisted("authorId") private val authorId: String?,
     private val userRepo: UserRepo,
     private val bookRepo: BookRepo,
+    private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
+    private val toaster: Toaster,
     private val authManager: AuthManager,
     recordsObserver: RecordsObserver,
     preferenceHolder: PreferenceHolder,
@@ -78,6 +83,11 @@ class RecordsViewModel @AssistedInject constructor(
     fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+    }
+
+    fun duplicateRecord(record: Record) {
+        recordRepo.duplicateRecord(record)
+        toaster.showMessage(R.string.record_duplicated)
     }
 
     @AssistedFactory

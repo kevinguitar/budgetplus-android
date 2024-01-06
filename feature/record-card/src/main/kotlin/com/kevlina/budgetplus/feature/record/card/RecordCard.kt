@@ -42,18 +42,6 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.time.LocalDate
 
-@Immutable
-class RecordCardUiState(
-    val item: Record,
-    val isLast: Boolean,
-    val canEdit: Boolean,
-    val showCategory: Boolean,
-    val showAuthor: Boolean,
-    val onEdit: () -> Unit,
-    val onDuplicate: () -> Unit,
-    val onDelete: () -> Unit,
-)
-
 @Composable
 fun RecordCard(
     uiState: RecordCardUiState,
@@ -178,6 +166,18 @@ fun RecordCard(
         }
     }
 }
+
+@Immutable
+class RecordCardUiState(
+    val item: Record,
+    val isLast: Boolean,
+    val canEdit: Boolean,
+    val showCategory: Boolean,
+    val showAuthor: Boolean,
+    val onEdit: () -> Unit,
+    val onDuplicate: () -> Unit,
+    val onDelete: () -> Unit,
+)
 
 @Composable
 private fun PillLabel(text: String) {

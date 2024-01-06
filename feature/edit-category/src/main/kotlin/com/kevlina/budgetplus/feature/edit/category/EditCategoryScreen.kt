@@ -141,7 +141,7 @@ fun EditCategoryScreen(
                             handlerModifier = Modifier.detectReorder(reorderableState),
                             modifier = Modifier.thenIf(index == 0) {
                                 val bubbleShape = with(LocalDensity.current) {
-                                    BubbleShape.RoundedRect(12.dp.toPx())
+                                    BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
                                 }
 
                                 Modifier.onPlaced {

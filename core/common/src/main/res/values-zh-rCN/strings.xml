@@ -173,6 +173,7 @@
     <string name="bubble_save_category">编辑完成后，记得储存喔！</string>
     <string name="bubble_overview_mode">你可以选择用类别或明细显示帐目</string>
     <string name="bubble_overview_export">输出帐目成 CSV 档保存</string>
+    <string name="bubble_overview_record_tap_hint">点击编辑，长按以复制或删除</string>
     <string name="bubble_records_sorting">你可以选择用日期或是金额排序帐目</string>
     <string name="bubble_colors_sharing">点击分享你的调色盘给好友们！</string>
 

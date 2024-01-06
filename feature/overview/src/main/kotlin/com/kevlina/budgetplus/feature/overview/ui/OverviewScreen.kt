@@ -164,6 +164,7 @@ private fun OverviewViewModel.toUiState() = OverviewContentUiState(
         recordList = recordList,
         recordGroups = recordGroups,
         isSoloAuthor = isSoloAuthor,
+        highlightTapHint = ::highlightTapHint,
         canEditRecord = ::canEditRecord,
         duplicateRecord = ::duplicateRecord
     )

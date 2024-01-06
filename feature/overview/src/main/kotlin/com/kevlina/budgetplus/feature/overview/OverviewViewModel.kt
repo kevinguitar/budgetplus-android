@@ -27,6 +27,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,6 +42,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 internal class OverviewViewModel @Inject constructor(
@@ -69,6 +72,8 @@ internal class OverviewViewModel @Inject constructor(
 
     private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
     private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
+    private var isTapHintBubbleShown by preferenceHolder.bindBoolean(false)
+    private var tapHintBubbleJob: Job? = null
 
     val authors = bookRepo.bookState
         .map {
@@ -208,6 +213,19 @@ internal class OverviewViewModel @Inject constructor(
                 isExportBubbleShown = true
                 bubbleRepo.addBubbleToQueue(dest)
             }
+        }
+    }
+
+    fun highlightTapHint(dest: BubbleDest) {
+        if (isTapHintBubbleShown) return
+
+        tapHintBubbleJob?.cancel()
+        tapHintBubbleJob = viewModelScope.launch {
+            // Give a short delay for the animation to complete
+            delay(1.seconds)
+
+            isTapHintBubbleShown = true
+            bubbleRepo.addBubbleToQueue(dest)
         }
     }
 }

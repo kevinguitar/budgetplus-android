@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -13,8 +14,11 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class EditCategoryViewModel @Inject constructor(
@@ -58,7 +62,11 @@ class EditCategoryViewModel @Inject constructor(
     fun highlightSaveButton(dest: BubbleDest) {
         if (!isSaveBubbleShown) {
             isSaveBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
+            viewModelScope.launch {
+                // Display save hint after edit hint
+                delay(1.seconds)
+                bubbleRepo.addBubbleToQueue(dest)
+            }
         }
     }
 

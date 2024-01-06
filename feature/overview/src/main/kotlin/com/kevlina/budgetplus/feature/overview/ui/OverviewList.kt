@@ -12,6 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,6 +29,8 @@ import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
@@ -104,7 +109,19 @@ internal fun OverviewList(
                         onDelete = { deleteRecordDialog = record }
                     ),
                     modifier = Modifier.thenIf(index == 0) {
-                        Modifier.padding(top = 8.dp)
+                        val bubbleShape = with(LocalDensity.current) {
+                            BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
+                        }
+
+                        Modifier
+                            .padding(top = 8.dp)
+                            .onPlaced {
+                                uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
+                                    size = it.size,
+                                    offset = it.positionInRoot(),
+                                    shape = bubbleShape
+                                ))
+                            }
                     }
                 )
             }
@@ -164,6 +181,7 @@ internal data class OverviewListUiState(
     val recordList: StateFlow<ImmutableList<Record>?>,
     val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?>,
     val isSoloAuthor: StateFlow<Boolean>,
+    val highlightTapHint: (BubbleDest) -> Unit,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
 ) {
@@ -191,8 +209,9 @@ internal data class OverviewListUiState(
             recordList = MutableStateFlow(foodRecords),
             recordGroups = MutableStateFlow(recordGroupsMap),
             isSoloAuthor = MutableStateFlow(false),
+            highlightTapHint = {},
             canEditRecord = { true },
-            duplicateRecord = { }
+            duplicateRecord = {}
         )
     }
 }

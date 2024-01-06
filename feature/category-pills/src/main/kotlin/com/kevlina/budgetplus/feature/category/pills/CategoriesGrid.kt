@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.DriveFileRenameOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -16,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,7 +74,19 @@ fun CategoriesGrid(
         }
 
         if (uiState.onEditClicked != null) {
-            EditCategoryButton(uiState.onEditClicked)
+            CategoryActionButton(
+                icon = Icons.Rounded.DriveFileRenameOutline,
+                name = stringResource(id = R.string.cta_edit),
+                onClick = uiState.onEditClicked
+            )
+        }
+
+        if (uiState.onAddClicked != null) {
+            CategoryActionButton(
+                icon = Icons.Rounded.Add,
+                name = stringResource(id = R.string.cta_add),
+                onClick = uiState.onAddClicked
+            )
         }
     }
 }
@@ -111,8 +125,11 @@ fun CategoryCard(
 }
 
 @Composable
-private fun EditCategoryButton(onClick: () -> Unit) {
-
+private fun CategoryActionButton(
+    icon: ImageVector,
+    name: String,
+    onClick: () -> Unit,
+) {
     Box(
         modifier = Modifier
             .background(
@@ -130,14 +147,14 @@ private fun EditCategoryButton(onClick: () -> Unit) {
         ) {
 
             Icon(
-                imageVector = Icons.Rounded.DriveFileRenameOutline,
+                imageVector = icon,
                 contentDescription = stringResource(id = R.string.category_edit_title),
                 tint = LocalAppColors.current.light,
                 modifier = Modifier.size(16.dp)
             )
 
             Text(
-                text = stringResource(id = R.string.cta_edit),
+                text = name,
                 singleLine = true,
                 color = LocalAppColors.current.light
             )
@@ -153,6 +170,7 @@ class CategoriesGridUiState(
     val selectedCategory: StateFlow<String?>,
     val onCategorySelected: (String) -> Unit,
     val onEditClicked: (() -> Unit)? = null,
+    val onAddClicked: (() -> Unit)? = null,
     val cardPaddingValues: PaddingValues = cardPadding,
 ) {
     companion object {
@@ -174,6 +192,7 @@ fun CategoriesViewModel.toUiState(
     selectedCategory: StateFlow<String?> = category,
     onCategorySelected: (String) -> Unit = ::setCategory,
     onEditClicked: (() -> Unit)? = null,
+    onAddClicked: (() -> Unit)? = null,
     cardPaddingValues: PaddingValues = cardPadding,
 ) = CategoriesGridUiState(
     expenseCategories = expenseCategories,
@@ -182,6 +201,7 @@ fun CategoriesViewModel.toUiState(
     selectedCategory = selectedCategory,
     onCategorySelected = onCategorySelected,
     onEditClicked = onEditClicked,
+    onAddClicked = onAddClicked,
     cardPaddingValues = cardPaddingValues
 )
 

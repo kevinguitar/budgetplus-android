@@ -33,7 +33,6 @@ internal class MembersViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.removeMember(userId)
-                tracker.logEvent("member_removed")
                 loadMembers()
             } catch (e: Exception) {
                 toaster.showError(e)

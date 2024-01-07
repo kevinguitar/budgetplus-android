@@ -8,7 +8,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -36,7 +35,6 @@ internal class BatchRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
@@ -118,7 +116,6 @@ internal class BatchRecordViewModel @Inject constructor(
         )
         recordEvent.sendEvent(Unit)
         toaster.showMessage(stringProvider[R.string.batch_record_created, times.value.toString(), category])
-        tracker.logEvent("record_batched")
         resetScreen()
     }
 

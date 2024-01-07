@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -23,7 +22,6 @@ import javax.inject.Inject
 class BookSelectorViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
     authManager: AuthManager,
 ) : ViewModel() {
@@ -51,9 +49,8 @@ class BookSelectorViewModel @Inject constructor(
     fun createBook(name: String) {
         viewModelScope.launch {
             try {
-                bookRepo.createBook(name)
+                bookRepo.createBook(name = name, source = "selector")
                 toaster.showMessage(stringProvider[R.string.book_create_success, name])
-                tracker.logEvent("book_created_from_selector")
             } catch (e: Exception) {
                 toaster.showError(e)
             }

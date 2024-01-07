@@ -14,6 +14,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.DocNotExistsException
@@ -37,6 +38,7 @@ internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     private val stringProvider: StringProvider,
+    private val tracker: dagger.Lazy<Tracker>,
     @AppScope private val appScope: CoroutineScope,
     @ApplicationContext private val context: Context,
     @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
@@ -72,6 +74,7 @@ internal class AuthManagerImpl @Inject constructor(
             user = currentUser.toUser().copy(name = newName),
             newName = newName
         )
+        tracker.get().logEvent("user_renamed")
     }
 
     override fun markPremium() {
@@ -91,6 +94,7 @@ internal class AuthManagerImpl @Inject constructor(
     }
 
     override fun logout() {
+        tracker.get().logEvent("logout")
         Firebase.auth.signOut()
         GoogleSignIn.getClient(context, gso.get()).signOut()
     }

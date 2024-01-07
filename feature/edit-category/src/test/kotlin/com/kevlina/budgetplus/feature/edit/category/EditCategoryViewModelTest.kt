@@ -39,7 +39,6 @@ class EditCategoryViewModelTest {
         recordRepo = mockk(),
         bubbleRepo = mockk(),
         toaster = mockk(),
-        tracker = mockk(),
         stringProvider = FakeStringProvider(),
         preferenceHolder = FakePreferenceHolder {
             put("isEditHintBubbleShown", false)

@@ -78,7 +78,6 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authManager.renameUser(newName)
-                tracker.logEvent("user_renamed")
                 toaster.showMessage(stringProvider[R.string.settings_rename_user_success, newName])
             } catch (e: Exception) {
                 toaster.showError(e)
@@ -164,7 +163,6 @@ internal class SettingsViewModel @Inject constructor(
 
     fun logout() {
         authManager.logout()
-        tracker.logEvent("logout")
 
         val navInfo = NavigationInfo(
             destination = authDest,

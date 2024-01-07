@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 internal class TrackerImpl @Inject constructor(
-    authManager: AuthManager,
+    authManager: dagger.Lazy<AuthManager>,
     @AppScope appScope: CoroutineScope,
     @Named("is_debug") private val isDebug: Boolean,
 ) : Tracker {
@@ -24,7 +24,8 @@ internal class TrackerImpl @Inject constructor(
     private val analytics by lazy { Firebase.analytics }
 
     init {
-        authManager.userState
+        authManager.get()
+            .userState
             .onEach { analytics.setUserId(it?.id) }
             .launchIn(appScope)
     }

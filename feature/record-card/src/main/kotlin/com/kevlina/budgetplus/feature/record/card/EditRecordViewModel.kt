@@ -47,7 +47,6 @@ class EditRecordViewModel @Inject constructor(
                         newPriceText = newPriceText
                     )
                     toaster.showMessage(stringProvider[R.string.batch_record_edited, count.toString()])
-                    tracker.logEvent("record_batch_edited")
                 } catch (e: Exception) {
                     toaster.showError(e)
                 }
@@ -61,7 +60,6 @@ class EditRecordViewModel @Inject constructor(
                 newPriceText = newPriceText
             )
             toaster.showMessage(R.string.record_edited)
-            tracker.logEvent("record_edited")
         }
     }
 
@@ -71,7 +69,6 @@ class EditRecordViewModel @Inject constructor(
                 try {
                     val count = recordRepo.deleteBatch(record)
                     toaster.showMessage(stringProvider[R.string.batch_record_deleted, count.toString()])
-                    tracker.logEvent("record_batch_deleted")
                 } catch (e: Exception) {
                     toaster.showError(e)
                 }
@@ -79,12 +76,10 @@ class EditRecordViewModel @Inject constructor(
         } else {
             recordRepo.deleteRecord(record.id)
             toaster.showMessage(stringProvider[R.string.record_deleted, record.name])
-            tracker.logEvent("record_deleted")
         }
     }
 
     fun addCategory(type: RecordType, newCategory: String) {
-        bookRepo.addCategory(type, newCategory)
-        tracker.logEvent("categories_added_from_edit")
+        bookRepo.addCategory(type = type, category = newCategory, source = "edit")
     }
 }

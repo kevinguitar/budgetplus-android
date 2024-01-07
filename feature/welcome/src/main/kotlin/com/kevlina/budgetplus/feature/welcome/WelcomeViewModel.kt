@@ -42,9 +42,8 @@ class WelcomeViewModel @Inject constructor(
 
         createBookJob = viewModelScope.launch {
             try {
-                bookRepo.createBook(name)
+                bookRepo.createBook(name = name, source = "welcome")
                 toaster.showMessage(stringProvider[R.string.book_create_success, name])
-                tracker.logEvent("book_created_from_welcome")
 
                 val navInfo = NavigationInfo(destination = bookDest)
                 navigation.sendEvent(navInfo)

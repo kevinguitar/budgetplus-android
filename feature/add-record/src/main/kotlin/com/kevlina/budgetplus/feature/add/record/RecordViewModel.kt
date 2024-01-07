@@ -150,7 +150,6 @@ class RecordViewModel @Inject constructor(
         recordRepo.createRecord(record)
         recordEvent.sendEvent(Unit)
         toaster.showMessage(stringProvider[R.string.record_created, category])
-        tracker.logEvent("record_created")
         recordCount += 1
 
         resetScreen()

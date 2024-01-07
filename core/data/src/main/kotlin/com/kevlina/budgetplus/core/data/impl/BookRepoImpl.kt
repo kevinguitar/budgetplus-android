@@ -158,6 +158,7 @@ internal class BookRepoImpl @Inject constructor(
         booksDb.get().document(requireBookId)
             .update(authorsField, newAuthors)
             .await()
+        tracker.logEvent("member_removed")
     }
 
     override suspend fun checkUserHasBook(): Boolean {
@@ -170,7 +171,7 @@ internal class BookRepoImpl @Inject constructor(
         return !books.isEmpty
     }
 
-    override suspend fun createBook(name: String) {
+    override suspend fun createBook(name: String, source: String) {
         val isPremium = authManager.userState.value?.premium == true
         val bookCount = booksState.filterNotNull().first().size
 
@@ -192,6 +193,7 @@ internal class BookRepoImpl @Inject constructor(
         )
         val doc = booksDb.get().add(newBook).await()
         setBook(newBook.copy(id = doc.id))
+        tracker.logEvent("book_created_from_$source")
     }
 
     override suspend fun renameBook(newName: String) {
@@ -270,13 +272,14 @@ internal class BookRepoImpl @Inject constructor(
         currentBook = book
     }
 
-    override fun addCategory(type: RecordType, category: String) {
+    override fun addCategory(type: RecordType, category: String, source: String) {
         val book = bookState.value ?: return
         val currentCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
             RecordType.Income -> book.incomeCategories
         }
         updateCategories(type, currentCategories + category)
+        tracker.logEvent("categories_added_from_$source")
     }
 
     override fun updateCategories(type: RecordType, categories: List<String>) {
@@ -288,5 +291,6 @@ internal class BookRepoImpl @Inject constructor(
                 },
                 categories
             )
+        tracker.logEvent("categories_updated")
     }
 }

@@ -6,7 +6,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -26,7 +25,6 @@ class EditCategoryViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -49,7 +47,6 @@ class EditCategoryViewModel @Inject constructor(
             recordRepo.renameCategories(categoryRenameEvents)
         }
         toaster.showMessage(R.string.category_edit_successful)
-        tracker.logEvent("categories_updated")
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {

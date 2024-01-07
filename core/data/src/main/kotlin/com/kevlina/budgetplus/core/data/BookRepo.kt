@@ -27,7 +27,7 @@ interface BookRepo {
 
     suspend fun checkUserHasBook(): Boolean
 
-    suspend fun createBook(name: String)
+    suspend fun createBook(name: String, source: String)
 
     suspend fun renameBook(newName: String)
 
@@ -35,7 +35,7 @@ interface BookRepo {
 
     fun selectBook(book: Book)
 
-    fun addCategory(type: RecordType, category: String)
+    fun addCategory(type: RecordType, category: String, source: String)
 
     fun updateCategories(type: RecordType, categories: List<String>)
 

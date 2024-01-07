@@ -41,6 +41,7 @@ internal class RecordRepoImpl @Inject constructor(
 
     override fun createRecord(record: Record) {
         recordsDb.get().add(record)
+        tracker.logEvent("record_created")
     }
 
     override fun batchRecord(
@@ -65,6 +66,7 @@ internal class RecordRepoImpl @Inject constructor(
                 batchId = batchId
             ))
         }
+        tracker.logEvent("record_batched")
     }
 
     override fun editRecord(
@@ -93,6 +95,7 @@ internal class RecordRepoImpl @Inject constructor(
         }
 
         recordsDb.get().document(oldRecord.id).set(newRecord)
+        tracker.logEvent("record_edited")
     }
 
     override suspend fun editBatch(
@@ -102,7 +105,7 @@ internal class RecordRepoImpl @Inject constructor(
         newName: String,
         newPriceText: String,
     ): Int {
-        // If record isn't batched for some reason, simply delete it.
+        // If record isn't batched for some reason, simply edit it.
         if (!oldRecord.isBatched) {
             editRecord(
                 oldRecord = oldRecord,
@@ -130,6 +133,7 @@ internal class RecordRepoImpl @Inject constructor(
             )
         }
 
+        tracker.logEvent("record_batch_edited")
         return records.size()
     }
 
@@ -142,10 +146,12 @@ internal class RecordRepoImpl @Inject constructor(
             batchId = null
         )
         recordsDb.get().add(duplicatedRecord)
+        tracker.logEvent("record_duplicated")
     }
 
     override fun deleteRecord(recordId: String) {
         recordsDb.get().document(recordId).delete()
+        tracker.logEvent("record_deleted")
     }
 
     override suspend fun deleteBatch(record: Record): Int {
@@ -160,6 +166,7 @@ internal class RecordRepoImpl @Inject constructor(
             deleteRecord(snapshot.id)
         }
 
+        tracker.logEvent("record_batch_deleted")
         return records.size()
     }
 

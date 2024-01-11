@@ -27,7 +27,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.6.2"
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }

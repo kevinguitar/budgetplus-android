@@ -25,14 +25,10 @@ import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarDuration
 import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.auth.AuthActivity
-import com.kevlina.budgetplus.feature.records.RecordsViewModel
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import com.kevlina.budgetplus.inapp.update.InAppUpdateState
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.ActivityComponent
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -76,7 +72,6 @@ class BookActivity : ComponentActivity() {
         }
 
         setContent {
-
             val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
             AppTheme(themeColors) {
                 BookBinding(
@@ -109,11 +104,5 @@ class BookActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.handleJoinRequest()
-    }
-
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface VmFactoryProvider {
-        fun recordsVmFactory(): RecordsViewModel.Factory
     }
 }

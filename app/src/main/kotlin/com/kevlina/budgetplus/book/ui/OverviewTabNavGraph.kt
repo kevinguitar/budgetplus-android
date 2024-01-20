@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.book.ui
 
 import android.os.Bundle
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -8,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import com.kevlina.budgetplus.book.recordsVm
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.getSerializableCompat
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
@@ -21,6 +21,7 @@ import com.kevlina.budgetplus.core.common.nav.originalNavValue
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
+import com.kevlina.budgetplus.feature.records.RecordsViewModel
 
 internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 
@@ -52,11 +53,13 @@ internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
             val args = backStackEntry.arguments ?: Bundle.EMPTY
             RecordsScreen(
                 navigator = navController.toNavigator(),
-                vm = recordsVm(
-                    type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
-                    category = requireNotNull(args.getString(ARG_CATEGORY)).originalNavValue,
-                    authorId = args.getString(ARG_AUTHOR_ID)
-                )
+                vm = hiltViewModel<RecordsViewModel, RecordsViewModel.Factory>(creationCallback = { factory ->
+                    factory.create(
+                        type = requireNotNull(args.getSerializableCompat(ARG_TYPE)),
+                        category = requireNotNull(args.getString(ARG_CATEGORY)).originalNavValue,
+                        authorId = args.getString(ARG_AUTHOR_ID)
+                    )
+                })
             )
         }
     }

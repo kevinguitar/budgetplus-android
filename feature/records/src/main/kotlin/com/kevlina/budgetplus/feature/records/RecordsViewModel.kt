@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.feature.records
 
 import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
@@ -21,6 +20,7 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 @Stable
+@HiltViewModel(assistedFactory = RecordsViewModel.Factory::class)
 class RecordsViewModel @AssistedInject constructor(
     @Assisted type: RecordType,
     @Assisted("category") val category: String,
@@ -97,21 +98,5 @@ class RecordsViewModel @AssistedInject constructor(
             @Assisted("category") category: String,
             @Assisted("authorId") authorId: String?,
         ): RecordsViewModel
-    }
-
-    // Assist inject doesn't work with @HiltViewModel
-    // https://github.com/google/dagger/issues/2287
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun provideFactory(
-            assistedFactory: Factory,
-            type: RecordType,
-            category: String,
-            authorId: String?,
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(type, category, authorId) as T
-            }
-        }
     }
 }

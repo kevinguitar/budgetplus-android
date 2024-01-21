@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
@@ -18,9 +17,8 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
+import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
-import com.kevlina.budgetplus.core.common.nav.NavigationInfo
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -29,7 +27,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.reflect.KClass
 
 @Stable
 @HiltViewModel
@@ -44,7 +41,7 @@ internal class SettingsViewModel @Inject constructor(
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("instagram_url") private val instagramUrl: String,
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
-    @Named("auth") private val authDest: KClass<out Activity>,
+    @Named("logout") private val logoutNavigationAction: NavigationAction,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -163,12 +160,7 @@ internal class SettingsViewModel @Inject constructor(
 
     fun logout() {
         authManager.logout()
-
-        val navInfo = NavigationInfo(
-            destination = authDest,
-            bundle = Bundle().apply { putBoolean(ARG_ENABLE_ONE_TAP, false) }
-        )
-        navigation.sendEvent(navInfo)
+        navigation.sendEvent(logoutNavigationAction)
     }
 
     private fun Context.visitUrl(url: String) {

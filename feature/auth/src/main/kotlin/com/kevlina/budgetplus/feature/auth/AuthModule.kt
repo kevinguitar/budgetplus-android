@@ -1,15 +1,18 @@
 package com.kevlina.budgetplus.feature.auth
 
-import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
+import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
-import kotlin.reflect.KClass
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -24,6 +27,11 @@ object AuthModule {
     }
 
     @Provides
-    @Named("auth")
-    fun provideAuthDest(): KClass<out Activity> = AuthActivity::class
+    @Named("logout")
+    fun provideLogoutNavigationAction(@ApplicationContext context: Context): NavigationAction {
+        return NavigationAction(
+            intent = Intent(context, AuthActivity::class.java)
+                .putExtra(ARG_ENABLE_ONE_TAP, false)
+        )
+    }
 }

@@ -146,7 +146,7 @@ fun EditRecordDialog(
                         title = stringResource(id = R.string.record_price),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
+                            imeAction = if (isSaveEnabled) ImeAction.Done else ImeAction.None
                         ),
                         onDone = {
                             if (editRecord.isBatched) {

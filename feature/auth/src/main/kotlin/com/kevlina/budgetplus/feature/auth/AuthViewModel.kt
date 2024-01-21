@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.auth
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
@@ -32,8 +31,8 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
-import com.kevlina.budgetplus.core.common.nav.NavigationInfo
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -42,7 +41,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.reflect.KClass
 
 @Stable
 class AuthViewModel @Inject constructor(
@@ -52,8 +50,8 @@ class AuthViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     private val gso: dagger.Lazy<GoogleSignInOptions>,
     @ActivityContext private val context: Context,
-    @Named("welcome") private val welcomeDest: KClass<out Activity>,
-    @Named("book") private val bookDest: KClass<out Activity>,
+    @Named("welcome") private val welcomeNavigationAction: NavigationAction,
+    @Named("book") private val bookNavigationAction: NavigationAction,
     referrerHandler: ReferrerHandler,
     preferenceHolder: PreferenceHolder,
 ) {
@@ -184,17 +182,17 @@ class AuthViewModel @Inject constructor(
 
     private fun checkBookAvailability() {
         activity.lifecycleScope.launch {
-            val navInfo = try {
+            val action = try {
                 if (bookRepo.checkUserHasBook()) {
-                    NavigationInfo(destination = bookDest)
+                    bookNavigationAction
                 } else {
-                    NavigationInfo(destination = welcomeDest)
+                    welcomeNavigationAction
                 }
             } catch (e: Exception) {
                 toaster.showError(e)
-                NavigationInfo(destination = welcomeDest)
+                welcomeNavigationAction
             }
-            navigation.sendEvent(navInfo)
+            navigation.sendEvent(action)
         }
     }
 

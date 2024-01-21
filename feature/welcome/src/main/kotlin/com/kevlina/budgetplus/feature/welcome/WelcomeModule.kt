@@ -1,12 +1,14 @@
 package com.kevlina.budgetplus.feature.welcome
 
-import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
-import kotlin.reflect.KClass
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -14,5 +16,7 @@ object WelcomeModule {
 
     @Provides
     @Named("welcome")
-    fun provideWelcomeDest(): KClass<out Activity> = WelcomeActivity::class
+    fun provideWelcomeNavigationAction(@ApplicationContext context: Context): NavigationAction {
+        return NavigationAction(intent = Intent(context, WelcomeActivity::class.java))
+    }
 }

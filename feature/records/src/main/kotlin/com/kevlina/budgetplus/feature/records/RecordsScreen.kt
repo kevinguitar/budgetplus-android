@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.EventNote
+import androidx.compose.material.icons.automirrored.rounded.EventNote
 import androidx.compose.material.icons.rounded.Paid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -73,7 +73,7 @@ fun RecordsScreen(
 
                 when (sortMode) {
                     RecordsSortMode.Date -> MenuAction(
-                        imageVector = Icons.Rounded.EventNote,
+                        imageVector = Icons.AutoMirrored.Rounded.EventNote,
                         description = stringResource(id = R.string.overview_sort_by_price),
                         onClick = { vm.setSortMode(RecordsSortMode.Price) },
                         modifier = modifier

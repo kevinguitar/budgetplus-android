@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Backspace
+import androidx.compose.material.icons.automirrored.rounded.Backspace
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -159,7 +159,7 @@ private fun ColumnScope.CalculatorBtn(
 
             when (button) {
                 CalculatorButton.Back -> Icon(
-                    imageVector = Icons.Rounded.Backspace,
+                    imageVector = Icons.AutoMirrored.Rounded.Backspace,
                     contentDescription = stringResource(id = coreCommonR.string.cta_delete),
                     tint = LocalAppColors.current.light
                 )

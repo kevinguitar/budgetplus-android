@@ -18,7 +18,7 @@ fun Text(
     color: Color = LocalAppColors.current.dark,
     fontSize: TextUnit = FontSize.Normal,
     fontWeight: FontWeight? = null,
-    textAlign: TextAlign? = null,
+    textAlign: TextAlign = TextAlign.Unspecified,
     singleLine: Boolean = false,
     lineHeight: TextUnit = TextUnit.Unspecified,
 ) {

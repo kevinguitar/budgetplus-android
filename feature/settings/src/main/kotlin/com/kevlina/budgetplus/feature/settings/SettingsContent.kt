@@ -6,15 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.DirectionsRun
+import androidx.compose.material.icons.automirrored.rounded.ForwardToInbox
+import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.DirectionsRun
 import androidx.compose.material.icons.rounded.EditNote
-import androidx.compose.material.icons.rounded.ForwardToInbox
 import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Language
-import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
@@ -175,7 +175,7 @@ internal fun SettingsContent(
 
         SettingsItem(
             text = stringResource(id = R.string.settings_contact_us),
-            icon = Icons.Rounded.ForwardToInbox,
+            icon = Icons.AutoMirrored.Rounded.ForwardToInbox,
             onClick = { vm.contactUs(context) }
         )
 
@@ -196,7 +196,7 @@ internal fun SettingsContent(
             icon = if (isBookOwner) {
                 Icons.Rounded.Delete
             } else {
-                Icons.Rounded.DirectionsRun
+                Icons.AutoMirrored.Rounded.DirectionsRun
             },
             roundTop = true,
             onClick = { isDeleteOrLeaveDialogShown = true }
@@ -204,7 +204,7 @@ internal fun SettingsContent(
 
         SettingsItem(
             text = stringResource(id = R.string.settings_logout),
-            icon = Icons.Rounded.Logout,
+            icon = Icons.AutoMirrored.Rounded.Logout,
             roundBottom = true,
             onClick = vm::logout
         )

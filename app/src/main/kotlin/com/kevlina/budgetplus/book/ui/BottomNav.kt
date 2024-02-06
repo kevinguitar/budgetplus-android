@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FormatListBulleted
+import androidx.compose.material.icons.automirrored.rounded.FormatListBulleted
 import androidx.compose.material.icons.rounded.PostAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -131,7 +131,7 @@ private fun RowScope.BottomNavItem(
         Icon(
             imageVector = when (tab) {
                 BookTab.Add -> Icons.Rounded.PostAdd
-                BookTab.History -> Icons.Rounded.FormatListBulleted
+                BookTab.History -> Icons.AutoMirrored.Rounded.FormatListBulleted
             },
             tint = if (isSelected) lightColor else darkColor,
             modifier = Modifier.size(28.dp)

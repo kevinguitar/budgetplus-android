@@ -6,9 +6,9 @@ kotlin = "1.9.22"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.22-1.0.17"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2023.10.01"
+compose-bom = "2024.02.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.5.8"
+compose-compiler = "1.5.9"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.7.1"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
@@ -62,15 +62,15 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-immutable-collections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
 lottie-compose = "com.airbnb.android:lottie-compose:6.3.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.2"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.3"
 mockk = "io.mockk:mockk:1.13.9"
-navigation-compose = "androidx.navigation:navigation-compose:2.7.6"
-navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0-alpha01"
+navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
+navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0-rc01"
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.3.1"
 # Official feature request: https://issuetracker.google.com/issues/181282427
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
-test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-beta01"
+test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0-rc01"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.4.0"
 

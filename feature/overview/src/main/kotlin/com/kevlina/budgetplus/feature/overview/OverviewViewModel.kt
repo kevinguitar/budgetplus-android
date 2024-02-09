@@ -23,9 +23,6 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.utils.CsvWriter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -78,12 +75,12 @@ internal class OverviewViewModel @Inject constructor(
     val authors = bookRepo.bookState
         .map {
             withContext(Dispatchers.Default) {
-                it?.authors.orEmpty()
+                it?.authors
+                    .orEmpty()
                     .mapNotNull(userRepo::getUser)
-                    .toImmutableList()
             }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), persistentListOf())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _selectedAuthor = MutableStateFlow<User?>(null)
     val selectedAuthor: StateFlow<User?> = _selectedAuthor.asStateFlow()
@@ -119,14 +116,14 @@ internal class OverviewViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val recordList: StateFlow<ImmutableList<Record>?> = records.map { records ->
+    val recordList: StateFlow<List<Record>?> = records.map { records ->
         records
             ?.map(userRepo::resolveAuthor)
             ?.sortedByDescending { it.createdOn }
-            ?.toImmutableList()
+            ?.toList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?> = records.map { records ->
+    val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
         records ?: return@map null
         withContext(Dispatchers.Default) {
             records
@@ -134,7 +131,7 @@ internal class OverviewViewModel @Inject constructor(
                 .toList()
                 .sortedByDescending { (_, v) -> v.sumOf { it.price } }
                 .toMap()
-                .mapValues { it.value.toImmutableList() }
+                .mapValues { it.value }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 

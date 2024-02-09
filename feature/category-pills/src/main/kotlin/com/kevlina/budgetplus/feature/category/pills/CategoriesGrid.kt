@@ -29,8 +29,6 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -164,8 +162,8 @@ private fun CategoryActionButton(
 
 @Stable
 class CategoriesGridUiState(
-    val expenseCategories: StateFlow<ImmutableList<String>>,
-    val incomeCategories: StateFlow<ImmutableList<String>>,
+    val expenseCategories: StateFlow<List<String>>,
+    val incomeCategories: StateFlow<List<String>>,
     val type: StateFlow<RecordType>,
     val selectedCategory: StateFlow<String?>,
     val onCategorySelected: (String) -> Unit,
@@ -176,10 +174,10 @@ class CategoriesGridUiState(
     companion object {
         val preview = CategoriesGridUiState(
             type = MutableStateFlow(RecordType.Expense),
-            expenseCategories = MutableStateFlow(persistentListOf(
+            expenseCategories = MutableStateFlow(listOf(
                 "Food", "Daily", "Transport", "Entertainment", "Rent", "Mobile", "Utility", "Other"
             )),
-            incomeCategories = MutableStateFlow(persistentListOf()),
+            incomeCategories = MutableStateFlow(emptyList()),
             onCategorySelected = {},
             onEditClicked = {},
             selectedCategory = MutableStateFlow("Daily")

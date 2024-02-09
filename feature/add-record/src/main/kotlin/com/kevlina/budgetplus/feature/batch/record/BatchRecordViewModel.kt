@@ -18,7 +18,6 @@ import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.EMPTY_PRICE
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -53,7 +52,7 @@ internal class BatchRecordViewModel @Inject constructor(
     private val _frequency = MutableStateFlow(BatchFrequency.Monthly)
     val frequency: StateFlow<BatchFrequency> = _frequency.asStateFlow()
 
-    val batchTimes = (BATCH_TIMES_MIN..BATCH_TIMES_MAX).toImmutableList()
+    val batchTimes = (BATCH_TIMES_MIN..BATCH_TIMES_MAX).toList()
     private val _times = MutableStateFlow(batchTimes.first())
     val times: StateFlow<Int> = _times.asStateFlow()
 

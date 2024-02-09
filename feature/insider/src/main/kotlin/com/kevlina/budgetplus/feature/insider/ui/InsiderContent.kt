@@ -29,7 +29,6 @@ import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.feature.insider.InsiderViewModel
 import com.kevlina.budgetplus.feature.insider.UsersOverviewData
-import kotlinx.collections.immutable.ImmutableList
 
 private const val TYPE_LOADER = "loader"
 private const val TYPE_STAT = "stat"
@@ -156,7 +155,7 @@ private fun LazyListScope.overviewSection(overviewData: UsersOverviewData?) {
     }
 }
 
-private fun LazyListScope.usersSection(users: ImmutableList<User>?) {
+private fun LazyListScope.usersSection(users: List<User>?) {
     if (users == null) {
         item(contentType = TYPE_LOADER) {
             InfiniteCircularProgress(modifier = Modifier.padding(top = 16.dp))

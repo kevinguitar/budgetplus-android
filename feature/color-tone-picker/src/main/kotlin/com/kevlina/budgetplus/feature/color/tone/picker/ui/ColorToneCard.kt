@@ -29,7 +29,6 @@ import com.kevlina.budgetplus.core.ui.TOP_BAR_DARKEN_FACTOR
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ColorToneCard(
@@ -44,7 +43,7 @@ internal fun ColorToneCard(
     var isPickingColor by remember { mutableStateOf<ThemeColorSemantic?>(null) }
 
     val colors = remember(themeColors) {
-        persistentListOf(
+        listOf(
             themeColors.light,
             themeColors.lightBg,
             themeColors.primary,

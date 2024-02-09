@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.records
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -28,7 +27,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-@Stable
 @HiltViewModel(assistedFactory = RecordsViewModel.Factory::class)
 class RecordsViewModel @AssistedInject constructor(
     @Assisted type: RecordType,

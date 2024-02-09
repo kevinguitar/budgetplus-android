@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.batch.record
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventTrigger
@@ -26,7 +25,6 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-@Stable
 internal class BatchRecordViewModel @Inject constructor(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,

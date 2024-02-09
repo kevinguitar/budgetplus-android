@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.record.card
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -17,7 +16,6 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-@Stable
 class EditRecordViewModel @Inject constructor(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,

@@ -12,7 +12,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
@@ -23,10 +22,8 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
-import com.kevlina.budgetplus.core.ui.LocalDateWrapper
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
-import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,7 +46,6 @@ class RecordViewModel @Inject constructor(
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val inAppReviewManager: InAppReviewManager,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -57,8 +53,8 @@ class RecordViewModel @Inject constructor(
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private val _date = MutableStateFlow(LocalDate.now().wrapped())
-    val date: StateFlow<LocalDateWrapper> = _date.asStateFlow()
+    private val _date = MutableStateFlow(LocalDate.now())
+    val date: StateFlow<LocalDate> = _date.asStateFlow()
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
@@ -85,7 +81,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun setDate(date: LocalDate) {
-        _date.value = date.wrapped()
+        _date.value = date
     }
 
     fun setNote(note: String) {
@@ -139,8 +135,8 @@ class RecordViewModel @Inject constructor(
 
         val record = Record(
             type = type.value,
-            date = date.value.value.toEpochDay(),
-            timestamp = date.value.value.withCurrentTime,
+            date = date.value.toEpochDay(),
+            timestamp = date.value.withCurrentTime,
             category = category,
             name = note.value.trim().ifEmpty { category },
             price = calculatorVm.price.value,

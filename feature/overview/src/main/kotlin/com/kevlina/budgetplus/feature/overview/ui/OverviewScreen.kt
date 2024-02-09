@@ -123,8 +123,8 @@ fun OverviewScreen(navigator: Navigator) {
         ConfirmDialog(
             message = stringResource(
                 id = R.string.export_csv_confirmation,
-                fromDate.value.shortFormatted,
-                untilDate.value.shortFormatted
+                fromDate.shortFormatted,
+                untilDate.shortFormatted
             ),
             onConfirm = {
                 val writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE

@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.ui.Book
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarSender
-import com.kevlina.budgetplus.core.ui.wrapped
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -29,8 +28,8 @@ class OverviewTimeViewModel @Inject constructor(
 ) {
 
     val timePeriod = recordsObserver.timePeriod
-    val fromDate = timePeriod.mapState { it.from.wrapped() }
-    val untilDate = timePeriod.mapState { it.until.wrapped() }
+    val fromDate = timePeriod.mapState { it.from }
+    val untilDate = timePeriod.mapState { it.until }
     val isOneDayPeriod = timePeriod.mapState { it.from == it.until }
 
     private val _openPremiumEvent = MutableEventFlow<Unit>()
@@ -64,27 +63,27 @@ class OverviewTimeViewModel @Inject constructor(
     fun setFromDate(from: LocalDate) {
         val newPeriod = when {
             isOneDayPeriod.value -> TimePeriod.Custom(from = from, until = from)
-            from.isAfter(untilDate.value.value) -> {
-                val daysInBetween = ChronoUnit.DAYS.between(fromDate.value.value, untilDate.value.value)
+            from.isAfter(untilDate.value) -> {
+                val daysInBetween = ChronoUnit.DAYS.between(fromDate.value, untilDate.value)
                 TimePeriod.Custom(from = from, until = from.plusDays(daysInBetween))
             }
 
-            else -> TimePeriod.Custom(from = from, until = untilDate.value.value)
+            else -> TimePeriod.Custom(from = from, until = untilDate.value)
         }
         setTimePeriod(newPeriod)
     }
 
     fun setUntilDate(until: LocalDate) {
-        setTimePeriod(TimePeriod.Custom(from = fromDate.value.value, until = until))
+        setTimePeriod(TimePeriod.Custom(from = fromDate.value, until = until))
     }
 
     fun previousDay() {
-        val previousDay = fromDate.value.value.minusDays(1)
+        val previousDay = fromDate.value.minusDays(1)
         setTimePeriod(TimePeriod.Custom(from = previousDay, until = previousDay))
     }
 
     fun nextDay() {
-        val previousDay = fromDate.value.value.plusDays(1)
+        val previousDay = fromDate.value.plusDays(1)
         setTimePeriod(TimePeriod.Custom(from = previousDay, until = previousDay))
     }
 }

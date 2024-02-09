@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -24,7 +23,6 @@ class EditRecordViewModel @Inject constructor(
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 

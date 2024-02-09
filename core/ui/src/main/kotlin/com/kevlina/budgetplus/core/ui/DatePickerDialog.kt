@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun DatePickerDialog(
-    date: LocalDateWrapper,
-    minDate: LocalDateWrapper? = null,
-    maxDate: LocalDateWrapper? = null,
+    date: LocalDate,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -51,7 +51,7 @@ fun DatePickerDialog(
                 date = currentDate,
                 minDate = minDate,
                 maxDate = maxDate,
-                onDateSelected = { currentDate = it.wrapped() }
+                onDateSelected = { currentDate = it }
             )
 
             Row(
@@ -76,7 +76,7 @@ fun DatePickerDialog(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(8.dp))
                         .rippleClick {
-                            onDatePicked(currentDate.value)
+                            onDatePicked(currentDate)
                             onDismiss()
                         }
                         .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -88,9 +88,9 @@ fun DatePickerDialog(
 
 @Composable
 private fun CustomDatePicker(
-    date: LocalDateWrapper,
-    minDate: LocalDateWrapper?,
-    maxDate: LocalDateWrapper?,
+    date: LocalDate,
+    minDate: LocalDate?,
+    maxDate: LocalDate?,
     onDateSelected: (LocalDate) -> Unit,
 ) {
     AndroidView(
@@ -98,9 +98,9 @@ private fun CustomDatePicker(
         factory = { context -> DatePicker(context) },
         update = { view ->
             view.init(
-                /* year = */ date.value.year,
-                /* monthOfYear = */ date.value.monthValue - 1,
-                /* dayOfMonth = */ date.value.dayOfMonth
+                /* year = */ date.year,
+                /* monthOfYear = */ date.monthValue - 1,
+                /* dayOfMonth = */ date.dayOfMonth
             ) { _, year, monthOfYear, dayOfMonth ->
                 onDateSelected(
                     LocalDate.now()
@@ -111,11 +111,11 @@ private fun CustomDatePicker(
             }
 
             if (minDate != null) {
-                view.minDate = minDate.value.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+                view.minDate = minDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
             }
 
             if (maxDate != null) {
-                view.maxDate = maxDate.value.toEpochDay() * TimeUnit.DAYS.toMillis(1)
+                view.maxDate = maxDate.toEpochDay() * TimeUnit.DAYS.toMillis(1)
             }
         }
     )

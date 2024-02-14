@@ -24,11 +24,10 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun AuthorSelector(
-    authors: ImmutableList<User>,
+    authors: List<User>,
     selectedAuthor: User?,
     setAuthor: (User?) -> Unit,
 ) {

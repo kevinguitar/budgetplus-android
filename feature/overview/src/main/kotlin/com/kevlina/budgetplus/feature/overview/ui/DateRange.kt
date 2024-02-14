@@ -60,9 +60,9 @@ internal fun DateRange(
 
         Text(
             text = if (isOneDayPeriod) {
-                fromDate.value.fullFormatted
+                fromDate.fullFormatted
             } else {
-                fromDate.value.mediumFormatted
+                fromDate.mediumFormatted
             },
             singleLine = true,
             modifier = Modifier
@@ -85,7 +85,7 @@ internal fun DateRange(
             Text(text = stringResource(id = R.string.date_to))
 
             Text(
-                text = untilDate.value.mediumFormatted,
+                text = untilDate.mediumFormatted,
                 singleLine = true,
                 modifier = Modifier
                     .rippleClick(onClick = showUntilDatePicker)

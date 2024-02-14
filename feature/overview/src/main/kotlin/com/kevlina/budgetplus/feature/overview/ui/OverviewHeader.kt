@@ -22,8 +22,6 @@ import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -88,8 +86,8 @@ internal class OverviewHeaderUiState(
     val type: StateFlow<RecordType>,
     val totalPrice: StateFlow<Double>,
     val balance: StateFlow<Double>,
-    val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?>,
-    val authors: StateFlow<ImmutableList<User>>,
+    val recordGroups: StateFlow<Map<String, List<Record>>?>,
+    val authors: StateFlow<List<User>>,
     val selectedAuthor: StateFlow<User?>,
     val timePeriodSelectorUiState: TimePeriodSelectorUiState,
     val setRecordType: (RecordType) -> Unit,
@@ -100,8 +98,8 @@ internal class OverviewHeaderUiState(
             type = MutableStateFlow(RecordType.Expense),
             totalPrice = MutableStateFlow(245.25),
             balance = MutableStateFlow(52.45),
-            recordGroups = MutableStateFlow(mapOf("Food" to persistentListOf())),
-            authors = MutableStateFlow(persistentListOf(User(name = "Kevin"), User(name = "Alina"))),
+            recordGroups = MutableStateFlow(mapOf("Food" to emptyList())),
+            authors = MutableStateFlow(listOf(User(name = "Kevin"), User(name = "Alina"))),
             selectedAuthor = MutableStateFlow(User(name = "Kevin")),
             timePeriodSelectorUiState = TimePeriodSelectorUiState.preview,
             setRecordType = {},

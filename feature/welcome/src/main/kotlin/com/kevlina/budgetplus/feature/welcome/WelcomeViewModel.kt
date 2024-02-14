@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.welcome
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -19,7 +18,6 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-@Stable
 class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,

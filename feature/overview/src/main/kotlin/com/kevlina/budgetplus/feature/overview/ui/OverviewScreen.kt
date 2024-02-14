@@ -8,9 +8,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Segment
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.FileDownload
-import androidx.compose.material.icons.rounded.Segment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +65,7 @@ fun OverviewScreen(navigator: Navigator) {
             menuActions = {
                 MenuAction(
                     imageVector = when (mode) {
-                        OverviewMode.AllRecords -> Icons.Rounded.Segment
+                        OverviewMode.AllRecords -> Icons.AutoMirrored.Rounded.Segment
                         OverviewMode.GroupByCategories -> Icons.Rounded.BarChart
                     },
                     description = stringResource(id = R.string.overview_details_title),
@@ -123,8 +123,8 @@ fun OverviewScreen(navigator: Navigator) {
         ConfirmDialog(
             message = stringResource(
                 id = R.string.export_csv_confirmation,
-                fromDate.value.shortFormatted,
-                untilDate.value.shortFormatted
+                fromDate.shortFormatted,
+                untilDate.shortFormatted
             ),
             onConfirm = {
                 val writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE

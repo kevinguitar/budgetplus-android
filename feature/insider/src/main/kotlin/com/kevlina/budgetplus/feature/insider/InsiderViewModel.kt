@@ -6,8 +6,6 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.InsiderRepo
 import com.kevlina.budgetplus.core.data.remote.User
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,10 +26,10 @@ internal class InsiderViewModel @Inject constructor(
     val usersOverviewData: StateFlow<UsersOverviewData?> = ::getUsersOverviewData.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val newUsers: StateFlow<ImmutableList<User>?> = ::getNewUser.asFlow()
+    val newUsers: StateFlow<List<User>?> = ::getNewUser.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val activePremiumUsers: StateFlow<ImmutableList<User>?> = ::getActivePremiumUser.asFlow()
+    val activePremiumUsers: StateFlow<List<User>?> = ::getActivePremiumUser.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private suspend fun getInsiderData(): InsiderData? = try {
@@ -68,15 +66,15 @@ internal class InsiderViewModel @Inject constructor(
         null
     }
 
-    private suspend fun getNewUser(): ImmutableList<User>? = try {
-        insiderRepo.getNewUsers(NEW_USERS_COUNT).toImmutableList()
+    private suspend fun getNewUser(): List<User>? = try {
+        insiderRepo.getNewUsers(NEW_USERS_COUNT)
     } catch (e: Exception) {
         toaster.showError(e)
         null
     }
 
-    private suspend fun getActivePremiumUser(): ImmutableList<User>? = try {
-        insiderRepo.getActivePremiumUsers(ACTIVE_PREMIUM_USERS_COUNT).toImmutableList()
+    private suspend fun getActivePremiumUser(): List<User>? = try {
+        insiderRepo.getActivePremiumUsers(ACTIVE_PREMIUM_USERS_COUNT)
     } catch (e: Exception) {
         toaster.showError(e)
         null

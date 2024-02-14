@@ -31,10 +31,8 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
-import com.kevlina.budgetplus.core.ui.LocalDateWrapper
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -155,8 +153,8 @@ private fun TimePeriodPill(
 @Stable
 internal class TimePeriodSelectorUiState(
     val timePeriod: StateFlow<TimePeriod>,
-    val fromDate: StateFlow<LocalDateWrapper>,
-    val untilDate: StateFlow<LocalDateWrapper>,
+    val fromDate: StateFlow<LocalDate>,
+    val untilDate: StateFlow<LocalDate>,
     val isOneDayPeriod: StateFlow<Boolean>,
     val openPremiumEvent: EventFlow<Unit>,
     val previousDay: () -> Unit,
@@ -168,8 +166,8 @@ internal class TimePeriodSelectorUiState(
     companion object {
         val preview = TimePeriodSelectorUiState(
             timePeriod = MutableStateFlow(TimePeriod.Month),
-            fromDate = MutableStateFlow(TimePeriod.Month.from.wrapped()),
-            untilDate = MutableStateFlow(TimePeriod.Month.until.wrapped()),
+            fromDate = MutableStateFlow(TimePeriod.Month.from),
+            untilDate = MutableStateFlow(TimePeriod.Month.until),
             isOneDayPeriod = MutableStateFlow(false),
             openPremiumEvent = MutableEventFlow(),
             previousDay = {},

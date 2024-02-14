@@ -37,8 +37,6 @@ import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -137,7 +135,7 @@ internal fun OverviewList(
                         Modifier.padding(top = 8.dp)
                     },
                     category = key,
-                    records = recordGroups.orEmpty()[key] ?: persistentListOf(),
+                    records = recordGroups.orEmpty()[key].orEmpty(),
                     totalPrice = totalPrice,
                     color = overviewColors[(index) % overviewColors.size],
                     isLast = index == recordGroups.orEmpty().size - 1,
@@ -178,8 +176,8 @@ internal data class OverviewListUiState(
     val type: StateFlow<RecordType>,
     val selectedAuthor: StateFlow<User?>,
     val totalPrice: StateFlow<Double>,
-    val recordList: StateFlow<ImmutableList<Record>?>,
-    val recordGroups: StateFlow<Map<String, ImmutableList<Record>>?>,
+    val recordList: StateFlow<List<Record>?>,
+    val recordGroups: StateFlow<Map<String, List<Record>>?>,
     val isSoloAuthor: StateFlow<Boolean>,
     val highlightTapHint: (BubbleDest) -> Unit,
     val canEditRecord: (Record) -> Boolean,
@@ -187,7 +185,7 @@ internal data class OverviewListUiState(
 ) {
     companion object {
 
-        private val foodRecords = persistentListOf(
+        private val foodRecords = listOf(
             Record(category = "Food", name = "High Tea", price = 45.3, author = Author(name = "Kevin"), id = "1"),
             Record(category = "Food", name = "Steak", price = 9.3, author = Author(name = "Kevin"), id = "2"),
             Record(category = "Food", name = "Snack", price = 4.7, author = Author(name = "Alina"), id = "3"),
@@ -195,9 +193,9 @@ internal data class OverviewListUiState(
         )
 
         private val recordGroupsMap = mapOf(
-            "Loan" to persistentListOf(Record(category = "Loan", price = 1033.0, author = Author(name = "Kevin"))),
-            "Daily" to persistentListOf(Record(category = "Daily", price = 342.1, author = Author(name = "Alina"))),
-            "Utility" to persistentListOf(Record(category = "Utility", price = 132.5, author = Author(name = "Kevin"))),
+            "Loan" to listOf(Record(category = "Loan", price = 1033.0, author = Author(name = "Kevin"))),
+            "Daily" to listOf(Record(category = "Daily", price = 342.1, author = Author(name = "Alina"))),
+            "Utility" to listOf(Record(category = "Utility", price = 132.5, author = Author(name = "Kevin"))),
             "Food" to foodRecords,
         )
 

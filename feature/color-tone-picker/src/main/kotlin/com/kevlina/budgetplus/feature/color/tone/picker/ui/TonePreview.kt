@@ -33,11 +33,8 @@ import com.kevlina.budgetplus.core.ui.TOP_BAR_DARKEN_FACTOR
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.darken
-import com.kevlina.budgetplus.core.ui.wrapped
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
@@ -47,7 +44,7 @@ internal fun TonePreview(
 ) {
 
     val expenseCategoriesArray = stringArrayResource(id = R.array.default_expense_categories)
-    val expenseCategories = remember { expenseCategoriesArray.toList().toImmutableList() }
+    val expenseCategories = remember { expenseCategoriesArray.toList() }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -84,7 +81,7 @@ internal fun TonePreview(
         CategoriesGrid(
             uiState = CategoriesGridUiState(
                 expenseCategories = MutableStateFlow(expenseCategories),
-                incomeCategories = MutableStateFlow(persistentListOf()),
+                incomeCategories = MutableStateFlow(emptyList()),
                 type = MutableStateFlow(RecordType.Expense),
                 selectedCategory = MutableStateFlow(expenseCategories.first()),
                 onCategorySelected = {},
@@ -113,7 +110,7 @@ internal fun TonePreview(
         ) {
 
             SingleDatePicker(
-                date = LocalDate.now().wrapped(),
+                date = LocalDate.now(),
                 modifier = Modifier.padding(vertical = 8.dp)
             )
 

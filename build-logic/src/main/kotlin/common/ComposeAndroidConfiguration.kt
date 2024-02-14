@@ -25,10 +25,18 @@ internal fun Project.configureComposeAndroid(
 
         tasks.withType<KotlinCompile>().configureEach {
             kotlinOptions {
-                freeCompilerArgs = freeCompilerArgs + listOf(
+                freeCompilerArgs += listOf(
                     "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
                     "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                     "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                    // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                        rootProject.file("misc/compose_compiler_config.conf").absolutePath,
+                    // Enable the strong skipping mode
+                    // https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/compiler/design/strong-skipping.md#other-gradle-projects
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true",
                 ) + buildComposeMetricsParameters()
             }
         }
@@ -37,7 +45,6 @@ internal fun Project.configureComposeAndroid(
     dependencies {
         add("implementation", platform(libs.findLibrary("compose.bom").get()))
         add("implementation", libs.findBundle("compose").get())
-        add("implementation", libs.findLibrary("kotlin.immutable.collections").get())
     }
 }
 

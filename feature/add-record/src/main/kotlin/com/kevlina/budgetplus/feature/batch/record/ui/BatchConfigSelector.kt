@@ -35,12 +35,10 @@ import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
-import com.kevlina.budgetplus.core.ui.LocalDateWrapper
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDate
 
 private val fontSize = FontSize.SemiLarge
@@ -76,7 +74,7 @@ internal fun BatchConfigSelector() {
 
 @Composable
 private fun DateSelector(
-    date: LocalDateWrapper,
+    date: LocalDate,
     setStartDate: (LocalDate) -> Unit,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
@@ -185,7 +183,7 @@ private fun FrequencySelector(
 @Composable
 private fun TimesSelector(
     times: Int,
-    batchTimes: ImmutableList<Int>,
+    batchTimes: List<Int>,
     setTimes: (Int) -> Unit,
 ) {
     var isTimesMenuShown by remember { mutableStateOf(false) }

@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lock
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -88,7 +88,7 @@ fun DropdownItem(
 
 @Composable
 fun DropdownMenuDivider() {
-    Divider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp))
+    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp))
 }
 
 @Preview

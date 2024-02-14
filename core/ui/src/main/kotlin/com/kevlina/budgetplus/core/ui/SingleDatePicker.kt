@@ -21,7 +21,7 @@ import java.time.LocalDate
 
 @Composable
 fun SingleDatePicker(
-    date: LocalDateWrapper,
+    date: LocalDate,
     modifier: Modifier = Modifier,
     showIcon: Boolean = true,
     fontSize: TextUnit = FontSize.Normal,
@@ -43,16 +43,16 @@ fun SingleDatePicker(
 
         Text(
             text = when {
-                date.value.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
-                date.value.plusDays(1).isEqual(LocalDate.now()) -> {
+                date.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
+                date.plusDays(1).isEqual(LocalDate.now()) -> {
                     stringResource(id = R.string.yesterday)
                 }
 
-                date.value.minusDays(1).isEqual(LocalDate.now()) -> {
+                date.minusDays(1).isEqual(LocalDate.now()) -> {
                     stringResource(id = R.string.tomorrow)
                 }
 
-                else -> date.value.mediumFormatted
+                else -> date.mediumFormatted
             },
             fontSize = fontSize
         )
@@ -63,7 +63,7 @@ fun SingleDatePicker(
 @Composable
 private fun SingleDatePicker_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
     SingleDatePicker(
-        date = LocalDate.now().wrapped(),
+        date = LocalDate.now(),
         modifier = Modifier.padding(8.dp)
     )
 }

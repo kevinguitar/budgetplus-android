@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.book
 
 import android.content.Intent
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
@@ -27,7 +26,6 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-@Stable
 class BookViewModel @Inject constructor(
     val snackbarSender: BookSnackbarSender,
     val themeManager: ThemeManager,

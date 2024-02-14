@@ -1,13 +1,11 @@
 package com.kevlina.budgetplus.feature.record.card
 
-import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -18,13 +16,11 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-@Stable
 class EditRecordViewModel @Inject constructor(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
-    private val tracker: Tracker,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 

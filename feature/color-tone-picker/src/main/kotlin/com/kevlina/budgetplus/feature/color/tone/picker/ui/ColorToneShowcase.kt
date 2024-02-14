@@ -14,12 +14,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ColorToneShowcase(
-    colors: ImmutableList<Color>,
+    colors: List<Color>,
     outlineColor: Color,
     modifier: Modifier = Modifier,
 ) {
@@ -77,7 +75,7 @@ internal fun ColorToneShowcase(
 @Preview
 @Composable
 private fun ColorToneCard_Preview() = ColorToneShowcase(
-    colors = persistentListOf(Color.Blue, Color.Cyan, Color.DarkGray),
+    colors = listOf(Color.Blue, Color.Cyan, Color.DarkGray),
     outlineColor = Color.Black,
     modifier = Modifier
         .fillMaxWidth()

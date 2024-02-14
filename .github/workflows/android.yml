@@ -14,6 +14,8 @@ jobs:
       # https://github.com/marketplace/actions/free-disk-space-ubuntu
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          android: false
 
       - uses: actions/checkout@v3
       - name: set up JDK 17

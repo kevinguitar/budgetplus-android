@@ -9,12 +9,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
 import androidx.compose.material3.Switch as MaterialSwitch
 
 @Composable
 fun Switch(
     checked: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -25,7 +26,8 @@ fun Switch(
             checkedThumbColor = LocalAppColors.current.light,
             checkedTrackColor = LocalAppColors.current.dark,
             uncheckedThumbColor = LocalAppColors.current.dark,
-            uncheckedTrackColor = LocalAppColors.current.light
+            uncheckedTrackColor = LocalAppColors.current.light,
+            uncheckedBorderColor = LocalAppColors.current.dark
         ),
         modifier = modifier
     )
@@ -33,7 +35,7 @@ fun Switch(
 
 @Preview
 @Composable
-private fun Switch_Preview() = AppTheme {
+private fun Switch_Preview() = AppTheme(themeColors = ThemeColors.NemoSea) {
     var checked by remember { mutableStateOf(false) }
     Switch(checked = checked, onCheckedChange = { checked = !checked })
 }

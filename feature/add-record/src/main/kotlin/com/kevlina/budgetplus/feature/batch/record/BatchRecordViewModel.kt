@@ -13,6 +13,7 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.EMPTY_PRICE
+import com.kevlina.budgetplus.feature.add.record.RecordDateState
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,8 +37,8 @@ internal class BatchRecordViewModel @Inject constructor(
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private val _startDate = MutableStateFlow(LocalDate.now())
-    val startDate: StateFlow<LocalDate> = _startDate.asStateFlow()
+    private val _startRecordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
+    val startRecordDate: StateFlow<RecordDateState> = _startRecordDate.asStateFlow()
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
@@ -67,7 +68,11 @@ internal class BatchRecordViewModel @Inject constructor(
     }
 
     fun setStartDate(date: LocalDate) {
-        _startDate.value = date
+        _startRecordDate.value = if (date.isEqual(LocalDate.now())) {
+            RecordDateState.Now
+        } else {
+            RecordDateState.Other(date)
+        }
     }
 
     fun setNote(note: String) {
@@ -105,7 +110,7 @@ internal class BatchRecordViewModel @Inject constructor(
 
         recordRepo.batchRecord(
             record = record,
-            startDate = startDate.value,
+            startDate = startRecordDate.value.date,
             frequency = frequency.value,
             times = times.value
         )

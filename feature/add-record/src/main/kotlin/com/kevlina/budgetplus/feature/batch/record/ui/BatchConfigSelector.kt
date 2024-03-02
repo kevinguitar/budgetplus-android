@@ -51,7 +51,7 @@ internal fun BatchConfigSelector() {
 
     val vm = hiltViewModel<BatchRecordViewModel>()
 
-    val date by vm.startDate.collectAsStateWithLifecycle()
+    val startRecordDate by vm.startRecordDate.collectAsStateWithLifecycle()
     val frequency by vm.frequency.collectAsStateWithLifecycle()
     val times by vm.times.collectAsStateWithLifecycle()
 
@@ -64,7 +64,7 @@ internal fun BatchConfigSelector() {
             .padding(16.dp)
     ) {
 
-        DateSelector(date = date, setStartDate = vm::setStartDate)
+        DateSelector(date = startRecordDate.date, setStartDate = vm::setStartDate)
 
         FrequencySelector(frequency = frequency, setFrequency = vm::setFrequency)
 

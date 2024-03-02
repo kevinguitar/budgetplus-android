@@ -31,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
+import com.kevlina.budgetplus.feature.add.record.RecordDateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
@@ -44,7 +45,7 @@ internal fun ColumnScope.DateAndPricing(
 
     val focusManager = LocalFocusManager.current
 
-    val date by uiState.date.collectAsStateWithLifecycle()
+    val recordDate by uiState.recordDate.collectAsStateWithLifecycle()
     val priceText by uiState.priceText.collectAsStateWithLifecycle()
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -67,7 +68,7 @@ internal fun ColumnScope.DateAndPricing(
     ) {
 
         SingleDatePicker(
-            date = date,
+            date = recordDate.date,
             modifier = Modifier
                 .rippleClick { showDatePicker = true }
                 .padding(vertical = 8.dp)
@@ -88,7 +89,7 @@ internal fun ColumnScope.DateAndPricing(
 
     if (showDatePicker) {
         DatePickerDialog(
-            date = date,
+            date = recordDate.date,
             onDatePicked = uiState.setDate,
             onDismiss = { showDatePicker = false }
         )
@@ -97,14 +98,14 @@ internal fun ColumnScope.DateAndPricing(
 
 @Immutable
 internal class DateAndPricingUiState(
-    val date: StateFlow<LocalDate>,
+    val recordDate: StateFlow<RecordDateState>,
     val priceText: StateFlow<String>,
     val scrollable: Boolean,
     val setDate: (LocalDate) -> Unit,
 ) {
     companion object {
         val preview = DateAndPricingUiState(
-            date = MutableStateFlow(LocalDate.now()),
+            recordDate = MutableStateFlow(RecordDateState.Now),
             priceText = MutableStateFlow("2344"),
             scrollable = false,
             setDate = {}

@@ -53,8 +53,8 @@ class RecordViewModel @Inject constructor(
     private val _type = MutableStateFlow(RecordType.Expense)
     val type: StateFlow<RecordType> = _type.asStateFlow()
 
-    private val _date = MutableStateFlow(LocalDate.now())
-    val date: StateFlow<LocalDate> = _date.asStateFlow()
+    private val _recordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
+    val recordDate: StateFlow<RecordDateState> = _recordDate.asStateFlow()
 
     private val _note = MutableStateFlow("")
     val note: StateFlow<String> = _note.asStateFlow()
@@ -81,7 +81,11 @@ class RecordViewModel @Inject constructor(
     }
 
     fun setDate(date: LocalDate) {
-        _date.value = date
+        _recordDate.value = if (date.isEqual(LocalDate.now())) {
+            RecordDateState.Now
+        } else {
+            RecordDateState.Other(date)
+        }
     }
 
     fun setNote(note: String) {
@@ -135,8 +139,8 @@ class RecordViewModel @Inject constructor(
 
         val record = Record(
             type = type.value,
-            date = date.value.toEpochDay(),
-            timestamp = date.value.withCurrentTime,
+            date = recordDate.value.date.toEpochDay(),
+            timestamp = recordDate.value.date.withCurrentTime,
             category = category,
             name = note.value.trim().ifEmpty { category },
             price = calculatorVm.price.value,

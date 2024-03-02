@@ -163,7 +163,7 @@ private fun RecordViewModel.toUiState(
             },
         ),
         dateAndPricingUiState = DateAndPricingUiState(
-            date = date,
+            recordDate = recordDate,
             priceText = calculatorVm.priceText,
             scrollable = scrollable,
             setDate = ::setDate

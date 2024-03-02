@@ -8,22 +8,26 @@ internal const val APP_PACKAGE = "com.kevlina.budgetplus"
 private const val UI_TIMEOUT = 1_000L
 
 internal fun MacrobenchmarkScope.authorize() {
-    if (!hasText("Welcome to Budget+")) {
+    if (!waitForText("Welcome to Budget+")) {
         return
     }
 
+    // Login with Google account
     waitForTextAndClick("Continue with Google")
     waitForTextAndClick("kevin.chiu@bandlab.com")
-    hasText("Expense")
+
+    // Record screen
+    waitForText("Expense")
 }
 
-private fun MacrobenchmarkScope.hasText(text: String): Boolean {
+private fun MacrobenchmarkScope.waitForText(text: String): Boolean {
     return device.wait(Until.hasObject(By.text(text)), UI_TIMEOUT)
 }
 
-private fun MacrobenchmarkScope.waitForTextAndClick(text: String) {
-    val isVisible = hasText(text)
+private fun MacrobenchmarkScope.waitForTextAndClick(text: String): Boolean {
+    val isVisible = waitForText(text)
     if (isVisible) {
         device.findObject(By.text(text)).click()
     }
+    return isVisible
 }

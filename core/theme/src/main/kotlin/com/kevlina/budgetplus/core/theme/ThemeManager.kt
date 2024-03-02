@@ -115,7 +115,7 @@ class ThemeManager @Inject constructor(
             .appendPath(AddDest.Colors.route)
             .appendQueryParameter(COLORS_LINK_QUERY, editedCustomColors.encode())
             .build()
-        tracker.logEvent("share_colors_link_generated")
+        tracker.logEvent("color_tone_link_generated")
         return colorsLink.toString().lowercase()
     }
 

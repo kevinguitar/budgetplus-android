@@ -125,6 +125,7 @@ internal class SettingsViewModel @Inject constructor(
             data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf("budgetplussg@gmail.com"))
             putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
+            putExtra(Intent.EXTRA_TEXT, "\n\nUser id: ${authManager.requireUserId()}")
         }
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)

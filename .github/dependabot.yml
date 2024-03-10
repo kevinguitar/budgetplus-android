@@ -22,7 +22,10 @@ updates:
       - maven-google
       - maven-apache
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "saturday"
+      time: "06:00"
+      timezone: Asia/Taipei
     reviewers:
       - "kevinguitar"
     groups:
@@ -31,6 +34,7 @@ updates:
           - "org.jetbrains.kotlin:*"
           - "org.jetbrains.kotlin.*"
           - "androidx.compose.compiler:compiler"
+          - "com.google.devtools.ksp"
       androidx:
         patterns:
           - "androidx.*"

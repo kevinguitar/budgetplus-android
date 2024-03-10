@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.welcome.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -28,4 +29,8 @@ fun WelcomeBinding(vm: WelcomeViewModel) {
             WelcomeContentPacked(vm)
         }
     )
+
+    BackHandler {
+        vm.logout()
+    }
 }

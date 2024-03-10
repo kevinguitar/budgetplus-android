@@ -237,7 +237,6 @@ internal fun SettingsContent(
     }
 
     if (isDeleteOrLeaveDialogShown) {
-
         ConfirmDialog(
             message = stringResource(
                 id = if (isBookOwner) R.string.settings_confirm_delete else R.string.settings_confirm_leave,

@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +21,11 @@ import javax.inject.Named
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
     private val bookRepo: BookRepo,
+    private val authManager: AuthManager,
     private val toaster: Toaster,
     private val stringProvider: StringProvider,
     @Named("book") private val bookNavigationAction: NavigationAction,
+    @Named("logout") private val logoutNavigationAction: NavigationAction,
 ) : ViewModel() {
 
     val navigation = NavigationFlow()
@@ -63,5 +66,10 @@ class WelcomeViewModel @Inject constructor(
                 toaster.showError(e)
             }
         }
+    }
+
+    fun logout() {
+        authManager.logout()
+        navigation.sendEvent(logoutNavigationAction)
     }
 }

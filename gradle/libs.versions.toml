@@ -2,7 +2,7 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.2.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.23-1.0.19"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping

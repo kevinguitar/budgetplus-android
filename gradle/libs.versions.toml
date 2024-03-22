@@ -6,7 +6,7 @@ kotlin = "1.9.22"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.23-1.0.19"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.02.02"
+compose-bom = "2024.03.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.10"
 # https://firebase.google.com/support/release-notes/android

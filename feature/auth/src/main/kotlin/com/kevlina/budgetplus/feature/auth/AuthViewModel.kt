@@ -175,7 +175,7 @@ class AuthViewModel @Inject constructor(
             toaster.showMessage(message)
             checkBookAvailability()
         } else {
-            val e = task.exception ?: IllegalStateException("Unable to login")
+            val e = task.exception ?: error("Unable to login")
             toaster.showError(e)
         }
     }

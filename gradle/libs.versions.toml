@@ -45,7 +45,7 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 google-ads = "com.google.android.gms:play-services-ads:23.0.0"
-google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.16.0.0"
+google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.17.0.0"
 google-auth = "com.google.android.gms:play-services-auth:21.0.0"
 google-billing = "com.android.billingclient:billing-ktx:6.2.0"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.26.1"

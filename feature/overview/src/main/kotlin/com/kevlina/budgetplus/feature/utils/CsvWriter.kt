@@ -12,7 +12,7 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.dollar
+import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -36,6 +36,7 @@ internal class CsvWriter @Inject constructor(
     @Named("app_package") private val appPackage: String,
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
+    private val bookRepo: BookRepo,
     private val stringProvider: StringProvider,
 ) {
 
@@ -64,7 +65,7 @@ internal class CsvWriter @Inject constructor(
                     listOf(
                         record.parseDatetime(datetimeFormatter),
                         record.name,
-                        record.price.dollar,
+                        bookRepo.formatPrice(record.price),
                         record.typeString,
                         record.category,
                         userRepo.resolveAuthor(record).author?.name

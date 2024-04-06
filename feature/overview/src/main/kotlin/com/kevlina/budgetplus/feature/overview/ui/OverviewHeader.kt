@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -39,8 +38,6 @@ internal fun OverviewHeader(
     val authors by uiState.authors.collectAsStateWithLifecycle()
     val selectedAuthor by uiState.selectedAuthor.collectAsStateWithLifecycle()
 
-    val totalPriceText = totalPrice.dollar
-    val balanceText = balance.dollar
     val isBalanceCardVisible = recordGroups?.isNotEmpty() == true
 
     Column(
@@ -74,18 +71,18 @@ internal fun OverviewHeader(
         ) {
 
             BalanceCard(
-                totalPrice = totalPriceText,
-                balance = balanceText,
+                totalPrice = totalPrice,
+                balance = balance,
             )
         }
     }
 }
 
 @Stable
-internal class OverviewHeaderUiState(
+internal data class OverviewHeaderUiState(
     val type: StateFlow<RecordType>,
-    val totalPrice: StateFlow<Double>,
-    val balance: StateFlow<Double>,
+    val totalPrice: StateFlow<String>,
+    val balance: StateFlow<String>,
     val recordGroups: StateFlow<Map<String, List<Record>>?>,
     val authors: StateFlow<List<User>>,
     val selectedAuthor: StateFlow<User?>,
@@ -96,8 +93,8 @@ internal class OverviewHeaderUiState(
     companion object {
         val preview = OverviewHeaderUiState(
             type = MutableStateFlow(RecordType.Expense),
-            totalPrice = MutableStateFlow(245.25),
-            balance = MutableStateFlow(52.45),
+            totalPrice = MutableStateFlow("$245.25"),
+            balance = MutableStateFlow("$52.45"),
             recordGroups = MutableStateFlow(mapOf("Food" to emptyList())),
             authors = MutableStateFlow(listOf(User(name = "Kevin"), User(name = "Alina"))),
             selectedAuthor = MutableStateFlow(User(name = "Kevin")),

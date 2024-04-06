@@ -39,7 +39,7 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(
     val calculatorVm: CalculatorViewModel,
     val categoriesVm: CategoriesViewModel,
-    private val bookRepo: BookRepo,
+    val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val authManager: AuthManager,

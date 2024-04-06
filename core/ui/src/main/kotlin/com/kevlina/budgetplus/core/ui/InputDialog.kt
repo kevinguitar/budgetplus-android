@@ -41,7 +41,9 @@ fun InputDialog(
 
     AppDialog(onDismissRequest = onDismiss) {
 
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
 
             TextField(
                 value = input,

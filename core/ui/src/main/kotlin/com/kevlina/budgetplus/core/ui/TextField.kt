@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 
-private const val PLACEHOLDER_ALPHA = 0.5F
+internal const val PLACEHOLDER_ALPHA = 0.5F
 
 @Composable
 fun TextField(
@@ -40,6 +40,7 @@ fun TextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     title: String,
+    onTitleClick: (() -> Unit)? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -50,7 +51,12 @@ fun TextField(
         imeAction = ImeAction.Done
     ),
     onDone: (KeyboardActionScope.() -> Unit)? = null,
-) = TextFieldInternal(modifier, title, fontSize) {
+) = TextFieldInternal(
+    modifier = modifier,
+    title = title,
+    onTitleClick = onTitleClick,
+    fontSize = fontSize
+) {
 
     BasicTextField(
         value = value,
@@ -89,6 +95,7 @@ fun TextField(
     onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
     title: String,
+    onTitleClick: (() -> Unit)? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -98,7 +105,12 @@ fun TextField(
         imeAction = ImeAction.Done
     ),
     onDone: (KeyboardActionScope.() -> Unit)? = null,
-) = TextFieldInternal(modifier, title, fontSize) {
+) = TextFieldInternal(
+    modifier = modifier,
+    title = title,
+    onTitleClick = onTitleClick,
+    fontSize = fontSize
+) {
 
     BasicTextField(
         value = value,
@@ -134,6 +146,7 @@ fun TextField(
 private fun TextFieldInternal(
     modifier: Modifier,
     title: String,
+    onTitleClick: (() -> Unit)? = null,
     fontSize: TextUnit,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -154,6 +167,12 @@ private fun TextFieldInternal(
             text = title,
             fontWeight = FontWeight.SemiBold,
             fontSize = fontSize,
+            modifier = Modifier.thenIfNotNull(onTitleClick) {
+                Modifier.rippleClick(
+                    borderless = true,
+                    onClick = it
+                )
+            }
         )
 
         content()

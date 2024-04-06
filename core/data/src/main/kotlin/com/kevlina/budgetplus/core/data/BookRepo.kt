@@ -10,6 +10,7 @@ interface BookRepo {
     val booksState: StateFlow<List<Book>?>
 
     val currentBookId: String?
+    val currencySymbol: StateFlow<String>
 
     val hasPendingJoinRequest: Boolean
 
@@ -37,6 +38,10 @@ interface BookRepo {
 
     fun addCategory(type: RecordType, category: String, source: String)
 
+    fun formatPrice(price: Double): String
+
     fun updateCategories(type: RecordType, categories: List<String>)
+
+    fun updateCurrency(currencyCode: String)
 
 }

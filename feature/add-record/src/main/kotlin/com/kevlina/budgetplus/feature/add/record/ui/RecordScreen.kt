@@ -164,9 +164,13 @@ private fun RecordViewModel.toUiState(
         ),
         dateAndPricingUiState = DateAndPricingUiState(
             recordDate = recordDate,
+            currencySymbol = bookRepo.currencySymbol,
             priceText = calculatorVm.priceText,
             scrollable = scrollable,
-            setDate = ::setDate
+            setDate = ::setDate,
+            editCurrency = {
+                navigator.navigate(route = AddDest.CurrencyPicker.route)
+            }
         ),
     ),
     calculatorUiState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),

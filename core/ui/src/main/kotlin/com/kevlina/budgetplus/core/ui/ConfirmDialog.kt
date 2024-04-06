@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
@@ -22,17 +23,18 @@ fun ConfirmDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     confirmText: String = stringResource(id = R.string.cta_confirm),
-    cancelText: String = stringResource(id = R.string.cta_cancel),
+    cancelText: String? = stringResource(id = R.string.cta_cancel),
 ) {
 
     AppDialog(onDismissRequest = onDismiss) {
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .width(280.dp)
                 .wrapContentHeight()
+                .padding(all = 8.dp)
         ) {
 
             Text(
@@ -46,11 +48,13 @@ fun ConfirmDialog(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                Button(onClick = onDismiss) {
-                    Text(
-                        text = cancelText,
-                        color = LocalAppColors.current.light,
-                    )
+                if (cancelText != null) {
+                    Button(onClick = onDismiss) {
+                        Text(
+                            text = cancelText,
+                            color = LocalAppColors.current.light,
+                        )
+                    }
                 }
 
                 Button(onClick = onConfirm) {

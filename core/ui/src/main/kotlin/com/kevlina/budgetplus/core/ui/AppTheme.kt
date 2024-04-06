@@ -26,6 +26,7 @@ object AppTheme {
     val dialogShape: Shape get() = RoundedCornerShape(cornerRadius)
     val cardShape: Shape get() = RoundedCornerShape(cornerRadius)
     val cornerRadius: Dp get() = 12.dp
+    val minSurfaceSize: Dp get() = 48.dp
 
     const val DIVIDER_ALPHA: Float = 0.4F
 

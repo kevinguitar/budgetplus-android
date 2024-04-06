@@ -43,7 +43,6 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 internal class OverviewViewModel @Inject constructor(
-    private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
@@ -52,6 +51,7 @@ internal class OverviewViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val csvWriter: CsvWriter,
     private val toaster: Toaster,
+    val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -96,15 +96,18 @@ internal class OverviewViewModel @Inject constructor(
         }
     }
 
-    val totalPrice = records.map { records -> records.orEmpty().sumOf { it.price } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
+    val totalPrice = records.map { records ->
+        records.orEmpty().sumOf { it.price }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val balance = combine(
+    val totalFormattedPrice = totalPrice.mapState(bookRepo::formatPrice)
+
+    val formattedBalance = combine(
         recordsObserver.records.filterNotNull(),
         selectedAuthor
     ) { records, author ->
         val authorId = author?.id
-        withContext(Dispatchers.Default) {
+        val sum = withContext(Dispatchers.Default) {
             records
                 .filter { authorId == null || it.author?.id == authorId }
                 .sumOf { record ->
@@ -114,7 +117,8 @@ internal class OverviewViewModel @Inject constructor(
                     }
                 }
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
+        bookRepo.formatPrice(sum)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
     val recordList: StateFlow<List<Record>?> = records.map { records ->
         records

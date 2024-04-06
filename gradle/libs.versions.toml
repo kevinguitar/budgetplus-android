@@ -101,7 +101,7 @@ test = [
 android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-test = { id = "com.android.test", version.ref = "gradle-plugin" }
-detekt = "io.gitlab.arturbosch.detekt:1.23.5"
+detekt = "io.gitlab.arturbosch.detekt:1.23.6"
 firebase-crashlytics = "com.google.firebase.crashlytics:2.9.9"
 google-services = "com.google.gms.google-services:4.4.1"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

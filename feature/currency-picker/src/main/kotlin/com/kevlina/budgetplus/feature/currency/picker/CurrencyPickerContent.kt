@@ -2,9 +2,12 @@ package com.kevlina.budgetplus.feature.currency.picker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,28 +57,46 @@ internal fun CurrencyPickerContent(
                 onSearch(it)
             },
             hint = stringResource(id = R.string.currency_picker_hint),
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 136.dp),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(top = 8.dp, start = 16.dp, end = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 136.dp),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(all = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
 
-            currencies.forEach { currency ->
-                item(key = currency.symbol) {
-                    CurrencyCard(
-                        uiState = currency,
-                        onClick = { onCurrencyPicked(currency) }
-                    )
+                currencies.forEach { currency ->
+                    item(key = currency.symbol) {
+                        CurrencyCard(
+                            uiState = currency,
+                            onClick = { onCurrencyPicked(currency) }
+                        )
+                    }
                 }
             }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+                    .align(Alignment.TopCenter)
+                    .background(Brush.verticalGradient(
+                        SEARCH_GRADIENT_START to LocalAppColors.current.light,
+                        SEARCH_GRADIENT_END to Color.Transparent
+                    ))
+            )
         }
     }
 }
+
+private const val SEARCH_GRADIENT_START = 0.4F
+private const val SEARCH_GRADIENT_END = 1F
 
 @Composable
 private fun CurrencyCard(
@@ -86,15 +109,15 @@ private fun CurrencyCard(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-                .height(120.dp)
-                .clip(AppTheme.cardShape)
-                .background(if (isSelected) {
-                    LocalAppColors.current.dark
-                } else {
-                    LocalAppColors.current.lightBg
-                })
-                .rippleClick(onClick = onClick)
-                .padding(8.dp)
+            .height(120.dp)
+            .clip(AppTheme.cardShape)
+            .background(if (isSelected) {
+                LocalAppColors.current.dark
+            } else {
+                LocalAppColors.current.lightBg
+            })
+            .rippleClick(onClick = onClick)
+            .padding(8.dp)
     ) {
         val textColor = if (isSelected) {
             LocalAppColors.current.light

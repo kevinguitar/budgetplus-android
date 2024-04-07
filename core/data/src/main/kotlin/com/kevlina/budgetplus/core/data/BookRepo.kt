@@ -38,7 +38,7 @@ interface BookRepo {
 
     fun addCategory(type: RecordType, category: String, source: String)
 
-    fun formatPrice(price: Double): String
+    fun formatPrice(price: Double, alwaysShowSymbol: Boolean = false): String
 
     fun updateCategories(type: RecordType, categories: List<String>)
 

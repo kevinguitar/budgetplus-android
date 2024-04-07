@@ -100,7 +100,9 @@ internal class OverviewViewModel @Inject constructor(
         records.orEmpty().sumOf { it.price }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val totalFormattedPrice = totalPrice.mapState(bookRepo::formatPrice)
+    val totalFormattedPrice = totalPrice.mapState {
+        bookRepo.formatPrice(it, alwaysShowSymbol = true)
+    }
 
     val formattedBalance = combine(
         recordsObserver.records.filterNotNull(),
@@ -117,7 +119,7 @@ internal class OverviewViewModel @Inject constructor(
                     }
                 }
         }
-        bookRepo.formatPrice(sum)
+        bookRepo.formatPrice(sum, alwaysShowSymbol = true)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
     val recordList: StateFlow<List<Record>?> = records.map { records ->

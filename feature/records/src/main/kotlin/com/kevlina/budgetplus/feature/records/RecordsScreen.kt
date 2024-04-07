@@ -46,7 +46,7 @@ fun RecordsScreen(
 
     val totalPrice = remember(records) {
         val total = records.orEmpty().sumOf { it.price }
-        vm.bookRepo.formatPrice(total)
+        vm.bookRepo.formatPrice(total, alwaysShowSymbol = true)
     }
 
     // Observe the records, when the last record get deleted, navigate back to the overview screen.

@@ -110,7 +110,7 @@
     <string name="export_csv_success">CSV 報表已儲存至下載資料夾</string>
     <string name="export_column_type">項目</string>
     <string name="export_column_name">名稱</string>
-    <string name="export_column_price">金額</string>
+    <string name="export_column_price">金額（%s）</string>
     <string name="export_column_category">類別</string>
     <string name="export_column_created_on">時間</string>
     <string name="export_column_author">記帳人</string>

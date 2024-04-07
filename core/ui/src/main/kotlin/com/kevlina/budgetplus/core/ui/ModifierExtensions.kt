@@ -17,6 +17,14 @@ inline fun Modifier.thenIf(condition: Boolean, modifierProvider: () -> Modifier)
     }
 }
 
+inline fun <T> Modifier.thenIfNotNull(value: T?, modifierProvider: (T) -> Modifier): Modifier {
+    return if (value != null) {
+        then(modifierProvider(value))
+    } else {
+        this
+    }
+}
+
 fun Modifier.rippleClick(
     color: Color = Color.Unspecified,
     borderless: Boolean = false,

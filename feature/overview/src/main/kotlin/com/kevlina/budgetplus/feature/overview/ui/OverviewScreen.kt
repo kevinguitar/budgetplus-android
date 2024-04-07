@@ -147,8 +147,8 @@ enum class OverviewUiType {
 private fun OverviewViewModel.toUiState() = OverviewContentUiState(
     headerUiState = OverviewHeaderUiState(
         type = type,
-        totalPrice = totalPrice,
-        balance = balance,
+        totalPrice = totalFormattedPrice,
+        balance = formattedBalance,
         recordGroups = recordGroups,
         authors = authors,
         selectedAuthor = selectedAuthor,
@@ -165,6 +165,7 @@ private fun OverviewViewModel.toUiState() = OverviewContentUiState(
         recordGroups = recordGroups,
         isSoloAuthor = isSoloAuthor,
         highlightTapHint = ::highlightTapHint,
+        formatPrice = bookRepo::formatPrice,
         canEditRecord = ::canEditRecord,
         duplicateRecord = ::duplicateRecord
     )

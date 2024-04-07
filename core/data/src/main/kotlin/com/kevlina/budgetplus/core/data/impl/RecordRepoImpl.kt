@@ -7,12 +7,12 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
-import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
+import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
 import com.kevlina.budgetplus.core.data.remote.toAuthor
@@ -87,7 +87,7 @@ internal class RecordRepoImpl @Inject constructor(
                 timestamp = LocalDateTime.of(newDate, originalTime).toEpochSecond(ZoneOffset.UTC),
                 category = newCategory,
                 name = newName,
-                price = newPriceText.parseToPrice
+                price = newPriceText.parseToPrice()
             )
         } catch (e: Exception) {
             toaster.showError(e)

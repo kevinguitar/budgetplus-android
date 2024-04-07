@@ -20,6 +20,7 @@ import com.kevlina.budgetplus.core.theme.ThemeManager.Companion.COLORS_LINK_QUER
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
+import com.kevlina.budgetplus.feature.currency.picker.CurrencyPickerScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
 import com.kevlina.budgetplus.feature.insider.InsiderScreen
 import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsScreen
@@ -102,6 +103,10 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
                 navigator = navController.toNavigator(),
                 hexFromLink = args.getString(COLORS_LINK_QUERY)
             )
+        }
+
+        composable(route = AddDest.CurrencyPicker.route) {
+            CurrencyPickerScreen(navigator = navController.toNavigator())
         }
 
         // Internal screens

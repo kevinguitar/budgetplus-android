@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.feature.addRecord)
     implementation(projects.feature.auth)
     implementation(projects.feature.colorTonePicker)
+    implementation(projects.feature.currencyPicker)
     implementation(projects.feature.editCategory)
     implementation(projects.feature.overview)
     implementation(projects.feature.pushNotifications)

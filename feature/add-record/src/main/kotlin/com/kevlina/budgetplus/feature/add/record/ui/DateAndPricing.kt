@@ -46,6 +46,7 @@ internal fun ColumnScope.DateAndPricing(
     val focusManager = LocalFocusManager.current
 
     val recordDate by uiState.recordDate.collectAsStateWithLifecycle()
+    val currencySymbol by uiState.currencySymbol.collectAsStateWithLifecycle()
     val priceText by uiState.priceText.collectAsStateWithLifecycle()
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -80,7 +81,8 @@ internal fun ColumnScope.DateAndPricing(
             fontSize = FontSize.Header,
             letterSpacing = 0.5.sp,
             enabled = false,
-            title = "$",
+            title = currencySymbol,
+            onTitleClick = uiState.editCurrency,
             modifier = Modifier
                 .weight(1F)
                 .clickableWithoutRipple { focusManager.clearFocus() }
@@ -99,16 +101,20 @@ internal fun ColumnScope.DateAndPricing(
 @Immutable
 internal class DateAndPricingUiState(
     val recordDate: StateFlow<RecordDateState>,
+    val currencySymbol: StateFlow<String>,
     val priceText: StateFlow<String>,
     val scrollable: Boolean,
     val setDate: (LocalDate) -> Unit,
+    val editCurrency: () -> Unit,
 ) {
     companion object {
         val preview = DateAndPricingUiState(
             recordDate = MutableStateFlow(RecordDateState.Now),
+            currencySymbol = MutableStateFlow("$"),
             priceText = MutableStateFlow("2344"),
             scrollable = false,
-            setDate = {}
+            setDate = {},
+            editCurrency = {}
         )
     }
 }

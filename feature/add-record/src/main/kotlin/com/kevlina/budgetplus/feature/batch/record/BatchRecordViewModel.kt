@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
+import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
@@ -28,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class BatchRecordViewModel @Inject constructor(
     val categoriesVm: CategoriesViewModel,
+    val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,

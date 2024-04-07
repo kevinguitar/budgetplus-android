@@ -11,6 +11,8 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.bundle
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -34,6 +36,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
+import java.math.RoundingMode
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
@@ -59,6 +65,36 @@ internal class BookRepoImpl @Inject constructor(
 
     override val currentBookId: String? get() = bookState.value?.id
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
+
+    private val currency: StateFlow<Currency> = bookState.mapState { book ->
+        val code = book?.currencyCode
+        if (code == null) {
+            defaultCurrency
+        } else {
+            try {
+                Currency.getInstance(code)
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to parse currency. $code")
+                defaultCurrency
+            }
+        }
+    }
+
+    override val currencySymbol: StateFlow<String> = currency.mapState {
+        it.getSymbol(Locale.getDefault())
+    }
+
+    private val defaultCurrency: Currency
+        get() = Currency.getInstance(Locale.getDefault())
+
+    private val pricingFormat by lazy {
+        NumberFormat.getCurrencyInstance()
+            .also {
+                it.roundingMode = RoundingMode.HALF_UP
+                it.minimumFractionDigits = 0
+                it.maximumFractionDigits = 2
+            }
+    }
 
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null
@@ -189,7 +225,8 @@ internal class BookRepoImpl @Inject constructor(
             ownerId = userId,
             authors = listOf(userId),
             expenseCategories = expenses.toList(),
-            incomeCategories = incomes.toList()
+            incomeCategories = incomes.toList(),
+            currencyCode = defaultCurrency.currencyCode
         )
         val doc = booksDb.get().add(newBook).await()
         setBook(newBook.copy(id = doc.id))
@@ -282,8 +319,16 @@ internal class BookRepoImpl @Inject constructor(
         tracker.logEvent("categories_added_from_$source")
     }
 
+    override fun formatPrice(price: Double): String {
+        return pricingFormat.run {
+            currency = this@BookRepoImpl.currency.value
+            format(price)
+        }
+    }
+
     override fun updateCategories(type: RecordType, categories: List<String>) {
-        booksDb.get().document(requireBookId)
+        booksDb.get()
+            .document(requireBookId)
             .update(
                 when (type) {
                     RecordType.Expense -> "expenseCategories"
@@ -292,5 +337,16 @@ internal class BookRepoImpl @Inject constructor(
                 categories
             )
         tracker.logEvent("categories_updated")
+    }
+
+    override fun updateCurrency(currencyCode: String) {
+        booksDb.get()
+            .document(requireBookId)
+            .update("currencyCode", currencyCode)
+
+        tracker.logEvent(
+            event = "currency_updated",
+            params = bundle { putString("currencyCode", currencyCode) }
+        )
     }
 }

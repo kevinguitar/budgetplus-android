@@ -65,7 +65,6 @@ internal fun OverviewList(
     ) {
 
         if (header != null) {
-
             item(
                 key = OverviewUiType.Header.name,
                 contentType = OverviewUiType.Header,
@@ -98,6 +97,7 @@ internal fun OverviewList(
                 RecordCard(
                     uiState = RecordCardUiState(
                         item = record,
+                        formattedPrice = uiState.formatPrice(record.price),
                         isLast = index == records.lastIndex,
                         canEdit = uiState.canEditRecord(record),
                         showCategory = true,
@@ -130,26 +130,32 @@ internal fun OverviewList(
                 contentType = { _, _ -> OverviewUiType.Group }
             ) { index, key ->
 
+                val groupRecords = recordGroups.orEmpty()[key].orEmpty()
+                val sum = groupRecords.sumOf { it.price }
+
                 OverviewGroup(
                     modifier = Modifier.thenIf(index == 0) {
                         Modifier.padding(top = 8.dp)
                     },
-                    category = key,
-                    records = recordGroups.orEmpty()[key].orEmpty(),
-                    totalPrice = totalPrice,
-                    color = overviewColors[(index) % overviewColors.size],
-                    isLast = index == recordGroups.orEmpty().size - 1,
-                    onClick = {
-                        navigator.navigate(route = buildString {
-                            append(HistoryDest.Records.route)
-                            append("/$type/${key.navKey}")
+                    uiState = OverviewGroupUiState(
+                        category = key,
+                        records = groupRecords,
+                        sumPrice = uiState.formatPrice(sum),
+                        percentage = remember(sum, totalPrice) { sum / totalPrice },
+                        color = overviewColors[(index) % overviewColors.size],
+                        isLast = index == recordGroups.orEmpty().size - 1,
+                        onClick = {
+                            navigator.navigate(route = buildString {
+                                append(HistoryDest.Records.route)
+                                append("/$type/${key.navKey}")
 
-                            val authorId = selectedAuthor?.id
-                            if (authorId != null) {
-                                append("?$ARG_AUTHOR_ID=$authorId")
-                            }
-                        })
-                    }
+                                val authorId = selectedAuthor?.id
+                                if (authorId != null) {
+                                    append("?$ARG_AUTHOR_ID=$authorId")
+                                }
+                            })
+                        }
+                    ),
                 )
             }
         }
@@ -180,6 +186,7 @@ internal data class OverviewListUiState(
     val recordGroups: StateFlow<Map<String, List<Record>>?>,
     val isSoloAuthor: StateFlow<Boolean>,
     val highlightTapHint: (BubbleDest) -> Unit,
+    val formatPrice: (Double) -> String,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
 ) {
@@ -208,6 +215,7 @@ internal data class OverviewListUiState(
             recordGroups = MutableStateFlow(recordGroupsMap),
             isSoloAuthor = MutableStateFlow(false),
             highlightTapHint = {},
+            formatPrice = { "$$it" },
             canEditRecord = { true },
             duplicateRecord = {}
         )

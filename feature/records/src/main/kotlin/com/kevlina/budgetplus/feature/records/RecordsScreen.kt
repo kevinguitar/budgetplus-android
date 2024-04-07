@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -46,7 +45,8 @@ fun RecordsScreen(
     val sortMode by vm.sortMode.collectAsStateWithLifecycle()
 
     val totalPrice = remember(records) {
-        records.orEmpty().sumOf { it.price }.dollar
+        val total = records.orEmpty().sumOf { it.price }
+        vm.bookRepo.formatPrice(total)
     }
 
     // Observe the records, when the last record get deleted, navigate back to the overview screen.
@@ -99,6 +99,7 @@ fun RecordsScreen(
             itemsIndexed(records.orEmpty()) { index, item ->
                 RecordCard(uiState = RecordCardUiState(
                     item = item,
+                    formattedPrice = vm.bookRepo.formatPrice(item.price),
                     isLast = index == records?.lastIndex,
                     canEdit = vm.canEditRecord(item),
                     showCategory = false,

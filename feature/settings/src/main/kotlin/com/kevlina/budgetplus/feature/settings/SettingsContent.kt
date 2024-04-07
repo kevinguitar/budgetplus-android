@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.rounded.ForwardToInbox
 import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ColorLens
+import androidx.compose.material.icons.rounded.CurrencyExchange
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Insights
@@ -67,9 +68,9 @@ internal fun SettingsContent(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
 
         // Content section
@@ -108,6 +109,12 @@ internal fun SettingsContent(
         )
 
         SettingsItem(
+            text = stringResource(id = R.string.settings_edit_book_currency),
+            icon = Icons.Rounded.CurrencyExchange,
+            onClick = { navigator.navigate(AddDest.CurrencyPicker.route) }
+        )
+
+        SettingsItem(
             text = stringResource(id = R.string.settings_view_members),
             icon = Icons.Rounded.SupervisedUserCircle,
             roundBottom = true,
@@ -140,8 +147,8 @@ internal fun SettingsContent(
                     checked = vibrateOnInput,
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
                     modifier = Modifier
-                        .padding(end = 10.dp)
-                        .scale(SWITCH_SCALE)
+                            .padding(end = 10.dp)
+                            .scale(SWITCH_SCALE)
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput

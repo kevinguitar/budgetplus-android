@@ -138,6 +138,7 @@
     <string name="settings_rename_user_success">Renamed to %s</string>
     <string name="settings_rename_book">Rename Book</string>
     <string name="settings_rename_book_success">Renamed the book to %s</string>
+    <string name="settings_edit_book_currency">Edit Book Currency</string>
     <string name="settings_view_members">View Members</string>
     <string name="settings_logout">Logout</string>
     <string name="settings_delete_book">Delete Book</string>
@@ -167,6 +168,12 @@
     <string name="color_tone_customized">Customized</string>
     <string name="color_tone_color_hex_code">Color Hex</string>
     <string name="color_tone_applied_from_link">Applied the colors, save it if you like it!</string>
+
+    <!-- Currency Picker -->
+    <string name="currency_picker_title">Currency Picker</string>
+    <string name="currency_picker_hint">US Dollar or USD</string>
+    <string name="currency_picker_no_conversion_disclaimer">Please note that we won\'t convert the price, the setting affects only the currency symbol representation.</string>
+    <string name="currency_picker_edit_success">%1$s\'s currency has been changed to %2$s</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>

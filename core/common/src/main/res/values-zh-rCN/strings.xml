@@ -137,6 +137,7 @@
     <string name="settings_rename_user_success">使用者名称已更改为%s</string>
     <string name="settings_rename_book">重新命名帐本</string>
     <string name="settings_rename_book_success">帐本名称已更改为%s</string>
+    <string name="settings_edit_book_currency">编辑帐本币别</string>
     <string name="settings_view_members">查看成员</string>
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">删除帐本</string>
@@ -166,6 +167,12 @@
     <string name="color_tone_customized">我的调色盘</string>
     <string name="color_tone_color_hex_code">Hex 色码</string>
     <string name="color_tone_applied_from_link">已套用主题色调，喜欢记得储存！</string>
+
+    <!-- Currency Picker -->
+    <string name="currency_picker_title">帐本币别</string>
+    <string name="currency_picker_hint">日元或 JPY</string>
+    <string name="currency_picker_no_conversion_disclaimer">更换帐本币别只会改变图示，并不包含汇率转换</string>
+    <string name="currency_picker_edit_success">%1$s的币别已更换为%2$s</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">点击分享连结，邀请好友们一起记帐！</string>

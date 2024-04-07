@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,8 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.dollar
-import com.kevlina.budgetplus.core.common.roundUpPercentageText
+import com.kevlina.budgetplus.core.common.roundUpRatioText
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -39,23 +39,17 @@ private const val TEXT_DARKEN_FACTOR = 0.7F
 private const val A_HUNDRED = 100
 
 @Composable
-fun OverviewGroup(
+internal fun OverviewGroup(
+    uiState: OverviewGroupUiState,
     modifier: Modifier = Modifier,
-    category: String,
-    records: List<Record>,
-    totalPrice: Double,
-    color: Color,
-    isLast: Boolean,
-    onClick: () -> Unit,
 ) {
 
-    val sum = remember(records) { records.sumOf { it.price } }
-    val percentage = remember(sum, totalPrice) { sum / totalPrice }
+    val percentage = uiState.percentage
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .rippleClick(onClick = onClick)
+            .rippleClick(onClick = uiState.onClick)
             .padding(horizontal = 16.dp)
     ) {
 
@@ -85,7 +79,7 @@ fun OverviewGroup(
                         .height(24.dp)
                         .align(Alignment.CenterStart)
                         .background(
-                            color = color.copy(alpha = 0.5F),
+                            color = uiState.color.copy(alpha = 0.5F),
                             shape = RoundedCornerShape(
                                 topEndPercent = 50,
                                 bottomEndPercent = 50
@@ -94,14 +88,14 @@ fun OverviewGroup(
                 )
 
                 Text(
-                    text = category,
+                    text = uiState.category,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
                 Text(
-                    text = sum.dollar,
+                    text = uiState.sumPrice,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterEnd)
@@ -109,13 +103,15 @@ fun OverviewGroup(
             }
 
             Text(
-                text = "${(percentage * A_HUNDRED).roundUpPercentageText}%",
+                text = "${(percentage * A_HUNDRED).roundUpRatioText}%",
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Small,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(
-                        color = color.darken(TEXT_DARKEN_FACTOR).copy(alpha = 0.7F),
+                        color = uiState.color
+                            .darken(TEXT_DARKEN_FACTOR)
+                            .copy(alpha = 0.7F),
                         shape = CircleShape
                     )
                     .width(48.dp)
@@ -123,7 +119,7 @@ fun OverviewGroup(
             )
         }
 
-        if (!isLast) {
+        if (!uiState.isLast) {
             Spacer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -143,19 +139,35 @@ private fun calcProgressWidth(maxWidth: Dp, ratio: Double): Dp {
     return base + amp
 }
 
+@Immutable
+internal data class OverviewGroupUiState(
+    val category: String,
+    val records: List<Record>,
+    val color: Color,
+    val isLast: Boolean,
+    val sumPrice: String,
+    val percentage: Double,
+    val onClick: () -> Unit,
+) {
+    companion object {
+        val preview = OverviewGroupUiState(
+            category = "日常",
+            records = listOf(
+                Record(price = 10.3),
+                Record(price = 42.43),
+                Record(price = 453.1),
+            ),
+            sumPrice = "$1043.5",
+            percentage = 0.34,
+            color = overviewColors[0],
+            isLast = false,
+            onClick = {}
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun OverviewGroup_Preview() = AppTheme {
-    OverviewGroup(
-        category = "日常",
-        records = listOf(
-            Record(price = 10.3),
-            Record(price = 42.43),
-            Record(price = 453.1),
-        ),
-        totalPrice = 1043.5,
-        color = overviewColors[0],
-        isLast = false,
-        onClick = {}
-    )
+    OverviewGroup(OverviewGroupUiState.preview)
 }

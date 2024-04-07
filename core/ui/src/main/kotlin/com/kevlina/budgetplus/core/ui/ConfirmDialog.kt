@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
@@ -28,11 +29,12 @@ fun ConfirmDialog(
     AppDialog(onDismissRequest = onDismiss) {
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .width(280.dp)
                 .wrapContentHeight()
+                .padding(all = 8.dp)
         ) {
 
             Text(

@@ -37,6 +37,8 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
+import java.util.Currency
+import java.util.Locale
 
 @Composable
 internal fun TonePreview(
@@ -120,7 +122,7 @@ internal fun TonePreview(
                 fontSize = FontSize.Header,
                 letterSpacing = 0.5.sp,
                 enabled = false,
-                title = "$",
+                title = Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault()),
                 modifier = Modifier.weight(1F)
             )
         }

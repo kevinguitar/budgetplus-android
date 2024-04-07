@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -88,6 +89,7 @@ private fun TypePill(
         onClick = onClick,
         shape = CircleShape,
         color = bgColor,
+        modifier = Modifier.heightIn(min = AppTheme.minSurfaceSize),
     ) {
 
         Text(

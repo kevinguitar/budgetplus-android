@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.dollar
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -117,7 +116,7 @@ fun RecordCard(
             }
 
             Text(
-                text = item.price.dollar,
+                text = uiState.formattedPrice,
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
             )
@@ -168,8 +167,9 @@ fun RecordCard(
 }
 
 @Immutable
-class RecordCardUiState(
+data class RecordCardUiState(
     val item: Record,
+    val formattedPrice: String,
     val isLast: Boolean,
     val canEdit: Boolean,
     val showCategory: Boolean,
@@ -207,6 +207,7 @@ private fun RecordCard_Preview() = AppTheme {
             price = 453.93,
             author = Author(id = "", name = "Kevin")
         ),
+        formattedPrice = "$453.93",
         isLast = false,
         canEdit = true,
         showCategory = true,

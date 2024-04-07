@@ -7,7 +7,8 @@ enum class BookTab {
 }
 
 enum class AddDest {
-    Record, EditCategory, Settings, UnlockPremium, BatchRecord, Colors,
+    Record, EditCategory, Settings, UnlockPremium,
+    BatchRecord, Colors, CurrencyPicker,
 
     // Internal screens
     Insider, PushNotifications;

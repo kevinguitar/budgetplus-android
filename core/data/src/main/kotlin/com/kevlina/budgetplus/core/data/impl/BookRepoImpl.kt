@@ -87,6 +87,15 @@ internal class BookRepoImpl @Inject constructor(
     private val defaultCurrency: Currency
         get() = Currency.getInstance(Locale.getDefault())
 
+    private val pricingFormat by lazy {
+        NumberFormat.getCurrencyInstance()
+            .also {
+                it.roundingMode = RoundingMode.HALF_UP
+                it.minimumFractionDigits = 0
+                it.maximumFractionDigits = 2
+            }
+    }
+
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null
 
@@ -308,15 +317,6 @@ internal class BookRepoImpl @Inject constructor(
         }
         updateCategories(type, currentCategories + category)
         tracker.logEvent("categories_added_from_$source")
-    }
-
-    private val pricingFormat by lazy {
-        NumberFormat.getCurrencyInstance()
-            .also {
-                it.roundingMode = RoundingMode.HALF_UP
-                it.minimumFractionDigits = 0
-                it.maximumFractionDigits = 2
-            }
     }
 
     override fun formatPrice(price: Double): String {

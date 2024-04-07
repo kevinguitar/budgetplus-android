@@ -32,16 +32,23 @@ class CurrencyPickerViewModel @Inject constructor(
 
     private val currentCurrencyCode = bookRepo.bookState.value?.currencyCode
 
+    private val defaultLocale = Locale.getDefault()
+    private val defaultCurrencyCode = Currency.getInstance(defaultLocale).currencyCode
+
     private val allCurrencies = Currency.getAvailableCurrencies()
         .map { currency ->
             CurrencyUiState(
-                name = currency.getDisplayName(Locale.getDefault()),
+                name = currency.getDisplayName(defaultLocale),
                 currencyCode = currency.currencyCode,
-                symbol = currency.getSymbol(Locale.getDefault()),
+                symbol = currency.getSymbol(defaultLocale),
                 isSelected = currentCurrencyCode == currency.currencyCode
             )
         }
+        // Sort by symbol, so it looks nicer from the beginning
         .sortedByDescending { it.symbol }
+        // Then place the default currency at the front
+        .sortedByDescending { it.currencyCode == defaultCurrencyCode }
+        // Then place the selected one (if exists) at the front
         .sortedByDescending { it.isSelected }
 
     private val _currencies = MutableStateFlow(allCurrencies)

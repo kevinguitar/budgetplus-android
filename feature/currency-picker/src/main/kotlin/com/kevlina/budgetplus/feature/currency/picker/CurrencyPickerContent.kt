@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -56,7 +56,7 @@ internal fun CurrencyPickerContent(
         )
 
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 120.dp),
+            columns = GridCells.Adaptive(minSize = 136.dp),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(top = 8.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -118,7 +118,7 @@ private fun CurrencyCard(
     }
 }
 
-@Preview
+@PreviewScreenSizes
 @Composable
 private fun CurrencyPickerContent_Preview() = AppTheme {
     CurrencyPickerContent(

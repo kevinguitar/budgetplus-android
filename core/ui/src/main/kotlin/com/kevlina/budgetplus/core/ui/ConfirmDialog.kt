@@ -23,7 +23,7 @@ fun ConfirmDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     confirmText: String = stringResource(id = R.string.cta_confirm),
-    cancelText: String? = stringResource(id = R.string.cta_cancel),
+    cancelText: String = stringResource(id = R.string.cta_cancel),
 ) {
 
     AppDialog(onDismissRequest = onDismiss) {
@@ -48,13 +48,11 @@ fun ConfirmDialog(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
-                if (cancelText != null) {
-                    Button(onClick = onDismiss) {
-                        Text(
-                            text = cancelText,
-                            color = LocalAppColors.current.light,
-                        )
-                    }
+                Button(onClick = onDismiss) {
+                    Text(
+                        text = cancelText,
+                        color = LocalAppColors.current.light,
+                    )
                 }
 
                 Button(onClick = onConfirm) {

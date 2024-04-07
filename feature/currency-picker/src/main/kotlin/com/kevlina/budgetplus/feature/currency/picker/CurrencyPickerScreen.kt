@@ -69,7 +69,7 @@ fun CurrencyPickerScreen(
                     currencyDisclaimerDialogState = null
                     navigator.navigateUp()
                 },
-                onDismiss = { currencyDisclaimerDialogState = null }
+                onDismiss = { currencyDisclaimerDialogState = null },
             )
         }
     }

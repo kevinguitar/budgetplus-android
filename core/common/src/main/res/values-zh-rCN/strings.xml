@@ -109,7 +109,7 @@
     <string name="export_csv_success">CSV 报表已储存至下载资料夹</string>
     <string name="export_column_type">项目</string>
     <string name="export_column_name">名称</string>
-    <string name="export_column_price">金额</string>
+    <string name="export_column_price">金额（%s）</string>
     <string name="export_column_category">类别</string>
     <string name="export_column_created_on">时间</string>
     <string name="export_column_author">记帐人</string>

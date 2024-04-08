@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
+import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -65,7 +66,7 @@ internal class CsvWriter @Inject constructor(
                     listOf(
                         record.parseDatetime(datetimeFormatter),
                         record.name,
-                        bookRepo.formatPrice(record.price),
+                        record.price.plainPriceString,
                         record.typeString,
                         record.category,
                         userRepo.resolveAuthor(record).author?.name
@@ -88,7 +89,7 @@ internal class CsvWriter @Inject constructor(
                     writeRow(listOf(
                         stringProvider[R.string.export_column_created_on],
                         stringProvider[R.string.export_column_name],
-                        stringProvider[R.string.export_column_price],
+                        stringProvider[R.string.export_column_price, bookRepo.currencySymbol.value],
                         stringProvider[R.string.export_column_type],
                         stringProvider[R.string.export_column_category],
                         stringProvider[R.string.export_column_author],

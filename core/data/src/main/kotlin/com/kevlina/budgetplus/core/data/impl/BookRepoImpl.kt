@@ -21,6 +21,7 @@ import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.core.data.JoinInfoProcessor
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.requireValue
@@ -319,10 +320,13 @@ internal class BookRepoImpl @Inject constructor(
         tracker.logEvent("categories_added_from_$source")
     }
 
-    override fun formatPrice(price: Double): String {
-        return pricingFormat.run {
-            currency = this@BookRepoImpl.currency.value
-            format(price)
+    override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
+        val bookCurrency = currency.value
+        return if (alwaysShowSymbol || bookCurrency.getSymbol(Locale.getDefault()).length == 1) {
+            pricingFormat.currency = bookCurrency
+            pricingFormat.format(price)
+        } else {
+            price.plainPriceString
         }
     }
 

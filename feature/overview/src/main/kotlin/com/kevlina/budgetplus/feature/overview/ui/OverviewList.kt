@@ -93,7 +93,6 @@ internal fun OverviewList(
                 key = { _, record -> record.id },
                 contentType = { _, _ -> OverviewUiType.Record }
             ) { index, record ->
-
                 RecordCard(
                     uiState = RecordCardUiState(
                         item = record,

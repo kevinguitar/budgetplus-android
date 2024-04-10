@@ -5,14 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.Stable
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -22,7 +16,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -42,7 +35,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-@Stable
 class AuthViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
@@ -52,6 +44,7 @@ class AuthViewModel @Inject constructor(
     @ActivityContext private val context: Context,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     @Named("book") private val bookNavigationAction: NavigationAction,
+    @Named("contact_email") private val contactEmail: String,
     referrerHandler: ReferrerHandler,
     preferenceHolder: PreferenceHolder,
 ) {
@@ -61,20 +54,7 @@ class AuthViewModel @Inject constructor(
     private val activity = context as ComponentActivity
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val oneTapClient: SignInClient by lazy { Identity.getSignInClient(activity) }
-    private val callbackManager by lazy { CallbackManager.Factory.create() }
     private val googleSignInClient by lazy { GoogleSignIn.getClient(activity, gso.get()) }
-
-    private val callback = object : FacebookCallback<LoginResult> {
-        override fun onSuccess(result: LoginResult) {
-            handleFacebookAccessToken(result.accessToken)
-        }
-
-        override fun onCancel() = Timber.d("Facebook sign-in canceled")
-
-        override fun onError(error: FacebookException) {
-            Timber.e(error, "Facebook sign-in failed")
-        }
-    }
 
     private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
 
@@ -83,20 +63,6 @@ class AuthViewModel @Inject constructor(
             isFirstLaunchAfterInstall = false
             referrerHandler.retrieveReferrer()
         }
-    }
-
-    fun signInWithFacebook() {
-        LoginManager.getInstance().registerCallback(callbackManager, callback)
-        LoginManager.getInstance().logInWithReadPermissions(
-            activity,
-            listOf("email", "public_profile")
-        )
-        tracker.logEvent("sign_in_with_facebook")
-    }
-
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        auth.signInWithCredential(credential).addOnCompleteListener(activity, ::onLoginCompleted)
     }
 
     fun signInWithGoogle() {
@@ -135,11 +101,6 @@ class AuthViewModel @Inject constructor(
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // Pass the activity result back to the Facebook SDK
-        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
-            return
-        }
-
         when {
             requestCode == REQ_ONE_TAP -> try {
                 val credential = oneTapClient.getSignInCredentialFromIntent(data)
@@ -163,6 +124,21 @@ class AuthViewModel @Inject constructor(
             } catch (e: ApiException) {
                 Timber.w(e)
             }
+        }
+    }
+
+    fun onContactClick() {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = "mailto:".toUri()
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
+            putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
+            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.auth_facebook_contact_text])
+        }
+        if (intent.resolveActivity(context.packageManager) != null) {
+            activity.startActivity(intent)
+            tracker.logEvent("auth_contact_us_click")
+        } else {
+            toaster.showMessage(R.string.settings_no_email_app_found)
         }
     }
 

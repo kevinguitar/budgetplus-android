@@ -6,9 +6,16 @@
     <!-- Auth -->
     <string name="auth_welcome_title">欢迎加入极简记帐</string>
     <string name="auth_welcome_description">飞快的记帐 App，从开启到完成记帐只要 5 秒钟\n快跟你的亲朋好友共同记帐吧！</string>
-    <string name="auth_facebook">以 Facebook 继续</string>
     <string name="auth_google">以 Google 继续</string>
     <string name="auth_success">欢迎，%s！</string>
+    <string name="auth_facebook_hint">已停止支援 Facebook 登入，造成不便请见谅\n请与我们联系协助您转移帐户</string>
+    <string name="auth_facebook_hint_contact">与我们联系</string>
+    <string name="auth_facebook_contact_text">
+         （麻烦您填写以下资讯，方便帮您转移帐户）
+         \n\n您好，请帮我转移 Facebook 帐户至新的帐户
+         \n旧有 Facebook 帐户 email：
+         \n新的 Google 帐户 email（需先注册极简记帐）：
+     </string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">你可以创建帐本</string>

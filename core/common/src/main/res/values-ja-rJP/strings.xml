@@ -6,9 +6,16 @@
     <!-- Auth -->
     <string name="auth_welcome_title">ミニマリストな帳簿への参加を歓迎します。</string>
     <string name="auth_welcome_description">高速な帳簿アプリ、開始から記帳完了までたった 5 秒、友達や親戚と一緒に記帳しましょう！</string>
-    <string name="auth_facebook">Facebook で続行</string>
     <string name="auth_google">Google で続行</string>
     <string name="auth_success">ようこそ、%sさん！</string>
+    <string name="auth_facebook_hint">は Facebook ログインのサポートを停止しており、ご不便をおかけして申し訳ありません。アカウント移行のお手伝いをさせていただくために、お問い合わせください</string>
+    <string name="auth_facebook_hint_contact">お問い合わせください</string>
+    <string name="auth_facebook_contact_text">
+        （以下の情報をご記入いただけると、アカウントの移行がスムーズに行えます）
+        \n\nこんにちは、新しいアカウントに Facebook アカウントを移行したいとのことですね。以下の情報を提供していただけますか？
+        \n古い Facebook アカウントのメールアドレス：
+        \n新しい Google アカウントのメールアドレス（ミニマリストな帳簿に事前に登録してください）：
+    </string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">帳簿を作成できます</string>

@@ -13,7 +13,6 @@ import com.kevlina.budgetplus.core.ui.Text
 
 @Composable
 fun AuthTitle(modifier: Modifier = Modifier) {
-
     Text(
         text = stringResource(id = R.string.auth_welcome_title),
         color = LocalAppColors.current.light,
@@ -26,11 +25,11 @@ fun AuthTitle(modifier: Modifier = Modifier) {
 
 @Composable
 fun AuthDescription(modifier: Modifier) {
-
     Text(
         text = stringResource(id = R.string.auth_welcome_description),
         color = LocalAppColors.current.light,
         textAlign = TextAlign.Center,
+        fontSize = FontSize.Normal,
         lineHeight = 24.sp,
         modifier = modifier
     )

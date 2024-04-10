@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
@@ -30,8 +32,7 @@ fun SocialSignInButton(
         modifier = Modifier
             .padding(horizontal = 32.dp)
             .fillMaxWidth()
-            .height(48.dp)
-            .padding(horizontal = 16.dp),
+            .height(56.dp),
         onClick = onClick,
         color = LocalAppColors.current.light
     ) {
@@ -40,8 +41,8 @@ fun SocialSignInButton(
             painter = painterResource(id = iconRes),
             contentDescription = null,
             modifier = Modifier
-                .size(40.dp)
                 .padding(end = 16.dp)
+                .size(24.dp)
         )
 
         Text(
@@ -49,8 +50,16 @@ fun SocialSignInButton(
             color = LocalAppColors.current.dark,
             fontSize = FontSize.SemiLarge,
             fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(1F)
         )
     }
+}
+
+@PreviewFontScale
+@Composable
+private fun SocialSignInButton_Preview() = AppTheme {
+    SocialSignInButton(
+        onClick = { },
+        textRes = R.string.auth_google,
+        iconRes = R.drawable.ic_google
+    )
 }

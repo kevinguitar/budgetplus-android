@@ -36,7 +36,6 @@ coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0"
 desugar = "com.android.tools:desugar_jdk_libs:2.0.4"
 espresso = "androidx.test.espresso:espresso-core:3.5.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
-facebook-auth = "com.facebook.android:facebook-login:16.3.0"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }

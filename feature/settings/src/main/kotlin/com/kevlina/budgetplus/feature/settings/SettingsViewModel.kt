@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.settings
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -39,6 +38,7 @@ internal class SettingsViewModel @Inject constructor(
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("instagram_url") private val instagramUrl: String,
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
+    @Named("contact_email") private val contactEmail: String,
     @Named("logout") private val logoutNavigationAction: NavigationAction,
 ) : ViewModel() {
 
@@ -120,12 +120,11 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     fun contactUs(context: Context) {
-        context as Activity
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = "mailto:".toUri()
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("budgetplussg@gmail.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
             putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
-            putExtra(Intent.EXTRA_TEXT, "\n\nUser id: ${authManager.requireUserId()}")
+            putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n")
         }
         if (intent.resolveActivity(context.packageManager) != null) {
             context.startActivity(intent)

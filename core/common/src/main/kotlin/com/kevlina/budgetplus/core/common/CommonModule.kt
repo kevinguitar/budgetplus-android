@@ -59,6 +59,12 @@ internal interface CommonModule {
         }
 
         @Provides
+        @Named("contact_email")
+        fun provideContactEmail(): String {
+            return "budgetplussg@gmail.com"
+        }
+
+        @Provides
         @Named("privacy_policy_url")
         fun providePrivacyPolicyUrl(): String {
             return "https://budgetplus.cchi.tw/privacy-policy/"

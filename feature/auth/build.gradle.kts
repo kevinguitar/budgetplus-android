@@ -9,7 +9,6 @@ dependencies {
     implementation(projects.core.ui)
 
     implementation(libs.install.referrer)
-    implementation(libs.facebook.auth)
     implementation(libs.firebase.auth)
     implementation(libs.google.auth)
 }

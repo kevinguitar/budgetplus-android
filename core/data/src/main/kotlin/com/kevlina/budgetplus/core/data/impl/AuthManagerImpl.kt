@@ -102,7 +102,6 @@ internal class AuthManagerImpl @Inject constructor(
     private fun FirebaseUser.toUser() = User(
         id = uid,
         name = displayName,
-        email = email,
         photoUrl = photoUrl?.toString(),
     )
 

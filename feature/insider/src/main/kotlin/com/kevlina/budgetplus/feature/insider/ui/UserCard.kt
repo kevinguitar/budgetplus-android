@@ -72,40 +72,30 @@ internal fun UserCard(
                     .clip(CircleShape)
             )
 
-            Column {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Text(
+                    text = user.name.orEmpty(),
+                    fontSize = FontSize.SemiLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
 
-                    Text(
-                        text = user.name.orEmpty(),
-                        fontSize = FontSize.SemiLarge,
-                        fontWeight = FontWeight.SemiBold
+                user.language?.let { language ->
+                    Spacer(modifier = Modifier
+                        .size(2.dp)
+                        .clip(CircleShape)
+                        .background(LocalAppColors.current.dark)
                     )
 
-                    user.language?.let { language ->
-                        Spacer(modifier = Modifier
-                            .size(2.dp)
-                            .clip(CircleShape)
-                            .background(LocalAppColors.current.dark)
-                        )
-
-                        Text(text = stringResource(id = when (language) {
-                            "zh-tw" -> R.string.insider_language_zh_tw
-                            "zh-cn" -> R.string.insider_language_zh_cn
-                            "ja" -> R.string.insider_language_ja
-                            else -> R.string.insider_language_en
-                        }))
-                    }
-                }
-
-                user.email.takeUnless { it.isNullOrBlank() }?.let { email ->
-                    Text(
-                        text = email,
-                        fontSize = FontSize.Small
-                    )
+                    Text(text = stringResource(id = when (language) {
+                        "zh-tw" -> R.string.insider_language_zh_tw
+                        "zh-cn" -> R.string.insider_language_zh_cn
+                        "ja" -> R.string.insider_language_ja
+                        else -> R.string.insider_language_en
+                    }))
                 }
             }
         }
@@ -131,7 +121,6 @@ internal fun UserCard(
 private fun UserCard_Preview() = AppTheme {
     UserCard(user = User(
         name = "Kevin Chiu",
-        email = "kevin.chiu@gmail.com",
         createdOn = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1),
         lastActiveOn = System.currentTimeMillis(),
         language = "zh-tw"

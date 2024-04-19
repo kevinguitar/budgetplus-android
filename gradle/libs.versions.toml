@@ -8,7 +8,7 @@ ksp = "1.9.23-1.0.20"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.04.00"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
-compose-compiler = "1.5.11"
+compose-compiler = "1.5.12"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.8.1"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android

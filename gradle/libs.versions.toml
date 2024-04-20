@@ -6,7 +6,7 @@ kotlin = "1.9.23"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "1.9.23-1.0.20"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.04.00"
+compose-bom = "2024.04.01"
 # https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.5.11"
 # https://firebase.google.com/support/release-notes/android
@@ -18,7 +18,7 @@ coil = "2.6.0"
 
 [libraries]
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"
-android-core = "androidx.core:core-ktx:1.12.0"
+android-core = "androidx.core:core-ktx:1.13.0"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -60,7 +60,7 @@ kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 lottie-compose = "com.airbnb.android:lottie-compose:6.4.0"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.3"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.2.4"
 mockk = "io.mockk:mockk:1.13.10"
 navigation-compose = "androidx.navigation:navigation-compose:2.7.7"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0"

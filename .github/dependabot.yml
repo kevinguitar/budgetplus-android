@@ -33,7 +33,6 @@ updates:
         patterns:
           - "org.jetbrains.kotlin:*"
           - "org.jetbrains.kotlin.*"
-          - "androidx.compose.compiler:compiler"
           - "com.google.devtools.ksp"
       androidx:
         patterns:

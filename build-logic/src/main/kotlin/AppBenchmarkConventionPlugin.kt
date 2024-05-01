@@ -35,8 +35,8 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             }
 
             tasks.withType<KotlinCompile>().configureEach {
-                kotlinOptions {
-                    jvmTarget = Constants.javaVersion.toString()
+                compilerOptions {
+                    jvmTarget.set(Constants.jvmTarget)
                 }
             }
 

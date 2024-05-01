@@ -7,6 +7,7 @@ import org.gradle.kotlin.dsl.getByType
 class ComposeLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.library")
+        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
         configureComposeAndroid(extensions.getByType<LibraryExtension>())
     }
 }

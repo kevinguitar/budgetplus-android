@@ -18,7 +18,6 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("com.android.test")
             apply("org.jetbrains.kotlin.android")
-            apply("org.jetbrains.kotlin.plugin.compose")
         }
 
         val appId: String by project

@@ -5,7 +5,7 @@ Budget+ Android client
 
 - **Alina**：BfvTnZPuUTS6oBH1UwZ8uZIllWs2
 - **Kevin**：wStzA9aMwHd0pOGwyT0woBrf05q2
-- **Kevin Test**：CWIvxiVBcXa6MdPE307Jb6myQPx2
+- **Kevin Test**：Z8anJ6T32nSCtWOJiB58DmgE8rl2
 
 ## Baseline Profile
 

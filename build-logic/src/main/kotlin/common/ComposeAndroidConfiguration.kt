@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureComposeAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
+    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     commonExtension.apply {

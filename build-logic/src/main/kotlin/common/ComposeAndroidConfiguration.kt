@@ -11,6 +11,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.configureComposeAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
+    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     commonExtension.apply {
@@ -18,34 +20,30 @@ internal fun Project.configureComposeAndroid(
             compose = true
         }
 
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("compose.compiler").get().toString()
-        }
-
         tasks.withType<KotlinCompile>().configureEach {
-            kotlinOptions {
-                freeCompilerArgs += listOf(
+            compilerOptions {
+                freeCompilerArgs.addAll(
                     "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
                     "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                     "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-                ) +
-                    buildStabilityConfiguration() +
-                    buildStrongSkippingMode() +
-                    buildComposeMetricsParameters()
+                )
+                freeCompilerArgs.addAll(buildStabilityConfiguration())
+                freeCompilerArgs.addAll(buildStrongSkippingMode())
+                freeCompilerArgs.addAll(buildComposeMetricsParameters())
             }
         }
     }
 
     dependencies {
-        add("implementation", platform(libs.findLibrary("compose.bom").get()))
-        add("implementation", libs.findBundle("compose").get())
+        implementation(platform(libs.findLibrary("compose.bom").get()))
+        implementation(libs.findBundle("compose").get())
     }
 }
 
 private fun Project.buildStabilityConfiguration(): List<String> = listOf(
     // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
     "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+    "plugin:org.jetbrains.kotlin.compose.compiler.gradle:stabilityConfigurationFile=" +
         rootProject.file("misc/compose_compiler_config.conf").absolutePath
 )
 
@@ -53,7 +51,7 @@ private fun Project.buildStrongSkippingMode(): List<String> = listOf(
     // Enable the strong skipping mode
     // https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/compiler/design/strong-skipping.md#other-gradle-projects
     "-P",
-    "plugin:androidx.compose.compiler.plugins.kotlin:experimentalStrongSkipping=true"
+    "plugin:org.jetbrains.kotlin.compose.compiler.gradle:enableStrongSkippingMode=true"
 )
 
 // Composable metrics
@@ -69,7 +67,7 @@ private fun Project.buildComposeMetricsParameters(): List<String> {
         val metricsFolder = project.layout.buildDirectory.dir("compose-metrics").get().asFile
         metricParameters.add("-P")
         metricParameters.add(
-            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" + metricsFolder.absolutePath
+            "plugin:org.jetbrains.kotlin.compose.compiler.gradle:metricsDestination=" + metricsFolder.absolutePath
         )
     }
 
@@ -79,7 +77,7 @@ private fun Project.buildComposeMetricsParameters(): List<String> {
         val reportsFolder = project.layout.buildDirectory.dir("compose-reports").get().asFile
         metricParameters.add("-P")
         metricParameters.add(
-            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" + reportsFolder.absolutePath
+            "plugin:org.jetbrains.kotlin.compose.compiler.gradle:reportsDestination=" + reportsFolder.absolutePath
         )
     }
     return metricParameters.toList()

@@ -2,6 +2,7 @@
 *.aab
 .gradle
 /local.properties
+/.kotlin
 /.idea
 .DS_Store
 /build

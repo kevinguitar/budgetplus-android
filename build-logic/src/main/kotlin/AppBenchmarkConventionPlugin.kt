@@ -62,7 +62,6 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
                 // for easy local/CI testing.
                 create("benchmark") {
                     initWith(getByName("release"))
-                    isDebuggable = true
                     signingConfig = getByName("debug").signingConfig
                     matchingFallbacks += listOf("release")
                 }

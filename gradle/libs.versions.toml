@@ -6,7 +6,7 @@ kotlin = "2.0.0-RC2"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "2.0.0-RC2-1.0.20"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.04.01"
+compose-bom = "2024.05.00"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "32.8.1"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
@@ -15,8 +15,8 @@ hilt = "2.51.1"
 coil = "2.6.0"
 
 [libraries]
-android-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"
-android-core = "androidx.core:core-ktx:1.13.0"
+android-appcompat = "androidx.appcompat:appcompat:1.7.0-beta01"
+android-core = "androidx.core:core-ktx:1.13.1"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }

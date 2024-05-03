@@ -1,6 +1,6 @@
 [versions]
 # https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "8.3.2"
+gradle-plugin = "8.4.0"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.0.0-RC2"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions

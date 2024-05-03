@@ -12,7 +12,9 @@ plugins {
     alias(libs.plugins.detekt)
 }
 
-tasks.register("clean", Delete::class) { delete(rootProject.buildDir) }
+tasks.register("clean", Delete::class) {
+    delete(rootProject.layout.buildDirectory)
+}
 
 // Collect all the issue for baseline on the project level.
 val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.DetektCreateBaselineTask::class) {

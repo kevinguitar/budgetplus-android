@@ -96,7 +96,7 @@ class AuthViewModel @Inject constructor(
 
         coroutineScope.launch {
             try {
-                val result = credentialManager.getCredential(context, request)
+                val result = credentialManager.getCredential(activity, request)
                 handleSignIn(result)
             } catch (e: GetCredentialCancellationException) {
                 // Ignore cancellation exception

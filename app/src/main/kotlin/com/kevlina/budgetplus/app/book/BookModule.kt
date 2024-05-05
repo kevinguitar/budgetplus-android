@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book
+package com.kevlina.budgetplus.app.book
 
 import android.content.Context
 import android.content.Intent

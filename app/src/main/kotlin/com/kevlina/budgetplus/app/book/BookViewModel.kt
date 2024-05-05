@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book
+package com.kevlina.budgetplus.app.book
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel

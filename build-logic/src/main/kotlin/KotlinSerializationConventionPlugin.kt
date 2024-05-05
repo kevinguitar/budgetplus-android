@@ -1,17 +1,17 @@
 import common.implementation
+import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 
 class KotlinSerializationConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 
-        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-        dependencies {
-            implementation(libs.findLibrary("kotlin.serialization").get())
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
+
+        project.dependencies {
+            implementation(project.libs.kotlin.serialization)
         }
     }
 }

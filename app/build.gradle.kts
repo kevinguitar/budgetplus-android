@@ -1,7 +1,7 @@
 plugins {
     id("budgetplus.android.app")
     id("budgetplus.hilt.android")
-    id("budgetplus.compose.app")
+    id("budgetplus.compose")
 }
 
 dependencies {

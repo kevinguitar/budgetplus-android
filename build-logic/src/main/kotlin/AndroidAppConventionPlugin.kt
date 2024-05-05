@@ -1,19 +1,19 @@
 import com.android.build.api.dsl.ApplicationExtension
-import common.configureKotlinAndroid
+import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.provideDelegate
 import kotlin.math.pow
 
 class AndroidAppConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        with(pluginManager) {
-            apply("com.android.application")
-            apply("org.jetbrains.kotlin.android")
-            apply("com.google.gms.google-services")
-            apply("com.google.firebase.crashlytics")
-        }
+
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.android.application.get().pluginId)
+        project.apply(plugin = project.libs.plugins.google.services.get().pluginId)
+        project.apply(plugin = project.libs.plugins.firebase.crashlytics.get().pluginId)
+        project.apply<KotlinAndroidConventionPlugin>()
 
         val appId: String by project
         val appVersion: String by project
@@ -36,9 +36,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
             }
             .sum()
 
-        extensions.configure<ApplicationExtension> {
-            configureKotlinAndroid(commonExtension = this, ns = appId)
-
+        project.extensions.configure<ApplicationExtension> {
             defaultConfig {
                 applicationId = appId
                 targetSdk = androidSdk.toInt()
@@ -53,7 +51,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
 
             signingConfigs {
                 create("release") {
-                    storeFile = rootProject.file("misc/BudgetKey")
+                    storeFile = project.rootProject.file("misc/BudgetKey")
                     storePassword = "budget+"
                     keyAlias = "key0"
                     keyPassword = "budget+"

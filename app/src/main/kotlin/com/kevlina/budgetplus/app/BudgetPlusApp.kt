@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus
+package com.kevlina.budgetplus.app
 
 import android.app.Application
 import com.google.firebase.analytics.ktx.analytics

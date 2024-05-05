@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book
+package com.kevlina.budgetplus.app.book
 
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 gradlePlugin {
@@ -21,13 +22,9 @@ gradlePlugin {
             id = "budgetplus.app.benchmark"
             implementationClass = "AppBenchmarkConventionPlugin"
         }
-        register("composeApp") {
-            id = "budgetplus.compose.app"
-            implementationClass = "ComposeAppConventionPlugin"
-        }
-        register("composeLibrary") {
-            id = "budgetplus.compose.library"
-            implementationClass = "ComposeLibraryConventionPlugin"
+        register("compose") {
+            id = "budgetplus.compose"
+            implementationClass = "ComposeConventionPlugin"
         }
         register("hiltAndroid") {
             id = "budgetplus.hilt.android"

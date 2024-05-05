@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.ui
+package com.kevlina.budgetplus.app.book.ui
 
 import android.os.Bundle
 import androidx.hilt.navigation.compose.hiltViewModel

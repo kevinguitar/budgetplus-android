@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.book.ui
+package com.kevlina.budgetplus.app.book.ui
 
 import android.content.Intent
 import androidx.compose.animation.fadeIn
@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.kevlina.budgetplus.book.BookViewModel
+import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab

@@ -100,6 +100,7 @@ class AuthViewModel @Inject constructor(
                 handleSignIn(result)
             } catch (e: GetCredentialCancellationException) {
                 // Ignore cancellation exception
+                Timber.d(e, "Google sign in canceled")
             } catch (e: GetCredentialException) {
                 toaster.showError(e)
             }
@@ -155,7 +156,7 @@ class AuthViewModel @Inject constructor(
                 checkBookAvailability()
             }
 
-            task.isCanceled -> Timber.d("Google sign in canceled")
+            task.isCanceled -> Timber.d("Google sign in task canceled")
             else -> toaster.showError(task.exception ?: error("Unable to login"))
         }
     }

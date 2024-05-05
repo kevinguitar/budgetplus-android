@@ -6,6 +6,7 @@ import common.implementation
 import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
@@ -14,10 +15,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AppBenchmarkConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        with(pluginManager) {
-            apply("com.android.test")
-            apply("org.jetbrains.kotlin.android")
-        }
+        apply(plugin = libs.plugins.android.test.get().pluginId)
+        apply(plugin = libs.plugins.kotlin.android.get().pluginId)
 
         val appId: String by project
         val minAndroidSdk: String by project

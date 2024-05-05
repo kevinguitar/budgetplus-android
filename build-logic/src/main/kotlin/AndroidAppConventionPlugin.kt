@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -8,13 +9,9 @@ import kotlin.math.pow
 
 class AndroidAppConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        //TODO: replace plugins too
-        with(pluginManager) {
-            apply("com.android.application")
-            apply("org.jetbrains.kotlin.android")
-            apply("com.google.gms.google-services")
-            apply("com.google.firebase.crashlytics")
-        }
+        apply(plugin = libs.plugins.android.application.get().pluginId)
+        apply(plugin = libs.plugins.google.services.get().pluginId)
+        apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
         apply<KotlinAndroidConventionPlugin>()
 
         val appId: String by project

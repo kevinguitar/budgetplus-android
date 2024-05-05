@@ -3,13 +3,14 @@ import common.implementation
 import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class ComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+        apply(plugin = libs.plugins.compose.compiler.get().pluginId)
 
         project.extensions.configure(CommonExtension::class.java) {
             buildFeatures {

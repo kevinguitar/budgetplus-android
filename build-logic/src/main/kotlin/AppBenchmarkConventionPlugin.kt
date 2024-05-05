@@ -14,15 +14,16 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AppBenchmarkConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.android.test.get().pluginId)
-        apply(plugin = libs.plugins.kotlin.android.get().pluginId)
+
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.android.test.get().pluginId)
+        project.apply(plugin = project.libs.plugins.kotlin.android.get().pluginId)
 
         val appId: String by project
         val minAndroidSdk: String by project
         val androidSdk: String by project
 
-        extensions.configure<TestExtension> {
+        project.extensions.configure<TestExtension> {
 
             namespace = "$appId.benchmark"
             compileSdk = androidSdk.toInt()
@@ -32,7 +33,7 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
                 targetCompatibility = Constants.javaVersion
             }
 
-            tasks.withType<KotlinCompile>().configureEach {
+            project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
                     jvmTarget.set(Constants.jvmTarget)
                 }
@@ -66,23 +67,25 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             }
 
             targetProjectPath = ":app"
+
+            @Suppress("UnstableApiUsage")
             experimentalProperties["android.experimental.self-instrumenting"] = true
         }
 
-        extensions.configure<TestAndroidComponentsExtension> {
+        project.extensions.configure<TestAndroidComponentsExtension> {
             beforeVariants(selector().all()) {
                 it.enable = it.buildType == "benchmark"
             }
         }
 
-        dependencies {
-            implementation(libs.junit.android)
-            implementation(libs.espresso)
-            implementation(libs.test.uiautomator)
-            implementation(libs.macro.benchmark)
+        project.dependencies {
+            implementation(project.libs.junit.android)
+            implementation(project.libs.espresso)
+            implementation(project.libs.test.uiautomator)
+            implementation(project.libs.macro.benchmark)
 
             // Required for r8
-            compileOnly(libs.google.errorprone)
+            compileOnly(project.libs.google.errorprone)
         }
     }
 }

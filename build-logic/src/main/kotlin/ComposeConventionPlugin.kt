@@ -9,31 +9,32 @@ import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class ComposeConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.compose.compiler.get().pluginId)
+
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.compose.compiler.get().pluginId)
 
         project.extensions.configure(CommonExtension::class.java) {
             buildFeatures {
                 compose = true
             }
 
-            tasks.withType<KotlinCompile>().configureEach {
+            project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
                     freeCompilerArgs.addAll(
                         "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
                         "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                         "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
                     )
-                    freeCompilerArgs.addAll(buildStabilityConfiguration())
-                    freeCompilerArgs.addAll(buildStrongSkippingMode())
-                    freeCompilerArgs.addAll(buildComposeMetricsParameters())
+                    freeCompilerArgs.addAll(project.buildStabilityConfiguration())
+                    freeCompilerArgs.addAll(project.buildStrongSkippingMode())
+                    freeCompilerArgs.addAll(project.buildComposeMetricsParameters())
                 }
             }
         }
 
-        dependencies {
-            implementation(platform(libs.compose.bom))
-            implementation(libs.bundles.compose)
+        project.dependencies {
+            implementation(platform(project.libs.compose.bom))
+            implementation(project.libs.bundles.compose)
         }
     }
 }

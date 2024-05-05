@@ -4,8 +4,9 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.android.library.get().pluginId)
-        apply<KotlinAndroidConventionPlugin>()
+
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.android.library.get().pluginId)
+        project.apply<KotlinAndroidConventionPlugin>()
     }
 }

@@ -7,14 +7,15 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
 class HiltAndroidConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.hilt.android.get().pluginId)
-        apply(plugin = libs.plugins.google.ksp.get().pluginId)
 
-        dependencies {
-            implementation(libs.navigation.hilt)
-            implementation(libs.hilt.android)
-            ksp(libs.hilt.compiler)
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.hilt.android.get().pluginId)
+        project.apply(plugin = project.libs.plugins.google.ksp.get().pluginId)
+
+        project.dependencies {
+            implementation(project.libs.navigation.hilt)
+            implementation(project.libs.hilt.android)
+            ksp(project.libs.hilt.compiler)
         }
     }
 }

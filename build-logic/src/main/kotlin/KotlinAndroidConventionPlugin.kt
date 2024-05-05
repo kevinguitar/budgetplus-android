@@ -7,20 +7,22 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class KotlinAndroidConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        apply(plugin = libs.plugins.kotlin.android.get().pluginId)
+
+    override fun apply(project: Project) {
+        project.apply(plugin = project.libs.plugins.kotlin.android.get().pluginId)
 
         val appId: String by project
         val minAndroidSdk: String by project
         val androidSdk: String by project
 
         project.extensions.configure(CommonExtension::class.java) {
-            val modulePath = this@with.path
+            val modulePath = project.path
                 .drop(1)
                 .split(':', '-')
                 .joinToString(".")
@@ -49,7 +51,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                 }
             }
 
-            tasks.withType<KotlinCompile>().configureEach {
+            project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
                     // Treat all Kotlin warnings as errors (disabled by default)
                     // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
@@ -67,14 +69,14 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             }
         }
 
-        dependencies {
-            implementation(libs.android.core)
-            implementation(libs.coroutines)
-            implementation(libs.timber)
-            implementation(libs.bundles.test)
-            coreLibraryDesugaring(libs.desugar)
+        project.dependencies {
+            implementation(project.libs.android.core)
+            implementation(project.libs.coroutines)
+            implementation(project.libs.timber)
+            implementation(project.libs.bundles.test)
+            coreLibraryDesugaring(project.libs.desugar)
 
-            if (path != ":core:common") {
+            if (project.path != ":core:common") {
                 implementation(project(":core:common"))
             }
         }

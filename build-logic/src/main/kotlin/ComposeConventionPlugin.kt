@@ -1,6 +1,7 @@
-package common
-
 import com.android.build.api.dsl.CommonExtension
+import common.implementation
+import common.libs
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
@@ -8,35 +9,36 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-internal fun Project.configureComposeAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
-    pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+class ComposeConventionPlugin : Plugin<Project> {
+    override fun apply(target: Project) = with(target) {
+        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+        val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
+        project.extensions.configure(CommonExtension::class.java) {
+            buildFeatures {
+                compose = true
+            }
 
-        tasks.withType<KotlinCompile>().configureEach {
-            compilerOptions {
-                freeCompilerArgs.addAll(
-                    "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-                    "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-                    "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
-                )
-                freeCompilerArgs.addAll(buildStabilityConfiguration())
-                freeCompilerArgs.addAll(buildStrongSkippingMode())
-                freeCompilerArgs.addAll(buildComposeMetricsParameters())
+            tasks.withType<KotlinCompile>().configureEach {
+                compilerOptions {
+                    freeCompilerArgs.addAll(
+                        "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                        "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                    )
+                    freeCompilerArgs.addAll(buildStabilityConfiguration())
+                    freeCompilerArgs.addAll(buildStrongSkippingMode())
+                    freeCompilerArgs.addAll(buildComposeMetricsParameters())
+                }
             }
         }
-    }
 
-    dependencies {
-        implementation(platform(libs.findLibrary("compose.bom").get()))
-        implementation(libs.findBundle("compose").get())
+        dependencies {
+            project.libs.compose.bom.get()
+            implementation(platform(libs.findLibrary("compose.bom").get()))
+            implementation(libs.findBundle("compose").get())
+        }
     }
 }
 

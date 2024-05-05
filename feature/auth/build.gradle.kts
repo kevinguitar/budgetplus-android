@@ -10,5 +10,5 @@ dependencies {
 
     implementation(libs.install.referrer)
     implementation(libs.firebase.auth)
-    implementation(libs.google.auth)
+    implementation(libs.google.id)
 }

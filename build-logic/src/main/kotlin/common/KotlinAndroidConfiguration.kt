@@ -49,10 +49,7 @@ internal fun Project.configureKotlinAndroid(
 
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
-                // Treat all Kotlin warnings as errors (disabled by default)
-                // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
-                val warningsAsErrors: String? by project
-                allWarningsAsErrors.set(warningsAsErrors.toBoolean())
+                allWarningsAsErrors.set(true)
 
                 freeCompilerArgs.addAll(
                     "-opt-in=kotlin.RequiresOptIn",

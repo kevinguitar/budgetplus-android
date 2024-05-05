@@ -83,6 +83,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
             }
 
             androidResources {
+                @Suppress("UnstableApiUsage")
                 generateLocaleConfig = true
             }
         }

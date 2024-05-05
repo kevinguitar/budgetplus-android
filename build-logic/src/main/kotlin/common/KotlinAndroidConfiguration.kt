@@ -2,9 +2,7 @@ package common
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -66,14 +64,12 @@ internal fun Project.configureKotlinAndroid(
         }
     }
 
-    val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
     dependencies {
-        implementation(libs.findLibrary("android.core").get())
-        implementation(libs.findLibrary("coroutines").get())
-        implementation(libs.findLibrary("timber").get())
-        implementation(libs.findBundle("test").get())
-        coreLibraryDesugaring(libs.findLibrary("desugar").get())
+        implementation(libs.android.core)
+        implementation(libs.coroutines)
+        implementation(libs.timber)
+        implementation(libs.bundles.test)
+        coreLibraryDesugaring(libs.desugar)
 
         if (path != ":core:common") {
             implementation(project(":core:common"))

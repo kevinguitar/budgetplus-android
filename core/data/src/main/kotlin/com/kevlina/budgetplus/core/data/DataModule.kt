@@ -78,6 +78,7 @@ internal interface DataModule {
             serializersModule = SerializersModule {
                 contextual(LocalDateSerializer)
                 contextual(LocalDateTimeSerializer)
+                ignoreUnknownKeys = true
             }
         }
     }

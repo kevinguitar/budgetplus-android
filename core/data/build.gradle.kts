@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.config)
 
+    implementation(libs.google.auth)
     implementation(libs.google.ads)
     runtimeOnly(libs.google.ads.mediation.meta)
 }

@@ -13,15 +13,10 @@ firebase-bom = "32.8.1"
 hilt = "2.51.1"
 # https://github.com/coil-kt/coil/releases
 coil = "2.6.0"
-# https://developer.android.com/jetpack/androidx/releases/credentials
-android-credentials = "1.2.2"
 
 [libraries]
 android-appcompat = "androidx.appcompat:appcompat:1.7.0-beta01"
 android-core = "androidx.core:core-ktx:1.13.1"
-#noinspection CredentialDependency
-android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
-android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -47,9 +42,9 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
 google-ads = "com.google.android.gms:play-services-ads:23.1.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.17.0.0"
+google-auth = "com.google.android.gms:play-services-auth:21.1.1"
 google-billing = "com.android.billingclient:billing-ktx:6.2.1"
 google-errorprone = "com.google.errorprone:error_prone_annotations:2.27.1"
-google-id = "com.google.android.libraries.identity.googleid:googleid:1.1.0"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
 google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }

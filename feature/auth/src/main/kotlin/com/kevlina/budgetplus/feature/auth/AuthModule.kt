@@ -2,7 +2,10 @@ package com.kevlina.budgetplus.feature.auth
 
 import android.content.Context
 import android.content.Intent
-import com.kevlina.budgetplus.core.common.nav.ARG_AUTO_SIGN_IN
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import dagger.Module
 import dagger.Provides
@@ -16,11 +19,19 @@ import javax.inject.Named
 object AuthModule {
 
     @Provides
+    fun provideGoogleSignInOptions(stringProvider: StringProvider): GoogleSignInOptions {
+        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestIdToken(stringProvider[R.string.google_cloud_client_id])
+            .build()
+    }
+
+    @Provides
     @Named("logout")
     fun provideLogoutNavigationAction(@ApplicationContext context: Context): NavigationAction {
         return NavigationAction(
             intent = Intent(context, AuthActivity::class.java)
-                .putExtra(ARG_AUTO_SIGN_IN, false)
+                .putExtra(ARG_ENABLE_ONE_TAP, false)
         )
     }
 }

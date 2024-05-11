@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -109,23 +108,22 @@ class AuthViewModel @Inject constructor(
 
     private fun handleSignIn(result: GetCredentialResponse) {
         val credential = result.credential
-        if (
-            credential !is CustomCredential ||
-            credential.type != GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
-        ) {
-            toaster.showMessage("Unexpected type of credential")
-            Timber.e("Unexpected type of credential. ${credential.type}")
-            return
+        val idToken = when {
+            credential is GoogleIdTokenCredential -> credential.idToken
+
+            credential is CustomCredential && credential.type ==
+                GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL -> {
+                GoogleIdTokenCredential.createFrom(credential.data).idToken
+            }
+
+            else -> {
+                toaster.showMessage("Unexpected type of credential")
+                Timber.e("Unexpected type of credential. ${credential.type}")
+                return
+            }
         }
 
-        val googleIdToken = try {
-            GoogleIdTokenCredential.createFrom(credential.data).idToken
-        } catch (e: GoogleIdTokenParsingException) {
-            toaster.showError(e)
-            return
-        }
-
-        val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(firebaseCredential)
             .addOnCompleteListener(activity, ::onLoginCompleted)
     }

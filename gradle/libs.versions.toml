@@ -15,7 +15,7 @@ hilt = "2.51.1"
 coil = "2.6.0"
 
 [libraries]
-android-appcompat = "androidx.appcompat:appcompat:1.7.0-beta01"
+android-appcompat = "androidx.appcompat:appcompat:1.7.0-rc01"
 android-core = "androidx.core:core-ktx:1.13.1"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
@@ -24,7 +24,7 @@ compose-activity = { module = "androidx.activity:activity-compose" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
-compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.8.0"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }

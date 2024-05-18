@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -50,8 +51,9 @@ internal fun BottomNav(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
             .background(color = lightColor)
+            .navigationBarsPadding()
+            .height(50.dp)
     ) {
 
         Spacer(

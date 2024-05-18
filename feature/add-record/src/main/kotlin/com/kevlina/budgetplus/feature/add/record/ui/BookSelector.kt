@@ -56,10 +56,12 @@ fun BookSelector(navigator: Navigator) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.rippleClick(
-                color = LocalAppColors.current.light,
-                onClick = { isSelectorShown = true }
-            )
+            modifier = Modifier
+                .rippleClick(
+                    color = LocalAppColors.current.light,
+                    onClick = { isSelectorShown = true }
+                )
+                .padding(vertical = 8.dp)
         ) {
 
             Text(

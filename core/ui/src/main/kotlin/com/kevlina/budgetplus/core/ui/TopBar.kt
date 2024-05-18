@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -30,14 +31,16 @@ fun TopBar(
     titleContent: @Composable (() -> Unit)? = null,
     navigateUp: (() -> Unit)? = null,
     menuActions: @Composable (() -> Unit)? = null,
+    applyStatusBarPadding: Boolean = true,
 ) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .height(56.dp)
-            .fillMaxWidth()
             .background(color = LocalAppColors.current.primary.darken(TOP_BAR_DARKEN_FACTOR))
+            .thenIf(applyStatusBarPadding) { Modifier.statusBarsPadding() }
+            .fillMaxWidth()
+            .height(56.dp)
     ) {
 
         if (navigateUp != null) {
@@ -68,9 +71,7 @@ fun TopBar(
             }
         }
 
-        if (menuActions != null) {
-            menuActions()
-        }
+        menuActions?.invoke()
     }
 }
 

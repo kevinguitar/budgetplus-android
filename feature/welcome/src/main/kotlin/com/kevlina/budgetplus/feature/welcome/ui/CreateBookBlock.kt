@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -45,7 +46,11 @@ fun CreateBookBlock(
 
     var value by remember { mutableStateOf("") }
 
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+            .background(LocalAppColors.current.light)
+            .systemBarsPadding()
+    ) {
 
         Column(
             modifier = Modifier

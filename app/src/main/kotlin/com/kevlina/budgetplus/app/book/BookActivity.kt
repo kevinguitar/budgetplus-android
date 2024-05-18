@@ -56,6 +56,7 @@ class BookActivity : ComponentActivity() {
                 intent.data = "$APP_DEEPLINK/${AddDest.Settings.route}".toUri()
             }
         }
+//        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         viewModel.handleJoinIntent(intent)
@@ -94,7 +95,7 @@ class BookActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (!viewModel.handleJoinIntent(intent)) {
             newIntent = intent

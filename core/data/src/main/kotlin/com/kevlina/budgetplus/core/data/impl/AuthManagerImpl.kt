@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.kevlina.budgetplus.core.data.impl
 
 import android.content.Context

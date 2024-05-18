@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.color.tone.picker
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -105,10 +106,20 @@ fun ColorTonePickerScreen(
         }
     }
 
+    fun navigateUp() {
+        if (isSaveEnabled) {
+            isExitDialogShown = true
+        } else {
+            navigator.navigateUp()
+        }
+    }
+
     fun unlockPremium() {
         vm.trackUnlockPremium()
         navigator.navigate(AddDest.UnlockPremium.route)
     }
+
+    BackHandler(onBack = ::navigateUp)
 
     // Override the app-level local colors with the state of color tone picker.
     CompositionLocalProvider(
@@ -123,13 +134,7 @@ fun ColorTonePickerScreen(
 
             TopBar(
                 title = stringResource(id = R.string.color_tone_picker_title),
-                navigateUp = {
-                    if (isSaveEnabled) {
-                        isExitDialogShown = true
-                    } else {
-                        navigator.navigateUp()
-                    }
-                },
+                navigateUp = ::navigateUp,
                 menuActions = {
                     if (selectedColorTone == ColorTone.Customized) {
                         MenuAction(

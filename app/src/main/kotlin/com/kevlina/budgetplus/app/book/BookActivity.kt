@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import com.kevlina.budgetplus.core.ui.Book
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarDuration
 import com.kevlina.budgetplus.core.ui.SnackbarSender
+import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.auth.AuthActivity
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
@@ -56,6 +58,8 @@ class BookActivity : ComponentActivity() {
                 intent.data = "$APP_DEEPLINK/${AddDest.Settings.route}".toUri()
             }
         }
+        enableEdgeToEdge()
+        setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
 
         viewModel.handleJoinIntent(intent)
@@ -94,7 +98,7 @@ class BookActivity : ComponentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (!viewModel.handleJoinIntent(intent)) {
             newIntent = intent

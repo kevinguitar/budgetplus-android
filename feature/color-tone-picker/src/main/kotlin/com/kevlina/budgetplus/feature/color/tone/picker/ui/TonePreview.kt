@@ -71,7 +71,8 @@ internal fun TonePreview(
                     imageVector = Icons.Rounded.Settings,
                     description = stringResource(id = R.string.settings_description),
                 )
-            }
+            },
+            applyStatusBarPadding = false
         )
 
         RecordTypeTab(

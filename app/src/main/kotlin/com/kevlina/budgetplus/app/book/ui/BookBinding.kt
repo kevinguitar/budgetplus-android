@@ -89,7 +89,8 @@ internal fun BookBinding(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
+                    // Do not consider the top padding, and let TopBar handle it.
+                    .padding(bottom = innerPadding.calculateBottomPadding())
                     .background(color = previewColors?.light ?: LocalAppColors.current.light)
             ) {
                 NavHost(
@@ -100,6 +101,7 @@ internal fun BookBinding(
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()
+                        .background(color = previewColors?.light ?: LocalAppColors.current.light)
                 ) {
                     addTabGraph(navController)
                     overviewTabGraph(navController)

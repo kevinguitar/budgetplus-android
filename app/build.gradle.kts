@@ -9,6 +9,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 
+    implementation(libs.android.activity)
     implementation(libs.navigation.compose)
     implementation(libs.profile.installer)
     implementation(libs.google.ads)

@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.auth.ui.AuthBinding
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +25,8 @@ class AuthActivity : ComponentActivity() {
     private val enableOneTap by lazy { intent.extras?.getBoolean(ARG_ENABLE_ONE_TAP) ?: true }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
 
         setContent {

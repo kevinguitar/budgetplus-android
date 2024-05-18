@@ -22,6 +22,7 @@ class BaselineProfileGenerator {
     fun startup() {
         baselineProfileRule.collect(
             packageName = APP_PACKAGE,
+            maxIterations = 10,
             profileBlock = {
                 // This block defines the app's critical user journey. Here we are interested in
                 // optimizing for app startup. But you can also navigate and scroll

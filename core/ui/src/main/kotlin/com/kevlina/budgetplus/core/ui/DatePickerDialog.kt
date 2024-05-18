@@ -145,9 +145,9 @@ import androidx.compose.material3.DatePickerDialog as MaterialDatePickerDialog
 
 @Composable
 fun DatePickerDialog(
-    date: LocalDateWrapper,
-    minDate: LocalDateWrapper? = null,
-    maxDate: LocalDateWrapper? = null,
+    date: LocalDate,
+    minDate: LocalDate? = null,
+    maxDate: LocalDate? = null,
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -186,7 +186,7 @@ fun DatePickerDialog(
                     .padding(end = 16.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
                     .rippleClick {
-                        onDatePicked(dateState.selectedDateMillis?.utcLocaleDate ?: date.value)
+                        onDatePicked(dateState.selectedDateMillis?.utcLocaleDate ?: date)
                         onDismiss()
                     }
                     .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -219,8 +219,8 @@ fun DatePickerDialog(
     }
 }
 
-private val LocalDateWrapper.utcMillis
-    get() = value.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+private val LocalDate.utcMillis
+    get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
 
 private val Long.utcLocaleDate: LocalDate
     get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()

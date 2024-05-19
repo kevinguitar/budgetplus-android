@@ -1,10 +1,17 @@
-package com.kevlina.budgetplus.core.common
+package com.kevlina.budgetplus.core.common.di
 
 import android.content.Context
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
 import com.kevlina.budgetplus.core.common.impl.ToasterImpl
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -31,6 +38,11 @@ internal interface CommonModule {
         @AppScope
         @Singleton
         fun provideAppCoroutineScope(): CoroutineScope = AppCoroutineScope
+
+        // Make it a singleton here for easiness, there is no activity stack at all.
+        @Provides
+        @Singleton
+        fun provideNavigationFlow(): NavigationFlow = MutableEventFlow()
 
         @Provides
         @Named("is_debug")

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.lottie.PremiumCrown
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
@@ -126,10 +127,12 @@ internal fun SettingsItem(
 
 @Preview
 @Composable
-private fun SettingsItem_Preview() = SettingsItem(
-    icon = Icons.Rounded.Language,
-    text = "語言",
-    roundTop = true,
-    roundBottom = true,
-    onClick = {}
-)
+private fun SettingsItem_Preview() = AppTheme {
+    SettingsItem(
+        icon = Icons.Rounded.Language,
+        text = "語言",
+        roundTop = true,
+        roundBottom = true,
+        onClick = {}
+    )
+}

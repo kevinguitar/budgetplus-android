@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.nav.consumeNavigation
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
@@ -32,6 +33,8 @@ class WelcomeActivity : ComponentActivity() {
                 WelcomeBinding(viewModel)
             }
         }
+
+        consumeNavigation(viewModel.navigation)
     }
 
     override fun onResume() {

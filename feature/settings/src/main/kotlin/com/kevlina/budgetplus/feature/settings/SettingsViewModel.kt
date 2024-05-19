@@ -34,6 +34,7 @@ internal class SettingsViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
+    val navigation: NavigationFlow,
     @Named("app_package") private val appPackage: String,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("instagram_url") private val instagramUrl: String,
@@ -41,8 +42,6 @@ internal class SettingsViewModel @Inject constructor(
     @Named("contact_email") private val contactEmail: String,
     @Named("logout") private val logoutNavigationAction: NavigationAction,
 ) : ViewModel() {
-
-    val navigation = NavigationFlow()
 
     val bookName = bookRepo.bookState.mapState { it?.name }
     val isBookOwner = bookRepo.bookState.combineState(

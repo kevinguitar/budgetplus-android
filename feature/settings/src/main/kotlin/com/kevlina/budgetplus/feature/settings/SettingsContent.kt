@@ -36,7 +36,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
@@ -51,9 +50,6 @@ internal fun SettingsContent(
     showMembers: Boolean,
     modifier: Modifier = Modifier,
 ) {
-
-    vm.navigation.consumeAsEffect()
-
     val context = LocalContext.current
 
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()

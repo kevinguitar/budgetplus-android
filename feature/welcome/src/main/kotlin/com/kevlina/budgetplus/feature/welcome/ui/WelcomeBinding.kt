@@ -4,14 +4,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.feature.welcome.WelcomeViewModel
 
 @Composable
 fun WelcomeBinding(vm: WelcomeViewModel) {
-
-    vm.navigation.consumeAsEffect()
 
     BackHandler(onBack = vm::logout)
 

@@ -1,29 +1,25 @@
 package com.kevlina.budgetplus.core.common.nav
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.kevlina.budgetplus.core.common.Event
 import com.kevlina.budgetplus.core.common.EventFlow
-import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.consumeEach
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
 
-@Suppress("FunctionName")
-fun NavigationFlow() = MutableEventFlow<NavigationAction>()
+typealias NavigationFlow = MutableStateFlow<Event<NavigationAction>>
 
-@SuppressLint("ComposableNaming")
-@Composable
-fun EventFlow<NavigationAction>.consumeAsEffect() {
-    val context = LocalContext.current
-    LaunchedEffect(this) {
-        consumeEach { action ->
-            context.startActivity(action.intent)
+fun ComponentActivity.consumeNavigation(navigationFlow: EventFlow<NavigationAction>) {
+    navigationFlow
+        .consumeEach { action ->
+            startActivity(action.intent)
 
             if (action.finishCurrent) {
-                (context as Activity).finish()
+                finish()
             }
-        }.collect()
-    }
+        }
+        .flowWithLifecycle(lifecycle)
+        .launchIn(lifecycleScope)
 }

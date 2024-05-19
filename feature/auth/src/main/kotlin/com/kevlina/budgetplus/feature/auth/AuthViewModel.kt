@@ -38,6 +38,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class AuthViewModel @Inject constructor(
+    val navigation: NavigationFlow,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
@@ -50,8 +51,6 @@ class AuthViewModel @Inject constructor(
     referrerHandler: ReferrerHandler,
     preferenceHolder: PreferenceHolder,
 ) {
-
-    val navigation = NavigationFlow()
 
     private val activity = context as ComponentActivity
     private val auth: FirebaseAuth by lazy { Firebase.auth }

@@ -20,6 +20,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
+    val navigation: NavigationFlow,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
@@ -27,8 +28,6 @@ class WelcomeViewModel @Inject constructor(
     @Named("book") private val bookNavigationAction: NavigationAction,
     @Named("logout") private val logoutNavigationAction: NavigationAction,
 ) : ViewModel() {
-
-    val navigation = NavigationFlow()
 
     private var createBookJob: Job? = null
 

@@ -1,19 +1,8 @@
 package com.kevlina.budgetplus.feature.edit.category
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,32 +10,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.theme.LocalAppColors
-import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
-import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.MenuAction
-import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
-import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
-import com.kevlina.budgetplus.core.ui.thenIf
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorder
-import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
 
 @Composable
 fun EditCategoryScreen(
@@ -64,7 +40,6 @@ fun EditCategoryScreen(
     var isExitDialogShown by remember { mutableStateOf(false) }
     var list by rememberSaveable { mutableStateOf(originalCategories) }
 
-    val isListModified = originalCategories != list
     val reorderableState = rememberReorderableLazyListState(
         onMove = { (fromIndex, _), (toIndex, _) ->
             list = list.toMutableList()
@@ -72,17 +47,20 @@ fun EditCategoryScreen(
         }
     )
 
-    Column {
+    fun navigateUp() {
+        if (originalCategories != list) {
+            isExitDialogShown = true
+        } else {
+            navigator.navigateUp()
+        }
+    }
 
+    BackHandler(onBack = ::navigateUp)
+
+    Column {
         TopBar(
             title = stringResource(id = R.string.category_edit_title),
-            navigateUp = {
-                if (isListModified) {
-                    isExitDialogShown = true
-                } else {
-                    navigator.navigateUp()
-                }
-            },
+            navigateUp = ::navigateUp,
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.Check,
@@ -104,84 +82,17 @@ fun EditCategoryScreen(
             }
         )
 
-        Box(
-            modifier = Modifier
-                .weight(1F)
-                .fillMaxSize()
-        ) {
-
-            LazyColumn(
-                modifier = Modifier
-                    .width(AppTheme.maxContentWidth)
-                    .fillMaxHeight()
-                    .align(Alignment.Center)
-                    .reorderable(reorderableState)
-                    .detectReorderAfterLongPress(reorderableState),
-                state = reorderableState.listState,
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-
-                itemsIndexed(
-                    items = list,
-                    key = { _, item -> item },
-                    contentType = { _, _ -> "category" }
-                ) { index, item ->
-
-                    ReorderableItem(
-                        reorderableState = reorderableState,
-                        key = item,
-                        index = index,
-                    ) { isDragging ->
-
-                        CategoryCell(
-                            category = item,
-                            isDragging = isDragging,
-                            onClick = { editDialogMode = CategoryEditMode.Rename(item) },
-                            handlerModifier = Modifier.detectReorder(reorderableState),
-                            modifier = Modifier.thenIf(index == 0) {
-                                val bubbleShape = with(LocalDensity.current) {
-                                    BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
-                                }
-
-                                Modifier.onPlaced {
-                                    vm.highlightCategoryHint(
-                                        BubbleDest.EditCategoriesHint(
-                                            size = it.size,
-                                            offset = it.positionInRoot(),
-                                            shape = bubbleShape
-                                        )
-                                    )
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-
-            Surface(
-                shape = CircleShape,
-                color = LocalAppColors.current.dark,
-                onClick = { editDialogMode = CategoryEditMode.Add },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(24.dp)
-                    .size(56.dp)
-            ) {
-
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = stringResource(id = R.string.cta_add),
-                    tint = LocalAppColors.current.light,
-                    modifier = Modifier.padding(all = 8.dp)
-                )
-            }
-        }
+        EditCategoryContent(
+            modifier = Modifier.weight(1F),
+            categories = list,
+            reorderableState = reorderableState,
+            onDialogEditClick = { editDialogMode = it },
+            showEditCategoriesBubble = vm::highlightCategoryHint
+        )
     }
 
     val dialogMode = editDialogMode
     if (dialogMode != null) {
-
         EditCategoryDialog(
             mode = dialogMode,
             onConfirm = { newName ->
@@ -213,7 +124,6 @@ fun EditCategoryScreen(
     }
 
     if (isExitDialogShown) {
-
         ConfirmDialog(
             message = stringResource(id = R.string.unsaved_warning_message),
             onConfirm = {

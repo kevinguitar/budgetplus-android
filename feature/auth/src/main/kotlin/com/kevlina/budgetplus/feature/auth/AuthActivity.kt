@@ -8,11 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
+import com.kevlina.budgetplus.core.common.nav.consumeNavigation
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.auth.ui.AuthBinding
-import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class AuthActivity : ComponentActivity() {
 
     @Inject lateinit var themeManager: ThemeManager
-    @Inject lateinit var viewModel: Lazy<AuthViewModel>
+    @Inject lateinit var viewModel: AuthViewModel
 
     private val enableOneTap by lazy { intent.extras?.getBoolean(ARG_ENABLE_ONE_TAP) ?: true }
 
@@ -32,19 +32,21 @@ class AuthActivity : ComponentActivity() {
         setContent {
             val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
             AppTheme(themeColors) {
-                AuthBinding(vm = viewModel.get())
+                AuthBinding(vm = viewModel)
             }
         }
 
         if (enableOneTap) {
-            viewModel.get().checkAuthorizedAccounts()
+            viewModel.checkAuthorizedAccounts()
         }
+
+        consumeNavigation(viewModel.navigation)
     }
 
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        viewModel.get().onActivityResult(requestCode, resultCode, data)
+        viewModel.onActivityResult(requestCode, resultCode, data)
     }
 }

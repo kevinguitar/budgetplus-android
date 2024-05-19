@@ -24,7 +24,6 @@ import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
-import com.kevlina.budgetplus.core.common.nav.consumeAsEffect
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
@@ -48,8 +47,6 @@ internal fun BookBinding(
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
     var isUnlockingPremium by remember { mutableStateOf(false) }
-
-    vm.navigation.consumeAsEffect()
 
     LaunchedEffect(vm) {
         vm.unlockPremiumEvent

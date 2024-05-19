@@ -17,6 +17,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_URL
 import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.consumeNavigation
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.theme.ThemeManager
@@ -96,6 +97,8 @@ class BookActivity : ComponentActivity() {
                 }
             }
         }
+
+        consumeNavigation(viewModel.navigation)
     }
 
     override fun onNewIntent(intent: Intent) {

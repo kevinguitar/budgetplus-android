@@ -29,6 +29,7 @@ import javax.inject.Named
 class BookViewModel @Inject constructor(
     val snackbarSender: BookSnackbarSender,
     val themeManager: ThemeManager,
+    val navigation: NavigationFlow,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val stringProvider: StringProvider,
@@ -36,8 +37,6 @@ class BookViewModel @Inject constructor(
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
 ) : ViewModel() {
-
-    val navigation = NavigationFlow()
 
     private val _unlockPremiumEvent = MutableEventFlow<Unit>()
     val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent

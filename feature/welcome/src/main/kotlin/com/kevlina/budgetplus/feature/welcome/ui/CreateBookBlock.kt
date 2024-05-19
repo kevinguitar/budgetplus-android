@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -36,12 +37,15 @@ import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
+import com.kevlina.budgetplus.core.ui.thenIf
 
 @Composable
 fun CreateBookBlock(
     modifier: Modifier,
     createBook: (String) -> Unit,
     isWideMode: Boolean = false,
+    applyStatusBarPadding: Boolean = true,
+    applyNavBarPadding: Boolean = false,
 ) {
 
     var value by remember { mutableStateOf("") }
@@ -49,7 +53,8 @@ fun CreateBookBlock(
     Box(
         modifier = modifier
             .background(LocalAppColors.current.light)
-            .systemBarsPadding()
+            .thenIf(applyStatusBarPadding) { Modifier.statusBarsPadding() }
+            .thenIf(applyNavBarPadding) { Modifier.navigationBarsPadding() }
     ) {
 
         Column(
@@ -62,7 +67,7 @@ fun CreateBookBlock(
                     }
                 )
                 .width(IntrinsicSize.Max)
-                .padding(vertical = 16.dp, horizontal = 24.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         ) {
 
             Row(
@@ -105,7 +110,7 @@ fun CreateBookBlock(
                     }
                 )
                 .width(AppTheme.maxContentWidth)
-                .padding(all = 24.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         ) {
 
             Text(
@@ -116,7 +121,7 @@ fun CreateBookBlock(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
 
                 TextField(

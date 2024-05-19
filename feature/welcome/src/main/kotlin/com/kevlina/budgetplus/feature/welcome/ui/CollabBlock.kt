@@ -3,8 +3,9 @@ package com.kevlina.budgetplus.feature.welcome.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +24,14 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.thenIf
 
 @Composable
-internal fun CollabBlock(modifier: Modifier = Modifier) {
+internal fun CollabBlock(
+    modifier: Modifier = Modifier,
+    applyStatusBarPadding: Boolean = false,
+    applyNavBarPadding: Boolean = true,
+) {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_collab))
 
@@ -33,7 +39,8 @@ internal fun CollabBlock(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .background(LocalAppColors.current.primary)
-            .systemBarsPadding()
+            .thenIf(applyStatusBarPadding) { Modifier.statusBarsPadding() }
+            .thenIf(applyNavBarPadding) { Modifier.navigationBarsPadding() }
     ) {
 
         Text(
@@ -44,7 +51,7 @@ internal fun CollabBlock(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .weight(1F)
                 .width(AppTheme.maxContentWidth)
-                .padding(24.dp)
+                .padding(vertical = 24.dp, horizontal = 16.dp)
         )
 
         LottieAnimation(

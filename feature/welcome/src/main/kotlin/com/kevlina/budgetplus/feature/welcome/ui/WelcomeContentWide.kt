@@ -17,12 +17,16 @@ fun WelcomeContentWide(viewModel: WelcomeViewModel) {
         CreateBookBlock(
             createBook = viewModel::createBook,
             isWideMode = true,
+            applyStatusBarPadding = true,
+            applyNavBarPadding = true,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)
         )
 
         CollabBlock(
+            applyStatusBarPadding = true,
+            applyNavBarPadding = true,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)

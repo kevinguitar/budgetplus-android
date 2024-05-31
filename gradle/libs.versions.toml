@@ -25,7 +25,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
 # https://www.reddit.com/r/androiddev/comments/1csjwne/lifecycle_280_only_compatible_with_compose_17/
-compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.8.1"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }

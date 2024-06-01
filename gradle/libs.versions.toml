@@ -45,7 +45,7 @@ google-ads = "com.google.android.gms:play-services-ads:23.1.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.17.0.0"
 google-auth = "com.google.android.gms:play-services-auth:21.2.0"
 google-billing = "com.android.billingclient:billing-ktx:6.2.1"
-google-errorprone = "com.google.errorprone:error_prone_annotations:2.27.1"
+google-errorprone = "com.google.errorprone:error_prone_annotations:2.28.0"
 google-play-review = "com.google.android.play:review-ktx:2.0.1"
 google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }

@@ -144,7 +144,8 @@ internal class OverviewViewModel @Inject constructor(
     fun toggleMode() {
         val newMode = when (mode.value) {
             OverviewMode.AllRecords -> OverviewMode.GroupByCategories
-            OverviewMode.GroupByCategories -> OverviewMode.AllRecords
+            OverviewMode.GroupByCategories -> OverviewMode.PieChart
+            OverviewMode.PieChart -> OverviewMode.AllRecords
         }
         _mode.value = newMode
         modeCache = newMode

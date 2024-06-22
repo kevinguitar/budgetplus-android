@@ -8,9 +8,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Segment
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.FileDownload
+import androidx.compose.material.icons.rounded.FormatListNumbered
+import androidx.compose.material.icons.rounded.PieChart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,8 +66,10 @@ fun OverviewScreen(navigator: Navigator) {
             menuActions = {
                 MenuAction(
                     imageVector = when (mode) {
-                        OverviewMode.AllRecords -> Icons.AutoMirrored.Rounded.Segment
+                        //TODO: decide icon
+                        OverviewMode.AllRecords -> Icons.Rounded.FormatListNumbered
                         OverviewMode.GroupByCategories -> Icons.Rounded.BarChart
+                        OverviewMode.PieChart -> Icons.Rounded.PieChart
                     },
                     description = stringResource(id = R.string.overview_details_title),
                     onClick = vm::toggleMode,
@@ -141,7 +144,7 @@ fun OverviewScreen(navigator: Navigator) {
 }
 
 enum class OverviewUiType {
-    Header, Record, Group, ZeroCase, Loader
+    Header, Record, Group, PieChart, ZeroCase, Loader
 }
 
 private fun OverviewViewModel.toUiState() = OverviewContentUiState(

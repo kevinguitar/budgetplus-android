@@ -170,6 +170,7 @@ internal fun OverviewList(
                                 modifier = Modifier.fillMaxSize(),
                                 totalPrice = totalPrice,
                                 recordGroups = recordGroups.orEmpty(),
+                                formatPrice = uiState.formatPrice,
                                 onClick = ::navigateToRecords
                             )
                         }

@@ -3,7 +3,6 @@ package com.kevlina.budgetplus.feature.overview.ui
 import android.view.MotionEvent
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,15 +19,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.roundUpRatioText
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -36,26 +35,30 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 @Composable
 internal fun PieChart(
     modifier: Modifier = Modifier,
     totalPrice: Double,
     recordGroups: Map<String, List<Record>>,
+    formatPrice: (Double) -> String,
     onClick: (category: String) -> Unit,
 ) {
 
-    val recordGroupPercents = remember(recordGroups) {
+    val recordGroupSums = remember(recordGroups) {
         recordGroups.mapValues { (_, group) ->
-            group.sumOf { it.price } / totalPrice
+            group.sumOf { it.price }
         }
     }
 
     val textMeasurer = rememberTextMeasurer()
     val textStyle = TextStyle(
         color = LocalAppColors.current.dark,
-        fontSize = FontSize.Small
+        fontSize = FontSize.Normal,
+        textAlign = TextAlign.Center
     )
 
     var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(false) }
@@ -67,7 +70,8 @@ internal fun PieChart(
     var tapPosition by remember { mutableStateOf<Offset?>(null) }
     var pressPosition by remember { mutableStateOf<Offset?>(null) }
 
-    val pressEffectPx = with(LocalDensity.current) { 4.dp.toPx() }
+    val pressEffectPx = with(LocalDensity.current) { 8.dp.toPx() }
+    val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
 
     LaunchedEffect(totalPrice, recordGroups) {
         isDrawn = true
@@ -75,25 +79,40 @@ internal fun PieChart(
 
     Canvas(
         modifier = modifier
-            .padding(12.dp)
+            .padding(8.dp)
             .clip(CircleShape)
             .aspectRatio(1F)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { tapPosition = it })
-            }
-            .pointerInteropFilter {
-                if (it.action == MotionEvent.ACTION_UP) {
-                    pressPosition = null
-                } else {
-                    pressPosition = Offset(it.x, it.y)
+            .pointerInteropFilter(
+                requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
+            ) { event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN,
+                    MotionEvent.ACTION_MOVE,
+                    MotionEvent.ACTION_HOVER_ENTER,
+                    MotionEvent.ACTION_HOVER_MOVE,
+                    -> {
+                        disallowInterceptTouchEventRequest.invoke(true)
+                        pressPosition = Offset(event.x, event.y)
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        disallowInterceptTouchEventRequest.invoke(false)
+                        pressPosition = null
+                        tapPosition = Offset(event.x, event.y)
+                    }
+
+                    else -> {
+                        disallowInterceptTouchEventRequest.invoke(false)
+                        pressPosition = null
+                    }
                 }
                 true
             }
     ) {
         var startAngle = 270f
 
-        recordGroupPercents.onEachIndexed { index, (category, percent) ->
-            val angle = (animateAngle * percent).toFloat()
+        recordGroupSums.onEachIndexed { index, (category, sum) ->
+            val angle = (animateAngle * sum / totalPrice).toFloat()
             val isPressed = pressPosition?.isWithIn(startAngle, angle) ?: false
 
             // Consume the tap action
@@ -126,7 +145,7 @@ internal fun PieChart(
             )
 
             if (animateAngle >= 180) {
-                val text = "$category\n${(percent * A_HUNDRED).roundUpRatioText}%"
+                val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
                 val textRadius = center.x * 0.6
@@ -137,7 +156,7 @@ internal fun PieChart(
 
                 drawText(
                     textMeasurer = textMeasurer,
-                    text = "$category\n${(percent * A_HUNDRED).roundUpRatioText}%",
+                    text = text,
                     style = textStyle,
                     topLeft = Offset(
                         x = center.x + deltaX.toFloat() - (textMeasure.size.width / 2),
@@ -161,9 +180,12 @@ private fun Offset.isWithIn(
     // Calculate angle of tap relative to center
     val angle = atan2(y - center, x - center) * 180f / PI
     val normalizedAngle = (angle + 360) % 360
-    val normalizedStartAngle = startAngle % 360
+    val normalizedStartAngle = (startAngle + 360) % 360
 
-    return normalizedAngle in normalizedStartAngle..(normalizedStartAngle + sweepAngle)
+    val distanceToCenter = sqrt((x - center).pow(2) + (y - center).pow(2))
+
+    return distanceToCenter <= center &&
+        normalizedAngle in normalizedStartAngle..(normalizedStartAngle + sweepAngle)
 }
 
 private fun Float.toRadians(): Double = this / 180.0 * PI
@@ -175,6 +197,7 @@ private fun PieChart_Preview() = AppTheme {
         modifier = Modifier.size(300.dp),
         totalPrice = OverviewListUiState.totalPricePreview,
         recordGroups = OverviewListUiState.recordGroupsPreview,
+        formatPrice = { it.toString() },
         onClick = {}
     )
 }

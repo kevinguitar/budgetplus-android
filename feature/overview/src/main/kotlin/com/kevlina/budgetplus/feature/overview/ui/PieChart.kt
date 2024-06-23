@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber", "CyclomaticComplexMethod")
+
 package com.kevlina.budgetplus.feature.overview.ui
 
 import android.view.MotionEvent

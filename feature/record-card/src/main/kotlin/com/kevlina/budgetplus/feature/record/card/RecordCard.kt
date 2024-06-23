@@ -141,9 +141,7 @@ fun RecordCard(
             DropdownMenu(
                 expanded = isMenuShown,
                 onDismissRequest = { isMenuShown = false },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .background(color = LocalAppColors.current.light)
+                modifier = Modifier.align(Alignment.BottomEnd)
             ) {
 
                 DropdownItem(

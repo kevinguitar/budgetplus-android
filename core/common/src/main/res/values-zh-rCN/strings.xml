@@ -155,6 +155,9 @@
     <string name="settings_book_left">您已离开%s</string>
     <string name="settings_language">语言</string>
     <string name="settings_input_vibration">输入震动反馈</string>
+    <string name="settings_chart_mode">总览图表模式</string>
+    <string name="settings_bar_chart">长条图</string>
+    <string name="settings_pie_chart">圆饼图</string>
     <string name="settings_share_app">分享 App 给好友</string>
     <string name="settings_share_app_message">我发现了一款超好用的记帐 App，快下载来试试吧！\n%s</string>
     <string name="settings_rate_us">在 Google Play 上评价</string>

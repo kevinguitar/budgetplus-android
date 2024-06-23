@@ -162,8 +162,7 @@ private fun FrequencySelector(
 
             DropdownMenu(
                 expanded = isFrequencyMenuShown,
-                onDismissRequest = { isFrequencyMenuShown = false },
-                modifier = Modifier.background(color = LocalAppColors.current.light)
+                onDismissRequest = { isFrequencyMenuShown = false }
             ) {
 
                 BatchFrequency.entries.forEach { freq ->
@@ -226,9 +225,7 @@ private fun TimesSelector(
             DropdownMenu(
                 expanded = isTimesMenuShown,
                 onDismissRequest = { isTimesMenuShown = false },
-                modifier = Modifier
-                    .background(color = LocalAppColors.current.light)
-                    .heightIn(max = 240.dp)
+                modifier = Modifier.heightIn(max = 240.dp)
             ) {
 
                 batchTimes.forEach { times ->

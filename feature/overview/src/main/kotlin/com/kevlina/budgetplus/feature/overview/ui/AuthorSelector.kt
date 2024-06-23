@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -56,8 +55,7 @@ internal fun AuthorSelector(
 
             DropdownMenu(
                 expanded = isAuthorPickerShown,
-                onDismissRequest = { isAuthorPickerShown = false },
-                modifier = Modifier.background(color = LocalAppColors.current.light)
+                onDismissRequest = { isAuthorPickerShown = false }
             ) {
 
                 DropdownItem(

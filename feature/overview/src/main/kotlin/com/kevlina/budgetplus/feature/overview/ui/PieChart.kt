@@ -28,7 +28,6 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,9 +68,8 @@ internal fun PieChart(
     val textMeasurer = rememberTextMeasurer()
     val textStyle = TextStyle(
         color = LocalAppColors.current.dark,
-        fontSize = FontSize.Normal,
+        fontSize = FontSize.Large,
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight.SemiBold
     )
 
     var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(false) }
@@ -191,7 +189,7 @@ internal fun PieChart(
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
-                val textRadius = center.x * 0.6
+                val textRadius = center.x * 0.5
                 val textAngle = startAngle + (angle / 2)
 
                 val deltaX = textRadius * cos(textAngle.toRadians())

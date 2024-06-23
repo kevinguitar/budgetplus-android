@@ -1,12 +1,10 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Check
@@ -28,10 +26,9 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.ui.DropdownDivider
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
-import com.kevlina.budgetplus.core.ui.DropdownMenuDivider
-import com.kevlina.budgetplus.core.ui.DropdownMenuItem
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.InputDialog
@@ -57,11 +54,11 @@ fun BookSelector(navigator: Navigator) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .rippleClick(
-                    color = LocalAppColors.current.light,
-                    onClick = { isSelectorShown = true }
-                )
-                .padding(vertical = 8.dp)
+                    .rippleClick(
+                            color = LocalAppColors.current.light,
+                            onClick = { isSelectorShown = true }
+                    )
+                    .padding(vertical = 8.dp)
         ) {
 
             Text(
@@ -82,14 +79,12 @@ fun BookSelector(navigator: Navigator) {
             expanded = isSelectorShown,
             onDismissRequest = { isSelectorShown = false },
             offset = DpOffset(0.dp, 8.dp),
-            modifier = Modifier
-                .background(color = LocalAppColors.current.light)
-                .heightIn(max = 300.dp)
+            modifier = Modifier.heightIn(max = 300.dp)
         ) {
 
             booksState.orEmpty().forEach { book ->
 
-                DropdownMenuItem(onClick = {
+                DropdownItem(onClick = {
                     viewModel.selectBook(book)
                     isSelectorShown = false
                 }) {
@@ -114,21 +109,14 @@ fun BookSelector(navigator: Navigator) {
                 }
             }
 
-            DropdownMenuDivider()
+            DropdownDivider()
 
             DropdownItem(
                 name = stringResource(id = R.string.menu_create_book),
-                icon = {
-                    if (createBookBtnState != CreateBookBtnState.Enabled) {
-                        Icon(
-                            imageVector = Icons.Rounded.Lock,
-                            contentDescription = null,
-                            tint = LocalAppColors.current.dark,
-                            modifier = Modifier
-                                .padding(end = 4.dp)
-                                .size(20.dp)
-                        )
-                    }
+                icon = if (createBookBtnState != CreateBookBtnState.Enabled) {
+                    Icons.Rounded.Lock
+                } else {
+                    null
                 },
                 onClick = {
                     when (createBookBtnState) {

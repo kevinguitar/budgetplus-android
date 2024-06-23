@@ -20,6 +20,7 @@ import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.ChartModeViewModel
 import com.kevlina.budgetplus.core.data.VibratorManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -34,6 +35,7 @@ internal class SettingsViewModel @Inject constructor(
     private val toaster: Toaster,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
+    val chartModel: ChartModeViewModel,
     val navigation: NavigationFlow,
     @Named("app_package") private val appPackage: String,
     @Named("google_play_url") private val googlePlayUrl: String,

@@ -350,7 +350,7 @@ internal class BookRepoImpl @Inject constructor(
 
         tracker.logEvent(
             event = "currency_updated",
-            params = bundle { putString("currencyCode", currencyCode) }
+            params = bundle { putString("currency_code", currencyCode) }
         )
     }
 }

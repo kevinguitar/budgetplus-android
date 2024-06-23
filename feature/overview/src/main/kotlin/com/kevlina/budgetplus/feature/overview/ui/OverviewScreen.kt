@@ -8,10 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.material.icons.rounded.FormatListNumbered
-import androidx.compose.material.icons.rounded.PieChart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +27,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.shortFormatted
+import com.kevlina.budgetplus.core.data.icon
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -44,6 +43,7 @@ fun OverviewScreen(navigator: Navigator) {
     val uiState = remember(key1 = vm) { vm.toUiState() }
 
     val mode by vm.mode.collectAsStateWithLifecycle()
+    val chartMode by vm.chartModeModel.chartMode.collectAsStateWithLifecycle()
     val bookName by vm.bookName.collectAsStateWithLifecycle()
 
     var isExportDialogShown by remember { mutableStateOf(false) }
@@ -66,10 +66,8 @@ fun OverviewScreen(navigator: Navigator) {
             menuActions = {
                 MenuAction(
                     imageVector = when (mode) {
-                        //TODO: decide icon
                         OverviewMode.AllRecords -> Icons.Rounded.FormatListNumbered
-                        OverviewMode.GroupByCategories -> Icons.Rounded.BarChart
-                        OverviewMode.PieChart -> Icons.Rounded.PieChart
+                        OverviewMode.GroupByCategories -> chartMode.icon
                     },
                     description = stringResource(id = R.string.overview_details_title),
                     onClick = vm::toggleMode,
@@ -161,6 +159,7 @@ private fun OverviewViewModel.toUiState() = OverviewContentUiState(
     ),
     listUiState = OverviewListUiState(
         mode = mode,
+        chartMode = chartModeModel.chartMode,
         type = type,
         selectedAuthor = selectedAuthor,
         totalPrice = totalPrice,

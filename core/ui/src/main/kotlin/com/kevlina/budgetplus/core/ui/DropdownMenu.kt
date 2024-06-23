@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,7 @@ fun DropdownMenu(
     MaterialDropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
-        modifier = modifier,
+        modifier = modifier.background(LocalAppColors.current.light),
         offset = offset,
         properties = properties,
         content = content
@@ -44,7 +45,7 @@ fun DropdownMenu(
 }
 
 @Composable
-fun DropdownMenuItem(
+fun DropdownItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -65,7 +66,7 @@ fun DropdownMenuItem(
 @Composable
 fun DropdownItem(
     name: String,
-    icon: @Composable (() -> Unit)? = null,
+    icon: ImageVector? = null,
     onClick: () -> Unit,
 ) {
     MaterialDropdownMenuItem(
@@ -73,7 +74,14 @@ fun DropdownItem(
         text = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (icon != null) {
-                    icon()
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = LocalAppColors.current.dark,
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .size(20.dp)
+                    )
                 }
 
                 Text(
@@ -87,7 +95,7 @@ fun DropdownItem(
 }
 
 @Composable
-fun DropdownMenuDivider() {
+fun DropdownDivider() {
     HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp))
 }
 
@@ -96,24 +104,14 @@ fun DropdownMenuDivider() {
 private fun DropdownMenu_Preview() = AppTheme(themeColors = ThemeColors.Lavender) {
     DropdownMenu(
         expanded = true,
-        onDismissRequest = { },
-        modifier = Modifier.background(color = LocalAppColors.current.light)
+        onDismissRequest = { }
     ) {
         DropdownItem(
             name = "Item 1",
-            icon = {
-                Icon(
-                    imageVector = Icons.Rounded.Lock,
-                    contentDescription = null,
-                    tint = LocalAppColors.current.dark,
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .size(20.dp)
-                )
-            },
+            icon = Icons.Rounded.Lock,
             onClick = {}
         )
-        DropdownMenuDivider()
+        DropdownDivider()
         DropdownItem(
             name = "Item 2",
             onClick = {}

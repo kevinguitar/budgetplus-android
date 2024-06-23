@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,6 +24,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.navKey
+import com.kevlina.budgetplus.core.data.ChartMode
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -49,15 +51,28 @@ internal fun OverviewList(
 ) {
 
     val mode by uiState.mode.collectAsStateWithLifecycle()
+    val chartMode by uiState.chartMode.collectAsStateWithLifecycle()
     val type by uiState.type.collectAsStateWithLifecycle()
     val selectedAuthor by uiState.selectedAuthor.collectAsStateWithLifecycle()
     val totalPrice by uiState.totalPrice.collectAsStateWithLifecycle()
-    val recordList by uiState.recordList.collectAsStateWithLifecycle()
+    val recordList = uiState.recordList.collectAsStateWithLifecycle().value
     val recordGroups by uiState.recordGroups.collectAsStateWithLifecycle()
     val isSoloAuthor by uiState.isSoloAuthor.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
+
+    fun navigateToRecords(category: String) {
+        navigator.navigate(route = buildString {
+            append(HistoryDest.Records.route)
+            append("/$type/${category.navKey}")
+
+            val authorId = selectedAuthor?.id
+            if (authorId != null) {
+                append("?$ARG_AUTHOR_ID=$authorId")
+            }
+        })
+    }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,15 +87,14 @@ internal fun OverviewList(
             )
         }
 
-        val records = recordList
         when {
-            records == null -> item(
+            recordList == null -> item(
                 key = OverviewUiType.Loader.name,
                 contentType = OverviewUiType.Loader,
                 content = { InfiniteCircularProgress(modifier = Modifier.padding(top = 32.dp)) }
             )
 
-            records.isEmpty() -> item(
+            recordList.isEmpty() -> item(
                 key = OverviewUiType.ZeroCase.name,
                 contentType = OverviewUiType.ZeroCase,
                 content = {
@@ -88,74 +102,82 @@ internal fun OverviewList(
                 }
             )
 
-            mode == OverviewMode.AllRecords -> itemsIndexed(
-                items = records,
-                key = { _, record -> record.id },
-                contentType = { _, _ -> OverviewUiType.Record }
-            ) { index, record ->
-                RecordCard(
-                    uiState = RecordCardUiState(
-                        item = record,
-                        formattedPrice = uiState.formatPrice(record.price),
-                        isLast = index == records.lastIndex,
-                        canEdit = uiState.canEditRecord(record),
-                        showCategory = true,
-                        showAuthor = !isSoloAuthor,
-                        onEdit = { editRecordDialog = record },
-                        onDuplicate = { uiState.duplicateRecord(record) },
-                        onDelete = { deleteRecordDialog = record }
-                    ),
-                    modifier = Modifier.thenIf(index == 0) {
-                        val bubbleShape = with(LocalDensity.current) {
-                            BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
-                        }
-
-                        Modifier
-                            .padding(top = 8.dp)
-                            .onPlaced {
-                                uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
-                                    size = it.size,
-                                    offset = it.positionInRoot(),
-                                    shape = bubbleShape
-                                ))
+            else -> when (mode) {
+                OverviewMode.AllRecords -> itemsIndexed(
+                    items = recordList,
+                    key = { _, record -> record.id },
+                    contentType = { _, _ -> OverviewUiType.Record }
+                ) { index, record ->
+                    RecordCard(
+                        uiState = RecordCardUiState(
+                            item = record,
+                            formattedPrice = uiState.formatPrice(record.price),
+                            isLast = index == recordList.lastIndex,
+                            canEdit = uiState.canEditRecord(record),
+                            showCategory = true,
+                            showAuthor = !isSoloAuthor,
+                            onEdit = { editRecordDialog = record },
+                            onDuplicate = { uiState.duplicateRecord(record) },
+                            onDelete = { deleteRecordDialog = record }
+                        ),
+                        modifier = Modifier.thenIf(index == 0) {
+                            val bubbleShape = with(LocalDensity.current) {
+                                BubbleShape.RoundedRect(AppTheme.cornerRadius.toPx())
                             }
-                    }
-                )
-            }
 
-            mode == OverviewMode.GroupByCategories -> itemsIndexed(
-                items = recordGroups?.keys?.toList().orEmpty(),
-                key = { _, key -> key },
-                contentType = { _, _ -> OverviewUiType.Group }
-            ) { index, key ->
-
-                val groupRecords = recordGroups.orEmpty()[key].orEmpty()
-                val sum = groupRecords.sumOf { it.price }
-
-                OverviewGroup(
-                    modifier = Modifier.thenIf(index == 0) {
-                        Modifier.padding(top = 8.dp)
-                    },
-                    uiState = OverviewGroupUiState(
-                        category = key,
-                        records = groupRecords,
-                        sumPrice = uiState.formatPrice(sum),
-                        percentage = remember(sum, totalPrice) { sum / totalPrice },
-                        color = overviewColors[(index) % overviewColors.size],
-                        isLast = index == recordGroups.orEmpty().size - 1,
-                        onClick = {
-                            navigator.navigate(route = buildString {
-                                append(HistoryDest.Records.route)
-                                append("/$type/${key.navKey}")
-
-                                val authorId = selectedAuthor?.id
-                                if (authorId != null) {
-                                    append("?$ARG_AUTHOR_ID=$authorId")
+                            Modifier
+                                .padding(top = 8.dp)
+                                .onPlaced {
+                                    uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
+                                        size = it.size,
+                                        offset = it.positionInRoot(),
+                                        shape = bubbleShape
+                                    ))
                                 }
-                            })
                         }
-                    ),
-                )
+                    )
+                }
+
+                OverviewMode.GroupByCategories -> when (chartMode) {
+                    ChartMode.BarChart -> itemsIndexed(
+                        items = recordGroups?.keys?.toList().orEmpty(),
+                        key = { _, key -> key },
+                        contentType = { _, _ -> OverviewUiType.Group }
+                    ) { index, key ->
+
+                        val groupRecords = recordGroups.orEmpty()[key].orEmpty()
+                        val sum = groupRecords.sumOf { it.price }
+
+                        OverviewGroup(
+                            modifier = Modifier.thenIf(index == 0) {
+                                Modifier.padding(top = 8.dp)
+                            },
+                            uiState = OverviewGroupUiState(
+                                category = key,
+                                records = groupRecords,
+                                sumPrice = uiState.formatPrice(sum),
+                                percentage = remember(sum, totalPrice) { sum / totalPrice },
+                                color = overviewColors[index % overviewColors.size],
+                                isLast = index == recordGroups.orEmpty().size - 1,
+                                onClick = { navigateToRecords(key) }
+                            ),
+                        )
+                    }
+
+                    ChartMode.PieChart -> item(
+                        key = OverviewUiType.PieChart.name,
+                        contentType = OverviewUiType.PieChart,
+                        content = {
+                            PieChart(
+                                modifier = Modifier.fillMaxSize(),
+                                totalPrice = totalPrice,
+                                recordGroups = recordGroups.orEmpty(),
+                                formatPrice = uiState.formatPrice,
+                                onClick = ::navigateToRecords
+                            )
+                        }
+                    )
+                }
             }
         }
     }
@@ -178,6 +200,7 @@ internal fun OverviewList(
 @Stable
 internal data class OverviewListUiState(
     val mode: StateFlow<OverviewMode>,
+    val chartMode: StateFlow<ChartMode>,
     val type: StateFlow<RecordType>,
     val selectedAuthor: StateFlow<User?>,
     val totalPrice: StateFlow<Double>,
@@ -198,20 +221,24 @@ internal data class OverviewListUiState(
             Record(category = "Food", name = "Mix Vegi rice", price = 12.9, author = Author(name = "Alina"), id = "4"),
         )
 
-        private val recordGroupsMap = mapOf(
-            "Loan" to listOf(Record(category = "Loan", price = 1033.0, author = Author(name = "Kevin"))),
+        val recordGroupsPreview = mapOf(
+            "Loan" to listOf(Record(category = "Loan", price = 433.0, author = Author(name = "Kevin"))),
             "Daily" to listOf(Record(category = "Daily", price = 342.1, author = Author(name = "Alina"))),
             "Utility" to listOf(Record(category = "Utility", price = 132.5, author = Author(name = "Kevin"))),
             "Food" to foodRecords,
         )
 
+        val totalPricePreview = recordGroupsPreview.values
+            .sumOf { group -> group.sumOf { it.price } }
+
         val preview = OverviewListUiState(
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
+            chartMode = MutableStateFlow(ChartMode.BarChart),
             type = MutableStateFlow(RecordType.Expense),
             selectedAuthor = MutableStateFlow(User(name = "Kevin")),
-            totalPrice = MutableStateFlow(1579.8),
+            totalPrice = MutableStateFlow(totalPricePreview),
             recordList = MutableStateFlow(foodRecords),
-            recordGroups = MutableStateFlow(recordGroupsMap),
+            recordGroups = MutableStateFlow(recordGroupsPreview),
             isSoloAuthor = MutableStateFlow(false),
             highlightTapHint = {},
             formatPrice = { "$$it" },
@@ -238,6 +265,19 @@ private fun OverviewList_All_Preview() = AppTheme {
 private fun OverviewList_Group_Preview() = AppTheme {
     OverviewList(
         uiState = OverviewListUiState.preview,
+        navigator = Navigator.empty,
+        modifier = Modifier.background(LocalAppColors.current.light)
+    )
+}
+
+@Preview
+@Composable
+private fun OverviewList_PieChart_Preview() = AppTheme {
+    OverviewList(
+        uiState = OverviewListUiState.preview.copy(
+            mode = MutableStateFlow(OverviewMode.GroupByCategories),
+            chartMode = MutableStateFlow(ChartMode.PieChart)
+        ),
         navigator = Navigator.empty,
         modifier = Modifier.background(LocalAppColors.current.light)
     )

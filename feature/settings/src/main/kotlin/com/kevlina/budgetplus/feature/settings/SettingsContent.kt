@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.feature.settings
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.DirectionsRun
 import androidx.compose.material.icons.automirrored.rounded.ForwardToInbox
 import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.automirrored.rounded.ShowChart
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.CurrencyExchange
@@ -29,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +40,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.data.ChartMode
+import com.kevlina.budgetplus.core.data.icon
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.ui.DropdownItem
+import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
@@ -56,11 +65,13 @@ internal fun SettingsContent(
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
     val isInsider by vm.isInsider.collectAsStateWithLifecycle()
     val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
+    val chartMode by vm.chartModel.chartMode.collectAsStateWithLifecycle()
 
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
     var isMembersDialogShown by rememberSaveable { mutableStateOf(showMembers) }
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
+    var isChartModeDropdownShown by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -148,6 +159,45 @@ internal fun SettingsContent(
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput
+        )
+
+        SettingsItem(
+            text = stringResource(id = R.string.settings_chart_mode),
+            icon = Icons.AutoMirrored.Rounded.ShowChart,
+            onClick = { isChartModeDropdownShown = true },
+            action = {
+                Box {
+                    Image(
+                        imageVector = chartMode.icon,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+
+                    DropdownMenu(
+                        expanded = isChartModeDropdownShown,
+                        onDismissRequest = { isChartModeDropdownShown = false }
+                    ) {
+                        DropdownItem(
+                            name = stringResource(id = R.string.settings_bar_chart),
+                            icon = ChartMode.BarChart.icon,
+                            onClick = {
+                                vm.chartModel.setChartMode(ChartMode.BarChart)
+                                isChartModeDropdownShown = false
+                            }
+                        )
+
+                        DropdownItem(
+                            name = stringResource(id = R.string.settings_pie_chart),
+                            icon = ChartMode.PieChart.icon,
+                            onClick = {
+                                vm.chartModel.setChartMode(ChartMode.PieChart)
+                                isChartModeDropdownShown = false
+                            }
+                        )
+                    }
+                }
+            }
         )
 
         if (isInsider) {

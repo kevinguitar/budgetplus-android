@@ -16,4 +16,6 @@ dependencies {
     implementation(libs.google.auth)
     implementation(libs.google.ads)
     runtimeOnly(libs.google.ads.mediation.meta)
+
+    implementation(libs.compose.icons)
 }

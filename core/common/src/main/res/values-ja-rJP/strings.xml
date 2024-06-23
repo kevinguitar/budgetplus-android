@@ -156,6 +156,9 @@
     <string name="settings_book_left">あなたは%sから退出しました</string>
     <string name="settings_language">言語</string>
     <string name="settings_input_vibration">入力時の振動フィードバック</string>
+    <string name="settings_chart_mode">概要チャートモード</string>
+    <string name="settings_bar_chart">棒グラフ</string>
+    <string name="settings_pie_chart">円グラフ</string>
     <string name="settings_share_app">友達にアプリを共有する</string>
     <string name="settings_share_app_message">使いやすい記帳アプリを見つけました、ぜひダウンロードして試してみてください！\n%s</string>
     <string name="settings_rate_us">Google Play で評価する</string>

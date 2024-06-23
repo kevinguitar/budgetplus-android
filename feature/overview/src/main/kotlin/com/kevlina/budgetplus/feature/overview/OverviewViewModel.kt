@@ -12,6 +12,7 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.ChartModeViewModel
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
@@ -53,6 +54,7 @@ internal class OverviewViewModel @Inject constructor(
     private val toaster: Toaster,
     val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
+    val chartModeModel: ChartModeViewModel,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 

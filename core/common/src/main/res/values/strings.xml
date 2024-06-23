@@ -156,6 +156,9 @@
     <string name="settings_book_left">You have left %s</string>
     <string name="settings_language">Language</string>
     <string name="settings_input_vibration">Input Vibration</string>
+    <string name="settings_chart_mode">Overview Chart Mode</string>
+    <string name="settings_bar_chart">Bar Chart</string>
+    <string name="settings_pie_chart">Pie Chart</string>
     <string name="settings_share_app">Share the app with friends</string>
     <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%s</string>
     <string name="settings_rate_us">Rate Us on Google Play</string>

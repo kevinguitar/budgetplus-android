@@ -22,6 +22,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -71,6 +73,7 @@ internal fun PieChart(
         label = "animateAngle"
     )
 
+    var canvasPositionInWindow by remember { mutableStateOf(Offset.Unspecified) }
     var tapPosition by remember { mutableStateOf<Offset?>(null) }
     var pressPosition by remember { mutableStateOf<Offset?>(null) }
 
@@ -80,47 +83,50 @@ internal fun PieChart(
     val coroutineScope = rememberCoroutineScope()
     var pointerJob by remember { mutableStateOf<Job?>(null) }
 
-    SideEffect {
-        isDrawn = true
+    fun resetTouchHandle() {
+        disallowInterceptTouchEventRequest.invoke(false)
+        pressPosition = null
+        pointerJob?.cancel()
+        pointerJob = null
     }
+
+    SideEffect { isDrawn = true }
 
     Canvas(
         modifier = modifier
             .padding(8.dp)
             .clip(CircleShape)
             .aspectRatio(1F)
+            .onGloballyPositioned { canvasPositionInWindow = it.positionInWindow() }
             .pointerInteropFilter(
                 requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
             ) { event ->
-                fun reset() {
-                    disallowInterceptTouchEventRequest.invoke(false)
-                    pressPosition = null
-                    pointerJob?.cancel()
-                    pointerJob = null
-                }
-
                 when (event.actionMasked) {
-                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_HOVER_ENTER -> {
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
                         pointerJob?.cancel()
                         pointerJob = coroutineScope.launch {
                             delay(200L)
                             disallowInterceptTouchEventRequest.invoke(true)
-                            pressPosition = Offset(event.x, event.y)
+                            // MotionEvent offset is absolute in this case
+                            pressPosition = Offset(
+                                x = event.rawX - canvasPositionInWindow.x,
+                                y = event.rawY - canvasPositionInWindow.y
+                            )
                         }
                     }
 
-                    MotionEvent.ACTION_MOVE, MotionEvent.ACTION_HOVER_MOVE -> {
+                    MotionEvent.ACTION_MOVE -> {
                         if (pointerJob?.isCompleted == true) {
                             pressPosition = Offset(event.x, event.y)
                         }
                     }
 
-                    MotionEvent.ACTION_UP -> {
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
                         tapPosition = Offset(event.x, event.y)
-                        reset()
+                        resetTouchHandle()
                     }
 
-                    else -> reset()
+                    else -> resetTouchHandle()
                 }
                 true
             }

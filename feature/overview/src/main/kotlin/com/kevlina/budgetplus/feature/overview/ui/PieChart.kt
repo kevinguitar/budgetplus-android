@@ -152,6 +152,7 @@ internal fun PieChart(
         val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
         val topLeft = Offset(centerOffset, centerOffset)
 
+        // Draw the circle background
         recordGroupSums.onEachIndexed { index, (category, sum) ->
             val ratio = sum / totalPrice
             val angle = (animateAngle * ratio).toFloat()
@@ -185,6 +186,14 @@ internal fun PieChart(
                 }
             )
 
+            startAngle += angle
+        }
+
+        // Draw the labels
+        recordGroupSums.onEach { (category, sum) ->
+            val ratio = sum / totalPrice
+            val angle = (animateAngle * ratio).toFloat()
+
             if (animateAngle >= 270 && ratio >= TEXT_DISPLAY_PERCENT_THRESHOLD) {
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
@@ -209,6 +218,7 @@ internal fun PieChart(
             startAngle += angle
         }
 
+        // Draw the hint area
         if (pressedCategory != null) {
             drawCircle(
                 color = hintBgColor,

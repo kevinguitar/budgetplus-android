@@ -36,7 +36,7 @@ import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.rippleClick
 
 private const val TEXT_DARKEN_FACTOR = 0.7F
-private const val A_HUNDRED = 100
+internal const val A_HUNDRED = 100
 
 @Composable
 internal fun OverviewGroup(

@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
 import android.view.MotionEvent
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,10 +28,12 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.common.roundUpRatioText
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -44,6 +47,9 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+
+// Hide the text in case the ratio is below 5%
+private const val TEXT_DISPLAY_PERCENT_THRESHOLD = 0.05
 
 @Composable
 internal fun PieChart(
@@ -64,7 +70,8 @@ internal fun PieChart(
     val textStyle = TextStyle(
         color = LocalAppColors.current.dark,
         fontSize = FontSize.Normal,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.SemiBold
     )
 
     var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(false) }
@@ -78,6 +85,12 @@ internal fun PieChart(
     var pressPosition by remember { mutableStateOf<Offset?>(null) }
 
     val pressEffectPx = with(LocalDensity.current) { 8.dp.toPx() }
+    val hintBgColor = LocalAppColors.current.light
+    val animateHint by animateFloatAsState(
+        targetValue = if (pressPosition == null) 0f else 1f,
+        label = "animateHint"
+    )
+
     val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
 
     val coroutineScope = rememberCoroutineScope()
@@ -132,16 +145,20 @@ internal fun PieChart(
             }
     ) {
         var startAngle = 270f
-        val radius = size.width - pressEffectPx * 2
-        val drawRadius = radius * (animateAngle / 360f)
+        var pressedCategory: String? = null
 
-        val arcSize = Size(drawRadius, drawRadius)
-        val centerOffset = pressEffectPx + (radius - drawRadius) / 2
+        val diameter = size.width - pressEffectPx * 2
+        val drawDiameter = diameter * (animateAngle / 360f)
+
+        val arcSize = Size(drawDiameter, drawDiameter)
+        val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
         val topLeft = Offset(centerOffset, centerOffset)
 
         recordGroupSums.onEachIndexed { index, (category, sum) ->
-            val angle = (animateAngle * sum / totalPrice).toFloat()
+            val ratio = sum / totalPrice
+            val angle = (animateAngle * ratio).toFloat()
             val isPressed = pressPosition?.isWithIn(startAngle, angle) ?: false
+            if (isPressed) pressedCategory = category
 
             // Consume the tap action
             tapPosition?.let { tap ->
@@ -156,11 +173,21 @@ internal fun PieChart(
                 startAngle = startAngle,
                 sweepAngle = angle,
                 useCenter = true,
-                topLeft = if (isPressed) Offset.Zero else topLeft,
-                size = if (isPressed) size else arcSize
+                topLeft = if (isPressed) {
+                    val animatedOffset = centerOffset * (1 - animateHint)
+                    Offset(animatedOffset, animatedOffset)
+                } else {
+                    topLeft
+                },
+                size = if (isPressed) {
+                    val animatedSize = diameter + (pressEffectPx * 2 * animateHint)
+                    Size(animatedSize, animatedSize)
+                } else {
+                    arcSize
+                }
             )
 
-            if (animateAngle >= 270) {
+            if (animateAngle >= 270 && ratio >= TEXT_DISPLAY_PERCENT_THRESHOLD) {
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
@@ -182,6 +209,35 @@ internal fun PieChart(
             }
 
             startAngle += angle
+        }
+
+        if (pressedCategory != null) {
+            drawCircle(
+                color = hintBgColor,
+                radius = diameter / 8,
+                alpha = animateHint
+            )
+
+            val sum = recordGroupSums[pressedCategory] ?: 0.0
+            val percent = sum / totalPrice
+            val text = if (percent >= TEXT_DISPLAY_PERCENT_THRESHOLD) {
+                "${(percent * A_HUNDRED).roundUpRatioText}%"
+            } else {
+                "$pressedCategory\n${formatPrice(sum)}"
+            }
+            val textMeasure = textMeasurer.measure(text, style = textStyle)
+
+            if (animateHint > 0.7f) {
+                drawText(
+                    textMeasurer = textMeasurer,
+                    text = text,
+                    style = textStyle,
+                    topLeft = Offset(
+                        x = center.x - (textMeasure.size.width / 2),
+                        y = center.y - (textMeasure.size.height / 2)
+                    )
+                )
+            }
         }
     }
 }

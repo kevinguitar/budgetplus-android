@@ -107,10 +107,11 @@ internal class CsvWriter @Inject constructor(
             put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            put(MediaStore.MediaColumns.IS_PENDING, 1)
         }
 
         val resolver = context.contentResolver
-        return resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+        return resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
             ?: error("Cannot resolve $contentValues")
     }
 

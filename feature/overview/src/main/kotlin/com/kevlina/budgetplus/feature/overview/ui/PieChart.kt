@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,6 +33,9 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -73,7 +77,10 @@ internal fun PieChart(
     val pressEffectPx = with(LocalDensity.current) { 8.dp.toPx() }
     val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
 
-    LaunchedEffect(totalPrice, recordGroups) {
+    val coroutineScope = rememberCoroutineScope()
+    var pointerJob by remember { mutableStateOf<Job?>(null) }
+
+    SideEffect {
         isDrawn = true
     }
 
@@ -85,31 +92,46 @@ internal fun PieChart(
             .pointerInteropFilter(
                 requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
             ) { event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN,
-                    MotionEvent.ACTION_MOVE,
-                    MotionEvent.ACTION_HOVER_ENTER,
-                    MotionEvent.ACTION_HOVER_MOVE,
-                    -> {
-                        disallowInterceptTouchEventRequest.invoke(true)
-                        pressPosition = Offset(event.x, event.y)
+                fun reset() {
+                    disallowInterceptTouchEventRequest.invoke(false)
+                    pressPosition = null
+                    pointerJob?.cancel()
+                    pointerJob = null
+                }
+
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_HOVER_ENTER -> {
+                        pointerJob?.cancel()
+                        pointerJob = coroutineScope.launch {
+                            delay(200L)
+                            disallowInterceptTouchEventRequest.invoke(true)
+                            pressPosition = Offset(event.x, event.y)
+                        }
+                    }
+
+                    MotionEvent.ACTION_MOVE, MotionEvent.ACTION_HOVER_MOVE -> {
+                        if (pointerJob?.isCompleted == true) {
+                            pressPosition = Offset(event.x, event.y)
+                        }
                     }
 
                     MotionEvent.ACTION_UP -> {
-                        disallowInterceptTouchEventRequest.invoke(false)
-                        pressPosition = null
                         tapPosition = Offset(event.x, event.y)
+                        reset()
                     }
 
-                    else -> {
-                        disallowInterceptTouchEventRequest.invoke(false)
-                        pressPosition = null
-                    }
+                    else -> reset()
                 }
                 true
             }
     ) {
         var startAngle = 270f
+        val radius = size.width - pressEffectPx * 2
+        val drawRadius = radius * (animateAngle / 360f)
+
+        val arcSize = Size(drawRadius, drawRadius)
+        val centerOffset = pressEffectPx + (radius - drawRadius) / 2
+        val topLeft = Offset(centerOffset, centerOffset)
 
         recordGroupSums.onEachIndexed { index, (category, sum) ->
             val angle = (animateAngle * sum / totalPrice).toFloat()
@@ -123,28 +145,16 @@ internal fun PieChart(
                 }
             }
 
-            val arcSize = if (isPressed) {
-                size
-            } else {
-                Size(size.width - pressEffectPx * 2, size.height - pressEffectPx * 2)
-            }
-
-            val topLeft = if (isPressed) {
-                Offset.Zero
-            } else {
-                Offset(pressEffectPx, pressEffectPx)
-            }
-
             drawArc(
                 color = overviewColors[index % overviewColors.size],
                 startAngle = startAngle,
                 sweepAngle = angle,
                 useCenter = true,
-                topLeft = topLeft,
-                size = arcSize
+                topLeft = if (isPressed) Offset.Zero else topLeft,
+                size = if (isPressed) size else arcSize
             )
 
-            if (animateAngle >= 180) {
+            if (animateAngle >= 270) {
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
@@ -177,15 +187,18 @@ private fun Offset.isWithIn(
 ): Boolean {
     val center = size.width / 2
 
+    val distanceToCenter = sqrt((x - center).pow(2) + (y - center).pow(2))
+    if (distanceToCenter > center) {
+        return false
+    }
+
     // Calculate angle of tap relative to center
     val angle = atan2(y - center, x - center) * 180f / PI
     val normalizedAngle = (angle + 360) % 360
     val normalizedStartAngle = (startAngle + 360) % 360
 
-    val distanceToCenter = sqrt((x - center).pow(2) + (y - center).pow(2))
-
-    return distanceToCenter <= center &&
-        normalizedAngle in normalizedStartAngle..(normalizedStartAngle + sweepAngle)
+    val range = normalizedStartAngle..(normalizedStartAngle + sweepAngle)
+    return normalizedAngle in range || normalizedAngle + 360 in range
 }
 
 private fun Float.toRadians(): Double = this / 180.0 * PI

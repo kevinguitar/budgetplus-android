@@ -43,6 +43,7 @@ fun TextField(
     onTitleClick: (() -> Unit)? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
+    singleLine: Boolean = true,
     readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
     letterSpacing: TextUnit = TextUnit.Unspecified,
@@ -72,7 +73,7 @@ fun TextField(
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = onDone),
-        singleLine = true,
+        singleLine = singleLine,
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.isEmpty() && placeholder != null) {
@@ -98,6 +99,7 @@ fun TextField(
     onTitleClick: (() -> Unit)? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
+    singleLine: Boolean = true,
     readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
@@ -125,7 +127,7 @@ fun TextField(
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(onDone = onDone),
-        singleLine = true,
+        singleLine = singleLine,
         cursorBrush = SolidColor(LocalAppColors.current.dark),
         decorationBox = @Composable { innerTextField ->
             if (value.text.isEmpty() && placeholder != null) {

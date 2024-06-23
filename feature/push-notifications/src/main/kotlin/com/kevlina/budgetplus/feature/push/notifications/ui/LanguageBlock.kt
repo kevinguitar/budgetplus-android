@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,13 +43,17 @@ internal fun LanguageBlock(
         TextField(
             value = title,
             onValueChange = onTitleUpdate,
-            title = stringResource(id = R.string.push_notif_push_title)
+            title = stringResource(id = R.string.push_notif_push_title),
+            singleLine = false,
+            modifier = Modifier.height(80.dp)
         )
 
         TextField(
             value = description,
             onValueChange = onDescriptionUpdate,
-            title = stringResource(id = R.string.push_notif_push_description)
+            title = stringResource(id = R.string.push_notif_push_description),
+            singleLine = false,
+            modifier = Modifier.height(80.dp)
         )
     }
 }
@@ -58,7 +63,7 @@ internal fun LanguageBlock(
 private fun LanguageBlock_Preview() = AppTheme {
     LanguageBlock(
         textRes = R.string.push_notif_language_zh_tw,
-        title = "推播標題",
+        title = "推播標題\nasdfasdf",
         onTitleUpdate = {},
         description = "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~",
         onDescriptionUpdate = {}

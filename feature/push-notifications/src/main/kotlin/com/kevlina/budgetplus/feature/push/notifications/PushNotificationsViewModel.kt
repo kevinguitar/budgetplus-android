@@ -80,17 +80,17 @@ internal class PushNotificationsViewModel @Inject constructor(
                 }
                 pushDbMediator.recordPushNotification(PushNotificationData(
                     internal = isInternal,
-                    titleTw = titleTw.value,
-                    descTw = descTw.value,
-                    titleCn = titleCn.value,
-                    descCn = descCn.value,
-                    titleJa = titleJa.value,
-                    descJa = descJa.value,
-                    titleEn = titleEn.value,
-                    descEn = descEn.value,
+                    titleTw = titleTw.value.trim(),
+                    descTw = descTw.value.trim(),
+                    titleCn = titleCn.value.trim(),
+                    descCn = descCn.value.trim(),
+                    titleJa = titleJa.value.trim(),
+                    descJa = descJa.value.trim(),
+                    titleEn = titleEn.value.trim(),
+                    descEn = descEn.value.trim(),
                     deeplink = when {
                         navigateToGooglePlay.value -> googlePlayUrl
-                        deeplink.value.isNotBlank() -> deeplink.value
+                        deeplink.value.isNotBlank() -> deeplink.value.trim()
                         else -> defaultDeeplink
                     }
                 ))

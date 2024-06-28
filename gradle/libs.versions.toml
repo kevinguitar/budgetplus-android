@@ -25,14 +25,14 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
 # https://www.reddit.com/r/androiddev/comments/1csjwne/lifecycle_280_only_compatible_with_compose_17/
-compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
+compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.8.2"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
 desugar = "com.android.tools:desugar_jdk_libs:2.0.4"
-espresso = "androidx.test.espresso:espresso-core:3.5.1"
+espresso = "androidx.test.espresso:espresso-core:3.6.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
@@ -51,7 +51,7 @@ google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"
-junit-android = "androidx.test.ext:junit:1.1.5"
+junit-android = "androidx.test.ext:junit:1.2.1"
 junit-compose = { module = "androidx.compose.ui:ui-test-junit4" }
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3"

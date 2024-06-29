@@ -28,6 +28,9 @@ updates:
       timezone: Asia/Taipei
     reviewers:
       - "kevinguitar"
+    ignore:
+      # https://www.reddit.com/r/androiddev/comments/1csjwne/lifecycle_280_only_compatible_with_compose_17/
+      - dependency-name: "androidx.lifecycle:lifecycle-runtime-compose"
     groups:
       kotlin-and-compose-compiler:
         patterns:

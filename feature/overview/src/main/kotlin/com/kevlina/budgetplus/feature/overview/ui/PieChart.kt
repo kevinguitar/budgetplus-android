@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +42,8 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.isPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -60,6 +64,7 @@ internal fun PieChart(
     recordGroups: Map<String, List<Record>>,
     formatPrice: (Double) -> String,
     vibrate: () -> Unit,
+    highlightPieChart: (BubbleDest) -> Unit,
     onClick: (category: String) -> Unit,
 ) {
 
@@ -76,7 +81,8 @@ internal fun PieChart(
         textAlign = TextAlign.Center,
     )
 
-    var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(false) }
+    val isPreview = isPreview()
+    var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(isPreview) }
     val animateAngle by animateIntAsState(
         targetValue = if (isDrawn) 360 else 0,
         label = "animateAngle"
@@ -127,6 +133,12 @@ internal fun PieChart(
             .padding(8.dp)
             .clip(CircleShape)
             .aspectRatio(1F)
+            .onPlaced {
+                highlightPieChart(BubbleDest.OverviewPieChart(
+                    size = it.size,
+                    offset = it.positionInRoot()
+                ))
+            }
             .onGloballyPositioned { canvasPositionInWindow = it.positionInWindow() }
             .pointerInteropFilter(
                 requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
@@ -294,6 +306,7 @@ private fun PieChart_Preview() = AppTheme {
         recordGroups = OverviewListUiState.recordGroupsPreview,
         formatPrice = { it.toString() },
         vibrate = {},
+        highlightPieChart = {},
         onClick = {}
     )
 }

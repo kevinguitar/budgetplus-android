@@ -17,6 +17,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.core.theme.ThemeManager
+import com.kevlina.budgetplus.core.ui.bubble.BubbleViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,6 +31,7 @@ class BookViewModel @Inject constructor(
     val snackbarSender: BookSnackbarSender,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,
+    val bubbleViewModel: BubbleViewModel,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val stringProvider: StringProvider,

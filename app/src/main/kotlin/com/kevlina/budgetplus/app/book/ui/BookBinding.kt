@@ -44,6 +44,7 @@ internal fun BookBinding(
     val showAds by vm.showAds.collectAsStateWithLifecycle()
     val isAdMobInitialized by vm.isAdMobInitialized.collectAsStateWithLifecycle()
     val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
+    val bubbleDest by vm.bubbleViewModel.destination.collectAsStateWithLifecycle()
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
     var isUnlockingPremium by remember { mutableStateOf(false) }
@@ -110,6 +111,9 @@ internal fun BookBinding(
             }
         }
 
-        Bubble()
+        Bubble(
+            dest = bubbleDest,
+            dismissBubble = vm.bubbleViewModel::dismissBubble
+        )
     }
 }

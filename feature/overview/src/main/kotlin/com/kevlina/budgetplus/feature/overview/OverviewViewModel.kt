@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 internal class OverviewViewModel @Inject constructor(
@@ -74,7 +74,9 @@ internal class OverviewViewModel @Inject constructor(
     private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
     private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
     private var isTapHintBubbleShown by preferenceHolder.bindBoolean(false)
+    private var isPieChartBubbleShown by preferenceHolder.bindBoolean(false)
     private var tapHintBubbleJob: Job? = null
+    private var pieChartBubbleJob: Job? = null
 
     val authors = bookRepo.bookState
         .map {
@@ -228,11 +230,26 @@ internal class OverviewViewModel @Inject constructor(
 
         tapHintBubbleJob?.cancel()
         tapHintBubbleJob = viewModelScope.launch {
-            // Give a short delay for the animation to complete
-            delay(1.seconds)
+            delay(animationDelay)
 
             isTapHintBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
+    }
+
+    fun highlightPieChart(dest: BubbleDest) {
+        if (isPieChartBubbleShown) return
+
+        pieChartBubbleJob?.cancel()
+        pieChartBubbleJob = viewModelScope.launch {
+            delay(animationDelay)
+
+            isPieChartBubbleShown = true
+            bubbleRepo.addBubbleToQueue(dest)
+        }
+    }
+
+    companion object {
+        private val animationDelay = 200.milliseconds
     }
 }

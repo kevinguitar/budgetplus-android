@@ -192,6 +192,7 @@
     <string name="bubble_overview_mode">你可以選擇用類別或明細顯示帳目</string>
     <string name="bubble_overview_export">輸出帳目成 CSV 檔保存</string>
     <string name="bubble_overview_record_tap_hint">點擊編輯，長按以複製或刪除</string>
+    <string name="bubble_overview_pie_chart">長按查看更多資訊</string>
     <string name="bubble_records_sorting">你可以選擇用日期或是金額排序帳目</string>
     <string name="bubble_colors_sharing">點擊分享你的調色盤給好友們！</string>
 

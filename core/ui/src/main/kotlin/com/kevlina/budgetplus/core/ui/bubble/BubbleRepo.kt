@@ -118,6 +118,14 @@ sealed class BubbleDest {
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
     ) : BubbleDest()
 
+    data class OverviewPieChart(
+        override val size: IntSize,
+        override val offset: Offset,
+        override val shape: BubbleShape = BubbleShape.Circle,
+        override val textRes: Int = R.string.bubble_overview_pie_chart,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.TopCenter,
+    ) : BubbleDest()
+
     data class RecordsSorting(
         override val size: IntSize,
         override val offset: Offset,

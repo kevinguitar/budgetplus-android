@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.TestAndroidComponentsExtension
 import common.Constants
-import common.compileOnly
 import common.implementation
 import common.libs
 import org.gradle.api.Plugin
@@ -47,22 +46,12 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             }
 
             buildTypes {
-                create("release") {
-                    isMinifyEnabled = true
-                    isShrinkResources = true
-                    proguardFiles(
-                        getDefaultProguardFile("proguard-android-optimize.txt"),
-                        "proguard-rules.pro"
-                    )
-                }
+                register("release") {
+                    isDebuggable = true
+                    signingConfig = signingConfigs.getByName("debug")
 
-                // This benchmark buildType is used for benchmarking, and should function like your
-                // release build (for example, with minification on). It's signed with a debug key
-                // for easy local/CI testing.
-                create("benchmark") {
-                    initWith(getByName("release"))
-                    signingConfig = getByName("debug").signingConfig
-                    matchingFallbacks += listOf("release")
+                    matchingFallbacks.add("release")
+                    matchingFallbacks.add("debug")
                 }
             }
 
@@ -74,7 +63,7 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
 
         project.extensions.configure<TestAndroidComponentsExtension> {
             beforeVariants(selector().all()) {
-                it.enable = it.buildType == "benchmark"
+                it.enable = it.buildType == "release"
             }
         }
 
@@ -83,9 +72,6 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             implementation(project.libs.espresso)
             implementation(project.libs.test.uiautomator)
             implementation(project.libs.macro.benchmark)
-
-            // Required for r8
-            compileOnly(project.libs.google.errorprone)
         }
     }
 }

@@ -83,6 +83,7 @@ internal fun PieChart(
     var canvasPositionInWindow by remember { mutableStateOf(Offset.Unspecified) }
     var tapPosition by remember { mutableStateOf<Offset?>(null) }
     var pressPosition by remember { mutableStateOf<Offset?>(null) }
+    var pressCategory by remember { mutableStateOf<String?>(null) }
 
     val pressEffectPx = with(LocalDensity.current) { 8.dp.toPx() }
     val hintBgColor = LocalAppColors.current.light
@@ -90,6 +91,13 @@ internal fun PieChart(
         targetValue = if (pressPosition == null) 0f else 1f,
         label = "animateHint"
     )
+
+    val animateGroup = recordGroups.keys.map { key ->
+        animateFloatAsState(
+            targetValue = if (pressCategory == key) 1f else 0f,
+            label = "animateGroup_$key"
+        )
+    }
 
     val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
 
@@ -99,6 +107,7 @@ internal fun PieChart(
     fun resetTouchHandle() {
         disallowInterceptTouchEventRequest.invoke(false)
         pressPosition = null
+        pressCategory = null
         pointerJob?.cancel()
         pointerJob = null
     }
@@ -145,21 +154,19 @@ internal fun PieChart(
             }
     ) {
         var startAngle = 270f
-        var pressedCategory: String? = null
 
         val diameter = size.width - pressEffectPx * 2
         val drawDiameter = diameter * (animateAngle / 360f)
 
-        val arcSize = Size(drawDiameter, drawDiameter)
-        val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
-        val topLeft = Offset(centerOffset, centerOffset)
 
         // Draw the circle background
         recordGroupSums.onEachIndexed { index, (category, sum) ->
             val ratio = sum / totalPrice
             val angle = (animateAngle * ratio).toFloat()
             val isPressed = pressPosition?.isWithIn(startAngle, angle) ?: false
-            if (isPressed) pressedCategory = category
+            if (isPressed) {
+                pressCategory = category
+            }
 
             // Consume the tap action
             tapPosition?.let { tap ->
@@ -169,30 +176,24 @@ internal fun PieChart(
                 }
             }
 
+            val animatePart = animateGroup[index].value
+            val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
+            val animatedOffset = centerOffset * (1 - animatePart)
+            val animatedSize = diameter + (pressEffectPx * 2 * animatePart)
             drawArc(
                 color = overviewColors[index % overviewColors.size],
                 startAngle = startAngle,
                 sweepAngle = angle,
                 useCenter = true,
-                topLeft = if (isPressed) {
-                    val animatedOffset = centerOffset * (1 - animateHint)
-                    Offset(animatedOffset, animatedOffset)
-                } else {
-                    topLeft
-                },
-                size = if (isPressed) {
-                    val animatedSize = diameter + (pressEffectPx * 2 * animateHint)
-                    Size(animatedSize, animatedSize)
-                } else {
-                    arcSize
-                }
+                topLeft = Offset(animatedOffset, animatedOffset),
+                size = Size(animatedSize, animatedSize)
             )
 
             startAngle += angle
         }
 
         // Draw the labels
-        recordGroupSums.onEach { (category, sum) ->
+        recordGroupSums.onEachIndexed { index, (category, sum) ->
             val ratio = sum / totalPrice
             val angle = (animateAngle * ratio).toFloat()
 
@@ -200,7 +201,8 @@ internal fun PieChart(
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
-                val textRadius = center.x * 0.5
+                val animatePart = animateGroup[index].value
+                val textRadius = center.x * (0.5 + 0.05 * animatePart)
                 val textAngle = startAngle + (angle / 2)
 
                 val deltaX = textRadius * cos(textAngle.toRadians())
@@ -220,20 +222,20 @@ internal fun PieChart(
             startAngle += angle
         }
 
-        // Draw the hint area
-        if (pressedCategory != null) {
+        if (pressCategory != null) {
+            // Draw the hint area
             drawCircle(
                 color = hintBgColor,
                 radius = diameter / 8,
                 alpha = animateHint
             )
 
-            val sum = recordGroupSums[pressedCategory] ?: 0.0
+            val sum = recordGroupSums[pressCategory] ?: 0.0
             val percent = sum / totalPrice
             val text = if (percent >= TEXT_DISPLAY_PERCENT_THRESHOLD) {
-                "${(percent * A_HUNDRED).roundUpRatioText}%"
+                "${(percent * 100).roundUpRatioText}%"
             } else {
-                "$pressedCategory\n${formatPrice(sum)}"
+                "$pressCategory\n${formatPrice(sum)}"
             }
             val textMeasure = textMeasurer.measure(text, style = textStyle)
 

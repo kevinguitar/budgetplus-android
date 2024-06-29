@@ -173,6 +173,7 @@ internal fun OverviewList(
                                 totalPrice = totalPrice,
                                 recordGroups = recordGroups.orEmpty(),
                                 formatPrice = uiState.formatPrice,
+                                vibrate = uiState.vibrate,
                                 onClick = ::navigateToRecords
                             )
                         }
@@ -209,6 +210,7 @@ internal data class OverviewListUiState(
     val isSoloAuthor: StateFlow<Boolean>,
     val highlightTapHint: (BubbleDest) -> Unit,
     val formatPrice: (Double) -> String,
+    val vibrate: () -> Unit,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
 ) {
@@ -242,6 +244,7 @@ internal data class OverviewListUiState(
             isSoloAuthor = MutableStateFlow(false),
             highlightTapHint = {},
             formatPrice = { "$$it" },
+            vibrate = {},
             canEditRecord = { true },
             duplicateRecord = {}
         )

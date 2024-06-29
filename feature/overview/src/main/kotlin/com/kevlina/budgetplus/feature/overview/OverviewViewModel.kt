@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.data.ChartModeViewModel
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
+import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -55,6 +56,7 @@ internal class OverviewViewModel @Inject constructor(
     val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
     val chartModeModel: ChartModeViewModel,
+    val vibratorManager: VibratorManager,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +59,7 @@ internal fun PieChart(
     totalPrice: Double,
     recordGroups: Map<String, List<Record>>,
     formatPrice: (Double) -> String,
+    vibrate: () -> Unit,
     onClick: (category: String) -> Unit,
 ) {
 
@@ -113,6 +115,12 @@ internal fun PieChart(
     }
 
     SideEffect { isDrawn = true }
+
+    LaunchedEffect(pressCategory) {
+        if (pressCategory != null) {
+            vibrate()
+        }
+    }
 
     Canvas(
         modifier = modifier
@@ -285,6 +293,7 @@ private fun PieChart_Preview() = AppTheme {
         totalPrice = OverviewListUiState.totalPricePreview,
         recordGroups = OverviewListUiState.recordGroupsPreview,
         formatPrice = { it.toString() },
+        vibrate = {},
         onClick = {}
     )
 }

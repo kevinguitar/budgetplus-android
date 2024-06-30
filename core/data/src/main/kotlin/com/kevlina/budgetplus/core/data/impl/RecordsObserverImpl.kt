@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppScope
-import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.common.tickerFlow
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -13,15 +13,25 @@ import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 
 /**
  *  Use a singleton class to register the records listener, this will significantly
@@ -35,6 +45,18 @@ internal class RecordsObserverImpl @Inject constructor(
     bookRepo: BookRepo,
 ) : RecordsObserver {
 
+    // A ticker to refresh the records when a day has passed.
+    private val ticker = tickerFlow(10.seconds)
+        .map { LocalDate.now() }
+        .distinctUntilChanged()
+        .drop(1)
+        .onEach {
+            val bookId = bookRepo.bookState.value?.id ?: return@onEach
+
+            currentRegistrationConfig = null
+            observeRecords(bookId, timePeriod.first())
+        }
+
     private val _records = MutableStateFlow<Sequence<Record>?>(null)
     override val records: StateFlow<Sequence<Record>?> = _records.asStateFlow()
 
@@ -42,9 +64,9 @@ internal class RecordsObserverImpl @Inject constructor(
     private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
     private val timePeriodMap = MutableStateFlow(periodCache)
 
-    override val timePeriod: StateFlow<TimePeriod> = timePeriodMap.combineState(
-        other = bookRepo.bookState,
-        scope = appScope
+    override val timePeriod: Flow<TimePeriod> = combine(
+        timePeriodMap,
+        bookRepo.bookState
     ) { periodMap, book ->
         book?.id?.let(periodMap::get) ?: TimePeriod.Month
     }
@@ -57,7 +79,13 @@ internal class RecordsObserverImpl @Inject constructor(
             bookRepo.bookState.mapNotNull { it?.id },
             timePeriod,
             ::observeRecords
-        ).launchIn(appScope)
+        )
+            .flowOn(Dispatchers.Default)
+            .launchIn(appScope)
+
+        ticker
+            .flowOn(Dispatchers.Default)
+            .launchIn(appScope)
     }
 
     override fun setTimePeriod(bookId: String, period: TimePeriod) {

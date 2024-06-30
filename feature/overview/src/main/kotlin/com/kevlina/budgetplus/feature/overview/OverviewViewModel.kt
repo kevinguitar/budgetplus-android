@@ -161,10 +161,8 @@ internal class OverviewViewModel @Inject constructor(
         tracker.logEvent("overview_export_to_csv")
         viewModelScope.launch {
             try {
-                val fromDate = recordsObserver.timePeriod.value.from
-                val untilDate = recordsObserver.timePeriod.value.until
-
-                val name = "${bookName.value}_${fromDate.mediumFormatted}_${untilDate.mediumFormatted}"
+                val period = recordsObserver.timePeriod.first()
+                val name = "${bookName.value}_${period.from.mediumFormatted}_${period.until.mediumFormatted}"
                 val fileUri = csvWriter.writeRecordsToCsv(name)
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_STREAM, fileUri)

@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.feature.overview
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
@@ -14,6 +16,8 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.ui.Book
 import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarSender
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -25,9 +29,11 @@ class OverviewTimeViewModel @Inject constructor(
     private val tracker: Tracker,
     private val stringProvider: StringProvider,
     @Book private val snackbarSender: SnackbarSender,
-) {
+) : ViewModel() {
 
     val timePeriod = recordsObserver.timePeriod
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), TimePeriod.Month)
+
     val fromDate = timePeriod.mapState { it.from }
     val untilDate = timePeriod.mapState { it.until }
     val isOneDayPeriod = timePeriod.mapState { it.from == it.until }

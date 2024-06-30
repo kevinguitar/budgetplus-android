@@ -17,8 +17,8 @@ import androidx.compose.material.icons.rounded.ColorLens
 import androidx.compose.material.icons.rounded.CurrencyExchange
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
-import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.LockPerson
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
@@ -203,7 +203,7 @@ internal fun SettingsContent(
         if (isInsider) {
             SettingsItem(
                 text = stringResource(id = R.string.insider_title),
-                icon = Icons.Rounded.Insights,
+                icon = Icons.Rounded.LockPerson,
                 onClick = { navigator.navigate(AddDest.Insider.route) }
             )
         }

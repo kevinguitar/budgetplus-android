@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
@@ -19,11 +20,13 @@ import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.invoke
 import java.io.File
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -35,6 +38,7 @@ import javax.inject.Named
 internal class CsvWriter @Inject constructor(
     @ApplicationContext private val context: Context,
     @Named("app_package") private val appPackage: String,
+    @Named("share_cache") private val shareCacheDir: File,
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
     private val bookRepo: BookRepo,
@@ -52,73 +56,89 @@ internal class CsvWriter @Inject constructor(
         }
 
     suspend fun writeRecordsToCsv(name: String): Uri {
+        val recordRows = generateRecordRows()
+        return writeToDownload(name, recordRows)
+    }
 
+    private suspend fun generateRecordRows(): Sequence<List<String?>> = Default {
         val rawRecords = recordsObserver.records.filterNotNull().first()
 
         val datetimeFormatter = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT)
             .withLocale(Locale.getDefault())
 
-        val recordRows = withContext(Dispatchers.Default) {
-            rawRecords
-                .sortedBy { it.createdOn }
-                .map { record ->
-                    listOf(
-                        record.parseDatetime(datetimeFormatter),
-                        record.name,
-                        record.price.plainPriceString,
-                        record.typeString,
-                        record.category,
-                        userRepo.resolveAuthor(record).author?.name
-                    )
-                }
+        rawRecords
+            .sortedBy { it.createdOn }
+            .map { record ->
+                listOf(
+                    record.parseDatetime(datetimeFormatter),
+                    record.name,
+                    record.price.plainPriceString,
+                    record.typeString,
+                    record.category,
+                    userRepo.resolveAuthor(record).author?.name
+                )
+            }
+    }
+
+    private suspend fun writeToDownload(
+        name: String,
+        recordRows: Sequence<List<String?>>,
+    ): Uri = IO {
+        val cacheFile = File(shareCacheDir, "$name.csv")
+        val outputStream = contentResolver.openOutputStream(cacheFile.toUri())
+            ?: throw IOException("Cannot open output stream from $cacheFile")
+
+        outputStream.use { stream ->
+            csvWriter().open(stream) {
+                writeRow(listOf(
+                    stringProvider[R.string.export_column_created_on],
+                    stringProvider[R.string.export_column_name],
+                    stringProvider[R.string.export_column_price, bookRepo.currencySymbol.value],
+                    stringProvider[R.string.export_column_type],
+                    stringProvider[R.string.export_column_category],
+                    stringProvider[R.string.export_column_author],
+                ))
+                writeRows(recordRows)
+            }
         }
 
-        return withContext(Dispatchers.IO) {
-            val filename = "$name.csv"
-            val fileUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                getFileUri(filename)
-            } else {
-                getFileUriPreQ(filename)
-            }
-            val outputStream = contentResolver.openOutputStream(fileUri)
-                ?: error("Cannot open output stream from $fileUri")
-
-            outputStream.use { stream ->
-                csvWriter().open(stream) {
-                    writeRow(listOf(
-                        stringProvider[R.string.export_column_created_on],
-                        stringProvider[R.string.export_column_name],
-                        stringProvider[R.string.export_column_price, bookRepo.currencySymbol.value],
-                        stringProvider[R.string.export_column_type],
-                        stringProvider[R.string.export_column_category],
-                        stringProvider[R.string.export_column_author],
-                    ))
-                    writeRows(recordRows)
-                }
-            }
-            fileUri
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            saveToDownload(cacheFile)
+        } else {
+            saveToDownloadPreQ(cacheFile)
         }
+
+        FileProvider.getUriForFile(context, "$appPackage.provider", cacheFile)
     }
 
     @TargetApi(Build.VERSION_CODES.Q)
-    private fun getFileUri(filename: String): Uri {
+    private fun saveToDownload(cacheFile: File): Uri {
         val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+            put(MediaStore.MediaColumns.DISPLAY_NAME, cacheFile.name)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-            put(MediaStore.MediaColumns.IS_PENDING, 1)
         }
 
         val resolver = context.contentResolver
-        return resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
-            ?: error("Cannot resolve $contentValues")
+        val mediaUri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+            ?: throw IOException("Cannot resolve ContentValues. $contentValues")
+
+        cacheFile.inputStream().use { input ->
+            resolver.openOutputStream(mediaUri)
+                ?.use { output -> input.copyTo(output) }
+                ?: throw IOException("Cannot open output stream from $mediaUri")
+        }
+
+        return mediaUri
     }
 
-    private fun getFileUriPreQ(filename: String): Uri {
+    private fun saveToDownloadPreQ(cacheFile: File): Uri {
         val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(dir, filename)
-        return FileProvider.getUriForFile(context, "$appPackage.provider", file)
+        val destFile = File(dir, cacheFile.name)
+
+        cacheFile.copyTo(target = destFile, overwrite = true)
+        return destFile.toUri()
     }
 
     private fun Record.parseDatetime(formatter: DateTimeFormatter): String {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FileDownload
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,29 +29,42 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
+import com.kevlina.budgetplus.core.ui.isPreview
 
 @Composable
-fun Bubble() {
+fun Bubble(
+    dest: BubbleDest?,
+    dismissBubble: () -> Unit,
+) {
 
-    val viewModel = hiltViewModel<BubbleViewModel>()
+    val isPreview = isPreview()
+    var isBubbleVisible by remember { mutableStateOf(isPreview) }
+    var textSize by remember { mutableStateOf(IntSize.Zero) }
 
-    val destination by viewModel.destination.collectAsStateWithLifecycle()
-    var isBubbleVisible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(key1 = destination) {
-        isBubbleVisible = destination != null
+    LaunchedEffect(key1 = dest) {
+        isBubbleVisible = dest != null
     }
+
+    dest ?: return
 
     AnimatedVisibility(
         visible = isBubbleVisible,
@@ -57,64 +72,61 @@ fun Bubble() {
         exit = fadeOut()
     ) {
 
-        val dest = destination
-        if (dest != null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickableWithoutRipple {
+                    isBubbleVisible = false
+                    dismissBubble()
+                }
+        ) {
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickableWithoutRipple {
-                        isBubbleVisible = false
-                        viewModel.dismissBubble()
-                    }
-            ) {
+                    .clip(HollowShape(dest = dest))
+                    .background(color = LocalAppColors.current.dark.copy(alpha = 0.8F))
+            )
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(HollowShape(dest = dest))
-                        .background(color = LocalAppColors.current.dark.copy(alpha = 0.8F))
-                )
-
-                Text(
-                    text = stringResource(id = dest.textRes),
-                    modifier = Modifier
-                        .align(
+            Text(
+                text = stringResource(id = dest.textRes),
+                modifier = Modifier
+                    .align(
+                        when (dest.textDirection) {
+                            BubbleTextDirection.TopStart, BubbleTextDirection.BottomStart -> Alignment.TopStart
+                            BubbleTextDirection.TopEnd, BubbleTextDirection.BottomEnd -> Alignment.TopEnd
+                            BubbleTextDirection.TopCenter, BubbleTextDirection.BottomCenter -> Alignment.TopCenter
+                        }
+                    )
+                    .offset(
+                        x = 0.dp,
+                        y = with(LocalDensity.current) {
                             when (dest.textDirection) {
-                                BubbleTextDirection.TopStart, BubbleTextDirection.BottomStart -> Alignment.TopStart
-                                BubbleTextDirection.TopEnd, BubbleTextDirection.BottomEnd -> Alignment.TopEnd
-                                BubbleTextDirection.TopCenter, BubbleTextDirection.BottomCenter -> Alignment.TopCenter
-                            }
-                        )
-                        .offset(
-                            x = 0.dp,
-                            y = with(LocalDensity.current) {
-                                when (dest.textDirection) {
-                                    BubbleTextDirection.TopStart,
-                                    BubbleTextDirection.TopEnd,
-                                    BubbleTextDirection.TopCenter,
-                                    -> dest.offset.y.toDp() - dest.size.height.toDp()
+                                BubbleTextDirection.TopStart,
+                                BubbleTextDirection.TopEnd,
+                                BubbleTextDirection.TopCenter,
+                                -> dest.offset.y.toDp() - textSize.height.toDp()
 
-                                    BubbleTextDirection.BottomStart,
-                                    BubbleTextDirection.BottomEnd,
-                                    BubbleTextDirection.BottomCenter,
-                                    -> dest.offset.y.toDp() + dest.size.height.toDp()
-                                }
+                                BubbleTextDirection.BottomStart,
+                                BubbleTextDirection.BottomEnd,
+                                BubbleTextDirection.BottomCenter,
+                                -> dest.offset.y.toDp() + dest.size.height.toDp()
                             }
-                        )
-                        .padding(all = 8.dp)
-                        .background(
-                            color = LocalAppColors.current.light,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(all = 16.dp)
-                )
-
-            }
+                        }
+                    )
+                    .onPlaced { textSize = it.size }
+                    .padding(all = 8.dp)
+                    .background(
+                        color = LocalAppColors.current.light,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(all = 16.dp)
+            )
         }
     }
 }
 
-class HollowShape(private val dest: BubbleDest) : Shape {
+private class HollowShape(private val dest: BubbleDest) : Shape {
 
     override fun createOutline(
         size: Size,
@@ -150,4 +162,41 @@ class HollowShape(private val dest: BubbleDest) : Shape {
             op(screenRectPath, ovalPath, PathOperation.Difference)
         })
     }
+}
+
+@Preview(widthDp = 360, heightDp = 240)
+@Composable
+private fun Bubble_Preview(
+    @PreviewParameter(BubbleTextDirectionParams::class)
+    textDirection: BubbleTextDirection,
+) = AppTheme(ThemeColors.Lavender) {
+    var size by remember { mutableStateOf(IntSize.Zero) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        MenuAction(
+            imageVector = Icons.Rounded.FileDownload,
+            description = stringResource(id = R.string.export_cta),
+            onClick = {},
+            modifier = Modifier
+                .align(Alignment.Center)
+                .onPlaced {
+                    size = it.size
+                    offset = it.positionInRoot()
+                }
+        )
+
+        Bubble(
+            dest = BubbleDest.OverviewExport(
+                size = size,
+                offset = offset,
+                textDirection = textDirection
+            ),
+            dismissBubble = {}
+        )
+    }
+}
+
+private class BubbleTextDirectionParams : PreviewParameterProvider<BubbleTextDirection> {
+    override val values = BubbleTextDirection.entries.asSequence()
 }

@@ -187,11 +187,12 @@
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>
-    <string name="bubble_edit_category">Click to rename or delete, long click to reorder</string>
+    <string name="bubble_edit_category">Tap to rename or delete, long tap to reorder</string>
     <string name="bubble_save_category">Click save after you finish editing</string>
     <string name="bubble_overview_mode">Tap to group the records by category</string>
     <string name="bubble_overview_export">You can export the records to csv</string>
     <string name="bubble_overview_record_tap_hint">Tap to edit, long tap to duplicate or delete</string>
+    <string name="bubble_overview_pie_chart">Long tap to view more details</string>
     <string name="bubble_records_sorting">Change the records sorting by date or price</string>
     <string name="bubble_colors_sharing">Share the colors with your friends!</string>
 

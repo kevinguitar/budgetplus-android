@@ -167,7 +167,9 @@ private fun OverviewViewModel.toUiState() = OverviewContentUiState(
         recordGroups = recordGroups,
         isSoloAuthor = isSoloAuthor,
         highlightTapHint = ::highlightTapHint,
+        highlightPieChart = ::highlightPieChart,
         formatPrice = bookRepo::formatPrice,
+        vibrate = vibratorManager::vibrate,
         canEditRecord = ::canEditRecord,
         duplicateRecord = ::duplicateRecord
     )

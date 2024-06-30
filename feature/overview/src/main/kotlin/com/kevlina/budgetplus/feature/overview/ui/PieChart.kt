@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -39,6 +42,8 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.ui.isPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,6 +63,8 @@ internal fun PieChart(
     totalPrice: Double,
     recordGroups: Map<String, List<Record>>,
     formatPrice: (Double) -> String,
+    vibrate: () -> Unit,
+    highlightPieChart: (BubbleDest) -> Unit,
     onClick: (category: String) -> Unit,
 ) {
 
@@ -74,7 +81,8 @@ internal fun PieChart(
         textAlign = TextAlign.Center,
     )
 
-    var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(false) }
+    val isPreview = isPreview()
+    var isDrawn by rememberSaveable(totalPrice, recordGroups) { mutableStateOf(isPreview) }
     val animateAngle by animateIntAsState(
         targetValue = if (isDrawn) 360 else 0,
         label = "animateAngle"
@@ -83,6 +91,7 @@ internal fun PieChart(
     var canvasPositionInWindow by remember { mutableStateOf(Offset.Unspecified) }
     var tapPosition by remember { mutableStateOf<Offset?>(null) }
     var pressPosition by remember { mutableStateOf<Offset?>(null) }
+    var pressCategory by remember { mutableStateOf<String?>(null) }
 
     val pressEffectPx = with(LocalDensity.current) { 8.dp.toPx() }
     val hintBgColor = LocalAppColors.current.light
@@ -90,6 +99,13 @@ internal fun PieChart(
         targetValue = if (pressPosition == null) 0f else 1f,
         label = "animateHint"
     )
+
+    val animateGroup = recordGroups.keys.map { key ->
+        animateFloatAsState(
+            targetValue = if (pressCategory == key) 1f else 0f,
+            label = "animateGroup_$key"
+        )
+    }
 
     val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
 
@@ -99,17 +115,30 @@ internal fun PieChart(
     fun resetTouchHandle() {
         disallowInterceptTouchEventRequest.invoke(false)
         pressPosition = null
+        pressCategory = null
         pointerJob?.cancel()
         pointerJob = null
     }
 
     SideEffect { isDrawn = true }
 
+    LaunchedEffect(pressCategory) {
+        if (pressCategory != null) {
+            vibrate()
+        }
+    }
+
     Canvas(
         modifier = modifier
             .padding(8.dp)
             .clip(CircleShape)
             .aspectRatio(1F)
+            .onPlaced {
+                highlightPieChart(BubbleDest.OverviewPieChart(
+                    size = it.size,
+                    offset = it.positionInRoot()
+                ))
+            }
             .onGloballyPositioned { canvasPositionInWindow = it.positionInWindow() }
             .pointerInteropFilter(
                 requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
@@ -145,21 +174,19 @@ internal fun PieChart(
             }
     ) {
         var startAngle = 270f
-        var pressedCategory: String? = null
 
         val diameter = size.width - pressEffectPx * 2
         val drawDiameter = diameter * (animateAngle / 360f)
 
-        val arcSize = Size(drawDiameter, drawDiameter)
-        val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
-        val topLeft = Offset(centerOffset, centerOffset)
 
         // Draw the circle background
         recordGroupSums.onEachIndexed { index, (category, sum) ->
             val ratio = sum / totalPrice
             val angle = (animateAngle * ratio).toFloat()
             val isPressed = pressPosition?.isWithIn(startAngle, angle) ?: false
-            if (isPressed) pressedCategory = category
+            if (isPressed) {
+                pressCategory = category
+            }
 
             // Consume the tap action
             tapPosition?.let { tap ->
@@ -169,30 +196,24 @@ internal fun PieChart(
                 }
             }
 
+            val animatePart = animateGroup[index].value
+            val centerOffset = pressEffectPx + (diameter - drawDiameter) / 2
+            val animatedOffset = centerOffset * (1 - animatePart)
+            val animatedSize = diameter + (pressEffectPx * 2 * animatePart)
             drawArc(
                 color = overviewColors[index % overviewColors.size],
                 startAngle = startAngle,
                 sweepAngle = angle,
                 useCenter = true,
-                topLeft = if (isPressed) {
-                    val animatedOffset = centerOffset * (1 - animateHint)
-                    Offset(animatedOffset, animatedOffset)
-                } else {
-                    topLeft
-                },
-                size = if (isPressed) {
-                    val animatedSize = diameter + (pressEffectPx * 2 * animateHint)
-                    Size(animatedSize, animatedSize)
-                } else {
-                    arcSize
-                }
+                topLeft = Offset(animatedOffset, animatedOffset),
+                size = Size(animatedSize, animatedSize)
             )
 
             startAngle += angle
         }
 
         // Draw the labels
-        recordGroupSums.onEach { (category, sum) ->
+        recordGroupSums.onEachIndexed { index, (category, sum) ->
             val ratio = sum / totalPrice
             val angle = (animateAngle * ratio).toFloat()
 
@@ -200,7 +221,8 @@ internal fun PieChart(
                 val text = "$category\n${formatPrice(sum)}"
                 val textMeasure = textMeasurer.measure(text, style = textStyle)
 
-                val textRadius = center.x * 0.5
+                val animatePart = animateGroup[index].value
+                val textRadius = center.x * (0.5 + 0.05 * animatePart)
                 val textAngle = startAngle + (angle / 2)
 
                 val deltaX = textRadius * cos(textAngle.toRadians())
@@ -220,20 +242,20 @@ internal fun PieChart(
             startAngle += angle
         }
 
-        // Draw the hint area
-        if (pressedCategory != null) {
+        if (pressCategory != null) {
+            // Draw the hint area
             drawCircle(
                 color = hintBgColor,
                 radius = diameter / 8,
                 alpha = animateHint
             )
 
-            val sum = recordGroupSums[pressedCategory] ?: 0.0
+            val sum = recordGroupSums[pressCategory] ?: 0.0
             val percent = sum / totalPrice
             val text = if (percent >= TEXT_DISPLAY_PERCENT_THRESHOLD) {
-                "${(percent * A_HUNDRED).roundUpRatioText}%"
+                "${(percent * 100).roundUpRatioText}%"
             } else {
-                "$pressedCategory\n${formatPrice(sum)}"
+                "$pressCategory\n${formatPrice(sum)}"
             }
             val textMeasure = textMeasurer.measure(text, style = textStyle)
 
@@ -283,6 +305,8 @@ private fun PieChart_Preview() = AppTheme {
         totalPrice = OverviewListUiState.totalPricePreview,
         recordGroups = OverviewListUiState.recordGroupsPreview,
         formatPrice = { it.toString() },
+        vibrate = {},
+        highlightPieChart = {},
         onClick = {}
     )
 }

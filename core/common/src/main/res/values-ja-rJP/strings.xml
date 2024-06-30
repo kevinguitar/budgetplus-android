@@ -192,6 +192,7 @@
     <string name="bubble_overview_mode">カテゴリまたは詳細で収支を表示することができます</string>
     <string name="bubble_overview_export">収支データを CSV ファイルとしてエクスポートして保存する</string>
     <string name="bubble_overview_record_tap_hint">タップして編集、長押ししてコピーまたは削除</string>
+    <string name="bubble_overview_pie_chart">長押しすると詳細情報が表示されます</string>
     <string name="bubble_records_sorting">収支を日付または金額で並び替えることができます</string>
     <string name="bubble_colors_sharing">友達にカラーパレットを共有しましょう！</string>
 

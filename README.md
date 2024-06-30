@@ -11,16 +11,16 @@ Budget+ Android client
 
 How to run?
 ```
-./gradlew :benchmark:connectedBenchmarkAndroidTest -P android.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
+./gradlew :benchmark:connectedReleaseAndroidTest -P android.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile
 ```
 
-Locate it in the build folder of the module you generated the profile in: [module]/build/outputs/connected_android_test_additional_output/benchmark/connected/[device].
+Locate it in the build folder of the module you generated the profile in: [module]/build/outputs/connected_android_test_additional_output/release/connected/[device].
 
 Copy and rename the file to `baseline-prof.txt` and place it in the `src/main` directory of your app module
 
 For Macrobenchmark:
 ```
-./gradlew :benchmark:connectedBenchmarkAndroidTest -P android.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
+./gradlew :benchmark:connectedReleaseAndroidTest -P android.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
 ```
 
 ## Firebase cloud messaging topics

@@ -1,5 +1,9 @@
 package com.kevlina.budgetplus.feature.overview
 
+import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.impl.FakeStringProvider
+import com.kevlina.budgetplus.core.common.impl.FakeTracker
+import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
@@ -10,14 +14,23 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 import java.time.LocalDate
 
 class OverviewTimeViewModelTest {
 
+    @get:Rule
+    val rule = MainDispatcherRule()
+
     @Test
-    fun `setting the period by clicking on previous day`() {
-        every { recordsObserver.timePeriod } returns MutableStateFlow(oneDayPeriod)
+    fun `setting the period by clicking on previous day`() = runTest {
+        every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 
         val model = createModel()
         model.previousDay()
@@ -29,8 +42,8 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `setting the period by clicking on next day`() {
-        every { recordsObserver.timePeriod } returns MutableStateFlow(oneDayPeriod)
+    fun `setting the period by clicking on next day`() = runTest {
+        every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 
         val model = createModel()
         model.nextDay()
@@ -42,8 +55,8 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `the fromDate is picked when it's a one day period`() {
-        every { recordsObserver.timePeriod } returns MutableStateFlow(oneDayPeriod)
+    fun `the fromDate is picked when it's a one day period`() = runTest {
+        every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 
         val model = createModel()
         val oneWeekAfter = LocalDate.now().plusWeeks(1)
@@ -55,8 +68,8 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `WHEN the fromDate is picked after the current untilDate THEN keep the current days in between`() {
-        every { recordsObserver.timePeriod } returns MutableStateFlow(TimePeriod.Custom(
+    fun `WHEN the fromDate is picked after the current untilDate THEN keep the current days in between`() = runTest {
+        every { recordsObserver.timePeriod } returns flowOf(TimePeriod.Custom(
             from = LocalDate.now(),
             until = LocalDate.now().plusDays(3)
         ))
@@ -74,8 +87,8 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `WHEN the period is more than one month THEN make it one month`() {
-        every { recordsObserver.timePeriod } returns MutableStateFlow(oneDayPeriod)
+    fun `WHEN the period is more than one month THEN make it one month`() = runTest {
+        every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 
         val model = createModel()
         model.setTimePeriod(TimePeriod.Custom(
@@ -106,12 +119,20 @@ class OverviewTimeViewModelTest {
         every { isPremium } returns MutableStateFlow(false)
     }
 
+    context(TestScope)
     private fun createModel() = OverviewTimeViewModel(
         recordsObserver = recordsObserver,
         bookRepo = bookRepo,
         authManager = authManager,
         snackbarSender = mockk(relaxUnitFun = true),
-        tracker = mockk(relaxUnitFun = true),
-        stringProvider = mockk(relaxed = true),
-    )
+        tracker = FakeTracker(),
+        stringProvider = FakeStringProvider(stringMap = mapOf(
+            R.string.overview_exceed_max_period to "Exceed max period",
+            R.string.cta_go to "Go"
+        )),
+    ).apply {
+        backgroundScope.launch(rule.testDispatcher) {
+            timePeriod.collect()
+        }
+    }
 }

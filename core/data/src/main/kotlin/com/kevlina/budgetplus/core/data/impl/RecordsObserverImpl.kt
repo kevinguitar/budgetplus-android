@@ -95,7 +95,7 @@ internal class RecordsObserverImpl @Inject constructor(
             TimePeriod.Week -> TimePeriod.Week
             TimePeriod.Month -> TimePeriod.Month
             TimePeriod.LastMonth -> TimePeriod.LastMonth
-            else -> period
+            is TimePeriod.Custom -> period
         }
 
         val newMapping = periodCache.toMutableMap()

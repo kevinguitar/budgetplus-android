@@ -54,8 +54,8 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-// Hide the text in case the ratio is below 5%
-private const val TEXT_DISPLAY_PERCENT_THRESHOLD = 0.05
+// Hide the text in case the ratio is below 4%
+private const val TEXT_DISPLAY_PERCENT_THRESHOLD = 0.04
 
 @Composable
 internal fun PieChart(

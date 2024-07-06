@@ -51,7 +51,7 @@ class AndroidAppConventionPlugin : Plugin<Project> {
 
             signingConfigs {
                 create("release") {
-                    storeFile = project.rootProject.file("misc/BudgetKey")
+                    storeFile = project.rootProject.file("BudgetKey")
                     storePassword = "budget+"
                     keyAlias = "key0"
                     keyPassword = "budget+"

@@ -43,7 +43,7 @@ private fun Project.buildStabilityConfiguration(): List<String> = listOf(
     // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
     "-P",
     "plugin:org.jetbrains.kotlin.compose.compiler.gradle:stabilityConfigurationFile=" +
-        rootProject.file("misc/compose_compiler_config.conf").absolutePath
+        rootProject.file("compose_compiler_config.conf").absolutePath
 )
 
 private fun Project.buildStrongSkippingMode(): List<String> = listOf(

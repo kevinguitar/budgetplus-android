@@ -1,12 +1,6 @@
 # budgetplus-android
 Budget+ Android client
 
-## Internal User Ids
-
-- **Alina**：BfvTnZPuUTS6oBH1UwZ8uZIllWs2
-- **Kevin**：wStzA9aMwHd0pOGwyT0woBrf05q2
-- **Kevin Test**：Z8anJ6T32nSCtWOJiB58DmgE8rl2
-
 ## Baseline Profile
 
 How to run?
@@ -30,7 +24,6 @@ We categorize the general push topic by language:
 - general_tw
 - general_cn
 - general_ja
-
 
 ## Supported deeplinks
 

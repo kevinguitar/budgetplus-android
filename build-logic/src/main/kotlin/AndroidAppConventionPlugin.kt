@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
 import common.libs
+import common.localProperty
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -51,10 +52,10 @@ class AndroidAppConventionPlugin : Plugin<Project> {
 
             signingConfigs {
                 create("release") {
-                    storeFile = project.rootProject.file("BudgetKey")
-                    storePassword = "budget+"
-                    keyAlias = "key0"
-                    keyPassword = "budget+"
+                    storeFile = project.localProperty("KEYSTORE_PATH")?.let { project.rootProject.file(it) }
+                    storePassword = project.localProperty("KEYSTORE_PASSWORD")
+                    keyAlias = project.localProperty("KEYSTORE_ALIAS")
+                    keyPassword = project.localProperty("KEYSTORE_PASSWORD")
                 }
             }
 

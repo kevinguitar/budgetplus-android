@@ -157,7 +157,7 @@ internal fun OverviewList(
                                 records = groupRecords,
                                 sumPrice = uiState.formatPrice(sum),
                                 percentage = remember(sum, totalPrice) { sum / totalPrice },
-                                color = overviewColors[index % overviewColors.size],
+                                color = chartColors[index % chartColors.size],
                                 isLast = index == recordGroups.orEmpty().size - 1,
                                 onClick = { navigateToRecords(key) }
                             ),

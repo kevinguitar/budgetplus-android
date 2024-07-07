@@ -159,7 +159,7 @@ internal data class OverviewGroupUiState(
             ),
             sumPrice = "$1043.5",
             percentage = 0.34,
-            color = overviewColors[0],
+            color = chartColors[0],
             isLast = false,
             onClick = {}
         )

@@ -13,6 +13,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltAndroidApp
+
 class BudgetPlusApp : Application() {
 
     @Inject lateinit var adMobInitializer: AdMobInitializer

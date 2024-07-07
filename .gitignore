@@ -2,6 +2,7 @@
 *.aab
 .gradle
 /local.properties
+/app/google-services.json
 /.kotlin
 /.idea
 .DS_Store

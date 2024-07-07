@@ -201,7 +201,7 @@ internal fun PieChart(
             val animatedOffset = centerOffset * (1 - animatePart)
             val animatedSize = diameter + (pressEffectPx * 2 * animatePart)
             drawArc(
-                color = overviewColors[index % overviewColors.size],
+                color = chartColorsStaggered[index % chartColorsStaggered.size],
                 startAngle = startAngle,
                 sweepAngle = angle,
                 useCenter = true,

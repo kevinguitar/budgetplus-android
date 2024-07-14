@@ -35,7 +35,7 @@ jobs:
           KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
         run: |
           echo $ENCODED_STRING > keystore-b64.txt
-          base64 -d keystore-b64.txt > $KEYSTORE_PATH
+          base64 -d keystore-b64.txt > ./BudgetKey
 
       - name: Decode Google Services Json
         env:
@@ -46,11 +46,10 @@ jobs:
 
       - name: Echo Secrets
         env:
-          KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
-          echo KEYSTORE_PATH=$KEYSTORE_PATH > ./local.properties
+          echo KEYSTORE_PATH=./BudgetKey > ./local.properties
           echo KEYSTORE_ALIAS=$KEYSTORE_ALIAS >> ./local.properties
           echo KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD >> ./local.properties
 

@@ -209,7 +209,7 @@ internal class BillingControllerImpl @Inject constructor(
                 }
 
                 else -> {
-                    Timber.w("BillingClient: Cannot process the purchase. Purchase state: ${purchase.purchaseState}")
+                    Timber.e("BillingClient: Cannot process the purchase. Purchase state: ${purchase.purchaseState}")
                     _purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
                 }
             }

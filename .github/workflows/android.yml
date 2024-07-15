@@ -39,7 +39,7 @@ jobs:
       - name: Decode Google Service file
         env:
           ENCODED_GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -di > ./app/google-services.json
+        run: echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -d > ./app/google-services.json
 
       - name: Echo Secrets
         env:

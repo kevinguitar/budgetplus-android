@@ -113,7 +113,6 @@ internal class BillingControllerImpl @Inject constructor(
         }
     }
 
-
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         val status = BillingStatus(billingResult.responseCode)
         val debugMessage = billingResult.debugMessage

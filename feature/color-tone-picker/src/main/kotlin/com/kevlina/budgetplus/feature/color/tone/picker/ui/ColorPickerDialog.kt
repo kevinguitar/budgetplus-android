@@ -70,7 +70,7 @@ internal fun ColorPickerDialog(
                             .padding(top = 16.dp)
                             .fillMaxWidth()
                             .height(24.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(AppTheme.cornerRadius))
                     )
 
                     LaunchedEffect(key1 = userInputColor) {

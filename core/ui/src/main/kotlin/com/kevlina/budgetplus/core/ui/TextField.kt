@@ -160,7 +160,7 @@ private fun TextFieldInternal(
             .height(56.dp)
             .background(
                 color = LocalAppColors.current.lightBg,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(AppTheme.cornerRadius)
             )
             .padding(horizontal = 16.dp)
     ) {

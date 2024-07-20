@@ -12,7 +12,7 @@ firebase-bom = "33.1.2"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.51.1"
 # https://github.com/coil-kt/coil/releases
-coil = "2.6.0"
+coil = "2.7.0"
 
 [libraries]
 android-activity = "androidx.activity:activity-ktx:1.9.0"

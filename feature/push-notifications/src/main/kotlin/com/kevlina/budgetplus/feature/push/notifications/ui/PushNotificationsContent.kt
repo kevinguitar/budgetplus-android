@@ -28,6 +28,7 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
+import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsViewModel
 
 @Composable
@@ -59,6 +60,7 @@ internal fun PushNotificationsContent(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .containerPadding()
             .padding(16.dp)
             .imePadding()
     ) {

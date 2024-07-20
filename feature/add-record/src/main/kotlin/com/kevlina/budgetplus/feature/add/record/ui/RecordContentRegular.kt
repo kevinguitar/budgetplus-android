@@ -35,7 +35,7 @@ internal fun RecordContentRegular(
             uiState = uiState.recordInfoUiState,
             modifier = Modifier
                 .weight(1F)
-                .width(AppTheme.maxContentWidth)
+                .width(AppTheme.containerMaxWidth)
                 .padding(horizontal = 16.dp)
         )
 
@@ -56,7 +56,7 @@ internal fun RecordContentRegular(
             Calculator(
                 uiState = uiState.calculatorUiState,
                 modifier = Modifier
-                    .width(AppTheme.maxContentWidth)
+                    .width(AppTheme.containerMaxWidth)
                     .padding(vertical = 8.dp, horizontal = 16.dp)
                     .background(
                         color = LocalAppColors.current.light,

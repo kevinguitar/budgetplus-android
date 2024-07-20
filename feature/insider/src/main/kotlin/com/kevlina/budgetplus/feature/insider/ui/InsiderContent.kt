@@ -1,6 +1,6 @@
 package com.kevlina.budgetplus.feature.insider.ui
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.feature.insider.InsiderViewModel
 import com.kevlina.budgetplus.feature.insider.UsersOverviewData
@@ -35,7 +36,7 @@ private const val TYPE_STAT = "stat"
 private const val TYPE_USER = "user"
 
 @Composable
-internal fun InsiderContent() {
+internal fun BoxWithConstraintsScope.InsiderContent() {
 
     val vm = hiltViewModel<InsiderViewModel>()
 
@@ -52,7 +53,7 @@ internal fun InsiderContent() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(vertical = 12.dp)
+        contentPadding = AppTheme.listContentPaddings(horizontal = 16.dp, vertical = 12.dp)
     ) {
 
         val data = insiderData

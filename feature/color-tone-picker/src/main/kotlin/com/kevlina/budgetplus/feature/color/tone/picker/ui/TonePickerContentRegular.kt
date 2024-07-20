@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
 import com.kevlina.budgetplus.core.theme.ThemeColors
-import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.thenIf
 
 private val MinColorCarouselHeight = 200.dp
@@ -41,7 +40,7 @@ internal fun TonePickerContentRegular(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .width(AppTheme.maxContentWidth)
+            .containerPadding()
     ) {
 
         BoxWithConstraints(

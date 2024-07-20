@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
@@ -169,9 +168,7 @@ fun ColorTonePickerScreen(
             )
 
             AdaptiveScreen(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .weight(1F),
+                modifier = Modifier.weight(1F),
                 regularContent = {
                     TonePickerContentRegular(
                         selectedColorTone = selectedColorTone,

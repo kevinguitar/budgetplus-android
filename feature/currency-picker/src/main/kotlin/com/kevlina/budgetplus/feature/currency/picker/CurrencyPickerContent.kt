@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.feature.currency.picker
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,9 +33,12 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.util.Currency
 
+// False positive, it's used in context receiver
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun CurrencyPickerContent(
     currencies: List<CurrencyUiState>,
@@ -57,16 +60,18 @@ internal fun CurrencyPickerContent(
                 onSearch(it)
             },
             hint = stringResource(id = R.string.currency_picker_hint),
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+            modifier = Modifier
+                .containerPadding()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
         )
 
-        Box(
+        BoxWithConstraints(
             modifier = Modifier.fillMaxSize()
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 136.dp),
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(all = 16.dp),
+                contentPadding = AppTheme.listContentPaddings(all = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {

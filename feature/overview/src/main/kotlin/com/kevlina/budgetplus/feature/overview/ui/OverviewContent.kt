@@ -31,8 +31,8 @@ internal fun OverviewContent(
             )
         },
         modifier = modifier
-                .fillMaxHeight()
-                .width(AppTheme.maxContentWidth)
+            .fillMaxHeight()
+            .width(AppTheme.containerMaxWidth)
     )
 }
 

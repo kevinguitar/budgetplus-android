@@ -109,7 +109,7 @@ fun CreateBookBlock(
                         Alignment.BottomCenter
                     }
                 )
-                .width(AppTheme.maxContentWidth)
+                .width(AppTheme.containerMaxWidth)
                 .padding(vertical = 24.dp, horizontal = 16.dp)
         ) {
 

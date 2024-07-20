@@ -6,8 +6,7 @@ on:
 
 jobs:
   build:
-    # https://github.com/actions/runner-images/issues/6709#issuecomment-1361269639
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -40,15 +39,13 @@ jobs:
           sudo swapon --show
 
       # https://www.droidcon.com/2023/04/04/securely-create-android-release-using-github-actions/
-      - name: Decode Keystore
+      - name: Decode Keystore and Google Service file
         env:
           ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_FILE }}
-        run: echo $ENCODED_KEYSTORE | base64 -d > ./BudgetKey
-
-      - name: Decode Google Service file
-        env:
           ENCODED_GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -d > ./app/google-services.json
+        run: |
+          echo $ENCODED_KEYSTORE | base64 -d > ./BudgetKey
+          echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -d > ./app/google-services.json
 
       - name: Echo Secrets
         env:
@@ -63,4 +60,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-configuration-cache

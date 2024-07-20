@@ -1,11 +1,11 @@
-name: Android CI
+name: Publish to Google Play
 
 on:
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [ released ]
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,19 +16,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
-      # https://github.com/actions/runner-images/discussions/7188
-      - name: Increase swapfile
-        run: |
-          sudo swapoff -a
-          sudo fallocate -l 15G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
-          sudo swapon --show
-
-      # https://www.droidcon.com/2023/04/04/securely-create-android-release-using-github-actions/
       - name: Decode Keystore and Google Service file
         env:
           ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_FILE }}
@@ -49,5 +37,23 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Assemble release AAB
+        run: ./gradlew bundleRelease
+
+      - name: Deploy the Play Store beta channel
+        uses: r0adkll/upload-google-play@v1.1.3
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.kevlina.budgetplus
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          mappingFile: app/build/outputs/mapping/release/mapping.txt
+          track: beta
+          # Get the tag name from the release
+          releaseName: ${{ github.event.release.tag_name }}
+          whatsNewDirectory: distribution/whatsnew
+
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-outputs
+          path: app/build/outputs

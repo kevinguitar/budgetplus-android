@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.feature.currency.picker
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.TopBar
 
@@ -42,8 +41,7 @@ fun CurrencyPickerScreen(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(AppTheme.maxContentWidth)
-                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
                 .weight(1F)
         ) {
 

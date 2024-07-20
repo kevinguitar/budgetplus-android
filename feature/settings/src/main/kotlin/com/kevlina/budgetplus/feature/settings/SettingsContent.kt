@@ -48,6 +48,7 @@ import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
+import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 
 private const val SWITCH_SCALE = 0.7F
@@ -75,9 +76,10 @@ internal fun SettingsContent(
 
     Column(
         modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .containerPadding()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
 
         // Content section
@@ -154,8 +156,8 @@ internal fun SettingsContent(
                     checked = vibrateOnInput,
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
                     modifier = Modifier
-                            .padding(end = 10.dp)
-                            .scale(SWITCH_SCALE)
+                        .padding(end = 10.dp)
+                        .scale(SWITCH_SCALE)
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput

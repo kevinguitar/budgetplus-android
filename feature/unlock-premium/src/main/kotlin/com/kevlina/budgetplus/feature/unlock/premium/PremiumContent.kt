@@ -25,6 +25,7 @@ import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.containerPadding
 
 @Composable
 fun PremiumContent(
@@ -43,6 +44,7 @@ fun PremiumContent(
                 shape = AppTheme.dialogShape
             )
             .verticalScroll(rememberScrollState())
+            .containerPadding()
             .padding(16.dp)
     ) {
 

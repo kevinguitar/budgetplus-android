@@ -50,7 +50,7 @@ internal fun CollabBlock(
             lineHeight = 24.sp,
             modifier = Modifier
                 .weight(1F)
-                .width(AppTheme.maxContentWidth)
+                .width(AppTheme.containerMaxWidth)
                 .padding(vertical = 24.dp, horizontal = 16.dp)
         )
 

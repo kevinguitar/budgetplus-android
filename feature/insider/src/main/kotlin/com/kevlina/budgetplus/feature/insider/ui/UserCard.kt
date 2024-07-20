@@ -48,7 +48,7 @@ internal fun UserCard(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .padding(vertical = 4.dp)
             .fillMaxWidth()
             .clip(AppTheme.cardShape)
             .background(LocalAppColors.current.lightBg)

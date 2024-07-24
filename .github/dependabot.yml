@@ -15,8 +15,16 @@ registries:
     type: maven-repository
     url: https://repo.maven.apache.org/maven2/
 updates:
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "06:00"
+      timezone: Asia/Taipei
+      
+  - package-ecosystem: "gradle"
+    directory: "/"
     registries:
       - maven-gradle-plugin
       - maven-google

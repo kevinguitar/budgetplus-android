@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.feature.records
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
@@ -30,6 +33,7 @@ import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RecordsScreen(
     navigator: Navigator,
@@ -87,24 +91,27 @@ fun RecordsScreen(
             }
         )
 
-        LazyColumn(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1F)
         ) {
-
-            itemsIndexed(records.orEmpty()) { index, item ->
-                RecordCard(uiState = RecordCardUiState(
-                    item = item,
-                    formattedPrice = vm.bookRepo.formatPrice(item.price),
-                    isLast = index == records?.lastIndex,
-                    canEdit = vm.canEditRecord(item),
-                    showCategory = false,
-                    showAuthor = true,
-                    onEdit = { editRecordDialog = item },
-                    onDuplicate = { vm.duplicateRecord(item) },
-                    onDelete = { deleteRecordDialog = item }
-                ))
+            LazyColumn(
+                contentPadding = AppTheme.listContentPaddings()
+            ) {
+                itemsIndexed(records.orEmpty()) { index, item ->
+                    RecordCard(uiState = RecordCardUiState(
+                        item = item,
+                        formattedPrice = vm.bookRepo.formatPrice(item.price),
+                        isLast = index == records?.lastIndex,
+                        canEdit = vm.canEditRecord(item),
+                        showCategory = false,
+                        showAuthor = true,
+                        onEdit = { editRecordDialog = item },
+                        onDuplicate = { vm.duplicateRecord(item) },
+                        onDelete = { deleteRecordDialog = item }
+                    ))
+                }
             }
         }
     }

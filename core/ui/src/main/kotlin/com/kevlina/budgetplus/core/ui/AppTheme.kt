@@ -50,7 +50,7 @@ object AppTheme {
      */
     context(BoxWithConstraintsScope)
     fun listContentPaddings(
-        all: Dp = Dp.Unspecified,
+        all: Dp = 0.dp,
         horizontal: Dp = all,
         vertical: Dp = all,
     ): PaddingValues {

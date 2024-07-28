@@ -15,7 +15,7 @@ hilt = "2.51.1"
 coil = "2.7.0"
 
 [libraries]
-android-activity = "androidx.activity:activity-ktx:1.9.0"
+android-activity = "androidx.activity:activity-ktx:1.9.1"
 android-core = "androidx.core:core-ktx:1.13.1"
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }

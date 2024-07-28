@@ -2,20 +2,10 @@
 Budget+ is an easy to use co-spending tracker to track expenses together with your friends and family.
 
 ## Feature Overview
-[login_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/e02daa19-88d3-49d7-9068-0b8faa2c6ad9
-[welcome_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/78b7fce0-cdfb-46c9-8bb8-43e9a58c4587
-[record_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/a41cb081-2222-4e4b-af37-68e6d650ef51
-[overview_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/10e572d9-8574-42e9-be60-f139d835adee
-[currency_picker_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/f5ebf954-ca89-496f-9bae-7762d60c807f
-[unlock_premium_img]: https://github.com/kevinguitar/budgetplus-android/assets/18852983/1d8e5a59-c705-468a-bdf9-a2cd56bf6c09
 
-| Login Screen | Welcome Screen | Record Screen |
-|:------------:|:--------------:|:-------------:|
-| ![login_img] | ![welcome_img] | ![record_img] |
+![overview_1](https://github.com/user-attachments/assets/b8a565ea-d7dd-4676-96a3-5ad02c37d8e3)
 
-| Overview Screen |    Currency Picker     |    Unlock Premium     | 
-|:---------------:|:----------------------:|:---------------------:| 
-| ![overview_img] | ![currency_picker_img] | ![unlock_premium_img] |
+![overview_2](https://github.com/user-attachments/assets/a480d869-a814-41f1-a258-e24e61e38f2e)
 
 ### And some cool animated features! ✨
 |                                                      Pie Chart                                                       |                                                  Color Tone Picker                                                   |                                                 Customize Color Tone                                                 |

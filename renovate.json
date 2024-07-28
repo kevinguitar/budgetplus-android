@@ -1,8 +1,13 @@
 {
   "$schema" : "https://docs.renovatebot.com/renovate-schema.json",
   "extends" : [
-    "config:recommended"
+    "config:recommended",
+    ":disableDependencyDashboard"
   ],
+  "schedule" : [
+    "every weekend"
+  ],
+  "timezone" : "Asia/Singapore",
   "ignoreDeps" : [
     "androidx.lifecycle:lifecycle-runtime-compose"
   ],

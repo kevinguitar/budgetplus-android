@@ -19,15 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # https://github.com/actions/runner-images/discussions/7188
-      - name: Increase swapfile
+      # https://github.com/orgs/community/discussions/26351#discussioncomment-3251595
+      - name: Free Disk Space
         run: |
           sudo swapoff -a
-          sudo fallocate -l 15G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
-          sudo swapon --show
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
 
       # https://www.droidcon.com/2023/04/04/securely-create-android-release-using-github-actions/
       - name: Decode Keystore and Google Service file

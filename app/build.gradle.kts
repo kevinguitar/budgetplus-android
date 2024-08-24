@@ -1,7 +1,7 @@
 plugins {
-    id("budgetplus.android.app")
-    id("budgetplus.hilt.android")
-    id("budgetplus.compose")
+    alias(budgetplus.plugins.android.app)
+    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.compose)
 }
 
 dependencies {

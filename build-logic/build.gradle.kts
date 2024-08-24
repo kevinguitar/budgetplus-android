@@ -10,15 +10,15 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("androidApp") {
+        register("android.app") {
             id = "budgetplus.android.app"
             implementationClass = "AndroidAppConventionPlugin"
         }
-        register("androidLibrary") {
+        register("android.library") {
             id = "budgetplus.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        register("appBenchmark") {
+        register("app.benchmark") {
             id = "budgetplus.app.benchmark"
             implementationClass = "AppBenchmarkConventionPlugin"
         }
@@ -26,11 +26,11 @@ gradlePlugin {
             id = "budgetplus.compose"
             implementationClass = "ComposeConventionPlugin"
         }
-        register("hiltAndroid") {
-            id = "budgetplus.hilt.android"
-            implementationClass = "HiltAndroidConventionPlugin"
+        register("hilt") {
+            id = "budgetplus.hilt"
+            implementationClass = "HiltConventionPlugin"
         }
-        register("kotlinSerialization") {
+        register("kotlin.serialization") {
             id = "budgetplus.kotlin.serialization"
             implementationClass = "KotlinSerializationConventionPlugin"
         }

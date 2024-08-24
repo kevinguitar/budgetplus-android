@@ -15,6 +15,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        register("budgetplus") {
+            from(files("gradle/plugins.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "budgetplus"

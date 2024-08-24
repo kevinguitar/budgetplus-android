@@ -6,7 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
-class HiltAndroidConventionPlugin : Plugin<Project> {
+class HiltConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.hilt.android.get().pluginId)

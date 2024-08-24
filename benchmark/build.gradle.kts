@@ -1,3 +1,3 @@
 plugins {
-    id("budgetplus.app.benchmark")
+    alias(budgetplus.plugins.app.benchmark)
 }

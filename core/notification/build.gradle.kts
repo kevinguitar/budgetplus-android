@@ -1,7 +1,7 @@
 plugins {
-    id("budgetplus.android.library")
-    id("budgetplus.hilt.android")
-    id("budgetplus.kotlin.serialization")
+    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.kotlin.serialization)
 }
 
 dependencies {

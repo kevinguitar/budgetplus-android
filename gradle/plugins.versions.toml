@@ -1,0 +1,7 @@
+[plugins]
+android-app = { id = "budgetplus.android.app" }
+android-library = { id = "budgetplus.android.library" }
+app-benchmark = { id = "budgetplus.app.benchmark" }
+compose = { id = "budgetplus.compose" }
+hilt = { id = "budgetplus.hilt" }
+kotlin-serialization = { id = "budgetplus.kotlin.serialization" }

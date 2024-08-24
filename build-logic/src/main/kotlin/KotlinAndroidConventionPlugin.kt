@@ -57,6 +57,9 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
                     freeCompilerArgs.addAll(
                         "-Xcontext-receivers",
+                        // Context receiver is deprecated, but the new context parameters API isn't ready.
+                        // https://youtrack.jetbrains.com/issue/KT-8087/Make-it-possible-to-suppress-warnings-globally-in-compiler-via-command-line-option#focus=Comments-27-10137847.0-0
+                        "-Xsuppress-warning=CONTEXT_RECEIVERS_DEPRECATED",
                         "-opt-in=kotlin.RequiresOptIn",
                         "-opt-in=kotlin.contracts.ExperimentalContracts",
                         "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",

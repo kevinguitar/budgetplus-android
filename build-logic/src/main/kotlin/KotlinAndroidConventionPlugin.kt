@@ -54,14 +54,11 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
                     allWarningsAsErrors.set(true)
-
-                    freeCompilerArgs.addAll(
-                        "-Xcontext-receivers",
-                        "-opt-in=kotlin.RequiresOptIn",
-                        "-opt-in=kotlin.contracts.ExperimentalContracts",
-                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    freeCompilerArgs.add("-Xcontext-receivers")
+                    optIn.addAll(
+                        "kotlin.contracts.ExperimentalContracts",
+                        "kotlinx.coroutines.ExperimentalCoroutinesApi",
                     )
-
                     jvmTarget.set(Constants.jvmTarget)
                 }
             }

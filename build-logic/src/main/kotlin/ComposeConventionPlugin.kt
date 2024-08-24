@@ -20,10 +20,10 @@ class ComposeConventionPlugin : Plugin<Project> {
 
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
-                    freeCompilerArgs.addAll(
-                        "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-                        "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-                        "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+                    optIn.addAll(
+                        "androidx.compose.ui.ExperimentalComposeUiApi",
+                        "androidx.compose.foundation.ExperimentalFoundationApi",
+                        "androidx.compose.foundation.layout.ExperimentalLayoutApi",
                     )
                     freeCompilerArgs.addAll(project.buildStabilityConfiguration())
                     freeCompilerArgs.addAll(project.buildStrongSkippingMode())

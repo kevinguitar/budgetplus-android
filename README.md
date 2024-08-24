@@ -63,14 +63,6 @@ For Macrobenchmark:
 ```bash
 ./gradlew :benchmark:connectedReleaseAndroidTest -P android.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark
 ```
-## Firebase Cloud Messaging
-The app uses [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging) to send push notifications.
-
-All users will subscribe to the general push topic based on the language preference on app start:
-- general_en
-- general_tw
-- general_cn
-- general_ja
 
 ## Firebase Cloud Functions
 Cloud Functions Repo (yet to open source): https://github.com/kevinguitar/budgetplus-cloud-functions

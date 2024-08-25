@@ -1,7 +1,6 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.data.remote
 
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import org.junit.Test
 import java.time.DayOfWeek
 import java.time.LocalDate

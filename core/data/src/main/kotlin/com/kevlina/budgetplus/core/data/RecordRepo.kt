@@ -8,12 +8,15 @@ interface RecordRepo {
 
     fun createRecord(record: Record)
 
+    /**
+     *  @return Batch id
+     */
     fun batchRecord(
         record: Record,
         startDate: LocalDate,
         frequency: BatchFrequency,
         times: Int,
-    )
+    ): String
 
     fun editRecord(
         oldRecord: Record,

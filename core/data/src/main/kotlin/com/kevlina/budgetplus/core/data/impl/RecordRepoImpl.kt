@@ -49,7 +49,7 @@ internal class RecordRepoImpl @Inject constructor(
         startDate: LocalDate,
         frequency: BatchFrequency,
         times: Int,
-    ) {
+    ): String {
         val batchId = UUID.randomUUID().toString()
         var currentDate: LocalDate
 
@@ -67,6 +67,7 @@ internal class RecordRepoImpl @Inject constructor(
             ))
         }
         tracker.logEvent("record_batched")
+        return batchId
     }
 
     override fun editRecord(

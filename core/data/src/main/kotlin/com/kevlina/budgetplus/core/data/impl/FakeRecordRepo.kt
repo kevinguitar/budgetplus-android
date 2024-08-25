@@ -17,7 +17,7 @@ class FakeRecordRepo : RecordRepo {
         lastCreatedRecord = record
     }
 
-    override fun batchRecord(record: Record, startDate: LocalDate, frequency: BatchFrequency, times: Int) {
+    override fun batchRecord(record: Record, startDate: LocalDate, frequency: BatchFrequency, times: Int): String {
         error("Not yet implemented")
     }
 

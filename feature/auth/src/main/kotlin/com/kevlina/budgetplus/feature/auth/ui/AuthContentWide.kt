@@ -19,7 +19,6 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 @Composable
 fun AuthContentWide(
     signInWithGoogle: () -> Unit,
-    onContactClick: () -> Unit
 ) {
 
     Row(
@@ -53,10 +52,6 @@ fun AuthContentWide(
                 textRes = R.string.auth_google,
                 iconRes = R.drawable.ic_google
             )
-
-            FacebookUserHint(
-                onContactClick = onContactClick
-            )
         }
     }
 }
@@ -64,5 +59,5 @@ fun AuthContentWide(
 @Preview(widthDp = 800, heightDp = 600)
 @Composable
 private fun AuthContentWide_Preview() = AppTheme {
-    AuthContentWide(signInWithGoogle = {}, onContactClick = {})
+    AuthContentWide(signInWithGoogle = {})
 }

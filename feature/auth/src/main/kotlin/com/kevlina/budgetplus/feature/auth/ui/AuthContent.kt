@@ -22,7 +22,6 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 @Composable
 fun AuthContent(
     signInWithGoogle: () -> Unit,
-    onContactClick: () -> Unit,
 ) {
 
     Box(
@@ -57,10 +56,6 @@ fun AuthContent(
                 textRes = R.string.auth_google,
                 iconRes = R.drawable.ic_google
             )
-
-            FacebookUserHint(
-                onContactClick = onContactClick,
-            )
         }
     }
 }
@@ -68,5 +63,5 @@ fun AuthContent(
 @Preview
 @Composable
 private fun AuthContent_Preview() = AppTheme {
-    AuthContent(signInWithGoogle = {}, onContactClick = {})
+    AuthContent(signInWithGoogle = {})
 }

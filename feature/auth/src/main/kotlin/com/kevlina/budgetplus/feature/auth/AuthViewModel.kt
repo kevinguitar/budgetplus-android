@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import androidx.activity.ComponentActivity
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -47,7 +46,6 @@ class AuthViewModel @Inject constructor(
     @ActivityContext private val context: Context,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     @Named("book") private val bookNavigationAction: NavigationAction,
-    @Named("contact_email") private val contactEmail: String,
     referrerHandler: ReferrerHandler,
     preferenceHolder: PreferenceHolder,
 ) {
@@ -125,21 +123,6 @@ class AuthViewModel @Inject constructor(
             } catch (e: ApiException) {
                 Timber.w(e)
             }
-        }
-    }
-
-    fun onContactClick() {
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = "mailto:".toUri()
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
-            putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.auth_facebook_contact_text])
-        }
-        if (intent.resolveActivity(context.packageManager) != null) {
-            activity.startActivity(intent)
-            tracker.logEvent("auth_contact_us_click")
-        } else {
-            toaster.showMessage(R.string.settings_no_email_app_found)
         }
     }
 

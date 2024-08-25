@@ -8,14 +8,6 @@
     <string name="auth_welcome_description">飛快的記帳 App，從開啟到完成記帳只要 5 秒鐘\n快跟你的親朋好友共同記帳吧！</string>
     <string name="auth_google">以 Google 繼續</string>
     <string name="auth_success">歡迎，%s！</string>
-    <string name="auth_facebook_hint">已停止支援 Facebook 登入，造成不便請見諒\n請與我們聯繫協助您轉移帳戶</string>
-    <string name="auth_facebook_hint_contact">與我們聯繫</string>
-    <string name="auth_facebook_contact_text">
-        （麻煩您填寫以下資訊，方便幫您轉移帳戶）
-        \n\n您好，請幫我轉移 Facebook 帳戶至新的帳戶
-        \n舊有 Facebook 帳戶 email：
-        \n新的 Google 帳戶 email（需先註冊極簡記帳）：
-    </string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">你可以創建帳本</string>

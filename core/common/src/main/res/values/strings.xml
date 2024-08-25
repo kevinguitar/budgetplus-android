@@ -8,14 +8,6 @@
     <string name="auth_welcome_description">A mighty co-spending tracker\nUse it anywhere with your friends and family</string>
     <string name="auth_google">Continue with Google</string>
     <string name="auth_success">Welcome, %s!</string>
-    <string name="auth_facebook_hint">Facebook login is discontinued, sorry for the inconvenience. Contact Us to transfer your account</string>
-    <string name="auth_facebook_hint_contact">Contact Us</string>
-    <string name="auth_facebook_contact_text">
-        (Please fill in the email for us to help you transfer the account)
-        \n\nHello, please help me transfer the Facebook account to the new one
-        \nFacebook account email:
-        \nNew Google account email (need to login with Budget+):
-    </string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">You can create a new accounting book</string>

@@ -19,13 +19,11 @@ fun AuthBinding(vm: AuthViewModel) {
         regularContent = {
             AuthContent(
                 signInWithGoogle = vm::signInWithGoogle,
-                onContactClick = vm::onContactClick
             )
         },
         wideContent = {
             AuthContentWide(
                 signInWithGoogle = vm::signInWithGoogle,
-                onContactClick = vm::onContactClick
             )
         }
     )

@@ -5,14 +5,12 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Currency
-import java.util.Locale
 
 @RestrictTo(RestrictTo.Scope.TESTS)
 class FakeBookRepo(
     book: Book? = null,
     books: List<Book>? = null,
-    currentCurrencySymbol: String = Currency.getInstance(Locale.getDefault()).symbol,
+    currentCurrencySymbol: String = "USD",
     override val currentBookId: String? = null,
     override val hasPendingJoinRequest: Boolean = false,
 ) : BookRepo {

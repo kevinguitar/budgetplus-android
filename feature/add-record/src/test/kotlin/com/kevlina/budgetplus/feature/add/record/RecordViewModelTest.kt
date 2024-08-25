@@ -140,7 +140,8 @@ class RecordViewModelTest {
         toaster = FakeToaster()
     )
 
-    private val categoriesVm = CategoriesViewModel(bookRepo = FakeBookRepo()).apply {
+    private val bookRepo = FakeBookRepo()
+    private val categoriesVm = CategoriesViewModel(bookRepo = bookRepo).apply {
         setCategory("Test category")
     }
 
@@ -152,7 +153,6 @@ class RecordViewModelTest {
         )
     )
 
-    private val bookRepo = FakeBookRepo()
     private val recordRepo = FakeRecordRepo()
     private val toaster = FakeToaster(stringProvider)
 

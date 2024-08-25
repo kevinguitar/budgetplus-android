@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 interface Toaster {
 
     @MainThread
-    fun showMessage(charSequence: CharSequence)
+    fun showMessage(message: CharSequence)
 
     @MainThread
     fun showMessage(@StringRes resId: Int)

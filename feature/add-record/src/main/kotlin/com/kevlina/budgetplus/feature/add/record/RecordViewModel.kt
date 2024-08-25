@@ -162,6 +162,12 @@ class RecordViewModel @Inject constructor(
         calculatorVm.clearPrice()
     }
 
+    /**
+     *  This callback does several things
+     *  - Show full screen Ad on every [FULLSCREEN_AD_RECORDS] records
+     *  - Request notification permission after the 2nd record
+     *  - Request in app review after the 4th record
+     */
     private fun onRecordCreated(context: Context) {
         val activity = context as? Activity ?: return
 

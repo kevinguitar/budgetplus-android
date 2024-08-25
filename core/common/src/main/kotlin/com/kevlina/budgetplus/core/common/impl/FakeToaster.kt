@@ -1,20 +1,25 @@
 package com.kevlina.budgetplus.core.common.impl
 
+import androidx.annotation.RestrictTo
 import com.kevlina.budgetplus.core.common.Toaster
-import org.jetbrains.annotations.VisibleForTesting
 
-@VisibleForTesting
-class FakeToaster : Toaster {
+@RestrictTo(RestrictTo.Scope.TESTS)
+class FakeToaster(
+    private val stringProvider: FakeStringProvider = FakeStringProvider(),
+) : Toaster {
 
-    override fun showMessage(charSequence: CharSequence) {
-        error("Not yet implemented")
+    var lastShownMessage: CharSequence? = null
+    var lastError: Exception? = null
+
+    override fun showMessage(message: CharSequence) {
+        lastShownMessage = message
     }
 
     override fun showMessage(resId: Int) {
-        error("Not yet implemented")
+        lastShownMessage = stringProvider[resId]
     }
 
     override fun showError(e: Exception) {
-        error("Not yet implemented")
+        lastError = e
     }
 }

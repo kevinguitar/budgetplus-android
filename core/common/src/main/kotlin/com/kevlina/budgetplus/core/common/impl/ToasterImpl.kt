@@ -20,15 +20,15 @@ internal class ToasterImpl @Inject constructor(
     private var toast: Toast? = null
     private var lastMessage: CharSequence? = null
 
-    override fun showMessage(charSequence: CharSequence) {
+    override fun showMessage(message: CharSequence) {
         // Cancel duplicated messages to avoid a long queue
-        if (lastMessage == charSequence) {
+        if (lastMessage == message) {
             toast?.cancel()
         }
 
-        toast = Toast.makeText(context, charSequence, Toast.LENGTH_SHORT)
+        toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
         toast?.show()
-        lastMessage = charSequence
+        lastMessage = message
     }
 
     override fun showMessage(resId: Int) {

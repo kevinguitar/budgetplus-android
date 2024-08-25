@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.core.common.impl
 
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
+import androidx.annotation.RestrictTo
 import com.kevlina.budgetplus.core.common.Tracker
 
-@VisibleForTesting
+@RestrictTo(RestrictTo.Scope.TESTS)
 class FakeTracker : Tracker {
 
     var lastEvent: Pair<String, Bundle?>? = null

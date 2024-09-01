@@ -275,6 +275,7 @@ internal fun PieChart(
 }
 
 context(DrawScope)
+@Suppress("CONTEXT_RECEIVERS_DEPRECATED")
 private fun Offset.isWithIn(
     startAngle: Float,
     sweepAngle: Float,

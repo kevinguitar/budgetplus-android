@@ -131,8 +131,7 @@ class RecordRepoImplTest {
     private val tracker = FakeTracker()
     private val toaster = FakeToaster()
 
-    context(TestScope)
-    private fun createRepo() = RecordRepoImpl(
+    private fun TestScope.createRepo() = RecordRepoImpl(
         recordsDb = { recordsDb },
         appScope = backgroundScope,
         authManager = authManger,

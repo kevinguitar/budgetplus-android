@@ -158,8 +158,7 @@ class RecordViewModelTest {
 
     private val fullScreenAdsLoader = mockk<FullScreenAdsLoader>(relaxed = true)
 
-    context(TestScope)
-    private fun createModel(
+    private fun TestScope.createModel(
         recordCount: Int = 0,
     ) = RecordViewModel(
         calculatorVm = calculatorVm,

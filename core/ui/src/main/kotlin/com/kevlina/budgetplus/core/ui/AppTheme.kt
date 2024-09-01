@@ -49,6 +49,7 @@ object AppTheme {
      *  the children within the [containerMaxWidth].
      */
     context(BoxWithConstraintsScope)
+    @Suppress("CONTEXT_RECEIVERS_DEPRECATED")
     fun listContentPaddings(
         all: Dp = 0.dp,
         horizontal: Dp = all,

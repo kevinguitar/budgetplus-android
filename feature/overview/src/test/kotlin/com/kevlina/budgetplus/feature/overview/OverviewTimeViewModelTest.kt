@@ -119,8 +119,7 @@ class OverviewTimeViewModelTest {
         every { isPremium } returns MutableStateFlow(false)
     }
 
-    context(TestScope)
-    private fun createModel() = OverviewTimeViewModel(
+    private fun TestScope.createModel() = OverviewTimeViewModel(
         recordsObserver = recordsObserver,
         bookRepo = bookRepo,
         authManager = authManager,

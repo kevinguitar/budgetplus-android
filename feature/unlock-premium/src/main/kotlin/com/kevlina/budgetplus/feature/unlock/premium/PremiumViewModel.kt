@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.AuthManager
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
     private val billingController: BillingController,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     authManager: AuthManager,
 ) : ViewModel() {
@@ -34,13 +34,13 @@ class PremiumViewModel @Inject constructor(
         .map { state ->
             when (state) {
                 PurchaseState.PaymentAcknowledgeFailed -> {
-                    toaster.showMessage(R.string.premium_acknowledge_fail)
+                    snackbarSender.send(R.string.premium_acknowledge_fail, canDismiss = true)
                     return@map true
                 }
 
                 PurchaseState.Success -> {
                     tracker.logEvent("buy_premium_success")
-                    toaster.showMessage(R.string.premium_unlocked)
+                    snackbarSender.send(R.string.premium_unlocked)
                     return@map true
                 }
 
@@ -49,7 +49,7 @@ class PremiumViewModel @Inject constructor(
                         event = "buy_premium_fail",
                         params = bundle { putString("reason", state.error) }
                     )
-                    toaster.showMessage(state.error)
+                    snackbarSender.send(state.error)
                 }
 
                 PurchaseState.Canceled -> tracker.logEvent("buy_premium_cancel")

@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -16,6 +15,7 @@ import com.kevlina.budgetplus.core.data.AdMobInitializer
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
+import com.kevlina.budgetplus.core.impl.SnackbarSenderImpl
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.bubble.BubbleViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,12 +28,11 @@ import javax.inject.Named
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    val snackbarSender: BookSnackbarSender,
+    val snackbarSender: SnackbarSenderImpl,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,
     val bubbleViewModel: BubbleViewModel,
     private val bookRepo: BookRepo,
-    private val toaster: Toaster,
     private val stringProvider: StringProvider,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     adMobInitializer: AdMobInitializer,
@@ -74,16 +73,16 @@ class BookViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
-                toaster.showMessage(stringProvider[R.string.book_join_success, bookName])
+                snackbarSender.send(stringProvider[R.string.book_join_success, bookName])
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 _unlockPremiumEvent.sendEvent()
-                toaster.showMessage(e.errorRes)
+                snackbarSender.send(e.errorRes, canDismiss = true)
             } catch (e: JoinBookException.General) {
-                toaster.showMessage(e.errorRes)
+                snackbarSender.send(e.errorRes, canDismiss = true)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Timber.e(e)
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }

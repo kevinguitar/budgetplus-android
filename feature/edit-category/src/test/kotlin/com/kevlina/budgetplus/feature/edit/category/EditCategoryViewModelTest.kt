@@ -3,8 +3,12 @@ package com.kevlina.budgetplus.feature.edit.category
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.impl.FakeStringProvider
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
+import com.kevlina.budgetplus.core.data.impl.FakeBookRepo
+import com.kevlina.budgetplus.core.data.impl.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
-import io.mockk.mockk
+import com.kevlina.budgetplus.core.impl.FakeSnackbarSender
+import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -34,11 +38,11 @@ class EditCategoryViewModelTest {
         assertThat(model.categoryRenameEvents).isEmpty()
     }
 
-    private fun createModel() = EditCategoryViewModel(
-        bookRepo = mockk(),
-        recordRepo = mockk(),
-        bubbleRepo = mockk(),
-        toaster = mockk(),
+    private fun TestScope.createModel() = EditCategoryViewModel(
+        bookRepo = FakeBookRepo(),
+        recordRepo = FakeRecordRepo,
+        bubbleRepo = BubbleRepo(backgroundScope),
+        snackbarSender = FakeSnackbarSender,
         stringProvider = FakeStringProvider(),
         preferenceHolder = FakePreferenceHolder {
             put("isEditHintBubbleShown", false)

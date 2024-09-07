@@ -1,7 +1,5 @@
 package com.kevlina.budgetplus.feature.overview
 
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.impl.FakeStringProvider
 import com.kevlina.budgetplus.core.common.impl.FakeTracker
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -125,10 +123,6 @@ class OverviewTimeViewModelTest {
         authManager = authManager,
         snackbarSender = mockk(relaxUnitFun = true),
         tracker = FakeTracker(),
-        stringProvider = FakeStringProvider(stringMap = mapOf(
-            R.string.overview_exceed_max_period to "Exceed max period",
-            R.string.cta_go to "Go"
-        )),
     ).apply {
         backgroundScope.launch(rule.testDispatcher) {
             timePeriod.collect()

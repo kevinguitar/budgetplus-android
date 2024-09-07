@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.remote.Book
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookSelectorViewModel @Inject constructor(
     private val bookRepo: BookRepo,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
     authManager: AuthManager,
 ) : ViewModel() {
@@ -48,15 +48,15 @@ class BookSelectorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name = name, source = "selector")
-                toaster.showMessage(stringProvider[R.string.book_create_success, name])
+                snackbarSender.send(stringProvider[R.string.book_create_success, name])
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }
 
     fun showReachedMaxMessage() {
-        toaster.showMessage(R.string.book_exceed_maximum)
+        snackbarSender.send(R.string.book_exceed_maximum, canDismiss = true)
     }
 
 }

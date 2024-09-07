@@ -5,7 +5,6 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.impl.FakeStringProvider
-import com.kevlina.budgetplus.core.common.impl.FakeToaster
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.impl.FakeAuthManager
@@ -14,6 +13,7 @@ import com.kevlina.budgetplus.core.data.impl.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.impl.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.impl.FakeSnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.FakeInAppReviewManager
@@ -37,7 +37,7 @@ class RecordViewModelTest {
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
-        assertThat(toaster.lastShownMessage).isEqualTo("Category is empty")
+        assertThat(FakeSnackbarSender.lastSentMessageId).isEqualTo(R.string.record_empty_category)
     }
 
     @Test
@@ -45,7 +45,7 @@ class RecordViewModelTest {
         createModel()
         calculatorVm.evaluate()
 
-        assertThat(toaster.lastShownMessage).isEqualTo("Price is empty")
+        assertThat(FakeSnackbarSender.lastSentMessageId).isEqualTo(R.string.record_empty_price)
     }
 
     @Test
@@ -63,7 +63,7 @@ class RecordViewModelTest {
 
         assertThat(
             // Do not verify timestamp as it depends on test execution time
-            recordRepo.lastCreatedRecord?.copy(timestamp = null)
+            FakeRecordRepo.lastCreatedRecord?.copy(timestamp = null)
         ).isEqualTo(
             Record(
                 type = RecordType.Income,
@@ -84,7 +84,7 @@ class RecordViewModelTest {
 
         assertThat(
             // Do not verify timestamp as it depends on test execution time
-            recordRepo.lastCreatedRecord?.copy(timestamp = null)
+            FakeRecordRepo.lastCreatedRecord?.copy(timestamp = null)
         ).isEqualTo(
             Record(
                 type = RecordType.Expense,
@@ -140,7 +140,7 @@ class RecordViewModelTest {
 
     private val calculatorVm = CalculatorViewModel(
         vibrator = FakeVibratorManager(),
-        toaster = FakeToaster()
+        snackbarSender = FakeSnackbarSender
     )
 
     private val bookRepo = FakeBookRepo()
@@ -156,9 +156,6 @@ class RecordViewModelTest {
         )
     )
 
-    private val recordRepo = FakeRecordRepo()
-    private val toaster = FakeToaster(stringProvider)
-
     private val fullScreenAdsLoader = mockk<FullScreenAdsLoader>(relaxed = true)
 
     private fun TestScope.createModel(
@@ -167,12 +164,12 @@ class RecordViewModelTest {
         calculatorVm = calculatorVm,
         categoriesVm = categoriesVm,
         bookRepo = bookRepo,
-        recordRepo = recordRepo,
+        recordRepo = FakeRecordRepo,
         bubbleRepo = BubbleRepo(backgroundScope),
         authManager = FakeAuthManager(),
         fullScreenAdsLoader = fullScreenAdsLoader,
         inAppReviewManager = FakeInAppReviewManager(),
-        toaster = toaster,
+        snackbarSender = FakeSnackbarSender,
         stringProvider = stringProvider,
         preferenceHolder = FakePreferenceHolder {
             put("recordCount", recordCount)

@@ -3,9 +3,9 @@ package com.kevlina.budgetplus.feature.currency.picker
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrencyPickerViewModel @Inject constructor(
     private val bookRepo: BookRepo,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -63,7 +63,7 @@ class CurrencyPickerViewModel @Inject constructor(
 
     fun onCurrencyPicked(currency: CurrencyUiState) {
         val bookName = bookRepo.bookState.value?.name ?: return
-        toaster.showMessage(stringProvider[R.string.currency_picker_edit_success, bookName, currency.name])
+        snackbarSender.send(stringProvider[R.string.currency_picker_edit_success, bookName, currency.name])
         bookRepo.updateCurrency(currency.currencyCode)
     }
 }

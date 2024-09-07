@@ -2,8 +2,8 @@ package com.kevlina.budgetplus.feature.add.record
 
 import android.app.Activity
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.impl.FakeToaster
 import com.kevlina.budgetplus.core.data.impl.FakeVibratorManager
+import com.kevlina.budgetplus.core.impl.FakeSnackbarSender
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import io.mockk.mockk
@@ -60,7 +60,7 @@ class CalculatorViewModelTest {
         assertThat(calculator.priceText.value).isEqualTo("44")
     }
 
-    private val calculator = CalculatorViewModel(vibrator = FakeVibratorManager(), toaster = FakeToaster())
+    private val calculator = CalculatorViewModel(vibrator = FakeVibratorManager(), snackbarSender = FakeSnackbarSender)
 }
 
 fun CalculatorViewModel.input(statement: String) {

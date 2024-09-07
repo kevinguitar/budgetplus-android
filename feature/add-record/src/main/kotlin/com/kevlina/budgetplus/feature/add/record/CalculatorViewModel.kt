@@ -3,11 +3,11 @@ package com.kevlina.budgetplus.feature.add.record
 import android.content.Context
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.core.data.plainPriceString
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class CalculatorViewModel @Inject constructor(
     private val vibrator: VibratorManager,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
 ) {
 
     private val _priceText = MutableStateFlow(EMPTY_PRICE)
@@ -99,14 +99,14 @@ class CalculatorViewModel @Inject constructor(
             val expression = ExpressionBuilder(text).build()
             val validation = expression.validate()
             if (!validation.isValid) {
-                toaster.showMessage(validation.errors.joinToString())
+                snackbarSender.send(validation.errors.joinToString())
                 Timber.e("Calculator validation error. Raw: $text")
                 return
             }
 
             expression.evaluate()
         } catch (e: Exception) {
-            toaster.showError(e)
+            snackbarSender.sendError(e)
             Timber.e("Calculator evaluation error. Raw: $text")
             return
         }

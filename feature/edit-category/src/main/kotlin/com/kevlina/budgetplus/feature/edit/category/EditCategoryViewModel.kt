@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +24,7 @@ class EditCategoryViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -46,7 +46,7 @@ class EditCategoryViewModel @Inject constructor(
         if (categoryRenameEvents.isNotEmpty()) {
             recordRepo.renameCategories(categoryRenameEvents)
         }
-        toaster.showMessage(R.string.category_edit_successful)
+        snackbarSender.send(R.string.category_edit_successful)
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {
@@ -68,7 +68,7 @@ class EditCategoryViewModel @Inject constructor(
     }
 
     fun showCategoryExistError(category: String) {
-        toaster.showMessage(stringProvider[R.string.category_already_exist, category])
+        snackbarSender.send(stringProvider[R.string.category_already_exist, category])
     }
 
     fun onCategoryRenamed(oldName: String, newName: String) {

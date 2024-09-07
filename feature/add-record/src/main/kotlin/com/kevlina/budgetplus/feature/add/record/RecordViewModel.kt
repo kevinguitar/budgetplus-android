@@ -11,7 +11,6 @@ import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
@@ -22,6 +21,7 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
@@ -45,7 +45,7 @@ class RecordViewModel @Inject constructor(
     private val authManager: AuthManager,
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val inAppReviewManager: InAppReviewManager,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -120,7 +120,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun showNotificationPermissionHint() {
-        toaster.showMessage(R.string.permission_hint)
+        snackbarSender.send(R.string.permission_hint, canDismiss = true)
     }
 
     private fun record(context: Context) {
@@ -128,12 +128,12 @@ class RecordViewModel @Inject constructor(
         val price = calculatorVm.price.value
 
         if (category == null) {
-            toaster.showMessage(R.string.record_empty_category)
+            snackbarSender.send(message = R.string.record_empty_category)
             return
         }
 
         if (price == 0.0) {
-            toaster.showMessage(R.string.record_empty_price)
+            snackbarSender.send(R.string.record_empty_price)
             return
         }
 
@@ -149,7 +149,7 @@ class RecordViewModel @Inject constructor(
 
         recordRepo.createRecord(record)
         recordEvent.sendEvent(Unit)
-        toaster.showMessage(stringProvider[R.string.record_created, category])
+        snackbarSender.send(stringProvider[R.string.record_created, category])
         recordCount += 1
 
         resetScreen()

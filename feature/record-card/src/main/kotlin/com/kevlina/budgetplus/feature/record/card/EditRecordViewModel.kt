@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ class EditRecordViewModel @Inject constructor(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
@@ -42,9 +42,9 @@ class EditRecordViewModel @Inject constructor(
                         newName = newName,
                         newPriceText = newPriceText
                     )
-                    toaster.showMessage(stringProvider[R.string.batch_record_edited, count.toString()])
+                    snackbarSender.send(stringProvider[R.string.batch_record_edited, count.toString()])
                 } catch (e: Exception) {
-                    toaster.showError(e)
+                    snackbarSender.sendError(e)
                 }
             }
         } else {
@@ -55,7 +55,7 @@ class EditRecordViewModel @Inject constructor(
                 newName = newName,
                 newPriceText = newPriceText
             )
-            toaster.showMessage(R.string.record_edited)
+            snackbarSender.send(R.string.record_edited)
         }
     }
 
@@ -64,14 +64,14 @@ class EditRecordViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     val count = recordRepo.deleteBatch(record)
-                    toaster.showMessage(stringProvider[R.string.batch_record_deleted, count.toString()])
+                    snackbarSender.send(stringProvider[R.string.batch_record_deleted, count.toString()])
                 } catch (e: Exception) {
-                    toaster.showError(e)
+                    snackbarSender.sendError(e)
                 }
             }
         } else {
             recordRepo.deleteRecord(record.id)
-            toaster.showMessage(stringProvider[R.string.record_deleted, record.name])
+            snackbarSender.send(stringProvider[R.string.record_deleted, record.name])
         }
     }
 

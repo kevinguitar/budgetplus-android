@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.app.book
 import android.content.Context
 import android.content.Intent
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
-import com.kevlina.budgetplus.core.ui.Book
+import com.kevlina.budgetplus.core.impl.SnackbarSenderImpl
 import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.Binds
 import dagger.Module
@@ -17,8 +17,8 @@ import javax.inject.Named
 @InstallIn(SingletonComponent::class)
 interface BookModule {
 
-    @Binds @Book
-    fun provideBookSnackbarSender(impl: BookSnackbarSender): SnackbarSender
+    @Binds
+    fun provideBookSnackbarSender(impl: SnackbarSenderImpl): SnackbarSender
 
     companion object {
 

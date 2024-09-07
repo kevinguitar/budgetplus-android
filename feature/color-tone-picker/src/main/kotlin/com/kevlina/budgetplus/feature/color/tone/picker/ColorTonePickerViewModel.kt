@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -14,6 +13,7 @@ import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.theme.ThemeManager
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +32,7 @@ internal class ColorTonePickerViewModel @Inject constructor(
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
     private val stringProvider: StringProvider,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
 ) : ViewModel() {
 
@@ -98,9 +98,9 @@ internal class ColorTonePickerViewModel @Inject constructor(
     fun processHexFromLink(hexFromLink: String) {
         previousProcessedLink = hexFromLink
         if (themeManager.processHexFromLink(hexFromLink)) {
-            toaster.showMessage(R.string.color_tone_applied_from_link)
+            snackbarSender.send(R.string.color_tone_applied_from_link)
         } else {
-            toaster.showMessage(R.string.fallback_error_message)
+            snackbarSender.send(R.string.fallback_error_message)
         }
     }
 }

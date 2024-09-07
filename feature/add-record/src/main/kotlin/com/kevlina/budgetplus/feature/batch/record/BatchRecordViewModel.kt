@@ -6,13 +6,13 @@ import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.EMPTY_PRICE
 import com.kevlina.budgetplus.feature.add.record.RecordDateState
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
@@ -32,7 +32,7 @@ internal class BatchRecordViewModel @Inject constructor(
     val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
@@ -98,7 +98,7 @@ internal class BatchRecordViewModel @Inject constructor(
         val price = try {
             priceText.value.toDouble()
         } catch (e: Exception) {
-            toaster.showError(e)
+            snackbarSender.sendError(e)
             return
         }
 
@@ -117,7 +117,7 @@ internal class BatchRecordViewModel @Inject constructor(
             times = times.value
         )
         recordEvent.sendEvent(Unit)
-        toaster.showMessage(stringProvider[R.string.batch_record_created, times.value.toString(), category])
+        snackbarSender.send(stringProvider[R.string.batch_record_created, times.value.toString(), category])
         resetScreen()
     }
 

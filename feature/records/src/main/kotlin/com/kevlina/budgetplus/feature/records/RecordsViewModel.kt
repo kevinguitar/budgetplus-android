@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -14,6 +13,7 @@ import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.assisted.Assisted
@@ -37,7 +37,7 @@ class RecordsViewModel @AssistedInject constructor(
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val authManager: AuthManager,
     recordsObserver: RecordsObserver,
     preferenceHolder: PreferenceHolder,
@@ -86,7 +86,7 @@ class RecordsViewModel @AssistedInject constructor(
 
     fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
-        toaster.showMessage(R.string.record_duplicated)
+        snackbarSender.send(R.string.record_duplicated)
     }
 
     @AssistedFactory

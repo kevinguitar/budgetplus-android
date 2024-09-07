@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import java.time.LocalDate
 
 @RestrictTo(RestrictTo.Scope.TESTS)
-class FakeRecordRepo : RecordRepo {
+object FakeRecordRepo : RecordRepo {
 
     var lastCreatedRecord: Record? = null
 

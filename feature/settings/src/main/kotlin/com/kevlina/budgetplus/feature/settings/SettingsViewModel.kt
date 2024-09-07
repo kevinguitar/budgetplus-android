@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
@@ -22,6 +21,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.ChartModeViewModel
 import com.kevlina.budgetplus.core.data.VibratorManager
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +32,7 @@ internal class SettingsViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val stringProvider: StringProvider,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
     val chartModel: ChartModeViewModel,
@@ -74,9 +74,9 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authManager.renameUser(newName)
-                toaster.showMessage(stringProvider[R.string.settings_rename_user_success, newName])
+                snackbarSender.send(stringProvider[R.string.settings_rename_user_success, newName])
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }
@@ -85,9 +85,9 @@ internal class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 bookRepo.renameBook(newName)
-                toaster.showMessage(stringProvider[R.string.settings_rename_book_success, newName])
+                snackbarSender.send(stringProvider[R.string.settings_rename_book_success, newName])
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }
@@ -131,7 +131,7 @@ internal class SettingsViewModel @Inject constructor(
             context.startActivity(intent)
             tracker.logEvent("settings_contact_us_click")
         } else {
-            toaster.showMessage(R.string.settings_no_email_app_found)
+            snackbarSender.send(R.string.settings_no_email_app_found, canDismiss = true)
         }
     }
 
@@ -146,13 +146,13 @@ internal class SettingsViewModel @Inject constructor(
             val bookName = bookName.value
             try {
                 bookRepo.leaveOrDeleteBook()
-                toaster.showMessage(stringProvider[if (isBookOwner) {
+                snackbarSender.send(stringProvider[if (isBookOwner) {
                     R.string.settings_book_deleted
                 } else {
                     R.string.settings_book_left
                 }, bookName.orEmpty()])
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }

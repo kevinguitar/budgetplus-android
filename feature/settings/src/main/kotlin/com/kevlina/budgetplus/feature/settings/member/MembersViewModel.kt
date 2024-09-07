@@ -2,12 +2,12 @@ package com.kevlina.budgetplus.feature.settings.member
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ internal class MembersViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val userRepo: UserRepo,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
 ) : ViewModel() {
 
@@ -35,7 +35,7 @@ internal class MembersViewModel @Inject constructor(
                 bookRepo.removeMember(userId)
                 loadMembers()
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }

@@ -23,8 +23,6 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.core.ui.Book
-import com.kevlina.budgetplus.core.ui.SnackbarData
 import com.kevlina.budgetplus.core.ui.SnackbarDuration
 import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
@@ -42,7 +40,7 @@ class BookActivity : ComponentActivity() {
     @Inject lateinit var bookRepo: BookRepo
     @Inject lateinit var themeManager: ThemeManager
     @Inject lateinit var inAppUpdateManager: InAppUpdateManager
-    @Inject @Book lateinit var snackbarSender: SnackbarSender
+    @Inject lateinit var snackbarSender: SnackbarSender
 
     private val viewModel by viewModels<BookViewModel>()
 
@@ -89,12 +87,12 @@ class BookActivity : ComponentActivity() {
             val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()
             LaunchedEffect(key1 = appUpdateState) {
                 if (appUpdateState is InAppUpdateState.Downloaded) {
-                    snackbarSender.showSnackbar(SnackbarData(
-                        message = getString(R.string.app_update_downloaded),
-                        actionLabel = getString(R.string.cta_complete),
+                    snackbarSender.send(
+                        message = R.string.app_update_downloaded,
+                        actionLabel = R.string.cta_complete,
                         duration = SnackbarDuration.Long,
                         action = (appUpdateState as InAppUpdateState.Downloaded).complete
-                    ))
+                    )
                 }
             }
         }

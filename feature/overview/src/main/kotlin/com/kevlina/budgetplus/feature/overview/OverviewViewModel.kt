@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
@@ -21,6 +20,7 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.resolveAuthor
+import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.utils.CsvWriter
@@ -52,7 +52,7 @@ internal class OverviewViewModel @Inject constructor(
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
     private val csvWriter: CsvWriter,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
     val chartModeModel: ChartModeViewModel,
@@ -170,15 +170,15 @@ internal class OverviewViewModel @Inject constructor(
                     type = csvWriter.mimeType
                 }
                 context.startActivity(Intent.createChooser(intent, null))
-                toaster.showMessage(R.string.export_csv_success)
+                snackbarSender.send(R.string.export_csv_success)
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }
 
     fun showWriteFilePermissionHint() {
-        toaster.showMessage(R.string.permission_hint)
+        snackbarSender.send(R.string.permission_hint, canDismiss = true)
     }
 
     fun setRecordType(type: RecordType) {
@@ -198,7 +198,7 @@ internal class OverviewViewModel @Inject constructor(
 
     fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
-        toaster.showMessage(R.string.record_duplicated)
+        snackbarSender.send(R.string.record_duplicated)
     }
 
     fun highlightModeButton(dest: BubbleDest) {

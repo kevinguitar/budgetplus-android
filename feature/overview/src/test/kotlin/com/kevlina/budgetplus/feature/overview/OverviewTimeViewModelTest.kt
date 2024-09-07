@@ -2,16 +2,16 @@ package com.kevlina.budgetplus.feature.overview
 
 import com.kevlina.budgetplus.core.common.impl.FakeTracker
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
-import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
+import com.kevlina.budgetplus.core.data.impl.FakeAuthManager
+import com.kevlina.budgetplus.core.data.impl.FakeBookRepo
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import com.kevlina.budgetplus.core.impl.FakeSnackbarSender
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -109,19 +109,11 @@ class OverviewTimeViewModelTest {
         every { setTimePeriod(bookId, any()) } just runs
     }
 
-    private val bookRepo = mockk<BookRepo> {
-        every { currentBookId } returns bookId
-    }
-
-    private val authManager = mockk<AuthManager> {
-        every { isPremium } returns MutableStateFlow(false)
-    }
-
     private fun TestScope.createModel() = OverviewTimeViewModel(
         recordsObserver = recordsObserver,
-        bookRepo = bookRepo,
-        authManager = authManager,
-        snackbarSender = mockk(relaxUnitFun = true),
+        bookRepo = FakeBookRepo(currentBookId = bookId),
+        authManager = FakeAuthManager(),
+        snackbarSender = FakeSnackbarSender,
         tracker = FakeTracker(),
     ).apply {
         backgroundScope.launch(rule.testDispatcher) {

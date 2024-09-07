@@ -2,10 +2,10 @@ package com.kevlina.budgetplus.inapp.review
 
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.impl.FakeToaster
+import com.kevlina.budgetplus.core.common.impl.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.Test
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -34,15 +34,13 @@ class InAppReviewManagerImplTest {
     fun `WHEN we never requested and the app is installed more than 3 days THEN request review`() {
         val reviewManager = createReviewManager()
         assertThat(reviewManager.isEligibleForReview()).isTrue()
-        verify {
-            tracker.logEvent("inapp_review_requested")
-        }
+        assertThat(tracker.lastEventName).isEqualTo("inapp_review_requested")
     }
 
     private val eligibleTime = LocalDateTime.now().minusDays(5).toEpochSecond(ZoneOffset.UTC)
     private val ineligibleTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
-    private val tracker = mockk<Tracker>(relaxUnitFun = true)
+    private val tracker = FakeTracker()
 
     private fun createReviewManager(
         firstInitDatetime: Long = eligibleTime,
@@ -50,7 +48,7 @@ class InAppReviewManagerImplTest {
         hasRequestedBefore: Boolean = false,
     ) = InAppReviewManagerImpl(
         reviewManager = FakeReviewManager(mockk()),
-        toaster = mockk(),
+        toaster = FakeToaster(),
         tracker = tracker,
         preferenceHolder = FakePreferenceHolder {
             put("firstInitDatetime", firstInitDatetime)

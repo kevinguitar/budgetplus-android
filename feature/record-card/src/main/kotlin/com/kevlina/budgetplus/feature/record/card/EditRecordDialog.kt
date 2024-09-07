@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -42,6 +43,7 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toUiState
 import kotlinx.coroutines.flow.MutableStateFlow
+import timber.log.Timber
 import java.time.LocalDate
 
 @Composable
@@ -79,7 +81,7 @@ fun EditRecordDialog(
     val (nameFocus, priceFocus) = remember { FocusRequester.createRefs() }
     val isSaveEnabled by remember {
         derivedStateOf {
-            name.text.isNotBlank() && priceText.text.isNotBlank()
+            name.text.isNotBlank() && priceText.text.isPriceTextValid()
         }
     }
 
@@ -235,6 +237,15 @@ fun EditRecordDialog(
 
     LaunchedEffect(Unit) {
         nameFocus.requestFocus()
+    }
+}
+
+private fun String.isPriceTextValid(): Boolean {
+    return isNotBlank() && try {
+        parseToPrice() > 0.0
+    } catch (e: Exception) {
+        Timber.d(e, "Invalid price editing: $this")
+        false
     }
 }
 

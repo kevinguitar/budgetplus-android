@@ -24,6 +24,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.nav.navKey
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.ChartMode
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -64,7 +65,7 @@ internal fun OverviewList(
 
     fun navigateToRecords(category: String) {
         navigator.navigate(route = buildString {
-            append(HistoryDest.Records.route)
+            append(HistoryDest.Records.navRoute)
             append("/$type/${category.navKey}")
 
             val authorId = selectedAuthor?.id

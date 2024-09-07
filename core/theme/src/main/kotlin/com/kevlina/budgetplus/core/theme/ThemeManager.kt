@@ -6,6 +6,7 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -112,7 +113,7 @@ class ThemeManager @Inject constructor(
     fun generateCustomColorsLink(): String {
         val colorsLink = APP_DEEPLINK.toUri()
             .buildUpon()
-            .appendPath(AddDest.Colors.route)
+            .appendPath(AddDest.Colors.navRoute)
             .appendQueryParameter(COLORS_LINK_QUERY, editedCustomColors.encode())
             .build()
         tracker.logEvent("color_tone_link_generated")

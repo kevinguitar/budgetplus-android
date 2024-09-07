@@ -24,6 +24,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -72,7 +73,7 @@ fun RecordScreen(navigator: Navigator) {
                     imageVector = Icons.Rounded.Settings,
                     description = stringResource(id = R.string.settings_description),
                     onClick = {
-                        navigator.navigate(AddDest.Settings.route)
+                        navigator.navigate(AddDest.Settings.navRoute)
                     }
                 )
             }
@@ -159,7 +160,7 @@ private fun RecordViewModel.toUiState(
         categoriesGridUiState = categoriesVm.toUiState(
             type = type,
             onEditClicked = {
-                navigator.navigate(route = "${AddDest.EditCategory.route}/${type.value}")
+                navigator.navigate(route = "${AddDest.EditCategory.navRoute}/${type.value}")
             },
         ),
         dateAndPricingUiState = DateAndPricingUiState(
@@ -169,7 +170,7 @@ private fun RecordViewModel.toUiState(
             scrollable = scrollable,
             setDate = ::setDate,
             editCurrency = {
-                navigator.navigate(route = AddDest.CurrencyPicker.route)
+                navigator.navigate(route = AddDest.CurrencyPicker.navRoute)
             }
         ),
     ),

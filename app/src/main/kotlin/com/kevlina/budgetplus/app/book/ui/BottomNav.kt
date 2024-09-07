@@ -30,6 +30,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kevlina.budgetplus.core.common.nav.BookTab
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -74,7 +75,7 @@ internal fun BottomNav(
                 BottomNavItem(
                     navController = navController,
                     tab = tab,
-                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
+                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.navRoute } == true,
                     darkColor = darkColor,
                     lightColor = lightColor
                 )
@@ -98,7 +99,7 @@ private fun RowScope.BottomNavItem(
             .weight(1F)
             .fillMaxHeight()
             .rippleClick {
-                navController.navigate(tab.route) {
+                navController.navigate(tab.navRoute) {
                     // Pop up to the start destination of the graph to
                     // avoid building up a large stack of destinations
                     // on the back stack as users select items

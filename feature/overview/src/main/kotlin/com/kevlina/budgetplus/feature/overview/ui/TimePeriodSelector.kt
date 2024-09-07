@@ -27,6 +27,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -54,7 +55,7 @@ internal fun ColumnScope.TimePeriodSelector(
 
     LaunchedEffect(key1 = uiState.openPremiumEvent) {
         uiState.openPremiumEvent
-            .consumeEach { navigator.navigate(AddDest.UnlockPremium.route) }
+            .consumeEach { navigator.navigate(AddDest.UnlockPremium.navRoute) }
             .collect()
     }
 

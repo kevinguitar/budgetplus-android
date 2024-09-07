@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.ARG_URL
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.consumeNavigation
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.theme.ThemeManager
@@ -56,7 +57,7 @@ class BookActivity : ComponentActivity() {
 
             // When the user open the settings from app preference.
             intent.action == Intent.ACTION_APPLICATION_PREFERENCES -> {
-                intent.data = "$APP_DEEPLINK/${AddDest.Settings.route}".toUri()
+                intent.data = "$APP_DEEPLINK/${AddDest.Settings.navRoute}".toUri()
             }
         }
         enableEdgeToEdge()

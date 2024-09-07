@@ -1,9 +1,7 @@
 package com.kevlina.budgetplus.core.common.nav
 
 enum class BookTab {
-    Add, History;
-
-    val route get() = name.navRoute
+    Add, History
 }
 
 enum class AddDest {
@@ -11,15 +9,12 @@ enum class AddDest {
     BatchRecord, Colors, CurrencyPicker,
 
     // Internal screens
-    Insider, PushNotifications;
-
-    val route get() = name.navRoute
+    Insider, PushNotifications
 }
 
 enum class HistoryDest {
-    Overview, Records;
-
-    val route get() = name.navRoute
+    Overview, Records
 }
 
-private val String.navRoute get() = replaceFirstChar { it.lowercaseChar() }
+val <T : Enum<T>> Enum<T>.navRoute
+    get() = name.replaceFirstChar { it.lowercaseChar() }

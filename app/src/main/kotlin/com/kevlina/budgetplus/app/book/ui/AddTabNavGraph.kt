@@ -15,6 +15,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_SHOW_MEMBERS
 import com.kevlina.budgetplus.core.common.nav.ARG_TYPE
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.core.theme.ThemeManager.Companion.COLORS_LINK_QUERY
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
@@ -30,21 +31,21 @@ import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
     navigation(
-        startDestination = AddDest.Record.route,
-        route = BookTab.Add.route
+        startDestination = AddDest.Record.navRoute,
+        route = BookTab.Add.navRoute
     ) {
 
         composable(
-            route = AddDest.Record.route,
+            route = AddDest.Record.navRoute,
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.Record.route}" }
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.Record.navRoute}" }
             )
         ) {
             RecordScreen(navigator = navController.toNavigator())
         }
 
         composable(
-            route = "${AddDest.EditCategory.route}/{$ARG_TYPE}",
+            route = "${AddDest.EditCategory.navRoute}/{$ARG_TYPE}",
             arguments = listOf(navArgument(ARG_TYPE) {
                 type = NavType.EnumType(RecordType::class.java)
             })
@@ -56,7 +57,7 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             )
         }
 
-        val settingsRoute = "${AddDest.Settings.route}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
+        val settingsRoute = "${AddDest.Settings.navRoute}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
         composable(
             route = settingsRoute,
             arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
@@ -75,19 +76,19 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
         }
 
         composable(
-            route = AddDest.UnlockPremium.route,
+            route = AddDest.UnlockPremium.navRoute,
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.UnlockPremium.route}" }
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.UnlockPremium.navRoute}" }
             )
         ) {
             PremiumScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.BatchRecord.route) {
+        composable(route = AddDest.BatchRecord.navRoute) {
             BatchRecordScreen(navigator = navController.toNavigator())
         }
 
-        val colorToneRoute = "${AddDest.Colors.route}?$COLORS_LINK_QUERY={$COLORS_LINK_QUERY}"
+        val colorToneRoute = "${AddDest.Colors.navRoute}?$COLORS_LINK_QUERY={$COLORS_LINK_QUERY}"
         composable(
             route = colorToneRoute,
             arguments = listOf(navArgument(COLORS_LINK_QUERY) {
@@ -105,16 +106,16 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             )
         }
 
-        composable(route = AddDest.CurrencyPicker.route) {
+        composable(route = AddDest.CurrencyPicker.navRoute) {
             CurrencyPickerScreen(navigator = navController.toNavigator())
         }
 
         // Internal screens
-        composable(route = AddDest.Insider.route) {
+        composable(route = AddDest.Insider.navRoute) {
             InsiderScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.PushNotifications.route) {
+        composable(route = AddDest.PushNotifications.navRoute) {
             PushNotificationsScreen(navigator = navController.toNavigator())
         }
     }

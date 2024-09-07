@@ -17,6 +17,7 @@ import com.kevlina.budgetplus.core.common.nav.ARG_CATEGORY
 import com.kevlina.budgetplus.core.common.nav.ARG_TYPE
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.common.nav.originalNavValue
 import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
@@ -26,21 +27,21 @@ import com.kevlina.budgetplus.feature.records.RecordsViewModel
 internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 
     navigation(
-        startDestination = HistoryDest.Overview.route,
-        route = BookTab.History.route
+        startDestination = HistoryDest.Overview.navRoute,
+        route = BookTab.History.navRoute
     ) {
 
         composable(
-            route = HistoryDest.Overview.route,
+            route = HistoryDest.Overview.navRoute,
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/${HistoryDest.Overview.route}" }
+                navDeepLink { uriPattern = "$APP_DEEPLINK/${HistoryDest.Overview.navRoute}" }
             )
         ) {
             OverviewScreen(navigator = navController.toNavigator())
         }
 
         composable(
-            route = "${HistoryDest.Records.route}/{$ARG_TYPE}/{$ARG_CATEGORY}?$ARG_AUTHOR_ID={$ARG_AUTHOR_ID}",
+            route = "${HistoryDest.Records.navRoute}/{$ARG_TYPE}/{$ARG_CATEGORY}?$ARG_AUTHOR_ID={$ARG_AUTHOR_ID}",
             arguments = listOf(
                 navArgument(ARG_TYPE) { type = NavType.EnumType(RecordType::class.java) },
                 navArgument(ARG_CATEGORY) { type = NavType.StringType },

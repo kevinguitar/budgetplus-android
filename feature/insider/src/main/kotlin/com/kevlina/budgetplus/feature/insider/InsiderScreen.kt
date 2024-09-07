@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
@@ -32,7 +33,7 @@ fun InsiderScreen(
                 MenuAction(
                     imageVector = Icons.Rounded.NotificationAdd,
                     description = stringResource(id = R.string.cta_add),
-                    onClick = { navigator.navigate(AddDest.PushNotifications.route) },
+                    onClick = { navigator.navigate(AddDest.PushNotifications.navRoute) },
                 )
             }
         )

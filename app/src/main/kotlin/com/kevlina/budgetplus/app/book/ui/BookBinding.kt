@@ -24,6 +24,7 @@ import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
+import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
@@ -51,7 +52,7 @@ internal fun BookBinding(
 
     LaunchedEffect(vm) {
         vm.unlockPremiumEvent
-            .consumeEach { navController.navigate(AddDest.UnlockPremium.route) }
+            .consumeEach { navController.navigate(AddDest.UnlockPremium.navRoute) }
             .launchIn(this)
 
         vm.snackbarSender.snackbarEvent
@@ -68,11 +69,11 @@ internal fun BookBinding(
         navController.currentBackStackEntryFlow
             .onEach { entry ->
                 val currentRoute = entry.destination.route
-                if (currentRoute != AddDest.Colors.route) {
+                if (currentRoute != AddDest.Colors.navRoute) {
                     vm.themeManager.clearPreviewColors()
                 }
 
-                isUnlockingPremium = currentRoute == AddDest.UnlockPremium.route
+                isUnlockingPremium = currentRoute == AddDest.UnlockPremium.navRoute
             }
             .collect()
     }
@@ -93,7 +94,7 @@ internal fun BookBinding(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = BookTab.Add.route,
+                    startDestination = BookTab.Add.navRoute,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() },
                     modifier = Modifier

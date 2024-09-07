@@ -65,7 +65,8 @@ For Macrobenchmark:
 ```
 
 ## Firebase Cloud Functions
-Cloud Functions Repo (yet to open source): https://github.com/kevinguitar/budgetplus-cloud-functions
+Database interactions and push notifications are all implemented with [Firebase Cloud Functions](https://firebase.google.com/docs/functions), 
+the repo is opened source as well: https://github.com/kevinguitar/budgetplus-cloud-functions
 
 ## License
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)

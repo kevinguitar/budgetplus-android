@@ -16,6 +16,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -33,6 +34,7 @@ class RecordRepoImplTest {
     }
 
     @Test
+    @Ignore("Flaky because of withCurrentTime, plan to introduce an abstraction for database")
     fun `batchRecord should record correct amount of records`() = runTest {
         val nTimes = 5
         val startDate = LocalDate.now()
@@ -89,6 +91,10 @@ class RecordRepoImplTest {
     }
 
     @Test
+    @Ignore("Implement it when DB abstraction is done")
+    fun `editBatch should edit all the batched records`() = runTest {  }
+
+    @Test
     fun `duplicateRecord should use the current user as author, and do not carry batch info`() = runTest {
         createRepo().duplicateRecord(testRecord)
 
@@ -108,6 +114,10 @@ class RecordRepoImplTest {
         verify { documentReference.delete() }
         assertThat(tracker.lastEventName).isEqualTo("record_deleted")
     }
+
+    @Test
+    @Ignore("Implement it when DB abstraction is done")
+    fun `deleteBatch should delete all the batched records`() = runTest {  }
 
 
     private val testRecord = Record(

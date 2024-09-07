@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.impl.FakeStringProvider
 import com.kevlina.budgetplus.core.common.impl.FakeToaster
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
-import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.impl.FakeAuthManager
 import com.kevlina.budgetplus.core.data.impl.FakeBookRepo
@@ -62,13 +61,15 @@ class RecordViewModelTest {
         calculatorVm.input("123")
         calculatorVm.evaluate()
 
-        assertThat(recordRepo.lastCreatedRecord).isEqualTo(
+        assertThat(
+            // Do not verify timestamp as it depends on test execution time
+            recordRepo.lastCreatedRecord?.copy(timestamp = null)
+        ).isEqualTo(
             Record(
                 type = RecordType.Income,
                 category = "Test category",
                 name = "Test note",
                 date = date.toEpochDay(),
-                timestamp = date.withCurrentTime,
                 price = 123.0,
             )
         )
@@ -81,13 +82,15 @@ class RecordViewModelTest {
         calculatorVm.input("1.23")
         calculatorVm.evaluate()
 
-        assertThat(recordRepo.lastCreatedRecord).isEqualTo(
+        assertThat(
+            // Do not verify timestamp as it depends on test execution time
+            recordRepo.lastCreatedRecord?.copy(timestamp = null)
+        ).isEqualTo(
             Record(
                 type = RecordType.Expense,
                 category = "Test category",
                 name = "Test category",
                 date = LocalDate.now().toEpochDay(),
-                timestamp = LocalDate.now().withCurrentTime,
                 price = 1.23,
             )
         )

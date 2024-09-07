@@ -178,13 +178,6 @@ internal class BillingControllerImpl @Inject constructor(
             when {
                 purchase.isAcknowledged -> {
                     Timber.d("BillingClient: Found purchased product ${purchase.products.joinToString()}")
-
-                    // Code snippet to consume the product, useful for testing purposes.
-                    /*billingClient.consumePurchase(
-                        ConsumeParams.newBuilder()
-                            .setPurchaseToken(purchases.first().purchaseToken)
-                            .build()
-                    )*/
                 }
 
                 purchase.purchaseState == Purchase.PurchaseState.PURCHASED -> {

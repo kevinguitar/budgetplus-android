@@ -8,9 +8,6 @@
     "every weekend"
   ],
   "timezone" : "Asia/Singapore",
-  "ignoreDeps" : [
-    "androidx.lifecycle:lifecycle-runtime-compose"
-  ],
   "packageRules" : [
     {
       "groupName" : "Kotlin and KSP",

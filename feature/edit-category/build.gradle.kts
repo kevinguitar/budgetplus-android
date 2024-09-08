@@ -10,4 +10,7 @@ dependencies {
     implementation(projects.core.ui)
 
     implementation(libs.reorderable)
+
+    testImplementation(testFixtures(projects.core.data))
+    testImplementation(testFixtures(projects.core.ui))
 }

@@ -3,11 +3,12 @@ package com.kevlina.budgetplus.core.data.impl
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.kevlina.budgetplus.core.common.FakeToaster
+import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.impl.FakeToaster
-import com.kevlina.budgetplus.core.common.impl.FakeTracker
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.BatchFrequency
+import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User

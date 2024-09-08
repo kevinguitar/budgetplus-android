@@ -2,8 +2,8 @@ package com.kevlina.budgetplus.inapp.review
 
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.impl.FakeToaster
-import com.kevlina.budgetplus.core.common.impl.FakeTracker
+import com.kevlina.budgetplus.core.common.FakeToaster
+import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import io.mockk.mockk
 import org.junit.Test

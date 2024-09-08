@@ -1,9 +1,5 @@
-package com.kevlina.budgetplus.core.common.impl
+package com.kevlina.budgetplus.core.common
 
-import androidx.annotation.RestrictTo
-import com.kevlina.budgetplus.core.common.StringProvider
-
-@RestrictTo(RestrictTo.Scope.TESTS)
 class FakeStringProvider(
     private val stringMap: Map<Int, String> = emptyMap(),
     private val stringArrayMap: Map<Int, Array<String>> = emptyMap(),

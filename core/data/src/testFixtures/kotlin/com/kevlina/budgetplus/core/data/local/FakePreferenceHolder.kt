@@ -1,11 +1,9 @@
 package com.kevlina.budgetplus.core.data.local
 
 import android.content.SharedPreferences
-import androidx.annotation.RestrictTo
 import kotlinx.serialization.json.Json
 
 @Suppress("FunctionName")
-@RestrictTo(RestrictTo.Scope.TESTS)
 fun FakePreferenceHolder(mapBuilder: MutableMap<String, Any?>.() -> Unit): PreferenceHolder {
     return PreferenceHolder(FakePreference(mapBuilder), Json)
 }

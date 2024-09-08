@@ -28,6 +28,7 @@ compose-icons = { module = "androidx.compose.material:material-icons-extended" }
 compose-lifecycle = "androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material3-windowsizeclass = { module = "androidx.compose.material3:material3-window-size-class" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1"
@@ -75,7 +76,6 @@ compose = [
     "compose-foundation",
     "compose-icons",
     "compose-lifecycle",
-    "compose-tooling",
     "compose-tooling-preview",
 ]
 test = [

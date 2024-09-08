@@ -1,5 +1,6 @@
 import common.implementation
 import common.libs
+import common.testFixturesImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -12,6 +13,7 @@ class KotlinSerializationConventionPlugin : Plugin<Project> {
 
         project.dependencies {
             implementation(project.libs.kotlin.serialization)
+            testFixturesImplementation(project.libs.kotlin.serialization)
         }
     }
 }

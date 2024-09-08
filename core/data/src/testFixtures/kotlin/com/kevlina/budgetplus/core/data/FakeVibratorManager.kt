@@ -1,12 +1,9 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
-import androidx.annotation.RestrictTo
-import com.kevlina.budgetplus.core.data.VibratorManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-@RestrictTo(RestrictTo.Scope.TESTS)
 class FakeVibratorManager(
     initialVibrateOnInput: Boolean = true,
 ) : VibratorManager {

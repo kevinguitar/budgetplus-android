@@ -2,8 +2,8 @@ package com.kevlina.budgetplus.feature.add.record
 
 import android.app.Activity
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.data.impl.FakeVibratorManager
-import com.kevlina.budgetplus.core.impl.FakeSnackbarSender
+import com.kevlina.budgetplus.core.data.FakeVibratorManager
+import com.kevlina.budgetplus.core.ui.FakeSnackbarSender
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import io.mockk.mockk

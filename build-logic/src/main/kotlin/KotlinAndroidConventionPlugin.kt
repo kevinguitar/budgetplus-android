@@ -1,8 +1,11 @@
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.TestedExtension
 import common.Constants
 import common.coreLibraryDesugaring
 import common.implementation
 import common.libs
+import common.testFixturesImplementation
+import common.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -64,6 +67,12 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             }
         }
 
+        // Enable test fixtures for all modules
+        project.extensions.configure(TestedExtension::class.java) {
+            @Suppress("UnstableApiUsage")
+            testFixtures.enable = true
+        }
+
         project.dependencies {
             implementation(project.libs.android.core)
             implementation(project.libs.coroutines)
@@ -73,7 +82,10 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))
+                testImplementation(testFixtures(project(":core:common")))
             }
+
+            testFixturesImplementation(project.libs.coroutines)
         }
     }
 }

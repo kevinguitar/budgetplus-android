@@ -7,4 +7,6 @@ plugins {
 dependencies {
     implementation(projects.core.data)
     implementation(libs.google.play.review)
+
+    testImplementation(testFixtures(projects.core.data))
 }

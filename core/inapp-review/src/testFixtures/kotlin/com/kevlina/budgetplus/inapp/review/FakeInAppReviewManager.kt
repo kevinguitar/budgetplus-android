@@ -1,9 +1,7 @@
 package com.kevlina.budgetplus.inapp.review
 
 import android.app.Activity
-import androidx.annotation.RestrictTo
 
-@RestrictTo(RestrictTo.Scope.TESTS)
 class FakeInAppReviewManager(
     private val isEligibleForReview: Boolean = true,
 ) : InAppReviewManager {

@@ -1,6 +1,8 @@
 import com.android.build.api.dsl.CommonExtension
+import common.debugImplementation
 import common.implementation
 import common.libs
+import common.testFixturesImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -35,6 +37,10 @@ class ComposeConventionPlugin : Plugin<Project> {
         project.dependencies {
             implementation(platform(project.libs.compose.bom))
             implementation(project.libs.bundles.compose)
+            debugImplementation(project.libs.compose.tooling)
+
+            testFixturesImplementation(platform(project.libs.compose.bom))
+            testFixturesImplementation(project.libs.compose.runtime)
         }
     }
 }

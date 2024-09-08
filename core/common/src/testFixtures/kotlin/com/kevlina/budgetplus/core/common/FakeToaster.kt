@@ -1,9 +1,5 @@
-package com.kevlina.budgetplus.core.common.impl
+package com.kevlina.budgetplus.core.common
 
-import androidx.annotation.RestrictTo
-import com.kevlina.budgetplus.core.common.Toaster
-
-@RestrictTo(RestrictTo.Scope.TESTS)
 class FakeToaster(
     private val stringProvider: FakeStringProvider = FakeStringProvider(),
 ) : Toaster {

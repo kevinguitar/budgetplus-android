@@ -11,4 +11,7 @@ dependencies {
 
     implementation(libs.kotlin.csv)
     implementation(libs.lottie.compose)
+
+    testImplementation(testFixtures(projects.core.data))
+    testImplementation(testFixtures(projects.core.ui))
 }

@@ -12,4 +12,8 @@ dependencies {
 
     implementation(libs.lottie.compose)
     implementation(libs.exp4j)
+
+    testImplementation(testFixtures(projects.core.data))
+    testImplementation(testFixtures(projects.core.ui))
+    testImplementation(testFixtures(projects.core.inappReview))
 }

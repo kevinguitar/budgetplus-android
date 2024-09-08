@@ -23,3 +23,15 @@ fun DependencyHandlerScope.compileOnly(module: Any) {
 fun DependencyHandlerScope.coreLibraryDesugaring(module: Any) {
     add("coreLibraryDesugaring", module)
 }
+
+fun DependencyHandlerScope.debugImplementation(module: Any) {
+    add("debugImplementation", module)
+}
+
+fun DependencyHandlerScope.testImplementation(module: Any) {
+    add("testImplementation", module)
+}
+
+fun DependencyHandlerScope.testFixturesImplementation(module: Any) {
+    add("testFixturesImplementation", module)
+}

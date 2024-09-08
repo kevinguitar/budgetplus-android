@@ -28,7 +28,6 @@ class ComposeConventionPlugin : Plugin<Project> {
                         "androidx.compose.foundation.layout.ExperimentalLayoutApi",
                     )
                     freeCompilerArgs.addAll(project.buildStabilityConfiguration())
-                    freeCompilerArgs.addAll(project.buildStrongSkippingMode())
                     freeCompilerArgs.addAll(project.buildComposeMetricsParameters())
                 }
             }
@@ -50,13 +49,6 @@ private fun Project.buildStabilityConfiguration(): List<String> = listOf(
     "-P",
     "plugin:org.jetbrains.kotlin.compose.compiler.gradle:stabilityConfigurationFile=" +
         rootProject.file("compose_compiler_config.conf").absolutePath
-)
-
-private fun Project.buildStrongSkippingMode(): List<String> = listOf(
-    // Enable the strong skipping mode
-    // https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/compiler/design/strong-skipping.md#other-gradle-projects
-    "-P",
-    "plugin:org.jetbrains.kotlin.compose.compiler.gradle:enableStrongSkippingMode=true"
 )
 
 // Composable metrics

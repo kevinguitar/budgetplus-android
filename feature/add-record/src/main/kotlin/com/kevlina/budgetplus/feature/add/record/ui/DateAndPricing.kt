@@ -80,7 +80,7 @@ internal fun ColumnScope.DateAndPricing(
             onValueChange = {},
             fontSize = FontSize.Header,
             letterSpacing = 0.5.sp,
-            enabled = false,
+            readOnly = true,
             title = currencySymbol,
             onTitleClick = uiState.editCurrency,
             modifier = Modifier

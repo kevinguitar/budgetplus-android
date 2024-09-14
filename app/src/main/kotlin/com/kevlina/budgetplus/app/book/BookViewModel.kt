@@ -8,6 +8,7 @@ import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -59,7 +60,7 @@ class BookViewModel @Inject constructor(
 
     fun handleJoinIntent(intent: Intent): Boolean {
         val uri = intent.data ?: return false
-        return if (uri.pathSegments.firstOrNull() == "join") {
+        return if (uri.pathSegments.firstOrNull() == NAV_JOIN_PATH) {
             bookRepo.setPendingJoinRequest(uri.lastPathSegment)
             true
         } else {

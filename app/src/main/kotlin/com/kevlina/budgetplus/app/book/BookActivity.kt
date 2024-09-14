@@ -15,10 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.app.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
-import com.kevlina.budgetplus.core.common.nav.ARG_URL
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.common.nav.consumeNavigation
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.theme.ThemeManager
@@ -47,17 +45,11 @@ class BookActivity : ComponentActivity() {
     private var newIntent: Intent? by mutableStateOf(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // When the app is in the background, the fcm won't go through the service impl, so we need
-        // to check the intent extras manually, if the url is presented, simply pass it as data.
-        val url = intent.extras?.getString(ARG_URL)
-        when {
-            url != null -> intent.data = url.toUri()
-
-            // When the user open the settings from app preference.
-            intent.action == Intent.ACTION_APPLICATION_PREFERENCES -> {
-                intent.data = "$APP_DEEPLINK/${AddDest.Settings.navRoute}".toUri()
-            }
+        // When the user open the settings from app preference.
+        if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
+            intent.data = "$APP_DEEPLINK/$NAV_SETTINGS_PATH".toUri()
         }
+
         enableEdgeToEdge()
         setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)

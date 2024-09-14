@@ -20,11 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.nav.ARG_AUTHOR_ID
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.nav.navKey
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.data.ChartMode
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -64,15 +61,13 @@ internal fun OverviewList(
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     fun navigateToRecords(category: String) {
-        navigator.navigate(route = buildString {
-            append(HistoryDest.Records.navRoute)
-            append("/$type/${category.navKey}")
-
-            val authorId = selectedAuthor?.id
-            if (authorId != null) {
-                append("?$ARG_AUTHOR_ID=$authorId")
-            }
-        })
+        navigator.navigate(
+            HistoryDest.Records(
+                type = type,
+                category = category,
+                authorId = selectedAuthor?.id
+            )
+        )
     }
 
     LazyColumn(

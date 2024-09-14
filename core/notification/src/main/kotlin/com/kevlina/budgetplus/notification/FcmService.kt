@@ -13,9 +13,7 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.ImageLoader
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
-import com.kevlina.budgetplus.core.common.nav.ARG_SHOW_MEMBERS
-import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.navRoute
+import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_GENERAL
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_NEW_MEMBER
@@ -57,7 +55,8 @@ class FcmService : FirebaseMessagingService() {
         val contentIntent = Intent(Intent.ACTION_VIEW)
         contentIntent.data = if (channelId == CHANNEL_NEW_MEMBER) {
             // Open the record screen and show the members dialog
-            "$APP_DEEPLINK/${AddDest.Settings.navRoute}?$ARG_SHOW_MEMBERS=true"
+            // the query must match AddDest.Settings
+            "$APP_DEEPLINK/$NAV_SETTINGS_PATH?showMembers=true"
         } else {
             message.data["url"] ?: defaultDeeplink
         }.toUri()

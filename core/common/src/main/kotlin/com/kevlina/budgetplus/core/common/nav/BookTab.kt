@@ -1,20 +1,57 @@
 package com.kevlina.budgetplus.core.common.nav
 
-enum class BookTab {
-    Add, History
+import com.kevlina.budgetplus.core.common.RecordType
+import kotlinx.serialization.Serializable
+
+sealed interface BookTab {
+
+    @Serializable
+    data object Add : BookTab
+
+    @Serializable
+    data object History : BookTab
 }
 
-enum class AddDest {
-    Record, EditCategory, Settings, UnlockPremium,
-    BatchRecord, Colors, CurrencyPicker,
+sealed interface AddDest {
+
+    @Serializable
+    data object Record : AddDest
+
+    @Serializable
+    data class EditCategory(val type: RecordType) : AddDest
+
+    @Serializable
+    data class Settings(val showMembers: Boolean = false) : AddDest
+
+    @Serializable
+    data object UnlockPremium : AddDest
+
+    @Serializable
+    data object BatchRecord : AddDest
+
+    @Serializable
+    data class Colors(val hex: String? = null) : AddDest
+
+    @Serializable
+    data object CurrencyPicker : AddDest
 
     // Internal screens
-    Insider, PushNotifications
+    @Serializable
+    data object Insider : AddDest
+
+    @Serializable
+    data object PushNotifications : AddDest
 }
 
-enum class HistoryDest {
-    Overview, Records
-}
+sealed interface HistoryDest {
 
-val <T : Enum<T>> Enum<T>.navRoute
-    get() = name.replaceFirstChar { it.lowercaseChar() }
+    @Serializable
+    data object Overview : HistoryDest
+
+    @Serializable
+    data class Records(
+        val type: RecordType,
+        val category: String,
+        val authorId: String?,
+    ) : HistoryDest
+}

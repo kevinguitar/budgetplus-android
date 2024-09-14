@@ -25,7 +25,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DropdownDivider
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -122,7 +121,7 @@ fun BookSelector(navigator: Navigator) {
                 onClick = {
                     when (createBookBtnState) {
                         CreateBookBtnState.Enabled -> isBookCreationDialogShown = true
-                        CreateBookBtnState.NeedPremium -> navigator.navigate(AddDest.UnlockPremium.navRoute)
+                        CreateBookBtnState.NeedPremium -> navigator.navigate(AddDest.UnlockPremium)
                         CreateBookBtnState.ReachedMax -> viewModel.showReachedMaxMessage()
                     }
                     isSelectorShown = false

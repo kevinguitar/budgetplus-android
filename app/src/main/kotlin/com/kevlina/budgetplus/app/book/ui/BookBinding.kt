@@ -18,13 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarData
@@ -52,7 +52,7 @@ internal fun BookBinding(
 
     LaunchedEffect(vm) {
         vm.unlockPremiumEvent
-            .consumeEach { navController.navigate(AddDest.UnlockPremium.navRoute) }
+            .consumeEach { navController.navigate(AddDest.UnlockPremium) }
             .launchIn(this)
 
         vm.snackbarSender.snackbarEvent
@@ -68,12 +68,11 @@ internal fun BookBinding(
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow
             .onEach { entry ->
-                val currentRoute = entry.destination.route
-                if (currentRoute != AddDest.Colors.navRoute) {
+                if (!entry.destination.hasRoute<AddDest.Colors>()) {
                     vm.themeManager.clearPreviewColors()
                 }
 
-                isUnlockingPremium = currentRoute == AddDest.UnlockPremium.navRoute
+                isUnlockingPremium = entry.destination.hasRoute<AddDest.UnlockPremium>()
             }
             .collect()
     }
@@ -94,7 +93,7 @@ internal fun BookBinding(
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = BookTab.Add.navRoute,
+                    startDestination = BookTab.Add,
                     enterTransition = { fadeIn() },
                     exitTransition = { fadeOut() },
                     modifier = Modifier

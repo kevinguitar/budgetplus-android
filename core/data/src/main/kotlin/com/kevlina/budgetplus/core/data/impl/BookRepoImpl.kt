@@ -14,6 +14,7 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
+import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
@@ -124,7 +125,7 @@ internal class BookRepoImpl @Inject constructor(
         val joinId = joinInfoProcessor.generateJoinId(requireBookId)
         val joinLink = APP_DEEPLINK.toUri()
             .buildUpon()
-            .appendPath("join")
+            .appendPath(NAV_JOIN_PATH)
             .appendPath(joinId)
             .build()
         tracker.logEvent("join_book_link_generated")

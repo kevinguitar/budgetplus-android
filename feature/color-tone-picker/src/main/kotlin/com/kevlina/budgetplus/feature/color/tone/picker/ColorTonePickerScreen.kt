@@ -26,7 +26,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.Navigator
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -116,7 +115,7 @@ fun ColorTonePickerScreen(
 
     fun unlockPremium() {
         vm.trackUnlockPremium()
-        navigator.navigate(AddDest.UnlockPremium.navRoute)
+        navigator.navigate(AddDest.UnlockPremium)
     }
 
     BackHandler(onBack = ::navigateUp)

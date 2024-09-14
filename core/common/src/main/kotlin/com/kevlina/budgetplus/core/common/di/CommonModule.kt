@@ -10,9 +10,8 @@ import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
 import com.kevlina.budgetplus.core.common.impl.ToasterImpl
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -86,7 +85,7 @@ internal interface CommonModule {
         @Provides
         @Named("default_deeplink")
         fun provideDefaultDeeplink(): String {
-            return "$APP_DEEPLINK/${AddDest.Record.navRoute}"
+            return "$APP_DEEPLINK/$NAV_RECORD_PATH"
         }
     }
 }

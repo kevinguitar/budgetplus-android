@@ -3,8 +3,8 @@ package com.kevlina.budgetplus.feature.records
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -29,9 +29,7 @@ import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel(assistedFactory = RecordsViewModel.Factory::class)
 class RecordsViewModel @AssistedInject constructor(
-    @Assisted type: RecordType,
-    @Assisted("category") val category: String,
-    @Assisted("authorId") private val authorId: String?,
+    @Assisted private val params: HistoryDest.Records,
     val bookRepo: BookRepo,
     private val userRepo: UserRepo,
     private val recordRepo: RecordRepo,
@@ -49,11 +47,14 @@ class RecordsViewModel @AssistedInject constructor(
 
     private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
+    val category get() = params.category
+    private val authorId get() = params.authorId
+
     val records = combine(recordsObserver.records, sortMode) { records, sortMode ->
         records ?: return@combine null
         records
             .filter {
-                it.type == type && it.category == category &&
+                it.type == params.type && it.category == category &&
                     (authorId == null || it.author?.id == authorId)
             }
             .map(userRepo::resolveAuthor)
@@ -91,10 +92,6 @@ class RecordsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(
-            type: RecordType,
-            @Assisted("category") category: String,
-            @Assisted("authorId") authorId: String?,
-        ): RecordsViewModel
+        fun create(params: HistoryDest.Records): RecordsViewModel
     }
 }

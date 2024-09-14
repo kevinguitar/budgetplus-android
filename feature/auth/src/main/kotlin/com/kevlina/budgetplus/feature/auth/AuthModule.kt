@@ -5,8 +5,8 @@ import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.nav.ARG_ENABLE_ONE_TAP
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
+import com.kevlina.budgetplus.feature.auth.AuthActivity.Companion.ARG_ENABLE_ONE_TAP
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

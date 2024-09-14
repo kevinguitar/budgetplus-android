@@ -1,23 +1,19 @@
 package com.kevlina.budgetplus.app.book.ui
 
-import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.getSerializableCompat
+import androidx.navigation.toRoute
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
-import com.kevlina.budgetplus.core.common.nav.ARG_SHOW_MEMBERS
-import com.kevlina.budgetplus.core.common.nav.ARG_TYPE
 import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.common.nav.BookTab
-import com.kevlina.budgetplus.core.common.nav.navRoute
+import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_UNLOCK_PREMIUM_PATH
 import com.kevlina.budgetplus.core.common.nav.toNavigator
-import com.kevlina.budgetplus.core.theme.ThemeManager.Companion.COLORS_LINK_QUERY
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
@@ -30,92 +26,69 @@ import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 
 internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
-    navigation(
-        startDestination = AddDest.Record.navRoute,
-        route = BookTab.Add.navRoute
+    navigation<BookTab.Add>(
+        startDestination = AddDest.Record,
     ) {
 
-        composable(
-            route = AddDest.Record.navRoute,
+        composable<AddDest.Record>(
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.Record.navRoute}" }
+                navDeepLink<AddDest.Record>(basePath = "$APP_DEEPLINK/$NAV_RECORD_PATH")
             )
         ) {
             RecordScreen(navigator = navController.toNavigator())
         }
 
-        composable(
-            route = "${AddDest.EditCategory.navRoute}/{$ARG_TYPE}",
-            arguments = listOf(navArgument(ARG_TYPE) {
-                type = NavType.EnumType(RecordType::class.java)
-            })
-        ) { entry ->
-            val args = entry.arguments ?: Bundle.EMPTY
+        composable<AddDest.EditCategory> { entry ->
             EditCategoryScreen(
                 navigator = navController.toNavigator(),
-                type = args.getSerializableCompat(ARG_TYPE)
+                type = entry.toRoute<AddDest.EditCategory>().type
             )
         }
 
-        val settingsRoute = "${AddDest.Settings.navRoute}?$ARG_SHOW_MEMBERS={$ARG_SHOW_MEMBERS}"
-        composable(
-            route = settingsRoute,
-            arguments = listOf(navArgument(ARG_SHOW_MEMBERS) {
-                type = NavType.BoolType
-                defaultValue = false
-            }),
+        composable<AddDest.Settings>(
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/$settingsRoute" }
+                navDeepLink<AddDest.Settings>(basePath = "$APP_DEEPLINK/$NAV_SETTINGS_PATH")
             )
         ) { entry ->
-            val args = entry.arguments ?: Bundle.EMPTY
             SettingsScreen(
                 navigator = navController.toNavigator(),
-                showMembers = args.getBoolean(ARG_SHOW_MEMBERS, false)
+                showMembers = entry.toRoute<AddDest.Settings>().showMembers
             )
         }
 
-        composable(
-            route = AddDest.UnlockPremium.navRoute,
+        composable<AddDest.UnlockPremium>(
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/${AddDest.UnlockPremium.navRoute}" }
+                navDeepLink<AddDest.UnlockPremium>(basePath = "$APP_DEEPLINK/$NAV_UNLOCK_PREMIUM_PATH")
             )
         ) {
             PremiumScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.BatchRecord.navRoute) {
+        composable<AddDest.BatchRecord> {
             BatchRecordScreen(navigator = navController.toNavigator())
         }
 
-        val colorToneRoute = "${AddDest.Colors.navRoute}?$COLORS_LINK_QUERY={$COLORS_LINK_QUERY}"
-        composable(
-            route = colorToneRoute,
-            arguments = listOf(navArgument(COLORS_LINK_QUERY) {
-                type = NavType.StringType
-                nullable = true
-            }),
+        composable<AddDest.Colors>(
             deepLinks = listOf(
-                navDeepLink { uriPattern = "$APP_DEEPLINK/$colorToneRoute" }
+                navDeepLink<AddDest.Colors>(basePath = "$APP_DEEPLINK/$NAV_COLORS_PATH")
             )
         ) { entry ->
-            val args = entry.arguments ?: Bundle.EMPTY
             ColorTonePickerScreen(
                 navigator = navController.toNavigator(),
-                hexFromLink = args.getString(COLORS_LINK_QUERY)
+                hexFromLink = entry.toRoute<AddDest.Colors>().hex
             )
         }
 
-        composable(route = AddDest.CurrencyPicker.navRoute) {
+        composable<AddDest.CurrencyPicker> {
             CurrencyPickerScreen(navigator = navController.toNavigator())
         }
 
         // Internal screens
-        composable(route = AddDest.Insider.navRoute) {
+        composable<AddDest.Insider> {
             InsiderScreen(navigator = navController.toNavigator())
         }
 
-        composable(route = AddDest.PushNotifications.navRoute) {
+        composable<AddDest.PushNotifications> {
             PushNotificationsScreen(navigator = navController.toNavigator())
         }
     }

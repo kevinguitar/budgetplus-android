@@ -8,11 +8,11 @@ import androidx.navigation.NavController
  */
 @Immutable
 class Navigator(
-    private val doNavigate: (String) -> Unit,
+    private val doNavigate: (Any) -> Unit,
     private val doUp: () -> Boolean,
 ) {
 
-    fun navigate(route: String) = doNavigate(route)
+    fun navigate(route: Any) = doNavigate(route)
     fun navigateUp(): Boolean = doUp()
 
     companion object {

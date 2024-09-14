@@ -26,16 +26,18 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kevlina.budgetplus.core.common.nav.BookTab
-import com.kevlina.budgetplus.core.common.nav.navRoute
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.rippleClick
+
+private val bottomTabs = listOf(BookTab.Add, BookTab.History)
 
 @Composable
 internal fun BottomNav(
@@ -71,11 +73,11 @@ internal fun BottomNav(
                 .fillMaxWidth()
         ) {
 
-            BookTab.entries.forEach { tab ->
+            bottomTabs.forEach { tab ->
                 BottomNavItem(
                     navController = navController,
                     tab = tab,
-                    isSelected = currentDestination?.hierarchy?.any { it.route == tab.navRoute } == true,
+                    isSelected = currentDestination?.hierarchy?.any { it.hasRoute(tab::class) } == true,
                     darkColor = darkColor,
                     lightColor = lightColor
                 )
@@ -99,7 +101,7 @@ private fun RowScope.BottomNavItem(
             .weight(1F)
             .fillMaxHeight()
             .rippleClick {
-                navController.navigate(tab.navRoute) {
+                navController.navigate(tab) {
                     // Pop up to the start destination of the graph to
                     // avoid building up a large stack of destinations
                     // on the back stack as users select items

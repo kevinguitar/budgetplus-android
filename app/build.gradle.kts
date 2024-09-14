@@ -2,6 +2,7 @@ plugins {
     alias(budgetplus.plugins.android.app)
     alias(budgetplus.plugins.hilt)
     alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.serialization)
 }
 
 dependencies {

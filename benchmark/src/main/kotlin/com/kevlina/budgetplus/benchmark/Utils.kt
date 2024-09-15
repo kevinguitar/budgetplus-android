@@ -13,6 +13,7 @@ internal fun MacrobenchmarkScope.authorize() {
     }
 
     // Login with Google account
+//    waitForTextAndClick("Continue as Kevin")
     waitForTextAndClick("Continue with Google")
     waitForTextAndClick("kevin.chiu@bandlab.com")
 

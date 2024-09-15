@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -47,25 +49,53 @@ class RecordsViewModel @AssistedInject constructor(
 
     private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
 
-    val category get() = params.category
     private val authorId get() = params.authorId
 
-    val records = combine(recordsObserver.records, sortMode) { records, sortMode ->
-        records ?: return@combine null
-        records
-            .filter {
-                it.type == params.type && it.category == category &&
-                    (authorId == null || it.author?.id == authorId)
-            }
-            .map(userRepo::resolveAuthor)
-            .run {
-                when (sortMode) {
-                    RecordsSortMode.Date -> sortedByDescending { it.createdOn }
-                    RecordsSortMode.Price -> sortedByDescending { it.price }
+    // Assuming the records are ready when the records page is opened, and resolve the
+    // categories right away to ease the database observation handling.
+    private val categories = recordsObserver.records.value
+        .orEmpty()
+        .filter { it.type == params.type && (authorId == null || it.author?.id == authorId) }
+        .groupBy { it.category }
+        .toList()
+        .sortedByDescending { (_, v) -> v.sumOf { it.price } }
+        .map { it.first }
+
+    val initialPage = categories.indexOf(params.category).coerceAtLeast(0)
+    val pageSize get() = categories.size
+
+    private val pageIndex = MutableStateFlow(initialPage)
+
+    val category = pageIndex.mapState { categories[it] }
+
+    val recordsList = combine(
+        recordsObserver.records,
+        sortMode
+    ) { allRecords, sortMode ->
+        allRecords ?: return@combine null
+        categories.map { category ->
+            allRecords
+                .filter { record ->
+                    record.category == category &&
+                        record.type == params.type &&
+                        (authorId == null || record.author?.id == authorId)
                 }
-            }
-            .toList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+                .map(userRepo::resolveAuthor)
+                .run {
+                    when (sortMode) {
+                        RecordsSortMode.Date -> sortedByDescending { it.createdOn }
+                        RecordsSortMode.Price -> sortedByDescending { it.price }
+                    }
+                }
+                .toList()
+        }
+    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val totalPrice = recordsList.combineState(pageIndex, viewModelScope) { recordsList, pageIndex ->
+        val total = recordsList?.getOrNull(pageIndex).orEmpty().sumOf { it.price }
+        bookRepo.formatPrice(total, alwaysShowSymbol = true)
+    }
 
     fun setSortMode(sortMode: RecordsSortMode) {
         _sortMode.value = sortMode
@@ -83,6 +113,13 @@ class RecordsViewModel @AssistedInject constructor(
     fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+    }
+
+    fun setPageIndex(index: Int) {
+        if (pageIndex.value != index) {
+            pageIndex.value = index
+            tracker.logEvent("overview_records_swiped")
+        }
     }
 
     fun duplicateRecord(record: Record) {

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.EventNote
 import androidx.compose.material.icons.rounded.Paid
@@ -16,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
@@ -32,6 +35,8 @@ import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -43,25 +48,34 @@ fun RecordsScreen(
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
-    val records by vm.records.collectAsStateWithLifecycle()
+    val recordsList by vm.recordsList.collectAsStateWithLifecycle()
     val sortMode by vm.sortMode.collectAsStateWithLifecycle()
+    val category by vm.category.collectAsStateWithLifecycle()
+    val totalPrice by vm.totalPrice.collectAsStateWithLifecycle()
 
-    val totalPrice = remember(records) {
-        val total = records.orEmpty().sumOf { it.price }
-        vm.bookRepo.formatPrice(total, alwaysShowSymbol = true)
+    val pagerState = rememberPagerState(initialPage = vm.initialPage) { vm.pageSize }
+
+    LaunchedEffect(key1 = pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .collect(vm::setPageIndex)
     }
 
     // Observe the records, when the last record get deleted, navigate back to the overview screen.
-    LaunchedEffect(key1 = records) {
-        if (records?.isEmpty() == true) {
-            navigator.navigateUp()
-        }
+    LaunchedEffect(key1 = vm) {
+        combine(
+            vm.recordsList,
+            snapshotFlow { pagerState.currentPage }
+        ) { recordsList, page ->
+            if (recordsList?.getOrNull(page)?.isEmpty() == true) {
+                navigator.navigateUp()
+            }
+        }.collect()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
         TopBar(
-            title = stringResource(id = R.string.overview_details_title, vm.category, totalPrice),
+            title = stringResource(id = R.string.overview_details_title, category, totalPrice),
             navigateUp = navigator::navigateUp,
             menuActions = {
                 val modifier = Modifier.onPlaced {
@@ -96,21 +110,27 @@ fun RecordsScreen(
                 .fillMaxWidth()
                 .weight(1F)
         ) {
-            LazyColumn(
-                contentPadding = AppTheme.listContentPaddings()
-            ) {
-                itemsIndexed(records.orEmpty()) { index, item ->
-                    RecordCard(uiState = RecordCardUiState(
-                        item = item,
-                        formattedPrice = vm.bookRepo.formatPrice(item.price),
-                        isLast = index == records?.lastIndex,
-                        canEdit = vm.canEditRecord(item),
-                        showCategory = false,
-                        showAuthor = true,
-                        onEdit = { editRecordDialog = item },
-                        onDuplicate = { vm.duplicateRecord(item) },
-                        onDelete = { deleteRecordDialog = item }
-                    ))
+            HorizontalPager(
+                state = pagerState,
+            ) { page ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = AppTheme.listContentPaddings()
+                ) {
+                    val records = recordsList?.getOrNull(page).orEmpty()
+                    itemsIndexed(records) { index, item ->
+                        RecordCard(uiState = RecordCardUiState(
+                            item = item,
+                            formattedPrice = vm.bookRepo.formatPrice(item.price),
+                            isLast = index == records.lastIndex,
+                            canEdit = vm.canEditRecord(item),
+                            showCategory = false,
+                            showAuthor = true,
+                            onEdit = { editRecordDialog = item },
+                            onDuplicate = { vm.duplicateRecord(item) },
+                            onDelete = { deleteRecordDialog = item }
+                        ))
+                    }
                 }
             }
         }

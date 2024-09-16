@@ -66,7 +66,9 @@ class RecordsViewModel @AssistedInject constructor(
 
     private val pageIndex = MutableStateFlow(initialPage)
 
-    val category = pageIndex.mapState { categories[it] }
+    val category = pageIndex.mapState {
+        categories.getOrNull(it) ?: params.category
+    }
 
     val recordsList = combine(
         recordsObserver.records,

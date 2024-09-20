@@ -34,6 +34,7 @@ import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordDateState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import timber.log.Timber
 import java.time.LocalDate
 
 @Composable
@@ -54,7 +55,13 @@ internal fun ColumnScope.DateAndPricing(
     if (uiState.scrollable) {
         LaunchedEffect(key1 = priceText) {
             if (priceText != CalculatorViewModel.EMPTY_PRICE) {
-                focusManager.clearFocus()
+                try {
+                    focusManager.clearFocus()
+                } catch (e: Exception) {
+                    // https://issuetracker.google.com/issues/358306222
+                    Timber.e(e, "Fail to clear focus")
+                }
+
                 if (scrollState.value != scrollState.maxValue) {
                     scrollState.animateScrollTo(scrollState.maxValue)
                 }
@@ -71,8 +78,8 @@ internal fun ColumnScope.DateAndPricing(
         SingleDatePicker(
             date = recordDate.date,
             modifier = Modifier
-                .rippleClick { showDatePicker = true }
-                .padding(vertical = 8.dp)
+                    .rippleClick { showDatePicker = true }
+                    .padding(vertical = 8.dp)
         )
 
         TextField(
@@ -84,8 +91,8 @@ internal fun ColumnScope.DateAndPricing(
             title = currencySymbol,
             onTitleClick = uiState.editCurrency,
             modifier = Modifier
-                .weight(1F)
-                .clickableWithoutRipple { focusManager.clearFocus() }
+                    .weight(1F)
+                    .clickableWithoutRipple { focusManager.clearFocus() }
         )
     }
 
@@ -127,8 +134,8 @@ private fun DateAndPricing_Preview() = AppTheme {
             uiState = DateAndPricingUiState.preview,
             scrollState = rememberScrollState(),
             modifier = Modifier
-                .background(LocalAppColors.current.light)
-                .padding(horizontal = 16.dp)
+                    .background(LocalAppColors.current.light)
+                    .padding(horizontal = 16.dp)
         )
     }
 }

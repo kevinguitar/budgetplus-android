@@ -50,12 +50,15 @@ internal class PushNotificationsViewModel @Inject constructor(
     val titleTw = MutableStateFlow(titleTwCache)
     val descTw = MutableStateFlow(descTwCache)
 
+    val sendToCn = MutableStateFlow(true)
     val titleCn = MutableStateFlow(titleCnCache)
     val descCn = MutableStateFlow(descCnCache)
 
+    val sendToJa = MutableStateFlow(true)
     val titleJa = MutableStateFlow(titleJaCache)
     val descJa = MutableStateFlow(descJaCache)
 
+    val sendToEn = MutableStateFlow(true)
     val titleEn = MutableStateFlow(titleEnCache)
     val descEn = MutableStateFlow(descEnCache)
 
@@ -76,23 +79,24 @@ internal class PushNotificationsViewModel @Inject constructor(
             try {
                 val user = authManager.userState.first()
                 if (user?.internal != true) {
-                    error("!!!An external user is trying to send notification!!!")
+                    error("An external user is trying to send notification!!!")
                 }
                 pushDbMediator.recordPushNotification(PushNotificationData(
                     internal = isInternal,
                     titleTw = titleTw.value.trim(),
                     descTw = descTw.value.trim(),
-                    titleCn = titleCn.value.trim(),
-                    descCn = descCn.value.trim(),
-                    titleJa = titleJa.value.trim(),
-                    descJa = descJa.value.trim(),
-                    titleEn = titleEn.value.trim(),
-                    descEn = descEn.value.trim(),
+                    titleCn = titleCn.value.trim().takeIf { sendToCn.value },
+                    descCn = descCn.value.trim().takeIf { sendToCn.value },
+                    titleJa = titleJa.value.trim().takeIf { sendToJa.value },
+                    descJa = descJa.value.trim().takeIf { sendToJa.value },
+                    titleEn = titleEn.value.trim().takeIf { sendToEn.value },
+                    descEn = descEn.value.trim().takeIf { sendToEn.value },
                     deeplink = when {
                         navigateToGooglePlay.value -> googlePlayUrl
                         deeplink.value.isNotBlank() -> deeplink.value.trim()
                         else -> defaultDeeplink
-                    }
+                    },
+                    sentOn = System.currentTimeMillis()
                 ))
                 snackbarSender.send(R.string.push_notif_sent_success)
             } catch (e: Exception) {

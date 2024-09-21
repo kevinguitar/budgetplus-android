@@ -14,4 +14,5 @@ data class PushNotificationData(
     val titleEn: String? = null,
     val descEn: String? = null,
     val deeplink: String? = null,
+    val sentOn: Long? = null,
 )

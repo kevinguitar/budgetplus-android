@@ -1,20 +1,25 @@
 package com.kevlina.budgetplus.feature.push.notifications.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 
@@ -25,36 +30,51 @@ internal fun LanguageBlock(
     onTitleUpdate: (String) -> Unit,
     description: String,
     onDescriptionUpdate: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isOptional: Boolean = true,
+    enabled: Boolean = true,
+    onEnableUpdate: (Boolean) -> Unit = {},
 ) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp)
     ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(id = textRes),
+                fontSize = FontSize.Large,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1F)
+            )
 
-        Text(
-            text = stringResource(id = textRes),
-            fontSize = FontSize.Large,
-            fontWeight = FontWeight.SemiBold
-        )
+            if (isOptional) {
+                Switch(
+                    checked = enabled,
+                    onCheckedChange = onEnableUpdate,
+                )
+            }
+        }
 
-        TextField(
-            value = title,
-            onValueChange = onTitleUpdate,
-            title = stringResource(id = R.string.push_notif_push_title),
-            singleLine = false,
-            modifier = Modifier.height(80.dp)
-        )
+        if (enabled) {
+            TextField(
+                value = title,
+                onValueChange = onTitleUpdate,
+                title = stringResource(id = R.string.push_notif_push_title),
+                singleLine = false,
+                modifier = Modifier.height(80.dp)
+            )
 
-        TextField(
-            value = description,
-            onValueChange = onDescriptionUpdate,
-            title = stringResource(id = R.string.push_notif_push_description),
-            singleLine = false,
-            modifier = Modifier.height(80.dp)
-        )
+            TextField(
+                value = description,
+                onValueChange = onDescriptionUpdate,
+                title = stringResource(id = R.string.push_notif_push_description),
+                singleLine = false,
+                modifier = Modifier.height(80.dp)
+            )
+        }
     }
 }
 
@@ -63,9 +83,29 @@ internal fun LanguageBlock(
 private fun LanguageBlock_Preview() = AppTheme {
     LanguageBlock(
         textRes = R.string.push_notif_language_zh_tw,
-        title = "推播標題\nasdfasdf",
+        title = "推播標題\n第二行",
         onTitleUpdate = {},
         description = "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~",
-        onDescriptionUpdate = {}
+        onDescriptionUpdate = {},
+        isOptional = false,
+        modifier = Modifier
+            .background(LocalAppColors.current.light)
+            .padding(horizontal = 16.dp)
+    )
+}
+
+@Preview
+@Composable
+private fun LanguageBlockOptional_Preview() = AppTheme {
+    LanguageBlock(
+        textRes = R.string.push_notif_language_ja,
+        title = "新しい月ですよ！",
+        onTitleUpdate = {},
+        description = "月初めに支出の追跡を始めましょう",
+        onDescriptionUpdate = {},
+        isOptional = true,
+        modifier = Modifier
+            .background(LocalAppColors.current.light)
+            .padding(horizontal = 16.dp)
     )
 }

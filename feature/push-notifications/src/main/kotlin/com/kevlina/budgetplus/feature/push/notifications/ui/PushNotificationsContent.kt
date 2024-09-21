@@ -41,12 +41,15 @@ internal fun PushNotificationsContent(
     val titleTw by vm.titleTw.collectAsStateWithLifecycle()
     val descTw by vm.descTw.collectAsStateWithLifecycle()
 
+    val sendToCn by vm.sendToCn.collectAsStateWithLifecycle()
     val titleCn by vm.titleCn.collectAsStateWithLifecycle()
     val descCn by vm.descCn.collectAsStateWithLifecycle()
 
+    val sendToJa by vm.sendToJa.collectAsStateWithLifecycle()
     val titleJa by vm.titleJa.collectAsStateWithLifecycle()
     val descJa by vm.descJa.collectAsStateWithLifecycle()
 
+    val sendToEn by vm.sendToEn.collectAsStateWithLifecycle()
     val titleEn by vm.titleEn.collectAsStateWithLifecycle()
     val descEn by vm.descEn.collectAsStateWithLifecycle()
 
@@ -64,13 +67,13 @@ internal fun PushNotificationsContent(
             .padding(16.dp)
             .imePadding()
     ) {
-
         LanguageBlock(
             textRes = R.string.push_notif_language_zh_tw,
             title = titleTw,
             onTitleUpdate = { vm.titleTw.value = it },
             description = descTw,
-            onDescriptionUpdate = { vm.descTw.value = it }
+            onDescriptionUpdate = { vm.descTw.value = it },
+            isOptional = false
         )
 
         LanguageBlock(
@@ -78,7 +81,9 @@ internal fun PushNotificationsContent(
             title = titleCn,
             onTitleUpdate = { vm.titleCn.value = it },
             description = descCn,
-            onDescriptionUpdate = { vm.descCn.value = it }
+            onDescriptionUpdate = { vm.descCn.value = it },
+            enabled = sendToCn,
+            onEnableUpdate = { vm.sendToCn.value = it }
         )
 
         LanguageBlock(
@@ -86,7 +91,9 @@ internal fun PushNotificationsContent(
             title = titleJa,
             onTitleUpdate = { vm.titleJa.value = it },
             description = descJa,
-            onDescriptionUpdate = { vm.descJa.value = it }
+            onDescriptionUpdate = { vm.descJa.value = it },
+            enabled = sendToJa,
+            onEnableUpdate = { vm.sendToJa.value = it }
         )
 
         LanguageBlock(
@@ -94,7 +101,9 @@ internal fun PushNotificationsContent(
             title = titleEn,
             onTitleUpdate = { vm.titleEn.value = it },
             description = descEn,
-            onDescriptionUpdate = { vm.descEn.value = it }
+            onDescriptionUpdate = { vm.descEn.value = it },
+            enabled = sendToEn,
+            onEnableUpdate = { vm.sendToEn.value = it }
         )
 
         SwitchBlock(

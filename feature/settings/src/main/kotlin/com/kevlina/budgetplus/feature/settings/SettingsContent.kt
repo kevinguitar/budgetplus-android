@@ -31,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -50,8 +49,6 @@ import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
-
-private const val SWITCH_SCALE = 0.7F
 
 @Composable
 internal fun SettingsContent(
@@ -155,9 +152,7 @@ internal fun SettingsContent(
                 Switch(
                     checked = vibrateOnInput,
                     onCheckedChange = { vm.vibrator.toggleVibrateOnInput() },
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .scale(SWITCH_SCALE)
+                    modifier = Modifier.padding(end = 10.dp)
                 )
             },
             onClick = vm.vibrator::toggleVibrateOnInput

@@ -27,7 +27,7 @@ class BudgetPlusApp : Application() {
 
         Timber.plant(if (isDebug) Timber.DebugTree() else CrashReportingTree())
         Firebase.analytics.setAnalyticsCollectionEnabled(!isDebug)
-        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!isDebug)
+        Firebase.crashlytics.isCrashlyticsCollectionEnabled = !isDebug
 
         // Execute all the actions that need to be executed on app start.
         appStartActions.forEach { it.onAppStart() }

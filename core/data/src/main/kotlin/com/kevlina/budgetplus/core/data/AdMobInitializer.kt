@@ -27,6 +27,7 @@ class AdMobInitializer @Inject constructor(
     val isInitialized = _isInitialized.asStateFlow()
 
     init {
+        // Handle the case when re-login with a non-premium user.
         authManager.userState
             .drop(1)
             .onEach { initialize() }

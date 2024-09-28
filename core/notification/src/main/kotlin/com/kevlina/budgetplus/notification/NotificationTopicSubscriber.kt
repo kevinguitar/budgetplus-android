@@ -53,6 +53,7 @@ internal class NotificationTopicSubscriber @Inject constructor(
             }
 
             Firebase.messaging.subscribeToTopic(generalTopic).await()
+            Timber.d("Notification: Subscribed to $generalTopic topic")
             lastInfo = SubscribeInfo(
                 userId = user.id,
                 topic = generalTopic

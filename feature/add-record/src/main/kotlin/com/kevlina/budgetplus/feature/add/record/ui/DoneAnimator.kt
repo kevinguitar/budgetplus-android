@@ -27,6 +27,7 @@ import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.clearFocusSafe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlin.time.Duration.Companion.seconds
@@ -53,7 +54,7 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
 
     LaunchedEffect(key1 = eventTrigger) {
         eventTrigger.event.consumeEach {
-            focusManager.clearFocus()
+            focusManager.clearFocusSafe()
 
             showAnimation = true
             lottieAnimatable.animate(

@@ -22,6 +22,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.TextField
+import com.kevlina.budgetplus.core.ui.clearFocusSafe
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
@@ -70,7 +71,7 @@ internal fun RecordInfo(
                 }
             ),
             modifier = Modifier.fillMaxWidth(),
-            onDone = { focusManager.clearFocus() }
+            onDone = { focusManager.clearFocusSafe() }
         )
 
         DateAndPricing(

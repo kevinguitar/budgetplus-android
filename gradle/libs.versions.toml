@@ -6,7 +6,7 @@ kotlin = "2.0.20"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "2.0.20-1.0.25"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2024.09.02"
+compose-bom = "2024.09.03"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "33.3.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
@@ -14,7 +14,7 @@ hilt = "2.52"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://developer.android.com/jetpack/androidx/releases/navigation
-navigation = "2.8.1"
+navigation = "2.8.2"
 
 [libraries]
 android-activity = "androidx.activity:activity-ktx:1.9.2"

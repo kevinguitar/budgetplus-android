@@ -8,7 +8,7 @@ ksp = "2.0.20-1.0.25"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.09.03"
 # https://firebase.google.com/support/release-notes/android
-firebase-bom = "33.3.0"
+firebase-bom = "33.4.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.52"
 # https://github.com/coil-kt/coil/releases

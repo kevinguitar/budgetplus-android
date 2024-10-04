@@ -65,7 +65,7 @@ navigation-compose = { module = "androidx.navigation:navigation-compose", versio
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0"
 navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation" }
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
-profile-installer = "androidx.profileinstaller:profileinstaller:1.4.0"
+profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
 # Official feature request: https://issuetracker.google.com/issues/181282427
 reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"

@@ -14,7 +14,7 @@ hilt = "2.52"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://developer.android.com/jetpack/androidx/releases/navigation
-navigation = "2.8.2"
+navigation = "2.8.3"
 
 [libraries]
 android-activity = "androidx.activity:activity-ktx:1.9.3"

@@ -43,7 +43,7 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx"
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
 firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
-google-ads = "com.google.android.gms:play-services-ads:23.3.0"
+google-ads = "com.google.android.gms:play-services-ads:23.4.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.18.0.0"
 google-auth = "com.google.android.gms:play-services-auth:21.2.0"
 google-billing = "com.android.billingclient:billing-ktx:7.1.1"

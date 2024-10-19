@@ -25,6 +25,8 @@
 -keepclasseswithmembers class com.google.firebase.FirebaseException
 
 # Required rules for r8
+-dontwarn android.media.LoudnessCodecController$OnLoudnessCodecUpdateListener
+-dontwarn android.media.LoudnessCodecController
 -dontwarn com.facebook.infer.annotation.Nullsafe
 -dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
 -dontwarn org.apiguardian.api.API$Status

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.kevlina.budgetplus.feature.auth
 
 import android.content.Context

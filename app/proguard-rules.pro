@@ -26,5 +26,6 @@
 
 # Required rules for r8
 -dontwarn com.facebook.infer.annotation.Nullsafe
+-dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
 -dontwarn org.apiguardian.api.API$Status
 -dontwarn org.apiguardian.api.API

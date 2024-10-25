@@ -13,6 +13,8 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,11 +33,19 @@ class WelcomeViewModel @Inject constructor(
 
     private var createBookJob: Job? = null
 
-    fun createBook(name: String) {
+    private val _bookName = MutableStateFlow("")
+    val bookName = _bookName.asStateFlow()
+
+    fun setBookName(value: String) {
+        _bookName.value = value
+    }
+
+    fun createBook() {
         if (createBookJob?.isActive == true) {
             return
         }
 
+        val name = bookName.value
         createBookJob = viewModelScope.launch {
             try {
                 bookRepo.createBook(name = name, source = "welcome")

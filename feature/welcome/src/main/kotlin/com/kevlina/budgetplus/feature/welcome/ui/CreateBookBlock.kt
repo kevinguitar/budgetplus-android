@@ -19,10 +19,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,13 +38,13 @@ import com.kevlina.budgetplus.core.ui.thenIf
 @Composable
 fun CreateBookBlock(
     modifier: Modifier,
-    createBook: (String) -> Unit,
+    bookName: String,
+    onBookNameChange: (String) -> Unit,
+    createBook: () -> Unit,
     isWideMode: Boolean = false,
     applyStatusBarPadding: Boolean = true,
     applyNavBarPadding: Boolean = false,
 ) {
-
-    var value by remember { mutableStateOf("") }
 
     Box(
         modifier = modifier
@@ -125,21 +121,21 @@ fun CreateBookBlock(
             ) {
 
                 TextField(
-                    value = value,
-                    onValueChange = { value = it },
+                    value = bookName,
+                    onValueChange = onBookNameChange,
                     title = stringResource(id = R.string.book_name_title),
                     placeholder = stringResource(id = R.string.book_name_placeholder),
                     modifier = Modifier.weight(1F),
                     onDone = {
-                        if (value.isNotBlank()) {
-                            createBook(value)
+                        if (bookName.isNotBlank()) {
+                            createBook()
                         }
                     }
                 )
 
                 Button(
-                    onClick = { createBook(value) },
-                    enabled = value.isNotBlank(),
+                    onClick = createBook,
+                    enabled = bookName.isNotBlank(),
                     shape = CircleShape,
                     contentPadding = PaddingValues(),
                     modifier = Modifier.size(56.dp)
@@ -159,11 +155,22 @@ fun CreateBookBlock(
 @Preview(showBackground = true, widthDp = 400, heightDp = 240)
 @Composable
 private fun CreateBookBlock_Preview() = AppTheme {
-    CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {})
+    CreateBookBlock(
+        modifier = Modifier.fillMaxSize(),
+        bookName = "My book",
+        onBookNameChange = {},
+        createBook = {}
+    )
 }
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 240)
 @Composable
 private fun CreateBookBlockWide_Preview() = AppTheme {
-    CreateBookBlock(modifier = Modifier.fillMaxSize(), createBook = {}, isWideMode = true)
+    CreateBookBlock(
+        modifier = Modifier.fillMaxSize(),
+        bookName = "",
+        onBookNameChange = {},
+        createBook = {},
+        isWideMode = true
+    )
 }

@@ -56,12 +56,33 @@ internal class RemoteConfigImpl @Inject constructor(
         }
     }
 
-    override fun observeString(key: String, defaultValue: String): StateFlow<String> {
-        return allConfigs.mapState {
-            it[key]?.asString() ?: run {
-                Timber.d("RemoteConfig: No config found, fallback to $defaultValue")
-                defaultValue
-            }
+    override fun getString(key: String, defaultValue: String): String {
+        val value = allConfigs.value[key]?.asString()
+        return if (value == null) {
+            Timber.d("RemoteConfig: No string config found for $key, fallback to $defaultValue")
+            defaultValue
+        } else {
+            Timber.d("RemoteConfig: Resolved $key to $value")
+            value
         }
+    }
+
+    override fun getInt(key: String, defaultValue: Int): Int {
+        val value = allConfigs.value[key]?.asLong()?.toInt()
+        return if (value == null) {
+            Timber.d("RemoteConfig: No long config found for $key, fallback to $defaultValue")
+            defaultValue
+        } else {
+            Timber.d("RemoteConfig: Resolved $key to $value")
+            value
+        }
+    }
+
+    override fun observeString(key: String, defaultValue: String): StateFlow<String> {
+        return allConfigs.mapState { getString(key, defaultValue) }
+    }
+
+    override fun observeInt(key: String, defaultValue: Int): StateFlow<Int> {
+        return allConfigs.mapState { getInt(key, defaultValue) }
     }
 }

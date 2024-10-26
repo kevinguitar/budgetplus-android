@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.RecordRepo
+import com.kevlina.budgetplus.core.data.RemoteConfig
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
@@ -47,6 +48,7 @@ class RecordViewModel @Inject constructor(
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
+    private val remoteConfig: RemoteConfig,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
@@ -164,15 +166,21 @@ class RecordViewModel @Inject constructor(
 
     /**
      *  This callback does several things
-     *  - Show full screen Ad on every [FULLSCREEN_AD_RECORDS] records
+     *  - Show full screen Ad on every [RECORD_COUNT_CYCLE] records
      *  - Request notification permission after the 2nd record
      *  - Request in app review after the 4th record
      */
     private fun onRecordCreated(context: Context) {
         val activity = context as? Activity ?: return
+        val interstitialAdFrequency = remoteConfig.getInt("interstitial_ad_frequency", RECORD_COUNT_CYCLE)
+        val disableInterstitial = interstitialAdFrequency == -1
+        val countToMod = if (disableInterstitial) RECORD_COUNT_CYCLE else interstitialAdFrequency
 
-        when (recordCount % FULLSCREEN_AD_RECORDS) {
-            RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
+        when (recordCount % countToMod) {
+            RECORD_SHOW_AD -> if (!disableInterstitial) {
+                fullScreenAdsLoader.showAd(activity)
+            }
+
             RECORD_REQUEST_PERMISSION -> _requestPermissionEvent.sendEvent()
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
@@ -184,9 +192,9 @@ class RecordViewModel @Inject constructor(
 
     private companion object {
         /**
-         *  Show full screen Ad on every [FULLSCREEN_AD_RECORDS] records
+         *  Show full screen Ad on every [RECORD_COUNT_CYCLE] records
          */
-        const val FULLSCREEN_AD_RECORDS = 5
+        const val RECORD_COUNT_CYCLE = 5
         const val RECORD_SHOW_AD = 0
         const val RECORD_REQUEST_PERMISSION = 2
         const val RECORD_REQUEST_REVIEW = 4

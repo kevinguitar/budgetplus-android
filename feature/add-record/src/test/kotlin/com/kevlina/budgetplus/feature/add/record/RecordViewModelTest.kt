@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.FakeRecordRepo
+import com.kevlina.budgetplus.core.data.FakeRemoteConfig
 import com.kevlina.budgetplus.core.data.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
@@ -171,6 +172,7 @@ class RecordViewModelTest {
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
         stringProvider = stringProvider,
+        remoteConfig = FakeRemoteConfig(),
         preferenceHolder = FakePreferenceHolder {
             put("recordCount", recordCount)
         },

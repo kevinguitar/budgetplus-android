@@ -60,6 +60,9 @@ class RecordsViewModel @AssistedInject constructor(
         .toList()
         .sortedByDescending { (_, v) -> v.sumOf { it.price } }
         .map { it.first }
+        // When the app was previously killed, the RecordsObserver will be cleared, added
+        // the target category from screen param manually to avoid displaying empty data.
+        .ifEmpty { listOf(params.category) }
 
     val initialPage = categories.indexOf(params.category).coerceAtLeast(0)
     val pageSize get() = categories.size

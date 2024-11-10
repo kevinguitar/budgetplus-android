@@ -128,13 +128,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -151,8 +152,23 @@ fun DatePickerDialog(
     onDatePicked: (LocalDate) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val dateState = rememberDatePickerState(
+        initialSelectedDateMillis = date.utcMillis,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return when {
+                    minDate != null && maxDate != null -> {
+                        utcTimeMillis >= minDate.utcMillis && utcTimeMillis <= maxDate.utcMillis
+                    }
 
-    val dateState = rememberDatePickerState(initialSelectedDateMillis = date.utcMillis)
+                    minDate != null -> utcTimeMillis >= minDate.utcMillis
+                    maxDate != null -> utcTimeMillis <= maxDate.utcMillis
+                    else -> true
+                }
+            }
+        }
+    )
+
     val colors = DatePickerDefaults.colors(
         containerColor = LocalAppColors.current.light,
         currentYearContentColor = LocalAppColors.current.dark,
@@ -169,7 +185,7 @@ fun DatePickerDialog(
         dismissButton = {
             Text(
                 text = stringResource(id = R.string.cta_cancel),
-                color = Color.Black,
+                color = LocalAppColors.current.dark,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(8.dp))
@@ -180,7 +196,7 @@ fun DatePickerDialog(
         confirmButton = {
             Text(
                 text = stringResource(id = R.string.cta_confirm),
-                color = Color.Black,
+                color = LocalAppColors.current.dark,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .padding(end = 16.dp)
@@ -201,19 +217,9 @@ fun DatePickerDialog(
             title = {
                 Text(
                     text = stringResource(id = R.string.select_date),
-                    color = Color.Black
+                    color = LocalAppColors.current.dark,
+                    modifier = Modifier.padding(16.dp)
                 )
-            },
-            dateValidator = { millis ->
-                when {
-                    minDate != null && maxDate != null -> {
-                        millis >= minDate.utcMillis && millis <= maxDate.utcMillis
-                    }
-
-                    minDate != null -> millis >= minDate.utcMillis
-                    maxDate != null -> millis <= maxDate.utcMillis
-                    else -> true
-                }
             }
         )
     }
@@ -224,4 +230,14 @@ private val LocalDate.utcMillis
 
 private val Long.utcLocaleDate: LocalDate
     get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()
+
+@Preview
+@Composable
+private fun DatePickerDialog_Preview() = AppTheme {
+    DatePickerDialog(
+        date = LocalDate.now(),
+        onDismiss = {},
+        onDatePicked = {}
+    )
+}
 */

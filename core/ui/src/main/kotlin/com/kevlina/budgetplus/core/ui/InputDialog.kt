@@ -2,19 +2,15 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -30,12 +26,7 @@ fun InputDialog(
     onDismiss: () -> Unit,
 ) {
 
-    var input by remember {
-        mutableStateOf(TextFieldValue(
-            text = currentInput.orEmpty(),
-            selection = TextRange(currentInput.orEmpty().length)
-        ))
-    }
+    val input = rememberTextFieldState(initialText = currentInput.orEmpty())
 
     val focusRequester = remember { FocusRequester() }
 
@@ -46,14 +37,13 @@ fun InputDialog(
         ) {
 
             TextField(
-                value = input,
-                onValueChange = { input = it },
+                state = input,
                 title = title,
                 placeholder = placeholder,
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
                     if (input.text.isNotBlank() && input.text != currentInput) {
-                        onButtonClicked(input.text.trim())
+                        onButtonClicked(input.text.trim().toString())
                         onDismiss()
                     }
                 }
@@ -61,7 +51,7 @@ fun InputDialog(
 
             Button(
                 onClick = {
-                    onButtonClicked(input.text.trim())
+                    onButtonClicked(input.text.trim().toString())
                     onDismiss()
                 },
                 enabled = input.text.isNotBlank() && input.text != currentInput,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -17,12 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
@@ -61,20 +60,9 @@ fun EditRecordDialog(
         mutableStateOf(editRecord.category)
     }
 
-    var name by remember {
-        mutableStateOf(TextFieldValue(
-            text = editRecord.name,
-            selection = TextRange(editRecord.name.length)
-        ))
-    }
+    val name = rememberTextFieldState(initialText = editRecord.name)
 
-    var priceText by remember {
-        val text = editRecord.price.plainPriceString
-        mutableStateOf(TextFieldValue(
-            text = text,
-            selection = TextRange(text.length)
-        ))
-    }
+    val priceText = rememberTextFieldState(initialText = editRecord.price.plainPriceString)
 
     var dialogState by remember { mutableStateOf(EditRecordDialogState.ShowRecord) }
 
@@ -90,8 +78,8 @@ fun EditRecordDialog(
             record = editRecord,
             newDate = date,
             newCategory = category,
-            newName = name.text,
-            newPriceText = priceText.text,
+            newName = name.text.toString(),
+            newPriceText = priceText.text.toString(),
             editBatch = editBatch
         )
     }
@@ -124,14 +112,13 @@ fun EditRecordDialog(
                         SingleDatePicker(
                             date = date,
                             modifier = Modifier
-                                    .rippleClick { dialogState = EditRecordDialogState.PickingDate }
-                                    .padding(vertical = 4.dp)
+                                .rippleClick { dialogState = EditRecordDialogState.PickingDate }
+                                .padding(vertical = 4.dp)
                         )
                     }
 
                     TextField(
-                        value = name,
-                        onValueChange = { name = it },
+                        state = name,
                         modifier = Modifier.focusRequester(nameFocus),
                         title = stringResource(id = R.string.record_note),
                         keyboardOptions = KeyboardOptions(
@@ -141,8 +128,7 @@ fun EditRecordDialog(
                     )
 
                     TextField(
-                        value = priceText,
-                        onValueChange = { priceText = it },
+                        state = priceText,
                         modifier = Modifier.focusRequester(priceFocus),
                         title = stringResource(id = R.string.record_price),
                         keyboardOptions = KeyboardOptions(
@@ -240,7 +226,7 @@ fun EditRecordDialog(
     }
 }
 
-private fun String.isPriceTextValid(): Boolean {
+private fun CharSequence.isPriceTextValid(): Boolean {
     return isNotBlank() && try {
         parseToPrice() > 0.0
     } catch (e: Exception) {

@@ -3,20 +3,16 @@ package com.kevlina.budgetplus.feature.edit.category
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
@@ -38,14 +34,7 @@ fun EditCategoryDialog(
 
     val currentName = (mode as? CategoryEditMode.Rename)?.currentName.orEmpty()
 
-    var name by remember {
-        mutableStateOf(
-            TextFieldValue(
-                text = currentName,
-                selection = TextRange(currentName.length)
-            )
-        )
-    }
+    val name = rememberTextFieldState(initialText = currentName)
 
     val focusRequester = remember { FocusRequester() }
 
@@ -54,13 +43,12 @@ fun EditCategoryDialog(
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
             TextField(
-                value = name,
-                onValueChange = { name = it },
+                state = name,
                 title = stringResource(id = R.string.category_title),
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
                     if (name.text.isNotBlank() && name.text != currentName) {
-                        onConfirm(name.text)
+                        onConfirm(name.text.toString())
                         onDismiss()
                     }
                 }
@@ -86,7 +74,7 @@ fun EditCategoryDialog(
 
                 Button(
                     onClick = {
-                        onConfirm(name.text)
+                        onConfirm(name.text.toString())
                         onDismiss()
                     },
                     enabled = name.text.isNotBlank() && name.text != currentName,

@@ -11,6 +11,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +26,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -58,7 +59,6 @@ fun TextField(
     onTitleClick = onTitleClick,
     fontSize = fontSize
 ) {
-
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
@@ -92,8 +92,7 @@ fun TextField(
 
 @Composable
 fun TextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
+    state: TextFieldState,
     modifier: Modifier = Modifier,
     title: String,
     onTitleClick: (() -> Unit)? = null,
@@ -106,17 +105,15 @@ fun TextField(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
     ),
-    onDone: (KeyboardActionScope.() -> Unit)? = null,
+    onDone: (() -> Unit)? = null,
 ) = TextFieldInternal(
     modifier = modifier,
     title = title,
     onTitleClick = onTitleClick,
     fontSize = fontSize
 ) {
-
     BasicTextField(
-        value = value,
-        onValueChange = onValueChange,
+        state = state,
         enabled = enabled,
         readOnly = readOnly,
         modifier = Modifier.weight(1F),
@@ -126,11 +123,19 @@ fun TextField(
             fontSize = fontSize
         ),
         keyboardOptions = keyboardOptions,
-        keyboardActions = KeyboardActions(onDone = onDone),
-        singleLine = singleLine,
+        onKeyboardAction = if (onDone == null) {
+            null
+        } else {
+            { onDone.invoke() }
+        },
+        lineLimits = if (singleLine) {
+            TextFieldLineLimits.SingleLine
+        } else {
+            TextFieldLineLimits.MultiLine()
+        },
         cursorBrush = SolidColor(LocalAppColors.current.dark),
-        decorationBox = @Composable { innerTextField ->
-            if (value.text.isEmpty() && placeholder != null) {
+        decorator = @Composable { innerTextField ->
+            if (state.text.isEmpty() && placeholder != null) {
                 Text(
                     text = placeholder,
                     textAlign = TextAlign.End,

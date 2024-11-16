@@ -11,8 +11,8 @@ private val numberFormat: NumberFormat
             it.maximumFractionDigits = 2
         }
 
-fun String.parseToPrice(): Double {
-    return requireNotNull(numberFormat.parse(this)) {
+fun CharSequence.parseToPrice(): Double {
+    return requireNotNull(numberFormat.parse(toString())) {
         "Incorrect price format: $this"
     }.toDouble()
 }

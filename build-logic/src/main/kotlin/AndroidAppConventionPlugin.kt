@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import common.libs
 import common.localProperty
 import org.gradle.api.Plugin
@@ -68,6 +69,10 @@ class AndroidAppConventionPlugin : Plugin<Project> {
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"
                     )
+                    configure<CrashlyticsExtension> {
+                        mappingFileUploadEnabled = true
+                        nativeSymbolUploadEnabled = true
+                    }
                 }
 
                 create("benchmark") {

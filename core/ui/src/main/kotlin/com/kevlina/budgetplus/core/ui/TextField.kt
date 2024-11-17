@@ -3,13 +3,10 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActionScope
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -34,61 +31,6 @@ internal const val PLACEHOLDER_ALPHA = 0.5F
 
 @Composable
 fun TextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    title: String,
-    onTitleClick: (() -> Unit)? = null,
-    placeholder: String? = null,
-    enabled: Boolean = true,
-    singleLine: Boolean = true,
-    readOnly: Boolean = false,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    letterSpacing: TextUnit = TextUnit.Unspecified,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(
-        capitalization = KeyboardCapitalization.Sentences,
-        imeAction = ImeAction.Done
-    ),
-    onDone: (KeyboardActionScope.() -> Unit)? = null,
-) = TextFieldInternal(
-    modifier = modifier,
-    title = title,
-    onTitleClick = onTitleClick,
-    fontSize = fontSize
-) {
-    BasicTextField(
-        value = value,
-        onValueChange = onValueChange,
-        enabled = enabled,
-        readOnly = readOnly,
-        modifier = Modifier.weight(1F),
-        textStyle = TextStyle(
-            color = LocalAppColors.current.dark,
-            textAlign = TextAlign.End,
-            fontSize = fontSize,
-            letterSpacing = letterSpacing
-        ),
-        keyboardOptions = keyboardOptions,
-        keyboardActions = KeyboardActions(onDone = onDone),
-        singleLine = singleLine,
-        cursorBrush = SolidColor(LocalAppColors.current.dark),
-        decorationBox = @Composable { innerTextField ->
-            if (value.isEmpty() && placeholder != null) {
-                Text(
-                    text = placeholder,
-                    textAlign = TextAlign.End,
-                    fontSize = fontSize,
-                    modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
-                )
-            }
-
-            innerTextField()
-        }
-    )
-}
-
-@Composable
-fun TextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     title: String,
@@ -104,59 +46,7 @@ fun TextField(
         imeAction = ImeAction.Done
     ),
     onDone: (() -> Unit)? = null,
-) = TextFieldInternal(
-    modifier = modifier,
-    title = title,
-    onTitleClick = onTitleClick,
-    fontSize = fontSize
 ) {
-    BasicTextField(
-        state = state,
-        enabled = enabled,
-        readOnly = readOnly,
-        modifier = Modifier.weight(1F),
-        textStyle = TextStyle(
-            color = LocalAppColors.current.dark,
-            textAlign = TextAlign.End,
-            fontSize = fontSize,
-            letterSpacing = letterSpacing
-        ),
-        keyboardOptions = keyboardOptions,
-        onKeyboardAction = if (onDone == null) {
-            null
-        } else {
-            { onDone.invoke() }
-        },
-        lineLimits = if (singleLine) {
-            TextFieldLineLimits.SingleLine
-        } else {
-            TextFieldLineLimits.MultiLine()
-        },
-        cursorBrush = SolidColor(LocalAppColors.current.dark),
-        decorator = @Composable { innerTextField ->
-            if (state.text.isEmpty() && placeholder != null) {
-                Text(
-                    text = placeholder,
-                    textAlign = TextAlign.End,
-                    fontSize = fontSize,
-                    modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
-                )
-            }
-
-            innerTextField()
-        }
-    )
-}
-
-@Composable
-private fun TextFieldInternal(
-    modifier: Modifier,
-    title: String,
-    onTitleClick: (() -> Unit)? = null,
-    fontSize: TextUnit,
-    content: @Composable RowScope.() -> Unit,
-) {
-
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -168,7 +58,6 @@ private fun TextFieldInternal(
             )
             .padding(horizontal = 16.dp)
     ) {
-
         Text(
             text = title,
             fontWeight = FontWeight.SemiBold,
@@ -181,7 +70,42 @@ private fun TextFieldInternal(
             }
         )
 
-        content()
+        BasicTextField(
+            state = state,
+            enabled = enabled,
+            readOnly = readOnly,
+            modifier = Modifier.weight(1F),
+            textStyle = TextStyle(
+                color = LocalAppColors.current.dark,
+                textAlign = TextAlign.End,
+                fontSize = fontSize,
+                letterSpacing = letterSpacing
+            ),
+            keyboardOptions = keyboardOptions,
+            onKeyboardAction = if (onDone == null) {
+                null
+            } else {
+                { onDone.invoke() }
+            },
+            lineLimits = if (singleLine) {
+                TextFieldLineLimits.SingleLine
+            } else {
+                TextFieldLineLimits.MultiLine()
+            },
+            cursorBrush = SolidColor(LocalAppColors.current.dark),
+            decorator = @Composable { innerTextField ->
+                if (state.text.isEmpty() && placeholder != null) {
+                    Text(
+                        text = placeholder,
+                        textAlign = TextAlign.End,
+                        fontSize = fontSize,
+                        modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
+                    )
+                }
+
+                innerTextField()
+            }
+        )
     }
 }
 

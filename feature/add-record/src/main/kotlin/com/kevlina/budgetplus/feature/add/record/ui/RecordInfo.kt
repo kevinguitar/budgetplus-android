@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -38,7 +39,6 @@ internal fun RecordInfo(
     val focusManager = LocalFocusManager.current
 
     val type by uiState.type.collectAsStateWithLifecycle()
-    val note by uiState.note.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
 
@@ -61,8 +61,7 @@ internal fun RecordInfo(
         )
 
         TextField(
-            value = note,
-            onValueChange = uiState.setNote,
+            state = uiState.note,
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(
                 id = when (type) {
@@ -85,9 +84,8 @@ internal fun RecordInfo(
 @Stable
 internal class RecordInfoUiState(
     val type: StateFlow<RecordType>,
-    val note: StateFlow<String>,
+    val note: TextFieldState,
     val setType: (RecordType) -> Unit,
-    val setNote: (String) -> Unit,
     val scrollable: Boolean,
     val categoriesGridUiState: CategoriesGridUiState,
     val dateAndPricingUiState: DateAndPricingUiState,
@@ -95,9 +93,8 @@ internal class RecordInfoUiState(
     companion object {
         val preview = RecordInfoUiState(
             type = MutableStateFlow(RecordType.Expense),
-            note = MutableStateFlow("Some cool daily stuff"),
+            note = TextFieldState("Some cool daily stuff"),
             setType = {},
-            setNote = {},
             scrollable = false,
             categoriesGridUiState = CategoriesGridUiState.preview,
             dateAndPricingUiState = DateAndPricingUiState.preview

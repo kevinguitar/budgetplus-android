@@ -1,5 +1,8 @@
 package com.kevlina.budgetplus.feature.batch.record
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventTrigger
@@ -42,11 +45,8 @@ internal class BatchRecordViewModel @Inject constructor(
     private val _startRecordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
     val startRecordDate: StateFlow<RecordDateState> = _startRecordDate.asStateFlow()
 
-    private val _note = MutableStateFlow("")
-    val note: StateFlow<String> = _note.asStateFlow()
-
-    private val _priceText = MutableStateFlow("")
-    val priceText: StateFlow<String> = _priceText.asStateFlow()
+    val note = TextFieldState()
+    val priceText = TextFieldState()
 
     private val _frequency = MutableStateFlow(BatchFrequency.Monthly)
     val frequency: StateFlow<BatchFrequency> = _frequency.asStateFlow()
@@ -59,7 +59,7 @@ internal class BatchRecordViewModel @Inject constructor(
 
     val isBatchButtonEnabled: StateFlow<Boolean> = combine(
         categoriesVm.category,
-        priceText
+        snapshotFlow { priceText.text }
     ) { category, priceText ->
         category != null && priceText.isNotEmpty() && priceText != EMPTY_PRICE
     }
@@ -77,14 +77,6 @@ internal class BatchRecordViewModel @Inject constructor(
         }
     }
 
-    fun setNote(note: String) {
-        _note.value = note
-    }
-
-    fun setPriceText(priceText: String) {
-        _priceText.value = priceText
-    }
-
     fun setFrequency(frequency: BatchFrequency) {
         _frequency.value = frequency
     }
@@ -96,7 +88,7 @@ internal class BatchRecordViewModel @Inject constructor(
     fun batchRecord() {
         val category = categoriesVm.category.value ?: return
         val price = try {
-            priceText.value.toDouble()
+            priceText.text.toString().toDouble()
         } catch (e: Exception) {
             snackbarSender.sendError(e)
             return
@@ -105,7 +97,7 @@ internal class BatchRecordViewModel @Inject constructor(
         val record = Record(
             type = type.value,
             category = category,
-            name = note.value.trim().ifEmpty { category },
+            name = note.text.trim().ifEmpty { category }.toString(),
             price = price,
             author = authManager.userState.value?.toAuthor()
         )
@@ -123,8 +115,8 @@ internal class BatchRecordViewModel @Inject constructor(
 
     private fun resetScreen() {
         categoriesVm.setCategory(null)
-        _note.value = ""
-        _priceText.value = EMPTY_PRICE
+        note.clearText()
+        priceText.clearText()
     }
 
     private companion object {

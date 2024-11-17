@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.feature.add.record
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
@@ -56,8 +58,7 @@ class RecordViewModel @Inject constructor(
     private val _recordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
     val recordDate: StateFlow<RecordDateState> = _recordDate.asStateFlow()
 
-    private val _note = MutableStateFlow("")
-    val note: StateFlow<String> = _note.asStateFlow()
+    val note = TextFieldState()
 
     val recordEvent = EventTrigger<Unit>()
 
@@ -86,10 +87,6 @@ class RecordViewModel @Inject constructor(
         } else {
             RecordDateState.Other(date)
         }
-    }
-
-    fun setNote(note: String) {
-        _note.value = note
     }
 
     fun shareJoinLink(context: Context) {
@@ -142,7 +139,7 @@ class RecordViewModel @Inject constructor(
             date = recordDate.value.date.toEpochDay(),
             timestamp = recordDate.value.date.withCurrentTime,
             category = category,
-            name = note.value.trim().ifEmpty { category },
+            name = note.text.trim().ifEmpty { category }.toString(),
             price = calculatorVm.price.value,
             author = authManager.userState.value?.toAuthor()
         )
@@ -158,7 +155,7 @@ class RecordViewModel @Inject constructor(
 
     private fun resetScreen() {
         categoriesVm.setCategory(null)
-        _note.value = ""
+        note.clearText()
         calculatorVm.clearPrice()
     }
 

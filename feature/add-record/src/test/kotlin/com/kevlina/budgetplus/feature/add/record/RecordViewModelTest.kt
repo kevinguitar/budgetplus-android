@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.FakeStringProvider
@@ -54,7 +55,7 @@ class RecordViewModelTest {
 
         createModel().apply {
             setDate(date)
-            setNote("Test note")
+            note.setTextAndPlaceCursorAtEnd("Test note")
             setType(RecordType.Income)
         }
 
@@ -98,16 +99,15 @@ class RecordViewModelTest {
 
     @Test
     fun `reset screen after the record is recorded`() = runTest {
-        val model = createModel().apply {
-            setNote("Test note")
-        }
+        val model = createModel()
+        model.note.setTextAndPlaceCursorAtEnd("Test note")
 
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
         assertThat(categoriesVm.category.value).isNull()
-        assertThat(model.note.value).isEmpty()
-        assertThat(calculatorVm.priceText.value).isEqualTo("0")
+        assertThat(model.note.text.toString()).isEmpty()
+        assertThat(calculatorVm.priceText.text).isEqualTo("0")
     }
 
     @Test

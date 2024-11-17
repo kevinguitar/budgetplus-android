@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,11 +49,11 @@ internal fun ColumnScope.DateAndPricing(
 
     val recordDate by uiState.recordDate.collectAsStateWithLifecycle()
     val currencySymbol by uiState.currencySymbol.collectAsStateWithLifecycle()
-    val priceText by uiState.priceText.collectAsStateWithLifecycle()
 
     var showDatePicker by remember { mutableStateOf(false) }
 
     if (uiState.scrollable) {
+        val priceText = uiState.priceText.text
         LaunchedEffect(key1 = priceText) {
             if (priceText != CalculatorViewModel.EMPTY_PRICE) {
                 focusManager.clearFocusSafe()
@@ -78,8 +79,7 @@ internal fun ColumnScope.DateAndPricing(
         )
 
         TextField(
-            value = priceText,
-            onValueChange = {},
+            state = uiState.priceText,
             fontSize = FontSize.Header,
             letterSpacing = 0.5.sp,
             readOnly = true,
@@ -104,7 +104,7 @@ internal fun ColumnScope.DateAndPricing(
 internal class DateAndPricingUiState(
     val recordDate: StateFlow<RecordDateState>,
     val currencySymbol: StateFlow<String>,
-    val priceText: StateFlow<String>,
+    val priceText: TextFieldState,
     val scrollable: Boolean,
     val setDate: (LocalDate) -> Unit,
     val editCurrency: () -> Unit,
@@ -113,7 +113,7 @@ internal class DateAndPricingUiState(
         val preview = DateAndPricingUiState(
             recordDate = MutableStateFlow(RecordDateState.Now),
             currencySymbol = MutableStateFlow("$"),
-            priceText = MutableStateFlow("2344"),
+            priceText = TextFieldState("2344"),
             scrollable = false,
             setDate = {},
             editCurrency = {}

@@ -41,8 +41,8 @@ import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.R
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 enum class CalculatorButton(val text: Char) {
@@ -53,7 +53,7 @@ enum class CalculatorButton(val text: Char) {
 
     One('1'), Zero('0'),
     Two('2'), Dot('.'),
-    Three('3'), Back('<'),
+    Three('3'), Delete('<'),
     Minus('-'), Plus('+');
 }
 
@@ -72,7 +72,7 @@ internal fun Calculator(
 ) {
 
     val context = LocalContext.current
-    val needEvaluate by uiState.needEvaluate.collectAsStateWithLifecycle()
+    val needEvaluate by uiState.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
 
     Column(
         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
@@ -158,7 +158,7 @@ private fun ColumnScope.CalculatorBtn(
         Box(contentAlignment = Alignment.Center) {
 
             when (button) {
-                CalculatorButton.Back -> Icon(
+                CalculatorButton.Delete -> Icon(
                     imageVector = Icons.AutoMirrored.Rounded.Backspace,
                     contentDescription = stringResource(id = coreCommonR.string.cta_delete),
                     tint = LocalAppColors.current.light
@@ -263,7 +263,7 @@ private fun RowScope.DoneBtn(
 
 @Stable
 internal data class CalculatorUiState(
-    val needEvaluate: StateFlow<Boolean>,
+    val needEvaluate: Flow<Boolean>,
     val adaptiveButton: Boolean,
     val onInput: (CalculatorButton) -> Unit,
     val onCalculatorAction: (Context, CalculatorAction) -> Unit,

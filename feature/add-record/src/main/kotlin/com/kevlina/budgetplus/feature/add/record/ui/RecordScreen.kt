@@ -154,7 +154,6 @@ private fun RecordViewModel.toUiState(
         type = type,
         note = note,
         setType = ::setType,
-        setNote = ::setNote,
         scrollable = scrollable,
         categoriesGridUiState = categoriesVm.toUiState(
             type = type,

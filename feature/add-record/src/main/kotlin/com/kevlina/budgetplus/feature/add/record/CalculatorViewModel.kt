@@ -1,18 +1,24 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import android.content.Context
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.delete
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.runtime.snapshotFlow
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import net.objecthunter.exp4j.ExpressionBuilder
 import timber.log.Timber
 import java.math.RoundingMode
@@ -23,14 +29,17 @@ class CalculatorViewModel @Inject constructor(
     private val snackbarSender: SnackbarSender,
 ) {
 
-    private val _priceText = MutableStateFlow(EMPTY_PRICE)
-    val priceText: StateFlow<String> = _priceText.asStateFlow()
+    val priceText = TextFieldState(EMPTY_PRICE)
 
     private val _price = MutableStateFlow(0.0)
     val price: StateFlow<Double> = _price.asStateFlow()
 
-    val needEvaluate: StateFlow<Boolean> = priceText.mapState { text ->
-        text.any { it in operatorChars }
+    val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
+        .map { text -> text.any { it in operatorChars } }
+        .distinctUntilChanged()
+
+    init {
+        println("DEBUG: test started ")
     }
 
     private val _recordFlow = MutableEventFlow<Context>()
@@ -48,17 +57,19 @@ class CalculatorViewModel @Inject constructor(
     fun onInput(btn: CalculatorButton) {
         vibrator.vibrate()
 
-        val currentText = priceText.value
+        val currentText = priceText.text
         when (btn) {
-            CalculatorButton.Back -> delete()
+            CalculatorButton.Delete -> delete()
 
             // Replace the latest operator
             CalculatorButton.Plus, CalculatorButton.Minus,
             CalculatorButton.Multiply, CalculatorButton.Divide,
-            -> when {
+                -> when {
                 currentText == EMPTY_PRICE -> Unit
                 currentText.last() in operatorChars -> {
-                    _priceText.value = currentText.dropLast(1) + btn.text
+                    priceText.edit {
+                        replace(length - 1, length, btn.text.toString())
+                    }
                 }
 
                 else -> appendText(btn)
@@ -79,7 +90,7 @@ class CalculatorViewModel @Inject constructor(
             }
 
             else -> if (currentText == EMPTY_PRICE) {
-                _priceText.value = btn.text.toString()
+                priceText.setTextAndPlaceCursorAtEnd(btn.text.toString())
             } else {
                 appendText(btn)
             }
@@ -87,11 +98,11 @@ class CalculatorViewModel @Inject constructor(
     }
 
     private fun appendText(btn: CalculatorButton) {
-        _priceText.value = priceText.value + btn.text
+        priceText.edit { append(btn.text) }
     }
 
     private fun evaluate() {
-        val text = priceText.value
+        val text = priceText.text.toString()
             .replace(CalculatorButton.Multiply.text, '*')
             .replace(CalculatorButton.Divide.text, '/')
 
@@ -111,7 +122,7 @@ class CalculatorViewModel @Inject constructor(
             return
         }
 
-        _priceText.value = rawResult.plainPriceString
+        priceText.setTextAndPlaceCursorAtEnd(rawResult.plainPriceString)
         _price.value = rawResult.toBigDecimal()
             .setScale(2, RoundingMode.HALF_UP)
             .toDouble()
@@ -119,7 +130,7 @@ class CalculatorViewModel @Inject constructor(
 
     fun clearPrice() {
         _price.value = 0.0
-        _priceText.value = EMPTY_PRICE
+        priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
     }
 
     fun onCalculatorAction(context: Context, action: CalculatorAction) {
@@ -135,10 +146,11 @@ class CalculatorViewModel @Inject constructor(
     }
 
     private fun delete() {
-        val currentPrice = priceText.value
-        when {
-            currentPrice.length == 1 -> _priceText.value = EMPTY_PRICE
-            currentPrice.isNotEmpty() -> _priceText.value = currentPrice.dropLast(1)
+        priceText.edit {
+            when {
+                length == 1 -> replace(0, length, EMPTY_PRICE)
+                length > 1 -> delete(length - 1, length)
+            }
         }
     }
 

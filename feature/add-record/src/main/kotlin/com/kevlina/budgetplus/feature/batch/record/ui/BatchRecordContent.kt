@@ -40,9 +40,7 @@ internal fun BatchRecordContent() {
     val focusManager = LocalFocusManager.current
 
     val type by vm.type.collectAsStateWithLifecycle()
-    val note by vm.note.collectAsStateWithLifecycle()
     val currencySymbol by vm.bookRepo.currencySymbol.collectAsStateWithLifecycle()
-    val priceText by vm.priceText.collectAsStateWithLifecycle()
     val isBatchButtonEnabled by vm.isBatchButtonEnabled.collectAsStateWithLifecycle()
 
     Column(
@@ -67,8 +65,7 @@ internal fun BatchRecordContent() {
         )
 
         TextField(
-            value = note,
-            onValueChange = vm::setNote,
+            state = vm.note,
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(
                 id = when (type) {
@@ -81,8 +78,7 @@ internal fun BatchRecordContent() {
         )
 
         TextField(
-            value = priceText,
-            onValueChange = vm::setPriceText,
+            state = vm.priceText,
             fontSize = FontSize.Header,
             title = currencySymbol,
             placeholder = "0",

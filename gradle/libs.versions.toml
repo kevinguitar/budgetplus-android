@@ -74,6 +74,7 @@ reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.4.4"
+turbine = "app.cash.turbine:turbine:1.2.0"
 
 [bundles]
 compose = [
@@ -89,6 +90,7 @@ test = [
     "junit-core",
     "mockk",
     "truth",
+    "turbine"
 ]
 
 [plugins]

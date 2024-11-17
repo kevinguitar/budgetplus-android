@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +40,7 @@ import com.kevlina.budgetplus.core.ui.thenIf
 @Composable
 fun CreateBookBlock(
     modifier: Modifier,
-    bookName: String,
-    onBookNameChange: (String) -> Unit,
+    bookName: TextFieldState,
     createBook: () -> Unit,
     isWideMode: Boolean = false,
     applyStatusBarPadding: Boolean = true,
@@ -121,13 +122,12 @@ fun CreateBookBlock(
             ) {
 
                 TextField(
-                    value = bookName,
-                    onValueChange = onBookNameChange,
+                    state = bookName,
                     title = stringResource(id = R.string.book_name_title),
                     placeholder = stringResource(id = R.string.book_name_placeholder),
                     modifier = Modifier.weight(1F),
                     onDone = {
-                        if (bookName.isNotBlank()) {
+                        if (bookName.text.isNotBlank()) {
                             createBook()
                         }
                     }
@@ -135,7 +135,7 @@ fun CreateBookBlock(
 
                 Button(
                     onClick = createBook,
-                    enabled = bookName.isNotBlank(),
+                    enabled = bookName.text.isNotBlank(),
                     shape = CircleShape,
                     contentPadding = PaddingValues(),
                     modifier = Modifier.size(56.dp)
@@ -157,8 +157,7 @@ fun CreateBookBlock(
 private fun CreateBookBlock_Preview() = AppTheme {
     CreateBookBlock(
         modifier = Modifier.fillMaxSize(),
-        bookName = "My book",
-        onBookNameChange = {},
+        bookName = rememberTextFieldState("My book"),
         createBook = {}
     )
 }
@@ -168,8 +167,7 @@ private fun CreateBookBlock_Preview() = AppTheme {
 private fun CreateBookBlockWide_Preview() = AppTheme {
     CreateBookBlock(
         modifier = Modifier.fillMaxSize(),
-        bookName = "",
-        onBookNameChange = {},
+        bookName = rememberTextFieldState(""),
         createBook = {},
         isWideMode = true
     )

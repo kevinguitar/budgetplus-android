@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +28,8 @@ import com.kevlina.budgetplus.core.ui.TextField
 @Composable
 internal fun LanguageBlock(
     @StringRes textRes: Int,
-    title: String,
-    onTitleUpdate: (String) -> Unit,
-    description: String,
-    onDescriptionUpdate: (String) -> Unit,
+    title: TextFieldState,
+    description: TextFieldState,
     modifier: Modifier = Modifier,
     isOptional: Boolean = true,
     enabled: Boolean = true,
@@ -60,16 +60,14 @@ internal fun LanguageBlock(
 
         if (enabled) {
             TextField(
-                value = title,
-                onValueChange = onTitleUpdate,
+                state = title,
                 title = stringResource(id = R.string.push_notif_push_title),
                 singleLine = false,
                 modifier = Modifier.height(80.dp)
             )
 
             TextField(
-                value = description,
-                onValueChange = onDescriptionUpdate,
+                state = description,
                 title = stringResource(id = R.string.push_notif_push_description),
                 singleLine = false,
                 modifier = Modifier.height(80.dp)
@@ -83,10 +81,8 @@ internal fun LanguageBlock(
 private fun LanguageBlock_Preview() = AppTheme {
     LanguageBlock(
         textRes = R.string.push_notif_language_zh_tw,
-        title = "推播標題\n第二行",
-        onTitleUpdate = {},
-        description = "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~",
-        onDescriptionUpdate = {},
+        title = rememberTextFieldState("推播標題\n第二行"),
+        description = rememberTextFieldState("記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"),
         isOptional = false,
         modifier = Modifier
             .background(LocalAppColors.current.light)
@@ -99,10 +95,8 @@ private fun LanguageBlock_Preview() = AppTheme {
 private fun LanguageBlockOptional_Preview() = AppTheme {
     LanguageBlock(
         textRes = R.string.push_notif_language_ja,
-        title = "新しい月ですよ！",
-        onTitleUpdate = {},
-        description = "月初めに支出の追跡を始めましょう",
-        onDescriptionUpdate = {},
+        title = rememberTextFieldState("新しい月ですよ！"),
+        description = rememberTextFieldState("月初めに支出の追跡を始めましょう"),
         isOptional = true,
         modifier = Modifier
             .background(LocalAppColors.current.light)

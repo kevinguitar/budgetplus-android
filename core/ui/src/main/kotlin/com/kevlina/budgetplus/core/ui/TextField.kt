@@ -13,11 +13,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -101,6 +98,7 @@ fun TextField(
     singleLine: Boolean = true,
     readOnly: Boolean = false,
     fontSize: TextUnit = TextUnit.Unspecified,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
@@ -120,7 +118,8 @@ fun TextField(
         textStyle = TextStyle(
             color = LocalAppColors.current.dark,
             textAlign = TextAlign.End,
-            fontSize = fontSize
+            fontSize = fontSize,
+            letterSpacing = letterSpacing
         ),
         keyboardOptions = keyboardOptions,
         onKeyboardAction = if (onDone == null) {
@@ -189,10 +188,9 @@ private fun TextFieldInternal(
 @Preview
 @Composable
 private fun TextField_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
-    var input by remember { mutableStateOf("") }
+    val input = rememberTextFieldState("")
     TextField(
-        value = input,
-        onValueChange = { input = it },
+        state = input,
         title = "Username",
         placeholder = "Your username",
     )

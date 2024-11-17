@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.welcome
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -13,8 +14,6 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,19 +32,14 @@ class WelcomeViewModel @Inject constructor(
 
     private var createBookJob: Job? = null
 
-    private val _bookName = MutableStateFlow("")
-    val bookName = _bookName.asStateFlow()
-
-    fun setBookName(value: String) {
-        _bookName.value = value
-    }
+    val bookName = TextFieldState()
 
     fun createBook() {
         if (createBookJob?.isActive == true) {
             return
         }
 
-        val name = bookName.value
+        val name = bookName.text.toString()
         createBookJob = viewModelScope.launch {
             try {
                 bookRepo.createBook(name = name, source = "welcome")

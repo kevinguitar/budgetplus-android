@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.color.tone.picker.ui
 
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,8 +45,22 @@ internal fun ColorPickerDialog(
 ) {
 
     var selectedColor by remember { mutableStateOf(ColorEnvelope(0)) }
-    var hexCode by remember { mutableStateOf("") }
+    val hexCode = rememberTextFieldState("")
     var userInputColor by remember { mutableStateOf<Int?>(null) }
+
+    LaunchedEffect(hexCode.text) {
+        val newHexCode = hexCode.text
+        // Skip the update if the change comes from the picker
+        if (newHexCode == selectedColor.hexCode.drop(2)) {
+            return@LaunchedEffect
+        }
+        hexCode.setTextAndPlaceCursorAtEnd(hexCode.text.toString().trim())
+        try {
+            userInputColor = hexCode.text.convertHexToColor()
+        } catch (e: Exception) {
+            Timber.d(e, "Failed to parse color hex from user input. $newHexCode")
+        }
+    }
 
     AppDialog(
         onDismissRequest = onDismiss
@@ -60,7 +77,7 @@ internal fun ColorPickerDialog(
                 onColorListener = { envelope, _ ->
                     selectedColor = envelope
                     // Drop the FF which stands for alpha because it's always 1.
-                    hexCode = envelope.hexCode.drop(2)
+                    hexCode.setTextAndPlaceCursorAtEnd(envelope.hexCode.drop(2))
                 },
                 children = { colorPickerView ->
                     BrightnessSlideBar(
@@ -78,24 +95,12 @@ internal fun ColorPickerDialog(
                     }
                 }
             ) {
-                val selector = it.context.getDrawable(R.drawable.ic_color_selector)
+                val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
                 it.setSelectorDrawable(selector)
             }
 
             TextField(
-                value = hexCode,
-                onValueChange = { newHexCode ->
-                    // Skip the update if the change comes from the picker
-                    if (newHexCode == selectedColor.hexCode.drop(2)) {
-                        return@TextField
-                    }
-                    hexCode = newHexCode.trim()
-                    try {
-                        userInputColor = hexCode.convertHexToColor()
-                    } catch (e: Exception) {
-                        Timber.d(e, "Failed to parse color hex from user input. $newHexCode")
-                    }
-                },
+                state = hexCode,
                 title = stringResource(id = coreCommonR.string.color_tone_color_hex_code),
             )
 

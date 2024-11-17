@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.push.notifications
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -47,23 +48,23 @@ internal class PushNotificationsViewModel @Inject constructor(
 
     private var deeplinkCache by preferenceHolder.bindString("")
 
-    val titleTw = MutableStateFlow(titleTwCache)
-    val descTw = MutableStateFlow(descTwCache)
+    val titleTw = TextFieldState(titleTwCache)
+    val descTw = TextFieldState(descTwCache)
 
     val sendToCn = MutableStateFlow(true)
-    val titleCn = MutableStateFlow(titleCnCache)
-    val descCn = MutableStateFlow(descCnCache)
+    val titleCn = TextFieldState(titleCnCache)
+    val descCn = TextFieldState(descCnCache)
 
     val sendToJa = MutableStateFlow(true)
-    val titleJa = MutableStateFlow(titleJaCache)
-    val descJa = MutableStateFlow(descJaCache)
+    val titleJa = TextFieldState(titleJaCache)
+    val descJa = TextFieldState(descJaCache)
 
     val sendToEn = MutableStateFlow(true)
-    val titleEn = MutableStateFlow(titleEnCache)
-    val descEn = MutableStateFlow(descEnCache)
+    val titleEn = TextFieldState(titleEnCache)
+    val descEn = TextFieldState(descEnCache)
 
     val navigateToGooglePlay = MutableStateFlow(false)
-    val deeplink = MutableStateFlow(deeplinkCache)
+    val deeplink = TextFieldState(deeplinkCache)
 
     fun sendToInternalTopic() {
         recordToPushDb(isInternal = true)
@@ -83,17 +84,17 @@ internal class PushNotificationsViewModel @Inject constructor(
                 }
                 pushDbMediator.recordPushNotification(PushNotificationData(
                     internal = isInternal,
-                    titleTw = titleTw.value.trim(),
-                    descTw = descTw.value.trim(),
-                    titleCn = titleCn.value.trim().takeIf { sendToCn.value },
-                    descCn = descCn.value.trim().takeIf { sendToCn.value },
-                    titleJa = titleJa.value.trim().takeIf { sendToJa.value },
-                    descJa = descJa.value.trim().takeIf { sendToJa.value },
-                    titleEn = titleEn.value.trim().takeIf { sendToEn.value },
-                    descEn = descEn.value.trim().takeIf { sendToEn.value },
+                    titleTw = titleTw.text.trim(),
+                    descTw = descTw.text.trim(),
+                    titleCn = titleCn.text.trim().takeIf { sendToCn.value },
+                    descCn = descCn.text.trim().takeIf { sendToCn.value },
+                    titleJa = titleJa.text.trim().takeIf { sendToJa.value },
+                    descJa = descJa.text.trim().takeIf { sendToJa.value },
+                    titleEn = titleEn.text.trim().takeIf { sendToEn.value },
+                    descEn = descEn.text.trim().takeIf { sendToEn.value },
                     deeplink = when {
                         navigateToGooglePlay.value -> googlePlayUrl
-                        deeplink.value.isNotBlank() -> deeplink.value.trim()
+                        deeplink.text.isNotBlank() -> deeplink.text.trim()
                         else -> defaultDeeplink
                     },
                     sentOn = System.currentTimeMillis()
@@ -106,18 +107,18 @@ internal class PushNotificationsViewModel @Inject constructor(
     }
 
     private fun saveToCache() {
-        titleTwCache = titleTw.value
-        descTwCache = descTw.value
+        titleTwCache = titleTw.text.toString()
+        descTwCache = descTw.text.toString()
 
-        titleCnCache = titleCn.value
-        descCnCache = descCn.value
+        titleCnCache = titleCn.text.toString()
+        descCnCache = descCn.text.toString()
 
-        titleJaCache = titleJa.value
-        descJaCache = descJa.value
+        titleJaCache = titleJa.text.toString()
+        descJaCache = descJa.text.toString()
 
-        titleEnCache = titleEn.value
-        descEnCache = descEn.value
+        titleEnCache = titleEn.text.toString()
+        descEnCache = descEn.text.toString()
 
-        deeplinkCache = deeplink.value
+        deeplinkCache = deeplink.text.toString()
     }
 }

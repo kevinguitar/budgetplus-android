@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GroupAdd
 import androidx.compose.material.icons.rounded.Settings
@@ -96,8 +97,7 @@ internal fun TonePreview(
         )
 
         TextField(
-            value = "",
-            onValueChange = { },
+            state = rememberTextFieldState(""),
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(id = R.string.record_note_placeholder_expense),
             enabled = false,
@@ -118,8 +118,7 @@ internal fun TonePreview(
             )
 
             TextField(
-                value = "1,680",
-                onValueChange = {},
+                state = rememberTextFieldState("1,680"),
                 fontSize = FontSize.Header,
                 letterSpacing = 0.5.sp,
                 enabled = false,

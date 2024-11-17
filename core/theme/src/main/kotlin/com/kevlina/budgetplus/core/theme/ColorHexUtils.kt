@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.toArgb
 import java.util.Locale
 import androidx.compose.ui.graphics.Color as ComposeColor
 
-fun String.convertHexToColor(): Int {
+fun CharSequence.convertHexToColor(): Int {
     return Color.parseColor("#$this")
 }
 

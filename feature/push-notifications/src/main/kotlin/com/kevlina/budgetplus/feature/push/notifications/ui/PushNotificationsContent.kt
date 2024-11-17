@@ -38,23 +38,10 @@ internal fun PushNotificationsContent(
 
     val vm = hiltViewModel<PushNotificationsViewModel>()
 
-    val titleTw by vm.titleTw.collectAsStateWithLifecycle()
-    val descTw by vm.descTw.collectAsStateWithLifecycle()
-
     val sendToCn by vm.sendToCn.collectAsStateWithLifecycle()
-    val titleCn by vm.titleCn.collectAsStateWithLifecycle()
-    val descCn by vm.descCn.collectAsStateWithLifecycle()
-
     val sendToJa by vm.sendToJa.collectAsStateWithLifecycle()
-    val titleJa by vm.titleJa.collectAsStateWithLifecycle()
-    val descJa by vm.descJa.collectAsStateWithLifecycle()
-
     val sendToEn by vm.sendToEn.collectAsStateWithLifecycle()
-    val titleEn by vm.titleEn.collectAsStateWithLifecycle()
-    val descEn by vm.descEn.collectAsStateWithLifecycle()
-
     val navigateToGooglePlay by vm.navigateToGooglePlay.collectAsStateWithLifecycle()
-    val deeplink by vm.deeplink.collectAsStateWithLifecycle()
 
     var isConfirmationDialogShown by remember { mutableStateOf(false) }
 
@@ -69,39 +56,31 @@ internal fun PushNotificationsContent(
     ) {
         LanguageBlock(
             textRes = R.string.push_notif_language_zh_tw,
-            title = titleTw,
-            onTitleUpdate = { vm.titleTw.value = it },
-            description = descTw,
-            onDescriptionUpdate = { vm.descTw.value = it },
+            title = vm.titleTw,
+            description = vm.descTw,
             isOptional = false
         )
 
         LanguageBlock(
             textRes = R.string.push_notif_language_zh_cn,
-            title = titleCn,
-            onTitleUpdate = { vm.titleCn.value = it },
-            description = descCn,
-            onDescriptionUpdate = { vm.descCn.value = it },
+            title = vm.titleCn,
+            description = vm.descCn,
             enabled = sendToCn,
             onEnableUpdate = { vm.sendToCn.value = it }
         )
 
         LanguageBlock(
             textRes = R.string.push_notif_language_ja,
-            title = titleJa,
-            onTitleUpdate = { vm.titleJa.value = it },
-            description = descJa,
-            onDescriptionUpdate = { vm.descJa.value = it },
+            title = vm.titleJa,
+            description = vm.descJa,
             enabled = sendToJa,
             onEnableUpdate = { vm.sendToJa.value = it }
         )
 
         LanguageBlock(
             textRes = R.string.push_notif_language_en,
-            title = titleEn,
-            onTitleUpdate = { vm.titleEn.value = it },
-            description = descEn,
-            onDescriptionUpdate = { vm.descEn.value = it },
+            title = vm.titleEn,
+            description = vm.descEn,
             enabled = sendToEn,
             onEnableUpdate = { vm.sendToEn.value = it }
         )
@@ -120,8 +99,7 @@ internal fun PushNotificationsContent(
             )
 
             TextField(
-                value = deeplink,
-                onValueChange = { vm.deeplink.value = it },
+                state = vm.deeplink,
                 title = "",
             )
         }

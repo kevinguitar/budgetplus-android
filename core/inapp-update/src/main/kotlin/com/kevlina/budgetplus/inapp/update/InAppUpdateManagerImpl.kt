@@ -95,8 +95,12 @@ internal class InAppUpdateManagerImpl @Inject constructor(
 
     private fun completeUpdate(result: AppUpdateResult.Downloaded) {
         scope.launch {
-            tracker.logEvent("inapp_update_flexible_complete")
-            result.completeUpdate()
+            try {
+                result.completeUpdate()
+                tracker.logEvent("inapp_update_flexible_complete")
+            } catch (e: Exception) {
+                Timber.e(e, "Fail to complete flexible update")
+            }
         }
     }
 

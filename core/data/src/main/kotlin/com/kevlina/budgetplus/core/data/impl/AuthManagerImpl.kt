@@ -1,10 +1,5 @@
-@file:Suppress("DEPRECATION")
-
 package com.kevlina.budgetplus.core.data.impl
 
-import android.content.Context
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -24,7 +19,6 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
 import com.kevlina.budgetplus.core.data.requireValue
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,11 +32,9 @@ import javax.inject.Singleton
 @Singleton
 internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
-    private val gso: dagger.Lazy<GoogleSignInOptions>,
     private val stringProvider: StringProvider,
     private val tracker: dagger.Lazy<Tracker>,
     @AppScope private val appScope: CoroutineScope,
-    @ApplicationContext private val context: Context,
     @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
 ) : AuthManager {
 
@@ -98,7 +90,6 @@ internal class AuthManagerImpl @Inject constructor(
     override fun logout() {
         tracker.get().logEvent("logout")
         Firebase.auth.signOut()
-        GoogleSignIn.getClient(context, gso.get()).signOut()
     }
 
     private fun FirebaseUser.toUser() = User(

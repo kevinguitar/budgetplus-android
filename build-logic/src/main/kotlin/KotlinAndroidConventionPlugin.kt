@@ -9,6 +9,7 @@ import common.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
@@ -69,7 +70,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
         }
 
         // Enable test fixtures for all modules
-        project.extensions.configure(TestedExtension::class.java) {
+        project.extensions.configure<TestedExtension> {
             @Suppress("UnstableApiUsage")
             testFixtures.enable = true
         }

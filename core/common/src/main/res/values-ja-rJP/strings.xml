@@ -8,6 +8,7 @@
     <string name="auth_welcome_description">高速な帳簿アプリ、開始から記帳完了までたった 5 秒、友達や親戚と一緒に記帳しましょう！</string>
     <string name="auth_google">Google で続行</string>
     <string name="auth_success">ようこそ、%sさん！</string>
+    <string name="auth_no_credential_found">デバイスで Google アカウントにログインしてください。</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">帳簿を作成できます</string>

@@ -8,6 +8,7 @@
     <string name="auth_welcome_description">飞快的记帐 App，从开启到完成记帐只要 5 秒钟\n快跟你的亲朋好友共同记帐吧！</string>
     <string name="auth_google">以 Google 继续</string>
     <string name="auth_success">欢迎，%s！</string>
+    <string name="auth_no_credential_found">装置内未登入 Google 帐号，请先于装置内完成登入</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">你可以创建帐本</string>

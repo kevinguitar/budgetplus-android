@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.auth
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +20,7 @@ class AuthActivity : ComponentActivity() {
     @Inject lateinit var themeManager: ThemeManager
     @Inject lateinit var viewModel: AuthViewModel
 
-    private val enableOneTap by lazy { intent.extras?.getBoolean(ARG_ENABLE_ONE_TAP) ?: true }
+    private val enableAutoSignIn by lazy { intent.extras?.getBoolean(ARG_ENABLE_AUTO_SIGN_IN) ?: true }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -35,21 +34,12 @@ class AuthActivity : ComponentActivity() {
             }
         }
 
-        if (enableOneTap) {
-            viewModel.checkAuthorizedAccounts()
-        }
+        viewModel.checkAuthorizedAccounts(enableAutoSignIn)
 
         consumeNavigation(viewModel.navigation)
     }
 
-    @Deprecated("Deprecated in Java")
-    @Suppress("DEPRECATION")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        viewModel.onActivityResult(requestCode, resultCode, data)
-    }
-
     companion object {
-        internal const val ARG_ENABLE_ONE_TAP = "enable_one_tap"
+        internal const val ARG_ENABLE_AUTO_SIGN_IN = "enable_auto_sign_in"
     }
 }

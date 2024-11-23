@@ -232,8 +232,8 @@
     <string name="insider_title" translatable="false">商業機密</string>
     <string name="insider_total_premium_users" translatable="false">付費用戶</string>
     <string name="insider_daily_active_users" translatable="false">日活躍用戶</string>
+    <string name="insider_weekly_active_users" translatable="false">週活躍用戶</string>
     <string name="insider_users_overview" translatable="false">用戶總覽</string>
-    <string name="insider_total_users" translatable="false">總用戶</string>
     <string name="insider_total_en_users" translatable="false">英文用戶總數</string>
     <string name="insider_total_ja_users" translatable="false">日文用戶總數</string>
     <string name="insider_total_cn_users" translatable="false">簡體中文用戶總數</string>

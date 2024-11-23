@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.days
 
 @HiltViewModel
 internal class InsiderViewModel @Inject constructor(
@@ -35,11 +36,13 @@ internal class InsiderViewModel @Inject constructor(
     private suspend fun getInsiderData(): InsiderData? = try {
         coroutineScope {
             val totalPremiumUsers = async { insiderRepo.getTotalPremiumUsers() }
-            val dailyActiveUsers = async { insiderRepo.getDailyActiveUsers() }
+            val dailyActiveUsers = async { insiderRepo.getActiveUsers(1.days) }
+            val weeklyActiveUsers = async { insiderRepo.getActiveUsers(7.days) }
 
             InsiderData(
                 totalPremiumUsers = totalPremiumUsers.await(),
                 dailyActiveUsers = dailyActiveUsers.await(),
+                weeklyActiveUsers = weeklyActiveUsers.await()
             )
         }
     } catch (e: Exception) {
@@ -49,13 +52,11 @@ internal class InsiderViewModel @Inject constructor(
 
     private suspend fun getUsersOverviewData(): UsersOverviewData? = try {
         coroutineScope {
-            val totalUsers = async { insiderRepo.getTotalUsers() }
             val totalEnglishUsers = async { insiderRepo.getTotalUsersByLanguage("en") }
             val totalJapaneseUsers = async { insiderRepo.getTotalUsersByLanguage("ja") }
             val totalSimplifiedChineseUsers = async { insiderRepo.getTotalUsersByLanguage("zh-cn") }
 
             UsersOverviewData(
-                totalUsers = totalUsers.await(),
                 totalEnglishUsers = totalEnglishUsers.await(),
                 totalJapaneseUsers = totalJapaneseUsers.await(),
                 totalSimplifiedChineseUsers = totalSimplifiedChineseUsers.await(),

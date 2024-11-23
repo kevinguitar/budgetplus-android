@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Abc
+import androidx.compose.material.icons.rounded.CalendarViewWeek
 import androidx.compose.material.icons.rounded.Landscape
-import androidx.compose.material.icons.rounded.People
 import androidx.compose.material.icons.rounded.RamenDining
 import androidx.compose.material.icons.rounded.Today
 import androidx.compose.material.icons.rounded.WorkspacePremium
@@ -80,6 +80,14 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
                 )
             }
 
+            item(contentType = TYPE_STAT) {
+                StatCard(
+                    title = stringResource(id = R.string.insider_weekly_active_users),
+                    icon = Icons.Rounded.CalendarViewWeek,
+                    number = data.weeklyActiveUsers
+                )
+            }
+
             item {
                 ExpandableTitle(
                     title = stringResource(id = R.string.insider_users_overview),
@@ -125,13 +133,6 @@ private fun LazyListScope.overviewSection(overviewData: UsersOverviewData?) {
             InfiniteCircularProgress(modifier = Modifier.padding(top = 16.dp))
         }
     } else {
-        item(contentType = TYPE_STAT) {
-            StatCard(
-                title = stringResource(id = R.string.insider_total_users),
-                icon = Icons.Rounded.People,
-                number = overviewData.totalUsers
-            )
-        }
         item(contentType = TYPE_STAT) {
             StatCard(
                 title = stringResource(id = R.string.insider_total_en_users),

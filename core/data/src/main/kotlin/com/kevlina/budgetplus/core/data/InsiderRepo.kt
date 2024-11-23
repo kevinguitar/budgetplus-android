@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
 import com.kevlina.budgetplus.core.data.remote.User
+import kotlin.time.Duration
 
 interface InsiderRepo {
 
@@ -10,7 +11,7 @@ interface InsiderRepo {
 
     suspend fun getTotalUsersByLanguage(language: String): Long
 
-    suspend fun getDailyActiveUsers(): Long
+    suspend fun getActiveUsers(duration: Duration): Long
 
     suspend fun getActivePremiumUsers(count: Int): List<User>
 

@@ -20,7 +20,6 @@ import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
 fun InsiderScreen(
     navigator: Navigator,
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

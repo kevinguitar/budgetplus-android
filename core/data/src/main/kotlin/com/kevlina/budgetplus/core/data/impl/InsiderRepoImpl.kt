@@ -7,9 +7,9 @@ import com.kevlina.budgetplus.core.data.InsiderRepo
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
 import kotlinx.coroutines.tasks.await
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration
 
 @Singleton
 internal class InsiderRepoImpl @Inject constructor(
@@ -42,8 +42,8 @@ internal class InsiderRepoImpl @Inject constructor(
             .count
     }
 
-    override suspend fun getDailyActiveUsers(): Long {
-        val threshold = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)
+    override suspend fun getActiveUsers(duration: Duration): Long {
+        val threshold = System.currentTimeMillis() - duration.inWholeMilliseconds
         return usersDb.get()
             .whereGreaterThanOrEqualTo("lastActiveOn", threshold)
             .count()

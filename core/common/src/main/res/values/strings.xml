@@ -29,6 +29,10 @@
     <string name="record_deleted">Record %s is deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
     <string name="record_duplicated">Record duplicated</string>
+    <string name="record_speech_recognition_code">en</string>
+    <string name="record_speech_recognition_format">Say the note and price</string>
+    <string name="record_speech_recognition_not_supported">Feature is not supported on this device</string>
+    <string name="record_speech_recognition_no_result">Cannot recognize, please try again</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">Batch Record</string>
@@ -180,6 +184,7 @@
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>
+    <string name="bubble_speak_to_record">Long tap to record your expenses by voice</string>
     <string name="bubble_edit_category">Tap to rename or delete, long tap to reorder</string>
     <string name="bubble_save_category">Click save after you finish editing</string>
     <string name="bubble_overview_mode">Tap to group the records by category</string>

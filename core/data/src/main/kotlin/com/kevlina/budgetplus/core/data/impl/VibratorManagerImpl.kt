@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.data.VibratorManager
+import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow

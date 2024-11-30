@@ -135,12 +135,12 @@ fun RecordScreen(navigator: Navigator) {
 @Stable
 internal class RecordContentUiState(
     val recordInfoUiState: RecordInfoUiState,
-    val calculatorUiState: CalculatorUiState,
+    val calculatorState: CalculatorState,
 ) {
     companion object {
         val preview = RecordContentUiState(
             recordInfoUiState = RecordInfoUiState.preview,
-            calculatorUiState = CalculatorUiState.preview,
+            calculatorState = CalculatorState.preview,
         )
     }
 }
@@ -172,5 +172,5 @@ private fun RecordViewModel.toUiState(
             }
         ),
     ),
-    calculatorUiState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),
+    calculatorState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),
 )

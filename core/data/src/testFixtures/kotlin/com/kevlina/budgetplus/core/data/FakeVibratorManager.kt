@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import com.kevlina.budgetplus.core.common.VibratorManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

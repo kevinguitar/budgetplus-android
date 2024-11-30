@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.data
 
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.data.impl.AppPreference
 import com.kevlina.budgetplus.core.data.impl.AuthManagerImpl
 import com.kevlina.budgetplus.core.data.impl.BookRepoImpl

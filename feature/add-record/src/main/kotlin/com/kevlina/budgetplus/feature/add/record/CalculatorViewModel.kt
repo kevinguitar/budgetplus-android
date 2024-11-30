@@ -7,12 +7,13 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.sendEvent
-import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.ui.SnackbarSender
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
+import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class CalculatorViewModel @Inject constructor(
     private val vibrator: VibratorManager,
     private val snackbarSender: SnackbarSender,
+    val speakToRecordViewModel: SpeakToRecordViewModel,
 ) {
 
     val priceText = TextFieldState(EMPTY_PRICE)
@@ -37,10 +39,6 @@ class CalculatorViewModel @Inject constructor(
     val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
         .map { text -> text.any { it in operatorChars } }
         .distinctUntilChanged()
-
-    init {
-        println("DEBUG: test started ")
-    }
 
     private val _recordFlow = MutableEventFlow<Context>()
     val recordFlow: EventFlow<Context> = _recordFlow.asStateFlow()
@@ -122,8 +120,12 @@ class CalculatorViewModel @Inject constructor(
             return
         }
 
-        priceText.setTextAndPlaceCursorAtEnd(rawResult.plainPriceString)
-        _price.value = rawResult.toBigDecimal()
+        setPrice(rawResult)
+    }
+
+    fun setPrice(priceNumber: Double) {
+        priceText.setTextAndPlaceCursorAtEnd(priceNumber.plainPriceString)
+        _price.value = priceNumber.toBigDecimal()
             .setScale(2, RoundingMode.HALF_UP)
             .toDouble()
     }

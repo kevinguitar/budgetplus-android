@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -15,7 +16,6 @@ import com.kevlina.budgetplus.core.data.ChartModeViewModel
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
-import com.kevlina.budgetplus.core.data.VibratorManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User

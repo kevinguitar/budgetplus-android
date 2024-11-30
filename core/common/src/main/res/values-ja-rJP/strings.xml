@@ -29,6 +29,10 @@
     <string name="record_deleted">%sを削除しました" となります</string>
     <string name="record_confirm_delete">この帳面を削除してもよろしいですか？</string>
     <string name="record_duplicated">帳面がコピーされました</string>
+    <string name="record_speech_recognition_code">ja-JP</string>
+    <string name="record_speech_recognition_format">内容と金額</string>
+    <string name="record_speech_recognition_not_supported">このデバイスは音声機能に対応していません。</string>
+    <string name="record_speech_recognition_no_result">認識できませんでした。もう一度お話しください。</string>
 
     <!-- Batch Record -->
     <string name="batch_record_title">一括で記帳する</string>
@@ -180,6 +184,7 @@
 
     <!-- Bubble -->
     <string name="bubble_invite">リンクを共有し、友達を招待して一緒に記帳しましょう</string>
+    <string name="bubble_speak_to_record">長押しして音声記帳を開始しましょう</string>
     <string name="bubble_edit_category">クリックして名前を変更または削除し、長押しして並び替えます</string>
     <string name="bubble_save_category">編集が完了したら、保存をお忘れなく！</string>
     <string name="bubble_overview_mode">カテゴリまたは詳細で収支を表示することができます</string>

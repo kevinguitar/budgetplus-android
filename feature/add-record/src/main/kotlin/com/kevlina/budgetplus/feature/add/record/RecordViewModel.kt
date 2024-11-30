@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
@@ -74,6 +75,13 @@ class RecordViewModel @Inject constructor(
     init {
         calculatorVm.recordFlow
             .consumeEach(::record)
+            .launchIn(viewModelScope)
+
+        calculatorVm.speakToRecordViewModel.speakResultFlow
+            .consumeEach {
+                note.setTextAndPlaceCursorAtEnd(it.name)
+                it.price?.let(calculatorVm::setPrice)
+            }
             .launchIn(viewModelScope)
     }
 

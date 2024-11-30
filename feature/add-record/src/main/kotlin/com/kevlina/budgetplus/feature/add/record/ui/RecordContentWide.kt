@@ -33,7 +33,7 @@ internal fun RecordContentWide(
         )
 
         Calculator(
-            uiState = uiState.calculatorUiState,
+            state = uiState.calculatorState,
             modifier = Modifier
                 .weight(1F)
                 .fillMaxHeight()
@@ -49,7 +49,7 @@ private fun RecordContentWide_Preview() = AppTheme(themeColors = ThemeColors.Nem
     RecordContentWide(
         uiState = RecordContentUiState(
             recordInfoUiState = RecordInfoUiState.preview,
-            calculatorUiState = CalculatorUiState.preview.copy(adaptiveButton = true),
+            calculatorState = CalculatorState.preview.copy(adaptiveButton = true),
         ),
         modifier = Modifier.background(LocalAppColors.current.light)
     )

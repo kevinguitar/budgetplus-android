@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.remember
@@ -46,3 +47,10 @@ fun Modifier.clickableWithoutRipple(onClick: () -> Unit) = this.composed {
         onClick = onClick
     )
 }
+
+fun Modifier.rippleIndication(
+    interactionSource: MutableInteractionSource,
+) = indication(
+    interactionSource = interactionSource,
+    indication = ripple()
+)

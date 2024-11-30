@@ -54,7 +54,7 @@ internal fun RecordContentRegular(
         ) {
 
             Calculator(
-                uiState = uiState.calculatorUiState,
+                state = uiState.calculatorState,
                 modifier = Modifier
                     .width(AppTheme.containerMaxWidth)
                     .padding(vertical = 8.dp, horizontal = 16.dp)

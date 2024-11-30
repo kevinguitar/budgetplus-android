@@ -140,7 +140,8 @@ class RecordViewModelTest {
 
     private val calculatorVm = CalculatorViewModel(
         vibrator = FakeVibratorManager(),
-        snackbarSender = FakeSnackbarSender
+        snackbarSender = FakeSnackbarSender,
+        speakToRecordViewModel = mockk(relaxed = true)
     )
 
     private val bookRepo = FakeBookRepo()

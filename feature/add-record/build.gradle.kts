@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.core.inappReview)
     implementation(projects.core.ui)
     implementation(projects.feature.categoryPills)
+    implementation(projects.feature.speakToRecord)
 
     implementation(libs.lottie.compose)
     implementation(libs.exp4j)

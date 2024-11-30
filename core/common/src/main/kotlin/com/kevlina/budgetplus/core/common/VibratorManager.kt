@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.common
 
 import kotlinx.coroutines.flow.StateFlow
 

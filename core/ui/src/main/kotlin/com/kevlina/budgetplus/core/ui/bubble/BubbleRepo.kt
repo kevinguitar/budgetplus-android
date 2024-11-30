@@ -78,6 +78,14 @@ sealed class BubbleDest {
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
+    data class SpeakToRecord(
+        override val size: IntSize,
+        override val offset: Offset,
+        override val shape: BubbleShape = BubbleShape.Circle,
+        override val textRes: Int = R.string.bubble_speak_to_record,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.TopEnd,
+    ) : BubbleDest()
+
     data class EditCategoriesHint(
         override val size: IntSize,
         override val offset: Offset,

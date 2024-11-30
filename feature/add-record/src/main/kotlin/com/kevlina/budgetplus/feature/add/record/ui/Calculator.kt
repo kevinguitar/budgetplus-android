@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -21,8 +21,8 @@ import androidx.compose.material.icons.automirrored.rounded.Backspace
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,8 +39,11 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.R
+import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButton
+import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import com.kevlina.budgetplus.core.common.R as coreCommonR
@@ -67,12 +70,11 @@ private val calcButtons = CalculatorButton.entries.toList()
 
 @Composable
 internal fun Calculator(
-    uiState: CalculatorUiState,
+    state: CalculatorState,
     modifier: Modifier = Modifier,
 ) {
-
     val context = LocalContext.current
-    val needEvaluate by uiState.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
+    val needEvaluate by state.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
 
     Column(
         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
@@ -83,7 +85,7 @@ internal fun Calculator(
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
-                modifier = if (uiState.adaptiveButton) {
+                modifier = if (state.adaptiveButton) {
                     Modifier
                         .weight(1F)
                         .fillMaxWidth()
@@ -100,27 +102,40 @@ internal fun Calculator(
                         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
                         modifier = Modifier.weight(1F)
                     ) {
-
                         btns.forEach { btn ->
-
                             CalculatorBtn(
                                 button = btn,
-                                isAdaptive = uiState.adaptiveButton,
-                                onClick = { uiState.onInput(btn) }
+                                isAdaptive = state.adaptiveButton,
+                                onClick = { state.onInput(btn) }
                             )
                         }
                     }
                 }
 
                 when (index) {
-                    0 -> ClearBtn(onClick = {
-                        uiState.onCalculatorAction(context, CalculatorAction.Clear)
-                    })
+                    0 -> {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+                            modifier = Modifier.weight(1F)
+                        ) {
+                            SpeakToRecordButton(
+                                state = state.speakToRecordButtonState,
+                                isAdaptive = state.adaptiveButton,
+                            )
+
+                            ClearBtn(
+                                isAdaptive = state.adaptiveButton,
+                                onClick = {
+                                    state.onCalculatorAction(context, CalculatorAction.Clear)
+                                }
+                            )
+                        }
+                    }
 
                     1 -> DoneBtn(
                         needEvaluate = needEvaluate,
                         onClick = {
-                            uiState.onCalculatorAction(context, if (needEvaluate) {
+                            state.onCalculatorAction(context, if (needEvaluate) {
                                 CalculatorAction.Evaluate
                             } else {
                                 CalculatorAction.Ok
@@ -134,75 +149,102 @@ internal fun Calculator(
 }
 
 @Composable
+private fun ColumnScope.CalculatorBtnContainer(
+    isAdaptive: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = LocalAppColors.current.primary,
+    content: @Composable BoxScope.() -> Unit,
+) {
+    Surface(
+        onClick = onClick,
+        modifier = modifier
+            .weight(1F)
+            .thenIf(isAdaptive) { Modifier.fillMaxWidth() }
+            .thenIf(!isAdaptive) { Modifier.aspectRatio(1F) },
+        shape = CircleShape,
+        color = color,
+        content = content
+    )
+}
+
+@Composable
 private fun ColumnScope.CalculatorBtn(
     button: CalculatorButton,
     isAdaptive: Boolean,
     onClick: () -> Unit,
 ) {
-
-    Surface(
-        onClick = onClick,
-        modifier = if (isAdaptive) {
-            Modifier
-                .weight(1F)
-                .fillMaxWidth()
-        } else {
-            Modifier
-                .weight(1F)
-                .aspectRatio(1F)
-        },
-        shape = CircleShape,
-        color = LocalAppColors.current.primary
+    CalculatorBtnContainer(
+        isAdaptive = isAdaptive,
+        onClick = onClick
     ) {
+        when (button) {
+            CalculatorButton.Delete -> Icon(
+                imageVector = Icons.AutoMirrored.Rounded.Backspace,
+                contentDescription = stringResource(id = coreCommonR.string.cta_delete),
+                tint = LocalAppColors.current.light
+            )
 
-        Box(contentAlignment = Alignment.Center) {
+            CalculatorButton.Plus -> Image(
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+            )
 
-            when (button) {
-                CalculatorButton.Delete -> Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.Backspace,
-                    contentDescription = stringResource(id = coreCommonR.string.cta_delete),
-                    tint = LocalAppColors.current.light
-                )
+            CalculatorButton.Minus -> Image(
+                painter = painterResource(id = R.drawable.ic_minus),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+            )
 
-                CalculatorButton.Plus -> Image(
-                    painter = painterResource(id = R.drawable.ic_plus),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
-                )
+            CalculatorButton.Multiply -> Image(
+                painter = painterResource(id = R.drawable.ic_multiply),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+            )
 
-                CalculatorButton.Minus -> Image(
-                    painter = painterResource(id = R.drawable.ic_minus),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
-                )
+            CalculatorButton.Divide -> Image(
+                painter = painterResource(id = R.drawable.ic_divide),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+            )
 
-                CalculatorButton.Multiply -> Image(
-                    painter = painterResource(id = R.drawable.ic_multiply),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
-                )
-
-                CalculatorButton.Divide -> Image(
-                    painter = painterResource(id = R.drawable.ic_divide),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
-                )
-
-                else -> Text(
-                    text = button.text.toString(),
-                    textAlign = TextAlign.Center,
-                    fontSize = FontSize.HeaderLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = LocalAppColors.current.light
-                )
-            }
+            else -> Text(
+                text = button.text.toString(),
+                textAlign = TextAlign.Center,
+                fontSize = FontSize.HeaderLarge,
+                fontWeight = FontWeight.Bold,
+                color = LocalAppColors.current.light
+            )
         }
     }
 }
 
 @Composable
-private fun RowScope.ClearBtn(onClick: () -> Unit) {
+private fun ColumnScope.ClearBtn(
+    isAdaptive: Boolean,
+    onClick: () -> Unit,
+) {
+    CalculatorBtnContainer(
+        isAdaptive = isAdaptive,
+        onClick = onClick,
+        color = LocalAppColors.current.dark
+    ) {
+        Text(
+            text = "AC",
+            textAlign = TextAlign.Center,
+            fontSize = FontSize.Header,
+            fontWeight = FontWeight.Bold,
+            color = LocalAppColors.current.light
+        )
+    }
+}
 
+@Composable
+private fun RowScope.DoneBtn(
+    needEvaluate: Boolean,
+    onClick: () -> Unit,
+) {
     Surface(
         onClick = onClick,
         modifier = Modifier
@@ -211,11 +253,15 @@ private fun RowScope.ClearBtn(onClick: () -> Unit) {
         shape = CircleShape,
         color = LocalAppColors.current.dark
     ) {
-
-        Box(contentAlignment = Alignment.Center) {
-
+        if (needEvaluate) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_equal),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(LocalAppColors.current.light)
+            )
+        } else {
             Text(
-                text = "AC",
+                text = "OK",
                 textAlign = TextAlign.Center,
                 fontSize = FontSize.Header,
                 fontWeight = FontWeight.Bold,
@@ -225,52 +271,18 @@ private fun RowScope.ClearBtn(onClick: () -> Unit) {
     }
 }
 
-@Composable
-private fun RowScope.DoneBtn(
-    needEvaluate: Boolean,
-    onClick: () -> Unit,
-) {
-
-    Surface(
-        onClick = onClick,
-        modifier = Modifier
-            .weight(1F)
-            .fillMaxHeight(),
-        shape = CircleShape,
-        color = LocalAppColors.current.dark
-    ) {
-
-        Box(contentAlignment = Alignment.Center) {
-
-            if (needEvaluate) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_equal),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.light)
-                )
-            } else {
-                Text(
-                    text = "OK",
-                    textAlign = TextAlign.Center,
-                    fontSize = FontSize.Header,
-                    fontWeight = FontWeight.Bold,
-                    color = LocalAppColors.current.light
-                )
-            }
-        }
-    }
-}
-
 @Stable
-internal data class CalculatorUiState(
+internal data class CalculatorState(
     val needEvaluate: Flow<Boolean>,
+    val speakToRecordButtonState: SpeakToRecordButtonState,
     val adaptiveButton: Boolean,
     val onInput: (CalculatorButton) -> Unit,
     val onCalculatorAction: (Context, CalculatorAction) -> Unit,
 ) {
     companion object {
-        val preview = CalculatorUiState(
+        val preview = CalculatorState(
             needEvaluate = MutableStateFlow(false),
+            speakToRecordButtonState = SpeakToRecordButtonState.preview,
             adaptiveButton = false,
             onInput = {},
             onCalculatorAction = { _, _ -> }
@@ -278,8 +290,15 @@ internal data class CalculatorUiState(
     }
 }
 
-internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = CalculatorUiState(
+internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = CalculatorState(
     needEvaluate = needEvaluate,
+    speakToRecordButtonState = SpeakToRecordButtonState(
+        onTap = speakToRecordViewModel::onButtonTap,
+        onReleased = speakToRecordViewModel::onButtonReleased,
+        highlightRecordButton = speakToRecordViewModel::highlightRecordButton,
+        showRecordPermissionHint = speakToRecordViewModel::showRecordPermissionHint,
+        dismissDialogEvent = speakToRecordViewModel.dismissDialogEvent
+    ),
     adaptiveButton = adaptiveButton,
     onInput = ::onInput,
     onCalculatorAction = ::onCalculatorAction
@@ -289,7 +308,7 @@ internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = Ca
 @Composable
 private fun Calculator_Preview() = AppTheme {
     Calculator(
-        uiState = CalculatorUiState.preview,
+        state = CalculatorState.preview,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(all = 16.dp)
@@ -300,7 +319,7 @@ private fun Calculator_Preview() = AppTheme {
 @Composable
 private fun CalculatorAdaptive_Preview() = AppTheme(themeColors = ThemeColors.Lavender) {
     Calculator(
-        uiState = CalculatorUiState.preview.copy(adaptiveButton = true),
+        state = CalculatorState.preview.copy(adaptiveButton = true),
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(all = 16.dp)

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.settings.api
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart

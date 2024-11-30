@@ -16,7 +16,5 @@ dependencies {
     implementation(libs.google.ads)
     runtimeOnly(libs.google.ads.mediation.meta)
 
-    implementation(libs.compose.icons)
-
     testFixturesImplementation(projects.core.common)
 }

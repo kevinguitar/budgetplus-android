@@ -21,6 +21,8 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
 
     LaunchedEffect(key1 = snackbarData) {
         if (snackbarData != null) {
+            // Dismiss the previous snackbar if it exists, to avoid a long queue
+            hostState.currentSnackbarData?.dismiss()
             scope.launch {
                 val result = hostState.showSnackbar(
                     message = snackbarData.message,

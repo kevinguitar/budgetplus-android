@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.feature.edit.category
 
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeStringProvider
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
-import com.kevlina.budgetplus.core.ui.FakeSnackbarSender
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest

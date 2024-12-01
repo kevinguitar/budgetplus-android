@@ -1,25 +1,25 @@
-package com.kevlina.budgetplus.core.impl
+package com.kevlina.budgetplus.core.common.impl
 
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.SnackbarData
+import com.kevlina.budgetplus.core.common.SnackbarDuration
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.sendEvent
-import com.kevlina.budgetplus.core.ui.SnackbarData
-import com.kevlina.budgetplus.core.ui.SnackbarDuration
-import com.kevlina.budgetplus.core.ui.SnackbarSender
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SnackbarSenderImpl @Inject constructor(
+internal class SnackbarSenderImpl @Inject constructor(
     private val stringProvider: StringProvider,
 ) : SnackbarSender {
 
     private val _snackbarEvent = MutableEventFlow<SnackbarData>()
-    val snackbarEvent: EventFlow<SnackbarData> get() = _snackbarEvent
+    override val snackbarEvent: EventFlow<SnackbarData> get() = _snackbarEvent
 
     override fun send(
         message: Int,

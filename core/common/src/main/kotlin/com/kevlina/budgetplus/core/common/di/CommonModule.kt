@@ -5,8 +5,10 @@ import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.impl.SnackbarSenderImpl
 import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
 import com.kevlina.budgetplus.core.common.impl.ToasterImpl
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
@@ -31,6 +33,9 @@ internal interface CommonModule {
 
     @Binds
     fun provideToaster(impl: ToasterImpl): Toaster
+
+    @Binds
+    fun provideSnackbarSender(impl: SnackbarSenderImpl): SnackbarSender
 
     companion object {
 

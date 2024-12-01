@@ -4,7 +4,7 @@ import android.app.Activity
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
-import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 internal class InAppReviewManagerImpl @Inject constructor(
     private val reviewManager: ReviewManager,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
 ) : InAppReviewManager {
@@ -58,7 +58,7 @@ internal class InAppReviewManagerImpl @Inject constructor(
             tracker.logEvent("inapp_review_accepted")
             hasRequestedBefore = true
         } catch (e: Exception) {
-            toaster.showError(e)
+            snackbarSender.sendError(e)
             Timber.e(e, "Failed to launch the review flow")
         }
     }

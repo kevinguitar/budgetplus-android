@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
@@ -16,7 +17,6 @@ import com.kevlina.budgetplus.core.data.AdMobInitializer
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
-import com.kevlina.budgetplus.core.impl.SnackbarSenderImpl
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.bubble.BubbleViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +29,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    val snackbarSender: SnackbarSenderImpl,
+    val snackbarSender: SnackbarSender,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,
     val bubbleViewModel: BubbleViewModel,

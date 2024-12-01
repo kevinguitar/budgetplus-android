@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.inapp.review
 
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.FakeToaster
+import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import io.mockk.mockk
@@ -48,7 +48,7 @@ class InAppReviewManagerImplTest {
         hasRequestedBefore: Boolean = false,
     ) = InAppReviewManagerImpl(
         reviewManager = FakeReviewManager(mockk()),
-        toaster = FakeToaster(),
+        snackbarSender = FakeSnackbarSender,
         tracker = tracker,
         preferenceHolder = FakePreferenceHolder {
             put("firstInitDatetime", firstInitDatetime)

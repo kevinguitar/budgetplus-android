@@ -12,5 +12,4 @@ dependencies {
     implementation(libs.reorderable)
 
     testImplementation(testFixtures(projects.core.data))
-    testImplementation(testFixtures(projects.core.ui))
 }

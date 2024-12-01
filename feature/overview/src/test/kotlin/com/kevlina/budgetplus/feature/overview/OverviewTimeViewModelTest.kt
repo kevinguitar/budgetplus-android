@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.feature.overview
 
+import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
-import com.kevlina.budgetplus.core.ui.FakeSnackbarSender
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk

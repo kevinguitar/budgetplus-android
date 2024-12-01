@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -7,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kevlina.budgetplus.core.common.SnackbarData
+import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarDuration as MaterialSnackbarDuration
@@ -43,6 +47,7 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
 
     MaterialSnackbarHost(
         hostState = hostState,
+        modifier = Modifier.imePadding()
     ) { data ->
         Snackbar(
             snackbarData = data,
@@ -53,18 +58,6 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
             dismissActionContentColor = LocalAppColors.current.light,
         )
     }
-}
-
-class SnackbarData(
-    val message: String,
-    val actionLabel: String? = null,
-    val canDismiss: Boolean = false,
-    val duration: SnackbarDuration = SnackbarDuration.Short,
-    val action: () -> Unit = {},
-)
-
-enum class SnackbarDuration {
-    Short, Long, Indefinite
 }
 
 @Preview

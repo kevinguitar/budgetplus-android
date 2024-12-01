@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.core.data.impl
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
-import com.kevlina.budgetplus.core.common.FakeToaster
+import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.withCurrentTime
@@ -93,7 +93,7 @@ class RecordRepoImplTest {
 
     @Test
     @Ignore("Implement it when DB abstraction is done")
-    fun `editBatch should edit all the batched records`() = runTest {  }
+    fun `editBatch should edit all the batched records`() = runTest { }
 
     @Test
     fun `duplicateRecord should use the current user as author, and do not carry batch info`() = runTest {
@@ -118,7 +118,7 @@ class RecordRepoImplTest {
 
     @Test
     @Ignore("Implement it when DB abstraction is done")
-    fun `deleteBatch should delete all the batched records`() = runTest {  }
+    fun `deleteBatch should delete all the batched records`() = runTest { }
 
 
     private val testRecord = Record(
@@ -140,13 +140,12 @@ class RecordRepoImplTest {
 
     private val authManger = FakeAuthManager(user = User(name = "My user"))
     private val tracker = FakeTracker()
-    private val toaster = FakeToaster()
 
     private fun TestScope.createRepo() = RecordRepoImpl(
         recordsDb = { recordsDb },
         appScope = backgroundScope,
         authManager = authManger,
         tracker = tracker,
-        toaster = toaster
+        snackbarSender = FakeSnackbarSender
     )
 }

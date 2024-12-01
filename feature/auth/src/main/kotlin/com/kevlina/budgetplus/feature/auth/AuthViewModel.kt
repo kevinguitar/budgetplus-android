@@ -20,6 +20,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
@@ -36,6 +37,7 @@ import javax.inject.Named
 
 class AuthViewModel @Inject constructor(
     val navigation: NavigationFlow,
+    val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
@@ -107,11 +109,11 @@ class AuthViewModel @Inject constructor(
             } catch (e: NoCredentialException) {
                 Timber.w(e, "No credential is found")
                 if (displayError) {
-                    toaster.showMessage(R.string.auth_no_credential_found)
+                    snackbarSender.send(R.string.auth_no_credential_found, canDismiss = true)
                 }
             } catch (e: GetCredentialException) {
                 if (displayError) {
-                    toaster.showError(e)
+                    snackbarSender.sendError(e)
                 } else {
                     Timber.e(e, "Fail to get credential")
                 }
@@ -125,7 +127,7 @@ class AuthViewModel @Inject constructor(
             credential !is CustomCredential ||
             credential.type != GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {
-            toaster.showMessage("Unexpected type of credential")
+            snackbarSender.send("Unexpected type of credential", canDismiss = true)
             Timber.e("Unexpected type of credential. ${credential.type}")
             return
         }
@@ -133,7 +135,7 @@ class AuthViewModel @Inject constructor(
         val googleIdToken = try {
             GoogleIdTokenCredential.createFrom(credential.data).idToken
         } catch (e: GoogleIdTokenParsingException) {
-            toaster.showError(e)
+            snackbarSender.sendError(e)
             return
         }
 
@@ -152,7 +154,7 @@ class AuthViewModel @Inject constructor(
             checkBookAvailability()
         } else {
             val e = task.exception ?: error("Unable to login")
-            toaster.showError(e)
+            snackbarSender.sendError(e)
         }
     }
 
@@ -165,7 +167,7 @@ class AuthViewModel @Inject constructor(
                     welcomeNavigationAction
                 }
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
                 welcomeNavigationAction
             }
             navigation.sendEvent(action)

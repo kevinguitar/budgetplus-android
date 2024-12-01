@@ -1,10 +1,12 @@
-package com.kevlina.budgetplus.core.ui
+package com.kevlina.budgetplus.core.common
 
 object FakeSnackbarSender : SnackbarSender {
 
     var lastSentMessageId: Int? = null
     var lastSentMessage: String? = null
     var lastSentError: Exception? = null
+
+    override val snackbarEvent = MutableEventFlow<SnackbarData>()
 
     override fun send(
         message: Int,

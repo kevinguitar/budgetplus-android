@@ -4,7 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppScope
-import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.withCurrentTime
@@ -36,7 +36,7 @@ internal class RecordRepoImpl @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     private val tracker: Tracker,
-    private val toaster: Toaster,
+    private val snackbarSender: SnackbarSender,
 ) : RecordRepo {
 
     override fun createRecord(record: Record) {
@@ -91,7 +91,7 @@ internal class RecordRepoImpl @Inject constructor(
                 price = newPriceText.parseToPrice()
             )
         } catch (e: Exception) {
-            toaster.showError(e)
+            snackbarSender.sendError(e)
             return
         }
 

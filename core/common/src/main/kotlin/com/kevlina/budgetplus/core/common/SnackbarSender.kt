@@ -1,11 +1,13 @@
-package com.kevlina.budgetplus.core.ui
+package com.kevlina.budgetplus.core.common
 
 import androidx.annotation.StringRes
 
 /**
- *  Deliver the snackbar event to let BookActivity show it.
+ *  Deliver the snackbar event to let ui show it.
  */
 interface SnackbarSender {
+
+    val snackbarEvent: EventFlow<SnackbarData>
 
     fun send(
         @StringRes message: Int,
@@ -24,4 +26,16 @@ interface SnackbarSender {
     )
 
     fun sendError(e: Exception)
+}
+
+class SnackbarData(
+    val message: String,
+    val actionLabel: String? = null,
+    val canDismiss: Boolean = false,
+    val duration: SnackbarDuration = SnackbarDuration.Short,
+    val action: () -> Unit = {},
+)
+
+enum class SnackbarDuration {
+    Short, Long, Indefinite
 }

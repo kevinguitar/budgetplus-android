@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
@@ -22,6 +23,7 @@ import javax.inject.Named
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
     val navigation: NavigationFlow,
+    val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val toaster: Toaster,
@@ -47,7 +49,7 @@ class WelcomeViewModel @Inject constructor(
 
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }
@@ -62,11 +64,11 @@ class WelcomeViewModel @Inject constructor(
 
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: JoinBookException.General) {
-                toaster.showMessage(e.errorRes)
+                snackbarSender.send(e.errorRes, canDismiss = true)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Timber.e(e)
             } catch (e: Exception) {
-                toaster.showError(e)
+                snackbarSender.sendError(e)
             }
         }
     }

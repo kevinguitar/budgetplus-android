@@ -2,9 +2,9 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.7.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.0-1.0.29"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2024.11.00"
 # https://firebase.google.com/support/release-notes/android

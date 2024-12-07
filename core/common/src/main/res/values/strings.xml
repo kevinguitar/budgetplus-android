@@ -8,7 +8,6 @@
     <string name="auth_welcome_description">A mighty co-spending tracker\nUse it anywhere with your friends and family</string>
     <string name="auth_google">Continue with Google</string>
     <string name="auth_success">Welcome, %s!</string>
-    <string name="auth_no_credential_found">There is no Google account logged into the device. Please log in first.</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">You can create a new accounting book</string>

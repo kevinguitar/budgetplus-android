@@ -12,6 +12,7 @@ import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.AuthResult
@@ -54,6 +55,7 @@ class AuthViewModel @Inject constructor(
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val credentialManager by lazy { CredentialManager.create(activity) }
+    private val googleClientId get() = stringProvider[R.string.google_cloud_client_id]
 
     private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
 
@@ -65,11 +67,23 @@ class AuthViewModel @Inject constructor(
     }
 
     fun signInWithGoogle() {
-        launchGoogleSignIn(
-            filterByAuthorizedAccounts = false,
-            enableAutoSignIn = true,
-            displayError = true
-        )
+        val siwgOption = GetSignInWithGoogleOption.Builder(googleClientId).build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(siwgOption)
+            .build()
+
+        coroutineScope.launch {
+            try {
+                val result = credentialManager.getCredential(activity, request)
+                handleSignIn(result)
+            } catch (e: GetCredentialCancellationException) {
+                // Ignore cancellation exception
+                Timber.d(e, "Google sign in canceled")
+            } catch (e: GetCredentialException) {
+                snackbarSender.sendError(e)
+            }
+        }
+
         tracker.logEvent("sign_in_with_google")
     }
 
@@ -77,22 +91,10 @@ class AuthViewModel @Inject constructor(
      *  If there are any accounts that were authorized before, launch the sign in dialog.
      */
     fun checkAuthorizedAccounts(enableAutoSignIn: Boolean) {
-        launchGoogleSignIn(
-            filterByAuthorizedAccounts = true,
-            enableAutoSignIn = enableAutoSignIn,
-            displayError = false
-        )
-    }
-
-    private fun launchGoogleSignIn(
-        filterByAuthorizedAccounts: Boolean,
-        enableAutoSignIn: Boolean,
-        displayError: Boolean,
-    ) {
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts)
+            .setFilterByAuthorizedAccounts(true)
             .setAutoSelectEnabled(enableAutoSignIn)
-            .setServerClientId(stringProvider[R.string.google_cloud_client_id])
+            .setServerClientId(googleClientId)
             .build()
 
         val request = GetCredentialRequest.Builder()
@@ -108,15 +110,8 @@ class AuthViewModel @Inject constructor(
                 Timber.d(e, "Google sign in canceled")
             } catch (e: NoCredentialException) {
                 Timber.w(e, "No credential is found")
-                if (displayError) {
-                    snackbarSender.send(R.string.auth_no_credential_found, canDismiss = true)
-                }
             } catch (e: GetCredentialException) {
-                if (displayError) {
-                    snackbarSender.sendError(e)
-                } else {
-                    Timber.e(e, "Fail to get credential")
-                }
+                Timber.e(e, "Fail to get credential")
             }
         }
     }

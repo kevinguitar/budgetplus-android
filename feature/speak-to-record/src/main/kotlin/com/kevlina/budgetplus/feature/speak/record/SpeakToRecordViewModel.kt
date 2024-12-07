@@ -11,10 +11,16 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class SpeakToRecordViewModel @Inject constructor(
@@ -28,27 +34,34 @@ class SpeakToRecordViewModel @Inject constructor(
     private val _speakResultFlow = MutableEventFlow<SpeakToRecordStatus.Success>()
     val speakResultFlow: EventFlow<SpeakToRecordStatus.Success> = _speakResultFlow.asStateFlow()
 
-    private val _dismissDialogEvent = MutableEventFlow<Unit>()
-    val dismissDialogEvent: EventFlow<Unit> = _dismissDialogEvent.asStateFlow()
-
     private var isSpeakToRecordBubbleShown by preferenceHolder.bindBoolean(false)
 
-    private var recordActor: RecordActor? = null
-    private var recordStatusJob: Job? = null
+    private val recordActorFlow = MutableStateFlow<RecordActor?>(null)
 
-    fun onButtonTap() {
-        recordStatusJob?.cancel()
+    private val recordStatusFlow = recordActorFlow
+        .flatMapLatest { it?.statusFlow ?: emptyFlow() }
 
-        val actor = speakToRecord.startRecording()
-        recordActor = actor
-        recordStatusJob = actor.statusFlow
-            .onEach(::handleResult)
+    val showLoader: StateFlow<Boolean> = recordStatusFlow
+        .map { it is SpeakToRecordStatus.ReadyToSpeak || it is SpeakToRecordStatus.Recognizing }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
+    val showRecordingDialog: StateFlow<Boolean> = recordStatusFlow
+        .map { it is SpeakToRecordStatus.ReadyToSpeak }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
+    init {
+        recordStatusFlow
+            .onEach(::handleStatus)
             .launchIn(viewModelScope)
     }
 
+    fun onButtonTap() {
+        recordActorFlow.value = speakToRecord.startRecording()
+        vibratorManager.vibrate()
+    }
+
     fun onButtonReleased() {
-        recordActor?.stopRecording?.invoke()
-        recordActor = null
+        recordActorFlow.value?.stopRecording?.invoke()
     }
 
     fun highlightRecordButton(dest: BubbleDest) {
@@ -62,28 +75,22 @@ class SpeakToRecordViewModel @Inject constructor(
         snackbarSender.send(R.string.permission_hint, canDismiss = true)
     }
 
-    private fun handleResult(result: SpeakToRecordStatus) {
-        // If record recognizer respond earlier than the user releases their finger, dismiss the dialog
-        // to hint the user that the current round of recording is over.
-        if (result !is SpeakToRecordStatus.ReadyToSpeak) {
-            _dismissDialogEvent.sendEvent()
-        }
-
-        when (result) {
+    private fun handleStatus(status: SpeakToRecordStatus) {
+        when (status) {
             SpeakToRecordStatus.DeviceNotSupported -> {
                 snackbarSender.send(R.string.record_speech_recognition_not_supported, canDismiss = true)
             }
 
-            SpeakToRecordStatus.ReadyToSpeak -> vibratorManager.vibrate()
+            SpeakToRecordStatus.ReadyToSpeak, SpeakToRecordStatus.Recognizing -> Unit
 
-            is SpeakToRecordStatus.Error -> snackbarSender.send(result.message, canDismiss = true)
+            is SpeakToRecordStatus.Error -> snackbarSender.send(status.message, canDismiss = true)
 
             SpeakToRecordStatus.NoResult -> {
                 snackbarSender.send(R.string.record_speech_recognition_no_result, canDismiss = true)
             }
 
             is SpeakToRecordStatus.Success -> {
-                _speakResultFlow.sendEvent(result)
+                _speakResultFlow.sendEvent(status)
             }
         }
     }

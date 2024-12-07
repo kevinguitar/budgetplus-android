@@ -8,6 +8,8 @@ sealed interface SpeakToRecordStatus {
 
     data object ReadyToSpeak : SpeakToRecordStatus
 
+    data object Recognizing : SpeakToRecordStatus
+
     data object NoResult : SpeakToRecordStatus
 
     data class Error(val message: String) : SpeakToRecordStatus

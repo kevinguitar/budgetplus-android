@@ -295,9 +295,10 @@ internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = Ca
     speakToRecordButtonState = SpeakToRecordButtonState(
         onTap = speakToRecordViewModel::onButtonTap,
         onReleased = speakToRecordViewModel::onButtonReleased,
+        showLoader = speakToRecordViewModel.showLoader,
+        showRecordingDialog = speakToRecordViewModel.showRecordingDialog,
         highlightRecordButton = speakToRecordViewModel::highlightRecordButton,
         showRecordPermissionHint = speakToRecordViewModel::showRecordPermissionHint,
-        dismissDialogEvent = speakToRecordViewModel.dismissDialogEvent
     ),
     adaptiveButton = adaptiveButton,
     onInput = ::onInput,

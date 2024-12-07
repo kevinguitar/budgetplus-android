@@ -91,7 +91,10 @@ internal class SpeakToRecordImpl @Inject constructor(
 
         return RecordActor(
             statusFlow = statusFlow,
-            stopRecording = { recognizer.stopListening() }
+            stopRecording = {
+                statusFlow.tryEmit(SpeakToRecordStatus.Recognizing)
+                recognizer.stopListening()
+            }
         )
     }
 }

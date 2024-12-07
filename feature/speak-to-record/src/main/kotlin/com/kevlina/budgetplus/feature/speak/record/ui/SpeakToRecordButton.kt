@@ -13,16 +13,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,17 +29,18 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.kevlina.budgetplus.core.common.EventFlow
-import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.consumeEach
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.rippleIndication
 import com.kevlina.budgetplus.core.ui.thenIf
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ColumnScope.SpeakToRecordButton(
@@ -49,7 +48,9 @@ fun ColumnScope.SpeakToRecordButton(
     isAdaptive: Boolean,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    var isRecording by remember { mutableStateOf(false) }
+
+    val showLoader by state.showLoader.collectAsStateWithLifecycle()
+    val showRecordingDialog by state.showRecordingDialog.collectAsStateWithLifecycle()
 
     val activity = LocalContext.current as Activity
     val recordPermission = Manifest.permission.RECORD_AUDIO
@@ -57,12 +58,6 @@ fun ColumnScope.SpeakToRecordButton(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (!isGranted) state.showRecordPermissionHint()
-    }
-
-    LaunchedEffect(state.dismissDialogEvent) {
-        state.dismissDialogEvent
-            .consumeEach { isRecording = false }
-            .collect()
     }
 
     Box(
@@ -86,15 +81,16 @@ fun ColumnScope.SpeakToRecordButton(
                 detectTapGestures(
                     onPress = { offset ->
                         if (activity.hasPermission(recordPermission)) {
+                            // If it's currently loading, do not trigger the tap again
+                            if (showLoader) return@detectTapGestures
+
                             state.onTap()
-                            isRecording = true
                             val press = PressInteraction.Press(offset)
                             interactionSource.emit(press)
 
                             tryAwaitRelease()
 
                             state.onReleased()
-                            isRecording = false
                             interactionSource.emit(PressInteraction.Release(press))
                         } else {
                             permissionRequester.launch(recordPermission)
@@ -103,32 +99,42 @@ fun ColumnScope.SpeakToRecordButton(
                 )
             }
     ) {
-        Icon(
-            imageVector = Icons.Rounded.Mic,
-            tint = LocalAppColors.current.light
-        )
+        if (showLoader) {
+            InfiniteCircularProgress(
+                color = LocalAppColors.current.light,
+                modifier = Modifier.size(24.dp),
+                strokeWidth = 2.dp
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Rounded.Mic,
+                tint = LocalAppColors.current.light
+            )
+        }
     }
 
-    if (isRecording) {
+    if (showRecordingDialog) {
         SpeakToRecordDialog()
     }
 }
 
-@Immutable
+@Stable
 data class SpeakToRecordButtonState(
     val onTap: () -> Unit,
     val onReleased: () -> Unit,
+    val showLoader: StateFlow<Boolean>,
+    val showRecordingDialog: StateFlow<Boolean>,
     val highlightRecordButton: (BubbleDest) -> Unit,
     val showRecordPermissionHint: () -> Unit,
-    val dismissDialogEvent: EventFlow<Unit>,
 ) {
     companion object {
         val preview = SpeakToRecordButtonState(
             onTap = {},
             onReleased = {},
+            showLoader = MutableStateFlow(false),
+            showRecordingDialog = MutableStateFlow(false),
             highlightRecordButton = {},
             showRecordPermissionHint = {},
-            dismissDialogEvent = MutableEventFlow()
         )
     }
 }
@@ -139,6 +145,12 @@ private fun SpeakToRecordButton_Preview() = AppTheme {
     Column {
         SpeakToRecordButton(
             state = SpeakToRecordButtonState.preview,
+            isAdaptive = false
+        )
+        SpeakToRecordButton(
+            state = SpeakToRecordButtonState.preview.copy(
+                showLoader = MutableStateFlow(true)
+            ),
             isAdaptive = false
         )
     }

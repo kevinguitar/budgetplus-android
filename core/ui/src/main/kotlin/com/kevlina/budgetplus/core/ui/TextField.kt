@@ -32,8 +32,8 @@ internal const val PLACEHOLDER_ALPHA = 0.5F
 @Composable
 fun TextField(
     state: TextFieldState,
-    modifier: Modifier = Modifier,
     title: String,
+    modifier: Modifier = Modifier,
     onTitleClick: (() -> Unit)? = null,
     placeholder: String? = null,
     enabled: Boolean = true,

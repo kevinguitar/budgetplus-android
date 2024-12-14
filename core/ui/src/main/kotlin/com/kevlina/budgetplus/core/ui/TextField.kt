@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
@@ -95,6 +96,82 @@ fun TextField(
             cursorBrush = SolidColor(LocalAppColors.current.dark),
             decorator = @Composable { innerTextField ->
                 if (state.text.isEmpty() && placeholder != null) {
+                    Text(
+                        text = placeholder,
+                        textAlign = TextAlign.End,
+                        fontSize = fontSize,
+                        modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
+                    )
+                }
+
+                innerTextField()
+            }
+        )
+    }
+}
+
+// Workaround to fix the text layout issue in TextFieldState overload.
+// See: https://issuetracker.google.com/issues/384009738
+@Composable
+fun TextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    title: String,
+    modifier: Modifier = Modifier,
+    onTitleClick: (() -> Unit)? = null,
+    placeholder: String? = null,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    readOnly: Boolean = false,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        capitalization = KeyboardCapitalization.Sentences,
+        imeAction = ImeAction.Done
+    ),
+    onDone: (() -> Unit)? = null,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .height(56.dp)
+            .background(
+                color = LocalAppColors.current.lightBg,
+                shape = RoundedCornerShape(AppTheme.cornerRadius)
+            )
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = title,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = fontSize,
+            modifier = Modifier.thenIfNotNull(onTitleClick) {
+                Modifier.rippleClick(
+                    borderless = true,
+                    onClick = it
+                )
+            }
+        )
+
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            enabled = enabled,
+            readOnly = readOnly,
+            modifier = Modifier.weight(1F),
+            textStyle = TextStyle(
+                color = LocalAppColors.current.dark,
+                textAlign = TextAlign.End,
+                fontSize = fontSize,
+                letterSpacing = letterSpacing
+            ),
+            keyboardOptions = keyboardOptions,
+            keyboardActions = KeyboardActions { onDone?.invoke() },
+            singleLine = singleLine,
+            cursorBrush = SolidColor(LocalAppColors.current.dark),
+            decorationBox = @Composable { innerTextField ->
+                if (value.isEmpty() && placeholder != null) {
                     Text(
                         text = placeholder,
                         textAlign = TextAlign.End,

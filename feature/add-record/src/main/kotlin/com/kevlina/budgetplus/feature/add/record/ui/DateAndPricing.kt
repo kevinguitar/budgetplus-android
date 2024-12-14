@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
@@ -79,7 +80,8 @@ internal fun ColumnScope.DateAndPricing(
         )
 
         TextField(
-            state = uiState.priceText,
+            value = uiState.priceText.text.toString(),
+            onValueChange = { uiState.priceText.setTextAndPlaceCursorAtEnd(it) },
             fontSize = FontSize.Header,
             letterSpacing = 0.5.sp,
             readOnly = true,

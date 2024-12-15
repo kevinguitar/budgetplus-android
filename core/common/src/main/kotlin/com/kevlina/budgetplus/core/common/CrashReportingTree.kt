@@ -5,7 +5,6 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
-import kotlin.contracts.contract
 
 class CrashReportingTree : Timber.Tree() {
 
@@ -14,16 +13,9 @@ class CrashReportingTree : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         crashlytics.log(message)
 
-        if (t.shouldRecordException() && priority >= Log.ERROR) {
-            // Weird compiler error, the contract should work fine
-            crashlytics.recordException(t!!)
+        if (priority >= Log.ERROR && t !is CancellationException) {
+            // If t is null, wrap the message with an exception
+            crashlytics.recordException(t ?: Exception(message))
         }
-    }
-
-    private fun Throwable?.shouldRecordException(): Boolean {
-        contract {
-            returns(true) implies (this@shouldRecordException != null)
-        }
-        return this != null && this !is CancellationException
     }
 }

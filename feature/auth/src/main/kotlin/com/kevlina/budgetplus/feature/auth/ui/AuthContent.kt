@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -42,14 +45,20 @@ fun AuthContent(
         ) {
 
             AuthTitle(
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 24.dp)
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
 
-            AnimatedLogo()
+            AuthLogo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            )
 
             AuthDescription(
-                modifier = Modifier.padding(all = 24.dp)
+                modifier = Modifier.padding(horizontal = 24.dp)
             )
+
+            Spacer(Modifier.height(24.dp))
 
             SocialSignInButton(
                 onClick = signInWithGoogle,

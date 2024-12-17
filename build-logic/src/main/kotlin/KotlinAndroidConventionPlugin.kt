@@ -1,7 +1,6 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.TestedExtension
 import common.Constants
-import common.coreLibraryDesugaring
 import common.implementation
 import common.libs
 import common.testFixturesImplementation
@@ -41,7 +40,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             compileOptions {
                 sourceCompatibility = Constants.javaVersion
                 targetCompatibility = Constants.javaVersion
-                isCoreLibraryDesugaringEnabled = true
             }
 
             packaging {
@@ -80,7 +78,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             implementation(project.libs.coroutines)
             implementation(project.libs.timber)
             implementation(project.libs.bundles.test)
-            coreLibraryDesugaring(project.libs.desugar)
 
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))

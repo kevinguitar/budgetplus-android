@@ -1,11 +1,9 @@
 package com.kevlina.budgetplus.notification.channel
 
-import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
-import android.os.Build
 import androidx.annotation.StringRes
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.R
@@ -23,8 +21,6 @@ internal class NotificationChannelsInitializer @Inject constructor(
     }
 
     private fun initNotificationChannels() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-
         val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val generalChannel = createChannel(
@@ -43,7 +39,6 @@ internal class NotificationChannelsInitializer @Inject constructor(
         notificationManager.createNotificationChannel(newMemberChannel)
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     private fun createChannel(
         channelId: String,
         @StringRes nameRes: Int,

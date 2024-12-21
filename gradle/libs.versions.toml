@@ -38,7 +38,7 @@ compose-material3-windowsizeclass = { module = "androidx.compose.material3:mater
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
+coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1"
 espresso = "androidx.test.espresso:espresso-core:3.6.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }

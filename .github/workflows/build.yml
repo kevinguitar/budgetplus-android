@@ -12,12 +12,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Fetch only the latest commit, instead of full git history
+          fetch-depth: 0
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       # https://github.com/orgs/community/discussions/26351#discussioncomment-3251595
       - name: Free Disk Space

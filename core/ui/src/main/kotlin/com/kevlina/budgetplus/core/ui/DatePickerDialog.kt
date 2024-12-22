@@ -57,18 +57,18 @@ fun DatePickerDialog(
         subheadContentColor = darkColor,
         navigationContentColor = darkColor,
         yearContentColor = darkColor,
-        disabledYearContentColor = darkColor.copy(alpha = DisabledAlpha),
+        disabledYearContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
         currentYearContentColor = darkColor,
         selectedYearContentColor = lightColor,
-        disabledSelectedYearContentColor = primaryColor.copy(alpha = DisabledAlpha),
+        disabledSelectedYearContentColor = primaryColor.copy(alpha = DISABLED_ALPHA),
         selectedYearContainerColor = primaryColor,
-        disabledSelectedYearContainerColor = darkColor.copy(alpha = DisabledAlpha),
+        disabledSelectedYearContainerColor = darkColor.copy(alpha = DISABLED_ALPHA),
         dayContentColor = darkColor,
-        disabledDayContentColor = darkColor.copy(alpha = DisabledAlpha),
+        disabledDayContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
         selectedDayContentColor = lightColor,
-        disabledSelectedDayContentColor = lightColor.copy(alpha = DisabledAlpha),
+        disabledSelectedDayContentColor = lightColor.copy(alpha = DISABLED_ALPHA),
         selectedDayContainerColor = primaryColor,
-        disabledSelectedDayContainerColor = primaryColor.copy(alpha = DisabledAlpha),
+        disabledSelectedDayContainerColor = primaryColor.copy(alpha = DISABLED_ALPHA),
         todayContentColor = darkColor,
         todayDateBorderColor = primaryColor,
         dayInSelectionRangeContentColor = darkColor,
@@ -114,7 +114,7 @@ fun DatePickerDialog(
     }
 }
 
-private const val DisabledAlpha = 0.38f
+private const val DISABLED_ALPHA = 0.38f
 
 private val LocalDate.utcMillis
     get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()

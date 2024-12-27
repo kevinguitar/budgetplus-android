@@ -4,8 +4,9 @@ plugins {
 
 dependencies {
     implementation(libs.firebase.crashlytics.gradle)
-    compileOnly(libs.android.gradle.plugin)
-    compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.build.android.gradle.plugin)
+    compileOnly(libs.build.compose.gradle.plugin)
+    compileOnly(libs.build.kotlin.gradle.plugin)
     compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 

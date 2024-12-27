@@ -6,8 +6,10 @@ import common.testFixturesImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class ComposeConventionPlugin : Plugin<Project> {
@@ -27,9 +29,33 @@ class ComposeConventionPlugin : Plugin<Project> {
                         "androidx.compose.foundation.ExperimentalFoundationApi",
                         "androidx.compose.foundation.layout.ExperimentalLayoutApi",
                     )
-                    freeCompilerArgs.addAll(project.buildStabilityConfiguration())
-                    freeCompilerArgs.addAll(project.buildComposeMetricsParameters())
                 }
+            }
+        }
+
+        project.extensions.configure<ComposeCompilerGradlePluginExtension> {
+            // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
+            stabilityConfigurationFiles.add(
+                project.rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+            )
+
+            // Composable metrics
+            // ./gradlew assembleRelease -PenableComposeCompilerMetrics=true --rerun-tasks
+            // ./gradlew assembleRelease -PenableComposeCompilerReports=true --rerun-tasks
+            // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
+            // https://chris.banes.dev/composable-metrics/
+            val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
+            val enableMetrics = enableMetricsProvider.orNull == "true"
+            if (enableMetrics) {
+                val metricsFolder = project.layout.buildDirectory.dir("compose-metrics")
+                metricsDestination.set(metricsFolder)
+            }
+
+            val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
+            val enableReports = (enableReportsProvider.orNull == "true")
+            if (enableReports) {
+                val reportsFolder = project.layout.buildDirectory.dir("compose-reports")
+                reportsDestination.set(reportsFolder)
             }
         }
 
@@ -42,40 +68,4 @@ class ComposeConventionPlugin : Plugin<Project> {
             testFixturesImplementation(project.libs.compose.runtime)
         }
     }
-}
-
-private fun Project.buildStabilityConfiguration(): List<String> = listOf(
-    // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
-    "-P",
-    "plugin:org.jetbrains.kotlin.compose.compiler.gradle:stabilityConfigurationFile=" +
-        rootProject.file("compose_compiler_config.conf").absolutePath
-)
-
-// Composable metrics
-// ./gradlew assembleRelease -PenableComposeCompilerMetrics=true --rerun-tasks
-// ./gradlew assembleRelease -PenableComposeCompilerReports=true --rerun-tasks
-// https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
-// https://chris.banes.dev/composable-metrics/
-private fun Project.buildComposeMetricsParameters(): List<String> {
-    val metricParameters = mutableListOf<String>()
-    val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
-    val enableMetrics = enableMetricsProvider.orNull == "true"
-    if (enableMetrics) {
-        val metricsFolder = project.layout.buildDirectory.dir("compose-metrics").get().asFile
-        metricParameters.add("-P")
-        metricParameters.add(
-            "plugin:org.jetbrains.kotlin.compose.compiler.gradle:metricsDestination=" + metricsFolder.absolutePath
-        )
-    }
-
-    val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
-    val enableReports = (enableReportsProvider.orNull == "true")
-    if (enableReports) {
-        val reportsFolder = project.layout.buildDirectory.dir("compose-reports").get().asFile
-        metricParameters.add("-P")
-        metricParameters.add(
-            "plugin:org.jetbrains.kotlin.compose.compiler.gradle:reportsDestination=" + reportsFolder.absolutePath
-        )
-    }
-    return metricParameters.toList()
 }

@@ -55,7 +55,9 @@ fun EditCategoryScreen(
         }
     }
 
-    BackHandler(onBack = ::navigateUp)
+    if (originalCategories != list) {
+        BackHandler(onBack = ::navigateUp)
+    }
 
     Column {
         TopBar(

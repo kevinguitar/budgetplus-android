@@ -118,7 +118,9 @@ fun ColorTonePickerScreen(
         navigator.navigate(AddDest.UnlockPremium)
     }
 
-    BackHandler(onBack = ::navigateUp)
+    if (isSaveEnabled) {
+        BackHandler(onBack = ::navigateUp)
+    }
 
     // Override the app-level local colors with the state of color tone picker.
     CompositionLocalProvider(

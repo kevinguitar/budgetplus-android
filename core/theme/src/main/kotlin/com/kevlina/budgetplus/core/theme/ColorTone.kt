@@ -7,11 +7,12 @@ import androidx.compose.ui.graphics.Color
 import com.kevlina.budgetplus.core.common.R
 
 enum class ColorTone {
-    MilkTea, Countryside, Barbie, Lavender, NemoSea, Customized;
+    MilkTea, Dusk, Countryside, Barbie, Lavender, NemoSea, Customized;
 
     val nameRes: Int
         @StringRes get() = when (this) {
             MilkTea -> R.string.color_tone_milk_tea
+            Dusk -> R.string.color_tone_dusk
             Countryside -> R.string.color_tone_countryside
             Barbie -> R.string.color_tone_barbie
             Lavender -> R.string.color_tone_lavender
@@ -21,7 +22,7 @@ enum class ColorTone {
 
     val requiresPremium: Boolean
         get() = when (this) {
-            MilkTea, Countryside -> false
+            MilkTea, Dusk, Countryside -> false
             Barbie, Lavender, NemoSea, Customized -> true
         }
 }
@@ -45,6 +46,13 @@ data class ThemeColors(
             lightBg = Color(0xFFF2E2CD),
             primary = Color(0xFFC1A185),
             dark = Color(0xFF7E8072)
+        )
+
+        val Dusk = ThemeColors(
+            light = Color(0xFFFFFFFF),
+            lightBg = Color(0xFFFCF9E3),
+            primary = Color(0xFFFFAD8F),
+            dark = Color(0xFF949494),
         )
 
         val Countryside = ThemeColors(

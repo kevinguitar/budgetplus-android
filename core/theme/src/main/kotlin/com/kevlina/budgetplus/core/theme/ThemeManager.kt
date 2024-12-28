@@ -45,6 +45,7 @@ class ThemeManager @Inject constructor(
 
     fun getThemeColors(colorTone: ColorTone): ThemeColors = when (colorTone) {
         ColorTone.MilkTea -> ThemeColors.MilkTea
+        ColorTone.Dusk -> ThemeColors.Dusk
         ColorTone.Countryside -> ThemeColors.Countryside
         ColorTone.Barbie -> ThemeColors.Barbie
         ColorTone.Lavender -> ThemeColors.Lavender
@@ -155,7 +156,7 @@ class ThemeManager @Inject constructor(
                 dark = Color(hexCodes[3].convertHexToColor()),
             )
         } catch (e: Exception) {
-            Timber.e("Failed to decode the theme colors. raw value=$value")
+            Timber.e(e, "Failed to decode the theme colors. raw value=$value")
             null
         }
     }

@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // Use the latest SDK to generate the file
-@SdkSuppress(minSdkVersion = Build.VERSION_CODES.TIRAMISU)
+@SdkSuppress(minSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class BaselineProfileGenerator {
@@ -20,6 +20,7 @@ class BaselineProfileGenerator {
 
     @Test
     fun startup() {
+        var needAuthorize = true
         baselineProfileRule.collect(
             packageName = APP_PACKAGE,
             maxIterations = 10,
@@ -29,7 +30,11 @@ class BaselineProfileGenerator {
                 // through your most important UI.
                 pressHome()
                 startActivityAndWait()
-                authorize()
+
+                if (needAuthorize) {
+                    authorize()
+                    needAuthorize = false
+                }
             }
         )
     }

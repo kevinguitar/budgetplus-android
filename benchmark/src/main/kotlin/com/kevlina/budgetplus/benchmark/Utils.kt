@@ -5,19 +5,13 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
 
 internal const val APP_PACKAGE = "com.kevlina.budgetplus"
-private const val UI_TIMEOUT = 1_000L
+private const val UI_TIMEOUT = 5_000L
 
 internal fun MacrobenchmarkScope.authorize() {
-    if (!waitForText("Welcome to Budget+")) {
-        return
-    }
+    // Dismiss bubbles
+    waitForTextAndClick("Invite fellows to track expenses together!")
+    waitForTextAndClick("Long tap to record your expenses by voice")
 
-    // Login with Google account
-//    waitForTextAndClick("Continue as Kevin")
-    waitForTextAndClick("Continue with Google")
-    waitForTextAndClick("kevin.chiu@bandlab.com")
-
-    // Record screen
     waitForText("Expense")
 }
 

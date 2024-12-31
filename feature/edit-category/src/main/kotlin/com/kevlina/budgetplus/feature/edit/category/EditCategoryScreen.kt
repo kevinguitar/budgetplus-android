@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import kotlinx.coroutines.launch
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 
 @Composable
@@ -40,6 +42,7 @@ fun EditCategoryScreen(
     var isExitDialogShown by remember { mutableStateOf(false) }
     var list by rememberSaveable { mutableStateOf(originalCategories) }
 
+    val coroutineScope = rememberCoroutineScope()
     val reorderableState = rememberReorderableLazyListState(
         onMove = { (fromIndex, _), (toIndex, _) ->
             list = list.toMutableList()
@@ -113,6 +116,13 @@ fun EditCategoryScreen(
                                 this[index] = newName
                             }
                         }
+                    }
+                }
+
+                // If a new category is added, scroll to the bottom of the list.
+                if (dialogMode is CategoryEditMode.Add) {
+                    coroutineScope.launch {
+                        reorderableState.listState.animateScrollToItem(list.lastIndex)
                     }
                 }
             },

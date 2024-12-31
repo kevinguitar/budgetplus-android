@@ -48,7 +48,7 @@ fun EditCategoryDialog(
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
                     if (name.text.isNotBlank() && name.text != currentName) {
-                        onConfirm(name.text.toString())
+                        onConfirm(name.text.trim().toString())
                         onDismiss()
                     }
                 }
@@ -74,7 +74,7 @@ fun EditCategoryDialog(
 
                 Button(
                     onClick = {
-                        onConfirm(name.text.toString())
+                        onConfirm(name.text.trim().toString())
                         onDismiss()
                     },
                     enabled = name.text.isNotBlank() && name.text != currentName,

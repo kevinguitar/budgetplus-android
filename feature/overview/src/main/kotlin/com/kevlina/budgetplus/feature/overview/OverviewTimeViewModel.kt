@@ -42,14 +42,8 @@ class OverviewTimeViewModel @Inject constructor(
         val isAboveOneMonth = timePeriod.from.isBefore(timePeriod.until.minusMonths(1))
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
             tracker.logEvent("overview_exceed_max_period")
-            snackbarSender.send(
-                message = R.string.overview_exceed_max_period,
-                actionLabel = R.string.cta_go,
-                action = {
-                    tracker.logEvent("overview_exceed_max_period_unlock")
-                    _openPremiumEvent.sendEvent()
-                }
-            )
+            snackbarSender.send(message = R.string.overview_exceed_max_period)
+            _openPremiumEvent.sendEvent()
 
             TimePeriod.Custom(
                 from = timePeriod.from,

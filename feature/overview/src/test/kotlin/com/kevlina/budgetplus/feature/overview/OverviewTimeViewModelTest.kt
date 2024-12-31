@@ -1,7 +1,9 @@
 package com.kevlina.budgetplus.feature.overview
 
+import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
@@ -85,7 +87,7 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `WHEN the period is more than one month THEN make it one month`() = runTest {
+    fun `WHEN the period is more than one month THEN make it one month, and navigate to unlock premium`() = runTest {
         every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 
         val model = createModel()
@@ -94,7 +96,9 @@ class OverviewTimeViewModelTest {
             until = LocalDate.now().plusMonths(3)
         ))
 
+        assertThat(model.openPremiumEvent.value.consume()).isEqualTo(Unit)
         verify {
+            FakeSnackbarSender.lastSentMessageId = R.string.overview_exceed_max_period
             recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(
                 from = LocalDate.now(),
                 until = LocalDate.now().plusMonths(1)

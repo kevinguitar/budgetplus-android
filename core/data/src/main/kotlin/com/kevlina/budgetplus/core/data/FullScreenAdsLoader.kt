@@ -62,7 +62,7 @@ class FullScreenAdsLoader @Inject constructor(
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
-                Timber.e(adError.message)
+                Timber.i(adError.message)
                 adState.value = null
             }
 

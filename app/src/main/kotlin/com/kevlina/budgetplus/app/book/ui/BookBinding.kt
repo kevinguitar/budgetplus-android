@@ -33,6 +33,7 @@ import com.kevlina.budgetplus.core.ui.bubble.Bubble
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @Composable
 internal fun BookBinding(
@@ -61,7 +62,11 @@ internal fun BookBinding(
     }
 
     LaunchedEffect(newIntent) {
-        navController.handleDeepLink(newIntent)
+        try {
+            navController.handleDeepLink(newIntent)
+        } catch (e: Exception) {
+            Timber.e(e, "Fail to handle deeplink")
+        }
     }
 
     // Clear the preview colors if the user navigates out of the picker screen.

@@ -13,7 +13,6 @@ import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_UNLOCK_PREMIUM_PATH
-import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
@@ -35,12 +34,12 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
                 navDeepLink<AddDest.Record>(basePath = "$APP_DEEPLINK/$NAV_RECORD_PATH")
             )
         ) {
-            RecordScreen(navigator = navController.toNavigator())
+            RecordScreen(navController)
         }
 
         composable<AddDest.EditCategory> { entry ->
             EditCategoryScreen(
-                navigator = navController.toNavigator(),
+                navController = navController,
                 type = entry.toRoute<AddDest.EditCategory>().type
             )
         }
@@ -51,7 +50,7 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             )
         ) { entry ->
             SettingsScreen(
-                navigator = navController.toNavigator(),
+                navController = navController,
                 showMembers = entry.toRoute<AddDest.Settings>().showMembers
             )
         }
@@ -61,11 +60,11 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
                 navDeepLink<AddDest.UnlockPremium>(basePath = "$APP_DEEPLINK/$NAV_UNLOCK_PREMIUM_PATH")
             )
         ) {
-            PremiumScreen(navigator = navController.toNavigator())
+            PremiumScreen(navController)
         }
 
         composable<AddDest.BatchRecord> {
-            BatchRecordScreen(navigator = navController.toNavigator())
+            BatchRecordScreen(navController)
         }
 
         composable<AddDest.Colors>(
@@ -74,22 +73,22 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
             )
         ) { entry ->
             ColorTonePickerScreen(
-                navigator = navController.toNavigator(),
+                navController = navController,
                 hexFromLink = entry.toRoute<AddDest.Colors>().hex
             )
         }
 
         composable<AddDest.CurrencyPicker> {
-            CurrencyPickerScreen(navigator = navController.toNavigator())
+            CurrencyPickerScreen(navController)
         }
 
         // Internal screens
         composable<AddDest.Insider> {
-            InsiderScreen(navigator = navController.toNavigator())
+            InsiderScreen(navController)
         }
 
         composable<AddDest.PushNotifications> {
-            PushNotificationsScreen(navigator = navController.toNavigator())
+            PushNotificationsScreen(navController)
         }
     }
 }

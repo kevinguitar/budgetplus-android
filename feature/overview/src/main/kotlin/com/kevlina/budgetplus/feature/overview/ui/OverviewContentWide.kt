@@ -9,15 +9,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.nav.Navigator
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContentWide(
     uiState: OverviewContentUiState,
-    navigator: Navigator,
+    navController: NavController,
 ) {
 
     Row(
@@ -29,7 +30,7 @@ internal fun OverviewContentWide(
 
         OverviewHeader(
             uiState = uiState.headerUiState,
-            navigator = navigator,
+            navController = navController,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)
@@ -39,7 +40,7 @@ internal fun OverviewContentWide(
 
         OverviewList(
             uiState = uiState.listUiState,
-            navigator = navigator,
+            navController = navController,
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1F)
@@ -52,6 +53,6 @@ internal fun OverviewContentWide(
 private fun OverviewContentWide_Preview() = AppTheme {
     OverviewContentWide(
         uiState = OverviewContentUiState.preview,
-        navigator = Navigator.empty,
+        navController = NavController(LocalContext.current),
     )
 }

@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.TopBar
 
 @Composable
 fun CurrencyPickerScreen(
-    navigator: Navigator,
+    navController: NavController,
     vm: CurrencyPickerViewModel = hiltViewModel(),
 ) {
 
@@ -35,7 +35,7 @@ fun CurrencyPickerScreen(
 
         TopBar(
             title = stringResource(id = R.string.currency_picker_title),
-            navigateUp = { navigator.navigateUp() },
+            navigateUp = { navController.navigateUp() },
         )
 
         Box(
@@ -50,7 +50,7 @@ fun CurrencyPickerScreen(
                 onCurrencyPicked = { currency ->
                     if (vm.hasShownCurrencyDisclaimer) {
                         vm.onCurrencyPicked(currency)
-                        navigator.navigateUp()
+                        navController.navigateUp()
                     } else {
                         currencyDisclaimerDialogState = currency
                     }
@@ -65,7 +65,7 @@ fun CurrencyPickerScreen(
                 onConfirm = {
                     vm.onCurrencyPicked(currency)
                     currencyDisclaimerDialogState = null
-                    navigator.navigateUp()
+                    navController.navigateUp()
                 },
                 onDismiss = { currencyDisclaimerDialogState = null },
             )

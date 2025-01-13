@@ -11,7 +11,6 @@ import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.BookTab
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.nav.NAV_OVERVIEW_PATH
-import com.kevlina.budgetplus.core.common.nav.toNavigator
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
 import com.kevlina.budgetplus.feature.records.RecordsViewModel
@@ -27,12 +26,12 @@ internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
                 navDeepLink<HistoryDest.Overview>(basePath = "$APP_DEEPLINK/$NAV_OVERVIEW_PATH")
             )
         ) {
-            OverviewScreen(navigator = navController.toNavigator())
+            OverviewScreen(navController)
         }
 
         composable<HistoryDest.Records> { entry ->
             RecordsScreen(
-                navigator = navController.toNavigator(),
+                navController = navController,
                 vm = hiltViewModel<RecordsViewModel, RecordsViewModel.Factory>(creationCallback = { factory ->
                     factory.create(entry.toRoute())
                 })

@@ -23,9 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -50,7 +50,7 @@ private const val CUSTOM_COLOR_TRANSITION = 100L
 
 @Composable
 fun ColorTonePickerScreen(
-    navigator: Navigator,
+    navController: NavController,
     hexFromLink: String?,
 ) {
     val vm = hiltViewModel<ColorTonePickerViewModel>()
@@ -109,13 +109,13 @@ fun ColorTonePickerScreen(
         if (isSaveEnabled) {
             isExitDialogShown = true
         } else {
-            navigator.navigateUp()
+            navController.navigateUp()
         }
     }
 
     fun unlockPremium() {
         vm.trackUnlockPremium()
-        navigator.navigate(AddDest.UnlockPremium)
+        navController.navigate(AddDest.UnlockPremium)
     }
 
     if (isSaveEnabled) {
@@ -160,7 +160,7 @@ fun ColorTonePickerScreen(
                         onClick = {
                             if (!selectedColorTone.requiresPremium || isPremium) {
                                 vm.setColorTone(selectedColorTone)
-                                navigator.navigateUp()
+                                navController.navigateUp()
                             } else {
                                 unlockPremium()
                             }
@@ -198,7 +198,7 @@ fun ColorTonePickerScreen(
             ConfirmDialog(
                 message = stringResource(id = R.string.unsaved_warning_message),
                 onConfirm = {
-                    navigator.navigateUp()
+                    navController.navigateUp()
                     isExitDialogShown = false
                 },
                 onDismiss = { isExitDialogShown = false }

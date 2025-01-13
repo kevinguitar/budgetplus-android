@@ -23,9 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.hasPermission
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.settings.api.icon
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewScreen(navigator: Navigator) {
+fun OverviewScreen(navController: NavController) {
 
     val vm = hiltViewModel<OverviewViewModel>()
     val uiState = remember(key1 = vm) { vm.toUiState() }
@@ -104,13 +104,13 @@ fun OverviewScreen(navigator: Navigator) {
             regularContent = {
                 OverviewContent(
                     uiState = uiState,
-                    navigator = navigator,
+                    navController = navController,
                 )
             },
             wideContent = {
                 OverviewContentWide(
                     uiState = uiState,
-                    navigator = navigator,
+                    navController = navController,
                 )
             }
         )

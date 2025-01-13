@@ -8,14 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.push.notifications.ui.PushNotificationsContent
 
 @Composable
 fun PushNotificationsScreen(
-    navigator: Navigator,
+    navController: NavController,
 ) {
 
     Column(
@@ -24,7 +24,7 @@ fun PushNotificationsScreen(
 
         TopBar(
             title = stringResource(id = R.string.push_notif_title),
-            navigateUp = navigator::navigateUp,
+            navigateUp = navController::navigateUp,
         )
 
         Box(
@@ -35,7 +35,7 @@ fun PushNotificationsScreen(
         ) {
 
             PushNotificationsContent(
-                navigateUp = navigator::navigateUp
+                navigateUp = navController::navigateUp
             )
         }
     }

@@ -7,26 +7,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.nav.Navigator
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContent(
     uiState: OverviewContentUiState,
-    navigator: Navigator,
+    navController: NavController,
     modifier: Modifier = Modifier,
 ) {
 
     OverviewList(
         uiState = uiState.listUiState,
-        navigator = navigator,
+        navController = navController,
         header = {
             OverviewHeader(
                 uiState = uiState.headerUiState,
-                navigator = navigator,
+                navController = navController,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         },
@@ -54,7 +55,7 @@ internal class OverviewContentUiState(
 private fun OverviewContent_Preview() = AppTheme {
     OverviewContent(
         uiState = OverviewContentUiState.preview,
-        navigator = Navigator.empty,
+        navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

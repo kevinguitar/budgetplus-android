@@ -24,8 +24,8 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.combine
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RecordsScreen(
-    navigator: Navigator,
+    navController: NavController,
     vm: RecordsViewModel,
 ) {
 
@@ -67,7 +67,7 @@ fun RecordsScreen(
             snapshotFlow { pagerState.currentPage }
         ) { recordsList, page ->
             if (recordsList?.getOrNull(page)?.isEmpty() == true) {
-                navigator.navigateUp()
+                navController.navigateUp()
             }
         }.collect()
     }
@@ -76,7 +76,7 @@ fun RecordsScreen(
 
         TopBar(
             title = stringResource(id = R.string.overview_details_title, category, totalPrice),
-            navigateUp = navigator::navigateUp,
+            navigateUp = navController::navigateUp,
             menuActions = {
                 val modifier = Modifier.onPlaced {
                     vm.highlightSortingButton(

@@ -36,9 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.settings.api.ChartMode
 import com.kevlina.budgetplus.core.settings.api.icon
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -52,7 +52,7 @@ import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 
 @Composable
 internal fun SettingsContent(
-    navigator: Navigator,
+    navController: NavController,
     vm: SettingsViewModel,
     showMembers: Boolean,
     modifier: Modifier = Modifier,
@@ -87,9 +87,9 @@ internal fun SettingsContent(
             onClick = {
                 vm.trackBatchRecordClicked()
                 if (isPremium) {
-                    navigator.navigate(AddDest.BatchRecord)
+                    navController.navigate(AddDest.BatchRecord)
                 } else {
-                    navigator.navigate(AddDest.UnlockPremium)
+                    navController.navigate(AddDest.UnlockPremium)
                 }
             }
         )
@@ -98,7 +98,7 @@ internal fun SettingsContent(
             SettingsItem(
                 text = stringResource(id = R.string.premium_hide_ads),
                 showCrownAnimation = true,
-                onClick = { navigator.navigate(AddDest.UnlockPremium) }
+                onClick = { navController.navigate(AddDest.UnlockPremium) }
             )
         }
 
@@ -117,7 +117,7 @@ internal fun SettingsContent(
         SettingsItem(
             text = stringResource(id = R.string.settings_edit_book_currency),
             icon = Icons.Rounded.CurrencyExchange,
-            onClick = { navigator.navigate(AddDest.CurrencyPicker) }
+            onClick = { navController.navigate(AddDest.CurrencyPicker) }
         )
 
         SettingsItem(
@@ -141,7 +141,7 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.color_tone_picker_title),
             icon = Icons.Rounded.ColorLens,
             roundTop = !vm.canSelectLanguage,
-            onClick = { navigator.navigate(AddDest.Colors()) }
+            onClick = { navController.navigate(AddDest.Colors()) }
         )
 
         SettingsItem(
@@ -201,7 +201,7 @@ internal fun SettingsContent(
             SettingsItem(
                 text = stringResource(id = R.string.insider_title),
                 icon = Icons.Rounded.LockPerson,
-                onClick = { navigator.navigate(AddDest.Insider) }
+                onClick = { navController.navigate(AddDest.Insider) }
             )
         }
 

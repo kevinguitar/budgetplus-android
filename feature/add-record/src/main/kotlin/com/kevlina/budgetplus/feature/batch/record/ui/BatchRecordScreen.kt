@@ -9,14 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.add.record.ui.DoneAnimator
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 
 @Composable
-fun BatchRecordScreen(navigator: Navigator) {
+fun BatchRecordScreen(navController: NavController) {
 
     val vm = hiltViewModel<BatchRecordViewModel>()
 
@@ -24,7 +24,7 @@ fun BatchRecordScreen(navigator: Navigator) {
 
         TopBar(
             title = stringResource(id = R.string.batch_record_title),
-            navigateUp = navigator::navigateUp,
+            navigateUp = navController::navigateUp,
         )
 
         Box(

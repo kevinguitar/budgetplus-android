@@ -15,13 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -43,7 +44,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 internal fun OverviewList(
     uiState: OverviewListUiState,
-    navigator: Navigator,
+    navController: NavController,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
@@ -61,7 +62,7 @@ internal fun OverviewList(
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     fun navigateToRecords(category: String) {
-        navigator.navigate(
+        navController.navigate(
             HistoryDest.Records(
                 type = type,
                 category = category,
@@ -257,7 +258,7 @@ private fun OverviewList_All_Preview() = AppTheme {
         uiState = OverviewListUiState.preview.copy(
             mode = MutableStateFlow(OverviewMode.AllRecords)
         ),
-        navigator = Navigator.empty,
+        navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }
@@ -267,7 +268,7 @@ private fun OverviewList_All_Preview() = AppTheme {
 private fun OverviewList_Group_Preview() = AppTheme {
     OverviewList(
         uiState = OverviewListUiState.preview,
-        navigator = Navigator.empty,
+        navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }
@@ -280,7 +281,7 @@ private fun OverviewList_PieChart_Preview() = AppTheme {
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
             chartMode = MutableStateFlow(ChartMode.PieChart)
         ),
-        navigator = Navigator.empty,
+        navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

@@ -16,9 +16,9 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
@@ -29,7 +29,7 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 @Composable
 fun EditCategoryScreen(
     vm: EditCategoryViewModel = hiltViewModel(),
-    navigator: Navigator,
+    navController: NavController,
     type: RecordType,
 ) {
 
@@ -54,7 +54,7 @@ fun EditCategoryScreen(
         if (originalCategories != list) {
             isExitDialogShown = true
         } else {
-            navigator.navigateUp()
+            navController.navigateUp()
         }
     }
 
@@ -81,7 +81,7 @@ fun EditCategoryScreen(
                     },
                     onClick = {
                         vm.updateCategories(type, list)
-                        navigator.navigateUp()
+                        navController.navigateUp()
                     }
                 )
             }
@@ -139,7 +139,7 @@ fun EditCategoryScreen(
         ConfirmDialog(
             message = stringResource(id = R.string.unsaved_warning_message),
             onConfirm = {
-                navigator.navigateUp()
+                navController.navigateUp()
                 isExitDialogShown = false
             },
             onDismiss = { isExitDialogShown = false }

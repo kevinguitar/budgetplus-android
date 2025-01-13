@@ -20,10 +20,10 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -34,7 +34,7 @@ import com.kevlina.budgetplus.feature.category.pills.toUiState
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun RecordScreen(navigator: Navigator) {
+fun RecordScreen(navController: NavController) {
 
     val vm = hiltViewModel<RecordViewModel>()
 
@@ -52,7 +52,7 @@ fun RecordScreen(navigator: Navigator) {
 
         TopBar(
             title = null,
-            titleContent = { BookSelector(navigator) },
+            titleContent = { BookSelector(navController) },
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.GroupAdd,
@@ -72,7 +72,7 @@ fun RecordScreen(navigator: Navigator) {
                     imageVector = Icons.Rounded.Settings,
                     description = stringResource(id = R.string.settings_description),
                     onClick = {
-                        navigator.navigate(AddDest.Settings())
+                         navController.navigate(AddDest.Settings())
                     }
                 )
             }
@@ -84,7 +84,7 @@ fun RecordScreen(navigator: Navigator) {
                 .weight(1F),
             regularContent = {
                 val recordInfoUiState = vm.toUiState(
-                    navigator = navigator,
+                    navController = navController,
                     scrollable = true,
                     adaptiveCalculatorButton = false
                 )
@@ -92,7 +92,7 @@ fun RecordScreen(navigator: Navigator) {
             },
             wideContent = {
                 val recordInfoUiState = vm.toUiState(
-                    navigator = navigator,
+                    navController = navController,
                     scrollable = true,
                     adaptiveCalculatorButton = true
                 )
@@ -100,7 +100,7 @@ fun RecordScreen(navigator: Navigator) {
             },
             packedContent = {
                 val recordInfoUiState = vm.toUiState(
-                    navigator = navigator,
+                    navController = navController,
                     scrollable = false,
                     adaptiveCalculatorButton = false
                 )
@@ -146,7 +146,7 @@ internal class RecordContentUiState(
 }
 
 private fun RecordViewModel.toUiState(
-    navigator: Navigator,
+    navController: NavController,
     scrollable: Boolean,
     adaptiveCalculatorButton: Boolean,
 ) = RecordContentUiState(
@@ -158,7 +158,7 @@ private fun RecordViewModel.toUiState(
         categoriesGridUiState = categoriesVm.toUiState(
             type = type,
             onEditClicked = {
-                navigator.navigate(AddDest.EditCategory(type.value))
+                navController.navigate(AddDest.EditCategory(type.value))
             },
         ),
         dateAndPricingUiState = DateAndPricingUiState(
@@ -168,7 +168,7 @@ private fun RecordViewModel.toUiState(
             scrollable = scrollable,
             setDate = ::setDate,
             editCurrency = {
-                navigator.navigate(route = AddDest.CurrencyPicker)
+                navController.navigate(route = AddDest.CurrencyPicker)
             }
         ),
     ),

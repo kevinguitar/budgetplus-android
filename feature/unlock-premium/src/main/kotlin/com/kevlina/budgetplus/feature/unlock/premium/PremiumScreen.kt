@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.TopBar
 
 @Composable
-fun PremiumScreen(navigator: Navigator) {
+fun PremiumScreen(navController: NavController) {
 
     val vm = hiltViewModel<PremiumViewModel>()
     val premiumPricing by vm.premiumPricing.collectAsStateWithLifecycle()
@@ -28,13 +28,13 @@ fun PremiumScreen(navigator: Navigator) {
     // Close the screen in case user enters it from the deeplink
     LaunchedEffect(key1 = Unit) {
         if (vm.isPremium.value) {
-            navigator.navigateUp()
+            navController.navigateUp()
         }
     }
 
     LaunchedEffect(key1 = purchaseDone) {
         if (purchaseDone) {
-            navigator.navigateUp()
+            navController.navigateUp()
         }
     }
 
@@ -44,7 +44,7 @@ fun PremiumScreen(navigator: Navigator) {
 
         TopBar(
             title = stringResource(id = R.string.premium_unlock),
-            navigateUp = navigator::navigateUp
+            navigateUp = navController::navigateUp
         )
 
         Box(

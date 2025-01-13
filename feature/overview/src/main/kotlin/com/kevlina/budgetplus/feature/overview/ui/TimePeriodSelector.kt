@@ -17,16 +17,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -42,7 +43,7 @@ import java.time.LocalDate
 @Composable
 internal fun ColumnScope.TimePeriodSelector(
     uiState: TimePeriodSelectorUiState,
-    navigator: Navigator,
+    navController: NavController,
 ) {
 
     val timePeriod by uiState.timePeriod.collectAsStateWithLifecycle()
@@ -54,7 +55,7 @@ internal fun ColumnScope.TimePeriodSelector(
 
     LaunchedEffect(key1 = uiState.openPremiumEvent) {
         uiState.openPremiumEvent
-            .consumeEach { navigator.navigate(AddDest.UnlockPremium) }
+            .consumeEach { navController.navigate(AddDest.UnlockPremium) }
             .collect()
     }
 
@@ -201,7 +202,7 @@ private fun TimePeriodSelector_Preview() = AppTheme {
     ) {
         TimePeriodSelector(
             uiState = TimePeriodSelectorUiState.preview,
-            navigator = Navigator.empty
+            navController = NavController(LocalContext.current)
         )
     }
 }

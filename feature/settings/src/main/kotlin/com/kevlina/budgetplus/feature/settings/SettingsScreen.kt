@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.Navigator
 import com.kevlina.budgetplus.core.ui.TopBar
 
 @Composable
 fun SettingsScreen(
-    navigator: Navigator,
+    navController: NavController,
     showMembers: Boolean,
 ) {
 
@@ -29,11 +29,11 @@ fun SettingsScreen(
 
         TopBar(
             title = stringResource(id = R.string.settings_title, bookName.orEmpty()),
-            navigateUp = navigator::navigateUp
+            navigateUp = navController::navigateUp
         )
 
         SettingsContent(
-            navigator = navigator,
+            navController = navController,
             vm = vm,
             showMembers = showMembers,
             modifier = Modifier

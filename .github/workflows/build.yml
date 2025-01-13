@@ -35,7 +35,10 @@ jobs:
           sudo swapoff -a
           sudo rm -f /swapfile
           sudo apt clean
-          docker rmi $(docker image ls -aq)
+          images=$(docker images -q)
+          if [[ -n "$images" ]]; then
+          docker rmi $images
+          fi
           df -h
 
       # https://www.droidcon.com/2023/04/04/securely-create-android-release-using-github-actions/

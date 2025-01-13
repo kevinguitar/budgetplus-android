@@ -14,7 +14,7 @@
     <application
         android:name=".BudgetPlusApp"
         android:allowBackup="true"
-        android:enableOnBackInvokedCallback="true"
+        android:enableOnBackInvokedCallback="@bool/enable_predictive_back"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

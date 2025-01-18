@@ -82,7 +82,7 @@ class BookActivity : ComponentActivity() {
                     snackbarSender.send(
                         message = R.string.app_update_downloaded,
                         actionLabel = R.string.cta_complete,
-                        duration = SnackbarDuration.Long,
+                        duration = SnackbarDuration.Indefinite,
                         action = (appUpdateState as InAppUpdateState.Downloaded).complete
                     )
                 }

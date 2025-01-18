@@ -21,7 +21,7 @@ firebase-crashlytics = "3.0.2"
 android-credentials = "1.5.0-beta01"
 
 [libraries]
-android-activity = "androidx.activity:activity-ktx:1.9.3"
+android-activity = "androidx.activity:activity-ktx:1.10.0"
 android-core = "androidx.core:core-ktx:1.15.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }

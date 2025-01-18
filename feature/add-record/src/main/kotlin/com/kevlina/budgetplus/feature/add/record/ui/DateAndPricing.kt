@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,8 +29,8 @@ import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.TextField
-import com.kevlina.budgetplus.core.ui.clearFocusSafe
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordDateState
@@ -46,7 +45,7 @@ internal fun ColumnScope.DateAndPricing(
     modifier: Modifier = Modifier,
 ) {
 
-    val focusManager = LocalFocusManager.current
+    val focusManager = rememberSafeFocusManager()
 
     val recordDate by uiState.recordDate.collectAsStateWithLifecycle()
     val currencySymbol by uiState.currencySymbol.collectAsStateWithLifecycle()
@@ -57,7 +56,7 @@ internal fun ColumnScope.DateAndPricing(
         val priceText = uiState.priceText.text
         LaunchedEffect(key1 = priceText) {
             if (priceText != CalculatorViewModel.EMPTY_PRICE) {
-                focusManager.clearFocusSafe()
+                focusManager.clearFocus()
 
                 if (scrollState.value != scrollState.maxValue) {
                     scrollState.animateScrollTo(scrollState.maxValue)
@@ -89,7 +88,7 @@ internal fun ColumnScope.DateAndPricing(
             onTitleClick = uiState.editCurrency,
             modifier = Modifier
                 .weight(1F)
-                .clickableWithoutRipple { focusManager.clearFocusSafe() }
+                .clickableWithoutRipple { focusManager.clearFocus() }
         )
     }
 

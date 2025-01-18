@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,7 +22,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.TextField
-import com.kevlina.budgetplus.core.ui.clearFocusSafe
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
@@ -36,7 +35,7 @@ internal fun RecordInfo(
     modifier: Modifier = Modifier,
 ) {
 
-    val focusManager = LocalFocusManager.current
+    val focusManager = rememberSafeFocusManager()
 
     val type by uiState.type.collectAsStateWithLifecycle()
 
@@ -70,7 +69,7 @@ internal fun RecordInfo(
                 }
             ),
             modifier = Modifier.fillMaxWidth(),
-            onDone = { focusManager.clearFocusSafe() }
+            onDone = { focusManager.clearFocus() }
         )
 
         DateAndPricing(

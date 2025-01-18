@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,8 +26,8 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
-import com.kevlina.budgetplus.core.ui.clearFocusSafe
 import com.kevlina.budgetplus.core.ui.containerPadding
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.toUiState
@@ -37,7 +36,7 @@ import com.kevlina.budgetplus.feature.category.pills.toUiState
 internal fun BatchRecordContent() {
 
     val vm = hiltViewModel<BatchRecordViewModel>()
-    val focusManager = LocalFocusManager.current
+    val focusManager = rememberSafeFocusManager()
 
     val type by vm.type.collectAsStateWithLifecycle()
     val currencySymbol by vm.bookRepo.currencySymbol.collectAsStateWithLifecycle()
@@ -74,7 +73,7 @@ internal fun BatchRecordContent() {
                 }
             ),
             modifier = Modifier.fillMaxWidth(),
-            onDone = { focusManager.clearFocusSafe() }
+            onDone = { focusManager.clearFocus() }
         )
 
         TextField(

@@ -86,7 +86,6 @@ fun RecordScreen(navController: NavController) {
                 val recordInfoUiState = vm.toUiState(
                     navController = navController,
                     scrollable = true,
-                    adaptiveCalculatorButton = false
                 )
                 RecordContentRegular(recordInfoUiState)
             },
@@ -94,7 +93,6 @@ fun RecordScreen(navController: NavController) {
                 val recordInfoUiState = vm.toUiState(
                     navController = navController,
                     scrollable = true,
-                    adaptiveCalculatorButton = true
                 )
                 RecordContentWide(recordInfoUiState)
             },
@@ -102,7 +100,6 @@ fun RecordScreen(navController: NavController) {
                 val recordInfoUiState = vm.toUiState(
                     navController = navController,
                     scrollable = false,
-                    adaptiveCalculatorButton = false
                 )
                 RecordContentPacked(recordInfoUiState)
             },
@@ -148,7 +145,6 @@ internal class RecordContentUiState(
 private fun RecordViewModel.toUiState(
     navController: NavController,
     scrollable: Boolean,
-    adaptiveCalculatorButton: Boolean,
 ) = RecordContentUiState(
     recordInfoUiState = RecordInfoUiState(
         type = type,
@@ -172,5 +168,5 @@ private fun RecordViewModel.toUiState(
             }
         ),
     ),
-    calculatorState = calculatorVm.toUiState(adaptiveButton = adaptiveCalculatorButton),
+    calculatorState = calculatorVm.toUiState(),
 )

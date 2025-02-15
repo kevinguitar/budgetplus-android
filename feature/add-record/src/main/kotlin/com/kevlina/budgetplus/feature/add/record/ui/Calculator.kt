@@ -71,6 +71,7 @@ private val calcButtons = CalculatorButton.entries.toList()
 @Composable
 internal fun Calculator(
     state: CalculatorState,
+    adaptiveButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -85,7 +86,7 @@ internal fun Calculator(
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
-                modifier = if (state.adaptiveButton) {
+                modifier = if (adaptiveButton) {
                     Modifier
                         .weight(1F)
                         .fillMaxWidth()
@@ -105,7 +106,7 @@ internal fun Calculator(
                         btns.forEach { btn ->
                             CalculatorBtn(
                                 button = btn,
-                                isAdaptive = state.adaptiveButton,
+                                isAdaptive = adaptiveButton,
                                 onClick = { state.onInput(btn) }
                             )
                         }
@@ -120,11 +121,11 @@ internal fun Calculator(
                         ) {
                             SpeakToRecordButton(
                                 state = state.speakToRecordButtonState,
-                                isAdaptive = state.adaptiveButton,
+                                isAdaptive = adaptiveButton,
                             )
 
                             ClearBtn(
-                                isAdaptive = state.adaptiveButton,
+                                isAdaptive = adaptiveButton,
                                 onClick = {
                                     state.onCalculatorAction(context, CalculatorAction.Clear)
                                 }
@@ -275,7 +276,6 @@ private fun RowScope.DoneBtn(
 internal data class CalculatorState(
     val needEvaluate: Flow<Boolean>,
     val speakToRecordButtonState: SpeakToRecordButtonState,
-    val adaptiveButton: Boolean,
     val onInput: (CalculatorButton) -> Unit,
     val onCalculatorAction: (Context, CalculatorAction) -> Unit,
 ) {
@@ -283,14 +283,13 @@ internal data class CalculatorState(
         val preview = CalculatorState(
             needEvaluate = MutableStateFlow(false),
             speakToRecordButtonState = SpeakToRecordButtonState.preview,
-            adaptiveButton = false,
             onInput = {},
             onCalculatorAction = { _, _ -> }
         )
     }
 }
 
-internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = CalculatorState(
+internal fun CalculatorViewModel.toUiState() = CalculatorState(
     needEvaluate = needEvaluate,
     speakToRecordButtonState = SpeakToRecordButtonState(
         onTap = speakToRecordViewModel::onButtonTap,
@@ -300,7 +299,6 @@ internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = Ca
         highlightRecordButton = speakToRecordViewModel::highlightRecordButton,
         showRecordPermissionHint = speakToRecordViewModel::showRecordPermissionHint,
     ),
-    adaptiveButton = adaptiveButton,
     onInput = ::onInput,
     onCalculatorAction = ::onCalculatorAction
 )
@@ -310,6 +308,7 @@ internal fun CalculatorViewModel.toUiState(adaptiveButton: Boolean = false) = Ca
 private fun Calculator_Preview() = AppTheme {
     Calculator(
         state = CalculatorState.preview,
+        adaptiveButton = false,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(all = 16.dp)
@@ -320,7 +319,8 @@ private fun Calculator_Preview() = AppTheme {
 @Composable
 private fun CalculatorAdaptive_Preview() = AppTheme(themeColors = ThemeColors.Lavender) {
     Calculator(
-        state = CalculatorState.preview.copy(adaptiveButton = true),
+        state = CalculatorState.preview,
+        adaptiveButton = true,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(all = 16.dp)

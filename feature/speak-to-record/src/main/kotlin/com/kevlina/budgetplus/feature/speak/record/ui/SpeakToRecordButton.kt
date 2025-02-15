@@ -52,7 +52,8 @@ fun ColumnScope.SpeakToRecordButton(
     val showLoader by state.showLoader.collectAsStateWithLifecycle()
     val showRecordingDialog by state.showRecordingDialog.collectAsStateWithLifecycle()
 
-    val activity = LocalContext.current as Activity
+    // Cast to nullable to support preview
+    val activity = LocalContext.current as? Activity
     val recordPermission = Manifest.permission.RECORD_AUDIO
     val permissionRequester = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -80,7 +81,7 @@ fun ColumnScope.SpeakToRecordButton(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = { offset ->
-                        if (activity.hasPermission(recordPermission)) {
+                        if (activity?.hasPermission(recordPermission) == true) {
                             // If it's currently loading, do not trigger the tap again
                             if (showLoader) return@detectTapGestures
 

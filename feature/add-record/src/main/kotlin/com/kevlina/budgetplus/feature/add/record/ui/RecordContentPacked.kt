@@ -36,6 +36,7 @@ internal fun RecordContentPacked(
 
         Calculator(
             state = uiState.calculatorState,
+            adaptiveButton = false,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)

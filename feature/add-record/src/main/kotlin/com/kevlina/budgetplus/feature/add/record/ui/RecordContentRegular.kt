@@ -59,6 +59,8 @@ internal fun RecordContentRegular(
             )
 
             val isAdaptiveButton = with(LocalDensity.current) {
+                // Give a small room for rounding
+                @Suppress("MagicNumber")
                 calculatorHeightPx.intValue + 10 > maxCalculatorHeight.roundToPx()
             }
 

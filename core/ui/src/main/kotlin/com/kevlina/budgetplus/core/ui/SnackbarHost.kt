@@ -1,9 +1,13 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -45,19 +49,53 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
         }
     }
 
-    MaterialSnackbarHost(
-        hostState = hostState,
-        modifier = Modifier.imePadding()
-    ) { data ->
-        Snackbar(
-            snackbarData = data,
-            containerColor = LocalAppColors.current.dark,
-            contentColor = LocalAppColors.current.light,
-            actionColor = LocalAppColors.current.light,
-            actionContentColor = LocalAppColors.current.light,
-            dismissActionContentColor = LocalAppColors.current.light,
-        )
+    SwipeableSnackbarHostWrapper(hostState) {
+        MaterialSnackbarHost(
+            hostState = hostState,
+            modifier = Modifier.imePadding()
+        ) { data ->
+            Snackbar(
+                snackbarData = data,
+                containerColor = LocalAppColors.current.dark,
+                contentColor = LocalAppColors.current.light,
+                actionColor = LocalAppColors.current.light,
+                actionContentColor = LocalAppColors.current.light,
+                dismissActionContentColor = LocalAppColors.current.light,
+            )
+        }
     }
+}
+
+@Composable
+private fun SwipeableSnackbarHostWrapper(
+    state: SnackbarHostState,
+    modifier: Modifier = Modifier,
+    dismissContent: @Composable RowScope.() -> Unit,
+) {
+    val dismissSnackbarState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            when (value) {
+                SwipeToDismissBoxValue.Settled -> false
+                SwipeToDismissBoxValue.StartToEnd, SwipeToDismissBoxValue.EndToStart -> {
+                    state.currentSnackbarData?.dismiss()
+                    true
+                }
+            }
+        }
+    )
+
+    LaunchedEffect(dismissSnackbarState.currentValue) {
+        if (dismissSnackbarState.currentValue != SwipeToDismissBoxValue.Settled) {
+            dismissSnackbarState.reset()
+        }
+    }
+
+    SwipeToDismissBox(
+        modifier = modifier,
+        state = dismissSnackbarState,
+        backgroundContent = {},
+        content = dismissContent,
+    )
 }
 
 @Preview

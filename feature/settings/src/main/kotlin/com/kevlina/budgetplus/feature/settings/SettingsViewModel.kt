@@ -131,7 +131,7 @@ internal class SettingsViewModel @Inject constructor(
             context.startActivity(intent)
             tracker.logEvent("settings_contact_us_click")
         } else {
-            snackbarSender.send(R.string.settings_no_email_app_found, canDismiss = true)
+            snackbarSender.send(R.string.settings_no_email_app_found)
         }
     }
 

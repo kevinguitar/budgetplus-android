@@ -77,9 +77,9 @@ class BookViewModel @Inject constructor(
                 snackbarSender.send(stringProvider[R.string.book_join_success, bookName])
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 _unlockPremiumEvent.sendEvent()
-                snackbarSender.send(e.errorRes, canDismiss = true)
+                snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.General) {
-                snackbarSender.send(e.errorRes, canDismiss = true)
+                snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Timber.e(e)
             } catch (e: Exception) {

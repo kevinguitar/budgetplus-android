@@ -12,7 +12,6 @@ interface SnackbarSender {
     fun send(
         @StringRes message: Int,
         @StringRes actionLabel: Int? = null,
-        canDismiss: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
         action: () -> Unit = {},
     )
@@ -20,7 +19,6 @@ interface SnackbarSender {
     fun send(
         message: String,
         @StringRes actionLabel: Int? = null,
-        canDismiss: Boolean = false,
         duration: SnackbarDuration = SnackbarDuration.Short,
         action: () -> Unit = {},
     )
@@ -31,7 +29,6 @@ interface SnackbarSender {
 class SnackbarData(
     val message: String,
     val actionLabel: String? = null,
-    val canDismiss: Boolean = false,
     val duration: SnackbarDuration = SnackbarDuration.Short,
     val action: () -> Unit = {},
 )

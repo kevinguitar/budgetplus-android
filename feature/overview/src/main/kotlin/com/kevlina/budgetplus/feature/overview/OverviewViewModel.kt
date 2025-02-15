@@ -178,7 +178,7 @@ internal class OverviewViewModel @Inject constructor(
     }
 
     fun showWriteFilePermissionHint() {
-        snackbarSender.send(R.string.permission_hint, canDismiss = true)
+        snackbarSender.send(R.string.permission_hint)
     }
 
     fun setRecordType(type: RecordType) {

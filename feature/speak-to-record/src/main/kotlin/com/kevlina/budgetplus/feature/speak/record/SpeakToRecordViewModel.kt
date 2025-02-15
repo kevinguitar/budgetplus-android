@@ -72,21 +72,21 @@ class SpeakToRecordViewModel @Inject constructor(
     }
 
     fun showRecordPermissionHint() {
-        snackbarSender.send(R.string.permission_hint, canDismiss = true)
+        snackbarSender.send(R.string.permission_hint)
     }
 
     private fun handleStatus(status: SpeakToRecordStatus) {
         when (status) {
             SpeakToRecordStatus.DeviceNotSupported -> {
-                snackbarSender.send(R.string.record_speech_recognition_not_supported, canDismiss = true)
+                snackbarSender.send(R.string.record_speech_recognition_not_supported)
             }
 
             SpeakToRecordStatus.ReadyToSpeak, SpeakToRecordStatus.Recognizing -> Unit
 
-            is SpeakToRecordStatus.Error -> snackbarSender.send(status.message, canDismiss = true)
+            is SpeakToRecordStatus.Error -> snackbarSender.send(status.message)
 
             SpeakToRecordStatus.NoResult -> {
-                snackbarSender.send(R.string.record_speech_recognition_no_result, canDismiss = true)
+                snackbarSender.send(R.string.record_speech_recognition_no_result)
             }
 
             is SpeakToRecordStatus.Success -> {

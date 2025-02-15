@@ -34,7 +34,7 @@ class PremiumViewModel @Inject constructor(
         .map { state ->
             when (state) {
                 PurchaseState.PaymentAcknowledgeFailed -> {
-                    snackbarSender.send(R.string.premium_acknowledge_fail, canDismiss = true)
+                    snackbarSender.send(R.string.premium_acknowledge_fail)
                     return@map true
                 }
 

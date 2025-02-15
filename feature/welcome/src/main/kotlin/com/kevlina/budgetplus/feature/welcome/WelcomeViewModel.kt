@@ -64,7 +64,7 @@ class WelcomeViewModel @Inject constructor(
 
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: JoinBookException.General) {
-                snackbarSender.send(e.errorRes, canDismiss = true)
+                snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Timber.e(e)
             } catch (e: Exception) {

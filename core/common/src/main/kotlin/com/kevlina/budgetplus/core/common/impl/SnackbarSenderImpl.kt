@@ -24,13 +24,11 @@ internal class SnackbarSenderImpl @Inject constructor(
     override fun send(
         message: Int,
         actionLabel: Int?,
-        canDismiss: Boolean,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) = send(
         message = stringProvider[message],
         actionLabel = actionLabel,
-        canDismiss = canDismiss,
         duration = duration,
         action = action
     )
@@ -38,14 +36,12 @@ internal class SnackbarSenderImpl @Inject constructor(
     override fun send(
         message: String,
         actionLabel: Int?,
-        canDismiss: Boolean,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
         _snackbarEvent.sendEvent(SnackbarData(
             message = message,
             actionLabel = actionLabel?.let(stringProvider::get),
-            canDismiss = canDismiss,
             duration = duration,
             action = action
         ))
@@ -57,8 +53,8 @@ internal class SnackbarSenderImpl @Inject constructor(
         when {
             // Do not toast the cancellation error
             e is CancellationException -> Unit
-            error != null -> send(error, canDismiss = true)
-            else -> send(R.string.fallback_error_message, canDismiss = true)
+            error != null -> send(error)
+            else -> send(R.string.fallback_error_message)
         }
     }
 }

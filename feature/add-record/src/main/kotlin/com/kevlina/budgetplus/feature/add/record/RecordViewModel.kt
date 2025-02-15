@@ -27,6 +27,7 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.add.record.RecordViewModel.Companion.RECORD_COUNT_CYCLE
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -125,7 +126,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun showNotificationPermissionHint() {
-        snackbarSender.send(R.string.permission_hint, canDismiss = true)
+        snackbarSender.send(R.string.permission_hint)
     }
 
     private fun record(context: Context) {

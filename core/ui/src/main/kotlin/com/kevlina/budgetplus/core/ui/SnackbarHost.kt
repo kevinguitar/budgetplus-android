@@ -35,7 +35,8 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
                 val result = hostState.showSnackbar(
                     message = snackbarData.message,
                     actionLabel = snackbarData.actionLabel,
-                    withDismissAction = snackbarData.canDismiss,
+                    // We support swipe to dismiss, don't want to pollute ui
+                    withDismissAction = false,
                     duration = when (snackbarData.duration) {
                         SnackbarDuration.Short -> MaterialSnackbarDuration.Short
                         SnackbarDuration.Long -> MaterialSnackbarDuration.Long

@@ -11,7 +11,6 @@ object FakeSnackbarSender : SnackbarSender {
     override fun send(
         message: Int,
         actionLabel: Int?,
-        canDismiss: Boolean,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
@@ -21,7 +20,6 @@ object FakeSnackbarSender : SnackbarSender {
     override fun send(
         message: String,
         actionLabel: Int?,
-        canDismiss: Boolean,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {

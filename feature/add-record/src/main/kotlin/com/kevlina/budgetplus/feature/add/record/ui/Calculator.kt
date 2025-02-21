@@ -54,8 +54,8 @@ enum class CalculatorButton(val text: Char) {
     Nine('9'), Six('6'),
     Divide('÷'), Multiply('×'),
 
-    One('1'), Zero('0'),
-    Two('2'), Dot('.'),
+    One('1'), Dot('.'),
+    Two('2'), Zero('0'),
     Three('3'), Delete('<'),
     Minus('-'), Plus('+');
 }

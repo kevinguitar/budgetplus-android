@@ -6,7 +6,7 @@ kotlin = "2.1.10"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "2.1.10-1.0.31"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2025.01.01"
+compose-bom = "2025.02.00"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "33.8.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android

@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
@@ -18,11 +16,11 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 internal class SpeakToRecordImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val stringProvider: StringProvider,
     private val speakResultParser: SpeakResultParser,
     private val tracker: Tracker,
 ) : SpeakToRecord {
@@ -82,10 +80,10 @@ internal class SpeakToRecordImpl @Inject constructor(
             )
             .putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE,
-                stringProvider[R.string.record_speech_recognition_code]
+                Locale.getDefault()
             )
 
-        Timber.d("SpeechRecognizer: Start listening")
+        Timber.d("SpeechRecognizer: Start listening, locale=${Locale.getDefault()}")
         tracker.logEvent("speak_to_record_start")
         recognizer.startListening(recognizerIntent)
 

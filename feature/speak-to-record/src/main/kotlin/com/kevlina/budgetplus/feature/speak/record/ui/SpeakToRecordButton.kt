@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Mic
@@ -143,7 +145,11 @@ data class SpeakToRecordButtonState(
 @Preview
 @Composable
 private fun SpeakToRecordButton_Preview() = AppTheme {
-    Column {
+    Column(
+        modifier = Modifier
+            .width(100.dp)
+            .height(220.dp)
+    ) {
         SpeakToRecordButton(
             state = SpeakToRecordButtonState.preview,
             isAdaptive = false

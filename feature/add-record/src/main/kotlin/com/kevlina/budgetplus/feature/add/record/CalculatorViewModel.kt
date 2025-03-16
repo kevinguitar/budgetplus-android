@@ -109,14 +109,14 @@ class CalculatorViewModel @Inject constructor(
             val validation = expression.validate()
             if (!validation.isValid) {
                 snackbarSender.send(validation.errors.joinToString())
-                Timber.e("Calculator validation error. Raw: $text")
+                Timber.e(CalculatorException("Validation error. Raw: $text"))
                 return
             }
 
             expression.evaluate()
         } catch (e: Exception) {
             snackbarSender.sendError(e)
-            Timber.e("Calculator evaluation error. Raw: $text")
+            Timber.e(e, "Validation error. Raw: $text")
             return
         }
 
@@ -160,3 +160,5 @@ class CalculatorViewModel @Inject constructor(
         const val EMPTY_PRICE: String = "0"
     }
 }
+
+internal class CalculatorException(override val message: String) : RuntimeException(message)

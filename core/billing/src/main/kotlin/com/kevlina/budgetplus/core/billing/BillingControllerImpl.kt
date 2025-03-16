@@ -138,7 +138,7 @@ internal class BillingControllerImpl @Inject constructor(
                 Timber.d("BillingClient: queryPurchases success ${purchases.size}")
                 processPurchases(purchases)
             } else {
-                Timber.e("BillingClient: queryPurchases error $status $debugMessage")
+                Timber.e(BillingException("queryPurchases error $status $debugMessage"))
             }
         }
     }
@@ -159,7 +159,7 @@ internal class BillingControllerImpl @Inject constructor(
             val debugMessage = billingResult.debugMessage
 
             if (status != BillingStatus.OK) {
-                Timber.e("BillingClient: ProductDetailsResponse $status $debugMessage")
+                Timber.e(BillingException("ProductDetailsResponse $status $debugMessage"))
                 return@launch
             }
 
@@ -195,13 +195,13 @@ internal class BillingControllerImpl @Inject constructor(
                         purchaseRecorder.recordPurchase(purchase.orderId, purchase.products.first())
                         _purchaseState.value = PurchaseState.Success
                     } else {
-                        Timber.e("BillingClient: Acknowledge failed ${billingResult.debugMessage}")
+                        Timber.e(BillingException("Acknowledge failed ${billingResult.debugMessage}"))
                         _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
                     }
                 }
 
                 else -> {
-                    Timber.e("BillingClient: Cannot process the purchase. Purchase state: ${purchase.purchaseState}")
+                    Timber.e(BillingException("Cannot process the purchase. Purchase state: ${purchase.purchaseState}"))
                     _purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
                 }
             }

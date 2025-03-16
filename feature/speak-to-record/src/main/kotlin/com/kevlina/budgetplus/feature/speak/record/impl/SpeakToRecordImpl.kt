@@ -31,7 +31,7 @@ internal class SpeakToRecordImpl @Inject constructor(
 
     override fun startRecording(): RecordActor {
         if (!isAvailableOnDevice) {
-            Timber.e("SpeechRecognizer: Feature is not supported")
+            Timber.e(SpeakToRecordException("Feature is not supported"))
             return RecordActor(
                 statusFlow = flowOf(SpeakToRecordStatus.DeviceNotSupported),
                 stopRecording = {}
@@ -62,7 +62,7 @@ internal class SpeakToRecordImpl @Inject constructor(
             override fun onError(code: Int) {
                 recognizer.destroy()
 
-                Timber.e("SpeechRecognizer: Error $code")
+                Timber.e(SpeakToRecordException("Error $code"))
                 val status = SpeakToRecordStatus.fromErrorCode(code)
                 statusFlow.tryEmit(status)
 

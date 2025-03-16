@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.feature.utils
 
-import android.annotation.TargetApi
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
@@ -112,7 +112,7 @@ internal class CsvWriter @Inject constructor(
         FileProvider.getUriForFile(context, "$appPackage.provider", cacheFile)
     }
 
-    @TargetApi(Build.VERSION_CODES.Q)
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun saveToDownload(cacheFile: File): Uri {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, cacheFile.name)

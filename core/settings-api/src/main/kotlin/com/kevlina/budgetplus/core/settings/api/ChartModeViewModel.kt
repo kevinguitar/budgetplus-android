@@ -32,16 +32,19 @@ class ChartModeViewModel @Inject constructor(
     private val _chartMode = MutableStateFlow(chartModeCache)
     val chartMode get() = _chartMode
 
+    val chartModeAnalyticsName: String
+        get() = when (chartMode.value) {
+            ChartMode.BarChart -> "bar_chart"
+            ChartMode.PieChart -> "pie_chart"
+        }
+
     fun setChartMode(mode: ChartMode) {
         chartModeCache = mode
         _chartMode.value = mode
         tracker.logEvent(
             event = "chart_mode_changed",
             params = bundle {
-                putString("chart_mode", when (mode) {
-                    ChartMode.BarChart -> "bar_chart"
-                    ChartMode.PieChart -> "pie_chart"
-                })
+                putString("chart_mode", chartModeAnalyticsName)
             }
         )
     }

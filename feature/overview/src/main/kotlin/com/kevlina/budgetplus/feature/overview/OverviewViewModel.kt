@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.VibratorManager
+import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -199,6 +200,15 @@ internal class OverviewViewModel @Inject constructor(
     fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
         snackbarSender.send(R.string.record_duplicated)
+    }
+
+    fun onGroupClicked() {
+        tracker.logEvent(
+            event = "overview_group_clicked",
+            params = bundle {
+                putString("chart_mode", chartModeModel.chartModeAnalyticsName)
+            }
+        )
     }
 
     fun highlightModeButton(dest: BubbleDest) {

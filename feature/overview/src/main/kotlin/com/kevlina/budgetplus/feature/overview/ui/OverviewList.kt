@@ -62,6 +62,7 @@ internal fun OverviewList(
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 
     fun navigateToRecords(category: String) {
+        uiState.onGroupClicked()
         navController.navigate(
             HistoryDest.Records(
                 type = type,
@@ -212,6 +213,7 @@ internal data class OverviewListUiState(
     val vibrate: () -> Unit,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
+    val onGroupClicked: () -> Unit,
 ) {
     companion object {
 
@@ -246,7 +248,8 @@ internal data class OverviewListUiState(
             formatPrice = { "$$it" },
             vibrate = {},
             canEditRecord = { true },
-            duplicateRecord = {}
+            duplicateRecord = {},
+            onGroupClicked = {}
         )
     }
 }

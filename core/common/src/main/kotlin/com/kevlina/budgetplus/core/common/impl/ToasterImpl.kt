@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,7 @@ internal class ToasterImpl @Inject constructor(
 
         toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
         toast?.show()
+        Timber.d("Toaster: Show toast $message")
         lastMessage = message
     }
 }

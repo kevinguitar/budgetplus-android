@@ -39,6 +39,7 @@ internal class SnackbarSenderImpl @Inject constructor(
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
+        Timber.d("SnackbarSender: Show snackbar $message")
         _snackbarEvent.sendEvent(SnackbarData(
             message = message,
             actionLabel = actionLabel?.let(stringProvider::get),

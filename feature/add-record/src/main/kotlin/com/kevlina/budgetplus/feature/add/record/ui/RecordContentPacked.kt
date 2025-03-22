@@ -44,11 +44,16 @@ internal fun RecordContentPacked(
     }
 }
 
-@Preview(heightDp = 700)
+@Preview(widthDp = 360, heightDp = 480)
+@Preview(widthDp = 360, heightDp = 640)
+@Preview(widthDp = 480, heightDp = 640)
 @Composable
 private fun RecordContentPacked_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
     RecordContentPacked(
-        uiState = RecordContentUiState.preview,
+        uiState = RecordContentUiState(
+            recordInfoUiState = RecordInfoUiState.preview.copy(scrollable = false),
+            calculatorState = CalculatorState.preview,
+        ),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

@@ -9,23 +9,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.thenIf
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -34,8 +30,8 @@ internal fun RecordContentRegular(
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints {
+        val useAdaptiveButton = (maxHeight / maxWidth) < 1.5
         val maxCalculatorHeight = maxHeight / 2
-        var calculatorHeightPx = remember { mutableIntStateOf(0) }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,23 +54,18 @@ internal fun RecordContentRegular(
                     .background(color = LocalAppColors.current.dark)
             )
 
-            val isAdaptiveButton = with(LocalDensity.current) {
-                // Give a small room for rounding
-                @Suppress("MagicNumber")
-                calculatorHeightPx.intValue + 10 > maxCalculatorHeight.roundToPx()
-            }
-
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = maxCalculatorHeight)
+                    .thenIf(useAdaptiveButton) {
+                        Modifier.height(maxCalculatorHeight)
+                    }
                     .background(LocalAppColors.current.lightBg)
-                    .onSizeChanged { calculatorHeightPx.intValue = it.height }
             ) {
                 Calculator(
                     state = uiState.calculatorState,
-                    adaptiveButton = isAdaptiveButton,
+                    adaptiveButton = useAdaptiveButton,
                     modifier = Modifier
                         .width(AppTheme.containerMaxWidth)
                         .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -89,7 +80,10 @@ internal fun RecordContentRegular(
     }
 }
 
-@PreviewScreenSizes
+@Preview(widthDp = 360, heightDp = 480)
+@Preview(widthDp = 360, heightDp = 640)
+@Preview(widthDp = 480, heightDp = 640)
+@Preview(widthDp = 480, heightDp = 840)
 @Composable
 private fun RecordContentRegular_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
     RecordContentRegular(

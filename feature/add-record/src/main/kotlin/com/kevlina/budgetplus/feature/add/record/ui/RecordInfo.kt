@@ -81,7 +81,7 @@ internal fun RecordInfo(
 }
 
 @Stable
-internal class RecordInfoUiState(
+internal data class RecordInfoUiState(
     val type: StateFlow<RecordType>,
     val note: TextFieldState,
     val setType: (RecordType) -> Unit,
@@ -94,7 +94,7 @@ internal class RecordInfoUiState(
             type = MutableStateFlow(RecordType.Expense),
             note = TextFieldState("Some cool daily stuff"),
             setType = {},
-            scrollable = false,
+            scrollable = true,
             categoriesGridUiState = CategoriesGridUiState.preview,
             dateAndPricingUiState = DateAndPricingUiState.preview
         )

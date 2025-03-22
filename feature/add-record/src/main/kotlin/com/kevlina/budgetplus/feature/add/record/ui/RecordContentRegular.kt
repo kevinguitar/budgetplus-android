@@ -23,6 +23,8 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.thenIf
 
+private const val ADAPTIVE_BUTTON_ASPECT_RATIO = 1.5
+
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun RecordContentRegular(
@@ -30,7 +32,7 @@ internal fun RecordContentRegular(
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints {
-        val useAdaptiveButton = (maxHeight / maxWidth) < 1.5
+        val useAdaptiveButton = (maxHeight / maxWidth) < ADAPTIVE_BUTTON_ASPECT_RATIO
         val maxCalculatorHeight = maxHeight / 2
 
         Column(

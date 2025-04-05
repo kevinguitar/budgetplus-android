@@ -22,7 +22,6 @@
     <string name="record_income">收入</string>
     <string name="record_empty_category">请选择类别</string>
     <string name="record_empty_price">请输入金额</string>
-    <string name="record_created">已新增至%s</string>
     <string name="record_edit_title">编辑帐目</string>
     <string name="record_edited">已储存</string>
     <string name="record_deleted">已删除%s</string>

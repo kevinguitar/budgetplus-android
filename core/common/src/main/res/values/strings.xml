@@ -22,7 +22,6 @@
     <string name="record_income">Income</string>
     <string name="record_empty_category">Please choose a category</string>
     <string name="record_empty_price">Please input the price</string>
-    <string name="record_created">Record added to %s</string>
     <string name="record_edit_title">Edit Record</string>
     <string name="record_edited">Record edited</string>
     <string name="record_deleted">Record %s is deleted</string>

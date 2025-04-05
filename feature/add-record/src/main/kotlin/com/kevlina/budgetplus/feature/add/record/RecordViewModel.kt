@@ -155,7 +155,6 @@ class RecordViewModel @Inject constructor(
 
         recordRepo.createRecord(record)
         recordEvent.sendEvent(Unit)
-        snackbarSender.send(stringProvider[R.string.record_created, category])
         recordCount += 1
 
         resetScreen()

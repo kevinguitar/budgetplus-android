@@ -22,7 +22,6 @@
     <string name="record_income">収入</string>
     <string name="record_empty_category">カテゴリを選択してください</string>
     <string name="record_empty_price">金額を入力してください</string>
-    <string name="record_created">%sに追加しました</string>
     <string name="record_edit_title">帳面を編集</string>
     <string name="record_edited">保存済み</string>
     <string name="record_deleted">%sを削除しました" となります</string>

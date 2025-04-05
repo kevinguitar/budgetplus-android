@@ -151,7 +151,6 @@ class RecordViewModelTest {
 
     private val stringProvider = FakeStringProvider(
         stringMap = mapOf(
-            R.string.record_created to "Record created",
             R.string.record_empty_category to "Category is empty",
             R.string.record_empty_price to "Price is empty"
         )

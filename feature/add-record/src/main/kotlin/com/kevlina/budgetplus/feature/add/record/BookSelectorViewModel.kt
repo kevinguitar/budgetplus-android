@@ -58,5 +58,4 @@ class BookSelectorViewModel @Inject constructor(
     fun showReachedMaxMessage() {
         snackbarSender.send(R.string.book_exceed_maximum)
     }
-
 }

@@ -50,15 +50,14 @@ fun BookSelector(navController: NavController) {
     var isBookCreationDialogShown by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxWidth()) {
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                    .rippleClick(
-                            color = LocalAppColors.current.light,
-                            onClick = { isSelectorShown = true }
-                    )
-                    .padding(vertical = 8.dp)
+                .rippleClick(
+                    color = LocalAppColors.current.light,
+                    onClick = { isSelectorShown = true }
+                )
+                .padding(vertical = 8.dp)
         ) {
 
             Text(
@@ -132,7 +131,6 @@ fun BookSelector(navController: NavController) {
     }
 
     if (isBookCreationDialogShown) {
-
         InputDialog(
             buttonText = stringResource(id = R.string.cta_create),
             title = stringResource(id = R.string.book_name_title),

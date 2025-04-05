@@ -33,6 +33,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.thenIf
@@ -41,6 +42,7 @@ import com.kevlina.budgetplus.core.ui.thenIf
 fun CreateBookBlock(
     modifier: Modifier,
     bookName: TextFieldState,
+    isCreatingBook: Boolean,
     createBook: () -> Unit,
     isWideMode: Boolean = false,
     applyStatusBarPadding: Boolean = true,
@@ -140,12 +142,19 @@ fun CreateBookBlock(
                     contentPadding = PaddingValues(),
                     modifier = Modifier.size(56.dp)
                 ) {
-
-                    Text(
-                        text = stringResource(id = R.string.cta_go),
-                        color = LocalAppColors.current.light,
-                        fontWeight = FontWeight.Medium
-                    )
+                    if (isCreatingBook) {
+                        InfiniteCircularProgress(
+                            color = LocalAppColors.current.light,
+                            strokeWidth = 2.dp,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(id = R.string.cta_go),
+                            color = LocalAppColors.current.light,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
         }
@@ -158,6 +167,18 @@ private fun CreateBookBlock_Preview() = AppTheme {
     CreateBookBlock(
         modifier = Modifier.fillMaxSize(),
         bookName = rememberTextFieldState("My book"),
+        isCreatingBook = false,
+        createBook = {}
+    )
+}
+
+@Preview(showBackground = true, widthDp = 400, heightDp = 240)
+@Composable
+private fun CreateBookBlockCreating_Preview() = AppTheme {
+    CreateBookBlock(
+        modifier = Modifier.fillMaxSize(),
+        bookName = rememberTextFieldState("My book"),
+        isCreatingBook = true,
         createBook = {}
     )
 }
@@ -168,6 +189,7 @@ private fun CreateBookBlockWide_Preview() = AppTheme {
     CreateBookBlock(
         modifier = Modifier.fillMaxSize(),
         bookName = rememberTextFieldState(""),
+        isCreatingBook = false,
         createBook = {},
         isWideMode = true
     )

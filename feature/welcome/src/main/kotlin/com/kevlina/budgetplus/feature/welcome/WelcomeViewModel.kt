@@ -15,6 +15,8 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,13 +38,17 @@ class WelcomeViewModel @Inject constructor(
 
     val bookName = TextFieldState()
 
+    private val _isCreatingBook = MutableStateFlow(false)
+    val isCreatingBook = _isCreatingBook.asStateFlow()
+
     fun createBook() {
         if (createBookJob?.isActive == true) {
             return
         }
 
-        val name = bookName.text.toString()
         createBookJob = viewModelScope.launch {
+            _isCreatingBook.value = true
+            val name = bookName.text.toString()
             try {
                 bookRepo.createBook(name = name, source = "welcome")
                 toaster.showMessage(stringProvider[R.string.book_create_success, name])
@@ -50,6 +56,8 @@ class WelcomeViewModel @Inject constructor(
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
+            } finally {
+                _isCreatingBook.value = false
             }
         }
     }

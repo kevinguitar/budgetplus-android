@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.add.record
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.FakeActivityProvider
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeStringProvider
 import com.kevlina.budgetplus.core.common.R
@@ -171,6 +172,7 @@ class RecordViewModelTest {
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
         stringProvider = stringProvider,
+        activityProvider = FakeActivityProvider(mockk()),
         preferenceHolder = FakePreferenceHolder {
             put("recordCount", recordCount)
         },

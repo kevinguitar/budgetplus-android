@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.common
 
 import android.app.Activity
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import timber.log.Timber
@@ -8,7 +9,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class ActivityProviderImpl @Inject constructor() : ActivityProvider {
+class ActivityProviderImpl @Inject constructor()
+    : ActivityProvider, Application.ActivityLifecycleCallbacks {
 
     private var _currentActivity: Activity? = null
 

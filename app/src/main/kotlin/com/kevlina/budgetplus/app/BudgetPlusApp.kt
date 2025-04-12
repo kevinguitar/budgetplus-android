@@ -4,7 +4,7 @@ import android.app.Application
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.kevlina.budgetplus.core.common.ActivityProvider
+import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AdMobInitializer
 import dagger.hilt.android.HiltAndroidApp
@@ -16,7 +16,7 @@ import javax.inject.Named
 class BudgetPlusApp : Application() {
 
     @Inject lateinit var adMobInitializer: AdMobInitializer
-    @Inject lateinit var activityProvider: ActivityProvider
+    @Inject lateinit var activityProvider: ActivityProviderImpl
     @Inject lateinit var appStartActions: Set<@JvmSuppressWildcards AppStartAction>
     @Inject @JvmField @Named("is_debug") var isDebug: Boolean = false
 

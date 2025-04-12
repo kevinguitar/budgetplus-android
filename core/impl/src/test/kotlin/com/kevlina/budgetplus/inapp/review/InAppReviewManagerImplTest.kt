@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
+import com.kevlina.budgetplus.core.inapp.review.InAppReviewManagerImpl
 import io.mockk.mockk
 import org.junit.Test
 import java.time.LocalDateTime

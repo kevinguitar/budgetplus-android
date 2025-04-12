@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.inapp.review
+package com.kevlina.budgetplus.core.inapp.review
 
 import android.app.Activity
 import com.google.android.play.core.ktx.launchReview
@@ -7,7 +7,8 @@ import com.google.android.play.core.review.ReviewManager
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import com.kevlina.budgetplus.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
+import com.kevlina.budgetplus.core.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
+import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.ZoneOffset

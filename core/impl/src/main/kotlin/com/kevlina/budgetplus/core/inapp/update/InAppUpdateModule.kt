@@ -1,5 +1,6 @@
-package com.kevlina.budgetplus.inapp.update
+package com.kevlina.budgetplus.core.inapp.update
 
+import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

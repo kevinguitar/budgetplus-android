@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.inapp.update
+package com.kevlina.budgetplus.core.inapp.update
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -12,6 +12,10 @@ import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.android.play.core.ktx.requestUpdateFlow
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion.DAYS_FOR_FLEXIBLE_UPDATE
+import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion.DAYS_FOR_IMMEDIATE_UPDATE
+import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
+import com.kevlina.budgetplus.inapp.update.InAppUpdateState
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

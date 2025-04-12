@@ -1,8 +1,9 @@
-package com.kevlina.budgetplus.inapp.review
+package com.kevlina.budgetplus.core.inapp.review
 
 import android.content.Context
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

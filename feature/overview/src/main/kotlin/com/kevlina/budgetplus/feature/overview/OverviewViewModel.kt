@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.feature.overview
 
-import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -50,6 +50,7 @@ internal class OverviewViewModel @Inject constructor(
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     private val authManager: AuthManager,
+    private val activityProvider: ActivityProvider,
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
     private val csvWriter: CsvWriter,
@@ -158,7 +159,8 @@ internal class OverviewViewModel @Inject constructor(
         tracker.logEvent("overview_mode_changed")
     }
 
-    fun exportToCsv(context: Context) {
+    fun exportToCsv() {
+        val activity = activityProvider.currentActivity ?: return
         tracker.logEvent("overview_export_to_csv")
         viewModelScope.launch {
             try {
@@ -170,7 +172,7 @@ internal class OverviewViewModel @Inject constructor(
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     type = csvWriter.mimeType
                 }
-                context.startActivity(Intent.createChooser(intent, null))
+                activity.startActivity(Intent.createChooser(intent, null))
                 snackbarSender.send(R.string.export_csv_success)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -74,7 +72,6 @@ internal fun Calculator(
     adaptiveButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val needEvaluate by state.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
 
     Column(
@@ -127,7 +124,7 @@ internal fun Calculator(
                             ClearBtn(
                                 isAdaptive = adaptiveButton,
                                 onClick = {
-                                    state.onCalculatorAction(context, CalculatorAction.Clear)
+                                    state.onCalculatorAction(CalculatorAction.Clear)
                                 }
                             )
                         }
@@ -136,11 +133,13 @@ internal fun Calculator(
                     1 -> DoneBtn(
                         needEvaluate = needEvaluate,
                         onClick = {
-                            state.onCalculatorAction(context, if (needEvaluate) {
-                                CalculatorAction.Evaluate
-                            } else {
-                                CalculatorAction.Ok
-                            })
+                            state.onCalculatorAction(
+                                if (needEvaluate) {
+                                    CalculatorAction.Evaluate
+                                } else {
+                                    CalculatorAction.Ok
+                                }
+                            )
                         }
                     )
                 }
@@ -277,14 +276,14 @@ internal data class CalculatorState(
     val needEvaluate: Flow<Boolean>,
     val speakToRecordButtonState: SpeakToRecordButtonState,
     val onInput: (CalculatorButton) -> Unit,
-    val onCalculatorAction: (Context, CalculatorAction) -> Unit,
+    val onCalculatorAction: (CalculatorAction) -> Unit,
 ) {
     companion object {
         val preview = CalculatorState(
             needEvaluate = MutableStateFlow(false),
             speakToRecordButtonState = SpeakToRecordButtonState.preview,
             onInput = {},
-            onCalculatorAction = { _, _ -> }
+            onCalculatorAction = {}
         )
     }
 }

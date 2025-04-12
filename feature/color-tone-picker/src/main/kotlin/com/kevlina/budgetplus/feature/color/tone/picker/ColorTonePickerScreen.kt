@@ -19,7 +19,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,8 +65,6 @@ fun ColorTonePickerScreen(
         initialPage = colorTones.indexOf(selectedColorTone),
         pageCount = { colorTones.size }
     )
-
-    val context = LocalContext.current
 
     LaunchedEffect(hexFromLink) {
         if (hexFromLink != null && vm.previousProcessedLink != hexFromLink) {
@@ -141,7 +138,7 @@ fun ColorTonePickerScreen(
                         MenuAction(
                             imageVector = Icons.Rounded.Share,
                             description = stringResource(id = R.string.cta_share),
-                            onClick = { vm.shareMyColors(context) },
+                            onClick = vm::shareMyColors,
                             modifier = Modifier.onPlaced {
                                 vm.highlightShareButton(
                                     BubbleDest.ColorsSharing(

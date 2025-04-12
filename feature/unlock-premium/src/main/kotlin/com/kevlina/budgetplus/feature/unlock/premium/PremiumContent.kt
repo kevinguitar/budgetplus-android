@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.unlock.premium
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,11 +28,8 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 @Composable
 fun PremiumContent(
     premiumPricing: String?,
-    getPremium: (Context) -> Unit,
+    getPremium: () -> Unit,
 ) {
-
-    val context = LocalContext.current
-
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +79,7 @@ fun PremiumContent(
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             enabled = premiumPricing != null,
-            onClick = { getPremium(context) }
+            onClick = getPremium
         ) {
             Text(
                 text = stringResource(id = R.string.premium_unlock_cta),

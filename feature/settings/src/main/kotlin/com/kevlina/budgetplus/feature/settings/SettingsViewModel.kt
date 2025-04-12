@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.settings
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
@@ -9,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -31,6 +31,7 @@ import javax.inject.Named
 internal class SettingsViewModel @Inject constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
+    private val activityProvider: ActivityProvider,
     private val stringProvider: StringProvider,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
@@ -93,50 +94,53 @@ internal class SettingsViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    fun openLanguageSettings(context: Context) {
+    fun openLanguageSettings() {
+        val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
             data = "package:$appPackage".toUri()
         }
-        context.startActivity(intent)
+        activity.startActivity(intent)
         tracker.logEvent("settings_language_click")
     }
 
-    fun share(context: Context) {
+    fun share() {
+        val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.settings_share_app_message, googlePlayUrl])
         }
-        context.startActivity(Intent.createChooser(intent, stringProvider[R.string.settings_share_app]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.settings_share_app]))
         tracker.logEvent("settings_share_app_click")
     }
 
-    fun rateUs(context: Context) {
-        context.visitUrl(googlePlayUrl)
+    fun rateUs() {
+        visitUrl(googlePlayUrl)
         tracker.logEvent("settings_rate_us_click")
     }
 
-    fun followOnInstagram(context: Context) {
-        context.visitUrl(instagramUrl)
+    fun followOnInstagram() {
+        visitUrl(instagramUrl)
         tracker.logEvent("settings_follow_instagram_click")
     }
 
-    fun contactUs(context: Context) {
+    fun contactUs() {
+        val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
             putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
             putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n")
         }
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
+        if (intent.resolveActivity(activity.packageManager) != null) {
+            activity.startActivity(intent)
             tracker.logEvent("settings_contact_us_click")
         } else {
             snackbarSender.send(R.string.settings_no_email_app_found)
         }
     }
 
-    fun viewPrivacyPolicy(context: Context) {
-        context.visitUrl(privacyPolicyUrl)
+    fun viewPrivacyPolicy() {
+        visitUrl(privacyPolicyUrl)
         tracker.logEvent("settings_privacy_policy_click")
     }
 
@@ -162,10 +166,11 @@ internal class SettingsViewModel @Inject constructor(
         navigation.sendEvent(logoutNavigationAction)
     }
 
-    private fun Context.visitUrl(url: String) {
+    private fun visitUrl(url: String) {
+        val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = url.toUri()
         }
-        startActivity(intent)
+        activity.startActivity(intent)
     }
 }

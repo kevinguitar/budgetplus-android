@@ -1,10 +1,9 @@
 package com.kevlina.budgetplus.feature.unlock.premium
 
-import android.content.Context
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -18,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
     private val billingController: BillingController,
+    private val activityProvider: ActivityProvider,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     authManager: AuthManager,
@@ -58,9 +58,10 @@ class PremiumViewModel @Inject constructor(
             false
         }
 
-    fun getPremium(context: Context) {
+    fun getPremium() {
+        val activity = activityProvider.currentActivity ?: return
         tracker.logEvent("buy_premium_attempt")
-        billingController.buyPremium(context as ComponentActivity)
+        billingController.buyPremium(activity)
     }
 
     override fun onCleared() {

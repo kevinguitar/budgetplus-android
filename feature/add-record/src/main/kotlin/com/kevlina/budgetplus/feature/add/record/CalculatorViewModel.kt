@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import android.content.Context
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
@@ -40,8 +39,8 @@ class CalculatorViewModel @Inject constructor(
         .map { text -> text.any { it in operatorChars } }
         .distinctUntilChanged()
 
-    private val _recordFlow = MutableEventFlow<Context>()
-    val recordFlow: EventFlow<Context> = _recordFlow.asStateFlow()
+    private val _recordFlow = MutableEventFlow<Unit>()
+    val recordFlow: EventFlow<Unit> = _recordFlow.asStateFlow()
 
     private val operatorChars = listOf(
         CalculatorButton.Plus,
@@ -135,14 +134,14 @@ class CalculatorViewModel @Inject constructor(
         priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
     }
 
-    fun onCalculatorAction(context: Context, action: CalculatorAction) {
+    fun onCalculatorAction(action: CalculatorAction) {
         vibrator.vibrate()
         when (action) {
             CalculatorAction.Clear -> clearPrice()
             CalculatorAction.Evaluate -> evaluate()
             CalculatorAction.Ok -> {
                 evaluate()
-                _recordFlow.sendEvent(context)
+                _recordFlow.sendEvent()
             }
         }
     }

@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.feature.color.tone.picker
 
-import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -33,6 +33,7 @@ internal class ColorTonePickerViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val stringProvider: StringProvider,
     private val snackbarSender: SnackbarSender,
+    private val activityProvider: ActivityProvider,
     private val tracker: Tracker,
 ) : ViewModel() {
 
@@ -75,13 +76,14 @@ internal class ColorTonePickerViewModel @Inject constructor(
         themeManager.onColorPicked(semantic, colorHexCode)
     }
 
-    fun shareMyColors(context: Context) {
+    fun shareMyColors() {
+        val activity = activityProvider.currentActivity ?: return
         val colorsLink = themeManager.generateCustomColorsLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_share_colors, colorsLink])
         }
-        context.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_share]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_share]))
     }
 
     fun trackUnlockPremium() {

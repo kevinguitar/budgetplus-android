@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.common
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,8 +12,8 @@ internal class ActivityProviderImpl @Inject constructor() : ActivityProvider {
 
     private var _currentActivity: Activity? = null
 
-    override val currentActivity: Activity?
-        get() = _currentActivity ?: run {
+    override val currentActivity: ComponentActivity?
+        get() = (_currentActivity as? ComponentActivity) ?: run {
             Timber.e(MissingActivityException())
             null
         }

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -17,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -38,8 +36,6 @@ fun RecordScreen(navController: NavController) {
 
     val vm = hiltViewModel<RecordViewModel>()
 
-    val context = LocalContext.current
-
     var isRequestingReview by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = vm) {
@@ -57,7 +53,7 @@ fun RecordScreen(navController: NavController) {
                 MenuAction(
                     imageVector = Icons.Rounded.GroupAdd,
                     description = stringResource(id = R.string.cta_invite),
-                    onClick = { vm.shareJoinLink(context) },
+                    onClick = vm::shareJoinLink,
                     modifier = Modifier.onPlaced {
                         vm.highlightInviteButton(
                             BubbleDest.Invite(
@@ -114,7 +110,7 @@ fun RecordScreen(navController: NavController) {
                 confirmText = stringResource(id = R.string.review_request_yes),
                 cancelText = stringResource(id = R.string.review_request_no),
                 onConfirm = {
-                    vm.launchReviewFlow(context as Activity)
+                    vm.launchReviewFlow()
                     isRequestingReview = false
                 },
                 onDismiss = {

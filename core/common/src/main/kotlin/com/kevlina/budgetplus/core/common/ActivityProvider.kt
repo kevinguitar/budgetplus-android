@@ -6,6 +6,6 @@ import androidx.activity.ComponentActivity
  * Get the current resumed activity, useful for lifecycle ViewModel where you cannot inject Activity.
  */
 interface ActivityProvider {
-    //TODO: Make it nonnull later
+    // Make it nonnull later
     val currentActivity: ComponentActivity?
 }

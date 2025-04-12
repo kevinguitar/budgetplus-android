@@ -75,7 +75,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
         project.dependencies {
             implementation(project.libs.android.core)
-            implementation(project.libs.coroutines)
+            implementation(project.libs.coroutines.android)
             implementation(project.libs.timber)
             implementation(project.libs.bundles.test)
 
@@ -84,7 +84,8 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                 testImplementation(testFixtures(project(":core:common")))
             }
 
-            testFixturesImplementation(project.libs.coroutines)
+            testImplementation(testFixtures(project(":core:unit-test")))
+            testFixturesImplementation(project.libs.coroutines.android)
         }
     }
 }

@@ -18,6 +18,7 @@ dependencies {
 
     implementation(projects.core.billing)
     implementation(projects.core.data)
+    implementation(projects.core.impl)
     implementation(projects.core.inappUpdate)
     implementation(projects.core.notification)
     implementation(projects.core.ui)

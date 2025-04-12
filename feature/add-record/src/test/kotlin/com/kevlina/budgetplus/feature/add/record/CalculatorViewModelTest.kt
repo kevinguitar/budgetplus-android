@@ -4,8 +4,8 @@ import android.app.Activity
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
-import com.kevlina.budgetplus.core.common.test.SnapshotFlowRule
 import com.kevlina.budgetplus.core.data.FakeVibratorManager
+import com.kevlina.budgetplus.core.unit.test.SnapshotFlowRule
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import io.mockk.mockk

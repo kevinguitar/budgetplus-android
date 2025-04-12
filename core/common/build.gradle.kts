@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.runtime)
     implementation(libs.coil)
     implementation(libs.navigation.runtime)
 }

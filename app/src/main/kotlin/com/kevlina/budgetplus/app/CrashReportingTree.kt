@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common
+package com.kevlina.budgetplus.app
 
 import android.util.Log
 import com.google.firebase.crashlytics.ktx.crashlytics

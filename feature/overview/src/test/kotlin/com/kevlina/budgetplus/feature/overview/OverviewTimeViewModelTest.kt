@@ -4,11 +4,11 @@ import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.test.MainDispatcherRule
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import com.kevlina.budgetplus.core.unit.test.MainDispatcherRule
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk

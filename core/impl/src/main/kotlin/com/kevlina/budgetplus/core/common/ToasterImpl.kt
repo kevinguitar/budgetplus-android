@@ -1,8 +1,7 @@
-package com.kevlina.budgetplus.core.common.impl
+package com.kevlina.budgetplus.core.common
 
 import android.content.Context
 import android.widget.Toast
-import com.kevlina.budgetplus.core.common.Toaster
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common.test
+package com.kevlina.budgetplus.core.unit.test
 
 import androidx.compose.runtime.snapshots.ObserverHandle
 import androidx.compose.runtime.snapshots.Snapshot

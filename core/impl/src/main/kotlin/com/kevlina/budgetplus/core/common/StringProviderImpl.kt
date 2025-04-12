@@ -1,7 +1,6 @@
-package com.kevlina.budgetplus.core.common.impl
+package com.kevlina.budgetplus.core.common
 
 import android.content.Context
-import com.kevlina.budgetplus.core.common.StringProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

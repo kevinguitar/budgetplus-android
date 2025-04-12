@@ -66,6 +66,7 @@ class ComposeConventionPlugin : Plugin<Project> {
 
             testFixturesImplementation(platform(project.libs.compose.bom))
             testFixturesImplementation(project.libs.compose.runtime)
+            testFixturesImplementation(project.libs.junit.compose)
         }
     }
 }

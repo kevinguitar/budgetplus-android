@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common.di
+package com.kevlina.budgetplus.core.di
 
 import android.content.Context
 import dagger.Module

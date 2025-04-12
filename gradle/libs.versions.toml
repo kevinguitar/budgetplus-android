@@ -5,6 +5,8 @@ gradle-plugin = "8.9.1"
 kotlin = "2.1.20"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
 ksp = "2.1.20-2.0.0"
+# https://github.com/Kotlin/kotlinx.coroutines/releases
+coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2025.04.00"
 # https://firebase.google.com/support/release-notes/android
@@ -40,7 +42,8 @@ compose-material3-windowsizeclass = { module = "androidx.compose.material3:mater
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso = "androidx.test.espresso:espresso-core:3.6.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -90,7 +93,6 @@ compose = [
 ]
 test = [
     "junit-android",
-    "junit-compose",
     "junit-core",
     "mockk",
     "truth",

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common.di
+package com.kevlina.budgetplus.core.di
 
 import android.content.Context
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -6,11 +6,11 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
+import com.kevlina.budgetplus.core.common.SnackbarSenderImpl
 import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.StringProviderImpl
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.core.common.impl.SnackbarSenderImpl
-import com.kevlina.budgetplus.core.common.impl.StringProviderImpl
-import com.kevlina.budgetplus.core.common.impl.ToasterImpl
+import com.kevlina.budgetplus.core.common.ToasterImpl
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow

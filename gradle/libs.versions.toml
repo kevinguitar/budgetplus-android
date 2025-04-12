@@ -92,6 +92,7 @@ compose = [
     "compose-tooling-preview",
 ]
 test = [
+    "coroutines-test",
     "junit-android",
     "junit-core",
     "mockk",

@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.core.di
 
 import android.content.Context
+import com.kevlina.budgetplus.core.common.ActivityProvider
+import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
@@ -36,6 +38,9 @@ internal interface CommonModule {
 
     @Binds
     fun provideSnackbarSender(impl: SnackbarSenderImpl): SnackbarSender
+
+    @Binds
+    fun provideActivityProvider(impl: ActivityProviderImpl): ActivityProvider
 
     companion object {
 

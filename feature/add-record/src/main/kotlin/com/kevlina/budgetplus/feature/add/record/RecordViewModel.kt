@@ -1,13 +1,12 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
@@ -51,6 +50,7 @@ class RecordViewModel @Inject constructor(
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
+    private val activityProvider: ActivityProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
@@ -75,7 +75,7 @@ class RecordViewModel @Inject constructor(
 
     init {
         calculatorVm.recordFlow
-            .consumeEach(::record)
+            .consumeEach { record() }
             .launchIn(viewModelScope)
 
         calculatorVm.speakToRecordViewModel.speakResultFlow
@@ -98,13 +98,14 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    fun shareJoinLink(context: Context) {
+    fun shareJoinLink() {
+        val activity = activityProvider.currentActivity ?: return
         val joinLink = bookRepo.generateJoinLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_invite_to_book, joinLink])
         }
-        context.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
         _requestPermissionEvent.sendEvent()
     }
 
@@ -115,7 +116,8 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    fun launchReviewFlow(activity: Activity) {
+    fun launchReviewFlow() {
+        val activity = activityProvider.currentActivity ?: return
         viewModelScope.launch {
             inAppReviewManager.launchReviewFlow(activity)
         }
@@ -129,7 +131,7 @@ class RecordViewModel @Inject constructor(
         snackbarSender.send(R.string.permission_hint)
     }
 
-    private fun record(context: Context) {
+    private fun record() {
         val category = categoriesVm.category.value
         val price = calculatorVm.price.value
 
@@ -158,7 +160,7 @@ class RecordViewModel @Inject constructor(
         recordCount += 1
 
         resetScreen()
-        onRecordCreated(context)
+        onRecordCreated()
     }
 
     private fun resetScreen() {
@@ -173,8 +175,8 @@ class RecordViewModel @Inject constructor(
      *  - Request notification permission after the 2nd record
      *  - Request in app review after the 4th record
      */
-    private fun onRecordCreated(context: Context) {
-        val activity = context as? Activity ?: return
+    private fun onRecordCreated() {
+        val activity = activityProvider.currentActivity ?: return
         when (recordCount % RECORD_COUNT_CYCLE) {
             RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
             RECORD_REQUEST_PERMISSION -> _requestPermissionEvent.sendEvent()

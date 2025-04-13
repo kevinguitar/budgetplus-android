@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import android.app.Activity
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
@@ -84,5 +83,5 @@ fun CalculatorViewModel.input(statement: String) {
 }
 
 fun CalculatorViewModel.evaluate() {
-    onCalculatorAction(mockk<Activity>(), CalculatorAction.Ok)
+    onCalculatorAction(CalculatorAction.Ok)
 }

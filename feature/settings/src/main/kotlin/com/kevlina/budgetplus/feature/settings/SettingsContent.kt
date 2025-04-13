@@ -32,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,8 +56,6 @@ internal fun SettingsContent(
     showMembers: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
     val isInsider by vm.isInsider.collectAsStateWithLifecycle()
@@ -133,7 +130,7 @@ internal fun SettingsContent(
                 text = stringResource(id = R.string.settings_language),
                 icon = Icons.Rounded.Language,
                 roundTop = true,
-                onClick = { vm.openLanguageSettings(context) }
+                onClick = vm.navigation::openLanguageSettings
             )
         }
 
@@ -208,32 +205,32 @@ internal fun SettingsContent(
         SettingsItem(
             text = stringResource(id = R.string.settings_share_app),
             icon = Icons.Rounded.Share,
-            onClick = { vm.share(context) }
+            onClick = vm.navigation::share
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_rate_us),
             icon = Icons.Rounded.Star,
-            onClick = { vm.rateUs(context) }
+            onClick = vm.navigation::rateUs
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_follow_on_instagram),
             iconRes = R.drawable.ic_instagram,
-            onClick = { vm.followOnInstagram(context) }
+            onClick = vm.navigation::followOnInstagram
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_contact_us),
             icon = Icons.AutoMirrored.Rounded.ForwardToInbox,
-            onClick = { vm.contactUs(context) }
+            onClick = vm.navigation::contactUs
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_privacy_policy),
             icon = Icons.Rounded.PrivacyTip,
             roundBottom = true,
-            onClick = { vm.viewPrivacyPolicy(context) }
+            onClick = vm.navigation::viewPrivacyPolicy
         )
 
         // Danger section
@@ -256,7 +253,7 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.settings_logout),
             icon = Icons.AutoMirrored.Rounded.Logout,
             roundBottom = true,
-            onClick = vm::logout
+            onClick = vm.navigation::logout
         )
     }
 

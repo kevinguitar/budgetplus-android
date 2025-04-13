@@ -9,4 +9,5 @@ dependencies {
     implementation(libs.compose.runtime)
     implementation(libs.coil)
     implementation(libs.navigation.runtime)
+    testFixturesImplementation(libs.android.activity)
 }

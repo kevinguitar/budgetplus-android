@@ -130,7 +130,7 @@ internal fun SettingsContent(
                 text = stringResource(id = R.string.settings_language),
                 icon = Icons.Rounded.Language,
                 roundTop = true,
-                onClick = vm::openLanguageSettings
+                onClick = vm.navigation::openLanguageSettings
             )
         }
 
@@ -205,32 +205,32 @@ internal fun SettingsContent(
         SettingsItem(
             text = stringResource(id = R.string.settings_share_app),
             icon = Icons.Rounded.Share,
-            onClick = vm::share
+            onClick = vm.navigation::share
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_rate_us),
             icon = Icons.Rounded.Star,
-            onClick = vm::rateUs
+            onClick = vm.navigation::rateUs
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_follow_on_instagram),
             iconRes = R.drawable.ic_instagram,
-            onClick = vm::followOnInstagram
+            onClick = vm.navigation::followOnInstagram
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_contact_us),
             icon = Icons.AutoMirrored.Rounded.ForwardToInbox,
-            onClick = vm::contactUs
+            onClick = vm.navigation::contactUs
         )
 
         SettingsItem(
             text = stringResource(id = R.string.settings_privacy_policy),
             icon = Icons.Rounded.PrivacyTip,
             roundBottom = true,
-            onClick = vm::viewPrivacyPolicy
+            onClick = vm.navigation::viewPrivacyPolicy
         )
 
         // Danger section
@@ -253,7 +253,7 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.settings_logout),
             icon = Icons.AutoMirrored.Rounded.Logout,
             roundBottom = true,
-            onClick = vm::logout
+            onClick = vm.navigation::logout
         )
     }
 

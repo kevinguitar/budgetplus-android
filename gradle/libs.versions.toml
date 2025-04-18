@@ -12,7 +12,7 @@ compose-bom = "2025.04.00"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "33.12.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
-hilt = "2.56.1"
+hilt = "2.56.2"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://developer.android.com/jetpack/androidx/releases/navigation

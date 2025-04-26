@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,21 +14,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContentWide(
     uiState: OverviewContentUiState,
     navController: NavController,
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
-
         OverviewHeader(
             uiState = uiState.headerUiState,
             navController = navController,
@@ -48,11 +49,12 @@ internal fun OverviewContentWide(
     }
 }
 
-@Preview
+@Preview(widthDp = 800, heightDp = 300)
 @Composable
 private fun OverviewContentWide_Preview() = AppTheme {
     OverviewContentWide(
         uiState = OverviewContentUiState.preview,
         navController = NavController(LocalContext.current),
+        modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

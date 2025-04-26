@@ -7,10 +7,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-@HiltViewModel
+@HiltViewModel(assistedFactory = SearchViewModel.Factory::class)
 class SearchViewModel @AssistedInject constructor(
     @Assisted params: HistoryDest.Search,
-
 ) : ViewModel() {
 
 

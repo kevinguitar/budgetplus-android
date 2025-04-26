@@ -209,6 +209,7 @@
     <string name="cta_edit">Edit</string>
     <string name="cta_save">Save</string>
     <string name="cta_share">Share</string>
+    <string name="cta_search">Search</string>
     <string name="cta_confirm">Confirm</string>
     <string name="cta_go">Go</string>
     <string name="cta_cancel">Cancel</string>

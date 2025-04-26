@@ -14,6 +14,8 @@ import com.kevlina.budgetplus.core.common.nav.NAV_OVERVIEW_PATH
 import com.kevlina.budgetplus.feature.overview.ui.OverviewScreen
 import com.kevlina.budgetplus.feature.records.RecordsScreen
 import com.kevlina.budgetplus.feature.records.RecordsViewModel
+import com.kevlina.budgetplus.feature.search.SearchScreen
+import com.kevlina.budgetplus.feature.search.SearchViewModel
 
 internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
 
@@ -33,6 +35,15 @@ internal fun NavGraphBuilder.overviewTabGraph(navController: NavController) {
             RecordsScreen(
                 navController = navController,
                 vm = hiltViewModel<RecordsViewModel, RecordsViewModel.Factory>(creationCallback = { factory ->
+                    factory.create(entry.toRoute())
+                })
+            )
+        }
+
+        composable<HistoryDest.Search> { entry ->
+            SearchScreen(
+                navController = navController,
+                vm = hiltViewModel<SearchViewModel, SearchViewModel.Factory>(creationCallback = { factory ->
                     factory.create(entry.toRoute())
                 })
             )

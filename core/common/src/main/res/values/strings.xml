@@ -116,6 +116,9 @@
     <string name="export_column_created_on">Created On</string>
     <string name="export_column_author">Author</string>
 
+    <!-- Search -->
+    <string name="search_title">Search</string>
+
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>
     <string name="premium_hide_ads">Hide Ads</string>

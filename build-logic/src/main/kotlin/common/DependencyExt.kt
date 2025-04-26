@@ -16,14 +16,6 @@ fun DependencyHandlerScope.ksp(module: Any) {
     add("ksp", module)
 }
 
-fun DependencyHandlerScope.compileOnly(module: Any) {
-    add("compileOnly", module)
-}
-
-fun DependencyHandlerScope.coreLibraryDesugaring(module: Any) {
-    add("coreLibraryDesugaring", module)
-}
-
 fun DependencyHandlerScope.debugImplementation(module: Any) {
     add("debugImplementation", module)
 }

@@ -74,10 +74,9 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
         }
 
         project.dependencies {
-            implementation(project.libs.android.core)
-            implementation(project.libs.coroutines.android)
-            implementation(project.libs.timber)
+            implementation(project.libs.bundles.android)
             implementation(project.libs.bundles.test)
+            implementation(project.libs.timber)
 
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))

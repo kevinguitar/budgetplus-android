@@ -129,14 +129,14 @@ internal fun OverviewList(
                                 }
 
                                 Modifier
-                                        .padding(top = 8.dp)
-                                        .onPlaced {
-                                            uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
-                                                    size = it.size,
-                                                    offset = it.positionInRoot(),
-                                                    shape = bubbleShape
-                                            ))
-                                        }
+                                    .padding(top = 8.dp)
+                                    .onPlaced {
+                                        uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
+                                            size = it.size,
+                                            offset = it.positionInRoot(),
+                                            shape = bubbleShape
+                                        ))
+                                    }
                             }
                         )
                     }

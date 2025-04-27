@@ -118,6 +118,8 @@
 
     <!-- Search -->
     <string name="search_title">Search</string>
+    <string name="search_field_title">Keyword</string>
+    <string name="search_field_placeholder">blabla</string>
 
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>

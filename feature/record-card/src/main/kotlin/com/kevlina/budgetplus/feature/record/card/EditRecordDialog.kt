@@ -16,6 +16,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component1
+import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component2
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,7 +53,6 @@ fun EditRecordDialog(
     vm: EditRecordViewModel = hiltViewModel(),
     onDismiss: () -> Unit,
 ) {
-
     var date by remember {
         mutableStateOf(LocalDate.ofEpochDay(editRecord.date))
     }

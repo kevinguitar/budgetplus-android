@@ -21,7 +21,6 @@ fun SearchScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-
         TopBar(
             title = stringResource(id = R.string.search_title),
             navigateUp = navController::navigateUp,
@@ -33,8 +32,7 @@ fun SearchScreen(
                 .fillMaxWidth()
                 .weight(1F)
         ) {
-
-            SearchContent()
+            SearchContent(state = vm.state)
         }
     }
 }

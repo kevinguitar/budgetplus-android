@@ -28,7 +28,6 @@ internal fun EditBatchDialog(
     onSelectOne: () -> Unit,
     onSelectAll: () -> Unit,
 ) {
-
     AppDialog(onDismissRequest = onDismiss) {
 
         Column(

@@ -13,18 +13,16 @@ import java.time.LocalDate
 data class SearchState(
     val query: TextFieldState,
     val filter: SearchFilterState,
-    val result: StateFlow<List<RecordCardUiState>>
+    val result: StateFlow<SearchResult>,
+
 ) {
     companion object {
         val preview = SearchState(
             query = TextFieldState("query"),
             filter = SearchFilterState.preview,
             result = MutableStateFlow(
-                listOf(
-                    RecordCardUiState.preview,
-                    RecordCardUiState.preview,
-                    RecordCardUiState.preview,
-                    RecordCardUiState.preview,
+                SearchResult.Success(
+                    List(12) { RecordCardUiState.preview }
                 )
             )
         )
@@ -36,7 +34,7 @@ data class SearchFilterState(
     val type: StateFlow<RecordType>,
     val category: StateFlow<SearchCategory>,
     val period: StateFlow<SearchPeriod>,
-    val author: StateFlow<Author?>
+    val author: StateFlow<Author?>,
 ) {
     companion object {
         val preview = SearchFilterState(
@@ -58,4 +56,10 @@ sealed interface SearchPeriod {
     data object PastHalfYear : SearchPeriod
     data object PastYear : SearchPeriod
     data class Custom(val from: LocalDate, val until: LocalDate) : SearchPeriod
+}
+
+sealed interface SearchResult {
+    data object Empty : SearchResult
+    data object Loading : SearchResult
+    data class Success(val records: List<RecordCardUiState>) : SearchResult
 }

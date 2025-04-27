@@ -61,6 +61,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                         "kotlin.contracts.ExperimentalContracts",
                         "kotlinx.coroutines.ExperimentalCoroutinesApi",
                         "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
+                        "kotlinx.coroutines.FlowPreview"
                     )
                     jvmTarget.set(Constants.jvmTarget)
                 }

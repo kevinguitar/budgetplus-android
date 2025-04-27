@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.feature.recordCard)
 
     implementation(libs.kotlin.csv)
-    implementation(libs.lottie.compose)
 
     testImplementation(testFixtures(projects.core.data))
 }

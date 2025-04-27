@@ -44,6 +44,7 @@ import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import com.kevlina.budgetplus.feature.record.card.RecordCardZeroCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -94,14 +95,16 @@ internal fun OverviewList(
                 recordList == null -> item(
                     key = OverviewUiType.Loader.name,
                     contentType = OverviewUiType.Loader,
-                    content = { InfiniteCircularProgress(modifier = Modifier.padding(top = 32.dp)) }
+                    content = {
+                        InfiniteCircularProgress(modifier = Modifier.padding(top = 32.dp))
+                    }
                 )
 
                 recordList.isEmpty() -> item(
                     key = OverviewUiType.ZeroCase.name,
                     contentType = OverviewUiType.ZeroCase,
                     content = {
-                        OverviewZeroCase(modifier = Modifier.padding(top = 32.dp))
+                        RecordCardZeroCase(modifier = Modifier.padding(top = 32.dp))
                     }
                 )
 

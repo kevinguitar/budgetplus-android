@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.overview.ui
+package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -21,7 +21,7 @@ import com.kevlina.budgetplus.core.ui.blend
 private const val BG_DARKEN_FACTOR = 0.5F
 
 @Composable
-fun OverviewZeroCase(modifier: Modifier = Modifier) {
+fun RecordCardZeroCase(modifier: Modifier = Modifier) {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_empty))
 
@@ -63,6 +63,6 @@ fun OverviewZeroCase(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun OverviewZeroCase_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
-    OverviewZeroCase()
+private fun RecordCardZeroCase_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
+    RecordCardZeroCase()
 }

@@ -3,7 +3,9 @@ package com.kevlina.budgetplus.feature.search
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
+import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -13,6 +15,7 @@ import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchFilterState
 import com.kevlina.budgetplus.feature.search.ui.SearchResult
+import com.kevlina.budgetplus.feature.search.ui.SearchResultState
 import com.kevlina.budgetplus.feature.search.ui.SearchState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -38,7 +41,7 @@ class SearchViewModel @AssistedInject constructor(
     private val category = MutableStateFlow<SearchCategory>(SearchCategory.None)
     private val author = MutableStateFlow<Author?>(null)
 
-    val searchResult = combine(
+    private val searchResult = combine(
         searchRepo.dbResult,
         snapshotFlow { searchRepo.query.text },
         type,
@@ -79,6 +82,9 @@ class SearchViewModel @AssistedInject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), SearchResult.Empty)
 
+    private val editRecordEvent = MutableEventFlow<Record>()
+    private val deleteRecordEvent = MutableEventFlow<Record>()
+
     val state = SearchState(
         query = searchRepo.query,
         filter = SearchFilterState(
@@ -87,7 +93,11 @@ class SearchViewModel @AssistedInject constructor(
             period = searchRepo.period,
             author = author
         ),
-        result = searchResult
+        result = SearchResultState(
+            result = searchResult,
+            editRecordEvent = editRecordEvent,
+            deleteRecordEvent = deleteRecordEvent
+        )
     )
 
     private fun canEditRecord(record: Record): Boolean {
@@ -104,9 +114,9 @@ class SearchViewModel @AssistedInject constructor(
                 canEdit = canEditRecord(record),
                 showCategory = true,
                 showAuthor = true,
-                onEdit = { },
+                onEdit = { editRecordEvent.sendEvent(record) },
                 onDuplicate = { recordRepo.duplicateRecord(record) },
-                onDelete = {}
+                onDelete = { deleteRecordEvent.sendEvent(record) }
             )
         }
 

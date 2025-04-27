@@ -2,8 +2,11 @@ package com.kevlina.budgetplus.feature.search.ui
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Stable
+import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.remote.Author
+import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,18 +16,13 @@ import java.time.LocalDate
 data class SearchState(
     val query: TextFieldState,
     val filter: SearchFilterState,
-    val result: StateFlow<SearchResult>,
-
+    val result: SearchResultState,
 ) {
     companion object {
         val preview = SearchState(
             query = TextFieldState("query"),
             filter = SearchFilterState.preview,
-            result = MutableStateFlow(
-                SearchResult.Success(
-                    List(12) { RecordCardUiState.preview }
-                )
-            )
+            result = SearchResultState.preview
         )
     }
 }
@@ -42,6 +40,25 @@ data class SearchFilterState(
             category = MutableStateFlow(SearchCategory.None),
             period = MutableStateFlow(SearchPeriod.PastMonth),
             author = MutableStateFlow(null)
+        )
+    }
+}
+
+@Stable
+data class SearchResultState(
+    val result: StateFlow<SearchResult>,
+    val editRecordEvent: EventFlow<Record>,
+    val deleteRecordEvent: EventFlow<Record>,
+) {
+    companion object {
+        val preview = SearchResultState(
+            result = MutableStateFlow(
+                SearchResult.Success(
+                    List(12) { RecordCardUiState.preview }
+                )
+            ),
+            editRecordEvent = MutableEventFlow(),
+            deleteRecordEvent = MutableEventFlow()
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -26,14 +29,23 @@ import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import com.kevlina.budgetplus.feature.record.card.RecordCardZeroCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
 
 @Composable
 internal fun SearchResult(
     modifier: Modifier = Modifier,
-    result: SearchResult,
+    state: SearchResultState,
 ) {
+    val result = state.result.collectAsStateWithLifecycle().value
+
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
+
+    LaunchedEffect(state) {
+        state.editRecordEvent.consumeEach { editRecordDialog = it }.launchIn(this)
+        state.deleteRecordEvent.consumeEach { deleteRecordDialog = it }.launchIn(this)
+    }
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +106,7 @@ private fun SearchResult_Preview(
 ) = AppTheme(ThemeColors.Dusk) {
     SearchResult(
         modifier = Modifier.background(LocalAppColors.current.light),
-        result = result
+        state = SearchResultState.preview.copy(result = MutableStateFlow(result))
     )
 }
 

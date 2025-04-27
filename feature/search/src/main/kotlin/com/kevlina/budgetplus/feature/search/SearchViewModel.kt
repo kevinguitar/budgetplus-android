@@ -18,10 +18,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.withContext
 
 @HiltViewModel(assistedFactory = SearchViewModel.Factory::class)
 class SearchViewModel @AssistedInject constructor(
@@ -47,11 +49,11 @@ class SearchViewModel @AssistedInject constructor(
         when (dbResult) {
             SearchRepo.DbResult.Empty -> SearchResult.Empty
             SearchRepo.DbResult.Loading -> SearchResult.Loading
-            is SearchRepo.DbResult.Success -> {
+            is SearchRepo.DbResult.Success -> withContext(Dispatchers.Default) {
                 val localSearchResult = dbResult.records
                     .filter { record ->
                         var include = true
-                        if (query !in record.name && query !in record.category) {
+                        if (!deepContains(record.name, query) && query !in record.category) {
                             include = false
                         }
                         if (record.type != type) {

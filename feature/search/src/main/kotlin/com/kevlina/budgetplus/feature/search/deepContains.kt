@@ -30,7 +30,7 @@ fun deepContains(target: String, search: CharSequence): Boolean {
     // 3. Iterate through the target string
     while (targetIndex < target.length) {
         // 4. Check if the current target character matches the current search character
-        if (target[targetIndex] == search[searchIndex]) {
+        if (target[targetIndex].equals(search[searchIndex], ignoreCase = true)) {
             // 5. Match found! Move to the next character in the search string
             searchIndex++
             // 6. If we've found all characters in the search string, we're done.

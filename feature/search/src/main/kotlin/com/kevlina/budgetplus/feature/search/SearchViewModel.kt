@@ -92,7 +92,7 @@ class SearchViewModel @AssistedInject constructor(
     private val editRecordEvent = MutableEventFlow<Record>()
     private val deleteRecordEvent = MutableEventFlow<Record>()
 
-    private val authors = bookRepo.bookState
+    private val allAuthors = bookRepo.bookState
         .map {
             withContext(Dispatchers.Default) {
                 it?.authors
@@ -123,7 +123,7 @@ class SearchViewModel @AssistedInject constructor(
             period = searchRepo.period,
             selectPeriod = { searchRepo.period.value = it },
             author = author,
-            allAuthor = authors,
+            allAuthors = allAuthors,
             selectAuthor = { author.value = it },
         ),
         result = SearchResultState(

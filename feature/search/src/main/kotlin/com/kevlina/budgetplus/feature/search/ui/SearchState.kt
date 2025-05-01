@@ -39,7 +39,7 @@ data class SearchFilterState(
     val period: StateFlow<SearchPeriod>,
     val selectPeriod: (SearchPeriod) -> Unit,
     val author: StateFlow<User?>,
-    val allAuthor: StateFlow<List<User>>,
+    val allAuthors: StateFlow<List<User>>,
     val selectAuthor: (User?) -> Unit,
 ) {
     companion object {
@@ -58,7 +58,7 @@ data class SearchFilterState(
                 period = period,
                 selectPeriod = { period.value = it },
                 author = author,
-                allAuthor = MutableStateFlow(
+                allAuthors = MutableStateFlow(
                     listOf(
                         User(id = "1", name = "Kevin"),
                         User(id = "2", name = "Alina"),

@@ -4,13 +4,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.HistoryDest
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
-import com.kevlina.budgetplus.core.data.remote.Author
+import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
+import com.kevlina.budgetplus.feature.category.pills.toUiState
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchFilterState
@@ -25,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 
@@ -35,11 +40,13 @@ class SearchViewModel @AssistedInject constructor(
     private val authManager: AuthManager,
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
+    private val userRepo: UserRepo,
+    categoriesVm: CategoriesViewModel,
 ) : ViewModel() {
 
     private val type = MutableStateFlow(params.type)
     private val category = MutableStateFlow<SearchCategory>(SearchCategory.None)
-    private val author = MutableStateFlow<Author?>(null)
+    private val author = MutableStateFlow<User?>(null)
 
     private val searchResult = combine(
         searchRepo.dbResult,
@@ -85,13 +92,39 @@ class SearchViewModel @AssistedInject constructor(
     private val editRecordEvent = MutableEventFlow<Record>()
     private val deleteRecordEvent = MutableEventFlow<Record>()
 
+    private val authors = bookRepo.bookState
+        .map {
+            withContext(Dispatchers.Default) {
+                it?.authors
+                    .orEmpty()
+                    .mapNotNull(userRepo::getUser)
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
     val state = SearchState(
         query = searchRepo.query,
         filter = SearchFilterState(
             type = type,
+            selectType = { type.value = it },
             category = category,
+            categoryGrid = categoriesVm.toUiState(
+                type = type,
+                selectedCategory = category.mapState { it.name },
+                onCategorySelected = {
+                    category.value = if (it == category.value.name) {
+                        SearchCategory.None
+                    } else {
+                        SearchCategory.Selected(it)
+                    }
+                }
+            ),
+            selectCategory = { category.value = it },
             period = searchRepo.period,
-            author = author
+            selectPeriod = { searchRepo.period.value = it },
+            author = author,
+            allAuthor = authors,
+            selectAuthor = { author.value = it },
         ),
         result = SearchResultState(
             result = searchResult,

@@ -7,6 +7,8 @@ import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.User
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,17 +32,41 @@ data class SearchState(
 @Stable
 data class SearchFilterState(
     val type: StateFlow<RecordType>,
+    val selectType: (RecordType) -> Unit,
     val category: StateFlow<SearchCategory>,
+    val categoryGrid: CategoriesGridUiState,
+    val selectCategory: (SearchCategory) -> Unit,
     val period: StateFlow<SearchPeriod>,
-    val author: StateFlow<Author?>,
+    val selectPeriod: (SearchPeriod) -> Unit,
+    val author: StateFlow<User?>,
+    val allAuthor: StateFlow<List<User>>,
+    val selectAuthor: (User?) -> Unit,
 ) {
     companion object {
-        val preview = SearchFilterState(
-            type = MutableStateFlow(RecordType.Expense),
-            category = MutableStateFlow(SearchCategory.None),
-            period = MutableStateFlow(SearchPeriod.PastMonth),
-            author = MutableStateFlow(null)
-        )
+        val preview = run {
+            val type = MutableStateFlow(RecordType.Expense)
+            val category = MutableStateFlow<SearchCategory>(SearchCategory.None)
+            val period = MutableStateFlow<SearchPeriod>(SearchPeriod.PastMonth)
+            val author = MutableStateFlow<User?>(null)
+
+            SearchFilterState(
+                type = type,
+                selectType = { type.value = it },
+                category = category,
+                categoryGrid = CategoriesGridUiState.preview,
+                selectCategory = { category.value = it },
+                period = period,
+                selectPeriod = { period.value = it },
+                author = author,
+                allAuthor = MutableStateFlow(
+                    listOf(
+                        User(id = "1", name = "Kevin"),
+                        User(id = "2", name = "Alina"),
+                    )
+                ),
+                selectAuthor = { author.value = it }
+            )
+        }
     }
 }
 
@@ -54,7 +80,19 @@ data class SearchResultState(
         val preview = SearchResultState(
             result = MutableStateFlow(
                 SearchResult.Success(
-                    List(12) { RecordCardUiState.preview }
+                    List(24) { index ->
+                        RecordCardUiState.preview.copy(
+                            item = Record(
+                                id = index.toString(),
+                                type = RecordType.Income,
+                                date = LocalDate.now().toEpochDay(),
+                                category = "Food",
+                                name = "Fancy Restaurant $index",
+                                price = 453.93,
+                                author = Author(id = "", name = "Kevin")
+                            )
+                        )
+                    }
                 )
             ),
             editRecordEvent = MutableEventFlow(),
@@ -64,8 +102,13 @@ data class SearchResultState(
 }
 
 sealed interface SearchCategory {
-    object None : SearchCategory
-    data class Selected(val name: String) : SearchCategory
+    val name: String?
+
+    object None : SearchCategory {
+        override val name: String? get() = null
+    }
+
+    data class Selected(override val name: String) : SearchCategory
 }
 
 sealed interface SearchPeriod {

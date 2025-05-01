@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.search.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +28,6 @@ import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
-import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import com.kevlina.budgetplus.feature.record.card.RecordCardZeroCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -49,6 +49,7 @@ internal fun SearchResult(
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(vertical = 12.dp),
         modifier = modifier.fillMaxSize()
     ) {
         when (result) {
@@ -114,6 +115,6 @@ private class SearchPreviewProvider : PreviewParameterProvider<SearchResult> {
     override val values: Sequence<SearchResult> = sequenceOf(
         SearchResult.Empty,
         SearchResult.Loading,
-        SearchResult.Success(List(12) { RecordCardUiState.preview })
+        SearchResultState.preview.result.value
     )
 }

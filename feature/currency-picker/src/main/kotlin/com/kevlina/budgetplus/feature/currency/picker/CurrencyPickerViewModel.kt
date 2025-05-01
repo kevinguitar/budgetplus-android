@@ -1,6 +1,9 @@
 package com.kevlina.budgetplus.feature.currency.picker
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -10,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.util.Currency
 import java.util.Locale
 import javax.inject.Inject
@@ -21,6 +26,8 @@ class CurrencyPickerViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
+
+    val keyword = TextFieldState()
 
     private var hasShownCurrencyDisclaimerCache by preferenceHolder.bindBoolean(false)
     val hasShownCurrencyDisclaimer: Boolean
@@ -54,7 +61,13 @@ class CurrencyPickerViewModel @Inject constructor(
     private val _currencies = MutableStateFlow(allCurrencies)
     val currencies: StateFlow<List<CurrencyUiState>> = _currencies.asStateFlow()
 
-    fun onSearch(keyword: String) {
+    init {
+        snapshotFlow { keyword.text }
+            .onEach(::onSearch)
+            .launchIn(viewModelScope)
+    }
+
+    private fun onSearch(keyword: CharSequence) {
         _currencies.value = allCurrencies.filter {
             it.name.contains(keyword, ignoreCase = true) ||
                 it.currencyCode.contains(keyword, ignoreCase = true)

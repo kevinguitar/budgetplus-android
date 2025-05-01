@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActionScope
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -29,15 +29,14 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 @Composable
 fun SearchField(
-    keyword: String,
-    onKeywordChanged: (String) -> Unit,
+    keyword: TextFieldState,
     modifier: Modifier = Modifier,
     hint: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         capitalization = KeyboardCapitalization.Sentences,
         imeAction = ImeAction.Done
     ),
-    onDone: (KeyboardActionScope.() -> Unit)? = null,
+    onDone: (() -> Unit)? = null,
 ) {
 
     Row(
@@ -59,8 +58,7 @@ fun SearchField(
         )
 
         BasicTextField(
-            value = keyword,
-            onValueChange = onKeywordChanged,
+            state = keyword,
             modifier = Modifier.weight(1F),
             textStyle = TextStyle(
                 color = LocalAppColors.current.dark,
@@ -69,11 +67,15 @@ fun SearchField(
                 letterSpacing = TextUnit.Unspecified
             ),
             keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(onDone = onDone),
-            singleLine = true,
+            onKeyboardAction = if (onDone == null) {
+                null
+            } else {
+                { onDone.invoke() }
+            },
+            lineLimits = TextFieldLineLimits.SingleLine,
             cursorBrush = SolidColor(LocalAppColors.current.dark),
-            decorationBox = @Composable { innerTextField ->
-                if (keyword.isEmpty() && hint != null) {
+            decorator = @Composable { innerTextField ->
+                if (keyword.text.isEmpty() && hint != null) {
                     Text(
                         text = hint,
                         textAlign = TextAlign.End,
@@ -92,8 +94,7 @@ fun SearchField(
 @Composable
 private fun SearchField_Preview() = AppTheme {
     SearchField(
-        keyword = "",
-        onKeywordChanged = {},
+        keyword = TextFieldState(),
         hint = "USD"
     )
 }

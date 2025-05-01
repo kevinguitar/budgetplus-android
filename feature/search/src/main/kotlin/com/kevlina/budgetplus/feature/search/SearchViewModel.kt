@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.feature.category.pills.toUiState
 import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchFilterState
+import com.kevlina.budgetplus.feature.search.ui.SearchPeriod
 import com.kevlina.budgetplus.feature.search.ui.SearchResult
 import com.kevlina.budgetplus.feature.search.ui.SearchResultState
 import com.kevlina.budgetplus.feature.search.ui.SearchState
@@ -121,7 +122,7 @@ class SearchViewModel @AssistedInject constructor(
             ),
             selectCategory = { category.value = it },
             period = searchRepo.period,
-            selectPeriod = { searchRepo.period.value = it },
+            selectPeriod = ::selectPeriod,
             author = author,
             allAuthors = allAuthors,
             selectAuthor = { author.value = it },
@@ -136,6 +137,11 @@ class SearchViewModel @AssistedInject constructor(
     private fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+    }
+
+    private fun selectPeriod(period: SearchPeriod) {
+        //TODO: check premium
+        searchRepo.period.value = period
     }
 
     private fun List<Record>.mapToStates(): List<RecordCardUiState> =

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
+import com.kevlina.budgetplus.core.ui.ModalBottomSheet
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 
 @Composable
@@ -45,6 +46,7 @@ internal fun SearchFilter(
     var isTypePickerShown by rememberSaveable { mutableStateOf(false) }
     var isCategoryGridShown by rememberSaveable { mutableStateOf(false) }
     var isPeriodPickerShown by rememberSaveable { mutableStateOf(false) }
+    var isCustomDateRangePickerShown by rememberSaveable { mutableStateOf(false) }
     var isAuthorPickerShown by rememberSaveable { mutableStateOf(false) }
 
     // Dismiss category grid when category is selected
@@ -100,16 +102,7 @@ internal fun SearchFilter(
         FilterPill(
             state = FilterPillState(
                 placeholder = null,
-                selection = when (period) {
-                    SearchPeriod.PastMonth -> stringResource(R.string.search_period_last_month)
-                    SearchPeriod.PastHalfYear -> stringResource(R.string.search_period_last_half_year)
-                    SearchPeriod.PastYear -> stringResource(R.string.search_period_last_year)
-                    is SearchPeriod.Custom -> stringResource(
-                        R.string.search_period_custom,
-                        period.from.shortFormatted,
-                        period.until.shortFormatted
-                    )
-                },
+                selection = period.text(),
                 onClick = { isPeriodPickerShown = true }
             )
         )
@@ -151,7 +144,45 @@ internal fun SearchFilter(
     }
 
     if (isPeriodPickerShown) {
-        //TODO: Bottom Sheet
+        ModalBottomSheet(
+            onDismissRequest = { isPeriodPickerShown = false }
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                SearchPeriodCell(
+                    period = SearchPeriod.PastMonth,
+                    isSelected = period == SearchPeriod.PastMonth,
+                    onClick = {
+                        isPeriodPickerShown = false
+                        state.selectPeriod(SearchPeriod.PastMonth)
+                    }
+                )
+                SearchPeriodCell(
+                    period = SearchPeriod.PastHalfYear,
+                    isSelected = period == SearchPeriod.PastHalfYear,
+                    onClick = {
+                        isPeriodPickerShown = false
+                        state.selectPeriod(SearchPeriod.PastHalfYear)
+                    }
+                )
+                SearchPeriodCell(
+                    period = SearchPeriod.PastYear,
+                    isSelected = period == SearchPeriod.PastYear,
+                    onClick = {
+                        isPeriodPickerShown = false
+                        state.selectPeriod(SearchPeriod.PastYear)
+                    }
+                )
+                SearchPeriodCell(
+                    period = (period as? SearchPeriod.Custom) ?: SearchPeriod.Custom.Unselected,
+                    isSelected = period is SearchPeriod.Custom,
+                    onClick = { isCustomDateRangePickerShown = true }
+                )
+            }
+        }
+    }
+
+    if (isCustomDateRangePickerShown) {
+
     }
 }
 

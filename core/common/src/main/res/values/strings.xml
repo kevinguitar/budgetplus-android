@@ -123,8 +123,8 @@
     <string name="search_period_last_month">Last Month</string>
     <string name="search_period_last_half_year">Last 6 Months</string>
     <string name="search_period_last_year">Last Year</string>
-    <string name="search_period_custom">From %1$s to %2$s</string>
-    <string name="search_all_authors"></string>
+    <string name="search_period_custom">Custom</string>
+    <string name="search_period_custom_range">From %1$s to %2$s</string>
 
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>

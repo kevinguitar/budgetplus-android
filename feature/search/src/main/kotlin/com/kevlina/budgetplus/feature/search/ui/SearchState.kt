@@ -115,7 +115,16 @@ sealed interface SearchPeriod {
     data object PastMonth : SearchPeriod
     data object PastHalfYear : SearchPeriod
     data object PastYear : SearchPeriod
-    data class Custom(val from: LocalDate, val until: LocalDate) : SearchPeriod
+    data class Custom(val from: LocalDate, val until: LocalDate) : SearchPeriod {
+        companion object {
+            val Unselected = Custom(LocalDate.now(), LocalDate.now())
+        }
+    }
+
+    companion object {
+        val SearchPeriod.requiresPremium: Boolean
+            get() = this !is PastMonth
+    }
 }
 
 sealed interface SearchResult {

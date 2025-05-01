@@ -26,10 +26,12 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.DateRangePickerDialog
 import com.kevlina.budgetplus.core.ui.DropdownItem
 import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.ModalBottomSheet
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
+import java.time.LocalDate
 
 @Composable
 internal fun SearchFilter(
@@ -182,7 +184,17 @@ internal fun SearchFilter(
     }
 
     if (isCustomDateRangePickerShown) {
-
+        DateRangePickerDialog(
+            startDate = (period as? SearchPeriod.Custom)?.from,
+            endDate = (period as? SearchPeriod.Custom)?.until,
+            maxDate = LocalDate.now(),
+            onDismiss = { isCustomDateRangePickerShown = false },
+            onRangePicked = { from, until ->
+                isCustomDateRangePickerShown = false
+                isPeriodPickerShown = false
+                state.selectPeriod(SearchPeriod.Custom(from, until))
+            }
+        )
     }
 }
 

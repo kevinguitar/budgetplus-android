@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDatePickerState
@@ -46,35 +47,7 @@ fun DatePickerDialog(
         }
     )
 
-    val lightColor = LocalAppColors.current.light
-    val primaryColor = LocalAppColors.current.primary
-    val darkColor = LocalAppColors.current.dark
-    val colors = DatePickerDefaults.colors(
-        containerColor = lightColor,
-        titleContentColor = darkColor,
-        headlineContentColor = darkColor,
-        weekdayContentColor = darkColor,
-        subheadContentColor = darkColor,
-        navigationContentColor = darkColor,
-        yearContentColor = darkColor,
-        disabledYearContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
-        currentYearContentColor = darkColor,
-        selectedYearContentColor = lightColor,
-        disabledSelectedYearContentColor = primaryColor.copy(alpha = DISABLED_ALPHA),
-        selectedYearContainerColor = primaryColor,
-        disabledSelectedYearContainerColor = darkColor.copy(alpha = DISABLED_ALPHA),
-        dayContentColor = darkColor,
-        disabledDayContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
-        selectedDayContentColor = lightColor,
-        disabledSelectedDayContentColor = lightColor.copy(alpha = DISABLED_ALPHA),
-        selectedDayContainerColor = primaryColor,
-        disabledSelectedDayContainerColor = primaryColor.copy(alpha = DISABLED_ALPHA),
-        todayContentColor = darkColor,
-        todayDateBorderColor = primaryColor,
-        dayInSelectionRangeContentColor = darkColor,
-        dayInSelectionRangeContainerColor = darkColor,
-        dividerColor = darkColor,
-    )
+    val colors = datePickerColors()
 
     MaterialDatePickerDialog(
         onDismissRequest = onDismiss,
@@ -114,12 +87,45 @@ fun DatePickerDialog(
     }
 }
 
+@Composable
+internal fun datePickerColors(): DatePickerColors {
+    val lightColor = LocalAppColors.current.light
+    val primaryColor = LocalAppColors.current.primary
+    val darkColor = LocalAppColors.current.dark
+    return DatePickerDefaults.colors(
+        containerColor = lightColor,
+        titleContentColor = darkColor,
+        headlineContentColor = darkColor,
+        weekdayContentColor = darkColor,
+        subheadContentColor = darkColor,
+        navigationContentColor = darkColor,
+        yearContentColor = darkColor,
+        disabledYearContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
+        currentYearContentColor = darkColor,
+        selectedYearContentColor = lightColor,
+        disabledSelectedYearContentColor = primaryColor.copy(alpha = DISABLED_ALPHA),
+        selectedYearContainerColor = primaryColor,
+        disabledSelectedYearContainerColor = darkColor.copy(alpha = DISABLED_ALPHA),
+        dayContentColor = darkColor,
+        disabledDayContentColor = darkColor.copy(alpha = DISABLED_ALPHA),
+        selectedDayContentColor = lightColor,
+        disabledSelectedDayContentColor = lightColor.copy(alpha = DISABLED_ALPHA),
+        selectedDayContainerColor = primaryColor,
+        disabledSelectedDayContainerColor = primaryColor.copy(alpha = DISABLED_ALPHA),
+        todayContentColor = darkColor,
+        todayDateBorderColor = primaryColor,
+        dayInSelectionRangeContentColor = darkColor,
+        dayInSelectionRangeContainerColor = darkColor,
+        dividerColor = darkColor,
+    )
+}
+
 private const val DISABLED_ALPHA = 0.38f
 
-private val LocalDate.utcMillis
+internal val LocalDate.utcMillis
     get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
 
-private val Long.utcLocaleDate: LocalDate
+internal val Long.utcLocaleDate: LocalDate
     get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()
 
 @Preview

@@ -33,7 +33,7 @@ https://play.google.com/store/apps/details?id=com.kevlina.budgetplus
 
 ### Other used open source libraries
 - [orchestra-colorpicker](https://github.com/skydoves/Orchestra?tab=readme-ov-file#colorpicker) for color picker view
-- [reorderable](https://github.com/aclassen/ComposeReorderable) for reorder items in compose
+- [reorderable](https://github.com/Calvin-LL/Reorderable) for reorder items in compose
 - [kotlin-csv-jvm](https://github.com/jsoizo/kotlin-csv) for exporting data as csv file
 - [detekt](https://github.com/detekt/detekt) for Kotlin static code analysis
 - [exp4j](https://github.com/fasseg/exp4j?tab=readme-ov-file) for math expression evaluation

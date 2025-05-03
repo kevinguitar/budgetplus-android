@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import kotlinx.coroutines.launch
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun EditCategoryScreen(
@@ -43,12 +44,11 @@ fun EditCategoryScreen(
     var list by rememberSaveable { mutableStateOf(originalCategories) }
 
     val coroutineScope = rememberCoroutineScope()
-    val reorderableState = rememberReorderableLazyListState(
-        onMove = { (fromIndex, _), (toIndex, _) ->
-            list = list.toMutableList()
-                .apply { add(toIndex, removeAt(fromIndex)) }
-        }
-    )
+    val lazyListState = rememberLazyListState()
+    val reorderableState = rememberReorderableLazyListState(lazyListState) { from, to ->
+        list = list.toMutableList()
+            .apply { add(to.index, removeAt(from.index)) }
+    }
 
     fun navigateUp() {
         if (originalCategories != list) {
@@ -90,6 +90,7 @@ fun EditCategoryScreen(
         EditCategoryContent(
             modifier = Modifier.weight(1F),
             categories = list,
+            lazyListState = lazyListState,
             reorderableState = reorderableState,
             onDialogEditClick = { editDialogMode = it },
             showEditCategoriesBubble = vm::highlightCategoryHint
@@ -122,7 +123,7 @@ fun EditCategoryScreen(
                 // If a new category is added, scroll to the bottom of the list.
                 if (dialogMode is CategoryEditMode.Add) {
                     coroutineScope.launch {
-                        reorderableState.listState.animateScrollToItem(list.lastIndex)
+                        lazyListState.animateScrollToItem(list.lastIndex)
                     }
                 }
             },

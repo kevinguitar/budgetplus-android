@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -13,12 +13,10 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.DocNotExistsException
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
-import com.kevlina.budgetplus.core.data.requireValue
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,9 +31,9 @@ import javax.inject.Singleton
 internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val stringProvider: StringProvider,
-    private val tracker: dagger.Lazy<Tracker>,
+    private val tracker: Lazy<Tracker>,
     @AppScope private val appScope: CoroutineScope,
-    @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
+    @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : AuthManager {
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()

@@ -1,14 +1,12 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.withCurrentTime
-import com.kevlina.budgetplus.core.data.BatchFrequency
-import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -31,7 +29,7 @@ class RecordRepoImplTest {
         createRepo().createRecord(testRecord)
 
         verify { recordsDb.add(testRecord) }
-        assertThat(tracker.lastEventName).isEqualTo("record_created")
+        Truth.assertThat(tracker.lastEventName).isEqualTo("record_created")
     }
 
     @Test
@@ -50,14 +48,16 @@ class RecordRepoImplTest {
         repeat(nTimes) { index ->
             val batchDate = startDate.plusWeeks(index.toLong())
             verify(exactly = 1) {
-                recordsDb.add(testRecord.copy(
-                    date = batchDate.toEpochDay(),
-                    timestamp = batchDate.withCurrentTime,
-                    batchId = batchId
-                ))
+                recordsDb.add(
+                    testRecord.copy(
+                        date = batchDate.toEpochDay(),
+                        timestamp = batchDate.withCurrentTime,
+                        batchId = batchId
+                    )
+                )
             }
         }
-        assertThat(tracker.lastEventName).isEqualTo("record_batched")
+        Truth.assertThat(tracker.lastEventName).isEqualTo("record_batched")
     }
 
     @Test
@@ -80,15 +80,17 @@ class RecordRepoImplTest {
 
         verify { recordsDb.document("old_record_id") }
         verify {
-            documentReference.set(oldRecord.copy(
-                date = newDate.toEpochDay(),
-                timestamp = LocalDateTime.of(newDate, localTime).toEpochSecond(ZoneOffset.UTC),
-                category = "New category",
-                name = "New name",
-                price = 12345.6
-            ))
+            documentReference.set(
+                oldRecord.copy(
+                    date = newDate.toEpochDay(),
+                    timestamp = LocalDateTime.of(newDate, localTime).toEpochSecond(ZoneOffset.UTC),
+                    category = "New category",
+                    name = "New name",
+                    price = 12345.6
+                )
+            )
         }
-        assertThat(tracker.lastEventName).isEqualTo("record_edited")
+        Truth.assertThat(tracker.lastEventName).isEqualTo("record_edited")
     }
 
     @Test
@@ -96,16 +98,19 @@ class RecordRepoImplTest {
     fun `editBatch should edit all the batched records`() = runTest { }
 
     @Test
-    fun `duplicateRecord should use the current user as author, and do not carry batch info`() = runTest {
-        createRepo().duplicateRecord(testRecord)
+    fun `duplicateRecord should use the current user as author, and do not carry batch info`() =
+        runTest {
+            createRepo().duplicateRecord(testRecord)
 
-        verify {
-            recordsDb.add(testRecord.copy(
-                author = Author(name = "My user")
-            ))
+            verify {
+                recordsDb.add(
+                    testRecord.copy(
+                        author = Author(name = "My user")
+                    )
+                )
+            }
+            Truth.assertThat(tracker.lastEventName).isEqualTo("record_duplicated")
         }
-        assertThat(tracker.lastEventName).isEqualTo("record_duplicated")
-    }
 
     @Test
     fun `deleteRecord should delete the record`() = runTest {
@@ -113,7 +118,7 @@ class RecordRepoImplTest {
 
         verify { recordsDb.document("old_record_id") }
         verify { documentReference.delete() }
-        assertThat(tracker.lastEventName).isEqualTo("record_deleted")
+        Truth.assertThat(tracker.lastEventName).isEqualTo("record_deleted")
     }
 
     @Test

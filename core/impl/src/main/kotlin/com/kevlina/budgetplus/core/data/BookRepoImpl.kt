@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import androidx.core.net.toUri
 import com.google.firebase.firestore.CollectionReference
@@ -15,17 +15,10 @@ import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
-import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
-import com.kevlina.budgetplus.core.data.JoinBookException
-import com.kevlina.budgetplus.core.data.JoinInfoProcessor
-import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
-import com.kevlina.budgetplus.core.data.requireValue
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,7 +47,7 @@ internal class BookRepoImpl @Inject constructor(
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppScope appScope: CoroutineScope,
-    @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
+    @BooksDb private val booksDb: Lazy<CollectionReference>,
 ) : BookRepo {
 
     private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
@@ -279,7 +272,7 @@ internal class BookRepoImpl @Inject constructor(
             .orderBy(createdOnField, Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "BookRepo: Listen failed.")
+                    Timber.Forest.e(e, "BookRepo: Listen failed.")
                     return@addSnapshotListener
                 }
 

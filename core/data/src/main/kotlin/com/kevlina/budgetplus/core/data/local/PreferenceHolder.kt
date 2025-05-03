@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data.local
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import javax.inject.Inject

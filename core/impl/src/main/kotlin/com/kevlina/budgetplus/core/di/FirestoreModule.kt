@@ -1,33 +1,20 @@
-package com.kevlina.budgetplus.core.data.remote
+package com.kevlina.budgetplus.core.di
 
+import com.google.firebase.Firebase
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.firestore
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.remote.BooksDb
+import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
+import com.kevlina.budgetplus.core.data.remote.PurchasesDb
+import com.kevlina.budgetplus.core.data.remote.PushNotificationsDb
+import com.kevlina.budgetplus.core.data.remote.RecordsDb
+import com.kevlina.budgetplus.core.data.remote.UsersDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Qualifier
 import javax.inject.Singleton
-
-@Qualifier
-annotation class UsersDb
-
-@Qualifier
-annotation class BooksDb
-
-@Qualifier
-annotation class RecordsDb
-
-@Qualifier
-annotation class JoinInfoDb
-
-@Qualifier
-annotation class PurchasesDb
-
-@Qualifier
-annotation class PushNotificationsDb
 
 @Module
 @InstallIn(SingletonComponent::class)

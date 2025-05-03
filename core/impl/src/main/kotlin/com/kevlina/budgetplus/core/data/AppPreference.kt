@@ -1,7 +1,8 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.kevlina.budgetplus.core.data.local.Preference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -20,6 +21,6 @@ internal class AppPreference @Inject constructor(
     override val editor: SharedPreferences.Editor get() = pref.edit()
 
     override fun clearAll() {
-        pref.edit().clear().apply()
+        pref.edit { clear() }
     }
 }

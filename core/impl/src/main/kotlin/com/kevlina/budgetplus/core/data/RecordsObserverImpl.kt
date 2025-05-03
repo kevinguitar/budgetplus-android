@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
@@ -6,12 +6,11 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.tickerFlow
-import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +39,7 @@ import kotlin.time.Duration.Companion.seconds
 @Singleton
 internal class RecordsObserverImpl @Inject constructor(
     @AppScope appScope: CoroutineScope,
-    @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
+    @BooksDb private val booksDb: Lazy<CollectionReference>,
     preferenceHolder: PreferenceHolder,
     bookRepo: BookRepo,
 ) : RecordsObserver {
@@ -122,7 +121,7 @@ internal class RecordsObserverImpl @Inject constructor(
             .whereLessThanOrEqualTo("date", period.until.toEpochDay())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "RecordsObserver: Listen failed.")
+                    Timber.Forest.e(e, "RecordsObserver: Listen failed.")
                     return@addSnapshotListener
                 }
 

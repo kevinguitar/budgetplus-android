@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import android.content.Context
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
@@ -6,7 +6,6 @@ import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.data.RemoteConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

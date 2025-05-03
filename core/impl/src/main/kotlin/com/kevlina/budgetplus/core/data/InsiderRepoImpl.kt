@@ -1,11 +1,11 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
-import com.kevlina.budgetplus.core.data.InsiderRepo
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
+import dagger.Lazy
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ import kotlin.time.Duration
 
 @Singleton
 internal class InsiderRepoImpl @Inject constructor(
-    @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
+    @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : InsiderRepo {
 
     override suspend fun getTotalUsers(): Long {

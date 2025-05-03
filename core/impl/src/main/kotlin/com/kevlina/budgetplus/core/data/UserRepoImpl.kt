@@ -1,15 +1,12 @@
-package com.kevlina.budgetplus.core.data.impl
+package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.AppStartAction
-import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
-import com.kevlina.budgetplus.core.data.requireValue
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -24,7 +21,7 @@ import javax.inject.Singleton
 @Singleton
 internal class UserRepoImpl @Inject constructor(
     private val authManager: AuthManager,
-    @UsersDb private val usersDb: dagger.Lazy<CollectionReference>,
+    @UsersDb private val usersDb: Lazy<CollectionReference>,
     @AppScope private val appScope: CoroutineScope,
     private val bookRepo: BookRepo,
 ) : UserRepo, AppStartAction {

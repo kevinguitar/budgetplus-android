@@ -15,6 +15,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -70,12 +71,12 @@ internal fun OverviewList(
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
-    var isSearchFabVisible by remember { mutableStateOf(true) }
+    var isSearchFabVisible by rememberSaveable { mutableStateOf(true) }
 
     val listState = rememberLazyListState()
 
     LaunchedEffect(listState) {
-        snapshotFlow { listState.lastScrolledForward }
+        snapshotFlow { listState.isScrollInProgress || listState.lastScrolledForward }
             .collect { isSearchFabVisible = !it }
     }
 

@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.SelectableDates
@@ -47,16 +48,18 @@ fun DateRangePickerDialog(
         }
     )
 
-    //TODO:
-    // - configure transparent color for range
-    // - fix picker width, it's too compact now
     AppDialog(
+        usePlatformDefaultWidth = false,
         onDismissRequest = onDismiss,
+        modifier = Modifier
+            .sizeIn(maxWidth = 480.dp, maxHeight = 600.dp)
+            .padding(all = 16.dp)
     ) {
         Column {
             DateRangePicker(
                 state = dateRangeState,
                 colors = datePickerColors(),
+                modifier = Modifier.weight(1F)
             )
 
             Row(modifier = Modifier.align(Alignment.End)) {
@@ -91,7 +94,7 @@ fun DateRangePickerDialog(
     }
 }
 
-@Preview(widthDp = 400, heightDp = 600)
+@Preview(widthDp = 600, heightDp = 600)
 @Composable
 private fun DateRangePickerDialog_Preview() = AppTheme(ThemeColors.Barbie) {
     DateRangePickerDialog(

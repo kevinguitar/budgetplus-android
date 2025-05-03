@@ -115,12 +115,13 @@ internal fun datePickerColors(): DatePickerColors {
         todayContentColor = darkColor,
         todayDateBorderColor = primaryColor,
         dayInSelectionRangeContentColor = darkColor,
-        dayInSelectionRangeContainerColor = darkColor,
+        dayInSelectionRangeContainerColor = primaryColor.copy(alpha = SELECTION_ALPHA),
         dividerColor = darkColor,
     )
 }
 
 private const val DISABLED_ALPHA = 0.38f
+private const val SELECTION_ALPHA = 0.2f
 
 internal val LocalDate.utcMillis
     get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()

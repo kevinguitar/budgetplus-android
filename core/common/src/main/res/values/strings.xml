@@ -118,7 +118,7 @@
 
     <!-- Search -->
     <string name="search_title">Search</string>
-    <string name="search_field_placeholder">blabla</string>
+    <string name="search_field_placeholder">Enter keyword</string>
     <string name="search_all_categories">All Categories</string>
     <string name="search_period_last_month">Last Month</string>
     <string name="search_period_last_half_year">Last 6 Months</string>
@@ -135,7 +135,7 @@
         \n✔ Create up to 10 accounting books
         \n✔ Batch record your regular expenses
         \n✔ Unlock all color tones and custom picker
-        \n✔ Filter records without period limitation
+        \n✔ Search records without period limitation
     </string>
     <string name="premium_unlock_cta">Get Premium</string>
     <string name="premium_unlocked">Budget+ Premium unlocked!</string>
@@ -216,7 +216,6 @@
     <string name="cta_edit">Edit</string>
     <string name="cta_save">Save</string>
     <string name="cta_share">Share</string>
-    <string name="cta_search">Search</string>
     <string name="cta_confirm">Confirm</string>
     <string name="cta_go">Go</string>
     <string name="cta_cancel">Cancel</string>

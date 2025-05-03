@@ -115,6 +115,16 @@
     <string name="export_column_created_on">时间</string>
     <string name="export_column_author">记帐人</string>
 
+    <!-- Search -->
+    <string name="search_title">搜寻</string>
+    <string name="search_field_placeholder">输入关键字</string>
+    <string name="search_all_categories">所有类别</string>
+    <string name="search_period_last_month">过去一个月</string>
+    <string name="search_period_last_half_year">过去半年</string>
+    <string name="search_period_last_year">过去一年</string>
+    <string name="search_period_custom">自订区间</string>
+    <string name="search_period_custom_range">自%1$s至%2$s</string>
+
     <!-- Premium -->
     <string name="premium_unlock">解锁进阶版</string>
     <string name="premium_hide_ads">隐藏广告</string>
@@ -124,7 +134,7 @@
         \n✔ 扩充至十本记帐本
         \n✔ 批次新增您的固定支出收入
         \n✔ 解锁所有主题色调及调色盘
-        \n✔ 筛选大于一个月的帐目
+        \n✔ 检视及搜寻任何时段的帐目
     </string>
     <string name="premium_unlock_cta">取得进阶版</string>
     <string name="premium_unlocked">极简记帐进阶版，解锁！</string>

@@ -92,6 +92,7 @@ class SearchRepo @Inject constructor(
         return flow
     }
 
+    @Suppress("MagicNumber")
     private fun SearchPeriod.fromDate(): LocalDate =
         when (this) {
             SearchPeriod.PastMonth -> LocalDate.now().minusMonths(1)

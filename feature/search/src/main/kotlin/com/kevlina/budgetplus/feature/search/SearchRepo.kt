@@ -9,6 +9,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.SnackbarSender
+import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -32,6 +34,7 @@ class SearchRepo @Inject constructor(
     @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
+    private val tracker: Tracker,
 ) : ViewModel() {
     val query = TextFieldState()
     val period = MutableStateFlow<SearchPeriod>(SearchPeriod.PastMonth)
@@ -85,6 +88,10 @@ class SearchRepo @Inject constructor(
                     val records = snapshot.documents
                         .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
                     Timber.d("Search: result size ${records.size}")
+                    tracker.logEvent(
+                        event = "search_queried_from_db",
+                        params = bundle { putInt("db_read_count", records.size) }
+                    )
                     flow.tryEmit(DbResult.Success(records))
                 }
             }

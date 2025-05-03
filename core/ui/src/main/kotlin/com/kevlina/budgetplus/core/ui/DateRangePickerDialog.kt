@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.DateRangePickerDefaults
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +33,7 @@ fun DateRangePickerDialog(
     onRangePicked: (from: LocalDate, until: LocalDate) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val dateRangeState = rememberDateRangePickerState(
+    val state = rememberDateRangePickerState(
         initialSelectedStartDateMillis = startDate?.utcMillis,
         initialSelectedEndDateMillis = endDate?.utcMillis,
         selectableDates = object : SelectableDates {
@@ -52,14 +55,32 @@ fun DateRangePickerDialog(
         usePlatformDefaultWidth = false,
         onDismissRequest = onDismiss,
         modifier = Modifier
-            .sizeIn(maxWidth = 480.dp, maxHeight = 600.dp)
+            .sizeIn(maxWidth = 480.dp, maxHeight = 560.dp)
             .padding(all = 16.dp)
     ) {
         Column {
+            val dateFormatter = remember { DatePickerDefaults.dateFormatter() }
             DateRangePicker(
-                state = dateRangeState,
+                state = state,
                 colors = datePickerColors(),
-                modifier = Modifier.weight(1F)
+                showModeToggle = false,
+                modifier = Modifier.weight(1F),
+                dateFormatter = dateFormatter,
+                title = {
+                    DateRangePickerDefaults.DateRangePickerTitle(
+                        displayMode = state.displayMode,
+                        modifier = Modifier.padding(horizontal = 24.dp)
+                    )
+                },
+                headline = {
+                    DateRangePickerDefaults.DateRangePickerHeadline(
+                        selectedStartDateMillis = state.selectedStartDateMillis,
+                        selectedEndDateMillis = state.selectedEndDateMillis,
+                        displayMode = state.displayMode,
+                        dateFormatter = dateFormatter,
+                        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 12.dp)
+                    )
+                },
             )
 
             Row(modifier = Modifier.align(Alignment.End)) {
@@ -80,8 +101,8 @@ fun DateRangePickerDialog(
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(8.dp))
                         .rippleClick {
-                            val startDate = dateRangeState.selectedStartDateMillis?.utcLocaleDate
-                            val endDate = dateRangeState.selectedEndDateMillis?.utcLocaleDate
+                            val startDate = state.selectedStartDateMillis?.utcLocaleDate
+                            val endDate = state.selectedEndDateMillis?.utcLocaleDate
                             if (startDate != null && endDate != null) {
                                 onRangePicked(startDate, endDate)
                             }

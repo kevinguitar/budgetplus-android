@@ -16,7 +16,7 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun RecordContentWide(
-    uiState: RecordContentUiState,
+    state: RecordContentState,
     modifier: Modifier = Modifier,
 ) {
 
@@ -28,12 +28,12 @@ internal fun RecordContentWide(
     ) {
 
         RecordInfo(
-            uiState = uiState.recordInfoUiState,
+            state = state.recordInfoState,
             modifier = Modifier.weight(1F)
         )
 
         Calculator(
-            state = uiState.calculatorState,
+            state = state.calculatorState,
             adaptiveButton = true,
             modifier = Modifier
                 .weight(1F)
@@ -48,8 +48,8 @@ internal fun RecordContentWide(
 @Composable
 private fun RecordContentWide_Preview() = AppTheme(themeColors = ThemeColors.NemoSea) {
     RecordContentWide(
-        uiState = RecordContentUiState(
-            recordInfoUiState = RecordInfoUiState.preview,
+        state = RecordContentState(
+            recordInfoState = RecordInfoState.preview,
             calculatorState = CalculatorState.preview,
         ),
         modifier = Modifier.background(LocalAppColors.current.light)

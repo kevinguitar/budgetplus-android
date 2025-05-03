@@ -39,20 +39,20 @@ import java.time.LocalDate
 
 @Composable
 internal fun ColumnScope.DateAndPricing(
-    uiState: DateAndPricingUiState,
+    state: DateAndPricingState,
     scrollState: ScrollState,
     modifier: Modifier = Modifier,
 ) {
 
     val focusManager = rememberSafeFocusManager()
 
-    val recordDate by uiState.recordDate.collectAsStateWithLifecycle()
-    val currencySymbol by uiState.currencySymbol.collectAsStateWithLifecycle()
+    val recordDate by state.recordDate.collectAsStateWithLifecycle()
+    val currencySymbol by state.currencySymbol.collectAsStateWithLifecycle()
 
     var showDatePicker by remember { mutableStateOf(false) }
 
-    if (uiState.scrollable) {
-        val priceText = uiState.priceText.text
+    if (state.scrollable) {
+        val priceText = state.priceText.text
         LaunchedEffect(key1 = priceText) {
             if (priceText != CalculatorViewModel.EMPTY_PRICE) {
                 focusManager.clearFocus()
@@ -78,12 +78,12 @@ internal fun ColumnScope.DateAndPricing(
         )
 
         TextField(
-            state = uiState.priceText,
+            state = state.priceText,
             fontSize = FontSize.Header,
             letterSpacing = 0.5.sp,
             readOnly = true,
             title = currencySymbol,
-            onTitleClick = uiState.editCurrency,
+            onTitleClick = state.editCurrency,
             modifier = Modifier
                 .weight(1F)
                 .clickableWithoutRipple { focusManager.clearFocus() }
@@ -93,14 +93,14 @@ internal fun ColumnScope.DateAndPricing(
     if (showDatePicker) {
         DatePickerDialog(
             date = recordDate.date,
-            onDatePicked = uiState.setDate,
+            onDatePicked = state.setDate,
             onDismiss = { showDatePicker = false }
         )
     }
 }
 
 @Immutable
-internal class DateAndPricingUiState(
+internal class DateAndPricingState(
     val recordDate: StateFlow<RecordDateState>,
     val currencySymbol: StateFlow<String>,
     val priceText: TextFieldState,
@@ -109,7 +109,7 @@ internal class DateAndPricingUiState(
     val editCurrency: () -> Unit,
 ) {
     companion object {
-        val preview = DateAndPricingUiState(
+        val preview = DateAndPricingState(
             recordDate = MutableStateFlow(RecordDateState.Now),
             currencySymbol = MutableStateFlow("$"),
             priceText = TextFieldState("2344"),
@@ -125,7 +125,7 @@ internal class DateAndPricingUiState(
 private fun DateAndPricing_Preview() = AppTheme {
     Column {
         DateAndPricing(
-            uiState = DateAndPricingUiState.preview,
+            state = DateAndPricingState.preview,
             scrollState = rememberScrollState(),
             modifier = Modifier
                 .background(LocalAppColors.current.light)

@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -40,16 +41,15 @@ private const val A_HUNDRED = 100
 
 @Composable
 internal fun OverviewGroup(
-    uiState: OverviewGroupUiState,
+    state: OverviewGroupState,
     modifier: Modifier = Modifier,
 ) {
-
-    val percentage = uiState.percentage
+    val percentage = state.percentage
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .rippleClick(onClick = uiState.onClick)
+            .rippleClick(onClick = state.onClick)
             .padding(horizontal = 16.dp)
     ) {
 
@@ -58,6 +58,7 @@ internal fun OverviewGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
+            @SuppressLint("UnusedBoxWithConstraintsScope")
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1F)
@@ -70,7 +71,7 @@ internal fun OverviewGroup(
                 val width by animateDpAsState(
                     targetValue = progress,
                     animationSpec = tween(durationMillis = 500),
-                    label = "widthAnimation_${uiState.category}"
+                    label = "widthAnimation_${state.category}"
                 )
 
                 Spacer(
@@ -79,7 +80,7 @@ internal fun OverviewGroup(
                         .height(24.dp)
                         .align(Alignment.CenterStart)
                         .background(
-                            color = uiState.color.copy(alpha = 0.5F),
+                            color = state.color.copy(alpha = 0.5F),
                             shape = RoundedCornerShape(
                                 topEndPercent = 50,
                                 bottomEndPercent = 50
@@ -88,14 +89,14 @@ internal fun OverviewGroup(
                 )
 
                 Text(
-                    text = uiState.category,
+                    text = state.category,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterStart)
                 )
 
                 Text(
-                    text = uiState.sumPrice,
+                    text = state.sumPrice,
                     fontSize = FontSize.SemiLarge,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.align(Alignment.CenterEnd)
@@ -109,7 +110,7 @@ internal fun OverviewGroup(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(
-                        color = uiState.color
+                        color = state.color
                             .darken(TEXT_DARKEN_FACTOR)
                             .copy(alpha = 0.7F),
                         shape = CircleShape
@@ -119,7 +120,7 @@ internal fun OverviewGroup(
             )
         }
 
-        if (!uiState.isLast) {
+        if (!state.isLast) {
             Spacer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -140,7 +141,7 @@ private fun calcProgressWidth(maxWidth: Dp, ratio: Double): Dp {
 }
 
 @Immutable
-internal data class OverviewGroupUiState(
+internal data class OverviewGroupState(
     val category: String,
     val records: List<Record>,
     val color: Color,
@@ -150,7 +151,7 @@ internal data class OverviewGroupUiState(
     val onClick: () -> Unit,
 ) {
     companion object {
-        val preview = OverviewGroupUiState(
+        val preview = OverviewGroupState(
             category = "日常",
             records = listOf(
                 Record(price = 10.3),
@@ -169,5 +170,5 @@ internal data class OverviewGroupUiState(
 @Preview(showBackground = true)
 @Composable
 private fun OverviewGroup_Preview() = AppTheme {
-    OverviewGroup(OverviewGroupUiState.preview)
+    OverviewGroup(OverviewGroupState.preview)
 }

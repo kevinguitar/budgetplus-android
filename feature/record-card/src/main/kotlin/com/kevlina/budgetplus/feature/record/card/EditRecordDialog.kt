@@ -42,7 +42,7 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
-import com.kevlina.budgetplus.feature.category.pills.toUiState
+import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import java.time.LocalDate
@@ -180,7 +180,7 @@ fun EditRecordDialog(
                 onDismissRequest = { dialogState = EditRecordDialogState.ShowRecord }
             ) {
                 CategoriesGrid(
-                    uiState = vm.categoriesVm.toUiState(
+                    state = vm.categoriesVm.toState(
                         type = MutableStateFlow(editRecord.type),
                         selectedCategory = MutableStateFlow(category),
                         onCategorySelected = {

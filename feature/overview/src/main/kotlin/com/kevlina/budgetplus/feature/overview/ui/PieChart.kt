@@ -303,8 +303,8 @@ private fun Float.toRadians(): Double = this / 180.0 * PI
 private fun PieChart_Preview() = AppTheme {
     PieChart(
         modifier = Modifier.size(300.dp),
-        totalPrice = OverviewListUiState.totalPricePreview,
-        recordGroups = OverviewListUiState.recordGroupsPreview,
+        totalPrice = OverviewListState.totalPricePreview,
+        recordGroups = OverviewListState.recordGroupsPreview,
         formatPrice = { it.toString() },
         vibrate = {},
         highlightPieChart = {},

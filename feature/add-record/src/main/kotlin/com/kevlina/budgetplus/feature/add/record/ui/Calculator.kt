@@ -288,7 +288,7 @@ internal data class CalculatorState(
     }
 }
 
-internal fun CalculatorViewModel.toUiState() = CalculatorState(
+internal fun CalculatorViewModel.toState() = CalculatorState(
     needEvaluate = needEvaluate,
     speakToRecordButtonState = SpeakToRecordButtonState(
         onTap = speakToRecordViewModel::onButtonTap,

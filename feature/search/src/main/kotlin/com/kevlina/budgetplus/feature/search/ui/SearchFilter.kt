@@ -141,7 +141,7 @@ internal fun SearchFilter(
 
     if (isCategoryGridShown) {
         AppDialog(onDismissRequest = { isCategoryGridShown = false }) {
-            CategoriesGrid(uiState = state.categoryGrid)
+            CategoriesGrid(state = state.categoryGrid)
         }
     }
 

@@ -16,16 +16,16 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContent(
-    uiState: OverviewContentUiState,
+    state: OverviewContentState,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
     OverviewList(
-        uiState = uiState.listUiState,
+        state = state.listState,
         navController = navController,
         header = {
             OverviewHeader(
-                uiState = uiState.headerUiState,
+                state = state.headerState,
                 navController = navController,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
@@ -37,14 +37,14 @@ internal fun OverviewContent(
 }
 
 @Immutable
-internal class OverviewContentUiState(
-    val headerUiState: OverviewHeaderUiState,
-    val listUiState: OverviewListUiState,
+internal class OverviewContentState(
+    val headerState: OverviewHeaderState,
+    val listState: OverviewListState,
 ) {
     companion object {
-        val preview = OverviewContentUiState(
-            headerUiState = OverviewHeaderUiState.preview,
-            listUiState = OverviewListUiState.preview
+        val preview = OverviewContentState(
+            headerState = OverviewHeaderState.preview,
+            listState = OverviewListState.preview
         )
     }
 }
@@ -53,7 +53,7 @@ internal class OverviewContentUiState(
 @Composable
 private fun OverviewContent_Preview() = AppTheme {
     OverviewContent(
-        uiState = OverviewContentUiState.preview,
+        state = OverviewContentState.preview,
         navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )

@@ -25,42 +25,42 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 internal fun RecordInfo(
-    uiState: RecordInfoUiState,
+    state: RecordInfoState,
     modifier: Modifier = Modifier,
 ) {
 
     val focusManager = rememberSafeFocusManager()
 
-    val type by uiState.type.collectAsStateWithLifecycle()
+    val type by state.type.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.thenIf(uiState.scrollable) {
+        modifier = modifier.thenIf(state.scrollable) {
             Modifier.verticalScroll(scrollState)
         }
     ) {
 
         RecordTypeTab(
             selected = type,
-            onTypeSelected = uiState.setType,
+            onTypeSelected = state.setType,
             modifier = Modifier.padding(top = 16.dp)
         )
 
         CategoriesGrid(
-            uiState = uiState.categoriesGridUiState,
+            state = state.categoriesGridState,
             modifier = Modifier.fillMaxWidth()
         )
 
         TextField(
-            state = uiState.note,
+            state = state.note,
             title = stringResource(id = R.string.record_note),
             placeholder = stringResource(
                 id = when (type) {
@@ -73,7 +73,7 @@ internal fun RecordInfo(
         )
 
         DateAndPricing(
-            uiState = uiState.dateAndPricingUiState,
+            state = state.dateAndPricingState,
             scrollState = scrollState,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -81,22 +81,22 @@ internal fun RecordInfo(
 }
 
 @Stable
-internal data class RecordInfoUiState(
+internal data class RecordInfoState(
     val type: StateFlow<RecordType>,
     val note: TextFieldState,
     val setType: (RecordType) -> Unit,
     val scrollable: Boolean,
-    val categoriesGridUiState: CategoriesGridUiState,
-    val dateAndPricingUiState: DateAndPricingUiState,
+    val categoriesGridState: CategoriesGridState,
+    val dateAndPricingState: DateAndPricingState,
 ) {
     companion object {
-        val preview = RecordInfoUiState(
+        val preview = RecordInfoState(
             type = MutableStateFlow(RecordType.Expense),
             note = TextFieldState("Some cool daily stuff"),
             setType = {},
             scrollable = true,
-            categoriesGridUiState = CategoriesGridUiState.preview,
-            dateAndPricingUiState = DateAndPricingUiState.preview
+            categoriesGridState = CategoriesGridState.preview,
+            dateAndPricingState = DateAndPricingState.preview
         )
     }
 }
@@ -105,7 +105,7 @@ internal data class RecordInfoUiState(
 @Composable
 private fun RecordInfo_Preview() = AppTheme {
     RecordInfo(
-        uiState = RecordInfoUiState.preview,
+        state = RecordInfoState.preview,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(horizontal = 16.dp)

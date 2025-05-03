@@ -42,39 +42,39 @@ import java.time.LocalDate
 
 @Composable
 internal fun ColumnScope.TimePeriodSelector(
-    uiState: TimePeriodSelectorUiState,
+    state: TimePeriodSelectorState,
     navController: NavController,
 ) {
 
-    val timePeriod by uiState.timePeriod.collectAsStateWithLifecycle()
-    val fromDate by uiState.fromDate.collectAsStateWithLifecycle()
-    val untilDate by uiState.untilDate.collectAsStateWithLifecycle()
+    val timePeriod by state.timePeriod.collectAsStateWithLifecycle()
+    val fromDate by state.fromDate.collectAsStateWithLifecycle()
+    val untilDate by state.untilDate.collectAsStateWithLifecycle()
 
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showUntilDatePicker by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = uiState.openPremiumEvent) {
-        uiState.openPremiumEvent
+    LaunchedEffect(key1 = state.openPremiumEvent) {
+        state.openPremiumEvent
             .consumeEach { navController.navigate(AddDest.UnlockPremium) }
             .collect()
     }
 
     DateRange(
-        uiState = uiState,
+        state = state,
         showFromDatePicker = { showFromDatePicker = true },
         showUntilDatePicker = { showUntilDatePicker = true }
     )
 
     TimePeriodPreset(
         timePeriod = timePeriod,
-        setTimePeriod = uiState.setTimePeriod
+        setTimePeriod = state.setTimePeriod
     )
 
     if (showFromDatePicker) {
         DatePickerDialog(
             date = fromDate,
             onDismiss = { showFromDatePicker = false },
-            onDatePicked = uiState.setFromDate
+            onDatePicked = state.setFromDate
         )
     }
 
@@ -83,7 +83,7 @@ internal fun ColumnScope.TimePeriodSelector(
             date = untilDate,
             minDate = fromDate,
             onDismiss = { showUntilDatePicker = false },
-            onDatePicked = uiState.setUntilDate
+            onDatePicked = state.setUntilDate
         )
     }
 }
@@ -152,7 +152,7 @@ private fun TimePeriodPill(
 }
 
 @Stable
-internal class TimePeriodSelectorUiState(
+internal class TimePeriodSelectorState(
     val timePeriod: StateFlow<TimePeriod>,
     val fromDate: StateFlow<LocalDate>,
     val untilDate: StateFlow<LocalDate>,
@@ -165,7 +165,7 @@ internal class TimePeriodSelectorUiState(
     val setUntilDate: (LocalDate) -> Unit,
 ) {
     companion object {
-        val preview = TimePeriodSelectorUiState(
+        val preview = TimePeriodSelectorState(
             timePeriod = MutableStateFlow(TimePeriod.Month),
             fromDate = MutableStateFlow(TimePeriod.Month.from),
             untilDate = MutableStateFlow(TimePeriod.Month.until),
@@ -180,7 +180,7 @@ internal class TimePeriodSelectorUiState(
     }
 }
 
-internal fun OverviewTimeViewModel.toUiState() = TimePeriodSelectorUiState(
+internal fun OverviewTimeViewModel.toState() = TimePeriodSelectorState(
     timePeriod = timePeriod,
     fromDate = fromDate,
     untilDate = untilDate,
@@ -201,7 +201,7 @@ private fun TimePeriodSelector_Preview() = AppTheme {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TimePeriodSelector(
-            uiState = TimePeriodSelectorUiState.preview,
+            state = TimePeriodSelectorState.preview,
             navController = NavController(LocalContext.current)
         )
     }

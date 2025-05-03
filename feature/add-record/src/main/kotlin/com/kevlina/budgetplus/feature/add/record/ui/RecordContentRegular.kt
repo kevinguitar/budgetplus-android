@@ -28,7 +28,7 @@ private const val ADAPTIVE_BUTTON_ASPECT_RATIO = 1.5
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun RecordContentRegular(
-    uiState: RecordContentUiState,
+    state: RecordContentState,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints {
@@ -41,7 +41,7 @@ internal fun RecordContentRegular(
         ) {
 
             RecordInfo(
-                uiState = uiState.recordInfoUiState,
+                state = state.recordInfoState,
                 modifier = Modifier
                     .weight(1F)
                     .width(AppTheme.containerMaxWidth)
@@ -66,7 +66,7 @@ internal fun RecordContentRegular(
                     .background(LocalAppColors.current.lightBg)
             ) {
                 Calculator(
-                    state = uiState.calculatorState,
+                    state = state.calculatorState,
                     adaptiveButton = useAdaptiveButton,
                     modifier = Modifier
                         .width(AppTheme.containerMaxWidth)
@@ -89,7 +89,7 @@ internal fun RecordContentRegular(
 @Composable
 private fun RecordContentRegular_Preview() = AppTheme(themeColors = ThemeColors.Barbie) {
     RecordContentRegular(
-        uiState = RecordContentUiState.preview,
+        state = RecordContentState.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

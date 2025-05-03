@@ -15,8 +15,8 @@ import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
-import com.kevlina.budgetplus.feature.category.pills.toUiState
-import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import com.kevlina.budgetplus.feature.category.pills.toState
+import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchFilterState
 import com.kevlina.budgetplus.feature.search.ui.SearchPeriod
@@ -113,7 +113,7 @@ class SearchViewModel @AssistedInject constructor(
             type = type,
             selectType = { type.value = it },
             category = category,
-            categoryGrid = categoriesVm.toUiState(
+            categoryGrid = categoriesVm.toState(
                 type = type,
                 selectedCategory = category.mapState { it.name },
                 onCategorySelected = {
@@ -153,9 +153,9 @@ class SearchViewModel @AssistedInject constructor(
         searchRepo.period.value = period
     }
 
-    private fun List<Record>.mapToStates(): List<RecordCardUiState> =
+    private fun List<Record>.mapToStates(): List<RecordCardState> =
         mapIndexed { i, record ->
-            RecordCardUiState(
+            RecordCardState(
                 item = record,
                 formattedPrice = record.price.toString(),
                 isLast = i == lastIndex,

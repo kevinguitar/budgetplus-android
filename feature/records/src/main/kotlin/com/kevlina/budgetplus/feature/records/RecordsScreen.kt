@@ -34,7 +34,7 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
-import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 
@@ -119,7 +119,7 @@ fun RecordsScreen(
                 ) {
                     val records = recordsList?.getOrNull(page).orEmpty()
                     itemsIndexed(records) { index, item ->
-                        RecordCard(uiState = RecordCardUiState(
+                        RecordCard(state = RecordCardState(
                             item = item,
                             formattedPrice = vm.bookRepo.formatPrice(item.price),
                             isLast = index == records.lastIndex,

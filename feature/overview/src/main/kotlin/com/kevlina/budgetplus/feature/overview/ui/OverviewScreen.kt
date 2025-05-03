@@ -40,7 +40,6 @@ import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 fun OverviewScreen(navController: NavController) {
 
     val vm = hiltViewModel<OverviewViewModel>()
-    val uiState = remember(key1 = vm) { vm.toUiState() }
 
     val mode by vm.mode.collectAsStateWithLifecycle()
     val chartMode by vm.chartModeModel.chartMode.collectAsStateWithLifecycle()
@@ -102,13 +101,13 @@ fun OverviewScreen(navController: NavController) {
                 .weight(1F),
             regularContent = {
                 OverviewContent(
-                    uiState = uiState,
+                    state = vm.state,
                     navController = navController,
                 )
             },
             wideContent = {
                 OverviewContentWide(
-                    uiState = uiState,
+                    state = vm.state,
                     navController = navController,
                 )
             }
@@ -143,34 +142,3 @@ fun OverviewScreen(navController: NavController) {
 enum class OverviewUiType {
     Header, Record, Group, PieChart, ZeroCase, Loader
 }
-
-private fun OverviewViewModel.toUiState() = OverviewContentUiState(
-    headerUiState = OverviewHeaderUiState(
-        type = type,
-        totalPrice = totalFormattedPrice,
-        balance = formattedBalance,
-        recordGroups = recordGroups,
-        authors = authors,
-        selectedAuthor = selectedAuthor,
-        timePeriodSelectorUiState = timeModel.toUiState(),
-        setRecordType = ::setRecordType,
-        setAuthor = ::setAuthor
-    ),
-    listUiState = OverviewListUiState(
-        mode = mode,
-        chartMode = chartModeModel.chartMode,
-        type = type,
-        selectedAuthor = selectedAuthor,
-        totalPrice = totalPrice,
-        recordList = recordList,
-        recordGroups = recordGroups,
-        isSoloAuthor = isSoloAuthor,
-        highlightTapHint = ::highlightTapHint,
-        highlightPieChart = ::highlightPieChart,
-        formatPrice = bookRepo::formatPrice,
-        vibrate = vibratorManager::vibrate,
-        canEditRecord = ::canEditRecord,
-        duplicateRecord = ::duplicateRecord,
-        onGroupClicked = ::onGroupClicked
-    )
-)

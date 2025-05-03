@@ -26,14 +26,14 @@ import com.kevlina.budgetplus.core.ui.thenIf
 
 @Composable
 internal fun DateRange(
-    uiState: TimePeriodSelectorUiState,
+    state: TimePeriodSelectorState,
     showFromDatePicker: () -> Unit,
     showUntilDatePicker: () -> Unit,
 ) {
 
-    val fromDate by uiState.fromDate.collectAsStateWithLifecycle()
-    val untilDate by uiState.untilDate.collectAsStateWithLifecycle()
-    val isOneDayPeriod by uiState.isOneDayPeriod.collectAsStateWithLifecycle()
+    val fromDate by state.fromDate.collectAsStateWithLifecycle()
+    val untilDate by state.untilDate.collectAsStateWithLifecycle()
+    val isOneDayPeriod by state.isOneDayPeriod.collectAsStateWithLifecycle()
 
     val arrowPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
 
@@ -48,7 +48,7 @@ internal fun DateRange(
                 tint = LocalAppColors.current.dark,
                 modifier = Modifier
                     .padding(arrowPadding)
-                    .rippleClick(borderless = true, onClick = uiState.previousDay)
+                    .rippleClick(borderless = true, onClick = state.previousDay)
             )
         }
 
@@ -79,7 +79,7 @@ internal fun DateRange(
                 tint = LocalAppColors.current.dark,
                 modifier = Modifier
                     .padding(arrowPadding)
-                    .rippleClick(borderless = true, onClick = uiState.nextDay)
+                    .rippleClick(borderless = true, onClick = state.nextDay)
             )
         } else {
             Text(text = stringResource(id = R.string.date_to))

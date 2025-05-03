@@ -44,7 +44,7 @@ class CurrencyPickerViewModel @Inject constructor(
 
     private val allCurrencies = Currency.getAvailableCurrencies()
         .map { currency ->
-            CurrencyUiState(
+            CurrencyState(
                 name = currency.getDisplayName(defaultLocale),
                 currencyCode = currency.currencyCode,
                 symbol = currency.getSymbol(defaultLocale),
@@ -59,7 +59,7 @@ class CurrencyPickerViewModel @Inject constructor(
         .sortedByDescending { it.isSelected }
 
     private val _currencies = MutableStateFlow(allCurrencies)
-    val currencies: StateFlow<List<CurrencyUiState>> = _currencies.asStateFlow()
+    val currencies: StateFlow<List<CurrencyState>> = _currencies.asStateFlow()
 
     init {
         snapshotFlow { keyword.text }
@@ -74,7 +74,7 @@ class CurrencyPickerViewModel @Inject constructor(
         }
     }
 
-    fun onCurrencyPicked(currency: CurrencyUiState) {
+    fun onCurrencyPicked(currency: CurrencyState) {
         val bookName = bookRepo.bookState.value?.name ?: return
         snackbarSender.send(stringProvider[R.string.currency_picker_edit_success, bookName, currency.name])
         bookRepo.updateCurrency(currency.currencyCode)

@@ -43,10 +43,10 @@ import java.time.LocalDate
 
 @Composable
 fun RecordCard(
-    uiState: RecordCardUiState,
+    state: RecordCardState,
     modifier: Modifier = Modifier,
 ) {
-    val item = uiState.item
+    val item = state.item
     var isMenuShown by remember { mutableStateOf(false) }
 
     Box(
@@ -54,7 +54,7 @@ fun RecordCard(
             .fillMaxWidth()
             .rippleClick(
                 color = LocalAppColors.current.dark,
-                onClick = if (uiState.canEdit) uiState.onEdit else {
+                onClick = if (state.canEdit) state.onEdit else {
                     {}
                 },
                 onLongClick = { isMenuShown = true }
@@ -104,24 +104,24 @@ fun RecordCard(
                         text = LocalDate.ofEpochDay(item.date).shortFormatted,
                     )
 
-                    if (uiState.showCategory) {
+                    if (state.showCategory) {
                         PillLabel(text = item.category)
                     }
 
-                    if (uiState.showAuthor) {
+                    if (state.showAuthor) {
                         PillLabel(text = item.author?.name.orEmpty())
                     }
                 }
             }
 
             Text(
-                text = uiState.formattedPrice,
+                text = state.formattedPrice,
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
             )
         }
 
-        if (!uiState.isLast) {
+        if (!state.isLast) {
             Spacer(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -147,15 +147,15 @@ fun RecordCard(
                     name = stringResource(id = R.string.cta_duplicate),
                 ) {
                     isMenuShown = false
-                    uiState.onDuplicate()
+                    state.onDuplicate()
                 }
 
-                if (uiState.canEdit) {
+                if (state.canEdit) {
                     DropdownItem(
                         name = stringResource(id = R.string.cta_delete),
                     ) {
                         isMenuShown = false
-                        uiState.onDelete()
+                        state.onDelete()
                     }
                 }
             }
@@ -164,7 +164,7 @@ fun RecordCard(
 }
 
 @Immutable
-data class RecordCardUiState(
+data class RecordCardState(
     val item: Record,
     val formattedPrice: String,
     val isLast: Boolean,
@@ -176,7 +176,7 @@ data class RecordCardUiState(
     val onDelete: () -> Unit,
 ) {
     companion object {
-        val preview = RecordCardUiState(
+        val preview = RecordCardState(
             item = Record(
                 type = RecordType.Income,
                 date = LocalDate.now().toEpochDay(),
@@ -216,5 +216,5 @@ private fun PillLabel(text: String) {
 @Preview(showBackground = true)
 @Composable
 private fun RecordCard_Preview() = AppTheme {
-    RecordCard(uiState = RecordCardUiState.preview)
+    RecordCard(state = RecordCardState.preview)
 }

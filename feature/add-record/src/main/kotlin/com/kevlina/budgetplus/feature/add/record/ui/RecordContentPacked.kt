@@ -18,7 +18,7 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 
 @Composable
 internal fun RecordContentPacked(
-    uiState: RecordContentUiState,
+    state: RecordContentState,
     modifier: Modifier = Modifier,
 ) {
 
@@ -30,12 +30,12 @@ internal fun RecordContentPacked(
     ) {
 
         RecordInfo(
-            uiState = uiState.recordInfoUiState,
+            state = state.recordInfoState,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
         Calculator(
-            state = uiState.calculatorState,
+            state = state.calculatorState,
             adaptiveButton = false,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -50,8 +50,8 @@ internal fun RecordContentPacked(
 @Composable
 private fun RecordContentPacked_Preview() = AppTheme(themeColors = ThemeColors.Countryside) {
     RecordContentPacked(
-        uiState = RecordContentUiState(
-            recordInfoUiState = RecordInfoUiState.preview.copy(scrollable = false),
+        state = RecordContentState(
+            recordInfoState = RecordInfoState.preview.copy(scrollable = false),
             calculatorState = CalculatorState.preview,
         ),
         modifier = Modifier.background(LocalAppColors.current.light)

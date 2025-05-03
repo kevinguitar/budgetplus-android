@@ -27,17 +27,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 internal fun OverviewHeader(
-    uiState: OverviewHeaderUiState,
+    state: OverviewHeaderState,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
 
-    val type by uiState.type.collectAsStateWithLifecycle()
-    val totalPrice by uiState.totalPrice.collectAsStateWithLifecycle()
-    val balance by uiState.balance.collectAsStateWithLifecycle()
-    val recordGroups by uiState.recordGroups.collectAsStateWithLifecycle()
-    val authors by uiState.authors.collectAsStateWithLifecycle()
-    val selectedAuthor by uiState.selectedAuthor.collectAsStateWithLifecycle()
+    val type by state.type.collectAsStateWithLifecycle()
+    val totalPrice by state.totalPrice.collectAsStateWithLifecycle()
+    val balance by state.balance.collectAsStateWithLifecycle()
+    val recordGroups by state.recordGroups.collectAsStateWithLifecycle()
+    val authors by state.authors.collectAsStateWithLifecycle()
+    val selectedAuthor by state.selectedAuthor.collectAsStateWithLifecycle()
 
     val isBalanceCardVisible = recordGroups?.isNotEmpty() == true
 
@@ -48,7 +48,7 @@ internal fun OverviewHeader(
 
         RecordTypeTab(
             selected = type,
-            onTypeSelected = uiState.setRecordType,
+            onTypeSelected = state.setRecordType,
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
@@ -56,12 +56,12 @@ internal fun OverviewHeader(
             AuthorSelector(
                 authors = authors,
                 selectedAuthor = selectedAuthor,
-                setAuthor = uiState.setAuthor
+                setAuthor = state.setAuthor
             )
         }
 
         TimePeriodSelector(
-            uiState = uiState.timePeriodSelectorUiState,
+            state = state.timePeriodSelectorState,
             navController = navController,
         )
 
@@ -80,26 +80,26 @@ internal fun OverviewHeader(
 }
 
 @Stable
-internal data class OverviewHeaderUiState(
+internal data class OverviewHeaderState(
     val type: StateFlow<RecordType>,
     val totalPrice: StateFlow<String>,
     val balance: StateFlow<String>,
     val recordGroups: StateFlow<Map<String, List<Record>>?>,
     val authors: StateFlow<List<User>>,
     val selectedAuthor: StateFlow<User?>,
-    val timePeriodSelectorUiState: TimePeriodSelectorUiState,
+    val timePeriodSelectorState: TimePeriodSelectorState,
     val setRecordType: (RecordType) -> Unit,
     val setAuthor: (User?) -> Unit,
 ) {
     companion object {
-        val preview = OverviewHeaderUiState(
+        val preview = OverviewHeaderState(
             type = MutableStateFlow(RecordType.Expense),
             totalPrice = MutableStateFlow("$245.25"),
             balance = MutableStateFlow("$52.45"),
             recordGroups = MutableStateFlow(mapOf("Food" to emptyList())),
             authors = MutableStateFlow(listOf(User(name = "Kevin"), User(name = "Alina"))),
             selectedAuthor = MutableStateFlow(User(name = "Kevin")),
-            timePeriodSelectorUiState = TimePeriodSelectorUiState.preview,
+            timePeriodSelectorState = TimePeriodSelectorState.preview,
             setRecordType = {},
             setAuthor = {}
         )
@@ -110,7 +110,7 @@ internal data class OverviewHeaderUiState(
 @Composable
 private fun OverviewHeader_Preview() = AppTheme {
     OverviewHeader(
-        uiState = OverviewHeaderUiState.preview,
+        state = OverviewHeaderState.preview,
         navController = NavController(LocalContext.current),
         modifier = Modifier
             .background(LocalAppColors.current.light)

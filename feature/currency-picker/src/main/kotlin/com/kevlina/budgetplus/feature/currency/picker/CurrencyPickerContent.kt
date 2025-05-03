@@ -40,8 +40,8 @@ import java.util.Currency
 @Composable
 internal fun CurrencyPickerContent(
     keyword: TextFieldState,
-    currencies: List<CurrencyUiState>,
-    onCurrencyPicked: (CurrencyUiState) -> Unit,
+    currencies: List<CurrencyState>,
+    onCurrencyPicked: (CurrencyState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = rememberSafeFocusManager()
@@ -72,7 +72,7 @@ internal fun CurrencyPickerContent(
                 currencies.forEach { currency ->
                     item(key = currency.symbol) {
                         CurrencyCard(
-                            uiState = currency,
+                            state = currency,
                             onClick = { onCurrencyPicked(currency) }
                         )
                     }
@@ -98,10 +98,10 @@ private const val SEARCH_GRADIENT_END = 1F
 
 @Composable
 private fun CurrencyCard(
-    uiState: CurrencyUiState,
+    state: CurrencyState,
     onClick: () -> Unit,
 ) {
-    val isSelected = uiState.isSelected
+    val isSelected = state.isSelected
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -124,7 +124,7 @@ private fun CurrencyCard(
         }
 
         Text(
-            text = uiState.symbol,
+            text = state.symbol,
             fontSize = FontSize.HeaderXLarge,
             fontWeight = FontWeight.Bold,
             color = textColor,
@@ -132,7 +132,7 @@ private fun CurrencyCard(
         )
 
         Text(
-            text = uiState.name,
+            text = state.name,
             color = textColor,
             textAlign = TextAlign.Center
         )
@@ -145,7 +145,7 @@ private fun CurrencyPickerContent_Preview() = AppTheme {
     CurrencyPickerContent(
         keyword = TextFieldState(),
         currencies = Currency.getAvailableCurrencies().mapIndexed { index, currency ->
-            CurrencyUiState(
+            CurrencyState(
                 name = currency.displayName,
                 currencyCode = currency.currencyCode,
                 symbol = currency.symbol,

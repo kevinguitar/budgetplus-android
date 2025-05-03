@@ -34,14 +34,13 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun CategoriesGrid(
-    uiState: CategoriesGridUiState,
+    state: CategoriesGridState,
     modifier: Modifier = Modifier,
 ) {
-
-    val type by uiState.type.collectAsStateWithLifecycle()
-    val expenseCategories by uiState.expenseCategories.collectAsStateWithLifecycle()
-    val incomeCategories by uiState.incomeCategories.collectAsStateWithLifecycle()
-    val selectedCategory by uiState.selectedCategory.collectAsStateWithLifecycle()
+    val type by state.type.collectAsStateWithLifecycle()
+    val expenseCategories by state.expenseCategories.collectAsStateWithLifecycle()
+    val incomeCategories by state.incomeCategories.collectAsStateWithLifecycle()
+    val selectedCategory by state.selectedCategory.collectAsStateWithLifecycle()
 
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.Start),
@@ -54,9 +53,9 @@ fun CategoriesGrid(
                 CategoryCard(
                     category = item,
                     isSelected = selectedCategory == item,
-                    paddingValues = uiState.cardPaddingValues
+                    paddingValues = state.cardPaddingValues
                 ) {
-                    uiState.onCategorySelected(item)
+                    state.onCategorySelected(item)
                 }
             }
 
@@ -64,26 +63,26 @@ fun CategoriesGrid(
                 CategoryCard(
                     category = item,
                     isSelected = selectedCategory == item,
-                    paddingValues = uiState.cardPaddingValues
+                    paddingValues = state.cardPaddingValues
                 ) {
-                    uiState.onCategorySelected(item)
+                    state.onCategorySelected(item)
                 }
             }
         }
 
-        if (uiState.onEditClicked != null) {
+        if (state.onEditClicked != null) {
             CategoryActionButton(
                 icon = Icons.Rounded.DriveFileRenameOutline,
                 name = stringResource(id = R.string.cta_edit),
-                onClick = uiState.onEditClicked
+                onClick = state.onEditClicked
             )
         }
 
-        if (uiState.onAddClicked != null) {
+        if (state.onAddClicked != null) {
             CategoryActionButton(
                 icon = Icons.Rounded.Add,
                 name = stringResource(id = R.string.cta_add),
-                onClick = uiState.onAddClicked
+                onClick = state.onAddClicked
             )
         }
     }
@@ -161,7 +160,7 @@ private fun CategoryActionButton(
 }
 
 @Stable
-class CategoriesGridUiState(
+class CategoriesGridState(
     val expenseCategories: StateFlow<List<String>>,
     val incomeCategories: StateFlow<List<String>>,
     val type: StateFlow<RecordType>,
@@ -172,7 +171,7 @@ class CategoriesGridUiState(
     val cardPaddingValues: PaddingValues = cardPadding,
 ) {
     companion object {
-        val preview = CategoriesGridUiState(
+        val preview = CategoriesGridState(
             type = MutableStateFlow(RecordType.Expense),
             expenseCategories = MutableStateFlow(listOf(
                 "Food", "Daily", "Transport", "Entertainment", "Rent", "Mobile", "Utility", "Other"
@@ -185,14 +184,14 @@ class CategoriesGridUiState(
     }
 }
 
-fun CategoriesViewModel.toUiState(
+fun CategoriesViewModel.toState(
     type: StateFlow<RecordType>,
     selectedCategory: StateFlow<String?> = category,
     onCategorySelected: (String) -> Unit = ::setCategory,
     onEditClicked: (() -> Unit)? = null,
     onAddClicked: (() -> Unit)? = null,
     cardPaddingValues: PaddingValues = cardPadding,
-) = CategoriesGridUiState(
+) = CategoriesGridState(
     expenseCategories = expenseCategories,
     incomeCategories = incomeCategories,
     type = type,
@@ -207,7 +206,7 @@ fun CategoriesViewModel.toUiState(
 @Composable
 private fun CategoryGrid_Preview() = AppTheme {
     CategoriesGrid(
-        CategoriesGridUiState.preview,
+        CategoriesGridState.preview,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(all = 16.dp)

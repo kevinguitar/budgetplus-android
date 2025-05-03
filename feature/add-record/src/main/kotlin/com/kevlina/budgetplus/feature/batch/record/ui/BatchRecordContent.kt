@@ -30,7 +30,7 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
-import com.kevlina.budgetplus.feature.category.pills.toUiState
+import com.kevlina.budgetplus.feature.category.pills.toState
 
 @Composable
 internal fun BatchRecordContent() {
@@ -59,7 +59,7 @@ internal fun BatchRecordContent() {
         )
 
         CategoriesGrid(
-            uiState = vm.categoriesVm.toUiState(type = vm.type),
+            state = vm.categoriesVm.toState(type = vm.type),
             modifier = Modifier.fillMaxWidth()
         )
 

@@ -26,7 +26,7 @@ fun CurrencyPickerScreen(
 ) {
     val currencies by vm.currencies.collectAsStateWithLifecycle()
 
-    var currencyDisclaimerDialogState by remember { mutableStateOf<CurrencyUiState?>(null) }
+    var currencyDisclaimerDialogState by remember { mutableStateOf<CurrencyState?>(null) }
 
     Column(
         modifier = Modifier.fillMaxSize()

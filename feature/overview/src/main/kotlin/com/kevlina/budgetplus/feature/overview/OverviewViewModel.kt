@@ -24,6 +24,10 @@ import com.kevlina.budgetplus.core.data.resolveAuthor
 import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.feature.overview.ui.OverviewContentState
+import com.kevlina.budgetplus.feature.overview.ui.OverviewHeaderState
+import com.kevlina.budgetplus.feature.overview.ui.OverviewListState
+import com.kevlina.budgetplus.feature.overview.ui.toState
 import com.kevlina.budgetplus.feature.utils.CsvWriter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -63,11 +67,10 @@ internal class OverviewViewModel @Inject constructor(
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
-    val isSoloAuthor = bookRepo.bookState.mapState { it?.authors?.size == 1 }
+    private val isSoloAuthor = bookRepo.bookState.mapState { it?.authors?.size == 1 }
 
     private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
-    private val _type = MutableStateFlow(typeCache)
-    val type: StateFlow<RecordType> = _type.asStateFlow()
+    private val type = MutableStateFlow(typeCache)
 
     private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
     private val _mode = MutableStateFlow(modeCache)
@@ -80,7 +83,7 @@ internal class OverviewViewModel @Inject constructor(
     private var tapHintBubbleJob: Job? = null
     private var pieChartBubbleJob: Job? = null
 
-    val authors = bookRepo.bookState
+    private val authors = bookRepo.bookState
         .map {
             withContext(Dispatchers.Default) {
                 it?.authors
@@ -90,8 +93,7 @@ internal class OverviewViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private val _selectedAuthor = MutableStateFlow<User?>(null)
-    val selectedAuthor: StateFlow<User?> = _selectedAuthor.asStateFlow()
+    private val selectedAuthor = MutableStateFlow<User?>(null)
 
     private val records: Flow<Sequence<Record>?> = combine(
         recordsObserver.records,
@@ -104,15 +106,15 @@ internal class OverviewViewModel @Inject constructor(
         }
     }
 
-    val totalPrice = records.map { records ->
+    private val totalPrice = records.map { records ->
         records.orEmpty().sumOf { it.price }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
-    val totalFormattedPrice = totalPrice.mapState {
+    private val totalFormattedPrice = totalPrice.mapState {
         bookRepo.formatPrice(it, alwaysShowSymbol = true)
     }
 
-    val formattedBalance = combine(
+    private val formattedBalance = combine(
         recordsObserver.records.filterNotNull(),
         selectedAuthor
     ) { records, author ->
@@ -130,14 +132,14 @@ internal class OverviewViewModel @Inject constructor(
         bookRepo.formatPrice(sum, alwaysShowSymbol = true)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
-    val recordList: StateFlow<List<Record>?> = records.map { records ->
+    private val recordList: StateFlow<List<Record>?> = records.map { records ->
         records
             ?.map(userRepo::resolveAuthor)
             ?.sortedByDescending { it.createdOn }
             ?.toList()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
+    private val recordGroups: StateFlow<Map<String, List<Record>>?> = records.map { records ->
         records ?: return@map null
         withContext(Dispatchers.Default) {
             records
@@ -148,6 +150,37 @@ internal class OverviewViewModel @Inject constructor(
                 .mapValues { it.value }
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val state = OverviewContentState(
+        headerState = OverviewHeaderState(
+            type = type,
+            totalPrice = totalFormattedPrice,
+            balance = formattedBalance,
+            recordGroups = recordGroups,
+            authors = authors,
+            selectedAuthor = selectedAuthor,
+            timePeriodSelectorState = timeModel.toState(),
+            setRecordType = ::setRecordType,
+            setAuthor = ::setAuthor
+        ),
+        listState = OverviewListState(
+            mode = mode,
+            chartMode = chartModeModel.chartMode,
+            type = type,
+            selectedAuthor = selectedAuthor,
+            totalPrice = totalPrice,
+            recordList = recordList,
+            recordGroups = recordGroups,
+            isSoloAuthor = isSoloAuthor,
+            highlightTapHint = ::highlightTapHint,
+            highlightPieChart = ::highlightPieChart,
+            formatPrice = bookRepo::formatPrice,
+            vibrate = vibratorManager::vibrate,
+            canEditRecord = ::canEditRecord,
+            duplicateRecord = ::duplicateRecord,
+            onGroupClicked = ::onGroupClicked
+        )
+    )
 
     fun toggleMode() {
         val newMode = when (mode.value) {
@@ -184,26 +217,26 @@ internal class OverviewViewModel @Inject constructor(
         snackbarSender.send(R.string.permission_hint)
     }
 
-    fun setRecordType(type: RecordType) {
-        _type.value = type
-        typeCache = type
+    private fun setRecordType(newType: RecordType) {
+        type.value = newType
+        typeCache = newType
         tracker.logEvent("overview_type_changed")
     }
 
-    fun setAuthor(author: User?) {
-        _selectedAuthor.value = author
+    private fun setAuthor(author: User?) {
+        selectedAuthor.value = author
     }
 
-    fun canEditRecord(record: Record): Boolean {
+    private fun canEditRecord(record: Record): Boolean {
         val myUserId = authManager.userState.value?.id
         return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
     }
 
-    fun duplicateRecord(record: Record) {
+    private fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
     }
 
-    fun onGroupClicked() {
+    private fun onGroupClicked() {
         tracker.logEvent(
             event = "overview_group_clicked",
             params = bundle {
@@ -234,7 +267,7 @@ internal class OverviewViewModel @Inject constructor(
         }
     }
 
-    fun highlightTapHint(dest: BubbleDest) {
+    private fun highlightTapHint(dest: BubbleDest) {
         if (isTapHintBubbleShown) return
 
         tapHintBubbleJob?.cancel()
@@ -246,7 +279,7 @@ internal class OverviewViewModel @Inject constructor(
         }
     }
 
-    fun highlightPieChart(dest: BubbleDest) {
+    private fun highlightPieChart(dest: BubbleDest) {
         if (isPieChartBubbleShown) return
 
         pieChartBubbleJob?.cancel()

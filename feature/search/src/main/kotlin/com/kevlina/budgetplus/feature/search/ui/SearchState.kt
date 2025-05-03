@@ -8,8 +8,8 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
-import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
+import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
@@ -36,7 +36,7 @@ data class SearchFilterState(
     val type: StateFlow<RecordType>,
     val selectType: (RecordType) -> Unit,
     val category: StateFlow<SearchCategory>,
-    val categoryGrid: CategoriesGridUiState,
+    val categoryGrid: CategoriesGridState,
     val selectCategory: (SearchCategory) -> Unit,
     val period: StateFlow<SearchPeriod>,
     val selectPeriod: (SearchPeriod) -> Unit,
@@ -55,7 +55,7 @@ data class SearchFilterState(
                 type = type,
                 selectType = { type.value = it },
                 category = category,
-                categoryGrid = CategoriesGridUiState.preview,
+                categoryGrid = CategoriesGridState.preview,
                 selectCategory = { category.value = it },
                 period = period,
                 selectPeriod = { period.value = it },
@@ -83,7 +83,7 @@ data class SearchResultState(
             result = MutableStateFlow(
                 SearchResult.Success(
                     List(24) { index ->
-                        RecordCardUiState.preview.copy(
+                        RecordCardState.preview.copy(
                             item = Record(
                                 id = index.toString(),
                                 type = RecordType.Income,
@@ -132,5 +132,5 @@ sealed interface SearchPeriod {
 sealed interface SearchResult {
     data object Empty : SearchResult
     data object Loading : SearchResult
-    data class Success(val records: List<RecordCardUiState>) : SearchResult
+    data class Success(val records: List<RecordCardState>) : SearchResult
 }

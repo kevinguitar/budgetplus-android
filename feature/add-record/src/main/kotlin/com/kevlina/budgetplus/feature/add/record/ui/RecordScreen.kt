@@ -28,7 +28,7 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
-import com.kevlina.budgetplus.feature.category.pills.toUiState
+import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -79,25 +79,25 @@ fun RecordScreen(navController: NavController) {
                 .align(Alignment.CenterHorizontally)
                 .weight(1F),
             regularContent = {
-                val recordInfoUiState = vm.toUiState(
+                val recordInfoState = vm.toState(
                     navController = navController,
                     scrollable = true,
                 )
-                RecordContentRegular(recordInfoUiState)
+                RecordContentRegular(recordInfoState)
             },
             wideContent = {
-                val recordInfoUiState = vm.toUiState(
+                val recordInfoState = vm.toState(
                     navController = navController,
                     scrollable = true,
                 )
-                RecordContentWide(recordInfoUiState)
+                RecordContentWide(recordInfoState)
             },
             packedContent = {
-                val recordInfoUiState = vm.toUiState(
+                val recordInfoState = vm.toState(
                     navController = navController,
                     scrollable = false,
                 )
-                RecordContentPacked(recordInfoUiState)
+                RecordContentPacked(recordInfoState)
             },
             extraContent = {
                 DoneAnimator(eventTrigger = vm.recordEvent)
@@ -126,34 +126,34 @@ fun RecordScreen(navController: NavController) {
 }
 
 @Stable
-internal class RecordContentUiState(
-    val recordInfoUiState: RecordInfoUiState,
+internal class RecordContentState(
+    val recordInfoState: RecordInfoState,
     val calculatorState: CalculatorState,
 ) {
     companion object {
-        val preview = RecordContentUiState(
-            recordInfoUiState = RecordInfoUiState.preview,
+        val preview = RecordContentState(
+            recordInfoState = RecordInfoState.preview,
             calculatorState = CalculatorState.preview,
         )
     }
 }
 
-private fun RecordViewModel.toUiState(
+private fun RecordViewModel.toState(
     navController: NavController,
     scrollable: Boolean,
-) = RecordContentUiState(
-    recordInfoUiState = RecordInfoUiState(
+) = RecordContentState(
+    recordInfoState = RecordInfoState(
         type = type,
         note = note,
         setType = ::setType,
         scrollable = scrollable,
-        categoriesGridUiState = categoriesVm.toUiState(
+        categoriesGridState = categoriesVm.toState(
             type = type,
             onEditClicked = {
                 navController.navigate(AddDest.EditCategory(type.value))
             },
         ),
-        dateAndPricingUiState = DateAndPricingUiState(
+        dateAndPricingState = DateAndPricingState(
             recordDate = recordDate,
             currencySymbol = bookRepo.currencySymbol,
             priceText = calculatorVm.priceText,
@@ -164,5 +164,5 @@ private fun RecordViewModel.toUiState(
             }
         ),
     ),
-    calculatorState = calculatorVm.toUiState(),
+    calculatorState = calculatorVm.toState(),
 )

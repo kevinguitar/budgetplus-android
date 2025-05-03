@@ -37,7 +37,7 @@ private fun ChartColors_BarChart_Preview() = AppTheme {
     Column(modifier = Modifier.background(LocalAppColors.current.light)) {
         chartColors.forEach { color ->
             OverviewGroup(
-                uiState = OverviewGroupUiState.preview.copy(color = color)
+                state = OverviewGroupState.preview.copy(color = color)
             )
         }
     }

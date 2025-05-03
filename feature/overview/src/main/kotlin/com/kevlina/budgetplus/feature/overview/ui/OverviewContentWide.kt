@@ -19,7 +19,7 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContentWide(
-    uiState: OverviewContentUiState,
+    state: OverviewContentState,
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
@@ -30,7 +30,7 @@ internal fun OverviewContentWide(
             .padding(horizontal = 32.dp)
     ) {
         OverviewHeader(
-            uiState = uiState.headerUiState,
+            state = state.headerState,
             navController = navController,
             modifier = Modifier
                 .fillMaxHeight()
@@ -40,7 +40,7 @@ internal fun OverviewContentWide(
         )
 
         OverviewList(
-            uiState = uiState.listUiState,
+            state = state.listState,
             navController = navController,
             modifier = Modifier
                 .fillMaxHeight()
@@ -53,7 +53,7 @@ internal fun OverviewContentWide(
 @Composable
 private fun OverviewContentWide_Preview() = AppTheme {
     OverviewContentWide(
-        uiState = OverviewContentUiState.preview,
+        state = OverviewContentState.preview,
         navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )

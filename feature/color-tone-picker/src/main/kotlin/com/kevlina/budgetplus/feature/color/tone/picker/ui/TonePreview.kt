@@ -35,7 +35,7 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
-import com.kevlina.budgetplus.feature.category.pills.CategoriesGridUiState
+import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 import java.util.Currency
@@ -83,7 +83,7 @@ internal fun TonePreview(
         )
 
         CategoriesGrid(
-            uiState = CategoriesGridUiState(
+            state = CategoriesGridState(
                 expenseCategories = MutableStateFlow(expenseCategories),
                 incomeCategories = MutableStateFlow(emptyList()),
                 type = MutableStateFlow(RecordType.Expense),

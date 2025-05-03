@@ -46,27 +46,27 @@ import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.record.card.DeleteRecordDialog
 import com.kevlina.budgetplus.feature.record.card.EditRecordDialog
 import com.kevlina.budgetplus.feature.record.card.RecordCard
-import com.kevlina.budgetplus.feature.record.card.RecordCardUiState
+import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import com.kevlina.budgetplus.feature.record.card.RecordCardZeroCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 internal fun OverviewList(
-    uiState: OverviewListUiState,
+    state: OverviewListState,
     navController: NavController,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
 
-    val mode by uiState.mode.collectAsStateWithLifecycle()
-    val chartMode by uiState.chartMode.collectAsStateWithLifecycle()
-    val type by uiState.type.collectAsStateWithLifecycle()
-    val selectedAuthor by uiState.selectedAuthor.collectAsStateWithLifecycle()
-    val totalPrice by uiState.totalPrice.collectAsStateWithLifecycle()
-    val recordList = uiState.recordList.collectAsStateWithLifecycle().value
-    val recordGroups by uiState.recordGroups.collectAsStateWithLifecycle()
-    val isSoloAuthor by uiState.isSoloAuthor.collectAsStateWithLifecycle()
+    val mode by state.mode.collectAsStateWithLifecycle()
+    val chartMode by state.chartMode.collectAsStateWithLifecycle()
+    val type by state.type.collectAsStateWithLifecycle()
+    val selectedAuthor by state.selectedAuthor.collectAsStateWithLifecycle()
+    val totalPrice by state.totalPrice.collectAsStateWithLifecycle()
+    val recordList = state.recordList.collectAsStateWithLifecycle().value
+    val recordGroups by state.recordGroups.collectAsStateWithLifecycle()
+    val isSoloAuthor by state.isSoloAuthor.collectAsStateWithLifecycle()
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
@@ -80,7 +80,7 @@ internal fun OverviewList(
     }
 
     fun navigateToRecords(category: String) {
-        uiState.onGroupClicked()
+        state.onGroupClicked()
         navController.navigate(
             HistoryDest.Records(
                 type = type,
@@ -127,15 +127,15 @@ internal fun OverviewList(
                         contentType = { _, _ -> OverviewUiType.Record }
                     ) { index, record ->
                         RecordCard(
-                            uiState = RecordCardUiState(
+                            state = RecordCardState(
                                 item = record,
-                                formattedPrice = uiState.formatPrice(record.price),
+                                formattedPrice = state.formatPrice(record.price),
                                 isLast = index == recordList.lastIndex,
-                                canEdit = uiState.canEditRecord(record),
+                                canEdit = state.canEditRecord(record),
                                 showCategory = true,
                                 showAuthor = !isSoloAuthor,
                                 onEdit = { editRecordDialog = record },
-                                onDuplicate = { uiState.duplicateRecord(record) },
+                                onDuplicate = { state.duplicateRecord(record) },
                                 onDelete = { deleteRecordDialog = record }
                             ),
                             modifier = Modifier.thenIf(index == 0) {
@@ -146,7 +146,7 @@ internal fun OverviewList(
                                 Modifier
                                     .padding(top = 8.dp)
                                     .onPlaced {
-                                        uiState.highlightTapHint(BubbleDest.OverviewRecordTapHint(
+                                        state.highlightTapHint(BubbleDest.OverviewRecordTapHint(
                                             size = it.size,
                                             offset = it.positionInRoot(),
                                             shape = bubbleShape
@@ -170,10 +170,10 @@ internal fun OverviewList(
                                 modifier = Modifier.thenIf(index == 0) {
                                     Modifier.padding(top = 8.dp)
                                 },
-                                uiState = OverviewGroupUiState(
+                                state = OverviewGroupState(
                                     category = key,
                                     records = groupRecords,
-                                    sumPrice = uiState.formatPrice(sum),
+                                    sumPrice = state.formatPrice(sum),
                                     percentage = remember(sum, totalPrice) { sum / totalPrice },
                                     color = chartColors[index % chartColors.size],
                                     isLast = index == recordGroups.orEmpty().size - 1,
@@ -190,9 +190,9 @@ internal fun OverviewList(
                                     modifier = Modifier.fillMaxSize(),
                                     totalPrice = totalPrice,
                                     recordGroups = recordGroups.orEmpty(),
-                                    formatPrice = uiState.formatPrice,
-                                    vibrate = uiState.vibrate,
-                                    highlightPieChart = uiState.highlightPieChart,
+                                    formatPrice = state.formatPrice,
+                                    vibrate = state.vibrate,
+                                    highlightPieChart = state.highlightPieChart,
                                     onClick = ::navigateToRecords
                                 )
                             }
@@ -226,7 +226,7 @@ internal fun OverviewList(
 }
 
 @Stable
-internal data class OverviewListUiState(
+internal data class OverviewListState(
     val mode: StateFlow<OverviewMode>,
     val chartMode: StateFlow<ChartMode>,
     val type: StateFlow<RecordType>,
@@ -262,7 +262,7 @@ internal data class OverviewListUiState(
         val totalPricePreview = recordGroupsPreview.values
             .sumOf { group -> group.sumOf { it.price } }
 
-        val preview = OverviewListUiState(
+        val preview = OverviewListState(
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
             chartMode = MutableStateFlow(ChartMode.BarChart),
             type = MutableStateFlow(RecordType.Expense),
@@ -286,7 +286,7 @@ internal data class OverviewListUiState(
 @Composable
 private fun OverviewList_All_Preview() = AppTheme {
     OverviewList(
-        uiState = OverviewListUiState.preview.copy(
+        state = OverviewListState.preview.copy(
             mode = MutableStateFlow(OverviewMode.AllRecords)
         ),
         navController = NavController(LocalContext.current),
@@ -298,7 +298,7 @@ private fun OverviewList_All_Preview() = AppTheme {
 @Composable
 private fun OverviewList_Group_Preview() = AppTheme {
     OverviewList(
-        uiState = OverviewListUiState.preview,
+        state = OverviewListState.preview,
         navController = NavController(LocalContext.current),
         modifier = Modifier.background(LocalAppColors.current.light)
     )
@@ -308,7 +308,7 @@ private fun OverviewList_Group_Preview() = AppTheme {
 @Composable
 private fun OverviewList_PieChart_Preview() = AppTheme {
     OverviewList(
-        uiState = OverviewListUiState.preview.copy(
+        state = OverviewListState.preview.copy(
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
             chartMode = MutableStateFlow(ChartMode.PieChart)
         ),

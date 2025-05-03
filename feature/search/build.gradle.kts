@@ -5,9 +5,11 @@ plugins {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+
     implementation(projects.core.data)
     implementation(projects.core.ui)
     implementation(projects.feature.categoryPills)
-
-    implementation(libs.lottie.compose)
+    implementation(projects.feature.recordCard)
 }

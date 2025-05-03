@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.feature.pushNotifications)
     implementation(projects.feature.records)
     implementation(projects.feature.insider)
+    implementation(projects.feature.search)
     implementation(projects.feature.settings)
     implementation(projects.feature.unlockPremium)
     implementation(projects.feature.welcome)

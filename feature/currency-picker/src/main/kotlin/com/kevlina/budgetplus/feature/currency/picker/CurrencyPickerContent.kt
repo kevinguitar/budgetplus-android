@@ -12,11 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.util.Currency
 
@@ -41,25 +39,20 @@ import java.util.Currency
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun CurrencyPickerContent(
+    keyword: TextFieldState,
     currencies: List<CurrencyUiState>,
     onCurrencyPicked: (CurrencyUiState) -> Unit,
-    onSearch: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    var keyword by rememberSaveable { mutableStateOf("") }
+    val focusManager = rememberSafeFocusManager()
 
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-
         SearchField(
             keyword = keyword,
-            onKeywordChanged = {
-                keyword = it
-                onSearch(it)
-            },
             hint = stringResource(id = R.string.currency_picker_hint),
+            onDone = { focusManager.clearFocus() },
             modifier = Modifier
                 .containerPadding()
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -150,6 +143,7 @@ private fun CurrencyCard(
 @Composable
 private fun CurrencyPickerContent_Preview() = AppTheme {
     CurrencyPickerContent(
+        keyword = TextFieldState(),
         currencies = Currency.getAvailableCurrencies().mapIndexed { index, currency ->
             CurrencyUiState(
                 name = currency.displayName,
@@ -159,7 +153,6 @@ private fun CurrencyPickerContent_Preview() = AppTheme {
             )
         },
         onCurrencyPicked = {},
-        onSearch = {},
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

@@ -116,6 +116,16 @@
     <string name="export_column_created_on">時間</string>
     <string name="export_column_author">記帳人</string>
 
+    <!-- Search -->
+    <string name="search_title">搜尋</string>
+    <string name="search_field_placeholder">輸入關鍵字</string>
+    <string name="search_all_categories">所有類別</string>
+    <string name="search_period_last_month">過去一個月</string>
+    <string name="search_period_last_half_year">過去半年</string>
+    <string name="search_period_last_year">過去一年</string>
+    <string name="search_period_custom">自訂區間</string>
+    <string name="search_period_custom_range">自%1$s至%2$s</string>
+
     <!-- Premium -->
     <string name="premium_unlock">解鎖進階版</string>
     <string name="premium_hide_ads">隱藏廣告</string>
@@ -125,7 +135,7 @@
         \n✔ 擴充至十本記帳本
         \n✔ 批次新增您的固定支出收入
         \n✔ 解鎖所有主題色調及調色盤
-        \n✔ 篩選大於一個月的帳目
+        \n✔ 檢視及搜尋任何時段的帳目
     </string>
     <string name="premium_unlock_cta">取得進階版</string>
     <string name="premium_unlocked">極簡記帳進階版，解鎖！</string>

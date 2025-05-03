@@ -2,8 +2,6 @@ package com.kevlina.budgetplus.feature.records
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
@@ -37,7 +35,6 @@ class RecordsViewModel @AssistedInject constructor(
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
-    private val snackbarSender: SnackbarSender,
     private val authManager: AuthManager,
     recordsObserver: RecordsObserver,
     preferenceHolder: PreferenceHolder,
@@ -129,7 +126,6 @@ class RecordsViewModel @AssistedInject constructor(
 
     fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
-        snackbarSender.send(R.string.record_duplicated)
     }
 
     @AssistedFactory

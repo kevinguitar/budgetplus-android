@@ -46,7 +46,6 @@ fun RecordCard(
     uiState: RecordCardUiState,
     modifier: Modifier = Modifier,
 ) {
-
     val item = uiState.item
     var isMenuShown by remember { mutableStateOf(false) }
 
@@ -175,7 +174,28 @@ data class RecordCardUiState(
     val onEdit: () -> Unit,
     val onDuplicate: () -> Unit,
     val onDelete: () -> Unit,
-)
+) {
+    companion object {
+        val preview = RecordCardUiState(
+            item = Record(
+                type = RecordType.Income,
+                date = LocalDate.now().toEpochDay(),
+                category = "Food",
+                name = "Fancy Restaurant",
+                price = 453.93,
+                author = Author(id = "", name = "Kevin")
+            ),
+            formattedPrice = "$453.93",
+            isLast = false,
+            canEdit = true,
+            showCategory = true,
+            showAuthor = true,
+            onEdit = {},
+            onDuplicate = {},
+            onDelete = {}
+        )
+    }
+}
 
 @Composable
 private fun PillLabel(text: String) {
@@ -196,22 +216,5 @@ private fun PillLabel(text: String) {
 @Preview(showBackground = true)
 @Composable
 private fun RecordCard_Preview() = AppTheme {
-    RecordCard(uiState = RecordCardUiState(
-        item = Record(
-            type = RecordType.Income,
-            date = LocalDate.now().toEpochDay(),
-            category = "Food",
-            name = "Fancy Restaurant",
-            price = 453.93,
-            author = Author(id = "", name = "Kevin")
-        ),
-        formattedPrice = "$453.93",
-        isLast = false,
-        canEdit = true,
-        showCategory = true,
-        showAuthor = true,
-        onEdit = {},
-        onDuplicate = {},
-        onDelete = {}
-    ))
+    RecordCard(uiState = RecordCardUiState.preview)
 }

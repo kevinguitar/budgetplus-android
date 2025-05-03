@@ -24,7 +24,6 @@ fun CurrencyPickerScreen(
     navController: NavController,
     vm: CurrencyPickerViewModel = hiltViewModel(),
 ) {
-
     val currencies by vm.currencies.collectAsStateWithLifecycle()
 
     var currencyDisclaimerDialogState by remember { mutableStateOf<CurrencyUiState?>(null) }
@@ -46,6 +45,7 @@ fun CurrencyPickerScreen(
         ) {
 
             CurrencyPickerContent(
+                keyword = vm.keyword,
                 currencies = currencies,
                 onCurrencyPicked = { currency ->
                     if (vm.hasShownCurrencyDisclaimer) {
@@ -54,8 +54,7 @@ fun CurrencyPickerScreen(
                     } else {
                         currencyDisclaimerDialogState = currency
                     }
-                },
-                onSearch = vm::onSearch
+                }
             )
         }
 

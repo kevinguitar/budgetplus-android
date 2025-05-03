@@ -20,7 +20,6 @@ internal fun OverviewContent(
     navController: NavController,
     modifier: Modifier = Modifier,
 ) {
-
     OverviewList(
         uiState = uiState.listUiState,
         navController = navController,

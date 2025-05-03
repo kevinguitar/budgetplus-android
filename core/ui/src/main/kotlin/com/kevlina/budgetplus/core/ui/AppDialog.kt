@@ -8,18 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 
 @Composable
 fun AppDialog(
     onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    usePlatformDefaultWidth: Boolean = true,
     content: @Composable BoxScope.() -> Unit,
 ) {
-
-    Dialog(onDismissRequest = onDismissRequest) {
-
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = usePlatformDefaultWidth)
+    ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     color = LocalAppColors.current.light,
                     shape = AppTheme.dialogShape

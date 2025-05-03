@@ -54,4 +54,7 @@ sealed interface HistoryDest {
         val category: String,
         val authorId: String?,
     ) : HistoryDest
+
+    @Serializable
+    data class Search(val type: RecordType) : HistoryDest
 }

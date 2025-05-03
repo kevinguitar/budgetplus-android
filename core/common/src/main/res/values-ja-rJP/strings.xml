@@ -116,6 +116,16 @@
     <string name="export_column_created_on">時刻</string>
     <string name="export_column_author">記帳者</string>
 
+    <!-- Search -->
+    <string name="search_title">搜尋</string>
+    <string name="search_field_placeholder">輸入關鍵字</string>
+    <string name="search_all_categories">所有類別</string>
+    <string name="search_period_last_month">過去一個月</string>
+    <string name="search_period_last_half_year">過去半年</string>
+    <string name="search_period_last_year">過去一年</string>
+    <string name="search_period_custom">自訂區間</string>
+    <string name="search_period_custom_range">自%1$s至%2$s</string>
+
     <!-- Premium -->
     <string name="premium_unlock">プレミアム版を解除する</string>
     <string name="premium_hide_ads">広告を非表示にする</string>

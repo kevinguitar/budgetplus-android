@@ -201,7 +201,6 @@ internal class OverviewViewModel @Inject constructor(
 
     fun duplicateRecord(record: Record) {
         recordRepo.duplicateRecord(record)
-        snackbarSender.send(R.string.record_duplicated)
     }
 
     fun onGroupClicked() {

@@ -4,6 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
@@ -147,6 +148,7 @@ internal class RecordRepoImpl @Inject constructor(
             batchId = null
         )
         recordsDb.get().add(duplicatedRecord)
+        snackbarSender.send(R.string.record_duplicated)
         tracker.logEvent("record_duplicated")
     }
 

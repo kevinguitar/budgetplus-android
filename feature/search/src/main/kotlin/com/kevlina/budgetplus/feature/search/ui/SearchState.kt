@@ -19,12 +19,14 @@ data class SearchState(
     val query: TextFieldState,
     val filter: SearchFilterState,
     val result: SearchResultState,
+    val unlockPremiumEvent: EventFlow<Unit>,
 ) {
     companion object {
         val preview = SearchState(
             query = TextFieldState("query"),
             filter = SearchFilterState.preview,
-            result = SearchResultState.preview
+            result = SearchResultState.preview,
+            unlockPremiumEvent = MutableEventFlow()
         )
     }
 }

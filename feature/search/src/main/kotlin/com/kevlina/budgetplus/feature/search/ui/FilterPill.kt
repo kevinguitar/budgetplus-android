@@ -36,8 +36,8 @@ internal fun FilterPill(
                 }
             )
             .clip(AppTheme.cardShape)
-            .padding(all = 8.dp)
             .rippleClick(onClick = state.onClick)
+            .padding(all = 8.dp)
     ) {
         Text(
             text = state.selection ?: state.placeholder.orEmpty(),

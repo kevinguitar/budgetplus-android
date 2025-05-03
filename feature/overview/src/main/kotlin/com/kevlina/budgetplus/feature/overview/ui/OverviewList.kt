@@ -219,7 +219,7 @@ internal fun OverviewList(
         Fab(
             isVisible = isSearchFabVisible,
             icon = Icons.Rounded.Search,
-            contentDescription = stringResource(id = R.string.cta_search),
+            contentDescription = stringResource(id = R.string.search_title),
             onClick = { navController.navigate(HistoryDest.Search(type)) }
         )
     }

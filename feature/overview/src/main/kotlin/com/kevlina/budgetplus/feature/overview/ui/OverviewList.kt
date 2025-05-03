@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
@@ -67,6 +70,14 @@ internal fun OverviewList(
 
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
+    var isSearchFabVisible by remember { mutableStateOf(true) }
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.lastScrolledForward }
+            .collect { isSearchFabVisible = !it }
+    }
 
     fun navigateToRecords(category: String) {
         uiState.onGroupClicked()
@@ -81,6 +92,7 @@ internal fun OverviewList(
 
     Box(modifier) {
         LazyColumn(
+            state = listState,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (header != null) {
@@ -204,8 +216,8 @@ internal fun OverviewList(
             )
         }
 
-        //TODO: Animate
         Fab(
+            isVisible = isSearchFabVisible,
             icon = Icons.Rounded.Search,
             contentDescription = stringResource(id = R.string.cta_search),
             onClick = { navController.navigate(HistoryDest.Search(type)) }

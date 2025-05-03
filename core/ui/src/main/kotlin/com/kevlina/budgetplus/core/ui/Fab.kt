@@ -1,5 +1,8 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
@@ -18,25 +21,32 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 @Composable
 fun BoxScope.Fab(
     modifier: Modifier = Modifier,
+    isVisible: Boolean = true,
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
 ) {
-    Surface(
-        shape = CircleShape,
-        color = LocalAppColors.current.dark,
-        onClick = onClick,
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = scaleIn(),
+        exit = scaleOut(),
         modifier = modifier
-                .align(Alignment.BottomEnd)
-                .padding(24.dp)
-                .size(56.dp)
+            .align(Alignment.BottomEnd)
+            .padding(24.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = contentDescription,
-            tint = LocalAppColors.current.light,
-            modifier = Modifier.padding(all = 8.dp)
-        )
+        Surface(
+            shape = CircleShape,
+            color = LocalAppColors.current.dark,
+            onClick = onClick,
+            modifier = Modifier.size(56.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = contentDescription,
+                tint = LocalAppColors.current.light,
+                modifier = Modifier.padding(all = 8.dp)
+            )
+        }
     }
 }
 

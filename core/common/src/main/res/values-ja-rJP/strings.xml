@@ -117,14 +117,14 @@
     <string name="export_column_author">記帳者</string>
 
     <!-- Search -->
-    <string name="search_title">搜尋</string>
-    <string name="search_field_placeholder">輸入關鍵字</string>
-    <string name="search_all_categories">所有類別</string>
-    <string name="search_period_last_month">過去一個月</string>
-    <string name="search_period_last_half_year">過去半年</string>
-    <string name="search_period_last_year">過去一年</string>
-    <string name="search_period_custom">自訂區間</string>
-    <string name="search_period_custom_range">自%1$s至%2$s</string>
+    <string name="search_title">検索</string>
+    <string name="search_field_placeholder">キーワードを入力</string>
+    <string name="search_all_categories">すべてのカテゴリ</string>
+    <string name="search_period_last_month">過去1か月分</string>
+    <string name="search_period_last_half_year">過去6か月分</string>
+    <string name="search_period_last_year">過去1年分</string>
+    <string name="search_period_custom">カスタム期間</string>
+    <string name="search_period_custom_range">%1$s～%2$s</string>
 
     <!-- Premium -->
     <string name="premium_unlock">プレミアム版を解除する</string>
@@ -135,7 +135,7 @@
         \n✔ 10 冊の帳簿に拡張する
         \n✔ 固定の支出と収入を一括で追加する
         \n✔ すべてのテーマカラーを解除する
-        \n✔ 1 か月以上前の帳簿データを選別する
+        \n✔ いつでも帳簿が見れて、調べられるよ
     </string>
     <string name="premium_unlock_cta">プレミアム版を入手する</string>
     <string name="premium_unlocked">ミニマリストな帳簿アプレミアム版、解除！</string>

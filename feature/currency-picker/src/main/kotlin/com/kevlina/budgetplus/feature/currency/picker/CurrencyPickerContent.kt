@@ -31,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.util.Currency
 
@@ -43,13 +44,15 @@ internal fun CurrencyPickerContent(
     onCurrencyPicked: (CurrencyUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = rememberSafeFocusManager()
+
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-
         SearchField(
             keyword = keyword,
             hint = stringResource(id = R.string.currency_picker_hint),
+            onDone = { focusManager.clearFocus() },
             modifier = Modifier
                 .containerPadding()
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp)

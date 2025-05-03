@@ -22,12 +22,15 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.containerPadding
+import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 
 @Composable
 internal fun SearchContent(
     modifier: Modifier = Modifier,
     state: SearchState,
 ) {
+    val focusManager = rememberSafeFocusManager()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -36,6 +39,7 @@ internal fun SearchContent(
         SearchField(
             keyword = state.query,
             hint = stringResource(R.string.search_field_placeholder),
+            onDone = { focusManager.clearFocus() },
             modifier = Modifier
                 .containerPadding()
                 .padding(top = 12.dp, start = 16.dp, end = 16.dp)

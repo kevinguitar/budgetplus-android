@@ -168,6 +168,10 @@ class SearchViewModel @AssistedInject constructor(
             )
         }
 
+    override fun onCleared() {
+        searchRepo.endConnection()
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(params: HistoryDest.Search): SearchViewModel

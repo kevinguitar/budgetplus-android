@@ -59,6 +59,11 @@ class SearchRepo @Inject constructor(
 
     private var recordsRegistration: ListenerRegistration? = null
 
+    fun endConnection() {
+        recordsRegistration?.remove()
+        recordsRegistration = null
+    }
+
     private fun queryFromDb(
         bookId: String,
         period: SearchPeriod,

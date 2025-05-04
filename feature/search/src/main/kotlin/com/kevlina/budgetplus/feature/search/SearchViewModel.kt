@@ -157,7 +157,7 @@ class SearchViewModel @AssistedInject constructor(
         mapIndexed { i, record ->
             RecordCardState(
                 item = record,
-                formattedPrice = record.price.toString(),
+                formattedPrice = bookRepo.formatPrice(record.price),
                 isLast = i == lastIndex,
                 canEdit = canEditRecord(record),
                 showCategory = true,

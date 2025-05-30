@@ -14,6 +14,7 @@ import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchPeriod
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -21,10 +22,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
 import java.time.LocalDate
@@ -36,19 +38,30 @@ class SearchRepo @Inject constructor(
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
 ) : ViewModel() {
+
     val query = TextFieldState()
+    val category = MutableStateFlow<SearchCategory>(SearchCategory.None)
     val period = MutableStateFlow<SearchPeriod>(SearchPeriod.PastMonth)
 
-    val dbResult: Flow<DbResult> = combine(
-        // Start querying DB only if query is presented
-        snapshotFlow { query.text }.filter { it.isNotBlank() },
-        period,
+    private val dbQueryActivationFlow = combine(
+        snapshotFlow { query.text },
+        category,
         ::Pair
     )
-        .distinctUntilChangedBy { it.second }
-        .flatMapLatest { (query, period) ->
+        .filter { (queryText, category) ->
+            queryText.isNotBlank() || category != SearchCategory.None
+        }
+        .map { Unit }
+        .distinctUntilChanged()
+
+    val dbResult: Flow<DbResult> = combine(
+        period,
+        dbQueryActivationFlow,
+        ::Pair
+    )
+        .flatMapLatest { (period, _) ->
             val bookId = bookRepo.currentBookId
-            if (query.isBlank() || bookId.isNullOrEmpty()) {
+            if (bookId.isNullOrEmpty()) {
                 flowOf(DbResult.Empty)
             } else {
                 queryFromDb(bookId, period)

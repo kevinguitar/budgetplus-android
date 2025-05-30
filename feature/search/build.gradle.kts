@@ -12,4 +12,6 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.feature.categoryPills)
     implementation(projects.feature.recordCard)
+
+    testImplementation(testFixtures(projects.core.data))
 }

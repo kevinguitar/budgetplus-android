@@ -49,17 +49,15 @@ class SearchViewModel @AssistedInject constructor(
 ) : ViewModel() {
 
     private val type = MutableStateFlow(params.type)
-    private val category = MutableStateFlow<SearchCategory>(SearchCategory.None)
     private val author = MutableStateFlow<User?>(null)
 
     private val searchResult = combine(
         searchRepo.dbResult,
         snapshotFlow { searchRepo.query.text },
         type,
-        category,
+        searchRepo.category,
         author
     ) { dbResult, query, type, category, author ->
-        if (query.isBlank()) return@combine SearchResult.Empty
         when (dbResult) {
             SearchRepo.DbResult.Empty -> SearchResult.Empty
             SearchRepo.DbResult.Loading -> SearchResult.Loading
@@ -111,20 +109,26 @@ class SearchViewModel @AssistedInject constructor(
         query = searchRepo.query,
         filter = SearchFilterState(
             type = type,
-            selectType = { type.value = it },
-            category = category,
+            selectType = {
+                if (type.value != it) {
+                    type.value = it
+                    // Reset the category if the type changes
+                    searchRepo.category.value = SearchCategory.None
+                }
+            },
+            category = searchRepo.category,
             categoryGrid = categoriesVm.toState(
                 type = type,
-                selectedCategory = category.mapState { it.name },
+                selectedCategory = searchRepo.category.mapState { it.name },
                 onCategorySelected = {
-                    category.value = if (it == category.value.name) {
+                    searchRepo.category.value = if (it == searchRepo.category.value.name) {
                         SearchCategory.None
                     } else {
                         SearchCategory.Selected(it)
                     }
                 }
             ),
-            selectCategory = { category.value = it },
+            selectCategory = { searchRepo.category.value = it },
             period = searchRepo.period,
             selectPeriod = ::selectPeriod,
             author = author,

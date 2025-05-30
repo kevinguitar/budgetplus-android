@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -53,7 +52,6 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
     SwipeableSnackbarHostWrapper(hostState) {
         MaterialSnackbarHost(
             hostState = hostState,
-            modifier = Modifier.imePadding()
         ) { data ->
             Snackbar(
                 snackbarData = data,

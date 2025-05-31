@@ -21,12 +21,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.common.nav.InsiderDest
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
 import com.kevlina.budgetplus.feature.insider.InsiderScreen
 import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsScreen
-import com.kevlina.budgetplus.insider.app.main.InsiderDest
 import com.kevlina.budgetplus.insider.app.main.InsiderViewModel
 import kotlinx.coroutines.flow.launchIn
 

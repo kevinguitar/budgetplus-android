@@ -18,8 +18,6 @@ import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
 import com.kevlina.budgetplus.feature.currency.picker.CurrencyPickerScreen
 import com.kevlina.budgetplus.feature.edit.category.EditCategoryScreen
-import com.kevlina.budgetplus.feature.insider.InsiderScreen
-import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsScreen
 import com.kevlina.budgetplus.feature.settings.SettingsScreen
 import com.kevlina.budgetplus.feature.unlock.premium.PremiumScreen
 
@@ -80,15 +78,6 @@ internal fun NavGraphBuilder.addTabGraph(navController: NavController) {
 
         composable<AddDest.CurrencyPicker> {
             CurrencyPickerScreen(navController)
-        }
-
-        // Internal screens
-        composable<AddDest.Insider> {
-            InsiderScreen(navController)
-        }
-
-        composable<AddDest.PushNotifications> {
-            PushNotificationsScreen(navController)
         }
     }
 }

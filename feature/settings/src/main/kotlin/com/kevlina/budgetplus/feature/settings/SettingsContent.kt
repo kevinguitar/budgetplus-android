@@ -18,7 +18,6 @@ import androidx.compose.material.icons.rounded.CurrencyExchange
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Language
-import androidx.compose.material.icons.rounded.LockPerson
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
@@ -58,7 +57,6 @@ internal fun SettingsContent(
 ) {
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
-    val isInsider by vm.isInsider.collectAsStateWithLifecycle()
     val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
     val chartMode by vm.chartModel.chartMode.collectAsStateWithLifecycle()
 
@@ -193,14 +191,6 @@ internal fun SettingsContent(
                 }
             }
         )
-
-        if (isInsider) {
-            SettingsItem(
-                text = stringResource(id = R.string.insider_title),
-                icon = Icons.Rounded.LockPerson,
-                onClick = { navController.navigate(AddDest.Insider) }
-            )
-        }
 
         SettingsItem(
             text = stringResource(id = R.string.settings_share_app),

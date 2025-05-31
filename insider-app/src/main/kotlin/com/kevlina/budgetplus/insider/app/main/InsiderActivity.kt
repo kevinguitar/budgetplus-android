@@ -26,7 +26,7 @@ class InsiderActivity : ComponentActivity() {
         setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
 
-        if (authManager.userState.value == null){
+        if (authManager.userState.value == null) {
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
         }

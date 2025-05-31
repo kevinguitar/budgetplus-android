@@ -52,9 +52,9 @@ internal fun InsiderBinding(vm: InsiderViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(color = LocalAppColors.current.light)
                     // Do not consider the top padding, and let TopBar handle it.
                     .padding(bottom = innerPadding.calculateBottomPadding())
-                    .background(color = LocalAppColors.current.light)
             ) {
                 NavHost(
                     navController = navController,

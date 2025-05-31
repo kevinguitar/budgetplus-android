@@ -2,12 +2,12 @@
 *.aab
 .gradle
 /local.properties
-/app/google-services.json
 /.kotlin
 /.idea
 .DS_Store
 /build
 */build
+*/google-services.json
 */*/build
 /captures
 .externalNativeBuild

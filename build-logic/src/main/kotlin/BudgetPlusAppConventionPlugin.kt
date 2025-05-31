@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.provideDelegate
 import kotlin.math.pow
 
-class AndroidAppConventionPlugin : Plugin<Project> {
+class BudgetPlusAppConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.android.application.get().pluginId)

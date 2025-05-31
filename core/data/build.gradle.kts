@@ -8,8 +8,5 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
 
-    implementation(libs.google.ads)
-    runtimeOnly(libs.google.ads.mediation.meta)
-
     testFixturesImplementation(projects.core.common)
 }

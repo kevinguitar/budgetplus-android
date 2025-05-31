@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.google.ads)
     implementation(libs.lottie.compose)
 
+    implementation(projects.core.ads)
     implementation(projects.core.billing)
     implementation(projects.core.data)
     implementation(projects.core.impl)

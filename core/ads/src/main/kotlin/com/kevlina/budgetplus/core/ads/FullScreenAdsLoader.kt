@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.ads
 
 import android.app.Activity
 import android.content.Context
@@ -10,6 +10,7 @@ import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

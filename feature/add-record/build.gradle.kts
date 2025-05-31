@@ -5,6 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.core.ads)
     implementation(projects.core.data)
     implementation(projects.core.inappReview)
     implementation(projects.core.ui)

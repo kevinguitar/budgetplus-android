@@ -242,6 +242,7 @@
     <!-- - - - - - - - -->
 
     <!-- Insider -->
+    <string name="insider_app_name" translatable="false">B+ Insider</string>
     <string name="insider_title" translatable="false">商業機密</string>
     <string name="insider_total_premium_users" translatable="false">付費用戶</string>
     <string name="insider_daily_active_users" translatable="false">日活躍用戶</string>

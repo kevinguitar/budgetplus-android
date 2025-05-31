@@ -5,3 +5,4 @@ app-benchmark = { id = "budgetplus.app.benchmark" }
 compose = { id = "budgetplus.compose" }
 hilt = { id = "budgetplus.hilt" }
 kotlin-serialization = { id = "budgetplus.kotlin.serialization" }
+insider-app = { id = "budgetplus.insider.app" }

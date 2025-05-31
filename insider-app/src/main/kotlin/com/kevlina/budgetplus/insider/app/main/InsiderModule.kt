@@ -23,4 +23,10 @@ object InsiderModule {
     fun provideWelcomeNavigationAction(@ApplicationContext context: Context): NavigationAction {
         return NavigationAction(intent = Intent(context, InsiderActivity::class.java))
     }
+
+    // Do not override FCM token from insider app, to make sure regular users
+    // can still receive push notifications from the main B+ app.
+    @Provides
+    @Named("allow_update_fcm_token")
+    fun provideAllowUpdateFcmToken(): Boolean = false
 }

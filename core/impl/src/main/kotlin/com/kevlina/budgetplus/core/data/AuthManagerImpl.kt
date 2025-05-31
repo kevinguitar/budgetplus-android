@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
@@ -32,6 +33,7 @@ internal class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val stringProvider: StringProvider,
     private val tracker: Lazy<Tracker>,
+    @Named("allow_update_fcm_token") private val allowUpdateFcmToken: Boolean,
     @AppScope private val appScope: CoroutineScope,
     @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : AuthManager {
@@ -78,6 +80,8 @@ internal class AuthManagerImpl @Inject constructor(
     }
 
     override fun updateFcmToken(newToken: String) {
+        if (!allowUpdateFcmToken) return
+
         val userWithNewToken = currentUser?.copy(fcmToken = newToken) ?: return
         usersDb.get().document(userWithNewToken.id).set(userWithNewToken)
 
@@ -116,10 +120,14 @@ internal class AuthManagerImpl @Inject constructor(
         currentUser = userWithExclusiveFields
 
         appScope.launch {
-            val fcmToken = try {
-                Firebase.messaging.token.await()
-            } catch (e: Exception) {
-                Timber.w(e, "Failed to retrieve the fcm token")
+            val fcmToken = if (allowUpdateFcmToken) {
+                try {
+                    Firebase.messaging.token.await()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to retrieve the fcm token")
+                    null
+                }
+            } else {
                 null
             }
             Timber.d("Fcm token: $fcmToken")

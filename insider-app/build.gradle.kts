@@ -6,6 +6,9 @@ plugins {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+
     implementation(libs.android.activity)
     implementation(libs.navigation.compose)
     implementation(libs.lottie.compose)

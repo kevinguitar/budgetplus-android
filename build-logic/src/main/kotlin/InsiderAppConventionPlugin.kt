@@ -19,7 +19,7 @@ class InsiderAppConventionPlugin : Plugin<Project> {
 
         project.extensions.configure<ApplicationExtension> {
             defaultConfig {
-                applicationId = appId
+                applicationId = "$appId.insider"
                 targetSdk = androidSdk.toInt()
                 versionName = "1.0.0"
                 versionCode = 1
@@ -28,10 +28,6 @@ class InsiderAppConventionPlugin : Plugin<Project> {
                 vectorDrawables {
                     useSupportLibrary = true
                 }
-            }
-
-            bundle {
-                storeArchive.enable = false
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.insider.app
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -15,6 +16,8 @@ class BudgetPlusInsiderApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseApp.initializeApp(this)
 
         registerActivityLifecycleCallbacks(activityProvider)
 

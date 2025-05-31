@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
@@ -19,7 +20,6 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record

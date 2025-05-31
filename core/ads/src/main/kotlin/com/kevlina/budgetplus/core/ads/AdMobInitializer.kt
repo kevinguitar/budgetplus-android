@@ -1,8 +1,9 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.ads
 
 import android.content.Context
 import com.google.android.gms.ads.MobileAds
 import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.data.AuthManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

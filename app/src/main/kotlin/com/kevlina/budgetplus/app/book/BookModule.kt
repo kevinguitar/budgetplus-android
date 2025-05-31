@@ -18,4 +18,8 @@ object BookModule {
     fun provideBookNavigationAction(@ApplicationContext context: Context): NavigationAction {
         return NavigationAction(intent = Intent(context, BookActivity::class.java))
     }
+
+    @Provides
+    @Named("allow_update_fcm_token")
+    fun provideAllowUpdateFcmToken(): Boolean = true
 }

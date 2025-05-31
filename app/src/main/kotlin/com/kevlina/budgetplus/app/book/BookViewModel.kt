@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.app.book
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
@@ -13,7 +14,6 @@ import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
-import com.kevlina.budgetplus.core.data.AdMobInitializer
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException

@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew test
 
       - name: Assemble release AAB
-        run: ./gradlew bundleRelease
+        run: ./gradlew :app:bundleRelease
 
       - name: Deploy the Play Store beta channel
         uses: r0adkll/upload-google-play@v1.1.3

@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.FakeActivityProvider
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
@@ -12,7 +13,6 @@ import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.FakeVibratorManager
-import com.kevlina.budgetplus.core.data.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo

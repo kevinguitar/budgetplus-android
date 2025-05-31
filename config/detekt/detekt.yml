@@ -551,7 +551,7 @@ style:
     ignoreOverridden: false
     ignoreUsageInGenerics: false
   FunctionOnlyReturningConstant:
-    active: true
+    active: false
     ignoreOverridableFunction: true
     ignoreActualFunction: true
     excludedFunctions: []

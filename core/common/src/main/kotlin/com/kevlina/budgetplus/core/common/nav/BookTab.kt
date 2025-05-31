@@ -34,13 +34,6 @@ sealed interface AddDest {
 
     @Serializable
     data object CurrencyPicker : AddDest
-
-    // Internal screens
-    @Serializable
-    data object Insider : AddDest
-
-    @Serializable
-    data object PushNotifications : AddDest
 }
 
 sealed interface HistoryDest {
@@ -57,4 +50,13 @@ sealed interface HistoryDest {
 
     @Serializable
     data class Search(val type: RecordType) : HistoryDest
+}
+
+sealed interface InsiderDest {
+
+    @Serializable
+    data object Insider : InsiderDest
+
+    @Serializable
+    data object PushNotifications : InsiderDest
 }

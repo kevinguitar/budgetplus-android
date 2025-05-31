@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.google.ads)
     implementation(libs.lottie.compose)
 
+    implementation(projects.core.ads)
     implementation(projects.core.billing)
     implementation(projects.core.data)
     implementation(projects.core.impl)
@@ -29,9 +30,7 @@ dependencies {
     implementation(projects.feature.currencyPicker)
     implementation(projects.feature.editCategory)
     implementation(projects.feature.overview)
-    implementation(projects.feature.pushNotifications)
     implementation(projects.feature.records)
-    implementation(projects.feature.insider)
     implementation(projects.feature.search)
     implementation(projects.feature.settings)
     implementation(projects.feature.unlockPremium)

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.InsiderDest
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
@@ -26,12 +26,11 @@ fun InsiderScreen(
 
         TopBar(
             title = stringResource(id = R.string.insider_title),
-            navigateUp = navController::navigateUp,
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.NotificationAdd,
                     description = stringResource(id = R.string.cta_add),
-                    onClick = { navController.navigate(AddDest.PushNotifications) },
+                    onClick = { navController.navigate(InsiderDest.PushNotifications) },
                 )
             }
         )

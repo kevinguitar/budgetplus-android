@@ -14,7 +14,11 @@ gradlePlugin {
     plugins {
         register("android.app") {
             id = "budgetplus.android.app"
-            implementationClass = "AndroidAppConventionPlugin"
+            implementationClass = "BudgetPlusAppConventionPlugin"
+        }
+        register("insider.app") {
+            id = "budgetplus.insider.app"
+            implementationClass = "InsiderAppConventionPlugin"
         }
         register("android.library") {
             id = "budgetplus.android.library"

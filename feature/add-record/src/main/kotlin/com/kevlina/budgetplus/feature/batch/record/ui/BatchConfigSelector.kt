@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.Numbers
-import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Today
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -41,8 +39,8 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import java.time.LocalDate
 
-private val fontSize = FontSize.SemiLarge
-private val iconModifier = Modifier
+internal val fontSize = FontSize.SemiLarge
+internal val iconModifier = Modifier
     .padding(top = 2.dp)
     .size(20.dp)
 
@@ -66,7 +64,11 @@ internal fun BatchConfigSelector() {
 
         DateSelector(date = startRecordDate.date, setStartDate = vm::setStartDate)
 
-        FrequencySelector(frequency = frequency, setFrequency = vm::setFrequency)
+        FrequencySelector(
+            frequency = frequency,
+            setDuration = vm::setDuration,
+            setUnit = vm::setUnit
+        )
 
         TimesSelector(times = times, batchTimes = vm.batchTimes, setTimes = vm::setTimes)
     }
@@ -115,67 +117,6 @@ private fun DateSelector(
             onDatePicked = setStartDate,
             onDismiss = { showDatePicker = false }
         )
-    }
-}
-
-@Composable
-private fun FrequencySelector(
-    frequency: BatchFrequency,
-    setFrequency: (BatchFrequency) -> Unit,
-) {
-    var isFrequencyMenuShown by remember { mutableStateOf(false) }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-
-        Icon(
-            imageVector = Icons.Rounded.Refresh,
-            tint = LocalAppColors.current.dark,
-            modifier = iconModifier
-        )
-
-        Text(
-            text = stringResource(id = R.string.batch_record_frequency),
-            fontSize = fontSize,
-            fontWeight = FontWeight.SemiBold,
-        )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .rippleClick { isFrequencyMenuShown = true }
-                .padding(vertical = 4.dp)
-        ) {
-
-            Text(
-                text = stringResource(id = frequency.stringRes),
-                fontSize = fontSize,
-            )
-
-            Icon(
-                imageVector = Icons.Rounded.ArrowDropDown,
-                tint = LocalAppColors.current.dark
-            )
-
-            DropdownMenu(
-                expanded = isFrequencyMenuShown,
-                onDismissRequest = { isFrequencyMenuShown = false }
-            ) {
-
-                BatchFrequency.entries.forEach { freq ->
-                    DropdownItem(
-                        name = stringResource(id = freq.stringRes),
-                        onClick = {
-                            setFrequency(freq)
-                            isFrequencyMenuShown = false
-                        }
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -241,10 +182,3 @@ private fun TimesSelector(
         }
     }
 }
-
-private val BatchFrequency.stringRes: Int
-    get() = when (this) {
-        BatchFrequency.Monthly -> R.string.batch_record_frequency_monthly
-        BatchFrequency.Weekly -> R.string.batch_record_frequency_weekly
-        BatchFrequency.Daily -> R.string.batch_record_frequency_daily
-    }

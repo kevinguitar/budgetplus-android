@@ -35,9 +35,10 @@
     <string name="batch_record_title">Batch Record</string>
     <string name="batch_record_start_date">Start Date:</string>
     <string name="batch_record_frequency">Batch Frequency:</string>
-    <string name="batch_record_frequency_monthly">Monthly</string>
-    <string name="batch_record_frequency_weekly">Weekly</string>
-    <string name="batch_record_frequency_daily">Daily</string>
+    <string name="batch_record_every_duration">Every</string>
+    <string name="batch_record_unit_month">Month</string>
+    <string name="batch_record_unit_week">Week</string>
+    <string name="batch_record_unit_day">Day</string>
     <string name="batch_record_times">Number of times:</string>
     <string name="batch_record_cta">Record</string>
     <string name="batch_record_created">%1$s records added to %2$s</string>

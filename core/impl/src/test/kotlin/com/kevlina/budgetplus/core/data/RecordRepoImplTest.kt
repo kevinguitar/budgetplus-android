@@ -1,6 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
@@ -29,11 +29,10 @@ class RecordRepoImplTest {
         createRepo().createRecord(testRecord)
 
         verify { recordsDb.add(testRecord) }
-        Truth.assertThat(tracker.lastEventName).isEqualTo("record_created")
+        assertThat(tracker.lastEventName).isEqualTo("record_created")
     }
 
     @Test
-    @Ignore("Flaky because of withCurrentTime, plan to introduce an abstraction for database")
     fun `batchRecord should record correct amount of records`() = runTest {
         val nTimes = 5
         val startDate = LocalDate.now()
@@ -41,23 +40,31 @@ class RecordRepoImplTest {
         val batchId = createRepo().batchRecord(
             record = testRecord,
             startDate = startDate,
-            frequency = BatchFrequency.Weekly,
+            frequency = BatchFrequency(duration = 3, unit = BatchUnit.Week),
             times = nTimes
         )
 
         repeat(nTimes) { index ->
-            val batchDate = startDate.plusWeeks(index.toLong())
+            val multiplier = 3 * index.toLong()
+            val batchDate = startDate.plusWeeks(multiplier)
             verify(exactly = 1) {
                 recordsDb.add(
-                    testRecord.copy(
-                        date = batchDate.toEpochDay(),
-                        timestamp = batchDate.withCurrentTime,
-                        batchId = batchId
-                    )
+                    match<Record> { arg ->
+                        arg.date == batchDate.toEpochDay() &&
+                            arg.batchId == batchId &&
+                            // For other properties from testRecord, ensure they match if they
+                            // are not supposed to change.
+                            arg.type == testRecord.type &&
+                            arg.category == testRecord.category &&
+                            arg.name == testRecord.name &&
+                            arg.price == testRecord.price &&
+                            arg.author == testRecord.author &&
+                            arg.id == testRecord.id
+                    }
                 )
             }
         }
-        Truth.assertThat(tracker.lastEventName).isEqualTo("record_batched")
+        assertThat(tracker.lastEventName).isEqualTo("record_batched")
     }
 
     @Test
@@ -90,7 +97,7 @@ class RecordRepoImplTest {
                 )
             )
         }
-        Truth.assertThat(tracker.lastEventName).isEqualTo("record_edited")
+        assertThat(tracker.lastEventName).isEqualTo("record_edited")
     }
 
     @Test
@@ -109,7 +116,7 @@ class RecordRepoImplTest {
                     )
                 )
             }
-            Truth.assertThat(tracker.lastEventName).isEqualTo("record_duplicated")
+            assertThat(tracker.lastEventName).isEqualTo("record_duplicated")
         }
 
     @Test
@@ -118,7 +125,7 @@ class RecordRepoImplTest {
 
         verify { recordsDb.document("old_record_id") }
         verify { documentReference.delete() }
-        Truth.assertThat(tracker.lastEventName).isEqualTo("record_deleted")
+        assertThat(tracker.lastEventName).isEqualTo("record_deleted")
     }
 
     @Test

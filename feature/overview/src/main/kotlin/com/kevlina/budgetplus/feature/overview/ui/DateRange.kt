@@ -27,8 +27,7 @@ import com.kevlina.budgetplus.core.ui.thenIf
 @Composable
 internal fun DateRange(
     state: TimePeriodSelectorState,
-    showFromDatePicker: () -> Unit,
-    showUntilDatePicker: () -> Unit,
+    showDateRangePicker: () -> Unit,
 ) {
 
     val fromDate by state.fromDate.collectAsStateWithLifecycle()
@@ -40,8 +39,8 @@ internal fun DateRange(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+        modifier = Modifier.rippleClick(onClick = showDateRangePicker)
     ) {
-
         if (isOneDayPeriod) {
             Icon(
                 imageVector = Icons.Rounded.ChevronLeft,
@@ -66,7 +65,6 @@ internal fun DateRange(
             },
             singleLine = true,
             modifier = Modifier
-                .rippleClick(onClick = showFromDatePicker)
                 .padding(all = 8.dp)
                 .thenIf(isOneDayPeriod) {
                     Modifier.weight(1F, fill = false)
@@ -88,7 +86,6 @@ internal fun DateRange(
                 text = untilDate.mediumFormatted,
                 singleLine = true,
                 modifier = Modifier
-                    .rippleClick(onClick = showUntilDatePicker)
                     .padding(all = 8.dp)
                     .weight(1F, fill = false)
             )

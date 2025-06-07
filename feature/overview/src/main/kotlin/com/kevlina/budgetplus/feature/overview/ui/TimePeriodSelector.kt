@@ -31,7 +31,7 @@ import com.kevlina.budgetplus.core.common.nav.AddDest
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.DateRangePickerDialog
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
@@ -50,8 +50,7 @@ internal fun ColumnScope.TimePeriodSelector(
     val fromDate by state.fromDate.collectAsStateWithLifecycle()
     val untilDate by state.untilDate.collectAsStateWithLifecycle()
 
-    var showFromDatePicker by remember { mutableStateOf(false) }
-    var showUntilDatePicker by remember { mutableStateOf(false) }
+    var showDateRangerPicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = state.openPremiumEvent) {
         state.openPremiumEvent
@@ -61,8 +60,7 @@ internal fun ColumnScope.TimePeriodSelector(
 
     DateRange(
         state = state,
-        showFromDatePicker = { showFromDatePicker = true },
-        showUntilDatePicker = { showUntilDatePicker = true }
+        showDateRangePicker = { showDateRangerPicker = true },
     )
 
     TimePeriodPreset(
@@ -70,20 +68,12 @@ internal fun ColumnScope.TimePeriodSelector(
         setTimePeriod = state.setTimePeriod
     )
 
-    if (showFromDatePicker) {
-        DatePickerDialog(
-            date = fromDate,
-            onDismiss = { showFromDatePicker = false },
-            onDatePicked = state.setFromDate
-        )
-    }
-
-    if (showUntilDatePicker) {
-        DatePickerDialog(
-            date = untilDate,
-            minDate = fromDate,
-            onDismiss = { showUntilDatePicker = false },
-            onDatePicked = state.setUntilDate
+    if (showDateRangerPicker) {
+        DateRangePickerDialog(
+            startDate = fromDate,
+            endDate = untilDate,
+            onDismiss = { showDateRangerPicker = false },
+            onRangePicked = state.setDateRange
         )
     }
 }
@@ -161,8 +151,7 @@ internal class TimePeriodSelectorState(
     val previousDay: () -> Unit,
     val nextDay: () -> Unit,
     val setTimePeriod: (TimePeriod) -> Unit,
-    val setFromDate: (LocalDate) -> Unit,
-    val setUntilDate: (LocalDate) -> Unit,
+    val setDateRange: (from: LocalDate, until: LocalDate) -> Unit,
 ) {
     companion object {
         val preview = TimePeriodSelectorState(
@@ -174,8 +163,7 @@ internal class TimePeriodSelectorState(
             previousDay = {},
             nextDay = {},
             setTimePeriod = {},
-            setFromDate = {},
-            setUntilDate = {}
+            setDateRange = { _, _ -> }
         )
     }
 }
@@ -189,8 +177,7 @@ internal fun OverviewTimeViewModel.toState() = TimePeriodSelectorState(
     previousDay = ::previousDay,
     nextDay = ::nextDay,
     setTimePeriod = ::setTimePeriod,
-    setFromDate = ::setFromDate,
-    setUntilDate = ::setUntilDate
+    setDateRange = ::setDateRange,
 )
 
 @Preview

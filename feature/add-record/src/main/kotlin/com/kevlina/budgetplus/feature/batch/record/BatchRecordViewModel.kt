@@ -12,6 +12,7 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
+import com.kevlina.budgetplus.core.data.BatchUnit
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -48,7 +50,7 @@ internal class BatchRecordViewModel @Inject constructor(
     val note = TextFieldState()
     val priceText = TextFieldState()
 
-    private val _frequency = MutableStateFlow(BatchFrequency.Monthly)
+    private val _frequency = MutableStateFlow(BatchFrequency(duration = 1, unit = BatchUnit.Month))
     val frequency: StateFlow<BatchFrequency> = _frequency.asStateFlow()
 
     val batchTimes = (BATCH_TIMES_MIN..BATCH_TIMES_MAX).toList()
@@ -77,8 +79,12 @@ internal class BatchRecordViewModel @Inject constructor(
         }
     }
 
-    fun setFrequency(frequency: BatchFrequency) {
-        _frequency.value = frequency
+    fun setDuration(duration: Int) {
+        _frequency.update { it.copy(duration = duration) }
+    }
+
+    fun setUnit(unit: BatchUnit) {
+        _frequency.update { it.copy(unit = unit) }
     }
 
     fun setTimes(times: Int) {

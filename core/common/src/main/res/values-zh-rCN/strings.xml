@@ -34,9 +34,10 @@
     <string name="batch_record_title">批次记帐</string>
     <string name="batch_record_start_date">开始日期</string>
     <string name="batch_record_frequency">循环周期</string>
-    <string name="batch_record_frequency_monthly">每月</string>
-    <string name="batch_record_frequency_weekly">每周</string>
-    <string name="batch_record_frequency_daily">每天</string>
+    <string name="batch_record_every_duration">每</string>
+    <string name="batch_record_unit_month">月</string>
+    <string name="batch_record_unit_week">周</string>
+    <string name="batch_record_unit_day">天</string>
     <string name="batch_record_times">循环次数</string>
     <string name="batch_record_cta">批次记帐</string>
     <string name="batch_record_created">%1$s笔帐目已新增至%2$s</string>

@@ -50,10 +50,11 @@ internal class RecordRepoImpl @Inject constructor(
         var currentDate: LocalDate
 
         repeat(times) { index ->
-            currentDate = when (frequency) {
-                BatchFrequency.Monthly -> startDate.plusMonths(index.toLong())
-                BatchFrequency.Weekly -> startDate.plusWeeks(index.toLong())
-                BatchFrequency.Daily -> startDate.plusDays(index.toLong())
+            val multiplier = index * frequency.duration.toLong()
+            currentDate = when (frequency.unit) {
+                BatchUnit.Month -> startDate.plusMonths(multiplier)
+                BatchUnit.Week -> startDate.plusWeeks(multiplier)
+                BatchUnit.Day -> startDate.plusDays(multiplier)
             }
 
             createRecord(record.copy(

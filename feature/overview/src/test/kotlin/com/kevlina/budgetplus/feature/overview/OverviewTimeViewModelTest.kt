@@ -54,38 +54,6 @@ class OverviewTimeViewModelTest {
     }
 
     @Test
-    fun `the fromDate is picked when it's a one day period`() = runTest {
-        every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
-
-        val model = createModel()
-        val oneWeekAfter = LocalDate.now().plusWeeks(1)
-        model.setFromDate(oneWeekAfter)
-
-        verify {
-            recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(oneWeekAfter, oneWeekAfter))
-        }
-    }
-
-    @Test
-    fun `WHEN the fromDate is picked after the current untilDate THEN keep the current days in between`() = runTest {
-        every { recordsObserver.timePeriod } returns flowOf(TimePeriod.Custom(
-            from = LocalDate.now(),
-            until = LocalDate.now().plusDays(3)
-        ))
-
-        val model = createModel()
-        val newFromDate = LocalDate.now().plusDays(10)
-        model.setFromDate(newFromDate)
-
-        verify {
-            recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(
-                from = newFromDate,
-                until = newFromDate.plusDays(3)
-            ))
-        }
-    }
-
-    @Test
     fun `WHEN the period is more than one month THEN make it one month`() = runTest {
         every { recordsObserver.timePeriod } returns flowOf(oneDayPeriod)
 

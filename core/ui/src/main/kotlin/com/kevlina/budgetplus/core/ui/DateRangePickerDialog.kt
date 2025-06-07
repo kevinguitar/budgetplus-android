@@ -69,7 +69,6 @@ fun DateRangePickerDialog(
                 title = {
                     DateRangePickerDefaults.DateRangePickerTitle(
                         displayMode = state.displayMode,
-                        modifier = Modifier.padding(horizontal = 24.dp)
                     )
                 },
                 headline = {
@@ -78,7 +77,7 @@ fun DateRangePickerDialog(
                         selectedEndDateMillis = state.selectedEndDateMillis,
                         displayMode = state.displayMode,
                         dateFormatter = dateFormatter,
-                        modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 12.dp)
+                        modifier = Modifier.padding(bottom = 16.dp)
                     )
                 },
             )

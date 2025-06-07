@@ -16,7 +16,6 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 class OverviewTimeViewModel @Inject constructor(
@@ -62,30 +61,17 @@ class OverviewTimeViewModel @Inject constructor(
         recordsObserver.setTimePeriod(bookId, period)
     }
 
-    fun setFromDate(from: LocalDate) {
-        val newPeriod = when {
-            isOneDayPeriod.value -> TimePeriod.Custom(from = from, until = from)
-            from.isAfter(untilDate.value) -> {
-                val daysInBetween = ChronoUnit.DAYS.between(fromDate.value, untilDate.value)
-                TimePeriod.Custom(from = from, until = from.plusDays(daysInBetween))
-            }
-
-            else -> TimePeriod.Custom(from = from, until = untilDate.value)
-        }
-        setTimePeriod(newPeriod)
-    }
-
-    fun setUntilDate(until: LocalDate) {
-        setTimePeriod(TimePeriod.Custom(from = fromDate.value, until = until))
+    fun setDateRange(from: LocalDate, until: LocalDate) {
+        setTimePeriod(TimePeriod.Custom(from = from, until = until))
     }
 
     fun previousDay() {
         val previousDay = fromDate.value.minusDays(1)
-        setTimePeriod(TimePeriod.Custom(from = previousDay, until = previousDay))
+        setDateRange(from = previousDay, until = previousDay)
     }
 
     fun nextDay() {
-        val previousDay = fromDate.value.plusDays(1)
-        setTimePeriod(TimePeriod.Custom(from = previousDay, until = previousDay))
+        val nextDay = fromDate.value.plusDays(1)
+        setDateRange(from = nextDay, until = nextDay)
     }
 }

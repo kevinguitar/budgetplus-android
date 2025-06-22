@@ -4,10 +4,6 @@
     "config:recommended",
     ":disableDependencyDashboard"
   ],
-  "schedule" : [
-    "every weekend"
-  ],
-  "timezone" : "Asia/Singapore",
   "packageRules" : [
     {
       "groupName" : "Kotlin and KSP",

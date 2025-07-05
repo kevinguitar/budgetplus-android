@@ -115,7 +115,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-google-services = "com.google.gms.google-services:4.4.2"
+google-services = "com.google.gms.google-services:4.4.3"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -1,16 +1,16 @@
 {
-  "$schema" : "https://docs.renovatebot.com/renovate-schema.json",
-  "extends" : ["config:recommended"],
-  "packageRules" : [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
     {
-      "groupName" : "Kotlin and KSP",
-      "groupSlug" : "kotlin",
-      "matchPackagePrefixes" : [
-        "com.google.devtools.ksp"
-      ],
-      "matchPackagePatterns" : [
-        "org.jetbrains.kotlin.*",
-        "org.jetbrains.kotlin:*"
+      "groupName": "Kotlin and KSP",
+      "groupSlug": "kotlin",
+      "matchPackageNames": [
+        "com.google.devtools.ksp{/,}**",
+        "/org.jetbrains.kotlin.*/",
+        "/org.jetbrains.kotlin:*/"
       ]
     }
   ]

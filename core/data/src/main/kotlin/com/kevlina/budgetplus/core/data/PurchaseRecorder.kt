@@ -20,7 +20,7 @@ class PurchaseRecorder @Inject constructor(
             purchasesDb.get().add(Purchase(
                 orderId = orderId,
                 productId = productId,
-                userId = authManager.userState.value?.id,
+                userId = authManager.userId,
                 purchasedOn = System.currentTimeMillis()
             )).await()
         } catch (e: Exception) {

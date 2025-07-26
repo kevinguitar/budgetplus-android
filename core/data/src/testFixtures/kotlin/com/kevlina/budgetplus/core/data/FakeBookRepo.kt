@@ -10,6 +10,7 @@ class FakeBookRepo(
     currentCurrencySymbol: String = "USD",
     override val currentBookId: String? = null,
     override val hasPendingJoinRequest: Boolean = false,
+    override val canEdit: Boolean = true,
 ) : BookRepo {
 
     override val bookState = MutableStateFlow(book)
@@ -65,6 +66,10 @@ class FakeBookRepo(
     }
 
     override fun updateCurrency(currencyCode: String) {
+        error("Not yet implemented")
+    }
+
+    override fun setAllowMembersEdit(allow: Boolean) {
         error("Not yet implemented")
     }
 }

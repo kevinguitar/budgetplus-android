@@ -38,6 +38,9 @@ internal class SettingsViewModel @Inject constructor(
         book != null && book.ownerId == user?.id
     }
 
+    val canEditBook: Boolean get() = bookRepo.canEdit
+    val allowMembersEdit = bookRepo.bookState.mapState { it?.allowMembersEdit != false }
+
     val isPremium = authManager.isPremium
 
     @get:SuppressLint("AnnotateVersionCheck")
@@ -71,6 +74,10 @@ internal class SettingsViewModel @Inject constructor(
                 snackbarSender.sendError(e)
             }
         }
+    }
+
+    fun setAllowMembersEdit(allow: Boolean) {
+        bookRepo.setAllowMembersEdit(allow)
     }
 
     fun deleteOrLeave() {

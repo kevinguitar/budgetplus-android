@@ -8,6 +8,7 @@ interface AuthManager {
     val userState: StateFlow<User?>
     val isPremium: StateFlow<Boolean>
 
+    val userId: String?
     fun requireUserId(): String
 
     suspend fun renameUser(newName: String)

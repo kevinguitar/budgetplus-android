@@ -24,6 +24,9 @@ class EditRecordViewModel @Inject constructor(
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
+    val canAddCategory: Boolean
+        get() = bookRepo.canEdit
+
     fun editRecord(
         record: Record,
         newDate: LocalDate,

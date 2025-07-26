@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.CurrencyExchange
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.EditNote
 import androidx.compose.material.icons.rounded.Language
+import androidx.compose.material.icons.rounded.LockPerson
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Star
@@ -56,6 +57,7 @@ internal fun SettingsContent(
     modifier: Modifier = Modifier,
 ) {
     val isBookOwner by vm.isBookOwner.collectAsStateWithLifecycle()
+    val allowMembersEdit by vm.allowMembersEdit.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
     val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
     val chartMode by vm.chartModel.chartMode.collectAsStateWithLifecycle()
@@ -103,24 +105,43 @@ internal fun SettingsContent(
             onClick = { isRenameUserDialogShown = true }
         )
 
-        SettingsItem(
-            text = stringResource(id = R.string.settings_rename_book),
-            icon = Icons.Rounded.EditNote,
-            onClick = { isRenameBookDialogShown = true }
-        )
+        if (vm.canEditBook) {
+            SettingsItem(
+                text = stringResource(id = R.string.settings_rename_book),
+                icon = Icons.Rounded.EditNote,
+                onClick = { isRenameBookDialogShown = true }
+            )
 
-        SettingsItem(
-            text = stringResource(id = R.string.settings_edit_book_currency),
-            icon = Icons.Rounded.CurrencyExchange,
-            onClick = { navController.navigate(AddDest.CurrencyPicker) }
-        )
+            SettingsItem(
+                text = stringResource(id = R.string.settings_edit_book_currency),
+                icon = Icons.Rounded.CurrencyExchange,
+                onClick = { navController.navigate(AddDest.CurrencyPicker) }
+            )
+        }
 
         SettingsItem(
             text = stringResource(id = R.string.settings_view_members),
             icon = Icons.Rounded.SupervisedUserCircle,
-            roundBottom = true,
+            roundBottom = !isBookOwner,
             onClick = { isMembersDialogShown = true }
         )
+
+        if (isBookOwner) {
+            SettingsItem(
+                text = stringResource(id = R.string.settings_allow_members_edit),
+                description = stringResource(id = R.string.settings_allow_members_edit_desc),
+                icon = Icons.Rounded.LockPerson,
+                roundBottom = true,
+                action = {
+                    Switch(
+                        checked = allowMembersEdit,
+                        onCheckedChange = vm::setAllowMembersEdit,
+                        modifier = Modifier.padding(end = 10.dp)
+                    )
+                },
+                onClick = { vm.setAllowMembersEdit(!allowMembersEdit) }
+            )
+        }
 
         // General section
         if (vm.canSelectLanguage) {

@@ -151,6 +151,8 @@
     <string name="settings_rename_book_success">帐本名称已更改为%s</string>
     <string name="settings_edit_book_currency">编辑帐本币别</string>
     <string name="settings_view_members">查看成员</string>
+    <string name="settings_allow_members_edit">允许成员编辑</string>
+    <string name="settings_allow_members_edit_desc">让成员编辑帐本名称、类别、币别及所有帐目</string>
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">删除帐本</string>
     <string name="settings_leave_book">离开帐本</string>

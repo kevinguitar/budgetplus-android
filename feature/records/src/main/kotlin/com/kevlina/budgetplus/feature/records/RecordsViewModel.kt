@@ -113,8 +113,7 @@ class RecordsViewModel @AssistedInject constructor(
     }
 
     fun canEditRecord(record: Record): Boolean {
-        val myUserId = authManager.userState.value?.id
-        return bookRepo.bookState.value?.ownerId == myUserId || record.author?.id == myUserId
+        return bookRepo.canEdit || record.author?.id == authManager.userId
     }
 
     fun setPageIndex(index: Int) {

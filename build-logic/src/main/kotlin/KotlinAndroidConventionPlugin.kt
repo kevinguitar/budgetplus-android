@@ -56,7 +56,10 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
                     allWarningsAsErrors.set(true)
-                    freeCompilerArgs.add("-Xcontext-receivers")
+                    freeCompilerArgs.addAll(
+                        "-Xcontext-parameters",
+                        "-Xannotation-default-target=param-property"
+                    )
                     optIn.addAll(
                         "kotlin.contracts.ExperimentalContracts",
                         "kotlinx.coroutines.ExperimentalCoroutinesApi",

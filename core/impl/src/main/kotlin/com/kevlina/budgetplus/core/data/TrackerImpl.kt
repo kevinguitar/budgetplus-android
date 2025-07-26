@@ -1,8 +1,8 @@
 package com.kevlina.budgetplus.core.data
 
 import android.os.Bundle
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.Tracker
 import dagger.Lazy

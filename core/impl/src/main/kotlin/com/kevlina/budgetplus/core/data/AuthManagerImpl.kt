@@ -1,13 +1,13 @@
 package com.kevlina.budgetplus.core.data
 
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.auth.auth
+import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider

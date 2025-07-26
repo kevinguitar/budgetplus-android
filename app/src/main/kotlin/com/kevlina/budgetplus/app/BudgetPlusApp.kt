@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.app
 
 import android.app.Application
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
+import com.google.firebase.crashlytics.crashlytics
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppStartAction

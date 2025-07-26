@@ -53,6 +53,7 @@ internal class BillingControllerImpl @Inject constructor(
                 .enableOneTimeProducts()
                 .build()
         )
+        .enableAutoServiceReconnection()
         .build()
 
     init {

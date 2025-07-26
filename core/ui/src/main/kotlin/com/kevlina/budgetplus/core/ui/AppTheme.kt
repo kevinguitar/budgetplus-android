@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
+import com.kevlina.budgetplus.core.ui.AppTheme.containerMaxWidth
 
 @Composable
 fun AppTheme(
@@ -48,14 +49,14 @@ object AppTheme {
      *  Useful in LazyList, to make sure the entire container is scrollable, but still limit
      *  the children within the [containerMaxWidth].
      */
-    context(BoxWithConstraintsScope)
+    context(scope: BoxWithConstraintsScope)
     @Suppress("CONTEXT_RECEIVERS_DEPRECATED")
     fun listContentPaddings(
         all: Dp = 0.dp,
         horizontal: Dp = all,
         vertical: Dp = all,
     ): PaddingValues {
-        val containerHorizontalPadding = (maxWidth - containerMaxWidth).coerceAtLeast(0.dp) / 2
+        val containerHorizontalPadding = (scope.maxWidth - containerMaxWidth).coerceAtLeast(0.dp) / 2
         return PaddingValues(
             horizontal = containerHorizontalPadding + horizontal,
             vertical = vertical

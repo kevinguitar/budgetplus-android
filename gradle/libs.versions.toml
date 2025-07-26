@@ -1,18 +1,18 @@
 [versions]
 # https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "8.10.1"
+gradle-plugin = "8.11.1"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
-ksp = "2.1.21-2.0.2"
+ksp = "2.2.0-2.0.2"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2025.07.00"
 # https://firebase.google.com/support/release-notes/android
-firebase-bom = "33.16.0"
+firebase-bom = "34.0.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android
-hilt = "2.56.2"
+hilt = "2.57"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://developer.android.com/jetpack/androidx/releases/navigation
@@ -49,17 +49,17 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso = "androidx.test.espresso:espresso-core:3.6.1"
 exp4j = "net.objecthunter:exp4j:0.4.8"
-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
-firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
-firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+firebase-config = { module = "com.google.firebase:firebase-config" }
 google-ads = "com.google.android.gms:play-services-ads:24.5.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.20.0.0"
-google-billing = "com.android.billingclient:billing-ktx:7.1.1"
+google-billing = "com.android.billingclient:billing-ktx:8.0.0"
 google-id = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-play-review = "com.google.android.play:review-ktx:2.0.2"
 google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
@@ -70,7 +70,7 @@ junit-android = "androidx.test.ext:junit:1.2.1"
 junit-compose = { module = "androidx.compose.ui:ui-test-junit4" }
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
-kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1"
+kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.6.7"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.3.4"
 mockk = "io.mockk:mockk:1.14.5"
@@ -79,7 +79,7 @@ navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0"
 navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "navigation" }
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
-reorderable = "sh.calvin.reorderable:reorderable:2.4.3"
+reorderable = "sh.calvin.reorderable:reorderable:2.5.1"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.4.4"

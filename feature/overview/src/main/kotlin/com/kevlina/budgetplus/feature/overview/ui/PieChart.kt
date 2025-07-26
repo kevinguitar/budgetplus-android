@@ -274,13 +274,13 @@ internal fun PieChart(
     }
 }
 
-context(DrawScope)
+context(scope: DrawScope)
 @Suppress("CONTEXT_RECEIVERS_DEPRECATED")
 private fun Offset.isWithIn(
     startAngle: Float,
     sweepAngle: Float,
 ): Boolean {
-    val center = size.width / 2
+    val center = scope.size.width / 2
 
     val distanceToCenter = sqrt((x - center).pow(2) + (y - center).pow(2))
     if (distanceToCenter > center) {

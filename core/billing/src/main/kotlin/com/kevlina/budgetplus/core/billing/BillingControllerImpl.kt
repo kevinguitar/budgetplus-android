@@ -57,10 +57,8 @@ internal class BillingControllerImpl @Inject constructor(
         .build()
 
     init {
-        if (!billingClient.isReady) {
-            Timber.d("BillingClient: Start connection")
-            billingClient.startConnection(this)
-        }
+        Timber.d("BillingClient: Start connection")
+        billingClient.startConnection(this)
     }
 
     override fun endConnection() {

@@ -68,7 +68,7 @@ fun RecordScreen(navController: NavController) {
                     imageVector = Icons.Rounded.Settings,
                     description = stringResource(id = R.string.settings_description),
                     onClick = {
-                         navController.navigate(AddDest.Settings())
+                        navController.navigate(AddDest.Settings())
                     }
                 )
             }
@@ -149,9 +149,9 @@ private fun RecordViewModel.toState(
         scrollable = scrollable,
         categoriesGridState = categoriesVm.toState(
             type = type,
-            onEditClicked = {
-                navController.navigate(AddDest.EditCategory(type.value))
-            },
+            onEditClicked = if (bookRepo.canEdit) {
+                { navController.navigate(AddDest.EditCategory(type.value)) }
+            } else null,
         ),
         dateAndPricingState = DateAndPricingState(
             recordDate = recordDate,
@@ -160,7 +160,9 @@ private fun RecordViewModel.toState(
             scrollable = scrollable,
             setDate = ::setDate,
             editCurrency = {
-                navController.navigate(route = AddDest.CurrencyPicker)
+                if (bookRepo.canEdit) {
+                    navController.navigate(route = AddDest.CurrencyPicker)
+                }
             }
         ),
     ),

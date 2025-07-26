@@ -187,9 +187,9 @@ fun EditRecordDialog(
                             category = it
                             dialogState = EditRecordDialogState.ShowRecord
                         },
-                        onAddClicked = {
-                            dialogState = EditRecordDialogState.AddingCategory
-                        }
+                        onAddClicked = if (vm.canAddCategory) {
+                            { dialogState = EditRecordDialogState.AddingCategory }
+                        } else null
                     )
                 )
             }

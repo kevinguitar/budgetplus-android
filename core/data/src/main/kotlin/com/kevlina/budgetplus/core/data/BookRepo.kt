@@ -12,6 +12,7 @@ interface BookRepo {
     val currentBookId: String?
     val currencySymbol: StateFlow<String>
 
+    val canEdit: Boolean
     val hasPendingJoinRequest: Boolean
 
     fun generateJoinLink(): String
@@ -43,5 +44,7 @@ interface BookRepo {
     fun updateCategories(type: RecordType, categories: List<String>)
 
     fun updateCurrency(currencyCode: String)
+
+    fun setAllowMembersEdit(allow: Boolean)
 
 }

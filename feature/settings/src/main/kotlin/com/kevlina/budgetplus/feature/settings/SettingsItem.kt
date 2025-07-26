@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +39,7 @@ private val cornerRadius = 8.dp
 @Composable
 internal fun SettingsItem(
     text: String,
+    description: String? = null,
     icon: ImageVector? = null,
     @DrawableRes iconRes: Int? = null,
     showCrownAnimation: Boolean = false,
@@ -91,13 +93,25 @@ internal fun SettingsItem(
                 PremiumCrown(modifier = Modifier.size(24.dp))
             }
 
-            Text(
-                text = text,
-                color = LocalAppColors.current.dark,
-                fontSize = FontSize.SemiLarge,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.weight(1F)
-            )
+            Column(
+                modifier = Modifier.weight(1F),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = text,
+                    color = LocalAppColors.current.dark,
+                    fontSize = FontSize.SemiLarge,
+                    fontWeight = FontWeight.Medium,
+                )
+
+                if (description != null) {
+                    Text(
+                        text = description,
+                        color = LocalAppColors.current.dark,
+                        fontSize = FontSize.Small,
+                    )
+                }
+            }
 
             if (action == null) {
                 Image(
@@ -128,11 +142,20 @@ internal fun SettingsItem(
 @Preview
 @Composable
 private fun SettingsItem_Preview() = AppTheme {
-    SettingsItem(
-        icon = Icons.Rounded.Language,
-        text = "語言",
-        roundTop = true,
-        roundBottom = true,
-        onClick = {}
-    )
+    Column {
+        SettingsItem(
+            icon = Icons.Rounded.Language,
+            text = "語言",
+            roundTop = true,
+            onClick = {}
+        )
+
+        SettingsItem(
+            icon = Icons.Rounded.Language,
+            text = "語言",
+            description = "English, bla bla bla, some very long description, look it's on the 2nd line already.",
+            roundBottom = true,
+            onClick = {}
+        )
+    }
 }

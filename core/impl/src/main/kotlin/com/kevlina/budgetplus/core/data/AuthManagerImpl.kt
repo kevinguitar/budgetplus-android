@@ -44,6 +44,7 @@ internal class AuthManagerImpl @Inject constructor(
     override val userState: StateFlow<User?> = _userState.asStateFlow()
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
+    override val userId: String? get() = userState.value?.id
 
     init {
         Firebase.auth.addAuthStateListener { auth ->
@@ -52,7 +53,7 @@ internal class AuthManagerImpl @Inject constructor(
     }
 
     override fun requireUserId(): String {
-        return requireNotNull(userState.value?.id) { "User is null." }
+        return requireNotNull(userId) { "User is null." }
     }
 
     override suspend fun renameUser(newName: String) {

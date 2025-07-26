@@ -152,6 +152,8 @@
     <string name="settings_rename_book_success">帳本名稱已更改為%s</string>
     <string name="settings_edit_book_currency">編輯帳本幣別</string>
     <string name="settings_view_members">查看成員</string>
+    <string name="settings_allow_members_edit">允許成員編輯</string>
+    <string name="settings_allow_members_edit_desc">讓成員編輯帳本名稱、類別、幣別及所有帳目</string>
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">刪除帳本</string>
     <string name="settings_leave_book">離開帳本</string>

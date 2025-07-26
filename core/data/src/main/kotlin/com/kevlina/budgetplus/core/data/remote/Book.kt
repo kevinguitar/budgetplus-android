@@ -14,4 +14,5 @@ data class Book(
     val currencyCode: String? = null,
     val archived: Boolean = false,
     val archivedOn: Long? = null,
+    val allowMembersEdit: Boolean? = null,
 )

@@ -91,6 +91,10 @@ internal class BookRepoImpl @Inject constructor(
             }
     }
 
+    override val canEdit: Boolean
+        get() = currentBook?.allowMembersEdit != false ||
+            currentBook?.ownerId == authManager.requireUserId()
+
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null
 
@@ -100,6 +104,7 @@ internal class BookRepoImpl @Inject constructor(
     private val createdOnField get() = "createdOn"
     private val archivedField get() = "archived"
     private val archivedOnField get() = "archivedOn"
+    private val allowMembersEditField get() = "allowMembersEdit"
 
     // The join link will expire in 1 day
     private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
@@ -269,6 +274,7 @@ internal class BookRepoImpl @Inject constructor(
         bookRegistration = booksDb.get()
             .whereArrayContains(authorsField, userId)
             .whereEqualTo(archivedField, false)
+            .whereEqualTo(archivedField, false)
             .orderBy(createdOnField, Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
@@ -345,6 +351,17 @@ internal class BookRepoImpl @Inject constructor(
         tracker.logEvent(
             event = "currency_updated",
             params = bundle { putString("currency_code", currencyCode) }
+        )
+    }
+
+    override fun setAllowMembersEdit(allow: Boolean) {
+        booksDb.get()
+            .document(requireBookId)
+            .update(allowMembersEditField, allow)
+
+        tracker.logEvent(
+            event = "allow_members_edit_updated",
+            params = bundle { putBoolean("allow", allow) }
         )
     }
 }

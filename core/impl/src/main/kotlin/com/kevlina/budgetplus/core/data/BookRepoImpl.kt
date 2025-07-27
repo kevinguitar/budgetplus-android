@@ -93,7 +93,7 @@ internal class BookRepoImpl @Inject constructor(
 
     override val canEdit: Boolean
         get() = currentBook?.allowMembersEdit != false ||
-            currentBook?.ownerId == authManager.requireUserId()
+            currentBook?.ownerId == authManager.userId
 
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null

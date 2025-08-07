@@ -72,7 +72,7 @@ junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.6.7"
-macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.3.4"
+macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.0"
 mockk = "io.mockk:mockk:1.14.5"
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.2.0"

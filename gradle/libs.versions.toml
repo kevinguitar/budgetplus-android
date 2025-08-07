@@ -16,7 +16,7 @@ hilt = "2.57"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://developer.android.com/jetpack/androidx/releases/navigation
-navigation = "2.9.2"
+navigation = "2.9.3"
 # https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle
 firebase-crashlytics = "3.0.5"
 # https://developer.android.com/jetpack/androidx/releases/credentials

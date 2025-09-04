@@ -26,7 +26,7 @@ android-lifecycle = "2.9.3"
 
 [libraries]
 android-activity = "androidx.activity:activity-ktx:1.10.1"
-android-core = "androidx.core:core-ktx:1.16.0"
+android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
 android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "android-lifecycle" }

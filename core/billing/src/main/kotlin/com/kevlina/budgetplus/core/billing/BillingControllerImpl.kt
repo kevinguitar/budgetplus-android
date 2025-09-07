@@ -100,6 +100,7 @@ internal class BillingControllerImpl @Inject constructor(
             _purchaseState.value = if (status == BillingStatus.USER_CANCELED) {
                 PurchaseState.Canceled
             } else {
+                Timber.e(BillingException("onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}"))
                 PurchaseState.Fail(status.toString())
             }
             return

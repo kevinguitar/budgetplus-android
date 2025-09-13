@@ -31,16 +31,16 @@ class PurchaseRepo @Inject constructor(
         productId: String,
     ): Boolean {
         val currentUserId = authManager.userId ?: return false
-        try {
+        return try {
             val purchases = purchasesDb.get()
                 .whereEqualTo("productId", productId)
                 .whereEqualTo("userId", currentUserId)
                 .get()
                 .await()
-            return !purchases.isEmpty
+            !purchases.isEmpty
         } catch (e: Exception) {
             Timber.e(e)
-            return false
+            false
         }
     }
 }

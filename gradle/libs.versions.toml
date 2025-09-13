@@ -82,7 +82,7 @@ profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
 reorderable = "sh.calvin.reorderable:reorderable:2.5.1"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
-truth = "com.google.truth:truth:1.4.4"
+truth = "com.google.truth:truth:1.4.5"
 turbine = "app.cash.turbine:turbine:1.2.1"
 
 [bundles]

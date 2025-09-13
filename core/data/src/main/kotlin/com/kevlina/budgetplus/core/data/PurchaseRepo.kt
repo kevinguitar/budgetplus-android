@@ -7,11 +7,10 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
-class PurchaseRecorder @Inject constructor(
+class PurchaseRepo @Inject constructor(
     private val authManager: AuthManager,
     @PurchasesDb private val purchasesDb: dagger.Lazy<CollectionReference>,
 ) {
-
     suspend fun recordPurchase(
         orderId: String?,
         productId: String,
@@ -25,6 +24,23 @@ class PurchaseRecorder @Inject constructor(
             )).await()
         } catch (e: Exception) {
             Timber.e(e)
+        }
+    }
+
+    suspend fun hasPurchaseBelongsToCurrentUser(
+        productId: String,
+    ): Boolean {
+        val currentUserId = authManager.userId ?: return false
+        return try {
+            val purchases = purchasesDb.get()
+                .whereEqualTo("productId", productId)
+                .whereEqualTo("userId", currentUserId)
+                .get()
+                .await()
+            !purchases.isEmpty
+        } catch (e: Exception) {
+            Timber.e(e)
+            false
         }
     }
 }

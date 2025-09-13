@@ -21,7 +21,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.PurchaseRecorder
+import com.kevlina.budgetplus.core.data.PurchaseRepo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +35,7 @@ internal class BillingControllerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
-    private val purchaseRecorder: PurchaseRecorder,
+    private val purchaseRepo: PurchaseRepo,
     private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
@@ -96,20 +96,34 @@ internal class BillingControllerImpl @Inject constructor(
         val debugMessage = billingResult.debugMessage
         Timber.d("BillingClient: onPurchasesUpdated $status $debugMessage")
 
-        if (status != BillingStatus.OK) {
-            _purchaseState.value = if (status == BillingStatus.USER_CANCELED) {
-                PurchaseState.Canceled
-            } else {
-                Timber.e(BillingException("onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}"))
-                PurchaseState.Fail(status.toString())
+        when (status) {
+            BillingStatus.OK -> {
+                _purchaseState.value = PurchaseState.PaymentProcessing
+                appScope.launch {
+                    processPurchases(purchases.orEmpty())
+                }
             }
-            return
-        }
 
-        _purchaseState.value = PurchaseState.PaymentProcessing
+            BillingStatus.USER_CANCELED -> {
+                _purchaseState.value = PurchaseState.Canceled
+            }
 
-        appScope.launch {
-            processPurchases(purchases.orEmpty())
+            // Item already owned, it's likely due to the loss of premium status, try to recover it.
+            BillingStatus.ITEM_ALREADY_OWNED -> appScope.launch {
+                _purchaseState.value =
+                    if (purchaseRepo.hasPurchaseBelongsToCurrentUser(PRODUCT_PREMIUM_ID)) {
+                        authManager.markPremium()
+                        Timber.e(BillingRestoredException("Premium is restored for ${authManager.userId}"))
+                        PurchaseState.Success
+                    } else {
+                        PurchaseState.Fail(status.toString())
+                    }
+            }
+
+            else -> {
+                Timber.e(BillingException("onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}"))
+                _purchaseState.value = PurchaseState.Fail(status.toString())
+            }
         }
     }
 
@@ -192,7 +206,7 @@ internal class BillingControllerImpl @Inject constructor(
 
                     if (status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products) {
                         authManager.markPremium()
-                        purchaseRecorder.recordPurchase(purchase.orderId, purchase.products.first())
+                        purchaseRepo.recordPurchase(purchase.orderId, purchase.products.first())
                         _purchaseState.value = PurchaseState.Success
                     } else {
                         Timber.e(BillingException("Acknowledge failed ${billingResult.debugMessage}"))

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString

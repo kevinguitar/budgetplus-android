@@ -22,7 +22,7 @@ firebase-crashlytics = "3.0.6"
 # https://developer.android.com/jetpack/androidx/releases/credentials
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
-android-lifecycle = "2.9.3"
+android-lifecycle = "2.9.4"
 
 [libraries]
 android-activity = "androidx.activity:activity-ktx:1.11.0"

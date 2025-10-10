@@ -20,6 +20,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
+import com.kevlina.budgetplus.core.ui.FocusRequestDelay
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import kotlinx.coroutines.delay
@@ -95,7 +96,7 @@ fun EditCategoryDialog(
     }
 
     LaunchedEffect(Unit) {
-        delay(10)
+        delay(FocusRequestDelay)
         focusRequester.requestFocus()
     }
 }

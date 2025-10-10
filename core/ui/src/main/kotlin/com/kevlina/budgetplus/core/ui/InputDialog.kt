@@ -69,7 +69,7 @@ fun InputDialog(
     }
 
     LaunchedEffect(Unit) {
-        delay(10)
+        delay(FocusRequestDelay)
         focusRequester.requestFocus()
     }
 }

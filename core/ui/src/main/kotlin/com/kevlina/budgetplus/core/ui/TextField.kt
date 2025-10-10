@@ -26,8 +26,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
+import kotlin.time.Duration.Companion.milliseconds
 
 internal const val PLACEHOLDER_ALPHA = 0.5F
+
+// Delay for a short amount of time to let keyboard actually show up.
+val FocusRequestDelay = 10.milliseconds
 
 @Composable
 fun TextField(

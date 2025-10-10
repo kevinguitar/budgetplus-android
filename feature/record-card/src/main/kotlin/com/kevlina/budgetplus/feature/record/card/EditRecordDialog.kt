@@ -34,6 +34,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.FocusRequestDelay
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
@@ -224,7 +225,7 @@ fun EditRecordDialog(
     }
 
     LaunchedEffect(Unit) {
-        delay(10)
+        delay(FocusRequestDelay)
         nameFocus.requestFocus()
     }
 }

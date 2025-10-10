@@ -19,6 +19,7 @@ import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 import androidx.compose.material3.SnackbarDuration as MaterialSnackbarDuration
 import androidx.compose.material3.SnackbarHost as MaterialSnackbarHost
 
@@ -60,7 +61,7 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
         onDismiss = {
             hostState.currentSnackbarData?.dismiss()
             scope.launch {
-                delay(50) // A small delay for better animation
+                delay(SnackbarDelay)
                 dismissSnackbarState.reset()
             }
         }
@@ -84,6 +85,9 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
         }
     }
 }
+
+// A small delay for better animation
+private val SnackbarDelay = 50.milliseconds
 
 @Preview
 @Composable

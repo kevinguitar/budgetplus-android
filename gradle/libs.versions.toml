@@ -4,7 +4,7 @@ gradle-plugin = "8.11.1"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.2.20"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin/versions
-ksp = "2.2.20-2.0.3"
+ksp = "2.2.20-2.0.4"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
@@ -57,7 +57,7 @@ firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlyti
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
-google-ads = "com.google.android.gms:play-services-ads:24.6.0"
+google-ads = "com.google.android.gms:play-services-ads:24.7.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.20.0.1"
 google-billing = "com.android.billingclient:billing-ktx:8.0.0"
 google-id = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
@@ -115,7 +115,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-google-services = "com.google.gms.google-services:4.4.3"
+google-services = "com.google.gms.google-services:4.4.4"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

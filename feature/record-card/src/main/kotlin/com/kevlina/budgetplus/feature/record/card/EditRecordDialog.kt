@@ -34,6 +34,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
+import com.kevlina.budgetplus.core.ui.FocusRequestDelay
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
@@ -43,6 +44,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import java.time.LocalDate
@@ -223,6 +225,7 @@ fun EditRecordDialog(
     }
 
     LaunchedEffect(Unit) {
+        delay(FocusRequestDelay)
         nameFocus.requestFocus()
     }
 }

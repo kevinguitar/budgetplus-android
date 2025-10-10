@@ -22,6 +22,7 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
+import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -94,6 +95,7 @@ fun EditCategoryDialog(
     }
 
     LaunchedEffect(Unit) {
+        delay(10)
         focusRequester.requestFocus()
     }
 }

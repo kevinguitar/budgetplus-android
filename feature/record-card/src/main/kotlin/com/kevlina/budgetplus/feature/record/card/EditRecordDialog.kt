@@ -43,6 +43,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import java.time.LocalDate
@@ -223,6 +224,7 @@ fun EditRecordDialog(
     }
 
     LaunchedEffect(Unit) {
+        delay(10)
         nameFocus.requestFocus()
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
+import kotlinx.coroutines.delay
 
 @Composable
 fun InputDialog(
@@ -68,6 +69,7 @@ fun InputDialog(
     }
 
     LaunchedEffect(Unit) {
+        delay(10)
         focusRequester.requestFocus()
     }
 }

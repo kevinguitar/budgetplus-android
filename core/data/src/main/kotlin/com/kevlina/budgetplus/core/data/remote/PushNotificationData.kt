@@ -15,4 +15,5 @@ data class PushNotificationData(
     val descEn: CharSequence? = null,
     val deeplink: CharSequence? = null,
     val sentOn: Long? = null,
+    val createdOn: Long? = System.currentTimeMillis(),
 )

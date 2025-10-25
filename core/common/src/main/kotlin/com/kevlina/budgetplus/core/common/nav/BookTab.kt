@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.common.nav
 
+import androidx.navigation3.runtime.NavKey
 import com.kevlina.budgetplus.core.common.RecordType
 import kotlinx.serialization.Serializable
 
@@ -52,7 +53,7 @@ sealed interface HistoryDest {
     data class Search(val type: RecordType) : HistoryDest
 }
 
-sealed interface InsiderDest {
+sealed interface InsiderDest : NavKey {
 
     @Serializable
     data object Insider : InsiderDest

@@ -12,6 +12,7 @@ dependencies {
 
     implementation(libs.android.activity)
     implementation(libs.navigation.compose)
+    implementation(libs.navigation3.ui)
     implementation(libs.profile.installer)
     implementation(libs.google.ads)
     implementation(libs.lottie.compose)

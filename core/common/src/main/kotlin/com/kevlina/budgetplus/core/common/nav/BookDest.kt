@@ -4,53 +4,48 @@ import androidx.navigation3.runtime.NavKey
 import com.kevlina.budgetplus.core.common.RecordType
 import kotlinx.serialization.Serializable
 
-sealed interface BookTab {
+sealed interface BookDest : NavKey {
+
+    /**
+     * Destinations of Add tab
+     */
+    @Serializable
+    data object Record : BookDest
 
     @Serializable
-    data object Add : BookTab
+    data class EditCategory(val type: RecordType) : BookDest
 
     @Serializable
-    data object History : BookTab
-}
-
-sealed interface AddDest {
+    data class Settings(val showMembers: Boolean = false) : BookDest
 
     @Serializable
-    data object Record : AddDest
+    data object UnlockPremium : BookDest
 
     @Serializable
-    data class EditCategory(val type: RecordType) : AddDest
+    data object BatchRecord : BookDest
 
     @Serializable
-    data class Settings(val showMembers: Boolean = false) : AddDest
+    data class Colors(val hex: String? = null) : BookDest
 
     @Serializable
-    data object UnlockPremium : AddDest
+    data object CurrencyPicker : BookDest
 
+
+    /**
+     * Destinations of History tab
+     */
     @Serializable
-    data object BatchRecord : AddDest
-
-    @Serializable
-    data class Colors(val hex: String? = null) : AddDest
-
-    @Serializable
-    data object CurrencyPicker : AddDest
-}
-
-sealed interface HistoryDest {
-
-    @Serializable
-    data object Overview : HistoryDest
+    data object Overview : BookDest
 
     @Serializable
     data class Records(
         val type: RecordType,
         val category: String,
         val authorId: String?,
-    ) : HistoryDest
+    ) : BookDest
 
     @Serializable
-    data class Search(val type: RecordType) : HistoryDest
+    data class Search(val type: RecordType) : BookDest
 }
 
 sealed interface InsiderDest : NavKey {

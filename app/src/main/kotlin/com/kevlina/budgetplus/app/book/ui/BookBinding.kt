@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.app.book.ui
 
 import android.content.Intent
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -18,22 +19,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.nav.AddDest
-import com.kevlina.budgetplus.core.common.nav.BookTab
+import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @Composable
 internal fun BookBinding(
@@ -41,7 +38,7 @@ internal fun BookBinding(
     newIntent: Intent?,
 ) {
 
-    val navController = rememberNavController()
+    val navController = vm.navController
 
     val showAds by vm.showAds.collectAsStateWithLifecycle()
     val isAdMobInitialized by vm.isAdMobInitialized.collectAsStateWithLifecycle()
@@ -52,8 +49,9 @@ internal fun BookBinding(
     var isUnlockingPremium by remember { mutableStateOf(false) }
 
     LaunchedEffect(vm) {
+        //TODO: Move to VM
         vm.unlockPremiumEvent
-            .consumeEach { navController.navigate(AddDest.UnlockPremium) }
+            .consumeEach { navController.navigate(BookDest.UnlockPremium) }
             .launchIn(this)
 
         vm.snackbarSender.snackbarEvent
@@ -61,26 +59,26 @@ internal fun BookBinding(
             .launchIn(this)
     }
 
-    LaunchedEffect(newIntent) {
+   /*TODO LaunchedEffect(newIntent) {
         try {
             navController.handleDeepLink(newIntent)
         } catch (e: Exception) {
             Timber.e(e, "Fail to handle deeplink")
         }
     }
-
+*/
     // Clear the preview colors if the user navigates out of the picker screen.
-    LaunchedEffect(navController) {
+    /*TODO LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow
             .onEach { entry ->
-                if (!entry.destination.hasRoute<AddDest.Colors>()) {
+                if (!entry.destination.hasRoute<BookDest.Colors>()) {
                     vm.themeManager.clearPreviewColors()
                 }
 
-                isUnlockingPremium = entry.destination.hasRoute<AddDest.UnlockPremium>()
+                isUnlockingPremium = entry.destination.hasRoute<BookDest.UnlockPremium>()
             }
             .collect()
-    }
+    }*/
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -96,19 +94,21 @@ internal fun BookBinding(
                     .padding(bottom = innerPadding.calculateBottomPadding())
                     .background(color = previewColors?.light ?: LocalAppColors.current.light)
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = BookTab.Add,
-                    enterTransition = { fadeIn() },
-                    exitTransition = { fadeOut() },
+                NavDisplay(
+                    backStack = vm.navController.backStack,
+                    entryProvider = { bookNavGraph(navController, it) },
+                    entryDecorators = listOf(
+                        rememberSaveableStateHolderNavEntryDecorator(),
+                        rememberViewModelStoreNavEntryDecorator()
+                    ),
+                    onBack = vm.navController::navigateUp,
+                    transitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
+                    popTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()
                         .background(color = previewColors?.light ?: LocalAppColors.current.light)
-                ) {
-                    addTabGraph(navController)
-                    overviewTabGraph(navController)
-                }
+                )
 
                 if (showAds && !isUnlockingPremium) {
                     AdsBanner(isAdMobInitialized = isAdMobInitialized)

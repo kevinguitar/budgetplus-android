@@ -18,10 +18,10 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -32,7 +32,7 @@ import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun RecordScreen(navController: NavController) {
+fun RecordScreen(navController: NavController<BookDest>) {
 
     val vm = hiltViewModel<RecordViewModel>()
 
@@ -68,7 +68,7 @@ fun RecordScreen(navController: NavController) {
                     imageVector = Icons.Rounded.Settings,
                     description = stringResource(id = R.string.settings_description),
                     onClick = {
-                        navController.navigate(AddDest.Settings())
+                        navController.navigate(BookDest.Settings())
                     }
                 )
             }
@@ -139,7 +139,7 @@ internal class RecordContentState(
 }
 
 private fun RecordViewModel.toState(
-    navController: NavController,
+    navController: NavController<BookDest>,
     scrollable: Boolean,
 ) = RecordContentState(
     recordInfoState = RecordInfoState(
@@ -150,7 +150,7 @@ private fun RecordViewModel.toState(
         categoriesGridState = categoriesVm.toState(
             type = type,
             onEditClicked = if (bookRepo.canEdit) {
-                { navController.navigate(AddDest.EditCategory(type.value)) }
+                { navController.navigate(BookDest.EditCategory(type.value)) }
             } else null,
         ),
         dateAndPricingState = DateAndPricingState(
@@ -161,7 +161,7 @@ private fun RecordViewModel.toState(
             setDate = ::setDate,
             editCurrency = {
                 if (bookRepo.canEdit) {
-                    navController.navigate(route = AddDest.CurrencyPicker)
+                    navController.navigate(BookDest.CurrencyPicker)
                 }
             }
         ),

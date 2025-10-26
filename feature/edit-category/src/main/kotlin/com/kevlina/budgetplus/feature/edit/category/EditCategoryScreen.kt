@@ -17,9 +17,10 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
@@ -30,7 +31,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun EditCategoryScreen(
     vm: EditCategoryViewModel = hiltViewModel(),
-    navController: NavController,
+    navController: NavController<BookDest>,
     type: RecordType,
 ) {
 

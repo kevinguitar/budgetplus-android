@@ -22,9 +22,9 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -49,7 +49,7 @@ private const val CUSTOM_COLOR_TRANSITION = 100L
 
 @Composable
 fun ColorTonePickerScreen(
-    navController: NavController,
+    navController: NavController<BookDest>,
     hexFromLink: String?,
 ) {
     val vm = hiltViewModel<ColorTonePickerViewModel>()
@@ -112,7 +112,7 @@ fun ColorTonePickerScreen(
 
     fun unlockPremium() {
         vm.trackUnlockPremium()
-        navController.navigate(AddDest.UnlockPremium)
+        navController.navigate(BookDest.UnlockPremium)
     }
 
     if (isSaveEnabled) {

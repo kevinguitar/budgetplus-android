@@ -10,17 +10,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContentWide(
     state: OverviewContentState,
-    navController: NavController,
+    navController: NavController<BookDest>,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -54,7 +54,7 @@ internal fun OverviewContentWide(
 private fun OverviewContentWide_Preview() = AppTheme {
     OverviewContentWide(
         state = OverviewContentState.preview,
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

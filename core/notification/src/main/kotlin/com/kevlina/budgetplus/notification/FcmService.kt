@@ -55,7 +55,7 @@ class FcmService : FirebaseMessagingService() {
         val contentIntent = Intent(Intent.ACTION_VIEW)
         contentIntent.data = if (channelId == CHANNEL_NEW_MEMBER) {
             // Open the record screen and show the members dialog
-            // the query must match AddDest.Settings
+            // the query must match BookDest.Settings
             "$APP_DEEPLINK/$NAV_SETTINGS_PATH?showMembers=true"
         } else {
             message.data["url"] ?: defaultDeeplink

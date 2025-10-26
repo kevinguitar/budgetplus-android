@@ -5,10 +5,9 @@ plugins {
 }
 
 dependencies {
+    api(libs.navigation3.runtime)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.runtime)
     implementation(libs.coil)
-    implementation(libs.navigation.runtime)
-    implementation(libs.navigation3.runtime)
     testFixturesImplementation(libs.android.activity)
 }

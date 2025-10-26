@@ -23,9 +23,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.hasPermission
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.settings.api.icon
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -37,7 +38,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
-fun OverviewScreen(navController: NavController) {
+fun OverviewScreen(navController: NavController<BookDest>) {
 
     val vm = hiltViewModel<OverviewViewModel>()
 

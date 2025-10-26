@@ -24,8 +24,9 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.MenuAction
@@ -41,7 +42,7 @@ import kotlinx.coroutines.flow.combine
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RecordsScreen(
-    navController: NavController,
+    navController: NavController<BookDest>,
     vm: RecordsViewModel,
 ) {
 

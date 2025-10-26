@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.common.nav.HistoryDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 
 @HiltViewModel(assistedFactory = SearchViewModel.Factory::class)
 class SearchViewModel @AssistedInject constructor(
-    @Assisted params: HistoryDest.Search,
+    @Assisted params: BookDest.Search,
     private val searchRepo: SearchRepo,
     private val authManager: AuthManager,
     private val bookRepo: BookRepo,
@@ -177,6 +177,6 @@ class SearchViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(params: HistoryDest.Search): SearchViewModel
+        fun create(params: BookDest.Search): SearchViewModel
     }
 }

@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
 internal fun OverviewContent(
     state: OverviewContentState,
-    navController: NavController,
+    navController: NavController<BookDest>,
     modifier: Modifier = Modifier,
 ) {
     OverviewList(
@@ -54,7 +54,7 @@ internal class OverviewContentState(
 private fun OverviewContent_Preview() = AppTheme {
     OverviewContent(
         state = OverviewContentState.preview,
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

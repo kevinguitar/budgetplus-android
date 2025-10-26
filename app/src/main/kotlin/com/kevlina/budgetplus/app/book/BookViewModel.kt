@@ -10,7 +10,9 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.common.nav.BottomNavTab
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -28,7 +30,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class BookViewModel @Inject constructor(
+internal class BookViewModel @Inject constructor(
     val snackbarSender: SnackbarSender,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,
@@ -42,6 +44,8 @@ class BookViewModel @Inject constructor(
 
     private val _unlockPremiumEvent = MutableEventFlow<Unit>()
     val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent
+
+    val navController = NavController(startRoot = BottomNavTab.Add.root)
 
     val showAds = authManager.isPremium.mapState { !it }
     val isAdMobInitialized = adMobInitializer.isInitialized

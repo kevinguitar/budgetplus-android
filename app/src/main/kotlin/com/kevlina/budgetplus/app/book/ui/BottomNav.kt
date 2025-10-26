@@ -19,35 +19,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.FormatListBulleted
 import androidx.compose.material.icons.rounded.PostAdd
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.kevlina.budgetplus.core.common.nav.BookTab
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.BottomNavTab
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.rippleClick
 
-private val bottomTabs = listOf(BookTab.Add, BookTab.History)
-
 @Composable
 internal fun BottomNav(
-    navController: NavController,
+    navController: NavController<BookDest>,
     previewColors: ThemeColors?,
 ) {
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
     val lightColor = previewColors?.light ?: LocalAppColors.current.light
     val darkColor = previewColors?.dark ?: LocalAppColors.current.dark
 
@@ -58,7 +48,6 @@ internal fun BottomNav(
             .navigationBarsPadding()
             .height(50.dp)
     ) {
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,12 +61,11 @@ internal fun BottomNav(
                 .weight(1F)
                 .fillMaxWidth()
         ) {
-
-            bottomTabs.forEach { tab ->
+            BottomNavTab.entries.forEach { tab ->
                 BottomNavItem(
                     navController = navController,
                     tab = tab,
-                    isSelected = currentDestination?.hierarchy?.any { it.hasRoute(tab::class) } == true,
+                    isSelected = navController.rootStack.lastOrNull() == tab.root,
                     darkColor = darkColor,
                     lightColor = lightColor
                 )
@@ -88,33 +76,18 @@ internal fun BottomNav(
 
 @Composable
 private fun RowScope.BottomNavItem(
-    navController: NavController,
-    tab: BookTab,
+    navController: NavController<BookDest>,
+    tab: BottomNavTab,
     isSelected: Boolean,
     darkColor: Color,
     lightColor: Color,
 ) {
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .weight(1F)
             .fillMaxHeight()
-            .rippleClick {
-                navController.navigate(tab) {
-                    // Pop up to the start destination of the graph to
-                    // avoid building up a large stack of destinations
-                    // on the back stack as users select items
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    // Avoid multiple copies of the same destination when
-                    // reselecting the same item
-                    launchSingleTop = true
-                    // Restore state when reselecting a previously selected item
-                    restoreState = true
-                }
-            }
+            .rippleClick { navController.selectRoot(tab.root) }
     ) {
 
         this@BottomNavItem.AnimatedVisibility(
@@ -135,8 +108,8 @@ private fun RowScope.BottomNavItem(
 
         Icon(
             imageVector = when (tab) {
-                BookTab.Add -> Icons.Rounded.PostAdd
-                BookTab.History -> Icons.AutoMirrored.Rounded.FormatListBulleted
+                BottomNavTab.Add -> Icons.Rounded.PostAdd
+                BottomNavTab.History -> Icons.AutoMirrored.Rounded.FormatListBulleted
             },
             tint = if (isSelected) lightColor else darkColor,
             modifier = Modifier.size(28.dp)

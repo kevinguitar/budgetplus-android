@@ -74,6 +74,7 @@ internal fun BookBinding(
                     onBack = vm.navController::navigateUp,
                     transitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     popTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
+                    predictivePopTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()

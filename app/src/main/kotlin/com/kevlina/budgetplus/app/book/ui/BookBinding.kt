@@ -45,7 +45,6 @@ internal fun BookBinding(
     val bubbleDest by vm.bubbleViewModel.destination.collectAsStateWithLifecycle()
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
-    var isUnlockingPremium by remember { mutableStateOf(false) }
 
     LaunchedEffect(vm) {
         vm.snackbarSender.snackbarEvent
@@ -61,18 +60,6 @@ internal fun BookBinding(
         }
     }
 */
-    // Clear the preview colors if the user navigates out of the picker screen.
-    /*TODO LaunchedEffect(navController) {
-        navController.currentBackStackEntryFlow
-            .onEach { entry ->
-                if (!entry.destination.hasRoute<BookDest.Colors>()) {
-                    vm.themeManager.clearPreviewColors()
-                }
-
-                isUnlockingPremium = entry.destination.hasRoute<BookDest.UnlockPremium>()
-            }
-            .collect()
-    }*/
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -104,7 +91,7 @@ internal fun BookBinding(
                         .background(color = previewColors?.light ?: LocalAppColors.current.light)
                 )
 
-                if (showAds && !isUnlockingPremium) {
+                if (showAds) {
                     AdsBanner(isAdMobInitialized = isAdMobInitialized)
                 }
             }

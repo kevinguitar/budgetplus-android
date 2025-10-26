@@ -1,13 +1,13 @@
 package com.kevlina.budgetplus.app.book
 
 import android.content.Intent
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
-import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.BottomNavTab
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
@@ -21,8 +21,12 @@ import com.kevlina.budgetplus.core.data.JoinBookException
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.bubble.BubbleViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,8 +46,15 @@ internal class BookViewModel @Inject constructor(
 ) : ViewModel() {
 
     val navController = NavController(startRoot = BottomNavTab.Add.root)
+    private val currentNavKeyFlow = snapshotFlow { navController.backStack.lastOrNull() }.filterNotNull()
 
-    val showAds = authManager.isPremium.mapState { !it }
+    val showAds = combine(
+        authManager.isPremium,
+        currentNavKeyFlow
+    ) { isPremium, currentNavKey ->
+        !isPremium && currentNavKey != BookDest.UnlockPremium
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+
     val isAdMobInitialized = adMobInitializer.isInitialized
 
     init {
@@ -56,6 +67,15 @@ internal class BookViewModel @Inject constructor(
                 }
                 .launchIn(viewModelScope)
         }
+
+        currentNavKeyFlow
+            .onEach { key ->
+                // Clear the preview colors if the user navigates out of the picker screen.
+                if (key != BookDest.Colors) {
+                    themeManager.clearPreviewColors()
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun handleJoinIntent(intent: Intent): Boolean {

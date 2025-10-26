@@ -19,7 +19,9 @@ fun PushNotificationsScreen(
     navigateUp: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LocalAppColors.current.light)
     ) {
 
         TopBar(
@@ -32,7 +34,6 @@ fun PushNotificationsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1F)
-                .background(LocalAppColors.current.light)
         ) {
             PushNotificationsContent(
                 navigateUp = navigateUp

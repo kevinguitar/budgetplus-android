@@ -21,7 +21,9 @@ fun InsiderScreen(
     openPushNotifications: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LocalAppColors.current.light)
     ) {
 
         TopBar(
@@ -39,7 +41,6 @@ fun InsiderScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1F)
-                .background(LocalAppColors.current.light)
         ) {
             InsiderContent()
         }

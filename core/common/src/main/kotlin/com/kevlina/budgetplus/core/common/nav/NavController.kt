@@ -10,7 +10,6 @@ import timber.log.Timber
  *
  * @param startRoot which root of navigation tree that is initially displayed.
  */
-//TODO: Cover with a test
 class NavController<T : NavKey>(private val startRoot: T) {
 
     private val rootBackStacks = hashMapOf<T, SnapshotStateList<T>>(

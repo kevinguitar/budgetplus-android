@@ -20,7 +20,7 @@ https://play.google.com/store/apps/details?id=com.kevlina.budgetplus
 - [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) & [Flow](https://kotlinlang.org/docs/flow.html) for asynchronous work
 - [Hilt](https://dagger.dev/hilt/) for dependency injection
 - [Lottie Compose](https://github.com/airbnb/lottie/blob/master/android-compose.md) for animation
-- [Navigation Compose](https://developer.android.com/develop/ui/compose/navigation) for deeplink and navigation
+- [Navigation3](https://developer.android.com/guide/navigation/navigation-3) for Composable navigation
 - [Google Billing](https://developer.android.com/google/play/billing/integrate) for in-app purchases
 - [Admob](https://admob.google.com/home/) with meta audience network mediation for Ads
 - [Coil](https://github.com/coil-kt/coil) for image loading

@@ -4,12 +4,11 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
-import com.kevlina.budgetplus.core.common.EventFlow
-import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
+import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.BottomNavTab
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -41,9 +40,6 @@ internal class BookViewModel @Inject constructor(
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
 ) : ViewModel() {
-
-    private val _unlockPremiumEvent = MutableEventFlow<Unit>()
-    val unlockPremiumEvent: EventFlow<Unit> get() = _unlockPremiumEvent
 
     val navController = NavController(startRoot = BottomNavTab.Add.root)
 
@@ -80,7 +76,7 @@ internal class BookViewModel @Inject constructor(
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
                 snackbarSender.send(stringProvider[R.string.book_join_success, bookName])
             } catch (e: JoinBookException.ExceedFreeLimit) {
-                _unlockPremiumEvent.sendEvent()
+                navController.navigate(BookDest.UnlockPremium)
                 snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.General) {
                 snackbarSender.send(e.errorRes)

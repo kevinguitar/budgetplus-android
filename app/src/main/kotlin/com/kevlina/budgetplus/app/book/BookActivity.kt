@@ -94,6 +94,7 @@ class BookActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        //TODO: move completely to VM
         if (!viewModel.handleJoinIntent(intent)) {
             newIntent = intent
         }

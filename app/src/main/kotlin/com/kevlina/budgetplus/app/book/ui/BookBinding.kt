@@ -25,7 +25,6 @@ import androidx.navigation3.ui.NavDisplay
 import com.kevlina.budgetplus.app.book.BookViewModel
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
@@ -49,11 +48,6 @@ internal fun BookBinding(
     var isUnlockingPremium by remember { mutableStateOf(false) }
 
     LaunchedEffect(vm) {
-        //TODO: Move to VM
-        vm.unlockPremiumEvent
-            .consumeEach { navController.navigate(BookDest.UnlockPremium) }
-            .launchIn(this)
-
         vm.snackbarSender.snackbarEvent
             .consumeEach { snackbarData = it }
             .launchIn(this)

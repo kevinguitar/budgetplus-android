@@ -81,37 +81,4 @@ internal fun bookNavGraph(
             )
         }
     }
-
-    //TODO: Hook deeplink
-    /*
-        composable<BookDest.Record>(
-            deepLinks = listOf(
-                navDeepLink<BookDest.Record>(basePath = "$APP_DEEPLINK/$NAV_RECORD_PATH")
-            )
-        )
-
-        composable<BookDest.Settings>(
-            deepLinks = listOf(
-                navDeepLink<BookDest.Settings>(basePath = "$APP_DEEPLINK/$NAV_SETTINGS_PATH")
-            )
-        )
-
-        composable<BookDest.UnlockPremium>(
-            deepLinks = listOf(
-                navDeepLink<BookDest.UnlockPremium>(basePath = "$APP_DEEPLINK/$NAV_UNLOCK_PREMIUM_PATH")
-            )
-        )
-
-        composable<BookDest.Colors>(
-            deepLinks = listOf(
-                navDeepLink<BookDest.Colors>(basePath = "$APP_DEEPLINK/$NAV_COLORS_PATH")
-            )
-        )
-
-        composable<HistoryDest.Overview>(
-            deepLinks = listOf(
-                navDeepLink<HistoryDest.Overview>(basePath = "$APP_DEEPLINK/$NAV_OVERVIEW_PATH")
-            )
-        )
-    }*/
 }

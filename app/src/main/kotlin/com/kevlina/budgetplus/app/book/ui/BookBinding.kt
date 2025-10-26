@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.app.book.ui
 
-import android.content.Intent
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -34,7 +33,6 @@ import kotlinx.coroutines.flow.launchIn
 @Composable
 internal fun BookBinding(
     vm: BookViewModel,
-    newIntent: Intent?,
 ) {
 
     val navController = vm.navController
@@ -51,15 +49,6 @@ internal fun BookBinding(
             .consumeEach { snackbarData = it }
             .launchIn(this)
     }
-
-   /*TODO LaunchedEffect(newIntent) {
-        try {
-            navController.handleDeepLink(newIntent)
-        } catch (e: Exception) {
-            Timber.e(e, "Fail to handle deeplink")
-        }
-    }
-*/
 
     Box(modifier = Modifier.fillMaxSize()) {
 

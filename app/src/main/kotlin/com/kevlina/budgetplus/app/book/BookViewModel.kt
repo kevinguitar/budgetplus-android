@@ -10,7 +10,12 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.BottomNavTab
+import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_OVERVIEW_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_UNLOCK_PREMIUM_PATH
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -78,13 +83,24 @@ internal class BookViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun handleJoinIntent(intent: Intent): Boolean {
-        val uri = intent.data ?: return false
-        return if (uri.pathSegments.firstOrNull() == NAV_JOIN_PATH) {
-            bookRepo.setPendingJoinRequest(uri.lastPathSegment)
-            true
-        } else {
-            false
+    fun handleIntent(intent: Intent) {
+        val uri = intent.data ?: return
+        return when (val firstSegment = uri.pathSegments.firstOrNull()) {
+            NAV_JOIN_PATH -> bookRepo.setPendingJoinRequest(uri.lastPathSegment)
+            NAV_RECORD_PATH -> navController.navigate(BookDest.Record)
+            NAV_OVERVIEW_PATH -> navController.navigate(BookDest.Overview)
+            NAV_UNLOCK_PREMIUM_PATH -> navController.navigate(BookDest.UnlockPremium)
+            NAV_SETTINGS_PATH -> {
+                val showMembers = uri.getQueryParameter("showMembers")?.toBoolean() ?: false
+                navController.navigate(BookDest.Settings(showMembers = showMembers))
+            }
+
+            NAV_COLORS_PATH -> {
+                val hex = uri.getQueryParameter("hex")
+                navController.navigate(BookDest.Colors(hex = hex))
+            }
+
+            else -> Timber.d("Deeplink: Unknown segment $firstSegment. Url=$uri")
         }
     }
 

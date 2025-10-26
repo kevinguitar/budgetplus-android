@@ -11,12 +11,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 internal fun OverviewHeader(
     state: OverviewHeaderState,
-    navController: NavController,
+    navController: NavController<BookDest>,
     modifier: Modifier = Modifier,
 ) {
 
@@ -111,7 +111,7 @@ internal data class OverviewHeaderState(
 private fun OverviewHeader_Preview() = AppTheme {
     OverviewHeader(
         state = OverviewHeaderState.preview,
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier
             .background(LocalAppColors.current.light)
             .padding(horizontal = 16.dp)

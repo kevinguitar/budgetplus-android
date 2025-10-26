@@ -17,17 +17,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -43,7 +42,7 @@ import java.time.LocalDate
 @Composable
 internal fun ColumnScope.TimePeriodSelector(
     state: TimePeriodSelectorState,
-    navController: NavController,
+    navController: NavController<BookDest>,
 ) {
 
     val timePeriod by state.timePeriod.collectAsStateWithLifecycle()
@@ -54,7 +53,7 @@ internal fun ColumnScope.TimePeriodSelector(
 
     LaunchedEffect(key1 = state.openPremiumEvent) {
         state.openPremiumEvent
-            .consumeEach { navController.navigate(AddDest.UnlockPremium) }
+            .consumeEach { navController.navigate(BookDest.UnlockPremium) }
             .collect()
     }
 
@@ -189,7 +188,7 @@ private fun TimePeriodSelector_Preview() = AppTheme {
     ) {
         TimePeriodSelector(
             state = TimePeriodSelectorState.preview,
-            navController = NavController(LocalContext.current)
+            navController = NavController.preview
         )
     }
 }

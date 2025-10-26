@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.insider.app.main.ui
 
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -16,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.InsiderDest
@@ -32,8 +35,6 @@ import kotlinx.coroutines.flow.launchIn
 
 @Composable
 internal fun InsiderBinding(vm: InsiderViewModel) {
-
-    val navController = rememberNavController()
 
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
 
@@ -56,24 +57,30 @@ internal fun InsiderBinding(vm: InsiderViewModel) {
                     // Do not consider the top padding, and let TopBar handle it.
                     .padding(bottom = innerPadding.calculateBottomPadding())
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = InsiderDest.Insider,
-                    enterTransition = { fadeIn() },
-                    exitTransition = { fadeOut() },
+                val backStack = rememberNavBackStack(InsiderDest.Insider)
+
+                NavDisplay(
+                    backStack = backStack,
+                    entryProvider = entryProvider {
+                        entry<InsiderDest.Insider> {
+                            InsiderScreen(openPushNotifications = { backStack.add(InsiderDest.PushNotifications) })
+                        }
+
+                        entry<InsiderDest.PushNotifications> {
+                            PushNotificationsScreen(navigateUp = { backStack.removeLastOrNull() })
+                        }
+                    },
+                    entryDecorators = listOf(
+                        rememberSaveableStateHolderNavEntryDecorator(),
+                        rememberViewModelStoreNavEntryDecorator()
+                    ),
+                    transitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
+                    popTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()
                         .background(color = LocalAppColors.current.light)
-                ) {
-                    composable<InsiderDest.Insider> {
-                        InsiderScreen(navController)
-                    }
-
-                    composable<InsiderDest.PushNotifications> {
-                        PushNotificationsScreen(navController)
-                    }
-                }
+                )
             }
         }
     }

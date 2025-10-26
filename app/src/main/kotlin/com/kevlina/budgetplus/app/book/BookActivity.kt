@@ -8,8 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.app.book.ui.BookBinding
@@ -42,8 +40,6 @@ class BookActivity : ComponentActivity() {
 
     private val viewModel by viewModels<BookViewModel>()
 
-    private var newIntent: Intent? by mutableStateOf(null)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // When the user open the settings from app preference.
         if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
@@ -54,7 +50,7 @@ class BookActivity : ComponentActivity() {
         setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
 
-        viewModel.handleJoinIntent(intent)
+        viewModel.handleIntent(intent)
 
         val destination = when {
             authManager.userState.value == null -> AuthActivity::class.java
@@ -70,10 +66,7 @@ class BookActivity : ComponentActivity() {
         setContent {
             val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
             AppTheme(themeColors) {
-                BookBinding(
-                    vm = viewModel,
-                    newIntent = newIntent,
-                )
+                BookBinding(vm = viewModel)
             }
 
             val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()
@@ -90,12 +83,9 @@ class BookActivity : ComponentActivity() {
         }
 
         consumeNavigation(viewModel.navigation)
-    }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        if (!viewModel.handleJoinIntent(intent)) {
-            newIntent = intent
+        addOnNewIntentListener { newIntent ->
+            viewModel.handleIntent(newIntent)
         }
     }
 

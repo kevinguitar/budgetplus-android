@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DropdownDivider
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -38,7 +38,7 @@ import com.kevlina.budgetplus.feature.add.record.BookSelectorViewModel
 import com.kevlina.budgetplus.feature.add.record.CreateBookBtnState
 
 @Composable
-fun BookSelector(navController: NavController) {
+fun BookSelector(navController: NavController<BookDest>) {
 
     val viewModel = hiltViewModel<BookSelectorViewModel>()
 
@@ -120,7 +120,7 @@ fun BookSelector(navController: NavController) {
                 onClick = {
                     when (createBookBtnState) {
                         CreateBookBtnState.Enabled -> isBookCreationDialogShown = true
-                        CreateBookBtnState.NeedPremium -> navController.navigate(AddDest.UnlockPremium)
+                        CreateBookBtnState.NeedPremium -> navController.navigate(BookDest.UnlockPremium)
                         CreateBookBtnState.ReachedMax -> viewModel.showReachedMaxMessage()
                     }
                     isSelectorShown = false

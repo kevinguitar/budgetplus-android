@@ -52,6 +52,9 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
             }
 
             signingConfigs {
+                named("debug") {
+                    storeFile = project.rootProject.file("misc/debug.keystore")
+                }
                 create("release") {
                     storeFile = project.localProperty("KEYSTORE_PATH")?.let { project.rootProject.file(it) }
                     storePassword = project.localProperty("KEYSTORE_PASSWORD")

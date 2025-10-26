@@ -1,7 +1,9 @@
 package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -17,9 +19,11 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
+import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
@@ -30,7 +34,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun EditCategoryScreen(
     vm: EditCategoryViewModel = hiltViewModel(),
-    navController: NavController,
+    navController: NavController<BookDest>,
     type: RecordType,
 ) {
 
@@ -62,7 +66,11 @@ fun EditCategoryScreen(
         BackHandler(onBack = ::navigateUp)
     }
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LocalAppColors.current.light)
+    ) {
         TopBar(
             title = stringResource(id = R.string.category_edit_title),
             navigateUp = ::navigateUp,

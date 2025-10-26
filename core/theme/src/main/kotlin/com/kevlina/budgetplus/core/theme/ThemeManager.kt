@@ -114,7 +114,7 @@ class ThemeManager @Inject constructor(
         val colorsLink = APP_DEEPLINK.toUri()
             .buildUpon()
             .appendPath(NAV_COLORS_PATH)
-            // Should match AddDest.Colors
+            // Should match BookDest.Colors
             .appendQueryParameter("hex", editedCustomColors.encode())
             .build()
         tracker.logEvent("color_tone_link_generated")

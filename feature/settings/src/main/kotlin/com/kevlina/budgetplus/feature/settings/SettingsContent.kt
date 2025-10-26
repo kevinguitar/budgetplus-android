@@ -35,9 +35,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.nav.AddDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.settings.api.ChartMode
 import com.kevlina.budgetplus.core.settings.api.icon
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -51,7 +51,7 @@ import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 
 @Composable
 internal fun SettingsContent(
-    navController: NavController,
+    navController: NavController<BookDest>,
     vm: SettingsViewModel,
     showMembers: Boolean,
     modifier: Modifier = Modifier,
@@ -84,9 +84,9 @@ internal fun SettingsContent(
             onClick = {
                 vm.trackBatchRecordClicked()
                 if (isPremium) {
-                    navController.navigate(AddDest.BatchRecord)
+                    navController.navigate(BookDest.BatchRecord)
                 } else {
-                    navController.navigate(AddDest.UnlockPremium)
+                    navController.navigate(BookDest.UnlockPremium)
                 }
             }
         )
@@ -95,7 +95,7 @@ internal fun SettingsContent(
             SettingsItem(
                 text = stringResource(id = R.string.premium_hide_ads),
                 showCrownAnimation = true,
-                onClick = { navController.navigate(AddDest.UnlockPremium) }
+                onClick = { navController.navigate(BookDest.UnlockPremium) }
             )
         }
 
@@ -115,7 +115,7 @@ internal fun SettingsContent(
             SettingsItem(
                 text = stringResource(id = R.string.settings_edit_book_currency),
                 icon = Icons.Rounded.CurrencyExchange,
-                onClick = { navController.navigate(AddDest.CurrencyPicker) }
+                onClick = { navController.navigate(BookDest.CurrencyPicker) }
             )
         }
 
@@ -157,7 +157,7 @@ internal fun SettingsContent(
             text = stringResource(id = R.string.color_tone_picker_title),
             icon = Icons.Rounded.ColorLens,
             roundTop = !vm.canSelectLanguage,
-            onClick = { navController.navigate(AddDest.Colors()) }
+            onClick = { navController.navigate(BookDest.Colors()) }
         )
 
         SettingsItem(

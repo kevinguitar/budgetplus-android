@@ -22,16 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.nav.HistoryDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -55,7 +54,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 internal fun OverviewList(
     state: OverviewListState,
-    navController: NavController,
+    navController: NavController<BookDest>,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
 ) {
@@ -83,7 +82,7 @@ internal fun OverviewList(
     fun navigateToRecords(category: String) {
         state.onGroupClicked()
         navController.navigate(
-            HistoryDest.Records(
+            BookDest.Records(
                 type = type,
                 category = category,
                 authorId = selectedAuthor?.id
@@ -221,7 +220,7 @@ internal fun OverviewList(
             isVisible = isSearchFabVisible,
             icon = Icons.Rounded.Search,
             contentDescription = stringResource(id = R.string.search_title),
-            onClick = { navController.navigate(HistoryDest.Search(type)) }
+            onClick = { navController.navigate(BookDest.Search(type)) }
         )
     }
 }
@@ -290,7 +289,7 @@ private fun OverviewList_All_Preview() = AppTheme {
         state = OverviewListState.preview.copy(
             mode = MutableStateFlow(OverviewMode.AllRecords)
         ),
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }
@@ -300,7 +299,7 @@ private fun OverviewList_All_Preview() = AppTheme {
 private fun OverviewList_Group_Preview() = AppTheme {
     OverviewList(
         state = OverviewListState.preview,
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }
@@ -313,7 +312,7 @@ private fun OverviewList_PieChart_Preview() = AppTheme {
             mode = MutableStateFlow(OverviewMode.GroupByCategories),
             chartMode = MutableStateFlow(ChartMode.PieChart)
         ),
-        navController = NavController(LocalContext.current),
+        navController = NavController.preview,
         modifier = Modifier.background(LocalAppColors.current.light)
     )
 }

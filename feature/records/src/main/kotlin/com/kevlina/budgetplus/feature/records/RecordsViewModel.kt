@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.common.nav.HistoryDest
+import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.stateIn
 
 @HiltViewModel(assistedFactory = RecordsViewModel.Factory::class)
 class RecordsViewModel @AssistedInject constructor(
-    @Assisted private val params: HistoryDest.Records,
+    @Assisted private val params: BookDest.Records,
     val bookRepo: BookRepo,
     private val userRepo: UserRepo,
     private val recordRepo: RecordRepo,
@@ -129,6 +129,6 @@ class RecordsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(params: HistoryDest.Records): RecordsViewModel
+        fun create(params: BookDest.Records): RecordsViewModel
     }
 }

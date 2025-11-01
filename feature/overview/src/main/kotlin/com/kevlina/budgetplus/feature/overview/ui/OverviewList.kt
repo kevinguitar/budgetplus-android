@@ -148,7 +148,7 @@ internal fun OverviewList(
                                     .onPlaced {
                                         state.highlightTapHint(BubbleDest.OverviewRecordTapHint(
                                             size = it.size,
-                                            offset = it.positionInRoot(),
+                                            offset = it::positionInRoot,
                                             shape = bubbleShape
                                         ))
                                     }

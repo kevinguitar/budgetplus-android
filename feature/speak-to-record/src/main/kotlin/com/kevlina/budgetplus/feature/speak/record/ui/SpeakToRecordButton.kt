@@ -76,7 +76,7 @@ fun ColumnScope.SpeakToRecordButton(
                 state.highlightRecordButton(
                     BubbleDest.SpeakToRecord(
                         size = it.size,
-                        offset = it.positionInRoot()
+                        offset = it::positionInRoot
                     )
                 )
             }

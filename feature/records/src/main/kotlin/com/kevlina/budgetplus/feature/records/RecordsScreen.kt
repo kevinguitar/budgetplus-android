@@ -89,7 +89,7 @@ fun RecordsScreen(
                     vm.highlightSortingButton(
                         BubbleDest.RecordsSorting(
                             size = it.size,
-                            offset = it.positionInRoot()
+                            offset = it::positionInRoot
                         )
                     )
                 }

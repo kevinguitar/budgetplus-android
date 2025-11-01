@@ -64,7 +64,11 @@ class BubbleRepo @Inject constructor(
 sealed class BubbleDest {
 
     abstract val size: IntSize
-    abstract val offset: Offset
+
+    /**
+     * Lazily resolve offset to make sure UI is placed steadily on the screen.
+     */
+    abstract val offset: () -> Offset
     abstract val shape: BubbleShape
 
     abstract val textRes: Int
@@ -72,7 +76,7 @@ sealed class BubbleDest {
 
     data class Invite(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_invite,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
@@ -80,7 +84,7 @@ sealed class BubbleDest {
 
     data class SpeakToRecord(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_speak_to_record,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.TopEnd,
@@ -88,7 +92,7 @@ sealed class BubbleDest {
 
     data class EditCategoriesHint(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape,
         override val textRes: Int = R.string.bubble_edit_category,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
@@ -96,7 +100,7 @@ sealed class BubbleDest {
 
     data class SaveCategories(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_save_category,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
@@ -104,7 +108,7 @@ sealed class BubbleDest {
 
     data class OverviewMode(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_mode,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
@@ -112,7 +116,7 @@ sealed class BubbleDest {
 
     data class OverviewExport(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_export,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
@@ -120,7 +124,7 @@ sealed class BubbleDest {
 
     data class OverviewRecordTapHint(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape,
         override val textRes: Int = R.string.bubble_overview_record_tap_hint,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
@@ -128,7 +132,7 @@ sealed class BubbleDest {
 
     data class OverviewPieChart(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_overview_pie_chart,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.TopCenter,
@@ -136,7 +140,7 @@ sealed class BubbleDest {
 
     data class RecordsSorting(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_records_sorting,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
@@ -144,7 +148,7 @@ sealed class BubbleDest {
 
     data class ColorsSharing(
         override val size: IntSize,
-        override val offset: Offset,
+        override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
         override val textRes: Int = R.string.bubble_colors_sharing,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,

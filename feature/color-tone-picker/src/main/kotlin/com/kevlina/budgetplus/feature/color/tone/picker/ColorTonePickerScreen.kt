@@ -143,7 +143,7 @@ fun ColorTonePickerScreen(
                                 vm.highlightShareButton(
                                     BubbleDest.ColorsSharing(
                                         size = it.size,
-                                        offset = it.positionInRoot()
+                                        offset = it::positionInRoot
                                     )
                                 )
                             },

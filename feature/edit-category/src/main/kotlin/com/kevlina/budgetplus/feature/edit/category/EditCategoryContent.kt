@@ -80,7 +80,7 @@ internal fun EditCategoryContent(
                                     showEditCategoriesBubble(
                                         BubbleDest.EditCategoriesHint(
                                             size = it.size,
-                                            offset = it.positionInRoot(),
+                                            offset = it::positionInRoot,
                                             shape = bubbleShape
                                         )
                                     )

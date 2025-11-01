@@ -83,7 +83,7 @@ fun EditCategoryScreen(
                         vm.highlightSaveButton(
                             BubbleDest.SaveCategories(
                                 size = it.size,
-                                offset = it.positionInRoot()
+                                offset = it::positionInRoot
                             )
                         )
                     },

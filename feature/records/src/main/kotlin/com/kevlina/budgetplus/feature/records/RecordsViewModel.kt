@@ -44,8 +44,6 @@ class RecordsViewModel @AssistedInject constructor(
     private val _sortMode = MutableStateFlow(sortModeCache)
     val sortMode: StateFlow<RecordsSortMode> = _sortMode.asStateFlow()
 
-    private var isSortingBubbleShown by preferenceHolder.bindBoolean(false)
-
     private val authorId get() = params.authorId
 
     // Assuming the records are ready when the records page is opened, and resolve the
@@ -106,10 +104,7 @@ class RecordsViewModel @AssistedInject constructor(
     }
 
     fun highlightSortingButton(dest: BubbleDest) {
-        if (!isSortingBubbleShown) {
-            isSortingBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
+        bubbleRepo.addBubbleToQueue(dest)
     }
 
     fun canEditRecord(record: Record): Boolean {

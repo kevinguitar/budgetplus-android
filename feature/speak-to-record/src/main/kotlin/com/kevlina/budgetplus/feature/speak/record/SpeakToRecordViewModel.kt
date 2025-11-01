@@ -8,7 +8,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.sendEvent
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,13 +27,10 @@ class SpeakToRecordViewModel @Inject constructor(
     private val snackbarSender: SnackbarSender,
     private val vibratorManager: VibratorManager,
     private val bubbleRepo: BubbleRepo,
-    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     private val _speakResultFlow = MutableEventFlow<SpeakToRecordStatus.Success>()
     val speakResultFlow: EventFlow<SpeakToRecordStatus.Success> = _speakResultFlow.asStateFlow()
-
-    private var isSpeakToRecordBubbleShown by preferenceHolder.bindBoolean(false)
 
     private val recordActorFlow = MutableStateFlow<RecordActor?>(null)
 
@@ -65,10 +61,7 @@ class SpeakToRecordViewModel @Inject constructor(
     }
 
     fun highlightRecordButton(dest: BubbleDest) {
-        if (!isSpeakToRecordBubbleShown) {
-            isSpeakToRecordBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
+        bubbleRepo.addBubbleToQueue(dest)
     }
 
     fun showRecordPermissionHint() {

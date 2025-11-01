@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.inappUpdate)
     implementation(projects.core.inappReview)
+    implementation(projects.core.ui)
     implementation(libs.google.play.update)
     implementation(libs.google.play.review)
     testImplementation(testFixtures(projects.core.data))

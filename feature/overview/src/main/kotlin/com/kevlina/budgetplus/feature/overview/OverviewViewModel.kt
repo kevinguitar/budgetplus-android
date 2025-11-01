@@ -76,10 +76,8 @@ internal class OverviewViewModel @Inject constructor(
     private val _mode = MutableStateFlow(modeCache)
     val mode: StateFlow<OverviewMode> = _mode.asStateFlow()
 
-    private var isModeBubbleShown by preferenceHolder.bindBoolean(false)
-    private var isExportBubbleShown by preferenceHolder.bindBoolean(false)
-    private var isTapHintBubbleShown by preferenceHolder.bindBoolean(false)
-    private var isPieChartBubbleShown by preferenceHolder.bindBoolean(false)
+    private var modeBubbleJob: Job? = null
+    private var exportBubbleJob: Job? = null
     private var tapHintBubbleJob: Job? = null
     private var pieChartBubbleJob: Job? = null
 
@@ -245,47 +243,35 @@ internal class OverviewViewModel @Inject constructor(
     }
 
     fun highlightModeButton(dest: BubbleDest) {
-        if (isModeBubbleShown) return
-
-        viewModelScope.launch {
+        if (modeBubbleJob != null) return
+        modeBubbleJob = viewModelScope.launch {
             if (recordList.filterNotNull().first().isNotEmpty()) {
-                isModeBubbleShown = true
                 bubbleRepo.addBubbleToQueue(dest)
             }
         }
     }
 
     fun highlightExportButton(dest: BubbleDest) {
-        if (isExportBubbleShown) return
-
-        viewModelScope.launch {
+        if (exportBubbleJob != null) return
+        exportBubbleJob = viewModelScope.launch {
             if (recordList.filterNotNull().first().isNotEmpty()) {
-                isExportBubbleShown = true
                 bubbleRepo.addBubbleToQueue(dest)
             }
         }
     }
 
     private fun highlightTapHint(dest: BubbleDest) {
-        if (isTapHintBubbleShown) return
-
-        tapHintBubbleJob?.cancel()
+        if (tapHintBubbleJob != null) return
         tapHintBubbleJob = viewModelScope.launch {
             delay(animationDelay)
-
-            isTapHintBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
     }
 
     private fun highlightPieChart(dest: BubbleDest) {
-        if (isPieChartBubbleShown) return
-
-        pieChartBubbleJob?.cancel()
+        if (pieChartBubbleJob != null) return
         pieChartBubbleJob = viewModelScope.launch {
             delay(animationDelay)
-
-            isPieChartBubbleShown = true
             bubbleRepo.addBubbleToQueue(dest)
         }
     }

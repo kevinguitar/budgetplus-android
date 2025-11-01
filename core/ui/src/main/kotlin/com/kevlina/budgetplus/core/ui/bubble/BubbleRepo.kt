@@ -2,67 +2,19 @@ package com.kevlina.budgetplus.core.ui.bubble
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize
-import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BubbleRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
-) {
+interface BubbleRepo {
+    val bubble: StateFlow<BubbleDest?>
 
-    private val bubblesQueue = arrayListOf<BubbleDest>()
-
-    private val _bubble = MutableStateFlow<BubbleDest?>(null)
-    val bubble: StateFlow<BubbleDest?> = _bubble.asStateFlow()
-
-    private var bubbleShownJob: Job? = null
-
-    fun addBubbleToQueue(dest: BubbleDest) {
-        if (bubblesQueue.isEmpty()) {
-            showBubble(dest)
-        }
-        bubblesQueue.add(dest)
-    }
-
-    private fun showBubble(dest: BubbleDest) {
-        bubbleShownJob?.cancel()
-        bubbleShownJob = appScope.launch {
-            // Given a short delay to show bubble after UI is presented
-            delay(BUBBLE_SHOWN_DELAY)
-            _bubble.value = dest
-        }
-    }
-
-    fun popBubble() {
-        val currentBubble = bubble.value ?: return
-        appScope.launch {
-            // Given a short delay to hide bubble with animation
-            delay(BUBBLE_SHOWN_DELAY)
-            bubblesQueue.remove(currentBubble)
-            _bubble.value = null
-
-            if (bubblesQueue.isNotEmpty()) {
-                showBubble(bubblesQueue.first())
-            }
-        }
-    }
-
-    private companion object {
-        const val BUBBLE_SHOWN_DELAY = 200L
-    }
+    fun addBubbleToQueue(dest: BubbleDest)
+    fun popBubble()
 }
 
 sealed class BubbleDest {
 
+    abstract val key: String
     abstract val size: IntSize
 
     /**
@@ -75,6 +27,7 @@ sealed class BubbleDest {
     abstract val textDirection: BubbleTextDirection
 
     data class Invite(
+        override val key: String = "isInviteBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -83,6 +36,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class SpeakToRecord(
+        override val key: String = "isSpeakToRecordBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -91,6 +45,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class EditCategoriesHint(
+        override val key: String = "isEditHintBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape,
@@ -99,6 +54,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class SaveCategories(
+        override val key: String = "isSaveBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -107,6 +63,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class OverviewMode(
+        override val key: String = "isModeBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -115,6 +72,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class OverviewExport(
+        override val key: String = "isExportBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -123,6 +81,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class OverviewRecordTapHint(
+        override val key: String = "isTapHintBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape,
@@ -131,6 +90,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class OverviewPieChart(
+        override val key: String = "isPieChartBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -139,6 +99,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class RecordsSorting(
+        override val key: String = "isSortingBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
@@ -147,6 +108,7 @@ sealed class BubbleDest {
     ) : BubbleDest()
 
     data class ColorsSharing(
+        override val key: String = "isShareColorsBubbleShown",
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,

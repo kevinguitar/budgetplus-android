@@ -9,7 +9,6 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -28,7 +27,6 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ColorTonePickerViewModel @Inject constructor(
     authManager: AuthManager,
-    preferenceHolder: PreferenceHolder,
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
     private val stringProvider: StringProvider,
@@ -46,8 +44,6 @@ internal class ColorTonePickerViewModel @Inject constructor(
 
     private val _selectedColorTone = MutableStateFlow(currentColorTone)
     val selectedColorTone: StateFlow<ColorTone> = _selectedColorTone.asStateFlow()
-
-    private var isShareColorsBubbleShown by preferenceHolder.bindBoolean(false)
 
     val isSaveEnabled = combine(
         selectedColorTone,
@@ -91,10 +87,7 @@ internal class ColorTonePickerViewModel @Inject constructor(
     }
 
     fun highlightShareButton(dest: BubbleDest) {
-        if (!isShareColorsBubbleShown) {
-            isShareColorsBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
+        bubbleRepo.addBubbleToQueue(dest)
     }
 
     fun processHexFromLink(hexFromLink: String) {

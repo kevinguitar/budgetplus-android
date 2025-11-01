@@ -70,7 +70,6 @@ class RecordViewModel @Inject constructor(
     private val _requestPermissionEvent = MutableEventFlow<Unit>()
     val requestPermissionEvent: EventFlow<Unit> = _requestPermissionEvent.asStateFlow()
 
-    private var isInviteBubbleShown by preferenceHolder.bindBoolean(false)
     private var recordCount by preferenceHolder.bindInt(0)
 
     init {
@@ -110,10 +109,7 @@ class RecordViewModel @Inject constructor(
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
-        if (!isInviteBubbleShown) {
-            isInviteBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
+        bubbleRepo.addBubbleToQueue(dest)
     }
 
     fun launchReviewFlow() {

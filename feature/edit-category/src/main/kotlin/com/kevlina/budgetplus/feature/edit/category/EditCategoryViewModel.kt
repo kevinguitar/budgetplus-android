@@ -9,10 +9,10 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.CategoryRenameEvent
 import com.kevlina.budgetplus.core.data.RecordRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
@@ -26,7 +26,6 @@ class EditCategoryViewModel @Inject constructor(
     private val bubbleRepo: BubbleRepo,
     private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,
-    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     val expenseCategories
@@ -38,8 +37,7 @@ class EditCategoryViewModel @Inject constructor(
     @VisibleForTesting
     val categoryRenameEvents = mutableListOf<CategoryRenameEvent>()
 
-    private var isEditHintBubbleShown by preferenceHolder.bindBoolean(false)
-    private var isSaveBubbleShown by preferenceHolder.bindBoolean(false)
+    private var saveBubbleJob: Job? = null
 
     fun updateCategories(type: RecordType, newCategories: List<String>) {
         bookRepo.updateCategories(type, newCategories)
@@ -50,20 +48,15 @@ class EditCategoryViewModel @Inject constructor(
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {
-        if (!isEditHintBubbleShown) {
-            isEditHintBubbleShown = true
-            bubbleRepo.addBubbleToQueue(dest)
-        }
+        bubbleRepo.addBubbleToQueue(dest)
     }
 
     fun highlightSaveButton(dest: BubbleDest) {
-        if (!isSaveBubbleShown) {
-            isSaveBubbleShown = true
-            viewModelScope.launch {
-                // Display save hint after edit hint
-                delay(1.seconds)
-                bubbleRepo.addBubbleToQueue(dest)
-            }
+        if (saveBubbleJob != null) return
+        saveBubbleJob = viewModelScope.launch {
+            // Display save hint after edit hint
+            delay(1.seconds)
+            bubbleRepo.addBubbleToQueue(dest)
         }
     }
 

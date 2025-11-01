@@ -15,13 +15,12 @@ import com.kevlina.budgetplus.core.data.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import com.kevlina.budgetplus.core.ui.bubble.FakeBubbleRepo
 import com.kevlina.budgetplus.core.unit.test.MainDispatcherRule
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.FakeInAppReviewManager
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -159,14 +158,14 @@ class RecordViewModelTest {
 
     private val fullScreenAdsLoader = mockk<FullScreenAdsLoader>(relaxed = true)
 
-    private fun TestScope.createModel(
+    private fun createModel(
         recordCount: Int = 0,
     ) = RecordViewModel(
         calculatorVm = calculatorVm,
         categoriesVm = categoriesVm,
         bookRepo = bookRepo,
         recordRepo = FakeRecordRepo,
-        bubbleRepo = BubbleRepo(backgroundScope),
+        bubbleRepo = FakeBubbleRepo(),
         authManager = FakeAuthManager(),
         fullScreenAdsLoader = fullScreenAdsLoader,
         inAppReviewManager = FakeInAppReviewManager(),

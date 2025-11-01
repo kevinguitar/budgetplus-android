@@ -33,6 +33,14 @@ class PreferenceHolder @Inject constructor(
         }
     }
 
+    fun getBoolean(key: String, default: Boolean): Boolean {
+        return preference.pref.getBoolean(key, default)
+    }
+
+    fun setBoolean(key: String, value: Boolean) {
+        preference.editor.putBoolean(key, value).apply()
+    }
+
     fun bindBoolean(default: Boolean) = object : ReadWriteProperty<Any, Boolean> {
         override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
             return preference.pref.getBoolean(property.name, default)

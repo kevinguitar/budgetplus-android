@@ -80,7 +80,7 @@ fun OverviewScreen(navController: NavController<BookDest>) {
                         vm.highlightModeButton(
                             BubbleDest.OverviewMode(
                                 size = it.size,
-                                offset = it.positionInRoot()
+                                offset = it::positionInRoot
                             )
                         )
                     }
@@ -94,7 +94,7 @@ fun OverviewScreen(navController: NavController<BookDest>) {
                         vm.highlightExportButton(
                             BubbleDest.OverviewExport(
                                 size = it.size,
-                                offset = it.positionInRoot()
+                                offset = it::positionInRoot
                             )
                         )
                     }

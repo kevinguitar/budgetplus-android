@@ -101,16 +101,17 @@ fun Bubble(
                     .offset(
                         x = 0.dp,
                         y = with(LocalDensity.current) {
+                            val offset = dest.offset()
                             when (dest.textDirection) {
                                 BubbleTextDirection.TopStart,
                                 BubbleTextDirection.TopEnd,
                                 BubbleTextDirection.TopCenter,
-                                -> dest.offset.y.toDp() - textSize.height.toDp()
+                                    -> offset.y.toDp() - textSize.height.toDp()
 
                                 BubbleTextDirection.BottomStart,
                                 BubbleTextDirection.BottomEnd,
                                 BubbleTextDirection.BottomCenter,
-                                -> dest.offset.y.toDp() + dest.size.height.toDp()
+                                    -> offset.y.toDp() + dest.size.height.toDp()
                             }
                         }
                     )
@@ -146,7 +147,7 @@ private class HollowShape(private val dest: BubbleDest) : Shape {
         val ovalPath = Path().apply {
 
             val rect = Rect(
-                offset = dest.offset,
+                offset = dest.offset(),
                 size = dest.size.toSize()
             )
 
@@ -189,7 +190,7 @@ private fun Bubble_Preview(
         Bubble(
             dest = BubbleDest.OverviewExport(
                 size = size,
-                offset = offset,
+                offset = { offset },
                 textDirection = textDirection
             ),
             dismissBubble = {}

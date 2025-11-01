@@ -136,7 +136,7 @@ internal fun PieChart(
             .onPlaced {
                 highlightPieChart(BubbleDest.OverviewPieChart(
                     size = it.size,
-                    offset = it.positionInRoot()
+                    offset = it::positionInRoot
                 ))
             }
             .onGloballyPositioned { canvasPositionInWindow = it.positionInWindow() }

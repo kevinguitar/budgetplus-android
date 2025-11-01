@@ -1,6 +1,7 @@
-package com.kevlina.budgetplus.core.ui.bubble
+package com.kevlina.budgetplus.app.book
 
 import androidx.lifecycle.ViewModel
+import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import javax.inject.Inject
 
 class BubbleViewModel @Inject constructor(

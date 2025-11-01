@@ -64,7 +64,7 @@ fun RecordScreen(navController: NavController<BookDest>) {
                         vm.highlightInviteButton(
                             BubbleDest.Invite(
                                 size = it.size,
-                                offset = it.positionInRoot()
+                                offset = it::positionInRoot
                             )
                         )
                     }

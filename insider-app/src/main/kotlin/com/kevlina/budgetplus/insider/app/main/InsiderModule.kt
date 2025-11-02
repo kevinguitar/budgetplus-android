@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.insider.app.main
 import android.content.Context
 import android.content.Intent
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
+import com.kevlina.budgetplus.insider.app.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,4 +30,8 @@ object InsiderModule {
     @Provides
     @Named("allow_update_fcm_token")
     fun provideAllowUpdateFcmToken(): Boolean = false
+
+    @Provides
+    @Named("google_api_key")
+    fun provideGoogleApiKey(): String = BuildConfig.GOOGLE_API_KEY
 }

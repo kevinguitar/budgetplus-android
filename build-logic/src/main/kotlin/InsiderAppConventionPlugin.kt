@@ -37,7 +37,7 @@ class InsiderAppConventionPlugin : Plugin<Project> {
                 buildConfigField(
                     type = "String",
                     name = "GOOGLE_API_KEY",
-                    value = localProperties.getProperty("GOOGLE_API_KEY")
+                    value = localProperties.getProperty("GOOGLE_API_KEY", "\"\"")
                 )
 
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

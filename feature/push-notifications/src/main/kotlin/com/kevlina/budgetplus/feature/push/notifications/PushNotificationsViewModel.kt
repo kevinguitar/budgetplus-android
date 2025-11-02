@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.feature.push.notifications
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
@@ -11,7 +13,10 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.PushNotificationData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -19,6 +24,7 @@ import javax.inject.Named
 @HiltViewModel
 internal class PushNotificationsViewModel @Inject constructor(
     preferenceHolder: PreferenceHolder,
+    translator: Translator,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("default_deeplink") private val defaultDeeplink: String,
     private val pushDbMediator: PushDbMediator,
@@ -29,11 +35,6 @@ internal class PushNotificationsViewModel @Inject constructor(
     private var titleTwCache by preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起編織理財夢！")
     private var descTwCache by preferenceHolder.bindString(
         "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"
-    )
-
-    private var titleCnCache by preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起编织理财梦！")
-    private var descCnCache by preferenceHolder.bindString(
-        "记得目标，存款不停歇！记帐确实，未来更悠游！将花费化为理财力！GO~"
     )
 
     private var titleJaCache by preferenceHolder.bindString("新しい月ですよ！")
@@ -52,8 +53,8 @@ internal class PushNotificationsViewModel @Inject constructor(
     val descTw = TextFieldState(descTwCache)
 
     val sendToCn = MutableStateFlow(true)
-    val titleCn = TextFieldState(titleCnCache)
-    val descCn = TextFieldState(descCnCache)
+    val titleCn = TextFieldState()
+    val descCn = TextFieldState()
 
     val sendToJa = MutableStateFlow(true)
     val titleJa = TextFieldState(titleJaCache)
@@ -65,6 +66,32 @@ internal class PushNotificationsViewModel @Inject constructor(
 
     val navigateToGooglePlay = MutableStateFlow(false)
     val deeplink = TextFieldState(deeplinkCache)
+
+    init {
+        snapshotFlow { titleTw.text }
+            .debounce(INPUT_DEBOUNCE_MS)
+            .mapLatest {
+                val title = translator.translate(
+                    text = it.toString(),
+                    sourceLanCode = LAN_CODE_TW,
+                    targetLanCode = LAN_CODE_CN
+                )
+                titleCn.setTextAndPlaceCursorAtEnd(title)
+            }
+            .launchIn(viewModelScope)
+
+        snapshotFlow { descTw.text }
+            .debounce(INPUT_DEBOUNCE_MS)
+            .mapLatest {
+                val desc = translator.translate(
+                    text = it.toString(),
+                    sourceLanCode = LAN_CODE_TW,
+                    targetLanCode = LAN_CODE_CN
+                )
+                descCn.setTextAndPlaceCursorAtEnd(desc)
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun sendToInternalTopic() {
         recordToPushDb(isInternal = true)
@@ -110,9 +137,6 @@ internal class PushNotificationsViewModel @Inject constructor(
         titleTwCache = titleTw.text.toString()
         descTwCache = descTw.text.toString()
 
-        titleCnCache = titleCn.text.toString()
-        descCnCache = descCn.text.toString()
-
         titleJaCache = titleJa.text.toString()
         descJaCache = descJa.text.toString()
 
@@ -120,5 +144,11 @@ internal class PushNotificationsViewModel @Inject constructor(
         descEnCache = descEn.text.toString()
 
         deeplinkCache = deeplink.text.toString()
+    }
+
+    private companion object {
+        const val INPUT_DEBOUNCE_MS = 200L
+        const val LAN_CODE_TW = "zh-TW"
+        const val LAN_CODE_CN = "zh-CN"
     }
 }

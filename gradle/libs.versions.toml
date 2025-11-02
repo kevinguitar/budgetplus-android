@@ -63,6 +63,7 @@ google-billing = "com.android.billingclient:billing-ktx:8.0.0"
 google-id = "com.google.android.libraries.identity.googleid:googleid:1.1.1"
 google-play-review = "com.google.android.play:review-ktx:2.0.2"
 google-play-update = "com.google.android.play:app-update-ktx:2.1.0"
+google-translate = "com.google.cloud:google-cloud-translate:2.78.0"
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 install-referrer = "com.android.installreferrer:installreferrer:2.2"

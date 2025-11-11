@@ -8,7 +8,7 @@ ksp = "2.3.0"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2025.10.01"
+compose-bom = "2025.11.00"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "34.5.0"
 # https://mvnrepository.com/artifact/com.google.dagger/hilt-android

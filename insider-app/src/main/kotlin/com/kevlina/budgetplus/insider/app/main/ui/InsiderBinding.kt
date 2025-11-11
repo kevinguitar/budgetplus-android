@@ -76,6 +76,7 @@ internal fun InsiderBinding(vm: InsiderViewModel) {
                     ),
                     transitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     popTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
+                    predictivePopTransitionSpec = { ContentTransform(fadeIn(), fadeOut()) },
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()

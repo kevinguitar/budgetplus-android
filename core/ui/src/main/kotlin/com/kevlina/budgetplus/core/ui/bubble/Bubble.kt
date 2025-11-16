@@ -49,13 +49,13 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.isPreview
+import timber.log.Timber
 
 @Composable
 fun Bubble(
     dest: BubbleDest?,
     dismissBubble: () -> Unit,
 ) {
-
     val isPreview = isPreview()
     var isBubbleVisible by remember { mutableStateOf(isPreview) }
     var textSize by remember { mutableStateOf(IntSize.Zero) }
@@ -66,12 +66,19 @@ fun Bubble(
 
     dest ?: return
 
+    // If the offset is no longer available, dismiss the current bubble
+    val offset = dest.getOffsetSafe()
+    if (offset == null) {
+        isBubbleVisible = false
+        dismissBubble()
+        return
+    }
+
     AnimatedVisibility(
         visible = isBubbleVisible,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -80,7 +87,6 @@ fun Bubble(
                     dismissBubble()
                 }
         ) {
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -101,7 +107,6 @@ fun Bubble(
                     .offset(
                         x = 0.dp,
                         y = with(LocalDensity.current) {
-                            val offset = dest.offset()
                             when (dest.textDirection) {
                                 BubbleTextDirection.TopStart,
                                 BubbleTextDirection.TopEnd,
@@ -147,7 +152,7 @@ private class HollowShape(private val dest: BubbleDest) : Shape {
         val ovalPath = Path().apply {
 
             val rect = Rect(
-                offset = dest.offset(),
+                offset = dest.getOffsetSafe() ?: return@apply,
                 size = dest.size.toSize()
             )
 
@@ -196,6 +201,14 @@ private fun Bubble_Preview(
             dismissBubble = {}
         )
     }
+}
+
+// This could fail if the element is no longer attached to the screen.
+private fun BubbleDest.getOffsetSafe(): Offset? = try {
+    offset()
+} catch (e: Exception) {
+    Timber.d(e, "Fail to retrieve offset for ${key}, skip showing")
+    null
 }
 
 private class BubbleTextDirectionParams : PreviewParameterProvider<BubbleTextDirection> {

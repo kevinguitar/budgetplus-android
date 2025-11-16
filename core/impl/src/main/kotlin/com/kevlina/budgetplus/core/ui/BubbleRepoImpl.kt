@@ -20,12 +20,13 @@ class BubbleRepoImpl @Inject constructor(
     private val preferenceHolder: PreferenceHolder,
 ) : BubbleRepo {
 
-    private val bubblesQueue = arrayListOf<BubbleDest>()
+    private val bubblesQueue = mutableListOf<BubbleDest>()
 
     private val _bubble = MutableStateFlow<BubbleDest?>(null)
     override val bubble: StateFlow<BubbleDest?> = _bubble.asStateFlow()
 
     private var bubbleShownJob: Job? = null
+    private var popBubbleJob: Job? = null
 
     override fun addBubbleToQueue(dest: BubbleDest) {
         val bubbleKey = dest.key
@@ -51,7 +52,8 @@ class BubbleRepoImpl @Inject constructor(
 
     override fun popBubble() {
         val currentBubble = bubble.value ?: return
-        appScope.launch {
+        popBubbleJob?.cancel()
+        popBubbleJob = appScope.launch {
             // Given a short delay to hide bubble with animation
             delay(BUBBLE_SHOWN_DELAY)
             bubblesQueue.remove(currentBubble)

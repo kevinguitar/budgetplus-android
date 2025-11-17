@@ -19,6 +19,7 @@ sealed class BubbleDest {
 
     /**
      * Lazily resolve offset to make sure UI is placed steadily on the screen.
+     * Note that this invocation could throw a [IllegalStateException] due to node not being attached.
      */
     abstract val offset: () -> Offset
     abstract val shape: BubbleShape

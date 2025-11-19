@@ -113,7 +113,7 @@ class NavControllerTest {
         val navController = NavController<TestKey>(startRoot)
         navController.selectRoot(newRoot)
         navController.selectRoot(startRoot)
-        assertThat(navController.rootStack).containsExactly(startRoot)
+        assertThat(navController.rootStack).containsExactly(newRoot, startRoot)
         assertThat(navController.backStack).containsExactly(startRoot)
     }
 
@@ -129,7 +129,7 @@ class NavControllerTest {
         assertThat(navController.rootStack).containsExactly(r1, r2, r3).inOrder()
 
         navController.selectRoot(r1)
-        assertThat(navController.rootStack).containsExactly(r1)
+        assertThat(navController.rootStack).containsExactly(r2, r3, r1)
         assertThat(navController.backStack).containsExactly(r1)
     }
 
@@ -165,16 +165,17 @@ class NavControllerTest {
     @Test
     fun `Complex scenario  State preservation after switching roots`() {
         val r1 = TestKey.RootA
-        val n1 = TestKey.Screen1
         val r2 = TestKey.RootB
+        val n2 = TestKey.Screen2
         val navController = NavController<TestKey>(r1)
 
-        navController.navigate(n1)
         navController.selectRoot(r2)
+        navController.navigate(n2)
         navController.selectRoot(r1)
+        navController.selectRoot(r2)
 
-        assertThat(navController.backStack).containsExactly(r1, n1).inOrder()
-        assertThat(navController.rootStack).containsExactly(r1)
+        assertThat(navController.backStack).containsExactly(r1, r2, n2).inOrder()
+        assertThat(navController.rootStack).containsExactly( r1, r2).inOrder()
     }
 
     @Test

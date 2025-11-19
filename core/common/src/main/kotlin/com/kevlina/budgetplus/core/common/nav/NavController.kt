@@ -23,14 +23,12 @@ class NavController<T : NavKey>(private val startRoot: T) {
         get() = rootStack.lastOrNull() ?: startRoot
 
     fun selectRoot(rootKey: T) {
+        if (rootKey == currentRoot) return
+
         if (rootKey in rootStack) {
-            // If the root was in the stack before, pops all the way to let the rootKey be on the top.
-            val index = rootStack.indexOf(rootKey)
-            while (true) {
-                val root = rootStack.getOrNull(index + 1) ?: break
-                rootBackStacks.remove(root)
-                rootStack.remove(root)
-            }
+            // If the root is already in the stack, remove it and add it again to bring it to the top
+            rootStack.remove(rootKey)
+            rootStack.add(rootKey)
         } else {
             // If the root was never added before, simply add it
             rootStack.add(rootKey)
@@ -57,9 +55,11 @@ class NavController<T : NavKey>(private val startRoot: T) {
 
     private fun updateBackStack() {
         backStack.clear()
-        rootStack.forEach { root ->
-            val stack = rootBackStacks[root] ?: return@forEach
-            backStack.addAll(stack)
+        // The first item of the backstack should always be the startRoot
+        val index = rootStack.indexOf(startRoot).coerceAtLeast(0)
+        for (i in index until rootStack.size) {
+            val root = rootStack[i]
+            rootBackStacks[root]?.let(backStack::addAll)
         }
         Timber.d("NavController: BackStack=${backStack.toList()}")
     }

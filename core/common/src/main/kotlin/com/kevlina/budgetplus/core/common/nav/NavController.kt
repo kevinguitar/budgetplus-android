@@ -55,13 +55,16 @@ class NavController<T : NavKey>(private val startRoot: T) {
 
     private fun updateBackStack() {
         backStack.clear()
-        // The first item of the backstack should always be the startRoot
-        val index = rootStack.indexOf(startRoot).coerceAtLeast(0)
-        for (i in index until rootStack.size) {
-            val root = rootStack[i]
-            rootBackStacks[root]?.let(backStack::addAll)
+        rootStack.forEach { root ->
+            val stack = rootBackStacks[root] ?: return@forEach
+            backStack.addAll(stack)
         }
         Timber.d("NavController: BackStack=${backStack.toList()}")
+
+        if (backStack.isEmpty()) {
+            backStack.add(startRoot)
+            Timber.w("NavController: BackStack is empty, added $startRoot to avoid crash")
+        }
     }
 
     companion object {

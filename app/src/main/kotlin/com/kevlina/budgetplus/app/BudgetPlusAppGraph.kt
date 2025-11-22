@@ -7,7 +7,9 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
+import javax.inject.Singleton
 
+@Singleton
 @DependencyGraph(AppScope::class)
 interface BudgetPlusAppGraph {
 

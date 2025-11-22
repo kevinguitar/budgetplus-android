@@ -27,6 +27,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import dev.zacsweers.metro.ContributesTo
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -42,8 +43,9 @@ import java.time.ZoneOffset
 import javax.inject.Singleton
 
 @Module
+@ContributesTo(dev.zacsweers.metro.AppScope::class)
 @InstallIn(SingletonComponent::class)
-internal interface DataModule {
+interface DataModule {
 
     @Binds
     fun bindAuthManager(impl: AuthManagerImpl): AuthManager

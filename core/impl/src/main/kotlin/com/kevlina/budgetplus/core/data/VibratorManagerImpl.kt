@@ -16,7 +16,7 @@ import javax.inject.Singleton
 import android.os.VibratorManager as AndroidVibratorManager
 
 @Singleton
-internal class VibratorManagerImpl @Inject constructor(
+class VibratorManagerImpl @Inject constructor(
     @ApplicationContext context: Context,
     preferenceHolder: PreferenceHolder,
     private val tracker: Tracker,

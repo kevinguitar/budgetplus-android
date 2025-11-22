@@ -40,7 +40,7 @@ import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
 
 @Singleton
-internal class BookRepoImpl @Inject constructor(
+class BookRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
     private val stringProvider: StringProvider,

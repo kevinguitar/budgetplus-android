@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class SnackbarSenderImpl @Inject constructor(
+class SnackbarSenderImpl @Inject constructor(
     private val stringProvider: StringProvider,
 ) : SnackbarSender {
 

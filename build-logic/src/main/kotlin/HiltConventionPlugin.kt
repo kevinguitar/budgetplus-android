@@ -17,8 +17,9 @@ class HiltConventionPlugin : Plugin<Project> {
 
         project.configure<MetroPluginExtension> {
             contributesAsInject.set(true)
+            transformProvidersToPrivate.set(false) // For Hilt to compile
             interop {
-                enableDaggerRuntimeInterop.set(true)
+                includeDagger(includeJavax = true)
             }
         }
 

@@ -19,7 +19,7 @@ import javax.inject.Singleton
 private typealias ConfigMap = Map<String, FirebaseRemoteConfigValue>
 
 @Singleton
-internal class RemoteConfigImpl @Inject constructor(
+class RemoteConfigImpl @Inject constructor(
     @Named("is_debug") isDebug: Boolean,
     @AppScope private val appScope: CoroutineScope,
 ) : RemoteConfig {

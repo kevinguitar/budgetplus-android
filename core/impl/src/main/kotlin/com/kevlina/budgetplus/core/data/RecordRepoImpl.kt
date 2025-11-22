@@ -27,7 +27,7 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
-internal class RecordRepoImpl @Inject constructor(
+class RecordRepoImpl @Inject constructor(
     @RecordsDb private val recordsDb: Provider<CollectionReference>,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,

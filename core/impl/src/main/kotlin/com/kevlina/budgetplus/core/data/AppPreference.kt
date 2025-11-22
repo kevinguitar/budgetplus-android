@@ -9,7 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class AppPreference @Inject constructor(
+class AppPreference @Inject constructor(
     @ApplicationContext context: Context,
 ) : Preference {
 

@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.seconds
  *  reduce the db requests for us.
  */
 @Singleton
-internal class RecordsObserverImpl @Inject constructor(
+class RecordsObserverImpl @Inject constructor(
     @AppScope appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
     preferenceHolder: PreferenceHolder,

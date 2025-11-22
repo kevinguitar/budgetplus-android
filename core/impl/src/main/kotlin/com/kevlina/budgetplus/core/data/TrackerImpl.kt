@@ -15,7 +15,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-internal class TrackerImpl @Inject constructor(
+class TrackerImpl @Inject constructor(
     authManager: Lazy<AuthManager>,
     @AppScope appScope: CoroutineScope,
     @Named("is_debug") private val isDebug: Boolean,

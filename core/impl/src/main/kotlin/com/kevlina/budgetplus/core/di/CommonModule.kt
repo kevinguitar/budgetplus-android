@@ -22,13 +22,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.ContributesTo
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
+@ContributesTo(dev.zacsweers.metro.AppScope::class)
 @InstallIn(SingletonComponent::class)
-internal interface CommonModule {
+interface CommonModule {
 
     @Binds
     fun provideStringProvider(impl: StringProviderImpl): StringProvider

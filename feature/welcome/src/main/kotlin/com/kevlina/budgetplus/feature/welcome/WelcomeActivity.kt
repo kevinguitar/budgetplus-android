@@ -26,8 +26,7 @@ class WelcomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         resolveGraphExtensionFactory<WelcomeActivityGraph.Factory>()
             .create(this)
-            .injector
-            .injectMembers(this)
+            .inject(this)
 
         enableEdgeToEdge()
         setStatusBarColor(isLight = true)

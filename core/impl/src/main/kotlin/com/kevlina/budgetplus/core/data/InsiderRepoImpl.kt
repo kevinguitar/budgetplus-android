@@ -12,7 +12,7 @@ import javax.inject.Singleton
 import kotlin.time.Duration
 
 @Singleton
-internal class InsiderRepoImpl @Inject constructor(
+class InsiderRepoImpl @Inject constructor(
     @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : InsiderRepo {
 

@@ -29,7 +29,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
-internal class AuthManagerImpl @Inject constructor(
+class AuthManagerImpl @Inject constructor(
     preferenceHolder: PreferenceHolder,
     private val stringProvider: StringProvider,
     private val tracker: Lazy<Tracker>,

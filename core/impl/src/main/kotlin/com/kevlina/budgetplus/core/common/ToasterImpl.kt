@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class ToasterImpl @Inject constructor(
+class ToasterImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : Toaster {
 

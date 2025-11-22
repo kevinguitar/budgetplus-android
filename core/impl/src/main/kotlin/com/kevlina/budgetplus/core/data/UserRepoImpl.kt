@@ -19,7 +19,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class UserRepoImpl @Inject constructor(
+class UserRepoImpl @Inject constructor(
     private val authManager: AuthManager,
     @UsersDb private val usersDb: Lazy<CollectionReference>,
     @AppScope private val appScope: CoroutineScope,

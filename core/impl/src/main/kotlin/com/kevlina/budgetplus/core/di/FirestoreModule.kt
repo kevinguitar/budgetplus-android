@@ -14,11 +14,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
 import javax.inject.Singleton
 
 @Module
+@ContributesTo(AppScope::class)
+@BindingContainer
 @InstallIn(SingletonComponent::class)
-internal object FirestoreModule {
+object FirestoreModule {
 
     @UsersDb
     @Singleton

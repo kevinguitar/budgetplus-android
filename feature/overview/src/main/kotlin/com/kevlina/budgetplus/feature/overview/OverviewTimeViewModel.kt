@@ -18,7 +18,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 
-class OverviewTimeViewModel @Inject constructor(
+@Inject
+class OverviewTimeViewModel(
     private val recordsObserver: RecordsObserver,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,

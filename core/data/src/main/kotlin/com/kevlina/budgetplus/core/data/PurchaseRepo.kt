@@ -7,7 +7,8 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
-class PurchaseRepo @Inject constructor(
+@Inject
+class PurchaseRepo(
     private val authManager: AuthManager,
     @PurchasesDb private val purchasesDb: Lazy<CollectionReference>,
 ) {

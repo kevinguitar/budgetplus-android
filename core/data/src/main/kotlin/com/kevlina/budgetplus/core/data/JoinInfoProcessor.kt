@@ -6,7 +6,8 @@ import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
 import dev.zacsweers.metro.Inject
 import java.util.UUID
 
-class JoinInfoProcessor @Inject constructor(
+@Inject
+class JoinInfoProcessor(
     @JoinInfoDb private val joinInfoDb: Lazy<CollectionReference>,
 ) {
 

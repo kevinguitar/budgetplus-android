@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dev.zacsweers.metro.Inject
 
-class BubbleViewModel @Inject constructor(
+@Inject
+class BubbleViewModel(
     private val bubbleRepo: BubbleRepo,
 ) : ViewModel() {
 

@@ -12,7 +12,6 @@ class MetroConventionPlugin : Plugin<Project> {
 
         project.configure<MetroPluginExtension> {
             contributesAsInject.set(true)
-            warnOnInjectAnnotationPlacement.set(false) //TODO: temp
         }
     }
 }

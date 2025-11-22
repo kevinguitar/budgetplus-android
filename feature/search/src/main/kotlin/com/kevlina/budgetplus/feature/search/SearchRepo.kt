@@ -32,7 +32,8 @@ import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
 import java.time.LocalDate
 
-class SearchRepo @Inject constructor(
+@Inject
+class SearchRepo(
     @BooksDb private val booksDb: Lazy<CollectionReference>,
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,

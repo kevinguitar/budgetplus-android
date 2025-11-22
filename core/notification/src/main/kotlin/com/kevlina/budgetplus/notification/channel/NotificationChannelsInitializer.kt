@@ -10,10 +10,9 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
-import dev.zacsweers.metro.Inject
 
 @ContributesIntoSet(AppScope::class)
-class NotificationChannelsInitializer @Inject constructor(
+class NotificationChannelsInitializer(
     private val context: Context,
     private val stringProvider: StringProvider,
 ) : AppStartAction {

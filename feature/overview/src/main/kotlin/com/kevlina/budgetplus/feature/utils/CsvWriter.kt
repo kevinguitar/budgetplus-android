@@ -34,7 +34,8 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
-internal class CsvWriter @Inject constructor(
+@Inject
+internal class CsvWriter(
     private val context: Context,
     @Named("app_package") private val appPackage: String,
     @Named("share_cache") private val shareCacheDir: File,

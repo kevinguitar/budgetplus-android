@@ -22,7 +22,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
-class SpeakToRecordViewModel @Inject constructor(
+@Inject
+class SpeakToRecordViewModel(
     private val speakToRecord: SpeakToRecord,
     private val snackbarSender: SnackbarSender,
     private val vibratorManager: VibratorManager,

@@ -5,7 +5,8 @@ import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
 import dev.zacsweers.metro.Inject
 import timber.log.Timber
 
-class SpeakResultParser @Inject constructor(
+@Inject
+class SpeakResultParser(
     private val tracker: Tracker,
 ) {
 

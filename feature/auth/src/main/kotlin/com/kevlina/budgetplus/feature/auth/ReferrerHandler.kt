@@ -8,7 +8,8 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import dev.zacsweers.metro.Inject
 import timber.log.Timber
 
-class ReferrerHandler @Inject constructor(
+@Inject
+class ReferrerHandler(
     private val activity: ComponentActivity,
     private val bookRepo: BookRepo,
 ) : InstallReferrerStateListener {

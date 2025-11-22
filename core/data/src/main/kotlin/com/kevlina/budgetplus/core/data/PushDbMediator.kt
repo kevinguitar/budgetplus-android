@@ -6,7 +6,8 @@ import com.kevlina.budgetplus.core.data.remote.PushNotificationsDb
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.tasks.await
 
-class PushDbMediator @Inject constructor(
+@Inject
+class PushDbMediator(
     @PushNotificationsDb private val pushNotificationsDb: Lazy<CollectionReference>,
 ) {
 

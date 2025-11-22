@@ -24,7 +24,8 @@ import net.objecthunter.exp4j.ExpressionBuilder
 import timber.log.Timber
 import java.math.RoundingMode
 
-class CalculatorViewModel @Inject constructor(
+@Inject
+class CalculatorViewModel(
     private val vibrator: VibratorManager,
     private val snackbarSender: SnackbarSender,
     val speakToRecordViewModel: SpeakToRecordViewModel,

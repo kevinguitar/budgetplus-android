@@ -9,7 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-internal class Translator @Inject constructor(
+@Inject
+internal class Translator(
     @Named("google_api_key") googleApiKey: String
 ) {
 

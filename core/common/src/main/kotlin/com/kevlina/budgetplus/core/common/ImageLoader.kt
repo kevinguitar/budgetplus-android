@@ -7,7 +7,8 @@ import coil.Coil
 import coil.request.ImageRequest
 import dev.zacsweers.metro.Inject
 
-class ImageLoader @Inject constructor(
+@Inject
+class ImageLoader(
     private val context: Context,
 ) {
 

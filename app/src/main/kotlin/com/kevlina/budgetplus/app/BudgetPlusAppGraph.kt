@@ -21,7 +21,7 @@ interface BudgetPlusAppGraph {
     fun BudgetPlusApp.bindContext(): Context
 
     @DependencyGraph.Factory
-    interface Factory {
+    fun interface Factory {
         fun create(@Provides app: BudgetPlusApp): BudgetPlusAppGraph
     }
 }

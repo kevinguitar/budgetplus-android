@@ -62,6 +62,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         project.dependencies {
             implementation(platform(project.libs.compose.bom))
             implementation(project.libs.bundles.compose)
+            implementation(project.libs.android.activity)
             debugImplementation(project.libs.compose.tooling)
 
             testFixturesImplementation(platform(project.libs.compose.bom))

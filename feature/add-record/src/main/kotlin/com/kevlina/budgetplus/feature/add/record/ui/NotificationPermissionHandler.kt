@@ -1,13 +1,12 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
 import android.Manifest
-import android.app.Activity
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.hasPermission
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.collect
 fun NotificationPermissionHandler() {
 
     val vm = hiltViewModel<RecordViewModel>()
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current!!
 
     val permissionRequester = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()

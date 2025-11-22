@@ -8,6 +8,5 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.ui)
 
-    implementation(libs.android.activity)
     implementation(libs.lottie.compose)
 }

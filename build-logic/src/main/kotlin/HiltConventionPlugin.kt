@@ -8,6 +8,7 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
+//TODO: Rename to metro
 class HiltConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
@@ -17,7 +18,7 @@ class HiltConventionPlugin : Plugin<Project> {
 
         project.configure<MetroPluginExtension> {
             contributesAsInject.set(true)
-            transformProvidersToPrivate.set(false) // For Hilt to compile
+            transformProvidersToPrivate.set(false) //TODO: For Hilt to compile
             interop {
                 includeDagger(includeJavax = true)
             }

@@ -1,12 +1,11 @@
 package com.kevlina.budgetplus.core.adaptive
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 
 data class WindowSizeClass(
     val width: Size,
@@ -22,7 +21,7 @@ data class WindowSizeClass(
         @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
         @Composable
         fun calculate(): WindowSizeClass {
-            val activity = LocalContext.current as Activity
+            val activity = LocalActivity.current!!
             val materialClass = calculateWindowSizeClass(activity = activity)
 
             return WindowSizeClass(

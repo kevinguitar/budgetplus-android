@@ -1,7 +1,7 @@
 package com.kevlina.budgetplus.feature.speak.record.ui
 
 import android.Manifest
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,7 +54,7 @@ fun ColumnScope.SpeakToRecordButton(
     val showRecordingDialog by state.showRecordingDialog.collectAsStateWithLifecycle()
 
     // Cast to nullable to support preview
-    val activity = LocalContext.current as? Activity
+    val activity = LocalActivity.current
     val recordPermission = Manifest.permission.RECORD_AUDIO
     val permissionRequester = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()

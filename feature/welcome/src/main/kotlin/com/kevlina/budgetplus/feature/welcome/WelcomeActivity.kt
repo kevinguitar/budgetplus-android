@@ -5,21 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
 import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.common.nav.consumeNavigation
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.utils.LocalViewModelGraphProvider
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.welcome.ui.WelcomeBinding
-import dagger.hilt.android.AndroidEntryPoint
 import dev.zacsweers.metro.Inject
 
-@AndroidEntryPoint
 class WelcomeActivity : ComponentActivity() {
 
     @Inject lateinit var themeManager: ThemeManager
+    @Inject lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
     private val viewModel by viewModels<WelcomeViewModel>()
 
@@ -33,9 +35,11 @@ class WelcomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
-            AppTheme(themeColors) {
-                WelcomeBinding(viewModel)
+            CompositionLocalProvider(LocalViewModelGraphProvider provides viewModelGraphProvider) {
+                val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
+                AppTheme(themeColors) {
+                    WelcomeBinding(viewModel)
+                }
             }
         }
 

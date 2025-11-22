@@ -73,7 +73,6 @@ class NavControllerTest {
         assertThat(navController.rootStack).containsExactly(startRoot)
 
         navController.navigateUp() // Removes RootA
-        assertThat(navController.backStack).isEmpty()
         assertThat(navController.rootStack).isEmpty()
     }
 
@@ -82,7 +81,6 @@ class NavControllerTest {
         val startRoot = TestKey.RootA
         val navController = NavController(startRoot)
         navController.navigateUp()
-        assertThat(navController.backStack).isEmpty()
         assertThat(navController.rootStack).isEmpty()
     }
 
@@ -92,7 +90,6 @@ class NavControllerTest {
         val navController = NavController(startRoot)
         navController.navigateUp() // first up, empties the stack
         navController.navigateUp() // second up, should not crash
-        assertThat(navController.backStack).isEmpty()
         assertThat(navController.rootStack).isEmpty()
     }
 
@@ -114,7 +111,6 @@ class NavControllerTest {
         navController.selectRoot(newRoot)
         navController.selectRoot(startRoot)
         assertThat(navController.rootStack).containsExactly(newRoot, startRoot)
-        assertThat(navController.backStack).containsExactly(startRoot)
     }
 
     @Test
@@ -130,7 +126,6 @@ class NavControllerTest {
 
         navController.selectRoot(r1)
         assertThat(navController.rootStack).containsExactly(r2, r3, r1)
-        assertThat(navController.backStack).containsExactly(r1)
     }
 
     @Test

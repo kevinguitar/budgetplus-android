@@ -78,7 +78,7 @@ mockk = "io.mockk:mockk:1.14.6"
 navigation-hilt = "androidx.hilt:hilt-navigation-compose:1.3.0"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
-navigation3-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "navigation3" }
+navigation3-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "android-lifecycle" }
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
 reorderable = "sh.calvin.reorderable:reorderable:3.0.0"

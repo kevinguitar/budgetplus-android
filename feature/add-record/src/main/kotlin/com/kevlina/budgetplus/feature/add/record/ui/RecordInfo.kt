@@ -34,9 +34,6 @@ internal fun RecordInfo(
     state: RecordInfoState,
     modifier: Modifier = Modifier,
 ) {
-
-    val focusManager = rememberSafeFocusManager()
-
     val type by state.type.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
@@ -59,6 +56,8 @@ internal fun RecordInfo(
             modifier = Modifier.fillMaxWidth()
         )
 
+        val focusManager = rememberSafeFocusManager()
+        
         TextField(
             state = state.note,
             title = stringResource(id = R.string.record_note),

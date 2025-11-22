@@ -36,7 +36,6 @@ import com.kevlina.budgetplus.feature.category.pills.toState
 internal fun BatchRecordContent() {
 
     val vm = hiltViewModel<BatchRecordViewModel>()
-    val focusManager = rememberSafeFocusManager()
 
     val type by vm.type.collectAsStateWithLifecycle()
     val currencySymbol by vm.bookRepo.currencySymbol.collectAsStateWithLifecycle()
@@ -62,6 +61,8 @@ internal fun BatchRecordContent() {
             state = vm.categoriesVm.toState(type = vm.type),
             modifier = Modifier.fillMaxWidth()
         )
+
+        val focusManager = rememberSafeFocusManager()
 
         TextField(
             state = vm.note,

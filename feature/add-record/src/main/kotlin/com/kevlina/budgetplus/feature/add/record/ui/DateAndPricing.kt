@@ -43,7 +43,6 @@ internal fun ColumnScope.DateAndPricing(
     scrollState: ScrollState,
     modifier: Modifier = Modifier,
 ) {
-
     val focusManager = rememberSafeFocusManager()
 
     val recordDate by state.recordDate.collectAsStateWithLifecycle()

@@ -44,11 +44,11 @@ internal fun CurrencyPickerContent(
     onCurrencyPicked: (CurrencyState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val focusManager = rememberSafeFocusManager()
-
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+        val focusManager = rememberSafeFocusManager()
+        
         SearchField(
             keyword = keyword,
             hint = stringResource(id = R.string.currency_picker_hint),

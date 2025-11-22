@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
@@ -26,15 +27,12 @@ import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
-
-    val focusManager = rememberSafeFocusManager()
 
     var showAnimation by remember { mutableStateOf(false) }
     val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
@@ -51,10 +49,11 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
         rememberStrokeColorProperty(color = strokeColor, "Path 2", "Path 2", "Stroke 1"),
     )
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LaunchedEffect(key1 = eventTrigger) {
         eventTrigger.event.consumeEach {
-            focusManager.clearFocus()
-
+            keyboardController?.hide()
             showAnimation = true
             lottieAnimatable.animate(
                 composition = imgDone,

@@ -29,13 +29,13 @@ internal fun SearchContent(
     modifier: Modifier = Modifier,
     state: SearchState,
 ) {
-    val focusManager = rememberSafeFocusManager()
-
     Column(
         modifier = modifier
             .fillMaxSize()
             .containerPadding()
     ) {
+        val focusManager = rememberSafeFocusManager()
+
         SearchField(
             keyword = state.query,
             hint = stringResource(R.string.search_field_placeholder),

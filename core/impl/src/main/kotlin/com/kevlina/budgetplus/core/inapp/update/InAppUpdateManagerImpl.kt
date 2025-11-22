@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.inapp.update
 
-import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -16,7 +15,6 @@ import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion
 import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion.DAYS_FOR_IMMEDIATE_UPDATE
 import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import com.kevlina.budgetplus.inapp.update.InAppUpdateState
-import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +25,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class InAppUpdateManagerImpl @Inject constructor(
-    @ActivityContext private val context: Context,
+class InAppUpdateManagerImpl @Inject constructor(
+    private val activity: ComponentActivity,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
 ) : InAppUpdateManager {
@@ -36,8 +34,7 @@ internal class InAppUpdateManagerImpl @Inject constructor(
     private val _updateState = MutableStateFlow<InAppUpdateState>(InAppUpdateState.NotStarted)
     override val updateState: StateFlow<InAppUpdateState> = _updateState.asStateFlow()
 
-    private val appUpdateManager = AppUpdateManagerFactory.create(context)
-    private val activity = context as ComponentActivity
+    private val appUpdateManager = AppUpdateManagerFactory.create(activity)
     private val scope = activity.lifecycleScope
 
     // The version code when we requested the update last time.

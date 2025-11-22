@@ -12,13 +12,13 @@ import com.google.firebase.messaging.RemoteMessage
 import com.kevlina.budgetplus.core.common.AppScope
 import com.kevlina.budgetplus.core.common.ImageLoader
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_GENERAL
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_NEW_MEMBER
 import dagger.Lazy
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +27,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-@AndroidEntryPoint
 class FcmService : FirebaseMessagingService() {
 
     @Inject lateinit var authManager: Lazy<AuthManager>
@@ -36,6 +35,13 @@ class FcmService : FirebaseMessagingService() {
     @Inject @AppScope lateinit var appScope: CoroutineScope
 
     private var notificationId: Int = 0
+
+    override fun onCreate() {
+        resolveGraphExtensionFactory<FcmServiceGraph.Factory>()
+            .create(this)
+            .inject(this)
+        super.onCreate()
+    }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -19,11 +18,12 @@ import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.core.utils.metroViewModel
 
 @Composable
 fun PremiumScreen(navController: NavController<BookDest>) {
 
-    val vm = hiltViewModel<PremiumViewModel>()
+    val vm = metroViewModel<PremiumViewModel>()
     val premiumPricing by vm.premiumPricing.collectAsStateWithLifecycle()
     val isPaymentProcessing by vm.isPaymentProcessing.collectAsStateWithLifecycle(initialValue = false)
     val purchaseDone by vm.purchaseDoneFlow.collectAsStateWithLifecycle(initialValue = false)

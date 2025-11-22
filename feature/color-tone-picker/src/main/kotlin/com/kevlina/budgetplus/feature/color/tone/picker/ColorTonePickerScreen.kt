@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -32,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.color.tone.picker.ui.TonePickerContentRegular
 import com.kevlina.budgetplus.feature.color.tone.picker.ui.TonePickerContentWide
 import com.kevlina.budgetplus.feature.color.tone.picker.ui.colorTones
@@ -52,7 +52,7 @@ fun ColorTonePickerScreen(
     navController: NavController<BookDest>,
     hexFromLink: String?,
 ) {
-    val vm = hiltViewModel<ColorTonePickerViewModel>()
+    val vm = metroViewModel<ColorTonePickerViewModel>()
 
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
     val selectedColorTone by vm.selectedColorTone.collectAsStateWithLifecycle()

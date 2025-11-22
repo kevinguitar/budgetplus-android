@@ -2,11 +2,9 @@ package com.kevlina.budgetplus.insider.app.main
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
-@HiltViewModel
-class InsiderViewModel @Inject constructor(
+@Inject
+class InsiderViewModel(
     val snackbarSender: SnackbarSender,
-
 ) : ViewModel()

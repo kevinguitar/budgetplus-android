@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.auth
+package com.kevlina.budgetplus.app.book
 
 import androidx.activity.ComponentActivity
 import dev.zacsweers.metro.AppScope
@@ -8,15 +8,15 @@ import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
 
 @GraphExtension
-interface AuthActivityGraph {
+interface BookActivityGraph {
 
-    @Binds val AuthActivity.bind: ComponentActivity
+    @Binds val BookActivity.bind: ComponentActivity
 
-    fun inject(target: AuthActivity)
+    fun inject(target: BookActivity)
 
     @ContributesTo(AppScope::class)
     @GraphExtension.Factory
     fun interface Factory {
-        fun create(@Provides activity: AuthActivity): AuthActivityGraph
+        fun create(@Provides activity: BookActivity): BookActivityGraph
     }
 }

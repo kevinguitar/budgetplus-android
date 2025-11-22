@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -29,6 +28,7 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.flow.collect
@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun RecordScreen(navController: NavController<BookDest>) {
 
-    val vm = hiltViewModel<RecordViewModel>()
+    val vm = metroViewModel<RecordViewModel>()
 
     var isRequestingReview by remember { mutableStateOf(false) }
 

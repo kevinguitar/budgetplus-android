@@ -5,23 +5,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
+import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
+import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.utils.LocalViewModelGraphProvider
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.auth.AuthActivity
 import com.kevlina.budgetplus.insider.app.main.ui.InsiderBinding
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
-@AndroidEntryPoint
 class InsiderActivity : ComponentActivity() {
 
     @Inject lateinit var authManager: AuthManager
-
-    private val viewModel by viewModels<InsiderViewModel>()
+    @Inject lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        resolveGraphExtensionFactory<InsiderActivityGraph.Factory>()
+            .create(this)
+            .inject(this)
+
         enableEdgeToEdge()
         setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
@@ -32,8 +36,10 @@ class InsiderActivity : ComponentActivity() {
         }
 
         setContent {
-            AppTheme {
-                InsiderBinding(vm = viewModel)
+            CompositionLocalProvider(LocalViewModelGraphProvider provides viewModelGraphProvider) {
+                AppTheme {
+                    InsiderBinding()
+                }
             }
         }
     }

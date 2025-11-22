@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,10 +20,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Currency
 import java.util.Locale
-import javax.inject.Inject
 
-@HiltViewModel
-class CurrencyPickerViewModel @Inject constructor(
+@Inject
+@ViewModelKey(CurrencyPickerViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+class CurrencyPickerViewModel(
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.feature.welcome
+package com.kevlina.budgetplus.insider.app.main
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -6,13 +6,13 @@ import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
 
 @GraphExtension
-interface WelcomeActivityGraph {
+interface InsiderActivityGraph {
 
-    fun inject(target: WelcomeActivity)
+    fun inject(target: InsiderActivity)
 
     @ContributesTo(AppScope::class)
     @GraphExtension.Factory
     fun interface Factory {
-        fun create(@Provides activity: WelcomeActivity): WelcomeActivityGraph
+        fun create(@Provides activity: InsiderActivity): InsiderActivityGraph
     }
 }

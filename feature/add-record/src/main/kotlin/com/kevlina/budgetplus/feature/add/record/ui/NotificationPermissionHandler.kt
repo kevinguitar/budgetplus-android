@@ -7,17 +7,17 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.shouldShowRationale
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import kotlinx.coroutines.flow.collect
 
 @Composable
 fun NotificationPermissionHandler() {
 
-    val vm = hiltViewModel<RecordViewModel>()
+    val vm = metroViewModel<RecordViewModel>()
     val activity = LocalActivity.current!!
 
     val permissionRequester = rememberLauncherForActivityResult(

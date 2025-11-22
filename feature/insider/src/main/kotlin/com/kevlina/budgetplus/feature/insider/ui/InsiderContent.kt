@@ -22,12 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.insider.InsiderViewModel
 import com.kevlina.budgetplus.feature.insider.UsersOverviewData
 
@@ -38,7 +38,7 @@ private const val TYPE_USER = "user"
 @Composable
 internal fun BoxWithConstraintsScope.InsiderContent() {
 
-    val vm = hiltViewModel<InsiderViewModel>()
+    val vm = metroViewModel<InsiderViewModel>()
 
     val insiderData by vm.insiderData.collectAsStateWithLifecycle()
 

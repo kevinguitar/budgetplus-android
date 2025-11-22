@@ -13,7 +13,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -21,11 +20,12 @@ import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.TopBar
+import com.kevlina.budgetplus.core.utils.metroViewModel
 
 @Composable
 fun CurrencyPickerScreen(
     navController: NavController<BookDest>,
-    vm: CurrencyPickerViewModel = hiltViewModel(),
+    vm: CurrencyPickerViewModel = metroViewModel(),
 ) {
     val currencies by vm.currencies.collectAsStateWithLifecycle()
 

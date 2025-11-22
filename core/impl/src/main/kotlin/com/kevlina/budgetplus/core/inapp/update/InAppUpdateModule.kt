@@ -5,10 +5,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
 
 @Module
+@ContributesTo(AppScope::class)
 @InstallIn(ActivityComponent::class)
-internal interface InAppUpdateModule {
+interface InAppUpdateModule {
 
     @Binds
     fun provideInAppUpdateManager(impl: InAppUpdateManagerImpl): InAppUpdateManager

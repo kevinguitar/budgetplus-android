@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.di.AssistedFactoryKey
+import com.kevlina.budgetplus.core.common.di.ViewModelAssistedFactory
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.sendEvent
@@ -24,10 +27,10 @@ import com.kevlina.budgetplus.feature.search.ui.SearchPeriod.Companion.requiresP
 import com.kevlina.budgetplus.feature.search.ui.SearchResult
 import com.kevlina.budgetplus.feature.search.ui.SearchResultState
 import com.kevlina.budgetplus.feature.search.ui.SearchState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -36,8 +39,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 
-@HiltViewModel(assistedFactory = SearchViewModel.Factory::class)
-class SearchViewModel @AssistedInject constructor(
+@AssistedInject
+class SearchViewModel(
     @Assisted params: BookDest.Search,
     private val searchRepo: SearchRepo,
     private val authManager: AuthManager,
@@ -176,7 +179,9 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     @AssistedFactory
-    interface Factory {
+    @AssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(ViewModelScope::class)
+    fun interface Factory : ViewModelAssistedFactory {
         fun create(params: BookDest.Search): SearchViewModel
     }
 }

@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -36,6 +35,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import java.time.LocalDate
 
@@ -47,7 +47,7 @@ internal val iconModifier = Modifier
 @Composable
 internal fun BatchConfigSelector() {
 
-    val vm = hiltViewModel<BatchRecordViewModel>()
+    val vm = metroViewModel<BatchRecordViewModel>()
 
     val startRecordDate by vm.startRecordDate.collectAsStateWithLifecycle()
     val frequency by vm.frequency.collectAsStateWithLifecycle()

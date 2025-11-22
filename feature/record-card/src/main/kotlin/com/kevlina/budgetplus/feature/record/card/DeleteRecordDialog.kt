@@ -2,16 +2,16 @@ package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
+import com.kevlina.budgetplus.core.utils.metroViewModel
 
 @Composable
 fun DeleteRecordDialog(
     editRecord: Record,
     onDismiss: () -> Unit,
-    vm: EditRecordViewModel = hiltViewModel(),
+    vm: EditRecordViewModel = metroViewModel(),
 ) {
     if (editRecord.isBatched) {
         EditBatchDialog(

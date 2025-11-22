@@ -8,14 +8,18 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.AuthManager
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-@HiltViewModel
-class PremiumViewModel @Inject constructor(
+@Inject
+@ViewModelKey(PremiumViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+class PremiumViewModel(
     private val billingController: BillingController,
     private val activityProvider: ActivityProvider,
     private val snackbarSender: SnackbarSender,

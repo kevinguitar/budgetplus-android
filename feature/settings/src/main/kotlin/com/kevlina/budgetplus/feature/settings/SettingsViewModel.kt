@@ -10,16 +10,20 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class SettingsViewModel @Inject constructor(
+@Inject
+@ViewModelKey(SettingsViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+internal class SettingsViewModel(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val stringProvider: StringProvider,

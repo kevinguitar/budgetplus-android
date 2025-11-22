@@ -23,7 +23,9 @@ class WelcomeActivity : ComponentActivity() {
     @Inject lateinit var themeManager: ThemeManager
     @Inject lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
-    private val viewModel by viewModels<WelcomeViewModel>()
+    private val viewModel by viewModels<WelcomeViewModel>(
+        factoryProducer = ::viewModelGraphProvider
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         resolveGraphExtensionFactory<WelcomeActivityGraph.Factory>()

@@ -9,9 +9,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
 import javax.inject.Named
 
 @Module
+@ContributesTo(AppScope::class)
 @InstallIn(SingletonComponent::class)
 object AuthModule {
 

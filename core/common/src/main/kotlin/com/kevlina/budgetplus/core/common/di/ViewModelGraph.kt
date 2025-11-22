@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
@@ -42,7 +43,7 @@ interface ViewModelGraph {
     @Multibinds
     val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
-    @Multibinds
+    @Multibinds(allowEmpty = true)
     val assistedFactoryProviders:
         Map<KClass<out ViewModelAssistedFactory>, Provider<ViewModelAssistedFactory>>
 
@@ -54,7 +55,9 @@ interface ViewModelGraph {
 }
 
 @Inject
-class ViewModelGraphProvider(private val context: Context) : ViewModelProvider.Factory {
+class ViewModelGraphProvider(
+    @ApplicationContext private val context: Context,
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
         val viewModelGraph = buildViewModelGraph(extras)
         val viewModelProvider =

@@ -1,6 +1,6 @@
 plugins {
     alias(budgetplus.plugins.insider.app)
-    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.metro)
     alias(budgetplus.plugins.compose)
     alias(budgetplus.plugins.kotlin.serialization)
 }

@@ -1,9 +1,12 @@
 package com.kevlina.budgetplus.core.ui
 
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -11,12 +14,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BubbleRepoImpl @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class BubbleRepoImpl(
+    @AppCoroutineScope private val appScope: CoroutineScope,
     private val preferenceHolder: PreferenceHolder,
 ) : BubbleRepo {
 

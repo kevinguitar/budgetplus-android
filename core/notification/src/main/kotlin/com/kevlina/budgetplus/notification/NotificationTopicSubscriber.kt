@@ -2,10 +2,12 @@ package com.kevlina.budgetplus.notification
 
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -13,10 +15,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
 import timber.log.Timber
-import javax.inject.Inject
 
-class NotificationTopicSubscriber @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
+@ContributesIntoSet(AppScope::class)
+class NotificationTopicSubscriber(
+    @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     preferenceHolder: PreferenceHolder,
 ) : AppStartAction {

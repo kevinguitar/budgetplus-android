@@ -1,12 +1,14 @@
 package com.kevlina.budgetplus.core.common
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SnackbarSenderImpl @Inject constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class SnackbarSenderImpl(
     private val stringProvider: StringProvider,
 ) : SnackbarSender {
 

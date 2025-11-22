@@ -2,14 +2,15 @@ package com.kevlina.budgetplus.core.common
 
 import android.content.Context
 import android.widget.Toast
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ToasterImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class ToasterImpl(
+    private val context: Context,
 ) : Toaster {
 
     private var toast: Toast? = null

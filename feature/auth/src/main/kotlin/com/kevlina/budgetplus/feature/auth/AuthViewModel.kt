@@ -30,9 +30,9 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Named
 
 @Inject
 class AuthViewModel(

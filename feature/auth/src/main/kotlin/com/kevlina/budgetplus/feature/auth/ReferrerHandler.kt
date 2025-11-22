@@ -5,8 +5,8 @@ import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.kevlina.budgetplus.core.data.BookRepo
+import dev.zacsweers.metro.Inject
 import timber.log.Timber
-import javax.inject.Inject
 
 class ReferrerHandler @Inject constructor(
     private val activity: ComponentActivity,

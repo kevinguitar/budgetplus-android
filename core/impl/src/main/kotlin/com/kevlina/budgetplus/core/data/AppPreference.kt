@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.kevlina.budgetplus.core.data.local.Preference
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-class AppPreference @Inject constructor(
-    @ApplicationContext context: Context,
-) : Preference {
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class AppPreference(context: Context) : Preference {
 
     override val pref: SharedPreferences = context.getSharedPreferences(
         "app_preference",

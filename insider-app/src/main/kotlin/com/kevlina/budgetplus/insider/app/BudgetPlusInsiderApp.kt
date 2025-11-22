@@ -2,12 +2,10 @@ package com.kevlina.budgetplus.insider.app
 
 import android.app.Application
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
-import dagger.hilt.android.HiltAndroidApp
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
 
-@HiltAndroidApp
 class BudgetPlusInsiderApp : Application() {
 
     @Inject lateinit var activityProvider: ActivityProviderImpl

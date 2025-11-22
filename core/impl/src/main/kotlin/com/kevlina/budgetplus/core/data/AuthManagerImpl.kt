@@ -8,7 +8,7 @@ import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.messaging.messaging
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
@@ -16,7 +16,9 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
-import dagger.Lazy
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,17 +26,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 
-@Singleton
-class AuthManagerImpl @Inject constructor(
+@SingleIn(dev.zacsweers.metro.AppScope::class)
+@ContributesBinding(dev.zacsweers.metro.AppScope::class)
+class AuthManagerImpl(
     preferenceHolder: PreferenceHolder,
     private val stringProvider: StringProvider,
     private val tracker: Lazy<Tracker>,
     @Named("allow_update_fcm_token") private val allowUpdateFcmToken: Boolean,
-    @AppScope private val appScope: CoroutineScope,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : AuthManager {
 
@@ -69,12 +69,12 @@ class AuthManagerImpl @Inject constructor(
             user = currentUser.toUser().copy(name = newName),
             newName = newName
         )
-        tracker.get().logEvent("user_renamed")
+        tracker.value.logEvent("user_renamed")
     }
 
     override fun markPremium() {
         val premiumUser = currentUser?.copy(premium = true) ?: return
-        usersDb.get().document(premiumUser.id).set(premiumUser)
+        usersDb.value.document(premiumUser.id).set(premiumUser)
 
         _userState.value = premiumUser
         currentUser = premiumUser
@@ -84,14 +84,14 @@ class AuthManagerImpl @Inject constructor(
         if (!allowUpdateFcmToken) return
 
         val userWithNewToken = currentUser?.copy(fcmToken = newToken) ?: return
-        usersDb.get().document(userWithNewToken.id).set(userWithNewToken)
+        usersDb.value.document(userWithNewToken.id).set(userWithNewToken)
 
         _userState.value = userWithNewToken
         currentUser = userWithNewToken
     }
 
     override fun logout() {
-        tracker.get().logEvent("logout")
+        tracker.value.logEvent("logout")
         Firebase.auth.signOut()
     }
 
@@ -135,7 +135,7 @@ class AuthManagerImpl @Inject constructor(
 
             try {
                 // Get the latest remote user from the server
-                val remoteUser = usersDb.get().document(user.id)
+                val remoteUser = usersDb.value.document(user.id)
                     .get(Source.SERVER)
                     .requireValue<User>()
 
@@ -151,11 +151,11 @@ class AuthManagerImpl @Inject constructor(
                 _userState.value = mergedUser
                 currentUser = mergedUser
 
-                usersDb.get().document(user.id).set(mergedUser)
+                usersDb.value.document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
                 Timber.i(e)
                 // Can't find user in the db yet, set it with the data what we have in place.
-                usersDb.get().document(user.id)
+                usersDb.value.document(user.id)
                     .set(userWithExclusiveFields.copy(fcmToken = fcmToken))
             } catch (e: Exception) {
                 Timber.w(e)

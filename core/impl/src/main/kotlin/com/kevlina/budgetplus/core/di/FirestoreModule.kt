@@ -10,30 +10,23 @@ import com.kevlina.budgetplus.core.data.remote.PurchasesDb
 import com.kevlina.budgetplus.core.data.remote.PushNotificationsDb
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
 import com.kevlina.budgetplus.core.data.remote.UsersDb
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
-import javax.inject.Singleton
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@Module
 @ContributesTo(AppScope::class)
-@BindingContainer
-@InstallIn(SingletonComponent::class)
-object FirestoreModule {
+interface FirestoreModule {
 
     @UsersDb
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun provideUsersDb(): CollectionReference {
         return Firebase.firestore.collection("users")
     }
 
     @BooksDb
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun provideBooksDb(): CollectionReference {
         return Firebase.firestore.collection("books")
@@ -48,21 +41,21 @@ object FirestoreModule {
     }
 
     @JoinInfoDb
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun provideJoinInfoDb(): CollectionReference {
         return Firebase.firestore.collection("join_info")
     }
 
     @PurchasesDb
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun providePurchasesDb(): CollectionReference {
         return Firebase.firestore.collection("purchases")
     }
 
     @PushNotificationsDb
-    @Singleton
+    @SingleIn(AppScope::class)
     @Provides
     fun providePushNotificationsDb(): CollectionReference {
         return Firebase.firestore.collection("push_notifications")

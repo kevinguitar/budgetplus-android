@@ -4,24 +4,21 @@ import android.content.Context
 import android.content.Intent
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.insider.app.BuildConfig
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
 
-@Module
-@InstallIn(SingletonComponent::class)
-object InsiderModule {
+@ContributesTo(AppScope::class)
+interface InsiderModule {
 
     @Provides @Named("book")
-    fun provideBookNavigationAction(@ApplicationContext context: Context): NavigationAction {
+    fun provideBookNavigationAction(context: Context): NavigationAction {
         return NavigationAction(intent = Intent(context, InsiderActivity::class.java))
     }
 
     @Provides @Named("welcome")
-    fun provideWelcomeNavigationAction(@ApplicationContext context: Context): NavigationAction {
+    fun provideWelcomeNavigationAction(context: Context): NavigationAction {
         return NavigationAction(intent = Intent(context, InsiderActivity::class.java))
     }
 

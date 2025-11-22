@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
 import com.kevlina.budgetplus.feature.search.ui.SearchPeriod
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,10 +31,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
 import java.time.LocalDate
-import javax.inject.Inject
 
 class SearchRepo @Inject constructor(
-    @BooksDb private val booksDb: dagger.Lazy<CollectionReference>,
+    @BooksDb private val booksDb: Lazy<CollectionReference>,
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
@@ -90,7 +90,7 @@ class SearchRepo @Inject constructor(
         flow.tryEmit(DbResult.Loading)
 
         recordsRegistration?.remove()
-        recordsRegistration = booksDb.get()
+        recordsRegistration = booksDb.value
             .document(bookId)
             .collection("records")
             .orderBy("date", Query.Direction.DESCENDING)

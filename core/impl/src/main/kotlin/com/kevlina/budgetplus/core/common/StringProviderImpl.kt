@@ -1,13 +1,14 @@
 package com.kevlina.budgetplus.core.common
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 
-@Singleton
-class StringProviderImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class StringProviderImpl(
+    private val context: Context,
 ) : StringProvider {
 
     override fun get(resId: Int): String {

@@ -3,11 +3,11 @@ package com.kevlina.budgetplus.feature.push.notifications
 import com.google.auth.ApiKeyCredentials
 import com.google.cloud.translate.Translate.TranslateOption
 import com.google.cloud.translate.TranslateOptions
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
 
 internal class Translator @Inject constructor(
     @Named("google_api_key") googleApiKey: String

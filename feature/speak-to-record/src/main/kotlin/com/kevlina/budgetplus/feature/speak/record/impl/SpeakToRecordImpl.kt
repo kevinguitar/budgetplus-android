@@ -11,16 +11,17 @@ import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
 import com.kevlina.budgetplus.feature.speak.record.fromErrorCode
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import timber.log.Timber
 import java.util.Locale
-import javax.inject.Inject
 
-class SpeakToRecordImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+@ContributesBinding(AppScope::class)
+class SpeakToRecordImpl(
+    private val context: Context,
     private val speakResultParser: SpeakResultParser,
     private val tracker: Tracker,
 ) : SpeakToRecord {

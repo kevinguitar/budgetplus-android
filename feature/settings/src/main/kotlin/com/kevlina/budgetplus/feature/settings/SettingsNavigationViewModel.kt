@@ -15,7 +15,7 @@ import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.Inject
-import javax.inject.Named
+import dev.zacsweers.metro.Named
 
 @Inject
 internal class SettingsNavigationViewModel(

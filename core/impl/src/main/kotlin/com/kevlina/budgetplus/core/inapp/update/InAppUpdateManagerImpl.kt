@@ -15,6 +15,8 @@ import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion
 import com.kevlina.budgetplus.core.inapp.update.InAppUpdateManagerImpl.Companion.DAYS_FOR_IMMEDIATE_UPDATE
 import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import com.kevlina.budgetplus.inapp.update.InAppUpdateState
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,9 +25,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-class InAppUpdateManagerImpl @Inject constructor(
+@ContributesBinding(AppScope::class)
+class InAppUpdateManagerImpl(
     private val activity: ComponentActivity,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,

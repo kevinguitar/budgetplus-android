@@ -5,11 +5,10 @@ import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
 import coil.Coil
 import coil.request.ImageRequest
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 class ImageLoader @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val context: Context,
 ) {
 
     private val coilLoader = Coil.imageLoader(context)

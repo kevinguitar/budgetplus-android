@@ -8,13 +8,11 @@ import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.di.HasServiceProvider
-import dagger.hilt.android.HiltAndroidApp
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.createGraphFactory
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
 
-@HiltAndroidApp
 class BudgetPlusApp : Application(), HasServiceProvider {
 
     @Inject lateinit var adMobInitializer: AdMobInitializer
@@ -27,6 +25,7 @@ class BudgetPlusApp : Application(), HasServiceProvider {
     }
 
     override fun onCreate() {
+        appGraph.inject(this)
         super.onCreate()
 
         // Initialize AdMob asap after app starts

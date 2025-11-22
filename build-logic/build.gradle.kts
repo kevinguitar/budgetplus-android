@@ -33,9 +33,9 @@ gradlePlugin {
             id = "budgetplus.compose"
             implementationClass = "ComposeConventionPlugin"
         }
-        register("hilt") {
-            id = "budgetplus.hilt"
-            implementationClass = "HiltConventionPlugin"
+        register("metro") {
+            id = "budgetplus.metro"
+            implementationClass = "MetroConventionPlugin"
         }
         register("kotlin.serialization") {
             id = "budgetplus.kotlin.serialization"

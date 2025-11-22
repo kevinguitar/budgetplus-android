@@ -7,9 +7,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 
 enum class ChartMode {
     BarChart, PieChart
@@ -21,8 +22,9 @@ val ChartMode.icon: ImageVector
         ChartMode.PieChart -> Icons.Rounded.PieChart
     }
 
-@Singleton
-class ChartModeViewModel @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+class ChartModeViewModel(
     preferenceHolder: PreferenceHolder,
     private val tracker: Tracker,
 ) {

@@ -3,16 +3,16 @@ package com.kevlina.budgetplus.core.data
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.JoinInfo
 import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
+import dev.zacsweers.metro.Inject
 import java.util.UUID
-import javax.inject.Inject
 
 class JoinInfoProcessor @Inject constructor(
-    @JoinInfoDb private val joinInfoDb: dagger.Lazy<CollectionReference>,
+    @JoinInfoDb private val joinInfoDb: Lazy<CollectionReference>,
 ) {
 
     fun generateJoinId(bookId: String): String {
         val joinId = UUID.randomUUID().toString()
-        joinInfoDb.get().document(joinId).set(
+        joinInfoDb.value.document(joinId).set(
             JoinInfo(
                 bookId = bookId,
                 generatedOn = System.currentTimeMillis()
@@ -28,7 +28,7 @@ class JoinInfoProcessor @Inject constructor(
         }
 
         return try {
-            joinInfoDb.get().document(joinId).get().requireValue()
+            joinInfoDb.value.document(joinId).get().requireValue()
         } catch (e: Exception) {
             e.toString()
             throw JoinBookException.JoinInfoNotFound("Couldn't resolve the join id. $joinId")

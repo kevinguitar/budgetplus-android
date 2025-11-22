@@ -1,7 +1,7 @@
 plugins {
     alias(budgetplus.plugins.android.library)
     alias(budgetplus.plugins.compose)
-    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.metro)
 }
 
 dependencies {

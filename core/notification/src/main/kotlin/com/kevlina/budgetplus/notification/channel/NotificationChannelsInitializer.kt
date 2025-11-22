@@ -8,11 +8,13 @@ import androidx.annotation.StringRes
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.Inject
 
+@ContributesIntoSet(AppScope::class)
 class NotificationChannelsInitializer @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val context: Context,
     private val stringProvider: StringProvider,
 ) : AppStartAction {
 

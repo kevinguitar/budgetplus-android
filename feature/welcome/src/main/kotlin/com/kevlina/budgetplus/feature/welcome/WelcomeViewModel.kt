@@ -13,7 +13,6 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +21,6 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-@HiltViewModel
 class WelcomeViewModel @Inject constructor(
     val navigation: NavigationFlow,
     val snackbarSender: SnackbarSender,

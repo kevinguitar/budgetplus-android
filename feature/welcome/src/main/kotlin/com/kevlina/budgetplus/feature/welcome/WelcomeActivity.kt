@@ -7,13 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.common.nav.consumeNavigation
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.welcome.ui.WelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
 @AndroidEntryPoint
 class WelcomeActivity : ComponentActivity() {
@@ -23,6 +24,11 @@ class WelcomeActivity : ComponentActivity() {
     private val viewModel by viewModels<WelcomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        resolveGraphExtensionFactory<WelcomeActivityGraph.Factory>()
+            .create(this)
+            .injector
+            .injectMembers(this)
+
         enableEdgeToEdge()
         setStatusBarColor(isLight = true)
         super.onCreate(savedInstanceState)

@@ -7,18 +7,24 @@ import com.google.firebase.crashlytics.crashlytics
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppStartAction
+import com.kevlina.budgetplus.core.common.di.HasServiceProvider
 import dagger.hilt.android.HiltAndroidApp
+import dev.zacsweers.metro.createGraphFactory
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
 @HiltAndroidApp
-class BudgetPlusApp : Application() {
+class BudgetPlusApp : Application(), HasServiceProvider {
 
     @Inject lateinit var adMobInitializer: AdMobInitializer
     @Inject lateinit var activityProvider: ActivityProviderImpl
     @Inject lateinit var appStartActions: Set<@JvmSuppressWildcards AppStartAction>
     @Inject @JvmField @Named("is_debug") var isDebug: Boolean = false
+
+    private val appGraph by lazy {
+        createGraphFactory<BudgetPlusAppGraph.Factory>().create(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -35,4 +41,7 @@ class BudgetPlusApp : Application() {
         // Execute all the actions that need to be executed on app start.
         appStartActions.forEach { it.onAppStart() }
     }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> resolve(): T = appGraph as T
 }

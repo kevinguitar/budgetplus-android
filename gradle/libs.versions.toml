@@ -15,6 +15,8 @@ firebase-bom = "34.5.0"
 hilt = "2.57.2"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
+# https://github.com/ZacSweers/metro/releases
+metro = "0.7.7"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
 navigation3 = "1.0.0"
 # https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle
@@ -33,6 +35,7 @@ android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", ver
 build-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 build-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 build-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+build-metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 compose-activity = { module = "androidx.activity:activity-compose" }
@@ -119,5 +122,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-services = "com.google.gms.google-services:4.4.4"
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

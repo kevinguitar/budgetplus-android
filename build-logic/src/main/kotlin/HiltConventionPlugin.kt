@@ -1,9 +1,11 @@
 import common.implementation
 import common.ksp
 import common.libs
+import dev.zacsweers.metro.gradle.MetroPluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 class HiltConventionPlugin : Plugin<Project> {
@@ -11,6 +13,14 @@ class HiltConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.hilt.android.get().pluginId)
         project.apply(plugin = project.libs.plugins.google.ksp.get().pluginId)
+        project.apply(plugin = project.libs.plugins.metro.get().pluginId)
+
+        project.configure<MetroPluginExtension> {
+            contributesAsInject.set(true)
+            interop {
+                enableDaggerRuntimeInterop.set(true)
+            }
+        }
 
         project.dependencies {
             implementation(project.libs.navigation.hilt)

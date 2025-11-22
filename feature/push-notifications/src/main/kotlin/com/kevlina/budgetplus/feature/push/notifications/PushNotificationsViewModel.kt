@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @Inject
 @ViewModelKey(PushNotificationsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-class PushNotificationsViewModel(
+internal class PushNotificationsViewModel(
     preferenceHolder: PreferenceHolder,
     translator: Translator,
     @Named("google_play_url") private val googlePlayUrl: String,

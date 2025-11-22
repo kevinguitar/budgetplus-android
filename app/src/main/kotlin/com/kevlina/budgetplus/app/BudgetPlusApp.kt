@@ -17,8 +17,8 @@ class BudgetPlusApp : Application(), HasServiceProvider {
 
     @Inject lateinit var adMobInitializer: AdMobInitializer
     @Inject lateinit var activityProvider: ActivityProviderImpl
-    @Inject lateinit var appStartActions: Set<@JvmSuppressWildcards AppStartAction>
-    @Inject @JvmField @Named("is_debug") var isDebug: Boolean = false
+    @Inject lateinit var appStartActions: Set<AppStartAction>
+    @Inject @Named("is_debug") var isDebug: Boolean = false
 
     private val appGraph by lazy {
         createGraphFactory<BudgetPlusAppGraph.Factory>().create(this)

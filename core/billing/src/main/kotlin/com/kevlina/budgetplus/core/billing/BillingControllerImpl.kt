@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class BillingControllerImpl @Inject constructor(
+class BillingControllerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,

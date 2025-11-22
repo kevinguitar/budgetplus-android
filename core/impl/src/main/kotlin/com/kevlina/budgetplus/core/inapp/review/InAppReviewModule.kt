@@ -10,10 +10,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
 
 @Module
+@ContributesTo(AppScope::class)
 @InstallIn(SingletonComponent::class)
-internal interface InAppReviewModule {
+interface InAppReviewModule {
 
     @Binds
     fun provideInAppReviewManager(impl: InAppReviewManagerImpl): InAppReviewManager

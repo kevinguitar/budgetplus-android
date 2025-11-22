@@ -11,7 +11,7 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-internal class NotificationChannelsInitializer @Inject constructor(
+class NotificationChannelsInitializer @Inject constructor(
     @ApplicationContext private val context: Context,
     private val stringProvider: StringProvider,
 ) : AppStartAction {

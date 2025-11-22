@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.auth
 
-import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -30,27 +29,26 @@ import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import dagger.hilt.android.qualifiers.ActivityContext
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 import javax.inject.Named
 
-class AuthViewModel @Inject constructor(
+@Inject
+class AuthViewModel(
     val navigation: NavigationFlow,
     val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
     private val stringProvider: StringProvider,
-    @ActivityContext private val context: Context,
+    private val activity: ComponentActivity,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     @Named("book") private val bookNavigationAction: NavigationAction,
     referrerHandler: ReferrerHandler,
     preferenceHolder: PreferenceHolder,
 ) {
 
-    private val activity = context as ComponentActivity
     private val coroutineScope = activity.lifecycleScope
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }

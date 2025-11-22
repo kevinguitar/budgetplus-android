@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class NotificationTopicSubscriber @Inject constructor(
+class NotificationTopicSubscriber @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     preferenceHolder: PreferenceHolder,

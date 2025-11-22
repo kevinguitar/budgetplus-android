@@ -20,7 +20,7 @@ import javax.inject.Inject
  *  [INSTALL_DAYS_MIN] days, and will only request the review once per app installation, also,
  *  if the user rejected, we'll never prompt the review flow again for them.
  */
-internal class InAppReviewManagerImpl @Inject constructor(
+class InAppReviewManagerImpl @Inject constructor(
     private val reviewManager: ReviewManager,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,

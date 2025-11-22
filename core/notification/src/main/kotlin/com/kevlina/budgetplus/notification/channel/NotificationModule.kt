@@ -7,10 +7,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
 
 @Module
+@ContributesTo(AppScope::class)
 @InstallIn(SingletonComponent::class)
-internal interface NotificationModule {
+interface NotificationModule {
 
     @Binds @IntoSet
     fun provideNotificationChannelsInitializer(

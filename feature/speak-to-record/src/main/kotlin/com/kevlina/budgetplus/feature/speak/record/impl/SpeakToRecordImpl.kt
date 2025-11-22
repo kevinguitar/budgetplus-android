@@ -19,7 +19,7 @@ import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
-internal class SpeakToRecordImpl @Inject constructor(
+class SpeakToRecordImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val speakResultParser: SpeakResultParser,
     private val tracker: Tracker,

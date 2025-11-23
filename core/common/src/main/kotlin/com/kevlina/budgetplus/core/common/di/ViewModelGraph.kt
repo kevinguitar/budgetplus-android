@@ -1,8 +1,10 @@
 package com.kevlina.budgetplus.core.common.di
 
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -45,6 +47,10 @@ interface ViewModelGraph {
     @Multibinds(allowEmpty = true)
     val assistedFactoryProviders:
         Map<KClass<out ViewModelAssistedFactory>, Provider<ViewModelAssistedFactory>>
+
+    @Provides
+    fun provideSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =
+        creationExtras.createSavedStateHandle()
 
     @ContributesTo(AppScope::class)
     @GraphExtension.Factory

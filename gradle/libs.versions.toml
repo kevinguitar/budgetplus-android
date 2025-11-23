@@ -57,7 +57,7 @@ firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlyti
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
-google-ads = "com.google.android.gms:play-services-ads:24.7.0"
+google-ads = "com.google.android.gms:play-services-ads:24.8.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.21.0.0"
 google-billing = "com.android.billingclient:billing-ktx:8.1.0"
 google-id = "com.google.android.libraries.identity.googleid:googleid:1.1.1"

@@ -6,6 +6,10 @@ plugins {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     implementation(libs.android.activity)
     implementation(libs.navigation3.ui)
     implementation(libs.navigation3.viewmodel)

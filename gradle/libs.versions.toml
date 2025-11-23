@@ -4,7 +4,7 @@ gradle-plugin = "8.13.1"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.2.21"
 # https://github.com/google/ksp/releases
-ksp = "2.3.2"
+ksp = "2.3.3"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping

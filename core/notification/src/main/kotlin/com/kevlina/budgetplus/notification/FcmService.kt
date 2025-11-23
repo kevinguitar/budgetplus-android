@@ -28,10 +28,10 @@ import timber.log.Timber
 
 class FcmService : FirebaseMessagingService() {
 
-    @Inject lateinit var authManager: Lazy<AuthManager>
-    @Inject lateinit var imageLoader: ImageLoader
-    @Inject @Named("default_deeplink") lateinit var defaultDeeplink: String
-    @Inject @AppCoroutineScope lateinit var appScope: CoroutineScope
+    @Inject private lateinit var authManager: Lazy<AuthManager>
+    @Inject private lateinit var imageLoader: ImageLoader
+    @Inject @Named("default_deeplink") private lateinit var defaultDeeplink: String
+    @Inject @AppCoroutineScope private lateinit var appScope: CoroutineScope
 
     private var notificationId: Int = 0
 

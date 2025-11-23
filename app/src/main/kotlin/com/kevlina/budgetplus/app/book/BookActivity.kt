@@ -34,12 +34,12 @@ import dev.zacsweers.metro.Inject
 
 class BookActivity : ComponentActivity() {
 
-    @Inject lateinit var authManager: AuthManager
-    @Inject lateinit var bookRepo: BookRepo
-    @Inject lateinit var themeManager: ThemeManager
-    @Inject lateinit var inAppUpdateManager: InAppUpdateManager
-    @Inject lateinit var snackbarSender: SnackbarSender
-    @Inject lateinit var viewModelGraphProvider: ViewModelGraphProvider
+    @Inject private lateinit var authManager: AuthManager
+    @Inject private lateinit var bookRepo: BookRepo
+    @Inject private lateinit var themeManager: ThemeManager
+    @Inject private lateinit var inAppUpdateManager: InAppUpdateManager
+    @Inject private lateinit var snackbarSender: SnackbarSender
+    @Inject private lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
     private val viewModel by viewModels<BookViewModel>(
         factoryProducer = ::viewModelGraphProvider

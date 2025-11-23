@@ -20,8 +20,8 @@ import dev.zacsweers.metro.Inject
 
 class WelcomeActivity : ComponentActivity() {
 
-    @Inject lateinit var themeManager: ThemeManager
-    @Inject lateinit var viewModelGraphProvider: ViewModelGraphProvider
+    @Inject private lateinit var themeManager: ThemeManager
+    @Inject private lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
     private val viewModel by viewModels<WelcomeViewModel>(
         factoryProducer = ::viewModelGraphProvider

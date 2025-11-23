@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Inject
-class AuthViewModel(
+internal class AuthViewModel(
     val navigation: NavigationFlow,
     val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,

@@ -20,7 +20,7 @@ import com.kevlina.budgetplus.feature.auth.AuthViewModel
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun AuthBinding(vm: AuthViewModel) {
+internal fun AuthBinding(vm: AuthViewModel) {
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
 
     LaunchedEffect(vm) {

@@ -53,7 +53,6 @@ class CalculatorViewModel @Inject constructor(
 
     fun onInput(btn: CalculatorButton) {
         vibrator.vibrate()
-        Timber.d("Calculator: Pressing ${btn.text}")
 
         val currentText = priceText.text
         when (btn) {
@@ -136,7 +135,6 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun onCalculatorAction(action: CalculatorAction) {
-        Timber.d("Calculator: Pressing $action")
         vibrator.vibrate()
         when (action) {
             CalculatorAction.Clear -> clearPrice()

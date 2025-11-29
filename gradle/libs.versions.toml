@@ -23,6 +23,7 @@ android-credentials = "1.5.0"
 android-lifecycle = "2.10.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
 android-activity = "1.12.0"
+jvmTarget = "21"
 
 [libraries]
 android-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }

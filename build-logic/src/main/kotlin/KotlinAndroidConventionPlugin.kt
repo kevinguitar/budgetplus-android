@@ -1,10 +1,10 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.TestedExtension
-import common.Constants
 import common.implementation
 import common.libs
 import common.testFixturesImplementation
 import common.testImplementation
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -13,6 +13,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class KotlinAndroidConventionPlugin : Plugin<Project> {
@@ -38,8 +39,9 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             }
 
             compileOptions {
-                sourceCompatibility = Constants.javaVersion
-                targetCompatibility = Constants.javaVersion
+                val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
+                sourceCompatibility = javaVersion
+                targetCompatibility = javaVersion
             }
 
             packaging {
@@ -66,7 +68,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                         "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
                         "kotlinx.coroutines.FlowPreview"
                     )
-                    jvmTarget.set(Constants.jvmTarget)
+                    jvmTarget.set(project.libs.versions.jvmTarget.map(JvmTarget::fromTarget))
                 }
             }
         }

@@ -1,8 +1,8 @@
 import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.TestAndroidComponentsExtension
-import common.Constants
 import common.implementation
 import common.libs
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -10,6 +10,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AppBenchmarkConventionPlugin : Plugin<Project> {
@@ -28,13 +29,14 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             compileSdk = androidSdk.toInt()
 
             compileOptions {
-                sourceCompatibility = Constants.javaVersion
-                targetCompatibility = Constants.javaVersion
+                val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
+                sourceCompatibility = javaVersion
+                targetCompatibility = javaVersion
             }
 
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
-                    jvmTarget.set(Constants.jvmTarget)
+                    jvmTarget.set(project.libs.versions.jvmTarget.map(JvmTarget::fromTarget))
                 }
             }
 

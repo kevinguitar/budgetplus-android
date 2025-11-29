@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.app.book
 
 import android.content.Intent
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
@@ -51,9 +52,14 @@ internal class BookViewModel(
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    val navController = NavController(startRoot = BottomNavTab.Add.root)
+    val navController = NavController(
+        startRoot = BottomNavTab.Add.root,
+        serializer = BookDest.serializer(),
+        savedStateHandle = savedStateHandle
+    )
     private val currentNavKeyFlow = snapshotFlow { navController.backStack.lastOrNull() }.filterNotNull()
 
     val showAds = combine(

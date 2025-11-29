@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.NavKey
 import com.kevlina.budgetplus.core.common.RecordType
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface BookDest : NavKey {
 
     /**

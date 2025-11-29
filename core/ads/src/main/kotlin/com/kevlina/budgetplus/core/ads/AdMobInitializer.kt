@@ -2,9 +2,11 @@ package com.kevlina.budgetplus.core.ads
 
 import android.content.Context
 import com.google.android.gms.ads.MobileAds
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.data.AuthManager
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,13 +16,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AdMobInitializer @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @AppScope appScope: CoroutineScope,
+@SingleIn(AppScope::class)
+@Inject
+class AdMobInitializer(
+    private val context: Context,
+    @AppCoroutineScope appScope: CoroutineScope,
     private val authManager: AuthManager,
 ) {
 

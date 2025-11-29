@@ -10,6 +10,8 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.bundle
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -29,7 +31,8 @@ import com.kevlina.budgetplus.feature.overview.ui.OverviewHeaderState
 import com.kevlina.budgetplus.feature.overview.ui.OverviewListState
 import com.kevlina.budgetplus.feature.overview.ui.toState
 import com.kevlina.budgetplus.feature.utils.CsvWriter
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -45,11 +48,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
-@HiltViewModel
-internal class OverviewViewModel @Inject constructor(
+@Inject
+@ViewModelKey(OverviewViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+internal class OverviewViewModel(
     private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,

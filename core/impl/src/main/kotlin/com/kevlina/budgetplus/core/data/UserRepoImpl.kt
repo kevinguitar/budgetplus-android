@@ -1,12 +1,16 @@
 package com.kevlina.budgetplus.core.data
 
 import com.google.firebase.firestore.CollectionReference
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
-import dagger.Lazy
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
+import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -15,14 +19,14 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-internal class UserRepoImpl @Inject constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class, binding = binding<UserRepo>())
+@ContributesIntoSet(AppScope::class, binding = binding<AppStartAction>())
+class UserRepoImpl(
     private val authManager: AuthManager,
     @UsersDb private val usersDb: Lazy<CollectionReference>,
-    @AppScope private val appScope: CoroutineScope,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     private val bookRepo: BookRepo,
 ) : UserRepo, AppStartAction {
 
@@ -62,7 +66,7 @@ internal class UserRepoImpl @Inject constructor(
 
     private suspend fun loadUser(userId: String) {
         try {
-            val user = usersDb.get().document(userId).get().requireValue<User>()
+            val user = usersDb.value.document(userId).get().requireValue<User>()
             userMapping[userId] = user
         } catch (e: Exception) {
             Timber.e(e)

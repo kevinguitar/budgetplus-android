@@ -16,6 +16,8 @@ import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.consumeEach
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -29,17 +31,19 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel.Companion.RECORD_COUNT_CYCLE
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class RecordViewModel @Inject constructor(
+@Inject
+@ViewModelKey(RecordViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+internal class RecordViewModel(
     val calculatorVm: CalculatorViewModel,
     val categoriesVm: CategoriesViewModel,
     val bookRepo: BookRepo,

@@ -2,10 +2,11 @@ package com.kevlina.budgetplus.feature.speak.record.impl
 
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
+import dev.zacsweers.metro.Inject
 import timber.log.Timber
-import javax.inject.Inject
 
-class SpeakResultParser @Inject constructor(
+@Inject
+class SpeakResultParser(
     private val tracker: Tracker,
 ) {
 

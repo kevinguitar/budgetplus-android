@@ -1,8 +1,8 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
 import android.Manifest
-import android.app.Activity
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -20,9 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.hasPermission
@@ -36,13 +34,14 @@ import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
 
 @Composable
 fun OverviewScreen(navController: NavController<BookDest>) {
 
-    val vm = hiltViewModel<OverviewViewModel>()
+    val vm = metroViewModel<OverviewViewModel>()
 
     val mode by vm.mode.collectAsStateWithLifecycle()
     val chartMode by vm.chartModeModel.chartMode.collectAsStateWithLifecycle()
@@ -123,7 +122,7 @@ fun OverviewScreen(navController: NavController<BookDest>) {
 
     val fromDate by vm.timeModel.fromDate.collectAsStateWithLifecycle()
     val untilDate by vm.timeModel.untilDate.collectAsStateWithLifecycle()
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current!!
 
     if (isExportDialogShown) {
         ConfirmDialog(

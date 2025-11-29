@@ -1,6 +1,6 @@
 package com.kevlina.budgetplus.core.data.remote
 
-import javax.inject.Qualifier
+import dev.zacsweers.metro.Qualifier
 
 @Qualifier
 annotation class UsersDb

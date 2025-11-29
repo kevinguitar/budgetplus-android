@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
@@ -14,6 +15,8 @@ import com.kevlina.budgetplus.app.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
+import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
+import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.common.nav.consumeNavigation
@@ -21,26 +24,32 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.theme.ThemeManager
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.utils.LocalViewModelGraphProvider
 import com.kevlina.budgetplus.core.utils.setStatusBarColor
 import com.kevlina.budgetplus.feature.auth.AuthActivity
 import com.kevlina.budgetplus.feature.welcome.WelcomeActivity
 import com.kevlina.budgetplus.inapp.update.InAppUpdateManager
 import com.kevlina.budgetplus.inapp.update.InAppUpdateState
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import dev.zacsweers.metro.Inject
 
-@AndroidEntryPoint
 class BookActivity : ComponentActivity() {
 
-    @Inject lateinit var authManager: AuthManager
-    @Inject lateinit var bookRepo: BookRepo
-    @Inject lateinit var themeManager: ThemeManager
-    @Inject lateinit var inAppUpdateManager: InAppUpdateManager
-    @Inject lateinit var snackbarSender: SnackbarSender
+    @Inject private lateinit var authManager: AuthManager
+    @Inject private lateinit var bookRepo: BookRepo
+    @Inject private lateinit var themeManager: ThemeManager
+    @Inject private lateinit var inAppUpdateManager: InAppUpdateManager
+    @Inject private lateinit var snackbarSender: SnackbarSender
+    @Inject private lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
-    private val viewModel by viewModels<BookViewModel>()
+    private val viewModel by viewModels<BookViewModel>(
+        factoryProducer = ::viewModelGraphProvider
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        resolveGraphExtensionFactory<BookActivityGraph.Factory>()
+            .create(this)
+            .inject(this)
+
         // When the user open the settings from app preference.
         if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
             intent.data = "$APP_DEEPLINK/$NAV_SETTINGS_PATH".toUri()
@@ -64,20 +73,22 @@ class BookActivity : ComponentActivity() {
         }
 
         setContent {
-            val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
-            AppTheme(themeColors) {
-                BookBinding(vm = viewModel)
-            }
+            CompositionLocalProvider(LocalViewModelGraphProvider provides viewModelGraphProvider) {
+                val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
+                AppTheme(themeColors) {
+                    BookBinding(vm = viewModel)
+                }
 
-            val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()
-            LaunchedEffect(key1 = appUpdateState) {
-                if (appUpdateState is InAppUpdateState.Downloaded) {
-                    snackbarSender.send(
-                        message = R.string.app_update_downloaded,
-                        actionLabel = R.string.cta_complete,
-                        duration = SnackbarDuration.Indefinite,
-                        action = (appUpdateState as InAppUpdateState.Downloaded).complete
-                    )
+                val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()
+                LaunchedEffect(key1 = appUpdateState) {
+                    if (appUpdateState is InAppUpdateState.Downloaded) {
+                        snackbarSender.send(
+                            message = R.string.app_update_downloaded,
+                            actionLabel = R.string.cta_complete,
+                            duration = SnackbarDuration.Indefinite,
+                            action = (appUpdateState as InAppUpdateState.Downloaded).complete
+                        )
+                    }
                 }
             }
         }

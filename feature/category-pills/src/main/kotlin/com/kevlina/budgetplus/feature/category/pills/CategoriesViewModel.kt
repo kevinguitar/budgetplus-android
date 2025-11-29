@@ -2,12 +2,13 @@ package com.kevlina.budgetplus.feature.category.pills
 
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.BookRepo
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
-class CategoriesViewModel @Inject constructor(
+@Inject
+class CategoriesViewModel(
     bookRepo: BookRepo,
 ) {
 

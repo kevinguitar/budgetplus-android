@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.combineState
+import com.kevlina.budgetplus.core.common.di.AssistedFactoryKey
+import com.kevlina.budgetplus.core.common.di.ViewModelAssistedFactory
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -16,10 +19,10 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
+import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,8 +30,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-@HiltViewModel(assistedFactory = RecordsViewModel.Factory::class)
-class RecordsViewModel @AssistedInject constructor(
+@AssistedInject
+class RecordsViewModel(
     @Assisted private val params: BookDest.Records,
     val bookRepo: BookRepo,
     private val userRepo: UserRepo,
@@ -123,7 +126,9 @@ class RecordsViewModel @AssistedInject constructor(
     }
 
     @AssistedFactory
-    interface Factory {
+    @AssistedFactoryKey(Factory::class)
+    @ContributesIntoMap(ViewModelScope::class)
+    fun interface Factory : ViewModelAssistedFactory {
         fun create(params: BookDest.Records): RecordsViewModel
     }
 }

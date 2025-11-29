@@ -7,23 +7,27 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.JoinBookException
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
 
-@HiltViewModel
-class WelcomeViewModel @Inject constructor(
+@Inject
+@ViewModelKey(WelcomeViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+class WelcomeViewModel(
     val navigation: NavigationFlow,
     val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,

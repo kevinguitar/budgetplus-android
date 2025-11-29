@@ -1,14 +1,16 @@
 package com.kevlina.budgetplus.core.data.local
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.serialization.json.Json
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-@Singleton
-class PreferenceHolder @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+class PreferenceHolder(
     val preference: Preference,
     val formatter: Json,
 ) {

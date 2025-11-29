@@ -3,20 +3,21 @@ package com.kevlina.budgetplus.core.data
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.Purchase
 import com.kevlina.budgetplus.core.data.remote.PurchasesDb
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
-import javax.inject.Inject
 
-class PurchaseRepo @Inject constructor(
+@Inject
+class PurchaseRepo(
     private val authManager: AuthManager,
-    @PurchasesDb private val purchasesDb: dagger.Lazy<CollectionReference>,
+    @PurchasesDb private val purchasesDb: Lazy<CollectionReference>,
 ) {
     suspend fun recordPurchase(
         orderId: String?,
         productId: String,
     ) {
         try {
-            purchasesDb.get().add(Purchase(
+            purchasesDb.value.add(Purchase(
                 orderId = orderId,
                 productId = productId,
                 userId = authManager.userId,
@@ -32,7 +33,7 @@ class PurchaseRepo @Inject constructor(
     ): Boolean {
         val currentUserId = authManager.userId ?: return false
         return try {
-            val purchases = purchasesDb.get()
+            val purchases = purchasesDb.value
                 .whereEqualTo("productId", productId)
                 .whereEqualTo("userId", currentUserId)
                 .get()

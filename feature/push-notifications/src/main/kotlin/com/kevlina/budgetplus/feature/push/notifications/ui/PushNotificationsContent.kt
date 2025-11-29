@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -29,6 +28,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.containerPadding
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsViewModel
 
 @Composable
@@ -36,7 +36,7 @@ internal fun PushNotificationsContent(
     navigateUp: () -> Unit,
 ) {
 
-    val vm = hiltViewModel<PushNotificationsViewModel>()
+    val vm = metroViewModel<PushNotificationsViewModel>()
 
     val sendToCn by vm.sendToCn.collectAsStateWithLifecycle()
     val sendToJa by vm.sendToJa.collectAsStateWithLifecycle()

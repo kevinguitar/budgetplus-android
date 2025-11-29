@@ -1,23 +1,20 @@
 package com.kevlina.budgetplus.core.di
 
 import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import java.io.File
-import javax.inject.Named
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-object StorageModule {
+@ContributesTo(AppScope::class)
+interface StorageModule {
 
     @Provides
-    @Singleton
+    @SingleIn(AppScope::class)
     @Named("share_cache")
-    fun provideShareCacheDir(@ApplicationContext context: Context): File {
+    fun provideShareCacheDir(context: Context): File {
         return File(context.cacheDir, "share").apply { mkdirs() }
     }
 }

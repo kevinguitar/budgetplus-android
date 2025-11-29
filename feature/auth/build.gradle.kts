@@ -1,14 +1,13 @@
 plugins {
     alias(budgetplus.plugins.android.library)
     alias(budgetplus.plugins.compose)
-    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.metro)
 }
 
 dependencies {
     implementation(projects.core.data)
     implementation(projects.core.ui)
 
-    implementation(libs.android.activity)
     implementation(libs.android.credentials)
     // For devices running Android 13 and below
     // See: https://developer.android.com/jetpack/androidx/releases/credentials

@@ -13,12 +13,13 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
-import javax.inject.Inject
 
-class OverviewTimeViewModel @Inject constructor(
+@Inject
+class OverviewTimeViewModel(
     private val recordsObserver: RecordsObserver,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,

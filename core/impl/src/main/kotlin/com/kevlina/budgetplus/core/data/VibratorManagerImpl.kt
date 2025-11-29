@@ -7,17 +7,18 @@ import android.os.Vibrator
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
 import android.os.VibratorManager as AndroidVibratorManager
 
-@Singleton
-internal class VibratorManagerImpl @Inject constructor(
-    @ApplicationContext context: Context,
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class VibratorManagerImpl(
+    context: Context,
     preferenceHolder: PreferenceHolder,
     private val tracker: Tracker,
 ) : VibratorManager {

@@ -19,7 +19,8 @@ import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.filterNotNull
@@ -32,11 +33,10 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Named
 
-internal class CsvWriter @Inject constructor(
-    @ApplicationContext private val context: Context,
+@Inject
+internal class CsvWriter(
+    private val context: Context,
     @Named("app_package") private val appPackage: String,
     @Named("share_cache") private val shareCacheDir: File,
     private val recordsObserver: RecordsObserver,

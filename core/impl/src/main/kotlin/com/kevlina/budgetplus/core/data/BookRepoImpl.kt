@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.toObject
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -18,7 +18,9 @@ import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
-import dagger.Lazy
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,18 +37,17 @@ import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.time.Duration.Companion.days
 
-@Singleton
-internal class BookRepoImpl @Inject constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
     private val stringProvider: StringProvider,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
-    @AppScope appScope: CoroutineScope,
+    @AppCoroutineScope appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
 ) : BookRepo {
 
@@ -135,7 +136,7 @@ internal class BookRepoImpl @Inject constructor(
     }
 
     private suspend fun getLatestBook(bookId: String): Book {
-        return booksDb.get().document(bookId).get(Source.SERVER)
+        return booksDb.value.document(bookId).get(Source.SERVER)
             .requireValue<Book>()
             .copy(id = bookId)
     }
@@ -176,7 +177,7 @@ internal class BookRepoImpl @Inject constructor(
         newAuthors.add(userId)
 
         setBook(book)
-        booksDb.get().document(bookId)
+        booksDb.value.document(bookId)
             .update(authorsField, newAuthors)
             .await()
 
@@ -191,7 +192,7 @@ internal class BookRepoImpl @Inject constructor(
             newAuthors.remove(userId)
         }
 
-        booksDb.get().document(requireBookId)
+        booksDb.value.document(requireBookId)
             .update(authorsField, newAuthors)
             .await()
         tracker.logEvent("member_removed")
@@ -199,7 +200,7 @@ internal class BookRepoImpl @Inject constructor(
 
     override suspend fun checkUserHasBook(): Boolean {
         val userId = authManager.requireUserId()
-        val books = booksDb.get()
+        val books = booksDb.value
             .whereArrayContains(authorsField, userId)
             .whereEqualTo(archivedField, false)
             .get()
@@ -228,20 +229,20 @@ internal class BookRepoImpl @Inject constructor(
             incomeCategories = incomes.toList(),
             currencyCode = defaultCurrency.currencyCode
         )
-        val doc = booksDb.get().add(newBook).await()
+        val doc = booksDb.value.add(newBook).await()
         setBook(newBook.copy(id = doc.id))
         tracker.logEvent("book_created_from_$source")
     }
 
     override suspend fun renameBook(newName: String) {
-        booksDb.get().document(requireBookId).update("name", newName).await()
+        booksDb.value.document(requireBookId).update("name", newName).await()
         tracker.logEvent("book_renamed")
     }
 
     override suspend fun leaveOrDeleteBook() {
         val book = bookState.value ?: return
         if (book.ownerId == authManager.requireUserId()) {
-            booksDb.get().document(book.id)
+            booksDb.value.document(book.id)
                 .update(
                     archivedField, true,
                     archivedOnField, System.currentTimeMillis()
@@ -252,7 +253,7 @@ internal class BookRepoImpl @Inject constructor(
             val authorsWithoutMe = book.authors.toMutableList()
             authorsWithoutMe.remove(authManager.requireUserId())
 
-            booksDb.get().document(book.id)
+            booksDb.value.document(book.id)
                 .update(authorsField, authorsWithoutMe)
                 .await()
             tracker.logEvent("book_leaved")
@@ -271,7 +272,7 @@ internal class BookRepoImpl @Inject constructor(
         }
 
         bookRegistration?.remove()
-        bookRegistration = booksDb.get()
+        bookRegistration = booksDb.value
             .whereArrayContains(authorsField, userId)
             .whereEqualTo(archivedField, false)
             .whereEqualTo(archivedField, false)
@@ -331,7 +332,7 @@ internal class BookRepoImpl @Inject constructor(
     }
 
     override fun updateCategories(type: RecordType, categories: List<String>) {
-        booksDb.get()
+        booksDb.value
             .document(requireBookId)
             .update(
                 when (type) {
@@ -344,7 +345,7 @@ internal class BookRepoImpl @Inject constructor(
     }
 
     override fun updateCurrency(currencyCode: String) {
-        booksDb.get()
+        booksDb.value
             .document(requireBookId)
             .update("currencyCode", currencyCode)
 
@@ -355,7 +356,7 @@ internal class BookRepoImpl @Inject constructor(
     }
 
     override fun setAllowMembersEdit(allow: Boolean) {
-        booksDb.get()
+        booksDb.value
             .document(requireBookId)
             .update(allowMembersEditField, allow)
 

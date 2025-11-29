@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.app.book.ui
 
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation3.runtime.NavEntry
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
+import com.kevlina.budgetplus.core.utils.assistedMetroViewModel
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.batch.record.ui.BatchRecordScreen
 import com.kevlina.budgetplus.feature.color.tone.picker.ColorTonePickerScreen
@@ -66,18 +66,14 @@ internal fun bookNavGraph(
         is BookDest.Records -> NavEntry(bookDest) {
             RecordsScreen(
                 navController = navController,
-                vm = hiltViewModel<RecordsViewModel, RecordsViewModel.Factory>(
-                    creationCallback = { factory -> factory.create(bookDest) }
-                )
+                vm = assistedMetroViewModel<RecordsViewModel, RecordsViewModel.Factory> { create(bookDest) }
             )
         }
 
         is BookDest.Search -> NavEntry(bookDest) {
             SearchScreen(
                 navController = navController,
-                vm = hiltViewModel<SearchViewModel, SearchViewModel.Factory>(
-                    creationCallback = { factory -> factory.create(bookDest) }
-                )
+                vm = assistedMetroViewModel<SearchViewModel, SearchViewModel.Factory> { create(bookDest) }
             )
         }
     }

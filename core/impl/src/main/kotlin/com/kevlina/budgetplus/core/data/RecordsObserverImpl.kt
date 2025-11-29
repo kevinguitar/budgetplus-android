@@ -4,13 +4,15 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.tickerFlow
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
-import dagger.Lazy
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,17 +30,16 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.time.LocalDate
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
 /**
  *  Use a singleton class to register the records listener, this will significantly
  *  reduce the db requests for us.
  */
-@Singleton
-internal class RecordsObserverImpl @Inject constructor(
-    @AppScope appScope: CoroutineScope,
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class RecordsObserverImpl(
+    @AppCoroutineScope appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
     preferenceHolder: PreferenceHolder,
     bookRepo: BookRepo,
@@ -113,7 +114,7 @@ internal class RecordsObserverImpl @Inject constructor(
 
         currentRegistrationConfig = newConfig
         recordsRegistration?.remove()
-        recordsRegistration = booksDb.get()
+        recordsRegistration = booksDb.value
             .document(bookId)
             .collection("records")
             .orderBy("date", Query.Direction.DESCENDING)

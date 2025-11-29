@@ -13,6 +13,7 @@ import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordViewModel
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,9 +23,9 @@ import kotlinx.coroutines.flow.map
 import net.objecthunter.exp4j.ExpressionBuilder
 import timber.log.Timber
 import java.math.RoundingMode
-import javax.inject.Inject
 
-class CalculatorViewModel @Inject constructor(
+@Inject
+class CalculatorViewModel(
     private val vibrator: VibratorManager,
     private val snackbarSender: SnackbarSender,
     val speakToRecordViewModel: SpeakToRecordViewModel,

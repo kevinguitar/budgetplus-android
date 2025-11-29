@@ -6,17 +6,21 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class EditRecordViewModel @Inject constructor(
+@Inject
+@ViewModelKey(EditRecordViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+class EditRecordViewModel(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,

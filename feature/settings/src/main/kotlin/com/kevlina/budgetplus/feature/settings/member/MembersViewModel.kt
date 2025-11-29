@@ -4,17 +4,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.di.ViewModelKey
+import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.User
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class MembersViewModel @Inject constructor(
+@Inject
+@ViewModelKey(MembersViewModel::class)
+@ContributesIntoMap(ViewModelScope::class)
+internal class MembersViewModel(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val userRepo: UserRepo,

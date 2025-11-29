@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.core.data
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -12,6 +12,10 @@ import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Provider
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,21 +26,19 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
 
-@Singleton
-internal class RecordRepoImpl @Inject constructor(
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class RecordRepoImpl(
     @RecordsDb private val recordsDb: Provider<CollectionReference>,
-    @AppScope private val appScope: CoroutineScope,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     private val tracker: Tracker,
     private val snackbarSender: SnackbarSender,
 ) : RecordRepo {
 
     override fun createRecord(record: Record) {
-        recordsDb.get().add(record)
+        recordsDb().add(record)
         tracker.logEvent("record_created")
     }
 
@@ -92,7 +94,7 @@ internal class RecordRepoImpl @Inject constructor(
             return
         }
 
-        recordsDb.get().document(oldRecord.id).set(newRecord)
+        recordsDb().document(oldRecord.id).set(newRecord)
         tracker.logEvent("record_edited")
     }
 
@@ -143,13 +145,13 @@ internal class RecordRepoImpl @Inject constructor(
             // Do not carry the batch info to duplicates
             batchId = null
         )
-        recordsDb.get().add(duplicatedRecord)
+        recordsDb().add(duplicatedRecord)
         snackbarSender.send(R.string.record_duplicated)
         tracker.logEvent("record_duplicated")
     }
 
     override fun deleteRecord(recordId: String) {
-        recordsDb.get().document(recordId).delete()
+        recordsDb().document(recordId).delete()
         tracker.logEvent("record_deleted")
     }
 
@@ -170,7 +172,7 @@ internal class RecordRepoImpl @Inject constructor(
     }
 
     private suspend fun getAllTheFutureRecords(record: Record): QuerySnapshot {
-        return recordsDb.get()
+        return recordsDb()
             .whereEqualTo("batchId", record.batchId)
             .whereGreaterThanOrEqualTo("date", record.date)
             .get()
@@ -180,7 +182,7 @@ internal class RecordRepoImpl @Inject constructor(
     override fun renameCategories(
         events: List<CategoryRenameEvent>,
     ) = appScope.launch(Dispatchers.IO) {
-        val db = recordsDb.get()
+        val db = recordsDb()
         var dbUpdateCount = 0
 
         events.forEach { event ->

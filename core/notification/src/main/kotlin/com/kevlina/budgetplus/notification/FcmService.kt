@@ -9,37 +9,42 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kevlina.budgetplus.core.common.AppScope
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.ImageLoader
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.di.resolveGraphExtensionFactory
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_GENERAL
 import com.kevlina.budgetplus.notification.channel.NotificationChannelsInitializer.Companion.CHANNEL_NEW_MEMBER
-import dagger.Lazy
-import dagger.hilt.android.AndroidEntryPoint
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Named
 
-@AndroidEntryPoint
 class FcmService : FirebaseMessagingService() {
 
-    @Inject lateinit var authManager: Lazy<AuthManager>
-    @Inject lateinit var imageLoader: ImageLoader
-    @Inject @Named("default_deeplink") lateinit var defaultDeeplink: String
-    @Inject @AppScope lateinit var appScope: CoroutineScope
+    @Inject private lateinit var authManager: Lazy<AuthManager>
+    @Inject private lateinit var imageLoader: ImageLoader
+    @Inject @Named("default_deeplink") private lateinit var defaultDeeplink: String
+    @Inject @AppCoroutineScope private lateinit var appScope: CoroutineScope
 
     private var notificationId: Int = 0
 
+    override fun onCreate() {
+        resolveGraphExtensionFactory<FcmServiceGraph.Factory>()
+            .create(this)
+            .inject(this)
+        super.onCreate()
+    }
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        authManager.get().updateFcmToken(newToken = token)
+        authManager.value.updateFcmToken(newToken = token)
         Timber.d("New fcm token: $token")
     }
 

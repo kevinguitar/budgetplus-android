@@ -1,22 +1,22 @@
 package com.kevlina.budgetplus.feature.auth
 
-import android.content.Context
+import androidx.activity.ComponentActivity
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResponse
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.kevlina.budgetplus.core.data.BookRepo
-import dagger.hilt.android.qualifiers.ActivityContext
+import dev.zacsweers.metro.Inject
 import timber.log.Timber
-import javax.inject.Inject
 
-class ReferrerHandler @Inject constructor(
-    @ActivityContext private val context: Context,
+@Inject
+class ReferrerHandler(
+    private val activity: ComponentActivity,
     private val bookRepo: BookRepo,
 ) : InstallReferrerStateListener {
 
     private val referrerClient by lazy {
         InstallReferrerClient
-            .newBuilder(context)
+            .newBuilder(activity)
             .build()
     }
 

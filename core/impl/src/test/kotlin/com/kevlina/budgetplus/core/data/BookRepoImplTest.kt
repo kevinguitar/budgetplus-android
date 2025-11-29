@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
-import dagger.Lazy
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -44,6 +43,6 @@ internal class BookRepoImplTest {
             put("currentBook", Json.encodeToString(book))
         },
         appScope = backgroundScope,
-        booksDb = Lazy { mockk<CollectionReference>(relaxed = true) }
+        booksDb = lazy { mockk<CollectionReference>(relaxed = true) }
     )
 }

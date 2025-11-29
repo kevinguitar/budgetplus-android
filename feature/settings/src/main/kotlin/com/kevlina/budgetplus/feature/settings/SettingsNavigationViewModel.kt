@@ -14,10 +14,11 @@ import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
-import javax.inject.Inject
-import javax.inject.Named
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 
-internal class SettingsNavigationViewModel @Inject constructor(
+@Inject
+internal class SettingsNavigationViewModel(
     private val authManager: AuthManager,
     private val activityProvider: ActivityProvider,
     private val navigationFlow: NavigationFlow,

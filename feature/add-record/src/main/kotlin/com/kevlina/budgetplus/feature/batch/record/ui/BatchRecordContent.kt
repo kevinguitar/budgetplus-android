@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
@@ -28,6 +27,7 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
+import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.toState
@@ -35,7 +35,7 @@ import com.kevlina.budgetplus.feature.category.pills.toState
 @Composable
 internal fun BatchRecordContent() {
 
-    val vm = hiltViewModel<BatchRecordViewModel>()
+    val vm = metroViewModel<BatchRecordViewModel>()
 
     val type by vm.type.collectAsStateWithLifecycle()
     val currencySymbol by vm.bookRepo.currencySymbol.collectAsStateWithLifecycle()

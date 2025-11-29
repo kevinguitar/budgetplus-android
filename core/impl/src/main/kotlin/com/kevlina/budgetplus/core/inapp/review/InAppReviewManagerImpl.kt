@@ -9,10 +9,11 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import javax.inject.Inject
 
 /**
  *  This implementation controls whether we should launch the review flow or not, depends on a
@@ -20,7 +21,8 @@ import javax.inject.Inject
  *  [INSTALL_DAYS_MIN] days, and will only request the review once per app installation, also,
  *  if the user rejected, we'll never prompt the review flow again for them.
  */
-internal class InAppReviewManagerImpl @Inject constructor(
+@ContributesBinding(AppScope::class)
+class InAppReviewManagerImpl(
     private val reviewManager: ReviewManager,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,

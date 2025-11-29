@@ -1,7 +1,7 @@
 plugins {
     alias(budgetplus.plugins.android.library)
     alias(budgetplus.plugins.compose)
-    alias(budgetplus.plugins.hilt)
+    alias(budgetplus.plugins.metro)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
@@ -11,6 +11,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
+    implementation(libs.android.viewmodel.compose)
     implementation(libs.compose.material3)
     implementation(libs.compose.material3.windowsizeclass)
     implementation(libs.lottie.compose)

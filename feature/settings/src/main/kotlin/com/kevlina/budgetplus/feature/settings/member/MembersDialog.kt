@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.settings.member
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,12 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -44,13 +43,14 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.IconButton
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
+import com.kevlina.budgetplus.core.utils.metroViewModel
 
 @Composable
 internal fun MembersDialog(
     onDismiss: () -> Unit,
 ) {
 
-    val viewModel = hiltViewModel<MembersViewModel>()
+    val viewModel = metroViewModel<MembersViewModel>()
     viewModel.loadMembers()
 
     val members by viewModel.bookMembers.collectAsStateWithLifecycle()
@@ -125,7 +125,7 @@ private fun MemberCard(
     ) {
 
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
+            model = ImageRequest.Builder(LocalActivity.current!!)
                 .data(member.photoUrl)
                 .crossfade(true)
                 .build(),

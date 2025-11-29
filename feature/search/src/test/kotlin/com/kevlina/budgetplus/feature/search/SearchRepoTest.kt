@@ -86,7 +86,7 @@ class SearchRepoTest {
     }
 
     private val repo = SearchRepo(
-        booksDb = { booksDb },
+        booksDb = lazy { booksDb },
         bookRepo = FakeBookRepo(currentBookId = "book_id"),
         snackbarSender = FakeSnackbarSender,
         tracker = FakeTracker()

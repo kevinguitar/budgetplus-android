@@ -8,15 +8,17 @@ import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ThemeManager @Inject constructor(
+@SingleIn(AppScope::class)
+@Inject
+class ThemeManager(
     preferenceHolder: PreferenceHolder,
     private val authManager: AuthManager,
     private val tracker: Tracker,

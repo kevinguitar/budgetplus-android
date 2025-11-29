@@ -20,7 +20,6 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
-import com.kevlina.budgetplus.core.ui.ClearFocusOnPauseEffect
 import com.kevlina.budgetplus.core.ui.RecordTypeTab
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
@@ -45,6 +44,7 @@ internal fun RecordInfo(
             Modifier.verticalScroll(scrollState)
         }
     ) {
+
         RecordTypeTab(
             selected = type,
             onTypeSelected = state.setType,
@@ -57,7 +57,7 @@ internal fun RecordInfo(
         )
 
         val focusManager = rememberSafeFocusManager()
-
+        
         TextField(
             state = state.note,
             title = stringResource(id = R.string.record_note),
@@ -70,8 +70,6 @@ internal fun RecordInfo(
             modifier = Modifier.fillMaxWidth(),
             onDone = { focusManager.clearFocus() }
         )
-
-        ClearFocusOnPauseEffect()
 
         DateAndPricing(
             state = state.dateAndPricingState,

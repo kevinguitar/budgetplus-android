@@ -1,11 +1,6 @@
 name: Android CI
 
 on:
-  # Only run push on main
-  push:
-    branches:
-      - main
-  # Always run on PRs
   pull_request:
 
 concurrency:

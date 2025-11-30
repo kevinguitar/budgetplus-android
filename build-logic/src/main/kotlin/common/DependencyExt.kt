@@ -12,10 +12,6 @@ fun DependencyHandlerScope.implementation(module: Any) {
     add("implementation", module)
 }
 
-fun DependencyHandlerScope.ksp(module: Any) {
-    add("ksp", module)
-}
-
 fun DependencyHandlerScope.debugImplementation(module: Any) {
     add("debugImplementation", module)
 }

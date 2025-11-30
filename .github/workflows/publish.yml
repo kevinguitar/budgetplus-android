@@ -17,6 +17,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          # Only save Gradle User Home state for builds on the 'main' branch.
+          # Builds on other branches will only read existing entries from the cache.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+          # Don't reuse cache entries from any other Job.
+          gradle-home-cache-strict-match: true
+
       - name: Decode Keystore and Google Service file
         env:
           ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_FILE }}
@@ -43,7 +53,7 @@ jobs:
         run: ./gradlew test
 
       - name: Assemble release AAB
-        run: ./gradlew :app:bundleRelease
+        run: ./gradlew :app:bundleRelease --quiet
 
       - name: Deploy the Play Store beta channel
         uses: r0adkll/upload-google-play@v1.1.3

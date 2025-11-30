@@ -11,7 +11,7 @@ dependencies {
         exclude("com.google.protobuf", "protobuf-java")
     }
     // Without this it crashes at grpc usages internally :/
-    implementation(platform("io.grpc:grpc-bom:1.76.0"))
+    implementation(platform("io.grpc:grpc-bom:1.77.0"))
 
     implementation(projects.core.data)
     implementation(projects.core.ui)

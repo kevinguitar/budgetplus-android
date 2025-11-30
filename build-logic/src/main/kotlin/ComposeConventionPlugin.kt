@@ -36,7 +36,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         project.extensions.configure<ComposeCompilerGradlePluginExtension> {
             // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
             stabilityConfigurationFiles.add(
-                project.rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+                project.rootProject.layout.projectDirectory.file("misc/compose_compiler_config.conf")
             )
 
             // Composable metrics

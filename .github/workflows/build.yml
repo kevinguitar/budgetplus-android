@@ -1,8 +1,16 @@
 name: Android CI
 
 on:
+  # Only run push on main
+  push:
+    branches:
+      - main
+  # Always run on PRs
   pull_request:
-    branches: [ "main" ]
+
+concurrency:
+  group: 'ci-${{ github.event.merge_group.head_ref || github.head_ref }}-${{ github.workflow }}'
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
@@ -20,12 +28,15 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - uses: actions/cache@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          # Only save Gradle User Home state for builds on the 'main' branch.
+          # Builds on other branches will only read existing entries from the cache.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          # Don't reuse cache entries from any other Job.
+          gradle-home-cache-strict-match: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       # https://github.com/orgs/community/discussions/26351#discussioncomment-3251595
       - name: Free Disk Space
@@ -59,8 +70,5 @@ jobs:
           echo KEYSTORE_ALIAS=$KEYSTORE_ALIAS >> ./local.properties
           echo KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD >> ./local.properties
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --continue --quiet

@@ -76,6 +76,7 @@ kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 lottie-compose = "com.airbnb.android:lottie-compose:6.7.1"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
+metrox-viewmodel-compose = { module = "dev.zacsweers.metro:metrox-viewmodel-compose", version.ref = "metro" }
 mockk = "io.mockk:mockk:1.14.6"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }

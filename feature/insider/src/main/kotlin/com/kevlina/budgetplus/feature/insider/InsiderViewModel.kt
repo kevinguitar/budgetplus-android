@@ -8,7 +8,6 @@ import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.InsiderRepo
 import com.kevlina.budgetplus.core.data.remote.User
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration.Companion.days
 
-@Inject
 @ViewModelKey(InsiderViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class InsiderViewModel(

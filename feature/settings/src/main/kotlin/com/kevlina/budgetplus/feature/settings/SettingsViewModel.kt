@@ -17,10 +17,8 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 
-@Inject
 @ViewModelKey(SettingsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class SettingsViewModel(

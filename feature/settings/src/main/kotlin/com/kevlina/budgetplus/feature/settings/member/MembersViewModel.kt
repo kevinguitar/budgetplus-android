@@ -11,11 +11,9 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.User
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-@Inject
 @ViewModelKey(MembersViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class MembersViewModel(

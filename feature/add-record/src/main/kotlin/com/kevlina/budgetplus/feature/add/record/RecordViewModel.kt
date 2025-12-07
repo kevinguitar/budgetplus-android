@@ -32,7 +32,6 @@ import com.kevlina.budgetplus.feature.add.record.RecordViewModel.Companion.RECOR
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +39,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@Inject
 @ViewModelKey(RecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class RecordViewModel(

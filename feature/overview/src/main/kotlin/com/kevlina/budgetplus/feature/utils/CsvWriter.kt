@@ -21,6 +21,7 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.resolveAuthor
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import dev.zacsweers.metro.Provider
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.filterNotNull
@@ -38,7 +39,7 @@ import java.util.Locale
 internal class CsvWriter(
     private val context: Context,
     @Named("app_package") private val appPackage: String,
-    @Named("share_cache") private val shareCacheDir: File,
+    @Named("share_cache") private val shareCacheDir: Provider<File>,
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
     private val bookRepo: BookRepo,
@@ -85,7 +86,7 @@ internal class CsvWriter(
         name: String,
         recordRows: Sequence<List<String?>>,
     ): Uri = IO {
-        val cacheFile = File(shareCacheDir, "$name.csv")
+        val cacheFile = File(shareCacheDir(), "$name.csv")
         val outputStream = contentResolver.openOutputStream(cacheFile.toUri())
             ?: throw IOException("Cannot open output stream from $cacheFile")
 

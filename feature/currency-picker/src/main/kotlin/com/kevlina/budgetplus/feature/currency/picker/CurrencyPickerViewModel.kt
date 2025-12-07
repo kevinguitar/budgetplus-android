@@ -12,7 +12,6 @@ import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.onEach
 import java.util.Currency
 import java.util.Locale
 
-@Inject
 @ViewModelKey(CurrencyPickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class CurrencyPickerViewModel(

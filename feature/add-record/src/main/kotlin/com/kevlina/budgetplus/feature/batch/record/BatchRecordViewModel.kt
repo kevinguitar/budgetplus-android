@@ -23,7 +23,6 @@ import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel.Companion.E
 import com.kevlina.budgetplus.feature.add.record.RecordDateState
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +32,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-@Inject
 @ViewModelKey(BatchRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class BatchRecordViewModel(

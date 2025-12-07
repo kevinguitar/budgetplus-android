@@ -14,14 +14,12 @@ import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
 import kotlin.time.Duration.Companion.seconds
 
-@Inject
 @ViewModelKey(EditCategoryViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class EditCategoryViewModel(

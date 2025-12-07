@@ -32,7 +32,6 @@ import com.kevlina.budgetplus.feature.overview.ui.OverviewListState
 import com.kevlina.budgetplus.feature.overview.ui.toState
 import com.kevlina.budgetplus.feature.utils.CsvWriter
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -50,7 +49,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
-@Inject
 @ViewModelKey(OverviewViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class OverviewViewModel(

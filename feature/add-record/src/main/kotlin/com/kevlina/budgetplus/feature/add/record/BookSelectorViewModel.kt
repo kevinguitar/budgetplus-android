@@ -14,11 +14,9 @@ import com.kevlina.budgetplus.core.data.FREE_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.PREMIUM_BOOKS_LIMIT
 import com.kevlina.budgetplus.core.data.remote.Book
 import dev.zacsweers.metro.ContributesIntoMap
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-@Inject
 @ViewModelKey(BookSelectorViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 internal class BookSelectorViewModel(

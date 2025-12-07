@@ -1,5 +1,6 @@
 import common.libs
 import dev.zacsweers.metro.gradle.MetroPluginExtension
+import dev.zacsweers.metro.gradle.OptionalBindingBehavior
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -12,6 +13,7 @@ class MetroConventionPlugin : Plugin<Project> {
 
         project.configure<MetroPluginExtension> {
             contributesAsInject.set(true)
+            optionalBindingBehavior.set(OptionalBindingBehavior.DISABLED)
         }
     }
 }

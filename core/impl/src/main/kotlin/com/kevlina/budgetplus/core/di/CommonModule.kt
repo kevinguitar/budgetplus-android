@@ -28,9 +28,7 @@ interface CommonModule {
 
     @Provides
     @Named("app_package")
-    fun provideAppPackage(): String {
-        return "com.kevlina.budgetplus"
-    }
+    fun provideAppPackage(): String = "com.kevlina.budgetplus"
 
     @Provides
     @Named("google_play_url")
@@ -42,25 +40,17 @@ interface CommonModule {
 
     @Provides
     @Named("instagram_url")
-    fun provideInstagramUrl(): String {
-        return "https://www.instagram.com/budget.plus.tw/"
-    }
+    fun provideInstagramUrl(): String = "https://www.instagram.com/budget.plus.tw/"
 
     @Provides
     @Named("contact_email")
-    fun provideContactEmail(): String {
-        return "budgetplussg@gmail.com"
-    }
+    fun provideContactEmail(): String = "budgetplussg@gmail.com"
 
     @Provides
     @Named("privacy_policy_url")
-    fun providePrivacyPolicyUrl(): String {
-        return "https://budgetplus.cchi.tw/privacy-policy/"
-    }
+    fun providePrivacyPolicyUrl(): String = "https://budgetplus.cchi.tw/privacy-policy/"
 
     @Provides
     @Named("default_deeplink")
-    fun provideDefaultDeeplink(): String {
-        return "$APP_DEEPLINK/$NAV_RECORD_PATH"
-    }
+    fun provideDefaultDeeplink(): String = "$APP_DEEPLINK/$NAV_RECORD_PATH"
 }

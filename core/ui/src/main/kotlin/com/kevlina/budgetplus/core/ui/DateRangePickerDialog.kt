@@ -56,7 +56,7 @@ fun DateRangePickerDialog(
         onDismissRequest = onDismiss,
         modifier = Modifier
             .sizeIn(maxWidth = 480.dp, maxHeight = 560.dp)
-            .padding(all = 16.dp)
+            .padding(vertical = 16.dp)
     ) {
         Column {
             val dateFormatter = remember { DatePickerDefaults.dateFormatter() }

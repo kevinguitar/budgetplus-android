@@ -60,6 +60,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                     allWarningsAsErrors.set(true)
                     freeCompilerArgs.addAll(
                         "-Xcontext-parameters",
+                        "-Xexplicit-backing-fields",
                         "-Xannotation-default-target=param-property"
                     )
                     optIn.addAll(

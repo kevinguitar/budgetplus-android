@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,6 @@ import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.containerPadding
-import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 
 @Composable
 internal fun SearchContent(
@@ -34,7 +34,7 @@ internal fun SearchContent(
             .fillMaxSize()
             .containerPadding()
     ) {
-        val focusManager = rememberSafeFocusManager()
+        val focusManager = LocalFocusManager.current
 
         SearchField(
             keyword = state.query,

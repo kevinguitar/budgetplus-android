@@ -3,8 +3,14 @@
   "extends": [
     "config:recommended"
   ],
-  "ignoreDeps": [
-    "com.google.cloud:google-cloud-translate",
-    "io.grpc:grpc-bom"
+  "packageRules": [
+    {
+      "description": "These are used only for the internal app, will be managed manually.",
+      "matchPackageNames": [
+        "com.google.cloud:google-cloud-translate",
+        "io.grpc:grpc-bom"
+      ],
+      "enabled": false
+    }
   ]
 }

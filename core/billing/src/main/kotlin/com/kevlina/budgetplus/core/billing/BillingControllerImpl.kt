@@ -28,7 +28,6 @@ import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -41,12 +40,12 @@ class BillingControllerImpl(
     private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
-    private val _premiumProduct = MutableStateFlow<ProductDetails?>(null)
-    override val premiumPricing: StateFlow<String?> = _premiumProduct
+    private val productDetailsState = MutableStateFlow<ProductDetails?>(null)
+    override val premiumPricing: StateFlow<String?> = productDetailsState
         .mapState { it?.oneTimePurchaseOfferDetails?.formattedPrice }
 
-    private val _purchaseState = MutableStateFlow<PurchaseState>(PurchaseState.Inactive)
-    override val purchaseState: StateFlow<PurchaseState> = _purchaseState.asStateFlow()
+    final override val purchaseState: StateFlow<PurchaseState>
+        field = MutableStateFlow<PurchaseState>(PurchaseState.Inactive)
 
     private val billingClient = BillingClient.newBuilder(context)
         .setListener(this)
@@ -75,7 +74,7 @@ class BillingControllerImpl(
     }
 
     override fun buyPremium(activity: ComponentActivity) {
-        val productDetails = requireNotNull(_premiumProduct.value)
+        val productDetails = requireNotNull(productDetailsState.value)
         val productParams = BillingFlowParams.ProductDetailsParams.newBuilder()
             .setProductDetails(productDetails)
             .build()
@@ -100,19 +99,19 @@ class BillingControllerImpl(
 
         when (status) {
             BillingStatus.OK -> {
-                _purchaseState.value = PurchaseState.PaymentProcessing
+                purchaseState.value = PurchaseState.PaymentProcessing
                 appScope.launch {
                     processPurchases(purchases.orEmpty())
                 }
             }
 
             BillingStatus.USER_CANCELED -> {
-                _purchaseState.value = PurchaseState.Canceled
+                purchaseState.value = PurchaseState.Canceled
             }
 
             // Item already owned, it's likely due to the loss of premium status, try to recover it.
             BillingStatus.ITEM_ALREADY_OWNED -> appScope.launch {
-                _purchaseState.value =
+                purchaseState.value =
                     if (purchaseRepo.hasPurchaseBelongsToCurrentUser(PRODUCT_PREMIUM_ID)) {
                         authManager.markPremium()
                         Timber.e(BillingRestoredException("Premium is restored for ${authManager.userId}"))
@@ -124,7 +123,7 @@ class BillingControllerImpl(
 
             else -> {
                 Timber.e(BillingException("onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}"))
-                _purchaseState.value = PurchaseState.Fail(status.toString())
+                purchaseState.value = PurchaseState.Fail(status.toString())
             }
         }
     }
@@ -184,7 +183,7 @@ class BillingControllerImpl(
                 Timber.w("BillingClient: ProductDetailsResponse is empty.")
             } else {
                 Timber.d("BillingClient: ProductDetailsResponse offer $premiumProduct")
-                _premiumProduct.value = premiumProduct
+                productDetailsState.value = premiumProduct
             }
         }
     }
@@ -209,16 +208,16 @@ class BillingControllerImpl(
                     if (status == BillingStatus.OK && PRODUCT_PREMIUM_ID in purchase.products) {
                         authManager.markPremium()
                         purchaseRepo.recordPurchase(purchase.orderId, purchase.products.first())
-                        _purchaseState.value = PurchaseState.Success
+                        purchaseState.value = PurchaseState.Success
                     } else {
                         Timber.e(BillingException("Acknowledge failed ${billingResult.debugMessage}"))
-                        _purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
+                        purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
                     }
                 }
 
                 else -> {
                     Timber.e(BillingException("Cannot process the purchase. Purchase state: ${purchase.purchaseState}"))
-                    _purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
+                    purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
                 }
             }
         }

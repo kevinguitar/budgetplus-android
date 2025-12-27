@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @ViewModelKey(MembersViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class MembersViewModel(
+class MembersViewModel(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val userRepo: UserRepo,

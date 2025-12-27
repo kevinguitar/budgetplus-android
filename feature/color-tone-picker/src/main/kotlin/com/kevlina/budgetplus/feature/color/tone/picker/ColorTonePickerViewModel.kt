@@ -21,13 +21,12 @@ import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 @ViewModelKey(ColorTonePickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class ColorTonePickerViewModel(
+class ColorTonePickerViewModel(
     authManager: AuthManager,
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
@@ -44,8 +43,8 @@ internal class ColorTonePickerViewModel(
 
     private val currentColorTone get() = themeManager.colorTone.value
 
-    private val _selectedColorTone = MutableStateFlow(currentColorTone)
-    val selectedColorTone: StateFlow<ColorTone> = _selectedColorTone.asStateFlow()
+    val selectedColorTone: StateFlow<ColorTone>
+        field = MutableStateFlow(currentColorTone)
 
     val isSaveEnabled = combine(
         selectedColorTone,
@@ -59,7 +58,7 @@ internal class ColorTonePickerViewModel(
     }
 
     fun selectColorTone(colorTone: ColorTone) {
-        _selectedColorTone.value = colorTone
+        selectedColorTone.value = colorTone
     }
 
     fun setColorTone(colorTone: ColorTone) {

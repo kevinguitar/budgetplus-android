@@ -24,7 +24,6 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -53,11 +52,11 @@ class BookRepoImpl(
 
     private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
 
-    private val _bookState = MutableStateFlow(currentBook)
-    override val bookState: StateFlow<Book?> = _bookState.asStateFlow()
+    final override val bookState: StateFlow<Book?>
+        field = MutableStateFlow(currentBook)
 
-    private val _booksState = MutableStateFlow<List<Book>?>(null)
-    override val booksState: StateFlow<List<Book>?> = _booksState.asStateFlow()
+    final override val booksState: StateFlow<List<Book>?>
+        field = MutableStateFlow<List<Book>?>(null)
 
     override val currentBookId: String? get() = bookState.value?.id
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
@@ -266,7 +265,7 @@ class BookRepoImpl(
 
     private fun observeBooks(userId: String?) {
         if (userId == null) {
-            _booksState.value = null
+            booksState.value = null
             bookRegistration?.remove()
             return
         }
@@ -289,7 +288,7 @@ class BookRepoImpl(
                 }
 
                 val books = snapshot.map { doc -> doc.toObject<Book>().copy(id = doc.id) }
-                _booksState.value = books
+                booksState.value = books
 
                 if (books.isEmpty()) {
                     setBook(null)
@@ -307,7 +306,7 @@ class BookRepoImpl(
     }
 
     private fun setBook(book: Book?) {
-        _bookState.value = book
+        bookState.value = book
         currentBook = book
     }
 

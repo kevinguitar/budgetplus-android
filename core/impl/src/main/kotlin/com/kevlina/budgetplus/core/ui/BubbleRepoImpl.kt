@@ -12,7 +12,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @SingleIn(AppScope::class)
@@ -24,8 +23,8 @@ class BubbleRepoImpl(
 
     private val bubblesQueue = mutableListOf<BubbleDest>()
 
-    private val _bubble = MutableStateFlow<BubbleDest?>(null)
-    override val bubble: StateFlow<BubbleDest?> = _bubble.asStateFlow()
+    final override val bubble: StateFlow<BubbleDest?>
+        field = MutableStateFlow<BubbleDest?>(null)
 
     private var bubbleShownJob: Job? = null
     private var popBubbleJob: Job? = null
@@ -48,7 +47,7 @@ class BubbleRepoImpl(
         bubbleShownJob = appScope.launch {
             // Given a short delay to show bubble after UI is presented
             delay(BUBBLE_SHOWN_DELAY)
-            _bubble.value = dest
+            bubble.value = dest
         }
     }
 
@@ -59,7 +58,7 @@ class BubbleRepoImpl(
             // Given a short delay to hide bubble with animation
             delay(BUBBLE_SHOWN_DELAY)
             bubblesQueue.remove(currentBubble)
-            _bubble.value = null
+            bubble.value = null
 
             if (bubblesQueue.isNotEmpty()) {
                 showBubble(bubblesQueue.first())

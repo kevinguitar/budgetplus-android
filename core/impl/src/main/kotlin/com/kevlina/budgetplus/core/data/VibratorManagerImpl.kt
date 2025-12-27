@@ -12,7 +12,6 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import android.os.VibratorManager as AndroidVibratorManager
 
 @SingleIn(AppScope::class)
@@ -24,8 +23,8 @@ class VibratorManagerImpl(
 ) : VibratorManager {
 
     private var vibrateOnInputCache by preferenceHolder.bindBoolean(true)
-    private val _vibrateOnInput = MutableStateFlow(vibrateOnInputCache)
-    override val vibrateOnInput: StateFlow<Boolean> = _vibrateOnInput.asStateFlow()
+    final override val vibrateOnInput: StateFlow<Boolean>
+        field = MutableStateFlow(vibrateOnInputCache)
 
     private val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as AndroidVibratorManager)
@@ -51,7 +50,7 @@ class VibratorManagerImpl(
     override fun toggleVibrateOnInput() {
         val newValue = !vibrateOnInputCache
         vibrateOnInputCache = newValue
-        _vibrateOnInput.value = newValue
+        vibrateOnInput.value = newValue
 
         if (newValue) {
             vibrate()

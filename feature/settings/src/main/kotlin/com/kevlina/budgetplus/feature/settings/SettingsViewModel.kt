@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 @ViewModelKey(SettingsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class SettingsViewModel(
+class SettingsViewModel private constructor(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val stringProvider: StringProvider,
@@ -29,7 +29,7 @@ internal class SettingsViewModel(
     private val tracker: Tracker,
     val vibrator: VibratorManager,
     val chartModel: ChartModeViewModel,
-    val navigation: SettingsNavigationViewModel,
+    internal val navigation: SettingsNavigationViewModel,
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }

@@ -13,7 +13,6 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
 
 @SingleIn(AppScope::class)
@@ -33,17 +32,17 @@ class ThemeManager(
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    private val _colorTone = MutableStateFlow(colorToneCache)
-    val colorTone: StateFlow<ColorTone> = _colorTone.asStateFlow()
+    val colorTone: StateFlow<ColorTone>
+        field = MutableStateFlow(colorToneCache)
 
-    private val _themeColors = MutableStateFlow(getThemeColors(colorToneCache))
-    val themeColors: StateFlow<ThemeColors> = _themeColors.asStateFlow()
+    val themeColors: StateFlow<ThemeColors>
+        field = MutableStateFlow<ThemeColors>(getThemeColors(colorToneCache))
 
-    private val _previewColors = MutableStateFlow<ThemeColors?>(null)
-    val previewColors: StateFlow<ThemeColors?> = _previewColors.asStateFlow()
+    val previewColors: StateFlow<ThemeColors?>
+        field = MutableStateFlow<ThemeColors?>(null)
 
-    private val _hasEditedCustomTheme = MutableStateFlow(false)
-    val hasEditedCustomTheme: StateFlow<Boolean> = _hasEditedCustomTheme.asStateFlow()
+    val hasEditedCustomTheme: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     fun getThemeColors(colorTone: ColorTone): ThemeColors = when (colorTone) {
         ColorTone.MilkTea -> ThemeColors.MilkTea
@@ -55,32 +54,32 @@ class ThemeManager(
         ColorTone.Customized -> editedCustomColors
     }
 
-    fun setColorTone(colorTone: ColorTone) {
-        if (!authManager.isPremium.value && colorTone.requiresPremium) {
+    fun setColorTone(newColorTone: ColorTone) {
+        if (!authManager.isPremium.value && newColorTone.requiresPremium) {
             Timber.e("ThemeManager: Attempting to apply a premium theme for a free user. $colorTone")
             return
         }
 
-        if (colorTone == ColorTone.Customized) {
+        if (newColorTone == ColorTone.Customized) {
             saveCustomColors(editedCustomColors)
         }
 
-        colorToneCache = colorTone
-        _colorTone.value = colorTone
-        _themeColors.value = getThemeColors(colorTone)
+        colorToneCache = newColorTone
+        colorTone.value = newColorTone
+        themeColors.value = getThemeColors(newColorTone)
 
         tracker.logEvent("color_tone_changed", bundle {
             putString("tone", colorTone.toString())
         })
     }
 
-    fun setPreviewColors(previewColors: ThemeColors) {
-        _previewColors.value = previewColors
+    fun setPreviewColors(newPreviewColors: ThemeColors) {
+        previewColors.value = newPreviewColors
     }
 
     fun clearPreviewColors() {
-        _previewColors.value = null
-        _hasEditedCustomTheme.value = false
+        previewColors.value = null
+        hasEditedCustomTheme.value = false
         // Reset the edited custom colors
         editedCustomColors = currentCustomColors
     }
@@ -105,8 +104,8 @@ class ThemeManager(
         tracker.logEvent("color_tone_custom_color_picked")
 
         // If the customized tone is not selected, write the new color hex directly.
-        if (_colorTone.value == ColorTone.Customized) {
-            _hasEditedCustomTheme.value = currentCustomColors != newColors
+        if (colorTone.value == ColorTone.Customized) {
+            hasEditedCustomTheme.value = currentCustomColors != newColors
         } else {
             saveCustomColors(newColors)
         }
@@ -130,7 +129,7 @@ class ThemeManager(
         val sharedColors = decodeThemeColors(hexFromLink) ?: return false
         setPreviewColors(sharedColors)
         editedCustomColors = sharedColors
-        _hasEditedCustomTheme.value = currentCustomColors != sharedColors
+        hasEditedCustomTheme.value = currentCustomColors != sharedColors
         tracker.logEvent("share_colors_link_opened")
         return true
     }
@@ -139,7 +138,7 @@ class ThemeManager(
         customizedColorsCache = newColors.encode()
         currentCustomColors = newColors
         editedCustomColors = newColors
-        _hasEditedCustomTheme.value = false
+        hasEditedCustomTheme.value = false
     }
 
     private fun ThemeColors.encode(): String {

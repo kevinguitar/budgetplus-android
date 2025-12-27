@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,6 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SingleDatePicker
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
-import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordDateState
@@ -43,7 +43,7 @@ internal fun ColumnScope.DateAndPricing(
     scrollState: ScrollState,
     modifier: Modifier = Modifier,
 ) {
-    val focusManager = rememberSafeFocusManager()
+    val focusManager = LocalFocusManager.current
 
     val recordDate by state.recordDate.collectAsStateWithLifecycle()
     val currencySymbol by state.currencySymbol.collectAsStateWithLifecycle()

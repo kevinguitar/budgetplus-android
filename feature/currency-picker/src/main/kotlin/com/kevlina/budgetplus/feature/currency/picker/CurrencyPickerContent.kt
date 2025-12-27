@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,7 +32,6 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
-import com.kevlina.budgetplus.core.ui.rememberSafeFocusManager
 import com.kevlina.budgetplus.core.ui.rippleClick
 import java.util.Currency
 
@@ -47,8 +47,8 @@ internal fun CurrencyPickerContent(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        val focusManager = rememberSafeFocusManager()
-        
+        val focusManager = LocalFocusManager.current
+
         SearchField(
             keyword = keyword,
             hint = stringResource(id = R.string.currency_picker_hint),

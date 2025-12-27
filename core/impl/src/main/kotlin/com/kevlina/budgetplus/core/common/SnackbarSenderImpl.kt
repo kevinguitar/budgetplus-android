@@ -12,8 +12,8 @@ class SnackbarSenderImpl(
     private val stringProvider: StringProvider,
 ) : SnackbarSender {
 
-    private val _snackbarEvent = MutableEventFlow<SnackbarData>()
-    override val snackbarEvent: EventFlow<SnackbarData> get() = _snackbarEvent
+    final override val snackbarEvent: EventFlow<SnackbarData>
+        field = MutableEventFlow<SnackbarData>()
 
     override fun send(
         message: Int,
@@ -34,7 +34,7 @@ class SnackbarSenderImpl(
         action: () -> Unit,
     ) {
         Timber.d("SnackbarSender: Show snackbar $message")
-        _snackbarEvent.sendEvent(SnackbarData(
+        snackbarEvent.sendEvent(SnackbarData(
             message = message,
             actionLabel = actionLabel?.let(stringProvider::get),
             duration = duration,

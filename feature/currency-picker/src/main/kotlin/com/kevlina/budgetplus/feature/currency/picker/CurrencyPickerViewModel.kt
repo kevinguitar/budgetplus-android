@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.Currency
@@ -60,8 +59,8 @@ class CurrencyPickerViewModel(
         // Then place the selected one (if exists) at the front
         .sortedByDescending { it.isSelected }
 
-    private val _currencies = MutableStateFlow(allCurrencies)
-    val currencies: StateFlow<List<CurrencyState>> = _currencies.asStateFlow()
+    val currencies: StateFlow<List<CurrencyState>>
+        field = MutableStateFlow(allCurrencies)
 
     init {
         snapshotFlow { keyword.text }
@@ -70,7 +69,7 @@ class CurrencyPickerViewModel(
     }
 
     private fun onSearch(keyword: CharSequence) {
-        _currencies.value = allCurrencies.filter {
+        currencies.value = allCurrencies.filter {
             it.name.contains(keyword, ignoreCase = true) ||
                 it.currencyCode.contains(keyword, ignoreCase = true)
         }

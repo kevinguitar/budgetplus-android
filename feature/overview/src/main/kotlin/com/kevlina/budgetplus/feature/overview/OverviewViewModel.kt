@@ -39,7 +39,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -51,7 +50,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ViewModelKey(OverviewViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class OverviewViewModel(
+class OverviewViewModel private constructor(
     private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
@@ -75,8 +74,8 @@ internal class OverviewViewModel(
     private val type = MutableStateFlow(typeCache)
 
     private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
-    private val _mode = MutableStateFlow(modeCache)
-    val mode: StateFlow<OverviewMode> = _mode.asStateFlow()
+    internal val mode: StateFlow<OverviewMode>
+        field = MutableStateFlow(modeCache)
 
     private var modeBubbleJob: Job? = null
     private var exportBubbleJob: Job? = null
@@ -151,7 +150,7 @@ internal class OverviewViewModel(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val state = OverviewContentState(
+    internal val state = OverviewContentState(
         headerState = OverviewHeaderState(
             type = type,
             totalPrice = totalFormattedPrice,
@@ -187,7 +186,7 @@ internal class OverviewViewModel(
             OverviewMode.AllRecords -> OverviewMode.GroupByCategories
             OverviewMode.GroupByCategories -> OverviewMode.AllRecords
         }
-        _mode.value = newMode
+        mode.value = newMode
         modeCache = newMode
         tracker.logEvent("overview_mode_changed")
     }

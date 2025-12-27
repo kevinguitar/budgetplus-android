@@ -26,7 +26,6 @@ import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -34,7 +33,7 @@ import java.time.LocalDate
 
 @ViewModelKey(BatchRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class BatchRecordViewModel(
+class BatchRecordViewModel(
     val categoriesVm: CategoriesViewModel,
     val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,
@@ -43,21 +42,21 @@ internal class BatchRecordViewModel(
     private val stringProvider: StringProvider,
 ) : ViewModel() {
 
-    private val _type = MutableStateFlow(RecordType.Expense)
-    val type: StateFlow<RecordType> = _type.asStateFlow()
+    val type: StateFlow<RecordType>
+        field = MutableStateFlow(RecordType.Expense)
 
-    private val _startRecordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
-    val startRecordDate: StateFlow<RecordDateState> = _startRecordDate.asStateFlow()
+    val startRecordDate: StateFlow<RecordDateState>
+        field = MutableStateFlow<RecordDateState>(RecordDateState.Now)
 
     val note = TextFieldState()
     val priceText = TextFieldState()
 
-    private val _frequency = MutableStateFlow(BatchFrequency(duration = 1, unit = BatchUnit.Month))
-    val frequency: StateFlow<BatchFrequency> = _frequency.asStateFlow()
+    val frequency: StateFlow<BatchFrequency>
+        field = MutableStateFlow<BatchFrequency>(BatchFrequency(duration = 1, unit = BatchUnit.Month))
 
     val batchTimes = (BATCH_TIMES_MIN..BATCH_TIMES_MAX).toList()
-    private val _times = MutableStateFlow(batchTimes.first())
-    val times: StateFlow<Int> = _times.asStateFlow()
+    val times: StateFlow<Int>
+        field = MutableStateFlow<Int>(batchTimes.first())
 
     val recordEvent = EventTrigger<Unit>()
 
@@ -69,12 +68,12 @@ internal class BatchRecordViewModel(
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
-    fun setType(type: RecordType) {
-        _type.value = type
+    fun setType(newType: RecordType) {
+        type.value = newType
     }
 
     fun setStartDate(date: LocalDate) {
-        _startRecordDate.value = if (date.isEqual(LocalDate.now())) {
+        startRecordDate.value = if (date.isEqual(LocalDate.now())) {
             RecordDateState.Now
         } else {
             RecordDateState.Other(date)
@@ -82,15 +81,15 @@ internal class BatchRecordViewModel(
     }
 
     fun setDuration(duration: Int) {
-        _frequency.update { it.copy(duration = duration) }
+        frequency.update { it.copy(duration = duration) }
     }
 
     fun setUnit(unit: BatchUnit) {
-        _frequency.update { it.copy(unit = unit) }
+        frequency.update { it.copy(unit = unit) }
     }
 
-    fun setTimes(times: Int) {
-        _times.value = times
+    fun setTimes(newTimes: Int) {
+        times.value = newTimes
     }
 
     fun batchRecord() {

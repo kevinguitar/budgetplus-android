@@ -19,7 +19,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,8 +32,8 @@ class InAppUpdateManagerImpl(
     preferenceHolder: PreferenceHolder,
 ) : InAppUpdateManager {
 
-    private val _updateState = MutableStateFlow<InAppUpdateState>(InAppUpdateState.NotStarted)
-    override val updateState: StateFlow<InAppUpdateState> = _updateState.asStateFlow()
+    final override val updateState: StateFlow<InAppUpdateState>
+        field = MutableStateFlow<InAppUpdateState>(InAppUpdateState.NotStarted)
 
     private val appUpdateManager = AppUpdateManagerFactory.create(activity)
     private val scope = activity.lifecycleScope
@@ -81,17 +80,17 @@ class InAppUpdateManagerImpl(
             }
 
             is AppUpdateResult.InProgress -> {
-                _updateState.value = InAppUpdateState.Downloading
+                updateState.value = InAppUpdateState.Downloading
             }
 
             is AppUpdateResult.Downloaded -> {
-                _updateState.value = InAppUpdateState.Downloaded {
+                updateState.value = InAppUpdateState.Downloaded {
                     completeUpdate(result)
                 }
             }
 
             AppUpdateResult.NotAvailable -> {
-                _updateState.value = InAppUpdateState.NotAvailable
+                updateState.value = InAppUpdateState.NotAvailable
             }
         }
     }

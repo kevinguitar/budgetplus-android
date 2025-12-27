@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -57,8 +56,8 @@ class RecordsObserverImpl(
             observeRecords(bookId, timePeriod.first())
         }
 
-    private val _records = MutableStateFlow<Sequence<Record>?>(null)
-    override val records: StateFlow<Sequence<Record>?> = _records.asStateFlow()
+    final override val records: StateFlow<Sequence<Record>?>
+        field = MutableStateFlow<Sequence<Record>?>(null)
 
     // Cache the time period by book id
     private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
@@ -127,7 +126,7 @@ class RecordsObserverImpl(
                 }
 
                 if (snapshot != null) {
-                    _records.value = snapshot.documents
+                    records.value = snapshot.documents
                         .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
                         .asSequence()
                 }

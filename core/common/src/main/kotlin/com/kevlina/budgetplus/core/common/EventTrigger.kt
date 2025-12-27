@@ -1,15 +1,14 @@
 package com.kevlina.budgetplus.core.common
 
 import androidx.compose.runtime.Stable
-import kotlinx.coroutines.flow.asStateFlow
 
 @Stable
 class EventTrigger<T> {
 
-    private val _event = MutableEventFlow<T>()
-    val event: EventFlow<T> = _event.asStateFlow()
+    val event: EventFlow<T>
+        field = MutableEventFlow<T>()
 
     fun sendEvent(content: T) {
-        _event.sendEvent(content)
+        event.sendEvent(content)
     }
 }

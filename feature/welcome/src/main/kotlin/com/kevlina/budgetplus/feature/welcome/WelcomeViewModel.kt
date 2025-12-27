@@ -19,7 +19,7 @@ import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Named
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -40,8 +40,8 @@ class WelcomeViewModel(
 
     val bookName = TextFieldState()
 
-    private val _isCreatingBook = MutableStateFlow(false)
-    val isCreatingBook = _isCreatingBook.asStateFlow()
+    val isCreatingBook: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     fun createBook() {
         if (createBookJob?.isActive == true) {
@@ -49,7 +49,7 @@ class WelcomeViewModel(
         }
 
         createBookJob = viewModelScope.launch {
-            _isCreatingBook.value = true
+            isCreatingBook.value = true
             val name = bookName.text.toString()
             try {
                 bookRepo.createBook(name = name, source = "welcome")
@@ -59,7 +59,7 @@ class WelcomeViewModel(
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             } finally {
-                _isCreatingBook.value = false
+                isCreatingBook.value = false
             }
         }
     }

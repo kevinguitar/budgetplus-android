@@ -26,7 +26,6 @@ import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
@@ -44,8 +43,8 @@ class RecordsViewModel(
 ) : ViewModel() {
 
     private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
-    private val _sortMode = MutableStateFlow(sortModeCache)
-    val sortMode: StateFlow<RecordsSortMode> = _sortMode.asStateFlow()
+    val sortMode: StateFlow<RecordsSortMode>
+        field = MutableStateFlow(sortModeCache)
 
     private val authorId get() = params.authorId
 
@@ -100,9 +99,9 @@ class RecordsViewModel(
         bookRepo.formatPrice(total, alwaysShowSymbol = true)
     }
 
-    fun setSortMode(sortMode: RecordsSortMode) {
-        _sortMode.value = sortMode
-        sortModeCache = sortMode
+    fun setSortMode(newSortMode: RecordsSortMode) {
+        sortMode.value = newSortMode
+        sortModeCache = newSortMode
         tracker.logEvent("overview_sort_mode_changed")
     }
 

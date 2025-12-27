@@ -18,15 +18,15 @@ import kotlin.time.Duration.Companion.days
 
 @ViewModelKey(InsiderViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class InsiderViewModel(
+class InsiderViewModel(
     private val insiderRepo: InsiderRepo,
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {
 
-    val insiderData: StateFlow<InsiderData?> = ::getInsiderData.asFlow()
+    internal val insiderData: StateFlow<InsiderData?> = ::getInsiderData.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val usersOverviewData: StateFlow<UsersOverviewData?> = ::getUsersOverviewData.asFlow()
+    internal val usersOverviewData: StateFlow<UsersOverviewData?> = ::getUsersOverviewData.asFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val newUsers: StateFlow<List<User>?> = ::getNewUser.asFlow()

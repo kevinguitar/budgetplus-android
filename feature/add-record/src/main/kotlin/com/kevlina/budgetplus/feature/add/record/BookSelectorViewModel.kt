@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 @ViewModelKey(BookSelectorViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class BookSelectorViewModel(
+class BookSelectorViewModel(
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
     private val stringProvider: StringProvider,

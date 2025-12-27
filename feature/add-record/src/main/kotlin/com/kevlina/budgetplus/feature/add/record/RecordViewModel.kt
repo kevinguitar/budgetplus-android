@@ -34,14 +34,13 @@ import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 @ViewModelKey(RecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class RecordViewModel(
+class RecordViewModel(
     val calculatorVm: CalculatorViewModel,
     val categoriesVm: CategoriesViewModel,
     val bookRepo: BookRepo,
@@ -56,21 +55,21 @@ internal class RecordViewModel(
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
-    private val _type = MutableStateFlow(RecordType.Expense)
-    val type: StateFlow<RecordType> = _type.asStateFlow()
+    val type: StateFlow<RecordType>
+        field = MutableStateFlow(RecordType.Expense)
 
-    private val _recordDate = MutableStateFlow<RecordDateState>(RecordDateState.Now)
-    val recordDate: StateFlow<RecordDateState> = _recordDate.asStateFlow()
+    val recordDate: StateFlow<RecordDateState>
+        field = MutableStateFlow<RecordDateState>(RecordDateState.Now)
 
     val note = TextFieldState()
 
     val recordEvent = EventTrigger<Unit>()
 
-    private val _requestReviewEvent = MutableEventFlow<Unit>()
-    val requestReviewEvent: EventFlow<Unit> = _requestReviewEvent.asStateFlow()
+    val requestReviewEvent: EventFlow<Unit>
+        field = MutableEventFlow<Unit>()
 
-    private val _requestPermissionEvent = MutableEventFlow<Unit>()
-    val requestPermissionEvent: EventFlow<Unit> = _requestPermissionEvent.asStateFlow()
+    val requestPermissionEvent: EventFlow<Unit>
+        field = MutableEventFlow<Unit>()
 
     private var recordCount by preferenceHolder.bindInt(0)
 
@@ -87,12 +86,12 @@ internal class RecordViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun setType(type: RecordType) {
-        _type.value = type
+    fun setType(newType: RecordType) {
+        type.value = newType
     }
 
     fun setDate(date: LocalDate) {
-        _recordDate.value = if (date.isEqual(LocalDate.now())) {
+        recordDate.value = if (date.isEqual(LocalDate.now())) {
             RecordDateState.Now
         } else {
             RecordDateState.Other(date)
@@ -107,7 +106,7 @@ internal class RecordViewModel(
             putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_invite_to_book, joinLink])
         }
         activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
-        _requestPermissionEvent.sendEvent()
+        requestPermissionEvent.sendEvent()
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
@@ -177,11 +176,11 @@ internal class RecordViewModel(
         val activity = activityProvider.currentActivity ?: return
         when (recordCount % RECORD_COUNT_CYCLE) {
             RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
-            RECORD_REQUEST_PERMISSION -> _requestPermissionEvent.sendEvent()
+            RECORD_REQUEST_PERMISSION -> requestPermissionEvent.sendEvent()
             // Request the in app review when almost reach the next full screen ad,
             // just to have a better UX while user reviewing.
             RECORD_REQUEST_REVIEW -> if (inAppReviewManager.isEligibleForReview()) {
-                _requestReviewEvent.sendEvent()
+                requestReviewEvent.sendEvent()
             }
         }
     }

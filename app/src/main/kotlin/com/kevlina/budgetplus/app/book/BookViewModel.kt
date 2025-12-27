@@ -40,7 +40,7 @@ import timber.log.Timber
 
 @ViewModelKey(BookViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class BookViewModel(
+class BookViewModel(
     val snackbarSender: SnackbarSender,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,

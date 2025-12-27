@@ -14,7 +14,6 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -30,8 +29,8 @@ class SpeakToRecordViewModel(
     private val bubbleRepo: BubbleRepo,
 ) : ViewModel() {
 
-    private val _speakResultFlow = MutableEventFlow<SpeakToRecordStatus.Success>()
-    val speakResultFlow: EventFlow<SpeakToRecordStatus.Success> = _speakResultFlow.asStateFlow()
+    val speakResultFlow: EventFlow<SpeakToRecordStatus.Success>
+        field = MutableEventFlow<SpeakToRecordStatus.Success>()
 
     private val recordActorFlow = MutableStateFlow<RecordActor?>(null)
 
@@ -84,7 +83,7 @@ class SpeakToRecordViewModel(
             }
 
             is SpeakToRecordStatus.Success -> {
-                _speakResultFlow.sendEvent(status)
+                speakResultFlow.sendEvent(status)
             }
         }
     }

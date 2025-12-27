@@ -9,7 +9,7 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -25,8 +25,8 @@ class AdMobInitializer(
     private val authManager: AuthManager,
 ) {
 
-    private val _isInitialized = MutableStateFlow(false)
-    val isInitialized = _isInitialized.asStateFlow()
+    val isInitialized: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     init {
         // Handle the case when re-login with a non-premium user.
@@ -42,7 +42,7 @@ class AdMobInitializer(
         }
 
         MobileAds.initialize(context) {
-            _isInitialized.value = true
+            isInitialized.value = true
             Timber.d("AdMob initialized: ${
                 it.adapterStatusMap
                     .map { (key, value) -> "$key: ${value.description}" }

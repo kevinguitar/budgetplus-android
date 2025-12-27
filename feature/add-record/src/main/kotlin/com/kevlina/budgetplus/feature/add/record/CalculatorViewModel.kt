@@ -17,7 +17,6 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import net.objecthunter.exp4j.ExpressionBuilder
@@ -33,15 +32,15 @@ class CalculatorViewModel(
 
     val priceText = TextFieldState(EMPTY_PRICE)
 
-    private val _price = MutableStateFlow(0.0)
-    val price: StateFlow<Double> = _price.asStateFlow()
+    val price: StateFlow<Double>
+        field = MutableStateFlow(0.0)
 
     val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
         .map { text -> text.any { it in operatorChars } }
         .distinctUntilChanged()
 
-    private val _recordFlow = MutableEventFlow<Unit>()
-    val recordFlow: EventFlow<Unit> = _recordFlow.asStateFlow()
+    val recordFlow: EventFlow<Unit>
+        field = MutableEventFlow<Unit>()
 
     private val operatorChars = listOf(
         CalculatorButton.Plus,
@@ -125,13 +124,13 @@ class CalculatorViewModel(
 
     fun setPrice(priceNumber: Double) {
         priceText.setTextAndPlaceCursorAtEnd(priceNumber.plainPriceString)
-        _price.value = priceNumber.toBigDecimal()
+        price.value = priceNumber.toBigDecimal()
             .setScale(2, RoundingMode.HALF_UP)
             .toDouble()
     }
 
     fun clearPrice() {
-        _price.value = 0.0
+        price.value = 0.0
         priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
     }
 
@@ -142,7 +141,7 @@ class CalculatorViewModel(
             CalculatorAction.Evaluate -> evaluate()
             CalculatorAction.Ok -> {
                 evaluate()
-                _recordFlow.sendEvent()
+                recordFlow.sendEvent()
             }
         }
     }

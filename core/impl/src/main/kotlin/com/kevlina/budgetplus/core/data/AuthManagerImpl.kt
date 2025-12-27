@@ -22,7 +22,6 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -40,8 +39,8 @@ class AuthManagerImpl(
 
     private var currentUser by preferenceHolder.bindObjectOptional<User>()
 
-    private val _userState = MutableStateFlow(currentUser)
-    override val userState: StateFlow<User?> = _userState.asStateFlow()
+    final override val userState: StateFlow<User?>
+        field = MutableStateFlow(currentUser)
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
     override val userId: String? get() = userState.value?.id
@@ -76,7 +75,7 @@ class AuthManagerImpl(
         val premiumUser = currentUser?.copy(premium = true) ?: return
         usersDb.value.document(premiumUser.id).set(premiumUser)
 
-        _userState.value = premiumUser
+        userState.value = premiumUser
         currentUser = premiumUser
     }
 
@@ -86,7 +85,7 @@ class AuthManagerImpl(
         val userWithNewToken = currentUser?.copy(fcmToken = newToken) ?: return
         usersDb.value.document(userWithNewToken.id).set(userWithNewToken)
 
-        _userState.value = userWithNewToken
+        userState.value = userWithNewToken
         currentUser = userWithNewToken
     }
 
@@ -103,7 +102,7 @@ class AuthManagerImpl(
 
     private fun updateUser(user: User?, newName: String? = null) {
         if (user == null) {
-            _userState.value = null
+            userState.value = null
             currentUser = null
             return
         }
@@ -117,7 +116,7 @@ class AuthManagerImpl(
             lastActiveOn = System.currentTimeMillis(),
             language = stringProvider[R.string.app_language],
         )
-        _userState.value = userWithExclusiveFields
+        userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields
 
         appScope.launch {
@@ -148,7 +147,7 @@ class AuthManagerImpl(
                     fcmToken = fcmToken ?: remoteUser.fcmToken
                 )
 
-                _userState.value = mergedUser
+                userState.value = mergedUser
                 currentUser = mergedUser
 
                 usersDb.value.document(user.id).set(mergedUser)

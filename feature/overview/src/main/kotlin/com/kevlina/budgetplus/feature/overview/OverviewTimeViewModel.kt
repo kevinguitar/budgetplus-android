@@ -34,8 +34,8 @@ class OverviewTimeViewModel(
     val untilDate = timePeriod.mapState { it.until }
     val isOneDayPeriod = timePeriod.mapState { it.from == it.until }
 
-    private val _openPremiumEvent = MutableEventFlow<Unit>()
-    val openPremiumEvent: EventFlow<Unit> get() = _openPremiumEvent
+    val openPremiumEvent: EventFlow<Unit>
+        field = MutableEventFlow<Unit>()
 
     fun setTimePeriod(timePeriod: TimePeriod) {
         val bookId = bookRepo.currentBookId ?: return
@@ -47,7 +47,7 @@ class OverviewTimeViewModel(
                 actionLabel = R.string.cta_go,
                 action = {
                     tracker.logEvent("overview_exceed_max_period_unlock")
-                    _openPremiumEvent.sendEvent()
+                    openPremiumEvent.sendEvent()
                 }
             )
 

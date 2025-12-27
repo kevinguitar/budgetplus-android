@@ -2,5 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "ignoreDeps": [
+    "com.google.cloud:google-cloud-translate",
+    "io.grpc:grpc-bom"
   ]
 }

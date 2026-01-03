@@ -81,6 +81,12 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             implementation(project.libs.timber)
             testImplementation(project.libs.bundles.test)
 
+            val bomBundle = project.libs.bundles.bom.get()
+            bomBundle.forEach { bom ->
+                implementation(enforcedPlatform(bom))
+                testFixturesImplementation(enforcedPlatform(bom))
+            }
+
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))
                 testImplementation(testFixtures(project(":core:common")))

@@ -4,6 +4,5 @@ plugins {
 
 dependencies {
     testFixturesImplementation(libs.coroutines.test)
-    testFixturesImplementation(platform(libs.compose.bom))
     testFixturesImplementation(libs.junit.compose)
 }

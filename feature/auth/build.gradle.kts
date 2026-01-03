@@ -13,8 +13,6 @@ dependencies {
     // See: https://developer.android.com/jetpack/androidx/releases/credentials
     implementation(libs.android.credentials.play.services)
     implementation(libs.install.referrer)
-    implementation(libs.google.id)
-
-    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.google.id)
 }

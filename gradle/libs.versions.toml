@@ -94,6 +94,10 @@ android = [
     "android-viewmodel",
     "coroutines-android",
 ]
+bom = [
+    "compose-bom",
+    "firebase-bom",
+]
 compose = [
     "compose-activity",
     "compose-foundation",

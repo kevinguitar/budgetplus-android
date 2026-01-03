@@ -18,9 +18,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.compose.compiler.get().pluginId)
 
         project.extensions.configure(CommonExtension::class.java) {
-            buildFeatures {
-                compose = true
-            }
+            buildFeatures.compose = true
 
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {

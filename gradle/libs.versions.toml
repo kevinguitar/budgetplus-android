@@ -1,6 +1,6 @@
 [versions]
 # https://developer.android.com/reference/tools/gradle-api
-gradle-plugin = "8.13.2"
+gradle-plugin = "9.0.0-rc02"
 # https://kotlinlang.org/docs/releases.html#release-details
 kotlin = "2.3.0"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
@@ -94,6 +94,10 @@ android = [
     "android-viewmodel",
     "coroutines-android",
 ]
+bom = [
+    "compose-bom",
+    "firebase-bom",
+]
 compose = [
     "compose-activity",
     "compose-foundation",
@@ -119,5 +123,4 @@ detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 google-services = "com.google.gms.google-services:4.4.4"
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

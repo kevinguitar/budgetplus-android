@@ -7,6 +7,5 @@ plugins {
 dependencies {
     implementation(projects.core.data)
 
-    implementation(platform(libs.firebase.bom))
     api(libs.firebase.messaging)
 }

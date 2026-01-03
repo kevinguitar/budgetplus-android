@@ -18,9 +18,7 @@ class ComposeConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.compose.compiler.get().pluginId)
 
         project.extensions.configure(CommonExtension::class.java) {
-            buildFeatures {
-                compose = true
-            }
+            buildFeatures.compose = true
 
             project.tasks.withType<KotlinCompile>().configureEach {
                 compilerOptions {
@@ -60,12 +58,10 @@ class ComposeConventionPlugin : Plugin<Project> {
         }
 
         project.dependencies {
-            implementation(platform(project.libs.compose.bom))
             implementation(project.libs.bundles.compose)
             implementation(project.libs.android.activity.compose)
             debugImplementation(project.libs.compose.tooling)
 
-            testFixturesImplementation(platform(project.libs.compose.bom))
             testFixturesImplementation(project.libs.compose.runtime)
             testFixturesImplementation(project.libs.junit.compose)
         }

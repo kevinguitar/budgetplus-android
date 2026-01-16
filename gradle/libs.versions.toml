@@ -8,7 +8,7 @@ coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
 compose-bom = "2026.01.00"
 # https://firebase.google.com/support/release-notes/android
-firebase-bom = "34.7.0"
+firebase-bom = "34.8.0"
 # https://github.com/coil-kt/coil/releases
 coil = "2.7.0"
 # https://github.com/ZacSweers/metro/releases

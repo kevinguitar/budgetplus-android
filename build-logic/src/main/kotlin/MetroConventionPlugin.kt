@@ -1,4 +1,5 @@
 import common.libs
+import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
 import dev.zacsweers.metro.gradle.MetroPluginExtension
 import dev.zacsweers.metro.gradle.OptionalBindingBehavior
 import org.gradle.api.Plugin
@@ -8,11 +9,12 @@ import org.gradle.kotlin.dsl.configure
 
 class MetroConventionPlugin : Plugin<Project> {
 
+    @OptIn(DelicateMetroGradleApi::class)
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.metro.get().pluginId)
 
         project.configure<MetroPluginExtension> {
-            contributesAsInject.set(true)
+            enableSwitchingProviders.set(true)
             optionalBindingBehavior.set(OptionalBindingBehavior.DISABLED)
         }
     }

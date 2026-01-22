@@ -1,7 +1,10 @@
-TEAM_ID=
+TEAM_ID=kevlina
 
-PRODUCT_NAME=demo
-PRODUCT_BUNDLE_IDENTIFIER=com.kevlina.demo.demo$(TEAM_ID)
+PRODUCT_NAME=Budget+
+PRODUCT_BUNDLE_IDENTIFIER=com.kevlina.budgetplus$(TEAM_ID)
 
 CURRENT_PROJECT_VERSION=1
 MARKETING_VERSION=1.0
+
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+OTHER_LDFLAGS = $(inherited) -framework sharedKit

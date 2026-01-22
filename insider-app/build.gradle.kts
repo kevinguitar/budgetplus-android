@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.android.activity)
     implementation(libs.navigation3.ui)
     implementation(libs.navigation3.viewmodel)
+    implementation(libs.coil.okhttp)
 
     implementation(projects.core.data)
     implementation(projects.core.impl)

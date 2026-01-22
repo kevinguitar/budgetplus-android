@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.profile.installer)
     implementation(libs.google.ads)
     implementation(libs.lottie.compose)
+    implementation(libs.coil.okhttp)
 
     implementation(projects.core.ads)
     implementation(projects.core.billing)

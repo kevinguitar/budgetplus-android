@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.metro) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.kotlin.multiplatform.library) apply false
 }
 
 tasks.register("clean", Delete::class) {

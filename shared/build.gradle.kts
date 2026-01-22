@@ -1,11 +1,6 @@
 plugins {
     alias(budgetplus.plugins.kotlin.multiplatform)
-
-    // Remove?
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.jetbrains.compose)
-    alias(libs.plugins.compose.compiler)
+    alias(budgetplus.plugins.compose.multiplatform)
 }
 
 kotlin {
@@ -29,24 +24,6 @@ kotlin {
         }
     }
 
-    // For iOS targets, this is also where you should
-    // configure native binary output. For more information, see:
-    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
-
-    // A step-by-step guide on how to include this library in an XCode
-    // project can be found here:
-    // https://developer.android.com/kotlin/multiplatform/migrate
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "sharedKit"
-            isStatic = true
-        }
-    }
-
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the
     // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
@@ -55,13 +32,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.coil.compose)
+                //...
             }
         }
 

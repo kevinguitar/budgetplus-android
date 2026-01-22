@@ -43,7 +43,11 @@ gradlePlugin {
         }
         register("kotlin.multiplatform") {
             id = "budgetplus.kotlin.multiplatform"
-            implementationClass = "MultiplatformConventionPlugin"
+            implementationClass = "KotlinMultiplatformConventionPlugin"
+        }
+        register("compose.multiplatform") {
+            id = "budgetplus.compose.multiplatform"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
         }
     }
 }

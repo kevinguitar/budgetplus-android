@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import common.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -9,6 +10,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
+        val appId: String by project
         val minAndroidSdk: String by project
         val androidSdk: String by project
 
@@ -16,6 +18,23 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
 
         project.extensions.configure<KotlinMultiplatformExtension> {
+            extensions.configure<KotlinMultiplatformAndroidLibraryTarget> {
+                val modulePath = project.path
+                    .drop(1)
+                    .split(':', '-')
+                    .joinToString(".")
+
+                namespace = "$appId.$modulePath"
+                compileSdk = androidSdk.toInt()
+                minSdk = minAndroidSdk.toInt()
+
+                withDeviceTestBuilder {
+                    sourceSetTreeName = "test"
+                }.configure {
+                    instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                }
+            }
+
             listOf(
                 iosX64(),
                 iosArm64(),

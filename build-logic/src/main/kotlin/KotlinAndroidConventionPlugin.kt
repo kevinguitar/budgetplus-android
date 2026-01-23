@@ -19,8 +19,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val appId: String by project
-        val minAndroidSdk: String by project
-        val androidSdk: String by project
 
         project.extensions.configure(CommonExtension::class.java) {
             val modulePath = project.path
@@ -29,9 +27,8 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                 .joinToString(".")
 
             namespace = "$appId.$modulePath"
-            compileSdk = androidSdk.toInt()
-
-            defaultConfig.minSdk = minAndroidSdk.toInt()
+            compileSdk = project.libs.versions.compileAndroidSdk.get().toInt()
+            defaultConfig.minSdk = project.libs.versions.minAndroidSdk.get().toInt()
 
             val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
             compileOptions.sourceCompatibility = javaVersion

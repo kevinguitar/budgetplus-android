@@ -19,13 +19,11 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.android.test.get().pluginId)
 
         val appId: String by project
-        val minAndroidSdk: String by project
-        val androidSdk: String by project
 
         project.extensions.configure<TestExtension> {
 
             namespace = "$appId.benchmark"
-            compileSdk = androidSdk.toInt()
+            compileSdk = project.libs.versions.compileAndroidSdk.get().toInt()
 
             compileOptions {
                 val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
@@ -40,8 +38,8 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
             }
 
             defaultConfig {
-                minSdk = minAndroidSdk.toInt()
-                targetSdk = androidSdk.toInt()
+                minSdk = project.libs.versions.minAndroidSdk.get().toInt()
+                targetSdk = project.libs.versions.compileAndroidSdk.get().toInt()
 
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }

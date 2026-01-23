@@ -28,6 +28,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "budgetplus"
 include(":androidApp")
+include(":composeApp")
+include(":insiderApp")
+
 include(":benchmark")
 include(":core:ads")
 include(":core:billing")
@@ -57,6 +60,3 @@ include(":feature:settings")
 include(":feature:speak-to-record")
 include(":feature:unlock-premium")
 include(":feature:welcome")
-include(":insider-app")
-
-include(":composeApp")

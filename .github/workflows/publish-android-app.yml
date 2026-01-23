@@ -34,8 +34,8 @@ jobs:
           ENCODED_INSIDER_GOOGLE_SERVICES_JSON: ${{ secrets.INSIDER_GOOGLE_SERVICES_JSON }}
         run: |
           echo $ENCODED_KEYSTORE | base64 -d > ./BudgetKey
-          echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -d > ./app/google-services.json
-          echo $ENCODED_INSIDER_GOOGLE_SERVICES_JSON | base64 -d > ./insider-app/google-services.json
+          echo $ENCODED_GOOGLE_SERVICES_JSON | base64 -d > ./androidApp/google-services.json
+          echo $ENCODED_INSIDER_GOOGLE_SERVICES_JSON | base64 -d > ./insiderApp/google-services.json
 
       - name: Echo Secrets
         env:
@@ -60,8 +60,8 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.kevlina.budgetplus
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          mappingFile: app/build/outputs/mapping/release/mapping.txt
+          releaseFiles: androidApp/build/outputs/bundle/release/app-release.aab
+          mappingFile: androidApp/build/outputs/mapping/release/mapping.txt
           track: beta
           # Get the tag name from the release
           releaseName: ${{ github.event.release.tag_name }}
@@ -72,4 +72,4 @@ jobs:
         with:
           name: build-outputs
           retention-days: 7
-          path: app/build/outputs
+          path: androidApp/build/outputs

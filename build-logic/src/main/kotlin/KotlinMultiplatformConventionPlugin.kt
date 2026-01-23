@@ -13,17 +13,16 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
         val appId: String by project
         val minAndroidSdk: String by project
         val androidSdk: String by project
+        val modulePath = project.path
+            .drop(1)
+            .split(':', '-')
+            .joinToString(".")
 
         project.apply(plugin = project.libs.plugins.kotlin.multiplatform.get().pluginId)
         project.apply(plugin = project.libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
 
         project.extensions.configure<KotlinMultiplatformExtension> {
             extensions.configure<KotlinMultiplatformAndroidLibraryTarget> {
-                val modulePath = project.path
-                    .drop(1)
-                    .split(':', '-')
-                    .joinToString(".")
-
                 namespace = "$appId.$modulePath"
                 compileSdk = androidSdk.toInt()
                 minSdk = minAndroidSdk.toInt()
@@ -41,7 +40,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 iosSimulatorArm64()
             ).forEach { iosTarget ->
                 iosTarget.binaries.framework {
-                    baseName = "shared"
+                    baseName = modulePath.replaceFirstChar { it.uppercase() }
                     isStatic = true
                 }
             }

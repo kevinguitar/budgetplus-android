@@ -59,5 +59,4 @@ include(":feature:unlock-premium")
 include(":feature:welcome")
 include(":insider-app")
 
-include(":shared")
 include(":composeApp")

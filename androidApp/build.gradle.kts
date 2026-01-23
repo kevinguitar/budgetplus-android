@@ -39,4 +39,6 @@ dependencies {
     implementation(projects.feature.speakToRecord)
     implementation(projects.feature.unlockPremium)
     implementation(projects.feature.welcome)
+
+    implementation(projects.composeApp)
 }

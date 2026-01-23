@@ -47,10 +47,20 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 commonMain.dependencies {
                     implementation(project.libs.kotlin.datetime)
                     implementation(project.libs.kotlin.serialization)
+
+                    if (project.path != ":core:common") {
+                        implementation(project(":core:common"))
+                    }
                 }
 
                 androidMain.dependencies {
+                    val bomBundle = project.libs.bundles.bom.get()
+                    bomBundle.forEach { bom ->
+                        project.dependencies.enforcedPlatform(bom)
+                    }
 
+                    implementation(project.libs.bundles.android)
+                    implementation(project.libs.timber)
                 }
             }
 

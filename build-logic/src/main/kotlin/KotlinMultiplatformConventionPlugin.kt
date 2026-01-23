@@ -62,6 +62,11 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     implementation(project.libs.bundles.android)
                     implementation(project.libs.timber)
                 }
+
+                // For migration, ideally should be commonUnitTest
+                androidUnitTest.dependencies {
+                    implementation(project.libs.bundles.test)
+                }
             }
 
             compilerOptions {

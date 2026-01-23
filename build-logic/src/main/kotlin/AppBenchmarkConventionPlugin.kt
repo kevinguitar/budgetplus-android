@@ -56,7 +56,7 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
                 }
             }
 
-            targetProjectPath = ":app"
+            targetProjectPath = ":androidApp"
 
             @Suppress("UnstableApiUsage")
             experimentalProperties["android.experimental.self-instrumenting"] = true

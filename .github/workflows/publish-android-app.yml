@@ -1,4 +1,4 @@
-name: Publish to Google Play
+name: Publish Android app to Google Play
 
 on:
   release:
@@ -53,7 +53,7 @@ jobs:
         run: ./gradlew test
 
       - name: Assemble release AAB
-        run: ./gradlew :app:bundleRelease --quiet
+        run: ./gradlew :androidApp:bundleRelease --quiet
 
       - name: Deploy the Play Store beta channel
         uses: r0adkll/upload-google-play@v1.1.3

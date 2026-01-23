@@ -12,7 +12,7 @@
     </queries>
 
     <application
-        android:name=".BudgetPlusApp"
+        android:name="com.kevlina.budgetplus.app.BudgetPlusApp"
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="@bool/enable_predictive_back"
         android:hardwareAccelerated="true"
@@ -27,7 +27,7 @@
             tools:targetApi="29" />
 
         <activity
-            android:name=".book.BookActivity"
+            android:name="com.kevlina.budgetplus.app.book.BookActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
             android:exported="true"
             android:launchMode="singleTask"

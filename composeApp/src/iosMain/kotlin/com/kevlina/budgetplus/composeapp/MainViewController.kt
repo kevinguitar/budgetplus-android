@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.shared
+package com.kevlina.budgetplus.composeapp
 
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController

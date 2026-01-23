@@ -19,6 +19,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
         project.apply(plugin = project.libs.plugins.kotlin.multiplatform.get().pluginId)
         project.apply(plugin = project.libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
+        project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
 
         project.extensions.configure<KotlinMultiplatformExtension> {
             extensions.configure<KotlinMultiplatformAndroidLibraryTarget> {
@@ -45,11 +46,27 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             sourceSets.apply {
                 commonMain.dependencies {
                     implementation(project.libs.kotlin.datetime)
+                    implementation(project.libs.kotlin.serialization)
                 }
 
                 androidMain.dependencies {
 
                 }
+            }
+
+            compilerOptions {
+                allWarningsAsErrors.set(true)
+                freeCompilerArgs.addAll(
+                    "-Xcontext-parameters",
+                    "-Xexplicit-backing-fields",
+                    "-Xannotation-default-target=param-property"
+                )
+                optIn.addAll(
+                    "kotlin.contracts.ExperimentalContracts",
+                    "kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
+                    "kotlinx.coroutines.FlowPreview"
+                )
             }
         }
     }

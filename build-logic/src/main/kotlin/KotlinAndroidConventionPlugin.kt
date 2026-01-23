@@ -51,11 +51,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                         "-Xexplicit-backing-fields",
                         "-Xannotation-default-target=param-property"
                     )
-                    // Workaround for explicit backing field, see:
-                    // https://youtrack.jetbrains.com/issue/KT-83265/How-to-disable-Explicit-Backing-Fields-compiler-warning#focus=Comments-27-13138960.0-0
-                    if (isInIdeaSync) {
-                        freeCompilerArgs.add("-XXLanguage:+ExplicitBackingFields")
-                    }
                     optIn.addAll(
                         "kotlin.contracts.ExperimentalContracts",
                         "kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -93,7 +88,4 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             testFixturesImplementation(project.libs.coroutines.android)
         }
     }
-
-    private val isInIdeaSync
-        get() = System.getProperty("idea.sync.active").toBoolean()
 }

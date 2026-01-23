@@ -17,7 +17,6 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                 commonMain.dependencies {
                     implementation(project.libs.cmp.runtime)
                     implementation(project.libs.cmp.foundation)
-                    implementation(project.libs.cmp.material3)
                     implementation(project.libs.cmp.ui)
                     implementation(project.libs.cmp.resources)
                     implementation(project.libs.cmp.uiTooling)

@@ -1,8 +1,8 @@
 package com.kevlina.budgetplus.core.data
 
-import com.budgetplus.core.common.AppStartAction
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb

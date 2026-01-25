@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.app
 
 import android.app.Application
-import com.budgetplus.core.common.AppStartAction
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.crashlytics.crashlytics
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.di.HasServiceProvider
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named

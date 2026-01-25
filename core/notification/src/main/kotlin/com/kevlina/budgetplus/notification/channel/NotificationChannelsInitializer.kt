@@ -5,7 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import androidx.annotation.StringRes
-import com.budgetplus.core.common.AppStartAction
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import dev.zacsweers.metro.AppScope

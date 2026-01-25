@@ -1,9 +1,9 @@
 package com.kevlina.budgetplus.notification
 
-import com.budgetplus.core.common.AppStartAction
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.AppScope

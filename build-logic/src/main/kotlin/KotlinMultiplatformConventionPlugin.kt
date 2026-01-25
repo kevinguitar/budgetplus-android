@@ -7,6 +7,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 
 class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
@@ -31,6 +32,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 }
                 androidResources.enable = true
             }
+
+            applyDefaultHierarchyTemplate()
 
             listOf(
                 iosX64(),
@@ -63,9 +66,35 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     implementation(project.libs.timber)
                 }
 
-                // For migration, ideally should be commonUnitTest
                 androidUnitTest.dependencies {
+                    implementation(kotlin("test"))
                     implementation(project.libs.bundles.test)
+                }
+
+                val androidTestFixtures = create("androidTestFixtures") {
+                    dependsOn(androidMain.get())
+                    dependencies {
+                        //TODO: Are they needed?
+                        implementation(kotlin("stdlib"))
+                        implementation(project.libs.android.activity)
+                    }
+                }
+                androidUnitTest.get().dependsOn(androidTestFixtures)
+            }
+
+            targets.configureEach {
+                if (platformType == KotlinPlatformType.androidJvm) {
+                    compilations.configureEach {
+                        if (name.endsWith("UnitTest")) {
+                            // Explicitly associate with the main compilation to access production code
+                            // This ensures fixtures and tests can see classes from commonMain and androidMain
+                            val mainCompilationName = name.removeSuffix("UnitTest")
+                            val mainCompilation = target.compilations.findByName(mainCompilationName)
+                            if (mainCompilation != null) {
+                                associateWith(mainCompilation)
+                            }
+                        }
+                    }
                 }
             }
 

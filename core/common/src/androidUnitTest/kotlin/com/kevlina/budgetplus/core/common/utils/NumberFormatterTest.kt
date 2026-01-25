@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.utils
+package com.kevlina.budgetplus.core.common.utils
 
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.common.roundUpRatioText

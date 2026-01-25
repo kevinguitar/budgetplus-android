@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.core.common
+package com.budgetplus.core.common
 
 /**
  *  The action which needs to be executed on app start.

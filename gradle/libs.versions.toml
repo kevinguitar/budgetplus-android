@@ -91,7 +91,7 @@ kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.7.1"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
-mockk = "io.mockk:mockk:1.14.7"
+mockk = "io.mockk:mockk:1.14.9"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
 navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 navigation3-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "android-lifecycle" }

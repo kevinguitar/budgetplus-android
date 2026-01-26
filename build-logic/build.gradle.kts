@@ -41,5 +41,13 @@ gradlePlugin {
             id = "budgetplus.kotlin.serialization"
             implementationClass = "KotlinSerializationConventionPlugin"
         }
+        register("kotlin.multiplatform") {
+            id = "budgetplus.kotlin.multiplatform"
+            implementationClass = "KotlinMultiplatformConventionPlugin"
+        }
+        register("compose.multiplatform") {
+            id = "budgetplus.compose.multiplatform"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
+        }
     }
 }

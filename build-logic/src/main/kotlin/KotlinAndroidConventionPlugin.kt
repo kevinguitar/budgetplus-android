@@ -19,8 +19,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val appId: String by project
-        val minAndroidSdk: String by project
-        val androidSdk: String by project
 
         project.extensions.configure(CommonExtension::class.java) {
             val modulePath = project.path
@@ -29,9 +27,8 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                 .joinToString(".")
 
             namespace = "$appId.$modulePath"
-            compileSdk = androidSdk.toInt()
-
-            defaultConfig.minSdk = minAndroidSdk.toInt()
+            compileSdk = project.libs.versions.compileAndroidSdk.get().toInt()
+            defaultConfig.minSdk = project.libs.versions.minAndroidSdk.get().toInt()
 
             val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
             compileOptions.sourceCompatibility = javaVersion
@@ -54,11 +51,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                         "-Xexplicit-backing-fields",
                         "-Xannotation-default-target=param-property"
                     )
-                    // Workaround for explicit backing field, see:
-                    // https://youtrack.jetbrains.com/issue/KT-83265/How-to-disable-Explicit-Backing-Fields-compiler-warning#focus=Comments-27-13138960.0-0
-                    if (isInIdeaSync) {
-                        freeCompilerArgs.add("-XXLanguage:+ExplicitBackingFields")
-                    }
                     optIn.addAll(
                         "kotlin.contracts.ExperimentalContracts",
                         "kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -96,7 +88,4 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             testFixturesImplementation(project.libs.coroutines.android)
         }
     }
-
-    private val isInIdeaSync
-        get() = System.getProperty("idea.sync.active").toBoolean()
 }

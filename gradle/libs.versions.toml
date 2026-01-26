@@ -10,7 +10,9 @@ compose-bom = "2026.01.00"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "34.8.0"
 # https://github.com/coil-kt/coil/releases
-coil = "2.7.0"
+coil = "3.3.0"
+# https://github.com/JetBrains/compose-multiplatform/releases
+compose-multiplatform = "1.10.0"
 # https://github.com/ZacSweers/metro/releases
 metro = "0.10.1"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
@@ -23,6 +25,11 @@ android-credentials = "1.5.0"
 android-lifecycle = "2.10.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
 android-activity = "1.12.2"
+# https://github.com/icerockdev/moko-permissions/releases
+permissions = "0.20.1"
+
+compileAndroidSdk = "36"
+minAndroidSdk = "26"
 jvmTarget = "21"
 
 [libraries]
@@ -37,8 +44,9 @@ build-android-gradle-plugin = { module = "com.android.tools.build:gradle", versi
 build-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 build-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 build-metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
-coil = { module = "io.coil-kt:coil", version.ref = "coil" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 compose-activity = { module = "androidx.activity:activity-compose" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -49,6 +57,12 @@ compose-material3-windowsizeclass = { module = "androidx.compose.material3:mater
 compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+cmp-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+cmp-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+cmp-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
+cmp-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+cmp-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
+cmp-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
@@ -74,6 +88,7 @@ junit-compose = { module = "androidx.compose.ui:ui-test-junit4" }
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
+kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 lottie-compose = "com.airbnb.android:lottie-compose:6.7.1"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
 mockk = "io.mockk:mockk:1.14.7"
@@ -87,6 +102,9 @@ test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.4.5"
 turbine = "app.cash.turbine:turbine:1.2.1"
+permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
+permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "permissions" }
+permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
 
 [bundles]
 android = [
@@ -124,3 +142,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 google-services = "com.google.gms.google-services:4.4.4"
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "gradle-plugin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

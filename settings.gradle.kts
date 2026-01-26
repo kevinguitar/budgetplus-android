@@ -7,6 +7,10 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
@@ -23,7 +27,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "budgetplus"
-include(":app")
+include(":androidApp")
+include(":composeApp")
+include(":insiderApp")
+
 include(":benchmark")
 include(":core:ads")
 include(":core:billing")
@@ -53,4 +60,3 @@ include(":feature:settings")
 include(":feature:speak-to-record")
 include(":feature:unlock-premium")
 include(":feature:welcome")
-include(":insider-app")

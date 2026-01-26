@@ -17,7 +17,6 @@ class InsiderAppConventionPlugin : Plugin<Project> {
         project.apply<KotlinAndroidConventionPlugin>()
 
         val appId: String by project
-        val androidSdk: String by project
 
         val localProperties = Properties()
         val localPropertiesFile = project.rootProject.file("local.properties")
@@ -30,7 +29,7 @@ class InsiderAppConventionPlugin : Plugin<Project> {
         project.extensions.configure<ApplicationExtension> {
             defaultConfig {
                 applicationId = "$appId.insider"
-                targetSdk = androidSdk.toInt()
+                targetSdk = project.libs.versions.compileAndroidSdk.get().toInt()
                 versionName = "1.0.0"
                 versionCode = 1
 

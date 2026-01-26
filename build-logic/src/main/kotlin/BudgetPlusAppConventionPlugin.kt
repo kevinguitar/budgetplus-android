@@ -19,7 +19,6 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
 
         val appId: String by project
         val appVersion: String by project
-        val androidSdk: String by project
 
         /**
          *  Major version * 10^6
@@ -41,7 +40,7 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
         project.extensions.configure<ApplicationExtension> {
             defaultConfig {
                 applicationId = appId
-                targetSdk = androidSdk.toInt()
+                targetSdk = project.libs.versions.compileAndroidSdk.get().toInt()
                 versionName = appVersion
                 versionCode = appVersionCode
 

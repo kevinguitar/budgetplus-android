@@ -1,13 +1,21 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
     alias(budgetplus.plugins.metro)
-    alias(budgetplus.plugins.kotlin.serialization)
 }
 
-dependencies {
-    api(libs.navigation3.runtime)
-    implementation(libs.compose.runtime)
-    implementation(libs.coil)
-    implementation(libs.android.activity)
-    testFixturesImplementation(libs.android.activity)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.navigation3.runtime)
+            implementation(libs.coil)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.android.activity)
+        }
+
+        iosMain.dependencies {
+
+        }
+    }
 }

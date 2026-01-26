@@ -29,6 +29,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.Button

@@ -121,7 +121,7 @@ class RecordsObserverImpl(
             .whereLessThanOrEqualTo("date", period.until.toEpochDay())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.Forest.e(e, "RecordsObserver: Listen failed.")
+                    Timber.e(e, "RecordsObserver: Listen failed.")
                     return@addSnapshotListener
                 }
 

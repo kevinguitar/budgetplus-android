@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.core.data
 
 import com.kevlina.budgetplus.core.data.remote.Record
 import kotlinx.coroutines.Job
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 interface RecordRepo {
 

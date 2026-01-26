@@ -11,6 +11,8 @@ import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
+import com.kevlina.budgetplus.core.data.remote.createdOn
+import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding

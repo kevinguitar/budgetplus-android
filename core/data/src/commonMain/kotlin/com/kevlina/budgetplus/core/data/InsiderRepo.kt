@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
 import com.kevlina.budgetplus.core.data.remote.User
+import kotlin.time.Duration
 
 interface InsiderRepo {
 

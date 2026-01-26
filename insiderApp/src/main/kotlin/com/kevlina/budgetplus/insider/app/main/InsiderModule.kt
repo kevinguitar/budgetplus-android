@@ -23,7 +23,7 @@ interface InsiderModule {
     }
 
     // Do not override FCM token from insider app, to make sure regular users
-    // can still receive push notifications from the main B+ app.
+    // can still receive push notifications from the androidMain B+ app.
     @Provides
     @Named("allow_update_fcm_token")
     fun provideAllowUpdateFcmToken(): Boolean = false

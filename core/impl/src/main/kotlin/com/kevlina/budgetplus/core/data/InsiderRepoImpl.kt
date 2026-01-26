@@ -9,6 +9,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.tasks.await
+import kotlin.time.Clock
 import kotlin.time.Duration
 
 @SingleIn(AppScope::class)
@@ -44,7 +45,7 @@ class InsiderRepoImpl(
     }
 
     override suspend fun getActiveUsers(duration: Duration): Long {
-        val threshold = System.currentTimeMillis() - duration.inWholeMilliseconds
+        val threshold = Clock.System.now().toEpochMilliseconds() - duration.inWholeMilliseconds
         return usersDb.value
             .whereGreaterThanOrEqualTo("lastActiveOn", threshold)
             .count()

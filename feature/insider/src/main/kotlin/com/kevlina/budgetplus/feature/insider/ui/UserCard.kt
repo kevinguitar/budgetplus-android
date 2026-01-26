@@ -32,7 +32,8 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
-import java.util.concurrent.TimeUnit
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 
 @Composable
 internal fun UserCard(
@@ -122,8 +123,8 @@ internal fun UserCard(
 private fun UserCard_Preview() = AppTheme {
     UserCard(user = User(
         name = "Kevin Chiu",
-        createdOn = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1),
-        lastActiveOn = System.currentTimeMillis(),
+        createdOn = Clock.System.now().minus(1.days).toEpochMilliseconds(),
+        lastActiveOn = Clock.System.now().toEpochMilliseconds(),
         language = "zh-tw"
     ))
 }

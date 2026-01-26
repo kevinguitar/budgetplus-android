@@ -21,7 +21,7 @@ interface BookRepo {
 
     /**
      *  @return The book's name if the user joined successfully.
-     *  @throws JoinBookException
+     *  @throws com.kevlina.budgetplus.core.data.JoinBookException
      */
     suspend fun handlePendingJoinRequest(): String?
 

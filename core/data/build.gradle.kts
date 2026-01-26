@@ -1,11 +1,12 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
     alias(budgetplus.plugins.metro)
-    alias(budgetplus.plugins.kotlin.serialization)
 }
 
-dependencies {
-    implementation(libs.firebase.firestore)
-
-    testFixturesImplementation(projects.core.common)
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.firebase.firestore)
+        }
+    }
 }

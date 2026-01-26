@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data.remote
 
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
 
 @Serializable
 data class PushNotificationData(
@@ -15,5 +16,5 @@ data class PushNotificationData(
     val descEn: CharSequence? = null,
     val deeplink: CharSequence? = null,
     val sentOn: Long? = null,
-    val createdOn: Long? = System.currentTimeMillis(),
+    val createdOn: Long? = Clock.System.now().toEpochMilliseconds(),
 )

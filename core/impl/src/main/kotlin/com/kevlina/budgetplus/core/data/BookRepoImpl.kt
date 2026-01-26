@@ -36,6 +36,7 @@ import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 @SingleIn(AppScope::class)
@@ -166,7 +167,7 @@ class BookRepoImpl(
                 throw JoinBookException.ExceedFreeLimit(R.string.book_join_exceed_free_limit)
             }
 
-            System.currentTimeMillis() > validBefore -> {
+            Clock.System.now().toEpochMilliseconds() > validBefore -> {
                 tracker.logEvent("join_book_link_expired")
                 throw JoinBookException.General(R.string.book_join_link_expired)
             }
@@ -244,7 +245,7 @@ class BookRepoImpl(
             booksDb.value.document(book.id)
                 .update(
                     archivedField, true,
-                    archivedOnField, System.currentTimeMillis()
+                    archivedOnField, Clock.System.now().toEpochMilliseconds()
                 )
                 .await()
             tracker.logEvent("book_deleted")

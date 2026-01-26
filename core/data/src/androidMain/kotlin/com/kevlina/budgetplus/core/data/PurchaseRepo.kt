@@ -6,6 +6,7 @@ import com.kevlina.budgetplus.core.data.remote.PurchasesDb
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
+import kotlin.time.Clock
 
 @Inject
 class PurchaseRepo(
@@ -21,7 +22,7 @@ class PurchaseRepo(
                 orderId = orderId,
                 productId = productId,
                 userId = authManager.userId,
-                purchasedOn = System.currentTimeMillis()
+                purchasedOn = Clock.System.now().toEpochMilliseconds()
             )).await()
         } catch (e: Exception) {
             Timber.e(e)

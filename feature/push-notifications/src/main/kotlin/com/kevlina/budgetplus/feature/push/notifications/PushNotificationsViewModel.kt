@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
 
 @ViewModelKey(PushNotificationsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -126,7 +127,7 @@ class PushNotificationsViewModel private constructor(
                         deeplink.text.isNotBlank() -> deeplink.text.trim()
                         else -> defaultDeeplink
                     },
-                    sentOn = System.currentTimeMillis()
+                    sentOn = Clock.System.now().toEpochMilliseconds()
                 ))
                 snackbarSender.send(R.string.push_notif_sent_success)
             } catch (e: Exception) {

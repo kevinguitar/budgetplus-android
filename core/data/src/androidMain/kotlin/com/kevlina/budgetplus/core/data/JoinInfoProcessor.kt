@@ -5,6 +5,7 @@ import com.kevlina.budgetplus.core.data.remote.JoinInfo
 import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
 import dev.zacsweers.metro.Inject
 import java.util.UUID
+import kotlin.time.Clock
 
 @Inject
 class JoinInfoProcessor(
@@ -16,7 +17,7 @@ class JoinInfoProcessor(
         joinInfoDb.value.document(joinId).set(
             JoinInfo(
                 bookId = bookId,
-                generatedOn = System.currentTimeMillis()
+                generatedOn = Clock.System.now().toEpochMilliseconds()
             )
         )
         return joinId

@@ -13,9 +13,5 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.android.activity)
         }
-
-        iosMain.dependencies {
-
-        }
     }
 }

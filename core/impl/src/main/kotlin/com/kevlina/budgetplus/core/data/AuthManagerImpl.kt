@@ -16,6 +16,7 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.SingleIn
@@ -25,9 +26,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
+import kotlin.time.Clock
 
-@SingleIn(dev.zacsweers.metro.AppScope::class)
-@ContributesBinding(dev.zacsweers.metro.AppScope::class)
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
 class AuthManagerImpl(
     preferenceHolder: PreferenceHolder,
     private val stringProvider: StringProvider,
@@ -112,8 +114,8 @@ class AuthManagerImpl(
 
         val userWithExclusiveFields = user.copy(
             premium = currentUser?.premium,
-            createdOn = currentUser?.createdOn ?: System.currentTimeMillis(),
-            lastActiveOn = System.currentTimeMillis(),
+            createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
+            lastActiveOn = Clock.System.now().toEpochMilliseconds(),
             language = stringProvider[R.string.app_language],
         )
         userState.value = userWithExclusiveFields

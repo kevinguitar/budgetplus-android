@@ -1,13 +1,12 @@
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
+import com.android.build.api.dsl.CommonExtension
 import common.libs
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.provideDelegate
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 
 class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
@@ -19,11 +18,23 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             .joinToString(".")
 
         project.apply(plugin = project.libs.plugins.kotlin.multiplatform.get().pluginId)
-        project.apply(plugin = project.libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
+        project.apply(plugin = project.libs.plugins.android.library.get().pluginId)
+//        project.apply(plugin = project.libs.plugins.android.kotlin.multiplatform.library.get().pluginId)
         project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
 
+        project.extensions.configure(CommonExtension::class.java) {
+            namespace = "$appId.$modulePath"
+            compileSdk = project.libs.versions.compileAndroidSdk.get().toInt()
+            defaultConfig.minSdk = project.libs.versions.minAndroidSdk.get().toInt()
+
+            val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
+            compileOptions.sourceCompatibility = javaVersion
+            compileOptions.targetCompatibility = javaVersion
+        }
+
         project.extensions.configure<KotlinMultiplatformExtension> {
-            extensions.configure<KotlinMultiplatformAndroidLibraryTarget> {
+            /*@Suppress("UnstableApiUsage")
+            androidLibrary {
                 namespace = "$appId.$modulePath"
                 compileSdk = project.libs.versions.compileAndroidSdk.get().toInt()
                 minSdk = project.libs.versions.minAndroidSdk.get().toInt()
@@ -31,9 +42,11 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     jvmTarget.set(project.libs.versions.jvmTarget.map(JvmTarget::fromTarget))
                 }
                 androidResources.enable = true
-            }
+            }*/
 
             applyDefaultHierarchyTemplate()
+
+            androidTarget()
 
             listOf(
                 iosX64(),
@@ -71,31 +84,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     implementation(project.libs.bundles.test)
                 }
 
-                val androidTestFixtures = create("androidTestFixtures") {
-                    dependsOn(androidMain.get())
-                    dependencies {
-                        //TODO: Are they needed?
-                        implementation(kotlin("stdlib"))
-                        implementation(project.libs.android.activity)
-                    }
-                }
+                val androidTestFixtures = create("androidTestFixtures")
                 androidUnitTest.get().dependsOn(androidTestFixtures)
-            }
-
-            targets.configureEach {
-                if (platformType == KotlinPlatformType.androidJvm) {
-                    compilations.configureEach {
-                        if (name.endsWith("UnitTest")) {
-                            // Explicitly associate with the main compilation to access production code
-                            // This ensures fixtures and tests can see classes from commonMain and androidMain
-                            val mainCompilationName = name.removeSuffix("UnitTest")
-                            val mainCompilation = target.compilations.findByName(mainCompilationName)
-                            if (mainCompilation != null) {
-                                associateWith(mainCompilation)
-                            }
-                        }
-                    }
-                }
             }
 
             compilerOptions {

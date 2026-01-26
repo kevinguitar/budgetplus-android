@@ -2,9 +2,9 @@ package com.kevlina.budgetplus.core.data.remote
 
 import androidx.compose.runtime.Immutable
 import com.kevlina.budgetplus.core.common.shortFormatted
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Immutable
 @Serializable

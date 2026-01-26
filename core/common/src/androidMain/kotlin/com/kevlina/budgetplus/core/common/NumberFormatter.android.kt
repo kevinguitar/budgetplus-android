@@ -12,5 +12,5 @@ private val ratioFormat by lazy {
         }
 }
 
-val Double.roundUpRatioText: String
+actual val Double.roundUpRatioText: String
     get() = ratioFormat.format(this)

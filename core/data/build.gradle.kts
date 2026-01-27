@@ -5,9 +5,6 @@ plugins {
 
 kotlin {
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.kotlin.datetime)
-        }
         androidMain.dependencies {
             implementation(libs.firebase.firestore)
         }

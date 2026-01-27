@@ -8,7 +8,6 @@ kotlin {
         commonMain.dependencies {
             api(libs.navigation3.runtime)
             implementation(libs.coil)
-            implementation(libs.kotlin.datetime)
         }
 
         androidMain.dependencies {

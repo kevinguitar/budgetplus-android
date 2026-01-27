@@ -22,12 +22,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import timber.log.Timber
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 import java.util.UUID
+import kotlin.time.Instant
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
@@ -54,15 +59,16 @@ class RecordRepoImpl(
         var currentDate: LocalDate
 
         repeat(times) { index ->
-            val multiplier = index * frequency.duration.toLong()
-            currentDate = when (frequency.unit) {
-                BatchUnit.Month -> startDate.plusMonths(multiplier)
-                BatchUnit.Week -> startDate.plusWeeks(multiplier)
-                BatchUnit.Day -> startDate.plusDays(multiplier)
+            val multiplier = index * frequency.duration
+            val unit = when (frequency.unit) {
+                BatchUnit.Month -> DateTimeUnit.MONTH
+                BatchUnit.Week -> DateTimeUnit.WEEK
+                BatchUnit.Day -> DateTimeUnit.DAY
             }
+            currentDate = startDate.plus(multiplier, unit)
 
             createRecord(record.copy(
-                date = currentDate.toEpochDay(),
+                date = currentDate.toEpochDays(),
                 timestamp = currentDate.withCurrentTime,
                 batchId = batchId
             ))
@@ -79,14 +85,14 @@ class RecordRepoImpl(
         newPriceText: String,
     ) {
         // Keep the record's original time
-        val originalTime = LocalDateTime
-            .ofEpochSecond(oldRecord.createdOn, 0, ZoneOffset.UTC)
-            .toLocalTime()
+        val originalTime = Instant.fromEpochSeconds(oldRecord.createdOn)
+            .toLocalDateTime(TimeZone.UTC)
+            .time
 
         val newRecord = try {
             oldRecord.copy(
-                date = newDate.toEpochDay(),
-                timestamp = LocalDateTime.of(newDate, originalTime).toEpochSecond(ZoneOffset.UTC),
+                date = newDate.toEpochDays(),
+                timestamp = LocalDateTime(newDate, originalTime).toInstant(TimeZone.UTC).epochSeconds,
                 category = newCategory,
                 name = newName,
                 price = newPriceText.parseToPrice()
@@ -119,16 +125,16 @@ class RecordRepoImpl(
             return 1
         }
 
-        val oldDate = LocalDate.ofEpochDay(oldRecord.date)
-        val daysDiff = ChronoUnit.DAYS.between(oldDate, newDate)
+        val oldDate = LocalDate.fromEpochDays(oldRecord.date)
+        val daysDiff = newDate.minus(oldDate).days
 
         val records = getAllTheFutureRecords(oldRecord)
         records.forEach { doc ->
             val record = doc.toObject<Record>().copy(id = doc.id)
-            val date = LocalDate.ofEpochDay(record.date)
+            val date = LocalDate.fromEpochDays(record.date)
             editRecord(
                 oldRecord = record,
-                newDate = date.plusDays(daysDiff),
+                newDate = date.plus(daysDiff, DateTimeUnit.DAY),
                 newCategory = newCategory,
                 newName = newName,
                 newPriceText = newPriceText

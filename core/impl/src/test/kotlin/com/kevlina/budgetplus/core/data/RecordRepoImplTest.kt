@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -15,12 +16,17 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import org.junit.Ignore
 import org.junit.Test
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.hours
 
 class RecordRepoImplTest {
 
@@ -46,11 +52,11 @@ class RecordRepoImplTest {
 
         repeat(nTimes) { index ->
             val multiplier = 3 * index.toLong()
-            val batchDate = startDate.plusWeeks(multiplier)
+            val batchDate = startDate.plus(multiplier, DateTimeUnit.WEEK)
             verify(exactly = 1) {
                 recordsDb.add(
                     match<Record> { arg ->
-                        arg.date == batchDate.toEpochDay() &&
+                        arg.date == batchDate.toEpochDays() &&
                             arg.batchId == batchId &&
                             // For other properties from testRecord, ensure they match if they
                             // are not supposed to change.
@@ -69,13 +75,13 @@ class RecordRepoImplTest {
 
     @Test
     fun `editRecord should keep the record's original time`() = runTest {
-        val localTime = LocalTime.now().minusHours(1)
-        val timestamp = LocalDateTime.of(LocalDate.now(), localTime).toEpochSecond(ZoneOffset.UTC)
+        val localDateTime = (Clock.System.now() - 1.hours).toLocalDateTime(TimeZone.currentSystemDefault())
+        val timestamp = localDateTime.toInstant(TimeZone.UTC).epochSeconds
         val oldRecord = testRecord.copy(
             id = "old_record_id",
             timestamp = timestamp
         )
-        val newDate = LocalDate.now().plusYears(1)
+        val newDate = LocalDate.now().plus(1, DateTimeUnit.YEAR)
 
         createRepo().editRecord(
             oldRecord = oldRecord,
@@ -89,8 +95,8 @@ class RecordRepoImplTest {
         verify {
             documentReference.set(
                 oldRecord.copy(
-                    date = newDate.toEpochDay(),
-                    timestamp = LocalDateTime.of(newDate, localTime).toEpochSecond(ZoneOffset.UTC),
+                    date = newDate.toEpochDays(),
+                    timestamp = LocalDateTime(newDate, localDateTime.time).toInstant(TimeZone.UTC).epochSeconds,
                     category = "New category",
                     name = "New name",
                     price = 12345.6
@@ -139,7 +145,7 @@ class RecordRepoImplTest {
         name = "Dinner",
         price = 124.56,
         author = Author(name = "Test user"),
-        date = LocalDate.now().toEpochDay(),
+        date = LocalDate.now().toEpochDays(),
         timestamp = LocalDate.now().withCurrentTime,
     )
 

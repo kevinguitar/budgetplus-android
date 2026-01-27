@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import java.time.LocalDate
+import com.kevlina.budgetplus.core.common.now
+import kotlinx.datetime.LocalDate
 
 sealed interface RecordDateState {
 

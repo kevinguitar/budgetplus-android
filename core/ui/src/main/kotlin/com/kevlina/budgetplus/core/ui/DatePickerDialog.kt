@@ -15,11 +15,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 import androidx.compose.material3.DatePickerDialog as MaterialDatePickerDialog
 
 @Composable
@@ -123,19 +129,19 @@ internal fun datePickerColors(): DatePickerColors {
 private const val DISABLED_ALPHA = 0.38f
 private const val SELECTION_ALPHA = 0.2f
 
-internal val LocalDate.utcMillis
-    get() = atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+internal val LocalDate.utcMillis: Long
+    get() = atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
 
 internal val Long.utcLocaleDate: LocalDate
-    get() = Instant.ofEpochMilli(this).atOffset(ZoneOffset.UTC).toLocalDate()
+    get() = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.UTC).date
 
 @Preview
 @Composable
 private fun DatePickerDialog_Preview() = AppTheme(ThemeColors.Barbie) {
     DatePickerDialog(
         date = LocalDate.now(),
-        minDate = LocalDate.now().minusWeeks(1),
-        maxDate = LocalDate.now().plusWeeks(1),
+        minDate = LocalDate.now().minus(1, DateTimeUnit.WEEK),
+        maxDate = LocalDate.now().plus(1, DateTimeUnit.WEEK),
         onDismiss = {},
         onDatePicked = {}
     )

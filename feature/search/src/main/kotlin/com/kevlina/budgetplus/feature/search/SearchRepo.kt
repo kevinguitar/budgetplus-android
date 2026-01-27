@@ -11,6 +11,7 @@ import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -29,8 +30,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
 import timber.log.Timber
-import java.time.LocalDate
 
 @Inject
 class SearchRepo(
@@ -95,8 +98,8 @@ class SearchRepo(
             .document(bookId)
             .collection("records")
             .orderBy("date", Query.Direction.DESCENDING)
-            .whereGreaterThanOrEqualTo("date", period.fromDate().toEpochDay())
-            .whereLessThanOrEqualTo("date", period.untilDate().toEpochDay())
+            .whereGreaterThanOrEqualTo("date", period.fromDate().toEpochDays())
+            .whereLessThanOrEqualTo("date", period.untilDate().toEpochDays())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     snackbarSender.sendError(e)
@@ -121,9 +124,9 @@ class SearchRepo(
     @Suppress("MagicNumber")
     private fun SearchPeriod.fromDate(): LocalDate =
         when (this) {
-            SearchPeriod.PastMonth -> LocalDate.now().minusMonths(1)
-            SearchPeriod.PastHalfYear -> LocalDate.now().minusMonths(6)
-            SearchPeriod.PastYear -> LocalDate.now().minusYears(1)
+            SearchPeriod.PastMonth -> LocalDate.now().minus(1, DateTimeUnit.MONTH)
+            SearchPeriod.PastHalfYear -> LocalDate.now().minus(6, DateTimeUnit.MONTH)
+            SearchPeriod.PastYear -> LocalDate.now().minus(1, DateTimeUnit.YEAR)
             is SearchPeriod.Custom -> from
         }
 

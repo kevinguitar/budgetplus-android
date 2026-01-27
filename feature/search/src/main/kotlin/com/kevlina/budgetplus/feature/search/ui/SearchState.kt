@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
@@ -12,7 +13,7 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Stable
 data class SearchState(
@@ -87,7 +88,7 @@ data class SearchResultState(
                             item = Record(
                                 id = index.toString(),
                                 type = RecordType.Income,
-                                date = LocalDate.now().toEpochDay(),
+                                date = LocalDate.now().toEpochDays(),
                                 category = "Food",
                                 name = "Fancy Restaurant $index",
                                 price = 453.93,

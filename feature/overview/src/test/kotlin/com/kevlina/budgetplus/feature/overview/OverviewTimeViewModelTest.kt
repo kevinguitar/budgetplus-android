@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.overview
 import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
@@ -18,9 +19,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import org.junit.Rule
 import org.junit.Test
-import java.time.LocalDate
 
 class OverviewTimeViewModelTest {
 
@@ -34,7 +38,7 @@ class OverviewTimeViewModelTest {
         val model = createModel()
         model.previousDay()
 
-        val yesterday = LocalDate.now().minusDays(1)
+        val yesterday = LocalDate.now().minus(1, DateTimeUnit.DAY)
         verify {
             recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(yesterday, yesterday))
         }
@@ -47,7 +51,7 @@ class OverviewTimeViewModelTest {
         val model = createModel()
         model.nextDay()
 
-        val tomorrow = LocalDate.now().plusDays(1)
+        val tomorrow = LocalDate.now().plus(1, DateTimeUnit.DAY)
         verify {
             recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(tomorrow, tomorrow))
         }
@@ -60,14 +64,14 @@ class OverviewTimeViewModelTest {
         val model = createModel()
         model.setTimePeriod(TimePeriod.Custom(
             from = LocalDate.now(),
-            until = LocalDate.now().plusMonths(3)
+            until = LocalDate.now().plus(3, DateTimeUnit.MONTH)
         ))
 
         verify {
             FakeSnackbarSender.lastSentMessageId = R.string.overview_exceed_max_period
             recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(
                 from = LocalDate.now(),
-                until = LocalDate.now().plusMonths(1)
+                until = LocalDate.now().plus(1, DateTimeUnit.MONTH)
             ))
         }
     }

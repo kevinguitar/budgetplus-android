@@ -28,9 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -39,7 +41,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun RecordCard(
@@ -101,7 +103,7 @@ fun RecordCard(
                 ) {
 
                     Text(
-                        text = LocalDate.ofEpochDay(item.date).shortFormatted,
+                        text = LocalDate.fromEpochDays(item.date).shortFormatted,
                     )
 
                     if (state.showCategory) {
@@ -179,7 +181,7 @@ data class RecordCardState(
         val preview = RecordCardState(
             item = Record(
                 type = RecordType.Income,
-                date = LocalDate.now().toEpochDay(),
+                date = LocalDate.now().toEpochDays(),
                 category = "Food",
                 name = "Fancy Restaurant",
                 price = 453.93,

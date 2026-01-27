@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
@@ -37,7 +38,7 @@ import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import java.util.Currency
 import java.util.Locale
 

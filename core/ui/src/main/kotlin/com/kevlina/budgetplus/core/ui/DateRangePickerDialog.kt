@@ -20,9 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
 @Composable
 fun DateRangePickerDialog(
@@ -118,8 +122,8 @@ fun DateRangePickerDialog(
 @Composable
 private fun DateRangePickerDialog_Preview() = AppTheme(ThemeColors.Barbie) {
     DateRangePickerDialog(
-        minDate = LocalDate.now().minusWeeks(1),
-        maxDate = LocalDate.now().plusWeeks(1),
+        minDate = LocalDate.now().minus(1, DateTimeUnit.WEEK),
+        maxDate = LocalDate.now().plus(1, DateTimeUnit.WEEK),
         onDismiss = {},
         onRangePicked = { _, _ -> },
     )

@@ -47,8 +47,8 @@ import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.datetime.LocalDate
 import timber.log.Timber
-import java.time.LocalDate
 
 @Composable
 fun EditRecordDialog(
@@ -57,7 +57,7 @@ fun EditRecordDialog(
     onDismiss: () -> Unit,
 ) {
     var date by remember {
-        mutableStateOf(LocalDate.ofEpochDay(editRecord.date))
+        mutableStateOf(LocalDate.fromEpochDays(editRecord.date))
     }
 
     var category by remember {

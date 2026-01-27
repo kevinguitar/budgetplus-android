@@ -8,7 +8,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -67,8 +66,8 @@ sealed class TimePeriod {
 
     @Serializable
     data class Custom(
-        @Contextual override val from: LocalDate,
-        @Contextual override val until: LocalDate,
+        override val from: LocalDate,
+        override val until: LocalDate,
     ) : TimePeriod() {
 
         init {

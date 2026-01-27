@@ -11,7 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.composeapp.App
+import com.kevlina.budgetplus.app.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -76,8 +76,8 @@ class BookActivity : ComponentActivity() {
             CompositionLocalProvider(LocalViewModelGraphProvider provides viewModelGraphProvider) {
                 val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
                 AppTheme(themeColors) {
-//                    BookBinding(vm = viewModel)
-                    App()
+                    BookBinding(vm = viewModel)
+//                    App()
                 }
 
                 val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()

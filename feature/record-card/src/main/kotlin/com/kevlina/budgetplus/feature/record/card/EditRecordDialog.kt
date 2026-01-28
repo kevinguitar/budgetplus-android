@@ -29,6 +29,7 @@ import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.Button
@@ -46,8 +47,8 @@ import com.kevlina.budgetplus.feature.category.pills.CategoryCard
 import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.datetime.LocalDate
 import timber.log.Timber
-import java.time.LocalDate
 
 @Composable
 fun EditRecordDialog(
@@ -56,7 +57,7 @@ fun EditRecordDialog(
     onDismiss: () -> Unit,
 ) {
     var date by remember {
-        mutableStateOf(LocalDate.ofEpochDay(editRecord.date))
+        mutableStateOf(LocalDate.fromEpochDays(editRecord.date))
     }
 
     var category by remember {

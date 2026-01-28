@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.data.remote.createdOn
 import com.kevlina.budgetplus.core.data.resolveAuthor
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
@@ -27,13 +28,15 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.invoke
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import java.io.IOException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import kotlin.time.Instant
 
 @Inject
 internal class CsvWriter(
@@ -143,8 +146,9 @@ internal class CsvWriter(
     }
 
     private fun Record.parseDatetime(formatter: DateTimeFormatter): String {
-        return LocalDateTime
-            .ofEpochSecond(createdOn, 0, ZoneOffset.UTC)
+        return Instant.fromEpochSeconds(createdOn)
+            .toLocalDateTime(TimeZone.UTC)
+            .toJavaLocalDateTime()
             .format(formatter)
     }
 }

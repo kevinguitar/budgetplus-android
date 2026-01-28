@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.FakeStringProvider
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.FakeAuthManager
 import com.kevlina.budgetplus.core.data.FakeBookRepo
 import com.kevlina.budgetplus.core.data.FakeRecordRepo
@@ -22,9 +23,11 @@ import com.kevlina.budgetplus.inapp.review.FakeInAppReviewManager
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
 import org.junit.Rule
 import org.junit.Test
-import java.time.LocalDate
 
 class RecordViewModelTest {
 
@@ -51,7 +54,7 @@ class RecordViewModelTest {
 
     @Test
     fun `record should be created with correct info in RecordRepo`() = runTest {
-        val date = LocalDate.now().minusDays(1)
+        val date = LocalDate.now().minus(1, DateTimeUnit.DAY)
 
         createModel().apply {
             setDate(date)
@@ -70,7 +73,7 @@ class RecordViewModelTest {
                 type = RecordType.Income,
                 category = "Test category",
                 name = "Test note",
-                date = date.toEpochDay(),
+                date = date.toEpochDays(),
                 price = 123.0,
             )
         )
@@ -91,7 +94,7 @@ class RecordViewModelTest {
                 type = RecordType.Expense,
                 category = "Test category",
                 name = "Test category",
-                date = LocalDate.now().toEpochDay(),
+                date = LocalDate.now().toEpochDays(),
                 price = 1.23,
             )
         )

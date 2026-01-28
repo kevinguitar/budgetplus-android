@@ -12,6 +12,7 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.BatchUnit
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @ViewModelKey(BatchRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -73,7 +74,7 @@ class BatchRecordViewModel(
     }
 
     fun setStartDate(date: LocalDate) {
-        startRecordDate.value = if (date.isEqual(LocalDate.now())) {
+        startRecordDate.value = if (date == LocalDate.now()) {
             RecordDateState.Now
         } else {
             RecordDateState.Other(date)

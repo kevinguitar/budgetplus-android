@@ -5,6 +5,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.tickerFlow
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.BooksDb
@@ -27,8 +28,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.datetime.LocalDate
 import timber.log.Timber
-import java.time.LocalDate
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -117,11 +118,11 @@ class RecordsObserverImpl(
             .document(bookId)
             .collection("records")
             .orderBy("date", Query.Direction.DESCENDING)
-            .whereGreaterThanOrEqualTo("date", period.from.toEpochDay())
-            .whereLessThanOrEqualTo("date", period.until.toEpochDay())
+            .whereGreaterThanOrEqualTo("date", period.from.toEpochDays())
+            .whereLessThanOrEqualTo("date", period.until.toEpochDays())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.Forest.e(e, "RecordsObserver: Listen failed.")
+                    Timber.e(e, "RecordsObserver: Listen failed.")
                     return@addSnapshotListener
                 }
 

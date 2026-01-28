@@ -7,8 +7,8 @@ import com.kevlina.budgetplus.core.common.FakeTracker
 import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
 import io.mockk.mockk
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 
 class InAppReviewManagerImplTest {
 
@@ -37,8 +37,8 @@ class InAppReviewManagerImplTest {
         assertThat(tracker.lastEventName).isEqualTo("inapp_review_requested")
     }
 
-    private val eligibleTime = LocalDateTime.now().minusDays(5).toEpochSecond(ZoneOffset.UTC)
-    private val ineligibleTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+    private val eligibleTime = (Clock.System.now() - 5.days).epochSeconds
+    private val ineligibleTime = Clock.System.now().epochSeconds
 
     private val tracker = FakeTracker()
 

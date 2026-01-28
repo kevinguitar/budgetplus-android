@@ -279,7 +279,7 @@ class BookRepoImpl(
             .orderBy(createdOnField, Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.Forest.e(e, "BookRepo: Listen failed.")
+                    Timber.e(e, "BookRepo: Listen failed.")
                     return@addSnapshotListener
                 }
 

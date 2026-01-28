@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 internal val fontSize = FontSize.SemiLarge
 internal val iconModifier = Modifier
@@ -111,7 +111,6 @@ private fun DateSelector(
     }
 
     if (showDatePicker) {
-
         DatePickerDialog(
             date = date,
             onDatePicked = setStartDate,

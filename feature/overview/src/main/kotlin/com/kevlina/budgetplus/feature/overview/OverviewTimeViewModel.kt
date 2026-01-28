@@ -16,7 +16,10 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
 @Inject
 class OverviewTimeViewModel(
@@ -39,7 +42,7 @@ class OverviewTimeViewModel(
 
     fun setTimePeriod(timePeriod: TimePeriod) {
         val bookId = bookRepo.currentBookId ?: return
-        val isAboveOneMonth = timePeriod.from.isBefore(timePeriod.until.minusMonths(1))
+        val isAboveOneMonth = timePeriod.from < timePeriod.until.minus(1, DateTimeUnit.MONTH)
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
             tracker.logEvent("overview_exceed_max_period")
             snackbarSender.send(
@@ -53,7 +56,7 @@ class OverviewTimeViewModel(
 
             TimePeriod.Custom(
                 from = timePeriod.from,
-                until = timePeriod.from.plusMonths(1)
+                until = timePeriod.from.plus(1, DateTimeUnit.MONTH)
             )
         } else {
             timePeriod
@@ -67,12 +70,12 @@ class OverviewTimeViewModel(
     }
 
     fun previousDay() {
-        val previousDay = fromDate.value.minusDays(1)
+        val previousDay = fromDate.value.minus(1, DateTimeUnit.DAY)
         setDateRange(from = previousDay, until = previousDay)
     }
 
     fun nextDay() {
-        val nextDay = fromDate.value.plusDays(1)
+        val nextDay = fromDate.value.plus(1, DateTimeUnit.DAY)
         setDateRange(from = nextDay, until = nextDay)
     }
 }

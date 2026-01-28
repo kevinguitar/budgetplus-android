@@ -6,14 +6,18 @@ import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import com.kevlina.budgetplus.core.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import timber.log.Timber
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 /**
  *  This implementation controls whether we should launch the review flow or not, depends on a
@@ -33,11 +37,12 @@ class InAppReviewManagerImpl(
 
     private var hasRejectedBefore by preferenceHolder.bindBoolean(false)
     private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
+    //TODO: Consider refactor to store DateTime directly
     private var firstInitDatetime by preferenceHolder.bindLong(0L)
 
     init {
         if (firstInitDatetime == 0L) {
-            firstInitDatetime = now.toEpochSecond(ZoneOffset.UTC)
+            firstInitDatetime = now.toInstant(TimeZone.UTC).epochSeconds
         }
     }
 
@@ -46,8 +51,8 @@ class InAppReviewManagerImpl(
             return false
         }
 
-        val initDateTime = LocalDateTime.ofEpochSecond(firstInitDatetime, 0, ZoneOffset.UTC)
-        val eligible = initDateTime.plusDays(INSTALL_DAYS_MIN).isBefore(now)
+        val initDateTime = Instant.fromEpochSeconds(firstInitDatetime)
+        val eligible = initDateTime.plus(INSTALL_DAYS_MIN.days) < now.toInstant(TimeZone.UTC)
         if (eligible) {
             tracker.logEvent("inapp_review_requested")
         }

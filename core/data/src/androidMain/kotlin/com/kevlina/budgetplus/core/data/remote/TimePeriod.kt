@@ -1,10 +1,14 @@
 package com.kevlina.budgetplus.core.data.remote
 
 import androidx.compose.runtime.Immutable
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.shortFormatted
-import kotlinx.serialization.Contextual
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Immutable
 @Serializable
@@ -26,52 +30,48 @@ sealed class TimePeriod {
     data object Week : TimePeriod() {
 
         private val now get() = LocalDate.now()
-        private val dayOfWeek get() = now.dayOfWeek.value
+        private val dayOfWeek get() = now.dayOfWeek.isoDayNumber
         private const val WEEK_DAYS = 7
 
-        override val from: LocalDate get() = now.minusDays((dayOfWeek - 1).toLong())
-        override val until: LocalDate get() = now.plusDays((WEEK_DAYS - dayOfWeek).toLong())
+        override val from: LocalDate get() = now.minus(dayOfWeek - 1, DateTimeUnit.DAY)
+        override val until: LocalDate get() = now.plus(WEEK_DAYS - dayOfWeek, DateTimeUnit.DAY)
     }
 
     @Serializable
     data object Month : TimePeriod() {
 
         private val now get() = LocalDate.now()
-        private val monthDays get() = now.month.length(now.isLeapYear)
 
-        override val from: LocalDate get() = now.withDayOfMonth(1)
-        override val until: LocalDate get() = now.withDayOfMonth(monthDays)
+        override val from: LocalDate get() = LocalDate(now.year, now.month, 1)
+        override val until: LocalDate
+            get() = from
+                .plus(1, DateTimeUnit.MONTH)
+                .minus(1, DateTimeUnit.DAY)
     }
 
     @Serializable
     data object LastMonth : TimePeriod() {
 
         private val now get() = LocalDate.now()
-        private val monthDays
-            get() = now
-                .minusMonths(1)
-                .month
-                .length(now.isLeapYear)
+        private val lastMonthDate get() = now.minus(1, DateTimeUnit.MONTH)
 
         override val from: LocalDate
-            get() = now
-                .minusMonths(1)
-                .withDayOfMonth(1)
+            get() = LocalDate(lastMonthDate.year, lastMonthDate.month, 1)
 
         override val until: LocalDate
-            get() = now
-                .minusMonths(1)
-                .withDayOfMonth(monthDays)
+            get() = from
+                .plus(1, DateTimeUnit.MONTH)
+                .minus(1, DateTimeUnit.DAY)
     }
 
     @Serializable
     data class Custom(
-        @Contextual override val from: LocalDate,
-        @Contextual override val until: LocalDate,
+        override val from: LocalDate,
+        override val until: LocalDate,
     ) : TimePeriod() {
 
         init {
-            check(!from.isAfter(until)) {
+            check(from <= until) {
                 "From date is later than until."
             }
         }

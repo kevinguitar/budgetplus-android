@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -36,7 +37,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @ViewModelKey(RecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -91,7 +92,7 @@ class RecordViewModel(
     }
 
     fun setDate(date: LocalDate) {
-        recordDate.value = if (date.isEqual(LocalDate.now())) {
+        recordDate.value = if (date == LocalDate.now()) {
             RecordDateState.Now
         } else {
             RecordDateState.Other(date)
@@ -144,7 +145,7 @@ class RecordViewModel(
 
         val record = Record(
             type = type.value,
-            date = recordDate.value.date.toEpochDay(),
+            date = recordDate.value.date.toEpochDays(),
             timestamp = recordDate.value.date.withCurrentTime,
             category = category,
             name = note.text.trim().ifEmpty { category }.toString(),

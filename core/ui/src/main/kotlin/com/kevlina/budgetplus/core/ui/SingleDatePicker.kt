@@ -15,9 +15,13 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.mediumFormatted
+import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
 @Composable
 fun SingleDatePicker(
@@ -43,12 +47,12 @@ fun SingleDatePicker(
 
         Text(
             text = when {
-                date.isEqual(LocalDate.now()) -> stringResource(id = R.string.today)
-                date.plusDays(1).isEqual(LocalDate.now()) -> {
+                date == LocalDate.now() -> stringResource(id = R.string.today)
+                date.plus(1, DateTimeUnit.DAY) == LocalDate.now() -> {
                     stringResource(id = R.string.yesterday)
                 }
 
-                date.minusDays(1).isEqual(LocalDate.now()) -> {
+                date.minus(1, DateTimeUnit.DAY) == LocalDate.now() -> {
                     stringResource(id = R.string.tomorrow)
                 }
 

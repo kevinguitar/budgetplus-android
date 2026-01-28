@@ -1,13 +1,11 @@
 package com.kevlina.budgetplus.core.data.remote
 
 import androidx.compose.runtime.Immutable
-import com.google.firebase.firestore.Exclude
 import com.kevlina.budgetplus.core.common.RecordType
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
 
 @Immutable
 @Serializable
@@ -21,15 +19,12 @@ data class Record(
     val date: Long = 0,
     val timestamp: Long? = null,
     val batchId: String? = null,
-) {
+)
 
-    @get:Exclude
-    val createdOn: Long
-        get() = timestamp ?: LocalDateTime
-            .of(LocalDate.ofEpochDay(date), LocalTime.MIN)
-            .toEpochSecond(ZoneOffset.UTC)
+val Record.createdOn: Long
+    get() = timestamp ?: LocalDate.fromEpochDays(date.toInt())
+        .atStartOfDayIn(TimeZone.UTC)
+        .epochSeconds
 
-    @get:Exclude
-    val isBatched: Boolean
-        get() = batchId != null
-}
+val Record.isBatched: Boolean
+    get() = batchId != null

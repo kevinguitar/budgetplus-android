@@ -107,13 +107,5 @@ private fun SearchPeriodCell_Preview() = AppTheme {
             isSelected = false,
             onClick = {}
         )
-//        SearchPeriodCell(
-//            period = SearchPeriod.Custom(
-//                from = LocalDate.now().minusMonths(6),
-//                until = LocalDate.now()
-//            ),
-//            isSelected = true,
-//            onClick = {}
-//        )
     }
 }

@@ -14,7 +14,7 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @ViewModelKey(EditRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)

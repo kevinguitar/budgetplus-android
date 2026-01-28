@@ -37,7 +37,7 @@ import com.kevlina.budgetplus.feature.overview.OverviewTimeViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun ColumnScope.TimePeriodSelector(

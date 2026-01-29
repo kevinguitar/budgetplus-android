@@ -15,8 +15,8 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.theme)
             implementation(libs.android.viewmodel.compose)
-            implementation(project.libs.cmp.material3)
-            implementation(project.libs.cmp.material3.windowsizeclass)
+            implementation(project.libs.compose.material3)
+            implementation(project.libs.compose.material3.windowsizeclass)
         }
         androidMain.dependencies {
             implementation(libs.lottie.compose)

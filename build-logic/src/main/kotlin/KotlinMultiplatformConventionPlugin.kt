@@ -1,15 +1,12 @@
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.TestedExtension
 import common.implementation
 import common.libs
-import common.testFixturesImplementation
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -35,12 +32,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
             compileOptions.sourceCompatibility = javaVersion
             compileOptions.targetCompatibility = javaVersion
-        }
-
-        // Enable test fixtures for all modules
-        project.extensions.configure<TestedExtension> {
-            @Suppress("UnstableApiUsage")
-            testFixtures.enable = true
         }
 
         project.extensions.configure<KotlinMultiplatformExtension> {
@@ -70,6 +61,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 }
             }
 
+            jvmToolchain(project.libs.versions.jvmTarget.get().toInt())
+
             sourceSets.apply {
                 commonMain.dependencies {
                     implementation(project.libs.kotlin.datetime)
@@ -87,6 +80,10 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 androidUnitTest.dependencies {
                     implementation(kotlin("test"))
                     implementation(project.libs.bundles.test)
+
+                    if (project.path != ":core:unit-test") {
+                        implementation(project(":core:unit-test"))
+                    }
                 }
             }
 
@@ -110,10 +107,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             val bomBundle = project.libs.bundles.bom.get()
             bomBundle.forEach { bom ->
                 implementation(enforcedPlatform(bom))
-            }
-
-            if (project.path != ":core:unit-test") {
-                testFixturesImplementation(testFixtures(project(":core:unit-test")))
             }
         }
     }

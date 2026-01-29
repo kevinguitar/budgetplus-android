@@ -1,9 +1,12 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.data.fixtures
 
+import androidx.annotation.VisibleForTesting
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import kotlinx.coroutines.flow.MutableStateFlow
 
+@VisibleForTesting
 class FakeBookRepo(
     book: Book? = null,
     books: List<Book>? = null,

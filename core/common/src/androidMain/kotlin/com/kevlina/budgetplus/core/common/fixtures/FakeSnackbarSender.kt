@@ -1,5 +1,12 @@
-package com.kevlina.budgetplus.core.common
+package com.kevlina.budgetplus.core.common.fixtures
 
+import androidx.annotation.VisibleForTesting
+import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.SnackbarData
+import com.kevlina.budgetplus.core.common.SnackbarDuration
+import com.kevlina.budgetplus.core.common.SnackbarSender
+
+@VisibleForTesting
 object FakeSnackbarSender : SnackbarSender {
 
     var lastSentMessageId: Int? = null

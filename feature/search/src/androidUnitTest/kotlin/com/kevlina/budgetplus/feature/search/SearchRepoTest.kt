@@ -4,9 +4,9 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
-import com.kevlina.budgetplus.core.common.FakeSnackbarSender
-import com.kevlina.budgetplus.core.common.FakeTracker
-import com.kevlina.budgetplus.core.data.FakeBookRepo
+import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
+import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
+import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
 import com.kevlina.budgetplus.core.unit.test.SnapshotFlowRule
 import com.kevlina.budgetplus.feature.search.SearchRepo.DbResult
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory

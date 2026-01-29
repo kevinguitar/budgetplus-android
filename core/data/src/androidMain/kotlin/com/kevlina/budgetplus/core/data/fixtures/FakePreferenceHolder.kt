@@ -1,8 +1,12 @@
-package com.kevlina.budgetplus.core.data.local
+package com.kevlina.budgetplus.core.data.fixtures
 
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
+import com.kevlina.budgetplus.core.data.local.Preference
+import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import kotlinx.serialization.json.Json
 
+@VisibleForTesting
 @Suppress("FunctionName")
 fun FakePreferenceHolder(mapBuilder: MutableMap<String, Any?>.() -> Unit): PreferenceHolder {
     return PreferenceHolder(FakePreference(mapBuilder), Json)

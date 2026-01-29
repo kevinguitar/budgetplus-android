@@ -1,14 +1,11 @@
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.TestedExtension
 import common.implementation
 import common.libs
-import common.testFixturesImplementation
 import common.testImplementation
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
@@ -65,12 +62,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             }
         }
 
-        // Enable test fixtures for all modules
-        project.extensions.configure<TestedExtension> {
-            @Suppress("UnstableApiUsage")
-            testFixtures.enable = true
-        }
-
         project.dependencies {
             implementation(project.libs.bundles.android)
             implementation(project.libs.timber)
@@ -80,16 +71,11 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             val bomBundle = project.libs.bundles.bom.get()
             bomBundle.forEach { bom ->
                 implementation(enforcedPlatform(bom))
-                testFixturesImplementation(enforcedPlatform(bom))
             }
 
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))
-                testImplementation(testFixtures(project(":core:common")))
             }
-
-            testImplementation(testFixtures(project(":core:unit-test")))
-            testFixturesImplementation(project.libs.coroutines.android)
         }
     }
 }

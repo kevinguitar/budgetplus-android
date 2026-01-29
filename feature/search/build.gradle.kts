@@ -15,10 +15,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.firebase.firestore)
         }
+        androidUnitTest.dependencies {
+            implementation(projects.core.common)
+            implementation(projects.core.data)
+        }
     }
-}
-
-dependencies {
-    add("androidUnitTestImplementation", testFixtures(projects.core.common))
-    add("androidUnitTestImplementation", testFixtures(projects.core.data))
 }

@@ -1,9 +1,14 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.data.fixtures
 
+import androidx.annotation.VisibleForTesting
+import com.kevlina.budgetplus.core.data.BatchFrequency
+import com.kevlina.budgetplus.core.data.CategoryRenameEvent
+import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import kotlinx.coroutines.Job
 import kotlinx.datetime.LocalDate
 
+@VisibleForTesting
 object FakeRecordRepo : RecordRepo {
 
     var lastCreatedRecord: Record? = null

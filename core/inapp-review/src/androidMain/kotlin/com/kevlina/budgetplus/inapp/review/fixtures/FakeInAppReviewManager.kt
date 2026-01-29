@@ -1,7 +1,10 @@
-package com.kevlina.budgetplus.inapp.review
+package com.kevlina.budgetplus.inapp.review.fixtures
 
 import android.app.Activity
+import androidx.annotation.VisibleForTesting
+import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 
+@VisibleForTesting
 class FakeInAppReviewManager(
     private val isEligibleForReview: Boolean = true,
 ) : InAppReviewManager {

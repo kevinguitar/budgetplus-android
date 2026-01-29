@@ -1,9 +1,11 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.data.fixtures
 
+import androidx.annotation.VisibleForTesting
 import com.kevlina.budgetplus.core.common.VibratorManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@VisibleForTesting
 class FakeVibratorManager(
     initialVibrateOnInput: Boolean = true,
 ) : VibratorManager {

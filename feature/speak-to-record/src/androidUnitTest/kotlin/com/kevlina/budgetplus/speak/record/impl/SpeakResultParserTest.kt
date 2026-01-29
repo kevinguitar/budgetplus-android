@@ -1,7 +1,7 @@
 package com.kevlina.budgetplus.speak.record.impl
 
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.FakeTracker
+import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
 import com.kevlina.budgetplus.feature.speak.record.impl.SpeakResultParser
 import org.junit.Test

@@ -2,9 +2,10 @@ package com.kevlina.budgetplus.core.data
 
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
-import com.kevlina.budgetplus.core.common.FakeStringProvider
-import com.kevlina.budgetplus.core.common.FakeTracker
-import com.kevlina.budgetplus.core.data.local.FakePreferenceHolder
+import com.kevlina.budgetplus.core.common.fixtures.FakeStringProvider
+import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
+import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
+import com.kevlina.budgetplus.core.data.fixtures.FakePreferenceHolder
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import io.mockk.mockk

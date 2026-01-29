@@ -19,7 +19,3 @@ fun DependencyHandlerScope.debugImplementation(module: Any) {
 fun DependencyHandlerScope.testImplementation(module: Any) {
     add("testImplementation", module)
 }
-
-fun DependencyHandlerScope.testFixturesImplementation(module: Any) {
-    add("testFixturesImplementation", module)
-}

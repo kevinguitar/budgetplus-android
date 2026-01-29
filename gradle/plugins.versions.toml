@@ -1,10 +1,8 @@
 [plugins]
 android-app = { id = "budgetplus.android.app" }
-android-library = { id = "budgetplus.android.library" }
 app-benchmark = { id = "budgetplus.app.benchmark" }
 compose = { id = "budgetplus.compose" }
 compose-multiplatform = { id = "budgetplus.compose.multiplatform" }
 metro = { id = "budgetplus.metro" }
 kotlin-multiplatform = { id = "budgetplus.kotlin.multiplatform" }
-kotlin-serialization = { id = "budgetplus.kotlin.serialization" }
 insider-app = { id = "budgetplus.insider.app" }

@@ -1,20 +1,22 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
-    alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.multiplatform)
+    alias(budgetplus.plugins.compose.multiplatform)
     alias(budgetplus.plugins.metro)
 }
 
-dependencies {
-    implementation(projects.core.ads)
-    implementation(projects.core.data)
-    implementation(projects.core.inappReview)
-    implementation(projects.core.ui)
-    implementation(projects.feature.categoryPills)
-    implementation(projects.feature.speakToRecord)
-
-    implementation(libs.lottie.compose)
-    implementation(libs.exp4j)
-
-    testImplementation(testFixtures(projects.core.data))
-    testImplementation(testFixtures(projects.core.inappReview))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.ads)
+            implementation(projects.core.data)
+            implementation(projects.core.inappReview)
+            implementation(projects.core.ui)
+            implementation(projects.feature.categoryPills)
+            implementation(projects.feature.speakToRecord)
+        }
+        androidMain.dependencies {
+            implementation(libs.lottie.compose)
+            implementation(libs.exp4j)
+        }
+    }
 }

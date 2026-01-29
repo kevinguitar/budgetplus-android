@@ -1,0 +1,24 @@
+package com.kevlina.budgetplus.inapp.review.fixtures
+
+import android.app.Activity
+import androidx.annotation.VisibleForTesting
+import com.kevlina.budgetplus.inapp.review.InAppReviewManager
+
+@VisibleForTesting
+class FakeInAppReviewManager(
+    private val isEligibleForReview: Boolean = true,
+) : InAppReviewManager {
+
+    var hasLaunchedReviewFlow = false
+    var hasRejectedReviewing = false
+
+    override fun isEligibleForReview(): Boolean = isEligibleForReview
+
+    override suspend fun launchReviewFlow(activity: Activity) {
+        hasLaunchedReviewFlow = true
+    }
+
+    override fun rejectReviewing() {
+        hasRejectedReviewing = true
+    }
+}

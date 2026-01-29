@@ -3,7 +3,7 @@ package com.kevlina.budgetplus.insider.app.main
 import android.content.Context
 import android.content.Intent
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
-import com.kevlina.budgetplus.insider.app.BuildConfig
+import com.kevlina.budgetplus.insiderApp.BuildConfig
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named

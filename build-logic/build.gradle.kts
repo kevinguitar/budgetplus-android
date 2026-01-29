@@ -21,10 +21,6 @@ gradlePlugin {
             id = "budgetplus.insider.app"
             implementationClass = "InsiderAppConventionPlugin"
         }
-        register("android.library") {
-            id = "budgetplus.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
         register("app.benchmark") {
             id = "budgetplus.app.benchmark"
             implementationClass = "AppBenchmarkConventionPlugin"
@@ -36,10 +32,6 @@ gradlePlugin {
         register("metro") {
             id = "budgetplus.metro"
             implementationClass = "MetroConventionPlugin"
-        }
-        register("kotlin.serialization") {
-            id = "budgetplus.kotlin.serialization"
-            implementationClass = "KotlinSerializationConventionPlugin"
         }
         register("kotlin.multiplatform") {
             id = "budgetplus.kotlin.multiplatform"

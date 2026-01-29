@@ -1,18 +1,23 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
-    alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.multiplatform)
+    alias(budgetplus.plugins.compose.multiplatform)
     alias(budgetplus.plugins.metro)
 }
 
-dependencies {
-    implementation(libs.google.translate) {
-        // Exclude artifacts that caused duplicated classes :/
-        exclude("com.google.api.grpc", "proto-google-common-protos")
-        exclude("com.google.protobuf", "protobuf-java")
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+            implementation(projects.core.ui)
+        }
+        androidMain.dependencies {
+            implementation("com.google.cloud:google-cloud-translate:2.81.0") {
+                // Exclude artifacts that caused duplicated classes :/
+                exclude(group = "com.google.api.grpc", module = "proto-google-common-protos")
+                exclude(group = "com.google.protobuf", module = "protobuf-java")
+            }
+            // Without this it crashes at grpc usages internally :/
+            project.dependencies.enforcedPlatform("io.grpc:grpc-bom:1.78.0")
+        }
     }
-    // Without this it crashes at grpc usages internally :/
-    implementation(platform("io.grpc:grpc-bom:1.78.0"))
-
-    implementation(projects.core.data)
-    implementation(projects.core.ui)
 }

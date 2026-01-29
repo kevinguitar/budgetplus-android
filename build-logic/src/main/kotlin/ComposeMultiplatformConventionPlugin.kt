@@ -10,22 +10,19 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.jetbrains.compose.get().pluginId)
-        project.apply(plugin = project.libs.plugins.compose.compiler.get().pluginId)
+        project.apply<SetupComposeCompiler>()
 
         project.extensions.configure<KotlinMultiplatformExtension> {
             sourceSets {
                 commonMain.dependencies {
-                    implementation(project.libs.cmp.runtime)
-                    implementation(project.libs.cmp.foundation)
-                    implementation(project.libs.cmp.ui)
-                    implementation(project.libs.cmp.resources)
-                    implementation(project.libs.cmp.uiTooling)
-
+                    implementation(project.libs.bundles.compose)
                     implementation(project.libs.coil.compose)
                 }
-
                 commonTest.dependencies {
                     implementation(kotlin("test"))
+                }
+                androidMain.dependencies {
+                    implementation(project.libs.android.activity.compose)
                 }
             }
         }

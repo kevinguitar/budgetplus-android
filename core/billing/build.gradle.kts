@@ -1,10 +1,15 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
     alias(budgetplus.plugins.metro)
 }
 
-dependencies {
-    implementation(projects.core.data)
-
-    implementation(libs.google.billing)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+        }
+        androidMain.dependencies {
+            implementation(libs.google.billing)
+        }
+    }
 }

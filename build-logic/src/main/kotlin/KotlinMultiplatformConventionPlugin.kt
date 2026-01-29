@@ -61,10 +61,11 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 }
             }
 
+            jvmToolchain(project.libs.versions.jvmTarget.get().toInt())
+
             sourceSets.apply {
                 commonMain.dependencies {
                     implementation(project.libs.kotlin.datetime)
-                    implementation(project.libs.kotlin.serialization)
 
                     if (project.path != ":core:common") {
                         implementation(project(":core:common"))
@@ -79,10 +80,11 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 androidUnitTest.dependencies {
                     implementation(kotlin("test"))
                     implementation(project.libs.bundles.test)
-                }
 
-                val androidTestFixtures = create("androidTestFixtures")
-                androidUnitTest.get().dependsOn(androidTestFixtures)
+                    if (project.path != ":core:unit-test") {
+                        implementation(project(":core:unit-test"))
+                    }
+                }
             }
 
             compilerOptions {

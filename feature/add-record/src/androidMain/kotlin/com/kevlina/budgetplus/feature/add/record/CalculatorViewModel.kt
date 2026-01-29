@@ -25,9 +25,9 @@ import java.math.RoundingMode
 
 @Inject
 class CalculatorViewModel(
-    private val vibrator: VibratorManager,
-    private val snackbarSender: SnackbarSender,
+    val vibrator: VibratorManager,
     val speakToRecordViewModel: SpeakToRecordViewModel,
+    private val snackbarSender: SnackbarSender,
 ) {
 
     val priceText = TextFieldState(EMPTY_PRICE)
@@ -52,8 +52,6 @@ class CalculatorViewModel(
         .toCharArray()
 
     fun onInput(btn: CalculatorButton) {
-        vibrator.vibrate()
-
         val currentText = priceText.text
         when (btn) {
             CalculatorButton.Delete -> delete()
@@ -135,7 +133,6 @@ class CalculatorViewModel(
     }
 
     fun onCalculatorAction(action: CalculatorAction) {
-        vibrator.vibrate()
         when (action) {
             CalculatorAction.Clear -> clearPrice()
             CalculatorAction.Evaluate -> evaluate()

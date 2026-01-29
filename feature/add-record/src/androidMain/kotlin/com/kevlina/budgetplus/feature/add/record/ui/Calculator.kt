@@ -23,6 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +46,7 @@ import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButton
 import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 enum class CalculatorButton(val text: Char) {
@@ -73,6 +76,14 @@ internal fun Calculator(
     modifier: Modifier = Modifier,
 ) {
     val needEvaluate by state.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
+    val vibrateOnInput by state.vibrateOnInput.collectAsStateWithLifecycle()
+    val hapticFeedback = LocalHapticFeedback.current
+
+    fun vibrate() {
+        if (vibrateOnInput) {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm)
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
@@ -93,7 +104,6 @@ internal fun Calculator(
                         .height(intrinsicSize = IntrinsicSize.Min)
                 }
             ) {
-
                 rows.chunked(2).forEach { btns ->
 
                     Column(
@@ -104,7 +114,10 @@ internal fun Calculator(
                             CalculatorBtn(
                                 button = btn,
                                 isAdaptive = adaptiveButton,
-                                onClick = { state.onInput(btn) }
+                                onClick = {
+                                    vibrate()
+                                    state.onInput(btn)
+                                }
                             )
                         }
                     }
@@ -124,6 +137,7 @@ internal fun Calculator(
                             ClearBtn(
                                 isAdaptive = adaptiveButton,
                                 onClick = {
+                                    vibrate()
                                     state.onCalculatorAction(CalculatorAction.Clear)
                                 }
                             )
@@ -133,6 +147,7 @@ internal fun Calculator(
                     1 -> DoneBtn(
                         needEvaluate = needEvaluate,
                         onClick = {
+                            vibrate()
                             state.onCalculatorAction(
                                 if (needEvaluate) {
                                     CalculatorAction.Evaluate
@@ -274,6 +289,7 @@ private fun RowScope.DoneBtn(
 @Stable
 internal data class CalculatorState(
     val needEvaluate: Flow<Boolean>,
+    val vibrateOnInput: StateFlow<Boolean>,
     val speakToRecordButtonState: SpeakToRecordButtonState,
     val onInput: (CalculatorButton) -> Unit,
     val onCalculatorAction: (CalculatorAction) -> Unit,
@@ -281,6 +297,7 @@ internal data class CalculatorState(
     companion object {
         val preview = CalculatorState(
             needEvaluate = MutableStateFlow(false),
+            vibrateOnInput = MutableStateFlow(true),
             speakToRecordButtonState = SpeakToRecordButtonState.preview,
             onInput = {},
             onCalculatorAction = {}
@@ -290,9 +307,11 @@ internal data class CalculatorState(
 
 internal fun CalculatorViewModel.toState() = CalculatorState(
     needEvaluate = needEvaluate,
+    vibrateOnInput = vibrator.vibrateOnInput,
     speakToRecordButtonState = SpeakToRecordButtonState(
         onTap = speakToRecordViewModel::onButtonTap,
         onReleased = speakToRecordViewModel::onButtonReleased,
+        vibrateOnPress = vibrator.vibrateOnInput,
         showLoader = speakToRecordViewModel.showLoader,
         showRecordingDialog = speakToRecordViewModel.showRecordingDialog,
         highlightRecordButton = speakToRecordViewModel::highlightRecordButton,

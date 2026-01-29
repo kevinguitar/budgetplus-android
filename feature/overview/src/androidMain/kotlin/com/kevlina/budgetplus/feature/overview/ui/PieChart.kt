@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -31,6 +32,7 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -63,7 +65,6 @@ internal fun PieChart(
     totalPrice: Double,
     recordGroups: Map<String, List<Record>>,
     formatPrice: (Double) -> String,
-    vibrate: () -> Unit,
     highlightPieChart: (BubbleDest) -> Unit,
     onClick: (category: String) -> Unit,
 ) {
@@ -122,9 +123,10 @@ internal fun PieChart(
 
     SideEffect { isDrawn = true }
 
+    val hapticFeedback = LocalHapticFeedback.current
     LaunchedEffect(pressCategory) {
         if (pressCategory != null) {
-            vibrate()
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm)
         }
     }
 
@@ -306,7 +308,6 @@ private fun PieChart_Preview() = AppTheme {
         totalPrice = OverviewListState.totalPricePreview,
         recordGroups = OverviewListState.recordGroupsPreview,
         formatPrice = { it.toString() },
-        vibrate = {},
         highlightPieChart = {},
         onClick = {}
     )

@@ -63,7 +63,6 @@ private fun ChartColors_PieChart_Preview() = AppTheme {
         totalPrice = total,
         recordGroups = recordGroups,
         formatPrice = { it.toString() },
-        vibrate = {},
         highlightPieChart = {},
         onClick = {},
         modifier = Modifier.background(LocalAppColors.current.light)

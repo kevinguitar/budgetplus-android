@@ -175,7 +175,6 @@ class OverviewViewModel private constructor(
             highlightTapHint = ::highlightTapHint,
             highlightPieChart = ::highlightPieChart,
             formatPrice = bookRepo::formatPrice,
-            vibrate = vibratorManager::vibrate,
             canEditRecord = ::canEditRecord,
             duplicateRecord = ::duplicateRecord,
             onGroupClicked = ::onGroupClicked

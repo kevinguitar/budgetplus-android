@@ -15,7 +15,7 @@ kotlin {
             implementation(projects.feature.speakToRecord)
         }
         androidMain.dependencies {
-            implementation(libs.lottie.compose)
+            implementation(libs.compottie)
             implementation(libs.exp4j)
         }
     }

@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -14,19 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieAnimatable
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.kevlina.budgetplus.core.common.EventTrigger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
-import com.kevlina.budgetplus.core.lottie.rememberColorProperty
-import com.kevlina.budgetplus.core.lottie.rememberStrokeColorProperty
+import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
+import io.github.alexzhirkevich.compottie.ExperimentalCompottieApi
+import io.github.alexzhirkevich.compottie.dynamic.rememberLottieDynamicProperties
+import io.github.alexzhirkevich.compottie.rememberLottieAnimatable
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlin.time.Duration.Companion.seconds
@@ -36,19 +35,32 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
     val focusManager = LocalFocusManager.current
 
     var showAnimation by remember { mutableStateOf(false) }
-    val imgDone by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_done))
+    val imgDone by rememberLottieComposition { loadLottieSpec("img_done") }
     val lottieAnimatable = rememberLottieAnimatable()
 
     val bgColor = LocalAppColors.current.dark
     val strokeColor = LocalAppColors.current.light
-    val dynamicProperties = rememberLottieDynamicProperties(
-        // The big circle outline
-        rememberStrokeColorProperty(color = bgColor, "Rectangle 6 Copy", "Rectangle 6 Copy", "Stroke 1"),
-        // The big circle filled color
-        rememberColorProperty(color = bgColor, "Rectangle 6 Copy", "Rectangle 6 Copy", "Fill 1"),
+
+    @OptIn(ExperimentalCompottieApi::class)
+    val dynamicProperties = rememberLottieDynamicProperties {
+        shapeLayer("Rectangle 6 Copy") {
+            // The big circle outline
+            stroke("Rectangle 6 Copy", "Stroke 1") {
+                color { bgColor }
+            }
+            // The big circle filled color
+            fill("Rectangle 6 Copy", "Fill 1") {
+                color { bgColor }
+            }
+        }
+
         // The check mark stroke
-        rememberStrokeColorProperty(color = strokeColor, "Path 2", "Path 2", "Stroke 1"),
-    )
+        shapeLayer("Path 2") {
+            stroke("Path 2", "Stroke 1") {
+                color { strokeColor }
+            }
+        }
+    }
 
     LaunchedEffect(key1 = eventTrigger) {
         eventTrigger.event.consumeEach {
@@ -64,10 +76,13 @@ fun BoxScope.DoneAnimator(eventTrigger: EventTrigger<Unit>) {
     }
 
     if (showAnimation) {
-        LottieAnimation(
-            composition = imgDone,
-            progress = { lottieAnimatable.progress },
-            dynamicProperties = dynamicProperties,
+        Image(
+            painter = rememberLottiePainter(
+                composition = imgDone,
+                progress = { lottieAnimatable.progress },
+                dynamicProperties = dynamicProperties,
+            ),
+            contentDescription = null,
             modifier = Modifier
                 .size(160.dp)
                 .align(Alignment.Center),

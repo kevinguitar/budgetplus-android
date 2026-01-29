@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.speak.record.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,18 +17,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.lottie.rememberColorProperty
+import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
+import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.ExperimentalCompottieApi
+import io.github.alexzhirkevich.compottie.dynamic.rememberLottieDynamicProperties
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 
+@OptIn(ExperimentalCompottieApi::class)
 @Composable
 internal fun SpeakToRecordDialog() {
     Dialog(
@@ -44,18 +46,25 @@ internal fun SpeakToRecordDialog() {
                     shape = CircleShape
                 ),
         ) {
-            val imgRecording by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_recording))
+            val imgRecording by rememberLottieComposition { loadLottieSpec("img_recording") }
 
             val primaryColor = LocalAppColors.current.dark
-            val dynamicProperties = rememberLottieDynamicProperties(
-                rememberColorProperty(color = primaryColor, "**", "Rectangle 1", "Fill 1"),
-            )
+            val dynamicProperties = rememberLottieDynamicProperties {
+                shapeLayer("**") {
+                    fill("Rectangle 1", "Fill 1") {
+                        color { primaryColor }
+                    }
+                }
+            }
 
-            LottieAnimation(
-                composition = imgRecording,
-                iterations = LottieConstants.IterateForever,
+            Image(
+                painter = rememberLottiePainter(
+                    composition = imgRecording,
+                    iterations = Compottie.IterateForever,
+                    dynamicProperties = dynamicProperties
+                ),
+                contentDescription = null,
                 contentScale = ContentScale.FillWidth,
-                dynamicProperties = dynamicProperties,
                 modifier = Modifier.size(width = 120.dp, height = 60.dp)
             )
 

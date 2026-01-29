@@ -12,7 +12,7 @@ kotlin {
             implementation(projects.feature.categoryPills)
         }
         androidMain.dependencies {
-            implementation(libs.lottie.compose)
+            implementation(libs.compottie)
         }
     }
 }

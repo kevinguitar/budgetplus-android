@@ -6,7 +6,7 @@ kotlin = "2.3.0"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-compose-bom = "2026.01.00"
+compose-bom = "2026.01.01"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "34.8.0"
 # https://github.com/coil-kt/coil/releases

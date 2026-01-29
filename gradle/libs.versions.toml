@@ -84,7 +84,7 @@ junit-compose = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.re
 junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
-kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
+kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
 mockk = "io.mockk:mockk:1.14.9"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }

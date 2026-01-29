@@ -4,63 +4,18 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.invoke
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class ComposeMultiplatformConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.jetbrains.compose.get().pluginId)
-        project.apply(plugin = project.libs.plugins.compose.compiler.get().pluginId)
-
-        project.tasks.withType<KotlinCompile>().configureEach {
-            compilerOptions {
-                optIn.addAll(
-                    "androidx.compose.ui.ExperimentalComposeUiApi",
-                    "androidx.compose.foundation.ExperimentalFoundationApi",
-                    "androidx.compose.foundation.layout.ExperimentalLayoutApi",
-                )
-            }
-        }
-
-        project.extensions.configure<ComposeCompilerGradlePluginExtension> {
-            // https://developer.android.com/jetpack/compose/performance/stability/fix#configuration-file
-            stabilityConfigurationFiles.add(
-                project.rootProject.layout.projectDirectory.file("misc/compose_compiler_config.conf")
-            )
-
-            // Composable metrics
-            // ./gradlew assembleRelease -PenableComposeCompilerMetrics=true --rerun-tasks
-            // ./gradlew assembleRelease -PenableComposeCompilerReports=true --rerun-tasks
-            // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
-            // https://chris.banes.dev/composable-metrics/
-            val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
-            val enableMetrics = enableMetricsProvider.orNull == "true"
-            if (enableMetrics) {
-                val metricsFolder = project.layout.buildDirectory.dir("compose-metrics")
-                metricsDestination.set(metricsFolder)
-            }
-
-            val enableReportsProvider = project.providers.gradleProperty("enableComposeCompilerReports")
-            val enableReports = (enableReportsProvider.orNull == "true")
-            if (enableReports) {
-                val reportsFolder = project.layout.buildDirectory.dir("compose-reports")
-                reportsDestination.set(reportsFolder)
-            }
-        }
+        project.apply<SetupComposeCompiler>()
 
         project.extensions.configure<KotlinMultiplatformExtension> {
             sourceSets {
                 commonMain.dependencies {
-                    implementation(project.libs.cmp.runtime)
-                    implementation(project.libs.cmp.foundation)
-                    implementation(project.libs.cmp.icons)
-                    implementation(project.libs.cmp.ui)
-                    implementation(project.libs.cmp.resources)
-                    implementation(project.libs.cmp.uiTooling)
-
+                    implementation(project.libs.bundles.compose)
                     implementation(project.libs.coil.compose)
                 }
                 commonTest.dependencies {

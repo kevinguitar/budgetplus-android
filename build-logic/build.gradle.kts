@@ -21,10 +21,6 @@ gradlePlugin {
             id = "budgetplus.insider.app"
             implementationClass = "InsiderAppConventionPlugin"
         }
-        register("android.library") {
-            id = "budgetplus.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
         register("app.benchmark") {
             id = "budgetplus.app.benchmark"
             implementationClass = "AppBenchmarkConventionPlugin"

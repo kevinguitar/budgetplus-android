@@ -23,9 +23,10 @@ firebase-crashlytics = "3.0.6"
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
 android-lifecycle = "2.10.0"
-jetbrains-lifecycle = "2.8.4"
+jetbrains-lifecycle = "2.9.6"
+jetbrains-material3 = "1.9.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
-android-activity = "1.12.2"
+android-activity = "1.12.3"
 # https://github.com/icerockdev/moko-permissions/releases
 permissions = "0.20.1"
 
@@ -48,7 +49,6 @@ build-metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", vers
 coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
-compose-activity = { module = "androidx.activity:activity-compose" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-icons = { module = "androidx.compose.material:material-icons-extended" }
@@ -61,8 +61,8 @@ compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 cmp-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
 cmp-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
 cmp-icons = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
-cmp-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
-cmp-material3-windowsizeclass = "org.jetbrains.compose.material3:material3-window-size-class:1.9.0"
+cmp-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrains-material3" }
+cmp-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "jetbrains-material3" }
 cmp-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 cmp-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 cmp-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
@@ -119,11 +119,11 @@ bom = [
     "firebase-bom",
 ]
 compose = [
-    "compose-activity",
-    "compose-foundation",
-    "compose-icons",
-    "compose-lifecycle",
-    "compose-tooling-preview",
+    "cmp-icons",
+    "cmp-resources",
+    "cmp-ui",
+    "cmp-uiTooling",
+    "cmp-foundation",
 ]
 test = [
     "coroutines-test",

@@ -55,6 +55,7 @@ compose-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+compottie = "io.github.alexzhirkevich:compottie:2.0.2"
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
@@ -80,7 +81,6 @@ junit-core = "junit:junit:4.13.2"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
-lottie-compose = "com.airbnb.android:lottie-compose:6.7.1"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
 mockk = "io.mockk:mockk:1.14.9"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }

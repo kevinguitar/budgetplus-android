@@ -12,7 +12,7 @@ kotlin {
             implementation(projects.core.ui)
         }
         androidMain.dependencies {
-            implementation(libs.lottie.compose)
+            implementation(libs.compottie)
         }
     }
 }

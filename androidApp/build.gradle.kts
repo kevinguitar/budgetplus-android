@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.navigation3.viewmodel)
     implementation(libs.profile.installer)
     implementation(libs.google.ads)
-    implementation(libs.lottie.compose)
+    implementation(libs.compottie)
     implementation(libs.coil.okhttp)
 
     implementation(projects.core.ads)

@@ -11,7 +11,7 @@ kotlin {
             implementation(projects.core.data)
         }
         androidMain.dependencies {
-            implementation(libs.lottie.compose)
+            implementation(libs.compottie)
         }
     }
 }

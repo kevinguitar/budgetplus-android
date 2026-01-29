@@ -19,7 +19,7 @@ kotlin {
             implementation(project.libs.compose.material3.windowsizeclass)
         }
         androidMain.dependencies {
-            implementation(libs.lottie.compose)
+            implementation(libs.compottie)
         }
     }
 }

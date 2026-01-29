@@ -24,7 +24,7 @@ android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
 android-lifecycle = "2.10.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
-android-activity = "1.12.2"
+android-activity = "1.12.3"
 # https://github.com/icerockdev/moko-permissions/releases
 permissions = "0.20.1"
 

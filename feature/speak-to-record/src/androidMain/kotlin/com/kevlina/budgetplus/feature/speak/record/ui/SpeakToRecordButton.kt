@@ -26,9 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,6 +52,7 @@ fun ColumnScope.SpeakToRecordButton(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
+    val vibrateOnInput by state.vibrateOnPress.collectAsStateWithLifecycle()
     val showLoader by state.showLoader.collectAsStateWithLifecycle()
     val showRecordingDialog by state.showRecordingDialog.collectAsStateWithLifecycle()
 
@@ -61,6 +64,8 @@ fun ColumnScope.SpeakToRecordButton(
     ) { isGranted: Boolean ->
         if (!isGranted) state.showRecordPermissionHint()
     }
+
+    val hapticFeedback = LocalHapticFeedback.current
 
     Box(
         contentAlignment = Alignment.Center,
@@ -86,6 +91,9 @@ fun ColumnScope.SpeakToRecordButton(
                             // If it's currently loading, do not trigger the tap again
                             if (showLoader) return@detectTapGestures
 
+                            if (vibrateOnInput) {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.Confirm)
+                            }
                             state.onTap()
                             val press = PressInteraction.Press(offset)
                             interactionSource.emit(press)
@@ -124,6 +132,7 @@ fun ColumnScope.SpeakToRecordButton(
 data class SpeakToRecordButtonState(
     val onTap: () -> Unit,
     val onReleased: () -> Unit,
+    val vibrateOnPress: StateFlow<Boolean>,
     val showLoader: StateFlow<Boolean>,
     val showRecordingDialog: StateFlow<Boolean>,
     val highlightRecordButton: (BubbleDest) -> Unit,
@@ -133,6 +142,7 @@ data class SpeakToRecordButtonState(
         val preview = SpeakToRecordButtonState(
             onTap = {},
             onReleased = {},
+            vibrateOnPress = MutableStateFlow(true),
             showLoader = MutableStateFlow(false),
             showRecordingDialog = MutableStateFlow(false),
             highlightRecordButton = {},

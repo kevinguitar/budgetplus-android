@@ -6,7 +6,5 @@ interface VibratorManager {
 
     val vibrateOnInput: StateFlow<Boolean>
 
-    fun vibrate()
-
     fun toggleVibrateOnInput()
 }

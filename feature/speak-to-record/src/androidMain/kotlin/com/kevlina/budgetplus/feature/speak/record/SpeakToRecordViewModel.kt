@@ -6,7 +6,6 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.stateIn
 class SpeakToRecordViewModel(
     private val speakToRecord: SpeakToRecord,
     private val snackbarSender: SnackbarSender,
-    private val vibratorManager: VibratorManager,
     private val bubbleRepo: BubbleRepo,
 ) : ViewModel() {
 
@@ -53,7 +51,6 @@ class SpeakToRecordViewModel(
 
     fun onButtonTap() {
         recordActorFlow.value = speakToRecord.startRecording()
-        vibratorManager.vibrate()
     }
 
     fun onButtonReleased() {

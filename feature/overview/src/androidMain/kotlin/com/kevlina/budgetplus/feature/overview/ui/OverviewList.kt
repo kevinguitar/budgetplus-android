@@ -191,7 +191,6 @@ internal fun OverviewList(
                                     totalPrice = totalPrice,
                                     recordGroups = recordGroups.orEmpty(),
                                     formatPrice = state.formatPrice,
-                                    vibrate = state.vibrate,
                                     highlightPieChart = state.highlightPieChart,
                                     onClick = ::navigateToRecords
                                 )
@@ -238,7 +237,6 @@ internal data class OverviewListState(
     val highlightTapHint: (BubbleDest) -> Unit,
     val highlightPieChart: (BubbleDest) -> Unit,
     val formatPrice: (Double) -> String,
-    val vibrate: () -> Unit,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
     val onGroupClicked: () -> Unit,
@@ -274,7 +272,6 @@ internal data class OverviewListState(
             highlightTapHint = {},
             highlightPieChart = {},
             formatPrice = { "$$it" },
-            vibrate = {},
             canEditRecord = { true },
             duplicateRecord = {},
             onGroupClicked = {}

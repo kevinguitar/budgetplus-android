@@ -1,11 +1,15 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
     alias(budgetplus.plugins.metro)
-    alias(budgetplus.plugins.kotlin.serialization)
 }
 
-dependencies {
-    implementation(projects.core.data)
-
-    api(libs.firebase.messaging)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+        }
+        androidMain.dependencies {
+            api(libs.firebase.messaging)
+        }
+    }
 }

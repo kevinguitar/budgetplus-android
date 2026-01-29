@@ -1,8 +1,12 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
 }
 
-dependencies {
-    testFixturesImplementation(libs.coroutines.test)
-    testFixturesImplementation(libs.junit.compose)
+kotlin {
+    sourceSets {
+        androidTestFixtures.dependencies {
+            implementation(libs.coroutines.test)
+            implementation(libs.junit.compose)
+        }
+    }
 }

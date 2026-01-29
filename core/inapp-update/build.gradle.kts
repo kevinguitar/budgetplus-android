@@ -1,3 +1,3 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
+    alias(budgetplus.plugins.kotlin.multiplatform)
 }

@@ -33,10 +33,6 @@ gradlePlugin {
             id = "budgetplus.metro"
             implementationClass = "MetroConventionPlugin"
         }
-        register("kotlin.serialization") {
-            id = "budgetplus.kotlin.serialization"
-            implementationClass = "KotlinSerializationConventionPlugin"
-        }
         register("kotlin.multiplatform") {
             id = "budgetplus.kotlin.multiplatform"
             implementationClass = "KotlinMultiplatformConventionPlugin"

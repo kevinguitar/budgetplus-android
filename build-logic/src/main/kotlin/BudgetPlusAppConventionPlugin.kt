@@ -15,6 +15,7 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.android.application.get().pluginId)
         project.apply(plugin = project.libs.plugins.google.services.get().pluginId)
         project.apply(plugin = project.libs.plugins.firebase.crashlytics.get().pluginId)
+        project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
         project.apply<KotlinAndroidConventionPlugin>()
 
         val appId: String by project

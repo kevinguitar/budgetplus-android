@@ -64,7 +64,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             sourceSets.apply {
                 commonMain.dependencies {
                     implementation(project.libs.kotlin.datetime)
-                    implementation(project.libs.kotlin.serialization)
 
                     if (project.path != ":core:common") {
                         implementation(project(":core:common"))

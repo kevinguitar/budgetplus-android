@@ -10,6 +10,8 @@ kotlin {
             implementation(projects.core.inappUpdate)
             implementation(projects.core.inappReview)
             implementation(projects.core.ui)
+
+            implementation(libs.kotlin.serialization)
         }
         androidMain.dependencies {
             implementation(libs.firebase.auth)

@@ -1,15 +1,18 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
-    alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.multiplatform)
+    alias(budgetplus.plugins.compose.multiplatform)
     alias(budgetplus.plugins.metro)
-    alias(budgetplus.plugins.kotlin.serialization)
 }
 
-dependencies {
-    implementation(projects.core.data)
-    implementation(projects.core.ui)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+            implementation(projects.core.ui)
+            implementation(libs.reorderable)
+        }
+        androidMain.dependencies {
 
-    implementation(libs.reorderable)
-
-    testImplementation(testFixtures(projects.core.data))
+        }
+    }
 }

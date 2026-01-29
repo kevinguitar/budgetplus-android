@@ -1,18 +1,23 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
-    alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.multiplatform)
+    alias(budgetplus.plugins.compose.multiplatform)
     alias(budgetplus.plugins.metro)
 }
 
-dependencies {
-    implementation(projects.core.data)
-    implementation(projects.core.ui)
-
-    implementation(libs.android.credentials)
-    // For devices running Android 13 and below
-    // See: https://developer.android.com/jetpack/androidx/releases/credentials
-    implementation(libs.android.credentials.play.services)
-    implementation(libs.install.referrer)
-    implementation(libs.firebase.auth)
-    implementation(libs.google.id)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+            implementation(projects.core.ui)
+        }
+        androidMain.dependencies {
+            implementation(libs.android.credentials)
+            // For devices running Android 13 and below
+            // See: https://developer.android.com/jetpack/androidx/releases/credentials
+            implementation(libs.android.credentials.play.services)
+            implementation(libs.install.referrer)
+            implementation(libs.firebase.auth)
+            implementation(libs.google.id)
+        }
+    }
 }

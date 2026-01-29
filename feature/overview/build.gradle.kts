@@ -1,16 +1,20 @@
 plugins {
-    alias(budgetplus.plugins.android.library)
-    alias(budgetplus.plugins.compose)
+    alias(budgetplus.plugins.kotlin.multiplatform)
+    alias(budgetplus.plugins.compose.multiplatform)
     alias(budgetplus.plugins.metro)
 }
 
-dependencies {
-    implementation(projects.core.data)
-    implementation(projects.core.settingsApi)
-    implementation(projects.core.ui)
-    implementation(projects.feature.recordCard)
-
-    implementation(libs.kotlin.csv)
-
-    testImplementation(testFixtures(projects.core.data))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.data)
+            implementation(projects.core.settingsApi)
+            implementation(projects.core.ui)
+            implementation(projects.feature.recordCard)
+        }
+        androidMain.dependencies {
+            //TODO: Eh this lacks iOS support
+            implementation(libs.kotlin.csv)
+        }
+    }
 }

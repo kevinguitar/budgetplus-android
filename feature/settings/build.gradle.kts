@@ -10,8 +10,6 @@ kotlin {
             implementation(projects.core.data)
             implementation(projects.core.settingsApi)
             implementation(projects.core.ui)
-
-            implementation(libs.coil.compose)
         }
     }
 }

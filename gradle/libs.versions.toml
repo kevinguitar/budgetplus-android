@@ -23,6 +23,7 @@ firebase-crashlytics = "3.0.6"
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
 android-lifecycle = "2.10.0"
+jetbrains-lifecycle = "2.8.4"
 # https://developer.android.com/jetpack/androidx/releases/activity
 android-activity = "1.12.2"
 # https://github.com/icerockdev/moko-permissions/releases
@@ -38,7 +39,7 @@ android-activity = { module = "androidx.activity:activity-ktx", version.ref = "a
 android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
-android-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "android-lifecycle" }
+android-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
 android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "android-lifecycle" }
 build-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 build-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
@@ -59,8 +60,9 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 cmp-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
 cmp-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+cmp-icons = "org.jetbrains.compose.material:material-icons-extended:1.7.3"
 cmp-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
-cmp-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:material3-window-size-class" }
+cmp-material3-windowsizeclass = "org.jetbrains.compose.material3:material3-window-size-class:1.9.0"
 cmp-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 cmp-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 cmp-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }

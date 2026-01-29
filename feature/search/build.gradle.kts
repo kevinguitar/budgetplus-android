@@ -17,3 +17,8 @@ kotlin {
         }
     }
 }
+
+dependencies {
+    add("androidUnitTestImplementation", testFixtures(projects.core.common))
+    add("androidUnitTestImplementation", testFixtures(projects.core.data))
+}

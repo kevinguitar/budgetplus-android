@@ -1,12 +1,15 @@
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.TestedExtension
 import common.implementation
 import common.libs
+import common.testFixturesImplementation
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -32,6 +35,12 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             val javaVersion = JavaVersion.toVersion(project.libs.versions.jvmTarget.get())
             compileOptions.sourceCompatibility = javaVersion
             compileOptions.targetCompatibility = javaVersion
+        }
+
+        // Enable test fixtures for all modules
+        project.extensions.configure<TestedExtension> {
+            @Suppress("UnstableApiUsage")
+            testFixtures.enable = true
         }
 
         project.extensions.configure<KotlinMultiplatformExtension> {
@@ -79,9 +88,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     implementation(kotlin("test"))
                     implementation(project.libs.bundles.test)
                 }
-
-                val androidTestFixtures = create("androidTestFixtures")
-                androidUnitTest.get().dependsOn(androidTestFixtures)
             }
 
             compilerOptions {
@@ -104,6 +110,10 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             val bomBundle = project.libs.bundles.bom.get()
             bomBundle.forEach { bom ->
                 implementation(enforcedPlatform(bom))
+            }
+
+            if (project.path != ":core:unit-test") {
+                testFixturesImplementation(testFixtures(project(":core:unit-test")))
             }
         }
     }

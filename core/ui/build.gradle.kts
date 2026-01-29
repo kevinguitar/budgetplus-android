@@ -15,11 +15,12 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.theme)
             implementation(libs.android.viewmodel.compose)
-            implementation(project.libs.compose.material3)
-            implementation(project.libs.compose.material3.windowsizeclass)
-        }
-        androidMain.dependencies {
+            implementation(libs.compose.material3)
+            implementation(libs.compose.material3.windowsizeclass)
+
             implementation(libs.compottie)
+            implementation(libs.compottie.dot)
+            implementation(libs.compottie.resources)
         }
     }
 }

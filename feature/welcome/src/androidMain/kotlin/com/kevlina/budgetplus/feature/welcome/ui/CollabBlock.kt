@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.welcome.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -11,20 +12,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.thenIf
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 
 @Composable
 internal fun CollabBlock(
@@ -32,8 +34,7 @@ internal fun CollabBlock(
     applyStatusBarPadding: Boolean = false,
     applyNavBarPadding: Boolean = true,
 ) {
-
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_collab))
+    val composition by rememberLottieComposition { loadLottieSpec("img_collab") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -54,8 +55,10 @@ internal fun CollabBlock(
                 .padding(vertical = 24.dp, horizontal = 16.dp)
         )
 
-        LottieAnimation(
-            composition = composition,
+        Image(
+            painter = rememberLottiePainter(composition),
+            contentDescription = null,
+            contentScale = ContentScale.FillHeight,
             modifier = Modifier.height(200.dp)
         )
     }

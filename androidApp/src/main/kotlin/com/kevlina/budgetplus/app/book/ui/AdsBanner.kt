@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.app.book.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -22,23 +23,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.lottie.rememberColorProperty
+import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
+import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.ExperimentalCompottieApi
+import io.github.alexzhirkevich.compottie.dynamic.rememberLottieDynamicProperties
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 
 @Composable
 internal fun AdsBanner(
@@ -88,16 +89,25 @@ private const val LOADER_SCALE = 2.5F
 
 @Composable
 private fun AdsBannerLoader() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.img_loader))
+    val composition by rememberLottieComposition { loadLottieSpec("img_loader") }
     val dotColor = LocalAppColors.current.dark
-    val dynamicProperties = rememberLottieDynamicProperties(
-        rememberColorProperty(color = dotColor, "**", "Ellipse 1", "Fill 1"),
-    )
 
-    LottieAnimation(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-        dynamicProperties = dynamicProperties,
+    @OptIn(ExperimentalCompottieApi::class)
+    val dynamicProperties = rememberLottieDynamicProperties {
+        shapeLayer("**") {
+            fill("Ellipse 1", "Fill 1") {
+                color { dotColor }
+            }
+        }
+    }
+
+    Image(
+        painter = rememberLottiePainter(
+            composition = composition,
+            iterations = Compottie.IterateForever,
+            dynamicProperties = dynamicProperties,
+        ),
+        contentDescription = null,
         modifier = Modifier
             .fillMaxHeight()
             .scale(LOADER_SCALE)

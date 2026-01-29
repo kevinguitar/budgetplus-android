@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.color.tone.picker.ui
 
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -95,7 +94,8 @@ internal fun ColorPickerDialog(
                     }
                 }
             ) {
-                val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
+                //TODO: Migrate to compose resources
+                val selector = it.context.getDrawable(R.drawable.ic_color_selector)
                 it.setSelectorDrawable(selector)
             }
 

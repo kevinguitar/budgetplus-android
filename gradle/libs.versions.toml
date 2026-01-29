@@ -27,6 +27,8 @@ jetbrains-material3 = "1.9.0"
 android-activity = "1.12.3"
 # https://github.com/icerockdev/moko-permissions/releases
 permissions = "0.20.1"
+# https://github.com/alexzhirkevich/compottie/releases
+compottie = "2.0.2"
 
 compileAndroidSdk = "36"
 minAndroidSdk = "26"
@@ -55,7 +57,9 @@ compose-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
-compottie = "io.github.alexzhirkevich:compottie:2.0.2"
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
+compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
+compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"

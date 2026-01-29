@@ -14,12 +14,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.theme)
+            implementation(libs.android.viewmodel.compose)
+            implementation(project.libs.cmp.material3)
+            implementation(project.libs.cmp.material3.windowsizeclass)
         }
         androidMain.dependencies {
-            api(projects.core.theme)
-            implementation(libs.android.viewmodel.compose)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.material3.windowsizeclass)
             implementation(libs.lottie.compose)
         }
     }

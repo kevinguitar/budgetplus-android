@@ -60,6 +60,7 @@ compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 cmp-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
 cmp-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
 cmp-material3 = "org.jetbrains.compose.material3:material3:1.9.0"
+cmp-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:material3-window-size-class" }
 cmp-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 cmp-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 cmp-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }

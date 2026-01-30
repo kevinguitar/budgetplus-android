@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
 import androidx.core.net.toUri
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.Currency
@@ -70,7 +70,7 @@ class BookRepoImpl(
             try {
                 Currency.getInstance(code)
             } catch (e: Exception) {
-                Timber.e(e, "Failed to parse currency. $code")
+                Logger.e(e) { "Failed to parse currency. $code" }
                 defaultCurrency
             }
         }
@@ -279,12 +279,12 @@ class BookRepoImpl(
             .orderBy(createdOnField, Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "BookRepo: Listen failed.")
+                    Logger.e(e) { "BookRepo: Listen failed." }
                     return@addSnapshotListener
                 }
 
                 if (snapshot == null) {
-                    Timber.d("BookRepo: Snapshot is empty")
+                    Logger.d { "BookRepo: Snapshot is empty" }
                     return@addSnapshotListener
                 }
 

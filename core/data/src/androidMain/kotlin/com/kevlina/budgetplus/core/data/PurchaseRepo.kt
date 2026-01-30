@@ -1,11 +1,11 @@
 package com.kevlina.budgetplus.core.data
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.Purchase
 import com.kevlina.budgetplus.core.data.remote.PurchasesDb
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import kotlin.time.Clock
 
 @Inject
@@ -25,7 +25,7 @@ class PurchaseRepo(
                 purchasedOn = Clock.System.now().toEpochMilliseconds()
             )).await()
         } catch (e: Exception) {
-            Timber.e(e)
+            Logger.e(e) { "Failed to record purchase for order $orderId" }
         }
     }
 
@@ -41,7 +41,7 @@ class PurchaseRepo(
                 .await()
             !purchases.isEmpty
         } catch (e: Exception) {
-            Timber.e(e)
+            Logger.e(e) { "Failed to check if user $currentUserId has purchased product $productId" }
             false
         }
     }

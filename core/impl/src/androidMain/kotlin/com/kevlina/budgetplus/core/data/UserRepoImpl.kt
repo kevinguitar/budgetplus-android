@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
@@ -18,7 +19,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class, binding = binding<UserRepo>())
@@ -69,7 +69,7 @@ class UserRepoImpl(
             val user = usersDb.value.document(userId).get().requireValue<User>()
             userMapping[userId] = user
         } catch (e: Exception) {
-            Timber.e(e)
+            Logger.e(e) { "UserRepo: loadUser failed" }
         }
     }
 }

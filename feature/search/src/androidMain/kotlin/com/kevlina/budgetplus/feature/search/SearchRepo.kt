@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import timber.log.Timber
 
 @Inject
 class SearchRepo(
@@ -90,7 +90,7 @@ class SearchRepo(
             replay = 1
         )
 
-        Timber.d("Search: Performing DB query with period $period")
+        Logger.d { "Search: Performing DB query with period $period" }
         flow.tryEmit(DbResult.Loading)
 
         recordsRegistration?.remove()
@@ -109,7 +109,7 @@ class SearchRepo(
                 if (snapshot != null) {
                     val records = snapshot.documents
                         .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
-                    Timber.d("Search: result size ${records.size}")
+                    Logger.d { "Search: result size ${records.size}" }
                     tracker.logEvent(
                         event = "search_queried_from_db",
                         params = bundle { putInt("db_read_count", records.size) }

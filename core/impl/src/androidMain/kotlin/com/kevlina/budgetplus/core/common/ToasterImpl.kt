@@ -1,16 +1,15 @@
 package com.kevlina.budgetplus.core.common
 
-import android.content.Context
 import android.widget.Toast
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class ToasterImpl(
-    private val context: Context,
+    private val context: android.content.Context,
 ) : Toaster {
 
     private var toast: Toast? = null
@@ -24,7 +23,7 @@ class ToasterImpl(
 
         toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
         toast?.show()
-        Timber.d("Toaster: Show toast $message")
+        Logger.d { "Toaster: Show toast $message" }
         lastMessage = message
     }
 }

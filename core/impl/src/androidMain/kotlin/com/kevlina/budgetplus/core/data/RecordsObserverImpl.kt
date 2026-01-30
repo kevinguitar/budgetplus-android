@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -29,7 +30,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.LocalDate
-import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -122,7 +122,7 @@ class RecordsObserverImpl(
             .whereLessThanOrEqualTo("date", period.until.toEpochDays())
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
-                    Timber.e(e, "RecordsObserver: Listen failed.")
+                    Logger.e(e) { "RecordsObserver: Listen failed." }
                     return@addSnapshotListener
                 }
 

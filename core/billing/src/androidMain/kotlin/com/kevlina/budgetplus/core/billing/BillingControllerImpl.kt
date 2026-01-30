@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.billing
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import co.touchlab.kermit.Logger
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -29,7 +30,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ContributesBinding(AppScope::class, binding = binding<BillingController>())
 class BillingControllerImpl(
@@ -58,19 +58,19 @@ class BillingControllerImpl(
         .build()
 
     init {
-        Timber.d("BillingClient: Start connection")
+        Logger.d { "BillingClient: Start connection" }
         billingClient.startConnection(this)
     }
 
     override fun endConnection() {
         if (billingClient.isReady) {
-            Timber.d("BillingClient: End connection")
+            Logger.d { "BillingClient: End connection" }
             billingClient.endConnection()
         }
     }
 
     override fun onBillingServiceDisconnected() {
-        Timber.d("BillingClient: onBillingServiceDisconnected")
+        Logger.d { "BillingClient: onBillingServiceDisconnected" }
     }
 
     override fun buyPremium(activity: ComponentActivity) {
@@ -95,7 +95,7 @@ class BillingControllerImpl(
     ) {
         val status = BillingStatus(billingResult.responseCode)
         val debugMessage = billingResult.debugMessage
-        Timber.d("BillingClient: onPurchasesUpdated $status $debugMessage")
+        Logger.d { "BillingClient: onPurchasesUpdated $status $debugMessage" }
 
         when (status) {
             BillingStatus.OK -> {
@@ -114,7 +114,7 @@ class BillingControllerImpl(
                 purchaseState.value =
                     if (purchaseRepo.hasPurchaseBelongsToCurrentUser(PRODUCT_PREMIUM_ID)) {
                         authManager.markPremium()
-                        Timber.e(BillingRestoredException("Premium is restored for ${authManager.userId}"))
+                        Logger.e(BillingRestoredException()) { "Premium is restored for ${authManager.userId}" }
                         PurchaseState.Success
                     } else {
                         PurchaseState.Fail(status.toString())
@@ -122,7 +122,7 @@ class BillingControllerImpl(
             }
 
             else -> {
-                Timber.e(BillingException("onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}"))
+                Logger.e(BillingException()) { "onPurchasesUpdated $status $debugMessage. UserId=${authManager.userId}" }
                 purchaseState.value = PurchaseState.Fail(status.toString())
             }
         }
@@ -131,7 +131,7 @@ class BillingControllerImpl(
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         val status = BillingStatus(billingResult.responseCode)
         val debugMessage = billingResult.debugMessage
-        Timber.d("BillingClient: onBillingSetupFinished $status $debugMessage")
+        Logger.d { "BillingClient: onBillingSetupFinished $status $debugMessage" }
 
         if (status == BillingStatus.OK) {
             queryProductDetails()
@@ -150,10 +150,10 @@ class BillingControllerImpl(
             val debugMessage = billingResult.debugMessage
 
             if (status == BillingStatus.OK) {
-                Timber.d("BillingClient: queryPurchases success ${purchases.size}")
+                Logger.d { "BillingClient: queryPurchases success ${purchases.size}" }
                 processPurchases(purchases)
             } else {
-                Timber.e(BillingException("queryPurchases error $status $debugMessage"))
+                Logger.e(BillingException()) { "queryPurchases error $status $debugMessage" }
             }
         }
     }
@@ -174,15 +174,15 @@ class BillingControllerImpl(
             val debugMessage = billingResult.debugMessage
 
             if (status != BillingStatus.OK) {
-                Timber.e(BillingException("ProductDetailsResponse $status $debugMessage"))
+                Logger.e(BillingException()) { "ProductDetailsResponse $status $debugMessage" }
                 return@launch
             }
 
             val premiumProduct = products?.firstOrNull()
             if (premiumProduct == null) {
-                Timber.w("BillingClient: ProductDetailsResponse is empty.")
+                Logger.w { "BillingClient: ProductDetailsResponse is empty." }
             } else {
-                Timber.d("BillingClient: ProductDetailsResponse offer $premiumProduct")
+                Logger.d { "BillingClient: ProductDetailsResponse offer $premiumProduct" }
                 productDetailsState.value = premiumProduct
             }
         }
@@ -192,7 +192,7 @@ class BillingControllerImpl(
         purchases.forEach { purchase ->
             when {
                 purchase.isAcknowledged -> {
-                    Timber.d("BillingClient: Found purchased product ${purchase.products.joinToString()}")
+                    Logger.d { "BillingClient: Found purchased product ${purchase.products.joinToString()}" }
                 }
 
                 purchase.purchaseState == Purchase.PurchaseState.PURCHASED -> {
@@ -201,7 +201,7 @@ class BillingControllerImpl(
                         .setPurchaseToken(purchase.purchaseToken)
                         .build()
 
-                    Timber.d("BillingClient: Acknowledging the purchase.")
+                    Logger.d { "BillingClient: Acknowledging the purchase." }
                     val billingResult = billingClient.acknowledgePurchase(params)
                     val status = BillingStatus(billingResult.responseCode)
 
@@ -210,13 +210,13 @@ class BillingControllerImpl(
                         purchaseRepo.recordPurchase(purchase.orderId, purchase.products.first())
                         purchaseState.value = PurchaseState.Success
                     } else {
-                        Timber.e(BillingException("Acknowledge failed ${billingResult.debugMessage}"))
+                        Logger.e(BillingException()) { "Acknowledge failed ${billingResult.debugMessage}" }
                         purchaseState.value = PurchaseState.PaymentAcknowledgeFailed
                     }
                 }
 
                 else -> {
-                    Timber.e(BillingException("Cannot process the purchase. Purchase state: ${purchase.purchaseState}"))
+                    Logger.e(BillingException()) { "Cannot process the purchase. Purchase state: ${purchase.purchaseState}" }
                     purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
                 }
             }

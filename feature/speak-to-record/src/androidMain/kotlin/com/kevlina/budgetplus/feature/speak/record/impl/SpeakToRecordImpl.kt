@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
@@ -16,8 +17,7 @@ import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
-import timber.log.Timber
-import java.util.Locale
+import java.util.*
 
 @ContributesBinding(AppScope::class)
 class SpeakToRecordImpl(
@@ -30,7 +30,7 @@ class SpeakToRecordImpl(
 
     override fun startRecording(): RecordActor {
         if (!isAvailableOnDevice) {
-            Timber.e(SpeakToRecordException("Feature is not supported"))
+            Logger.e(SpeakToRecordException("Feature is not supported")) { "Feature is not supported" }
             return RecordActor(
                 statusFlow = flowOf(SpeakToRecordStatus.DeviceNotSupported),
                 stopRecording = {}
@@ -45,7 +45,7 @@ class SpeakToRecordImpl(
         val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
         recognizer.setRecognitionListener(object : SimpleRecognitionListener() {
             override fun onReadyForSpeech(bundle: Bundle) {
-                Timber.d("SpeechRecognizer: Ready for speech")
+                Logger.d { "SpeechRecognizer: Ready for speech" }
                 statusFlow.tryEmit(SpeakToRecordStatus.ReadyToSpeak)
             }
 
@@ -53,7 +53,7 @@ class SpeakToRecordImpl(
                 recognizer.destroy()
 
                 val data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                Timber.d("SpeechRecognizer: Results received $data")
+                Logger.d { "SpeechRecognizer: Results received $data" }
                 // First element is the most likely candidate.
                 statusFlow.tryEmit(speakResultParser.parse(data?.firstOrNull()))
             }
@@ -61,7 +61,7 @@ class SpeakToRecordImpl(
             override fun onError(code: Int) {
                 recognizer.destroy()
 
-                Timber.e(SpeakToRecordException("Error $code"))
+                Logger.e(SpeakToRecordException("Error $code")) { "SpeechRecognizer Error $code" }
                 val status = SpeakToRecordStatus.fromErrorCode(code)
                 statusFlow.tryEmit(status)
 
@@ -84,7 +84,7 @@ class SpeakToRecordImpl(
                 Locale.getDefault()
             )
 
-        Timber.d("SpeechRecognizer: Start listening, locale=${Locale.getDefault()}")
+        Logger.d { "SpeechRecognizer: Start listening, locale=${Locale.getDefault()}" }
         tracker.logEvent("speak_to_record_start")
         recognizer.startListening(recognizerIntent)
 

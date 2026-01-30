@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.inapp.review
 
 import android.app.Activity
+import co.touchlab.kermit.Logger
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
@@ -15,7 +16,6 @@ import dev.zacsweers.metro.ContributesBinding
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import timber.log.Timber
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 
@@ -67,7 +67,7 @@ class InAppReviewManagerImpl(
             hasRequestedBefore = true
         } catch (e: Exception) {
             snackbarSender.sendError(e)
-            Timber.e(e, "Failed to launch the review flow")
+            Logger.e(e) { "Failed to launch the review flow" }
         }
     }
 

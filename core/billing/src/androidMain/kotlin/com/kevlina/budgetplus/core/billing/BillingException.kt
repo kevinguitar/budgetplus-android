@@ -1,5 +1,5 @@
 package com.kevlina.budgetplus.core.billing
 
-internal class BillingException(override val message: String) : RuntimeException(message)
+internal class BillingException : RuntimeException("Billing error")
 
-internal class BillingRestoredException(override val message: String) : RuntimeException(message)
+internal class BillingRestoredException : RuntimeException("Billing restoration error")

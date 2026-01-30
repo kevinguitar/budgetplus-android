@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.ads
 
 import android.content.Context
+import co.touchlab.kermit.Logger
 import com.google.android.gms.ads.MobileAds
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @Inject
@@ -43,11 +43,13 @@ class AdMobInitializer(
 
         MobileAds.initialize(context) {
             isInitialized.value = true
-            Timber.d("AdMob initialized: ${
-                it.adapterStatusMap
-                    .map { (key, value) -> "$key: ${value.description}" }
-                    .joinToString("\n")
-            }")
+            Logger.d {
+                "AdMob initialized: ${
+                    it.adapterStatusMap
+                        .map { (key, value) -> "$key: ${value.description}" }
+                        .joinToString("\n")
+                }"
+            }
         }
     }
 

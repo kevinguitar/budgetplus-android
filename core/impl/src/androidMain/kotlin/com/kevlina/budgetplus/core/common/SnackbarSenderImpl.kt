@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.core.common
 
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
@@ -33,7 +33,7 @@ class SnackbarSenderImpl(
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
-        Timber.d("SnackbarSender: Show snackbar $message")
+        Logger.d { "SnackbarSender: Show snackbar $message" }
         snackbarEvent.sendEvent(SnackbarData(
             message = message,
             actionLabel = actionLabel?.let(stringProvider::get),
@@ -43,7 +43,7 @@ class SnackbarSenderImpl(
     }
 
     override fun sendError(e: Exception) {
-        Timber.e(e)
+        Logger.e(e) { "SnackbarSender: sendError" }
         val error = e.localizedMessage ?: e.message
         when {
             // Do not toast the cancellation error

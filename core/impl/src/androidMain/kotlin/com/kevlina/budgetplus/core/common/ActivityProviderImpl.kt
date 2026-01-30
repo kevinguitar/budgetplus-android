@@ -4,11 +4,11 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.binding
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class, binding = binding<ActivityProvider>())
@@ -18,7 +18,7 @@ class ActivityProviderImpl : ActivityProvider, Application.ActivityLifecycleCall
 
     override val currentActivity: ComponentActivity?
         get() = (_currentActivity as? ComponentActivity) ?: run {
-            Timber.e(MissingActivityException())
+            Logger.e(MissingActivityException()) { "Missing current activity" }
             null
         }
 

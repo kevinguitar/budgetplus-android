@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.core.data.local
 
+import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.serialization.json.Json
-import timber.log.Timber
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -70,7 +70,7 @@ class PreferenceHolder(
             return try {
                 formatter.decodeFromString(json)
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { "Preference: Decode failed" }
                 default
             }
         }
@@ -80,7 +80,7 @@ class PreferenceHolder(
                 val json = formatter.encodeToString(value)
                 preference.editor.putString(property.name, json).apply()
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { "Preference: Encode failed" }
             }
         }
     }
@@ -94,7 +94,7 @@ class PreferenceHolder(
             return try {
                 formatter.decodeFromString(json)
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { "Preference: Decode failed" }
                 default
             }
         }
@@ -104,7 +104,7 @@ class PreferenceHolder(
                 val json = value?.let(formatter::encodeToString)
                 preference.editor.putString(property.name, json).apply()
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { "Preference: Encode failed" }
             }
         }
     }

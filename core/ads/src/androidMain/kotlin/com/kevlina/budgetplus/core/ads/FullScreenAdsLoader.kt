@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.ads
 
 import android.app.Activity
 import android.content.Context
+import co.touchlab.kermit.Logger
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @Inject
@@ -64,7 +64,7 @@ class FullScreenAdsLoader(
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
-                Timber.i(adError.message)
+                Logger.i { adError.message }
                 adState.value = null
             }
 

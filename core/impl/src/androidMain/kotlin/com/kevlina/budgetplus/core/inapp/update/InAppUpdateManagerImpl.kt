@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.inapp.update
 
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import co.touchlab.kermit.Logger
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ContributesBinding(AppScope::class)
 class InAppUpdateManagerImpl(
@@ -56,7 +56,7 @@ class InAppUpdateManagerImpl(
     init {
         appUpdateManager.requestUpdateFlow()
             .onEach(::processResult)
-            .catch { e -> Timber.e(e) }
+            .catch { e -> Logger.e(e) { "AppUpdate flow failed" } }
             .launchIn(scope)
     }
 
@@ -101,7 +101,7 @@ class InAppUpdateManagerImpl(
                 result.completeUpdate()
                 tracker.logEvent("inapp_update_flexible_complete")
             } catch (e: Exception) {
-                Timber.e(e, "Fail to complete flexible update")
+                Logger.e(e) { "Fail to complete flexible update" }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
@@ -13,7 +14,6 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
 
 @SingleIn(AppScope::class)
 @Inject
@@ -56,7 +56,7 @@ class ThemeManager(
 
     fun setColorTone(newColorTone: ColorTone) {
         if (!authManager.isPremium.value && newColorTone.requiresPremium) {
-            Timber.e("ThemeManager: Attempting to apply a premium theme for a free user. $colorTone")
+            Logger.e { "ThemeManager: Attempting to apply a premium theme for a free user. $colorTone" }
             return
         }
 
@@ -88,7 +88,7 @@ class ThemeManager(
         val newColor = try {
             Color(colorHexCode.convertHexToColor())
         } catch (e: Exception) {
-            Timber.e(e, "Failed to parse the picked color $colorHexCode")
+            Logger.e(e) { "Failed to parse the picked color $colorHexCode" }
             return
         }
 
@@ -157,7 +157,7 @@ class ThemeManager(
                 dark = Color(hexCodes[3].convertHexToColor()),
             )
         } catch (e: Exception) {
-            Timber.e(e, "Failed to decode the theme colors. raw value=$value")
+            Logger.e(e) { "Failed to decode the theme colors. raw value=$value" }
             null
         }
     }

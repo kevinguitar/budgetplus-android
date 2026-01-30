@@ -37,6 +37,7 @@ jvmTarget = "21"
 [libraries]
 android-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
 android-activity = { module = "androidx.activity:activity-ktx", version.ref = "android-activity" }
+android-appcompat = "androidx.appcompat:appcompat:1.7.1"
 android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
@@ -103,6 +104,7 @@ permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissi
 
 [bundles]
 android = [
+    "android-appcompat",
     "android-core",
     "android-viewmodel",
     "coroutines-android",

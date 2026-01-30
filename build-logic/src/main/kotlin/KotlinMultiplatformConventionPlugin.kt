@@ -66,6 +66,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             ).forEach { iosTarget ->
                 iosTarget.binaries.framework {
                     baseName = modulePath.replaceFirstChar { it.uppercase() }
+//                    freeCompilerArgs += listOf("-Xbinary=bundleId=$appId.$modulePath")
                     isStatic = true
                 }
             }

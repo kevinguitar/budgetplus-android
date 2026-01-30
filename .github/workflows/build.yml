@@ -66,6 +66,8 @@ jobs:
           echo KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD >> ./local.properties
 
       - name: Build with Gradle
-        run: ./gradlew :androidApp:assemble --continue --quiet
+        run: |
+          ./gradlew :androidApp:assemble --continue --quiet
+          ./gradlew test detekt lint --continue --quiet
         # Disable temporarily
         # run: ./gradlew build --continue --quiet

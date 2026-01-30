@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString
@@ -48,7 +49,6 @@ import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
-import timber.log.Timber
 
 @Composable
 fun EditRecordDialog(
@@ -235,7 +235,7 @@ private fun CharSequence.isPriceTextValid(): Boolean {
     return isNotBlank() && try {
         parseToPrice() > 0.0
     } catch (e: Exception) {
-        Timber.d(e, "Invalid price editing: $this")
+        Logger.d(e) { "Invalid price editing: $this" }
         false
     }
 }

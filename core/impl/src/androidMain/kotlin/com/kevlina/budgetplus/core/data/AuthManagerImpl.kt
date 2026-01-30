@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -25,7 +26,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
 import kotlin.time.Clock
 
 @SingleIn(AppScope::class)
@@ -126,13 +126,13 @@ class AuthManagerImpl(
                 try {
                     Firebase.messaging.token.await()
                 } catch (e: Exception) {
-                    Timber.w(e, "Failed to retrieve the fcm token")
+                    Logger.w(e) { "Failed to retrieve the fcm token" }
                     null
                 }
             } else {
                 null
             }
-            Timber.d("Fcm token: $fcmToken")
+            Logger.d { "Fcm token: $fcmToken" }
 
             try {
                 // Get the latest remote user from the server
@@ -154,12 +154,12 @@ class AuthManagerImpl(
 
                 usersDb.value.document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
-                Timber.i(e)
+                Logger.i(e) { "DocNotExistsException caught" }
                 // Can't find user in the db yet, set it with the data what we have in place.
                 usersDb.value.document(user.id)
                     .set(userWithExclusiveFields.copy(fcmToken = fcmToken))
             } catch (e: Exception) {
-                Timber.w(e)
+                Logger.w(e) { "AuthManager update failed" }
             }
         }
     }

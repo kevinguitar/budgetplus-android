@@ -1,6 +1,8 @@
 package com.kevlina.budgetplus.insider.app
 
 import android.app.Application
+import co.touchlab.kermit.LogcatWriter
+import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.crashlytics.crashlytics
@@ -8,7 +10,6 @@ import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.di.HasServiceProvider
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.createGraphFactory
-import timber.log.Timber
 
 class BudgetPlusInsiderApp : Application(), HasServiceProvider {
 
@@ -24,7 +25,7 @@ class BudgetPlusInsiderApp : Application(), HasServiceProvider {
 
         registerActivityLifecycleCallbacks(activityProvider)
 
-        Timber.plant(Timber.DebugTree())
+        Logger.setLogWriters(LogcatWriter())
         Firebase.analytics.setAnalyticsCollectionEnabled(false)
         Firebase.crashlytics.isCrashlyticsCollectionEnabled = false
     }

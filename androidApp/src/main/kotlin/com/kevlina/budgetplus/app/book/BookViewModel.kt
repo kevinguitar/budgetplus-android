@@ -5,6 +5,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -36,7 +37,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ViewModelKey(BookViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -107,7 +107,7 @@ class BookViewModel(
                 navController.navigate(BookDest.Colors(hex = hex))
             }
 
-            else -> Timber.d("Deeplink: Unknown segment $firstSegment. Url=$uri")
+            else -> Logger.d { "Deeplink: Unknown segment $firstSegment. Url=$uri" }
         }
     }
 
@@ -124,7 +124,7 @@ class BookViewModel(
             } catch (e: JoinBookException.General) {
                 snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.JoinInfoNotFound) {
-                Timber.e(e)
+                Logger.e(e) { "JoinInfo not found in DB" }
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }

@@ -9,6 +9,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
+import co.touchlab.kermit.Logger
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
@@ -32,7 +33,6 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Inject
 internal class AuthViewModel(
@@ -76,7 +76,7 @@ internal class AuthViewModel(
                 handleSignIn(result)
             } catch (e: GetCredentialCancellationException) {
                 // Ignore cancellation exception
-                Timber.d(e, "Google sign in canceled")
+                Logger.d(e) { "Google sign in canceled" }
             } catch (e: GetCredentialException) {
                 snackbarSender.sendError(e)
             }
@@ -105,11 +105,11 @@ internal class AuthViewModel(
                 handleSignIn(result)
             } catch (e: GetCredentialCancellationException) {
                 // Ignore cancellation exception
-                Timber.d(e, "Google sign in canceled")
+                Logger.d(e) { "Google sign in canceled" }
             } catch (e: NoCredentialException) {
-                Timber.w(e, "No credential is found")
+                Logger.w(e) { "No credential is found" }
             } catch (e: GetCredentialException) {
-                Timber.e(e, "Fail to get credential")
+                Logger.e(e) { "Fail to get credential" }
             }
         }
     }
@@ -121,7 +121,7 @@ internal class AuthViewModel(
             credential.type != GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {
             snackbarSender.send("Unexpected type of credential")
-            Timber.e("Unexpected type of credential. ${credential.type}")
+            Logger.e { "Unexpected type of credential. ${credential.type}" }
             return
         }
 

@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.welcome
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -21,7 +22,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ViewModelKey(WelcomeViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -76,7 +76,7 @@ class WelcomeViewModel(
             } catch (e: JoinBookException.General) {
                 snackbarSender.send(e.errorRes)
             } catch (e: JoinBookException.JoinInfoNotFound) {
-                Timber.e(e)
+                Logger.e(e) { "WelcomeViewModel: Join info not found" }
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }

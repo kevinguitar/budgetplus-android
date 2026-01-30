@@ -37,6 +37,7 @@ jvmTarget = "21"
 [libraries]
 android-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
 android-activity = { module = "androidx.activity:activity-ktx", version.ref = "android-activity" }
+android-appcompat = "androidx.appcompat:appcompat:1.7.1"
 android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
@@ -82,6 +83,7 @@ install-referrer = "com.android.installreferrer:installreferrer:2.2"
 junit-android = "androidx.test.ext:junit:1.3.0"
 junit-compose = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose-multiplatform" }
 junit-core = "junit:junit:4.13.2"
+kermit = "co.touchlab:kermit:2.0.8"
 kotlin-csv = "com.jsoizo:kotlin-csv-jvm:1.10.0"
 kotlin-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
@@ -94,7 +96,6 @@ orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
 reorderable = "sh.calvin.reorderable:reorderable:3.0.0"
 test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
-timber = "com.jakewharton.timber:timber:5.0.1"
 truth = "com.google.truth:truth:1.4.5"
 turbine = "app.cash.turbine:turbine:1.2.1"
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
@@ -103,9 +104,14 @@ permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissi
 
 [bundles]
 android = [
+    "android-appcompat",
     "android-core",
     "android-viewmodel",
     "coroutines-android",
+]
+kmp = [
+    "kermit",
+    "kotlin-datetime",
 ]
 bom = [
     "firebase-bom",

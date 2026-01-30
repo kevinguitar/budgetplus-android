@@ -7,13 +7,13 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.serialization.saved
 import androidx.navigation3.runtime.NavKey
+import co.touchlab.kermit.Logger
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import timber.log.Timber
 
 /**
  * A navigation controller that has a back stack for complex navigation trees like bottom navigation.
@@ -109,11 +109,11 @@ class NavController<T : NavKey>(
             val stack = rootBackStacks[root] ?: return@forEach
             backStack.addAll(stack)
         }
-        Timber.d("NavController: BackStack=${backStack.toList()}")
+        Logger.d { "NavController: BackStack=${backStack.toList()}" }
 
         if (backStack.isEmpty()) {
             backStack.add(startRoot)
-            Timber.w("NavController: BackStack is empty, added $startRoot to avoid crash")
+            Logger.w { "NavController: BackStack is empty, added $startRoot to avoid crash" }
         }
     }
 

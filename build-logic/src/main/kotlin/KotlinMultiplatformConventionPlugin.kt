@@ -66,6 +66,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             ).forEach { iosTarget ->
                 iosTarget.binaries.framework {
                     baseName = modulePath.replaceFirstChar { it.uppercase() }
+//                    freeCompilerArgs += listOf("-Xbinary=bundleId=$appId.$modulePath")
                     isStatic = true
                 }
             }
@@ -83,7 +84,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
                 androidMain.dependencies {
                     implementation(project.libs.bundles.android)
-                    implementation(project.libs.timber)
+                    implementation(project.libs.bundles.kmp)
                 }
 
                 androidUnitTest.dependencies {
@@ -97,7 +98,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             }
 
             compilerOptions {
-                allWarningsAsErrors.set(true)
+                // Due to https://youtrack.jetbrains.com/issue/CMP-8498/KLIB-name-conflict-with-AndroidX-libraries
+                allWarningsAsErrors.set(false)
                 freeCompilerArgs.addAll(
                     "-Xcontext-parameters",
                     "-Xexplicit-backing-fields",

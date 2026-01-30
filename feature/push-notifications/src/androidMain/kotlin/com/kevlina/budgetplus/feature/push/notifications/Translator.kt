@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.push.notifications
 
+import co.touchlab.kermit.Logger
 import com.google.auth.ApiKeyCredentials
 import com.google.cloud.translate.Translate.TranslateOption
 import com.google.cloud.translate.TranslateOptions
@@ -7,11 +8,10 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 @Inject
 internal class Translator(
-    @Named("google_api_key") googleApiKey: String
+    @Named("google_api_key") googleApiKey: String,
 ) {
 
     private val translationService by lazy {
@@ -33,7 +33,7 @@ internal class Translator(
                 TranslateOption.targetLanguage(targetLanCode)
             ).translatedText
         } catch (e: Exception) {
-            Timber.e(e, "Translation failed, return original text as fallback.")
+            Logger.e(e) { "Translation failed, return original text as fallback." }
             text
         }
     }

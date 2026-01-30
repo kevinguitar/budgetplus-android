@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import net.objecthunter.exp4j.ExpressionBuilder
-import timber.log.Timber
 import java.math.RoundingMode
 
 @Inject
@@ -106,14 +106,14 @@ class CalculatorViewModel(
             val validation = expression.validate()
             if (!validation.isValid) {
                 snackbarSender.send(validation.errors.joinToString())
-                Timber.e(CalculatorException("Validation error. Raw: $text"))
+                Logger.e(CalculatorException()) { "Validation error. Raw: $text" }
                 return
             }
 
             expression.evaluate()
         } catch (e: Exception) {
             snackbarSender.sendError(e)
-            Timber.e(e, "Validation error. Raw: $text")
+            Logger.e(e) { "Validation error. Raw: $text" }
             return
         }
 
@@ -157,4 +157,4 @@ class CalculatorViewModel(
     }
 }
 
-internal class CalculatorException(override val message: String) : RuntimeException(message)
+internal class CalculatorException : RuntimeException("Calculation error")

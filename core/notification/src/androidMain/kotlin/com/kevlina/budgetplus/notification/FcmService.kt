@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
+import co.touchlab.kermit.Logger
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -24,7 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class FcmService : FirebaseMessagingService() {
 
@@ -45,11 +45,11 @@ class FcmService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         authManager.value.updateFcmToken(newToken = token)
-        Timber.d("New fcm token: $token")
+        Logger.d { "New fcm token: $token" }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        Timber.d("RemoteMessage: ${message.data}")
+        Logger.d { "RemoteMessage: ${message.data}" }
 
         val channelId = when (message.data["type"]) {
             CHANNEL_NEW_MEMBER -> CHANNEL_NEW_MEMBER

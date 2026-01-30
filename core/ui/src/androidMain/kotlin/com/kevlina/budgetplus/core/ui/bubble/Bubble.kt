@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -49,7 +50,6 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.isPreview
-import timber.log.Timber
 
 @Composable
 fun Bubble(
@@ -207,7 +207,7 @@ private fun Bubble_Preview(
 private fun BubbleDest.getOffsetSafe(): Offset? = try {
     offset()
 } catch (e: Exception) {
-    Timber.d(e, "Fail to retrieve offset for ${key}, skip showing")
+    Logger.d(e) { "Fail to retrieve offset for ${key}, skip showing" }
     null
 }
 

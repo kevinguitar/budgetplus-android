@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.convertHexToColor
 import com.kevlina.budgetplus.core.ui.AppDialog
@@ -33,7 +34,6 @@ import com.kevlina.budgetplus.feature.color.tone.picker.R
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.orchestra.colorpicker.BrightnessSlideBar
 import com.skydoves.orchestra.colorpicker.ColorPicker
-import timber.log.Timber
 import com.kevlina.budgetplus.core.common.R as coreCommonR
 
 @Composable
@@ -57,7 +57,7 @@ internal fun ColorPickerDialog(
         try {
             userInputColor = hexCode.text.convertHexToColor()
         } catch (e: Exception) {
-            Timber.d(e, "Failed to parse color hex from user input. $newHexCode")
+            Logger.d(e) { "Failed to parse color hex from user input. $newHexCode" }
         }
     }
 

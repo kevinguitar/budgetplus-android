@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.notification
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 
 @ContributesIntoSet(AppScope::class)
 class NotificationTopicSubscriber(
@@ -55,13 +55,13 @@ class NotificationTopicSubscriber(
             }
 
             Firebase.messaging.subscribeToTopic(generalTopic).await()
-            Timber.d("Notification: Subscribed to $generalTopic topic")
+            Logger.d { "Notification: Subscribed to $generalTopic topic" }
             lastInfo = SubscribeInfo(
                 userId = user.id,
                 topic = generalTopic
             )
         } catch (e: Exception) {
-            Timber.e(e)
+            Logger.e(e) { "Notification topic subscription failed" }
         }
     }
 }

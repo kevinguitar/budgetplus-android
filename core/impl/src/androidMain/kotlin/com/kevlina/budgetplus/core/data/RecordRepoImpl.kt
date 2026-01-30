@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
@@ -30,7 +31,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import timber.log.Timber
 import java.util.UUID
 import kotlin.time.Instant
 
@@ -206,7 +206,7 @@ class RecordRepoImpl(
                 }
                 dbUpdateCount += records.size()
             } catch (e: Exception) {
-                Timber.e(e)
+                Logger.e(e) { "RecordRepo: renameCategories failed" }
             }
         }
 

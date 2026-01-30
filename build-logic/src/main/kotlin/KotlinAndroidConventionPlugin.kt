@@ -64,8 +64,7 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
 
         project.dependencies {
             implementation(project.libs.bundles.android)
-            implementation(project.libs.timber)
-            implementation(project.libs.kotlin.datetime)
+            implementation(project.libs.bundles.kmp)
             testImplementation(project.libs.bundles.test)
 
             val bomBundle = project.libs.bundles.bom.get()

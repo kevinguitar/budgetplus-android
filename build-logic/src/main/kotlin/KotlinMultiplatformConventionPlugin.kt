@@ -83,7 +83,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
                 androidMain.dependencies {
                     implementation(project.libs.bundles.android)
-                    implementation(project.libs.timber)
+                    implementation(project.libs.bundles.kmp)
                 }
 
                 androidUnitTest.dependencies {

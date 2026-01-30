@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".BudgetPlusInsiderApp"
+        android:name="com.kevlina.budgetplus.insider.app.BudgetPlusInsiderApp"
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
         android:hardwareAccelerated="true"
@@ -14,7 +14,7 @@
         tools:targetApi="tiramisu">
 
         <activity
-            android:name=".main.InsiderActivity"
+            android:name="com.kevlina.budgetplus.insider.app.main.InsiderActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
             android:exported="true"
             android:launchMode="singleTask"

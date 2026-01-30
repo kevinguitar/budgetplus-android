@@ -97,7 +97,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             }
 
             compilerOptions {
-                allWarningsAsErrors.set(true)
+                // Due to https://youtrack.jetbrains.com/issue/CMP-8498/KLIB-name-conflict-with-AndroidX-libraries
+                allWarningsAsErrors.set(false)
                 freeCompilerArgs.addAll(
                     "-Xcontext-parameters",
                     "-Xexplicit-backing-fields",

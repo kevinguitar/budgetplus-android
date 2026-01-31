@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
+import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.Currency
@@ -226,8 +227,8 @@ class BookRepoImpl(
         }
 
         val userId = authManager.requireUserId()
-        val expenses = stringProvider.getArray(Res.array.default_expense_categories)
-        val incomes = stringProvider.getArray(Res.array.default_income_categories)
+        val expenses = getStringArray(Res.array.default_expense_categories)
+        val incomes = getStringArray(Res.array.default_income_categories)
         val newBook = Book(
             name = name,
             ownerId = userId,

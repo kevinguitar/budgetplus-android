@@ -49,6 +49,13 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
                 vectorDrawables {
                     useSupportLibrary = true
                 }
+
+                androidResources {
+                    @Suppress("UnstableApiUsage")
+                    localeFilters.addAll(
+                        listOf("en", "zh-rCN", "zh-rTW", "ja-rJP")
+                    )
+                }
             }
 
             signingConfigs {
@@ -87,11 +94,6 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
 
             bundle {
                 storeArchive.enable = false
-            }
-
-            androidResources {
-                @Suppress("UnstableApiUsage")
-                generateLocaleConfig = true
             }
         }
     }

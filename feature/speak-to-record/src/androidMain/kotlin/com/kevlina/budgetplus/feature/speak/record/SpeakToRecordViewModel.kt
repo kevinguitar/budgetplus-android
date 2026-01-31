@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @Inject
 class SpeakToRecordViewModel(
@@ -65,10 +66,10 @@ class SpeakToRecordViewModel(
     }
 
     fun showRecordPermissionHint() {
-        snackbarSender.send(Res.string.permission_hint)
+        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
     }
 
-    private fun handleStatus(status: SpeakToRecordStatus) {
+    private suspend fun handleStatus(status: SpeakToRecordStatus) {
         when (status) {
             SpeakToRecordStatus.DeviceNotSupported -> {
                 snackbarSender.send(Res.string.record_speech_recognition_not_supported)

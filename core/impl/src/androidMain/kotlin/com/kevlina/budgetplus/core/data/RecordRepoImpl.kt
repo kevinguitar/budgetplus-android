@@ -32,7 +32,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.UUID
+import java.util.*
 import kotlin.time.Instant
 
 @SingleIn(AppScope::class)
@@ -155,8 +155,8 @@ class RecordRepoImpl(
             batchId = null
         )
         recordsDb().add(duplicatedRecord)
-        snackbarSender.send(Res.string.record_duplicated)
         tracker.logEvent("record_duplicated")
+        appScope.launch { snackbarSender.send(Res.string.record_duplicated) }
     }
 
     override fun deleteRecord(recordId: String) {

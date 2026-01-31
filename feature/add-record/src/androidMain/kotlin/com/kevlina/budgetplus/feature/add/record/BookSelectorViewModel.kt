@@ -59,6 +59,6 @@ class BookSelectorViewModel(
     }
 
     fun showReachedMaxMessage() {
-        snackbarSender.send(Res.string.book_exceed_maximum)
+        viewModelScope.launch { snackbarSender.send(Res.string.book_exceed_maximum) }
     }
 }

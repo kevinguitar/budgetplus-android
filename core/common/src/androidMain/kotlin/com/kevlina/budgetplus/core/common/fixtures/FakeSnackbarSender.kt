@@ -16,7 +16,7 @@ object FakeSnackbarSender : SnackbarSender {
 
     override val snackbarEvent = MutableEventFlow<SnackbarData>()
 
-    override fun send(
+    override suspend fun send(
         message: StringResource,
         actionLabel: StringResource?,
         duration: SnackbarDuration,
@@ -25,7 +25,7 @@ object FakeSnackbarSender : SnackbarSender {
         lastSentMessageRes = message
     }
 
-    override fun send(
+    override suspend fun send(
         message: String,
         actionLabel: StringResource?,
         duration: SnackbarDuration,

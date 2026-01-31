@@ -40,8 +40,8 @@ class EditRecordViewModel(
         newPriceText: String,
         editBatch: Boolean,
     ) {
-        if (editBatch) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (editBatch) {
                 try {
                     val count = recordRepo.editBatch(
                         oldRecord = record,
@@ -54,16 +54,16 @@ class EditRecordViewModel(
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
+            } else {
+                recordRepo.editRecord(
+                    oldRecord = record,
+                    newDate = newDate,
+                    newCategory = newCategory,
+                    newName = newName,
+                    newPriceText = newPriceText
+                )
+                snackbarSender.send(Res.string.record_edited)
             }
-        } else {
-            recordRepo.editRecord(
-                oldRecord = record,
-                newDate = newDate,
-                newCategory = newCategory,
-                newName = newName,
-                newPriceText = newPriceText
-            )
-            snackbarSender.send(Res.string.record_edited)
         }
     }
 

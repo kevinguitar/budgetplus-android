@@ -215,7 +215,7 @@ class OverviewViewModel private constructor(
     }
 
     fun showWriteFilePermissionHint() {
-        snackbarSender.send(Res.string.permission_hint)
+        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
     }
 
     private fun setRecordType(newType: RecordType) {

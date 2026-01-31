@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.data.remote.TimePeriod
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
@@ -47,14 +48,16 @@ class OverviewTimeViewModel(
         val isAboveOneMonth = timePeriod.from < timePeriod.until.minus(1, DateTimeUnit.MONTH)
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
             tracker.logEvent("overview_exceed_max_period")
-            snackbarSender.send(
-                message = Res.string.overview_exceed_max_period,
-                actionLabel = Res.string.cta_go,
-                action = {
-                    tracker.logEvent("overview_exceed_max_period_unlock")
-                    openPremiumEvent.sendEvent()
-                }
-            )
+            viewModelScope.launch {
+                snackbarSender.send(
+                    message = Res.string.overview_exceed_max_period,
+                    actionLabel = Res.string.cta_go,
+                    action = {
+                        tracker.logEvent("overview_exceed_max_period_unlock")
+                        openPremiumEvent.sendEvent()
+                    }
+                )
+            }
 
             TimePeriod.Custom(
                 from = timePeriod.from,

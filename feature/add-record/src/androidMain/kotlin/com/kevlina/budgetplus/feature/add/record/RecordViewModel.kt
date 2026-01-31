@@ -132,7 +132,7 @@ class RecordViewModel(
     }
 
     fun showNotificationPermissionHint() {
-        snackbarSender.send(Res.string.permission_hint)
+        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
     }
 
     private fun record() {
@@ -140,12 +140,12 @@ class RecordViewModel(
         val price = calculatorVm.price.value
 
         if (category == null) {
-            snackbarSender.send(message = Res.string.record_empty_category)
+            viewModelScope.launch { snackbarSender.send(message = Res.string.record_empty_category) }
             return
         }
 
         if (price == 0.0) {
-            snackbarSender.send(Res.string.record_empty_price)
+            viewModelScope.launch { snackbarSender.send(Res.string.record_empty_price) }
             return
         }
 

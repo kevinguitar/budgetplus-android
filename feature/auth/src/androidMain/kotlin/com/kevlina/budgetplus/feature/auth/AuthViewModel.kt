@@ -122,7 +122,7 @@ internal class AuthViewModel(
             credential !is CustomCredential ||
             credential.type != GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {
-            snackbarSender.send("Unexpected type of credential")
+            coroutineScope.launch { snackbarSender.send("Unexpected type of credential") }
             Logger.e { "Unexpected type of credential. ${credential.type}" }
             return
         }

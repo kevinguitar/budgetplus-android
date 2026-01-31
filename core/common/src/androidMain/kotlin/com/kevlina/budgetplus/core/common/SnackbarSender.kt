@@ -9,14 +9,14 @@ interface SnackbarSender {
 
     val snackbarEvent: EventFlow<SnackbarData>
 
-    fun send(
+     suspend fun send(
         message: StringResource,
         actionLabel: StringResource? = null,
         duration: SnackbarDuration = SnackbarDuration.Short,
         action: () -> Unit = {},
     )
 
-    fun send(
+    suspend fun send(
         message: String,
         actionLabel: StringResource? = null,
         duration: SnackbarDuration = SnackbarDuration.Short,

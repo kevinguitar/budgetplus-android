@@ -21,38 +21,31 @@ class SnackbarSenderImpl(
     final override val snackbarEvent: EventFlow<SnackbarData>
         field = MutableEventFlow<SnackbarData>()
 
-    override fun send(
+    override suspend fun send(
         message: StringResource,
         actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
-    ) {
-        appScope.launch {
-            Logger.d { "SnackbarSender: Show snackbar $message" }
-            snackbarEvent.sendEvent(SnackbarData(
-                message = getString(message),
-                actionLabel = actionLabel?.let { getString(it) },
-                duration = duration,
-                action = action
-            ))
-        }
-    }
+    ) = send(
+        message = getString(message),
+        actionLabel = actionLabel,
+        duration = duration,
+        action = action
+    )
 
-    override fun send(
+    override suspend fun send(
         message: String,
         actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
-        appScope.launch {
-            Logger.d { "SnackbarSender: Show snackbar $message" }
-            snackbarEvent.sendEvent(SnackbarData(
-                message = message,
-                actionLabel = actionLabel?.let { getString(it) },
-                duration = duration,
-                action = action
-            ))
-        }
+        Logger.d { "SnackbarSender: Show snackbar $message" }
+        snackbarEvent.sendEvent(SnackbarData(
+            message = message,
+            actionLabel = actionLabel?.let { getString(it) },
+            duration = duration,
+            action = action
+        ))
     }
 
     override fun sendError(e: Exception) {
@@ -61,8 +54,9 @@ class SnackbarSenderImpl(
         when {
             // Do not toast the cancellation error
             e is CancellationException -> Unit
-            error != null -> send(error)
-            else -> send(Res.string.fallback_error_message)
+            // Insignificant error, just launch from appScope
+            error != null -> appScope.launch { send(error) }
+            else -> appScope.launch { send(Res.string.fallback_error_message) }
         }
     }
 }

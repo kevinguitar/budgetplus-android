@@ -99,10 +99,12 @@ class ColorTonePickerViewModel(
 
     fun processHexFromLink(hexFromLink: String) {
         previousProcessedLink = hexFromLink
-        if (themeManager.processHexFromLink(hexFromLink)) {
-            snackbarSender.send(Res.string.color_tone_applied_from_link)
-        } else {
-            snackbarSender.send(Res.string.fallback_error_message)
+        viewModelScope.launch {
+            if (themeManager.processHexFromLink(hexFromLink)) {
+                snackbarSender.send(Res.string.color_tone_applied_from_link)
+            } else {
+                snackbarSender.send(Res.string.fallback_error_message)
+            }
         }
     }
 }

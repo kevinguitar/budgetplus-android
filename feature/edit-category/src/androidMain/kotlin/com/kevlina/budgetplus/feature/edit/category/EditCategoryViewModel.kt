@@ -47,7 +47,7 @@ class EditCategoryViewModel(
         if (categoryRenameEvents.isNotEmpty()) {
             recordRepo.renameCategories(categoryRenameEvents)
         }
-        snackbarSender.send(Res.string.category_edit_successful)
+        viewModelScope.launch { snackbarSender.send(Res.string.category_edit_successful) }
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {

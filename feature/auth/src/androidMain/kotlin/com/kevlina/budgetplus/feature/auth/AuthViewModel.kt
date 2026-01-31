@@ -11,7 +11,6 @@ import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.auth_success
-import budgetplus.core.common.generated.resources.google_cloud_client_id
 import co.touchlab.kermit.Logger
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -54,6 +53,7 @@ internal class AuthViewModel(
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val credentialManager by lazy { CredentialManager.create(activity) }
+    private val googleClientId get() = activity.getString(R.string.google_cloud_client_id)
 
     private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
 
@@ -65,14 +65,14 @@ internal class AuthViewModel(
     }
 
     fun signInWithGoogle() {
-        coroutineScope.launch {
-            val siwgOption = GetSignInWithGoogleOption
-                .Builder(getString(Res.string.google_cloud_client_id))
-                .build()
-            val request = GetCredentialRequest.Builder()
-                .addCredentialOption(siwgOption)
-                .build()
+        val siwgOption = GetSignInWithGoogleOption
+            .Builder(googleClientId)
+            .build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(siwgOption)
+            .build()
 
+        coroutineScope.launch {
             try {
                 val result = credentialManager.getCredential(activity, request)
                 handleSignIn(result)
@@ -91,17 +91,17 @@ internal class AuthViewModel(
      *  If there are any accounts that were authorized before, launch the sign in dialog.
      */
     fun checkAuthorizedAccounts(enableAutoSignIn: Boolean) {
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(true)
+            .setAutoSelectEnabled(enableAutoSignIn)
+            .setServerClientId(googleClientId)
+            .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
         coroutineScope.launch {
-            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(true)
-                .setAutoSelectEnabled(enableAutoSignIn)
-                .setServerClientId(getString(Res.string.google_cloud_client_id))
-                .build()
-
-            val request = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
-
             try {
                 val result = credentialManager.getCredential(activity, request)
                 handleSignIn(result)

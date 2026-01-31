@@ -1,8 +1,5 @@
 package com.kevlina.budgetplus.core.di
 
-import android.content.Context
-import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.is_debug
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
@@ -12,8 +9,6 @@ import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import kotlinx.coroutines.runBlocking
-import org.jetbrains.compose.resources.getString
 
 @ContributesTo(AppScope::class)
 interface CommonModule {
@@ -22,13 +17,6 @@ interface CommonModule {
     @Provides
     @SingleIn(AppScope::class)
     fun provideNavigationFlow(): NavigationFlow = MutableEventFlow()
-
-    @Provides
-    @Named("is_debug")
-    fun provideIsDebug(context: Context): Boolean {
-        //TODO: what should I do?
-        return runBlocking { getString(Res.string.is_debug).toBooleanStrict() }
-    }
 
     @Provides
     @Named("app_package")

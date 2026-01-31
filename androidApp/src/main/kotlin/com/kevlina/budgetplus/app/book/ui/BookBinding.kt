@@ -82,7 +82,10 @@ internal fun BookBinding(
                 )
 
                 if (showAds) {
-                    AdsBanner(isAdMobInitialized = isAdMobInitialized)
+                    AdsBanner(
+                        isAdMobInitialized = isAdMobInitialized,
+                        bannerId = vm.bannerAdUnitId
+                    )
                 }
             }
         }

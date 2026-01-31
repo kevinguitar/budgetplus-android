@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.admob_banner_id_30sec
 import budgetplus.core.common.generated.resources.ads_not_available
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -46,7 +45,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 internal fun AdsBanner(
     isAdMobInitialized: Boolean,
-    bannerId: String = stringResource(Res.string.admob_banner_id_30sec),
+    bannerId: String,
 ) {
     Box(
         contentAlignment = Alignment.Center,

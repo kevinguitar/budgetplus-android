@@ -10,6 +10,6 @@
     <string name="admob_interstitial_id" translatable="false">ca-app-pub-5636675608309788/3378219950</string>
 
     <!-- Others -->
-    <bool name="is_debug">false</bool>
+    <string name="is_debug">false</string>
 
 </resources>

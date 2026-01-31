@@ -3,8 +3,10 @@ package com.kevlina.budgetplus.feature.welcome
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_create_success
+import budgetplus.core.common.generated.resources.book_join_success
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
@@ -53,7 +55,7 @@ class WelcomeViewModel(
             val name = bookName.text.toString()
             try {
                 bookRepo.createBook(name = name, source = "welcome")
-                toaster.showMessage(stringProvider[R.string.book_create_success, name])
+                toaster.showMessage(stringProvider[Res.string.book_create_success, name])
 
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: Exception) {
@@ -70,11 +72,11 @@ class WelcomeViewModel(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
-                toaster.showMessage(stringProvider[R.string.book_join_success, bookName])
+                toaster.showMessage(stringProvider[Res.string.book_join_success, bookName])
 
                 navigation.sendEvent(bookNavigationAction)
             } catch (e: JoinBookException.General) {
-                snackbarSender.send(e.errorRes)
+                snackbarSender.send(e.message)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Logger.e(e) { "WelcomeViewModel: Join info not found" }
             } catch (e: Exception) {

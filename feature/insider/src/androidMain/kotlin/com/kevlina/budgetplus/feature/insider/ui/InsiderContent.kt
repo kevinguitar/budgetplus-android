@@ -20,16 +20,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.insider_active_premium_users
+import budgetplus.core.common.generated.resources.insider_daily_active_users
+import budgetplus.core.common.generated.resources.insider_new_users
+import budgetplus.core.common.generated.resources.insider_total_cn_users
+import budgetplus.core.common.generated.resources.insider_total_en_users
+import budgetplus.core.common.generated.resources.insider_total_ja_users
+import budgetplus.core.common.generated.resources.insider_total_premium_users
+import budgetplus.core.common.generated.resources.insider_users_overview
+import budgetplus.core.common.generated.resources.insider_weekly_active_users
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.insider.InsiderViewModel
 import com.kevlina.budgetplus.feature.insider.UsersOverviewData
+import org.jetbrains.compose.resources.stringResource
 
 private const val TYPE_LOADER = "loader"
 private const val TYPE_STAT = "stat"
@@ -66,7 +75,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
         } else {
             item(contentType = TYPE_STAT) {
                 StatCard(
-                    title = stringResource(id = R.string.insider_total_premium_users),
+                    title = stringResource(Res.string.insider_total_premium_users),
                     icon = Icons.Rounded.WorkspacePremium,
                     number = data.totalPremiumUsers
                 )
@@ -74,7 +83,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
 
             item(contentType = TYPE_STAT) {
                 StatCard(
-                    title = stringResource(id = R.string.insider_daily_active_users),
+                    title = stringResource(Res.string.insider_daily_active_users),
                     icon = Icons.Rounded.Today,
                     number = data.dailyActiveUsers
                 )
@@ -82,7 +91,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
 
             item(contentType = TYPE_STAT) {
                 StatCard(
-                    title = stringResource(id = R.string.insider_weekly_active_users),
+                    title = stringResource(Res.string.insider_weekly_active_users),
                     icon = Icons.Rounded.CalendarViewWeek,
                     number = data.weeklyActiveUsers
                 )
@@ -90,7 +99,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
 
             item {
                 ExpandableTitle(
-                    title = stringResource(id = R.string.insider_users_overview),
+                    title = stringResource(Res.string.insider_users_overview),
                     isExpanded = showUsersOverview,
                     onClick = { showUsersOverview = !showUsersOverview }
                 )
@@ -102,7 +111,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
 
             item {
                 ExpandableTitle(
-                    title = stringResource(id = R.string.insider_new_users),
+                    title = stringResource(Res.string.insider_new_users),
                     isExpanded = showNewUsers,
                     onClick = { showNewUsers = !showNewUsers }
                 )
@@ -114,7 +123,7 @@ internal fun BoxWithConstraintsScope.InsiderContent() {
 
             item {
                 ExpandableTitle(
-                    title = stringResource(id = R.string.insider_active_premium_users),
+                    title = stringResource(Res.string.insider_active_premium_users),
                     isExpanded = showActivePremiumUsers,
                     onClick = { showActivePremiumUsers = !showActivePremiumUsers }
                 )
@@ -135,21 +144,21 @@ private fun LazyListScope.overviewSection(overviewData: UsersOverviewData?) {
     } else {
         item(contentType = TYPE_STAT) {
             StatCard(
-                title = stringResource(id = R.string.insider_total_en_users),
+                title = stringResource(Res.string.insider_total_en_users),
                 icon = Icons.Rounded.Abc,
                 number = overviewData.totalEnglishUsers
             )
         }
         item(contentType = TYPE_STAT) {
             StatCard(
-                title = stringResource(id = R.string.insider_total_ja_users),
+                title = stringResource(Res.string.insider_total_ja_users),
                 icon = Icons.Rounded.RamenDining,
                 number = overviewData.totalJapaneseUsers
             )
         }
         item(contentType = TYPE_STAT) {
             StatCard(
-                title = stringResource(id = R.string.insider_total_cn_users),
+                title = stringResource(Res.string.insider_total_cn_users),
                 icon = Icons.Rounded.Landscape,
                 number = overviewData.totalSimplifiedChineseUsers
             )

@@ -2,7 +2,11 @@ package com.kevlina.budgetplus.feature.record.card
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_deleted
+import budgetplus.core.common.generated.resources.batch_record_edited
+import budgetplus.core.common.generated.resources.record_deleted
+import budgetplus.core.common.generated.resources.record_edited
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -47,7 +51,7 @@ class EditRecordViewModel(
                         newName = newName,
                         newPriceText = newPriceText
                     )
-                    snackbarSender.send(stringProvider[R.string.batch_record_edited, count.toString()])
+                    snackbarSender.send(stringProvider[Res.string.batch_record_edited, count.toString()])
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
@@ -60,7 +64,7 @@ class EditRecordViewModel(
                 newName = newName,
                 newPriceText = newPriceText
             )
-            snackbarSender.send(R.string.record_edited)
+            snackbarSender.send(Res.string.record_edited)
         }
     }
 
@@ -69,14 +73,14 @@ class EditRecordViewModel(
             viewModelScope.launch {
                 try {
                     val count = recordRepo.deleteBatch(record)
-                    snackbarSender.send(stringProvider[R.string.batch_record_deleted, count.toString()])
+                    snackbarSender.send(stringProvider[Res.string.batch_record_deleted, count.toString()])
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
             }
         } else {
             recordRepo.deleteRecord(record.id)
-            snackbarSender.send(stringProvider[R.string.record_deleted, record.name])
+            snackbarSender.send(stringProvider[Res.string.record_deleted, record.name])
         }
     }
 

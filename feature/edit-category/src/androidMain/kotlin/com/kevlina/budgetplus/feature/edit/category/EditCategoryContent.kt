@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_add
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -27,6 +27,7 @@ import com.kevlina.budgetplus.core.ui.Fab
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleShape
 import com.kevlina.budgetplus.core.ui.thenIf
+import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -93,7 +94,7 @@ internal fun EditCategoryContent(
 
         Fab(
             icon = Icons.Rounded.Add,
-            contentDescription = stringResource(id = R.string.cta_add),
+            contentDescription = stringResource(Res.string.cta_add),
             onClick = { onDialogEditClick(CategoryEditMode.Add) }
         )
     }

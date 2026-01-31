@@ -5,8 +5,9 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_created
 import com.kevlina.budgetplus.core.common.EventTrigger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -117,7 +118,7 @@ class BatchRecordViewModel(
             times = times.value
         )
         recordEvent.sendEvent(Unit)
-        snackbarSender.send(stringProvider[R.string.batch_record_created, times.value.toString(), category])
+        snackbarSender.send(stringProvider[Res.string.batch_record_created, times.value.toString(), category])
         resetScreen()
     }
 

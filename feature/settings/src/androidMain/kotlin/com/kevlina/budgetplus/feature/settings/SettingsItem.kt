@@ -33,6 +33,8 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 private val cornerRadius = 8.dp
 
@@ -42,6 +44,7 @@ internal fun SettingsItem(
     description: String? = null,
     icon: ImageVector? = null,
     @DrawableRes iconRes: Int? = null,
+    drawableRes: DrawableResource? = null,
     showCrownAnimation: Boolean = false,
     roundTop: Boolean = false,
     roundBottom: Boolean = false,
@@ -83,7 +86,15 @@ internal fun SettingsItem(
 
             if (iconRes != null) {
                 Image(
-                    painter = painterResource(id = iconRes),
+                    painter = painterResource(iconRes),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
+                )
+            }
+
+            if (drawableRes != null) {
+                Image(
+                    painter = painterResource(drawableRes),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
                 )

@@ -52,6 +52,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 compilerOptions {
                     jvmTarget.set(project.libs.versions.jvmTarget.map(JvmTarget::fromTarget))
                 }
+                //TODO: After this all resources can live in core:common
                 androidResources.enable = true
             }*/
 

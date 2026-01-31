@@ -2,7 +2,9 @@ package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.category_already_exist
+import budgetplus.core.common.generated.resources.category_edit_successful
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -46,7 +48,7 @@ class EditCategoryViewModel(
         if (categoryRenameEvents.isNotEmpty()) {
             recordRepo.renameCategories(categoryRenameEvents)
         }
-        snackbarSender.send(R.string.category_edit_successful)
+        snackbarSender.send(Res.string.category_edit_successful)
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {
@@ -63,7 +65,7 @@ class EditCategoryViewModel(
     }
 
     fun showCategoryExistError(category: String) {
-        snackbarSender.send(stringProvider[R.string.category_already_exist, category])
+        snackbarSender.send(stringProvider[Res.string.category_already_exist, category])
     }
 
     fun onCategoryRenamed(oldName: String, newName: String) {

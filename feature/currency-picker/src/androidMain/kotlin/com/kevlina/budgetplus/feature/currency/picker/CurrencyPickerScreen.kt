@@ -12,15 +12,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.currency_picker_no_conversion_disclaimer
+import budgetplus.core.common.generated.resources.currency_picker_title
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CurrencyPickerScreen(
@@ -38,7 +40,7 @@ fun CurrencyPickerScreen(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.currency_picker_title),
+            title = stringResource(Res.string.currency_picker_title),
             navigateUp = { navController.navigateUp() },
         )
 
@@ -65,7 +67,7 @@ fun CurrencyPickerScreen(
 
         currencyDisclaimerDialogState?.let { currency ->
             ConfirmDialog(
-                message = stringResource(id = R.string.currency_picker_no_conversion_disclaimer),
+                message = stringResource(Res.string.currency_picker_no_conversion_disclaimer),
                 onConfirm = {
                     vm.onCurrencyPicked(currency)
                     currencyDisclaimerDialogState = null

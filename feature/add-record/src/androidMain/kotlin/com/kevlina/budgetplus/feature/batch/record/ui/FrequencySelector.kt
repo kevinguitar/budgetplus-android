@@ -17,11 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_every_duration
+import budgetplus.core.common.generated.resources.batch_record_frequency
+import budgetplus.core.common.generated.resources.batch_record_unit_day
+import budgetplus.core.common.generated.resources.batch_record_unit_month
+import budgetplus.core.common.generated.resources.batch_record_unit_week
 import com.kevlina.budgetplus.core.data.BatchFrequency
 import com.kevlina.budgetplus.core.data.BatchUnit
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -31,6 +35,8 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 private const val DURATION_MIN = 1
 private const val DURATION_MAX = 12
@@ -57,7 +63,7 @@ internal fun FrequencySelector(
         Spacer(Modifier.width(16.dp))
 
         Text(
-            text = stringResource(id = R.string.batch_record_frequency),
+            text = stringResource(Res.string.batch_record_frequency),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
         )
@@ -65,7 +71,7 @@ internal fun FrequencySelector(
         Spacer(Modifier.width(16.dp))
 
         Text(
-            text = stringResource(id = R.string.batch_record_every_duration),
+            text = stringResource(Res.string.batch_record_every_duration),
             fontSize = fontSize,
         )
 
@@ -114,7 +120,7 @@ internal fun FrequencySelector(
         ) {
 
             Text(
-                text = stringResource(id = frequency.unit.stringRes),
+                text = stringResource(frequency.unit.stringRes),
                 fontSize = fontSize,
             )
 
@@ -129,7 +135,7 @@ internal fun FrequencySelector(
             ) {
                 BatchUnit.entries.forEach { unit ->
                     DropdownItem(
-                        name = stringResource(id = unit.stringRes),
+                        name = stringResource(unit.stringRes),
                         onClick = {
                             setUnit(unit)
                             isUnitDropdownShown = false
@@ -141,11 +147,11 @@ internal fun FrequencySelector(
     }
 }
 
-private val BatchUnit.stringRes: Int
+private val BatchUnit.stringRes: StringResource
     get() = when (this) {
-        BatchUnit.Month -> R.string.batch_record_unit_month
-        BatchUnit.Week -> R.string.batch_record_unit_week
-        BatchUnit.Day -> R.string.batch_record_unit_day
+        BatchUnit.Month -> Res.string.batch_record_unit_month
+        BatchUnit.Week -> Res.string.batch_record_unit_week
+        BatchUnit.Day -> Res.string.batch_record_unit_day
     }
 
 @Preview

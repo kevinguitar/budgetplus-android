@@ -5,9 +5,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_join_success
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
@@ -117,12 +118,12 @@ class BookViewModel(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
-                snackbarSender.send(stringProvider[R.string.book_join_success, bookName])
+                snackbarSender.send(stringProvider[Res.string.book_join_success, bookName])
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 navController.navigate(BookDest.UnlockPremium)
-                snackbarSender.send(e.errorRes)
+                snackbarSender.send(e.message)
             } catch (e: JoinBookException.General) {
-                snackbarSender.send(e.errorRes)
+                snackbarSender.send(e.message)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Logger.e(e) { "JoinInfo not found in DB" }
             } catch (e: Exception) {

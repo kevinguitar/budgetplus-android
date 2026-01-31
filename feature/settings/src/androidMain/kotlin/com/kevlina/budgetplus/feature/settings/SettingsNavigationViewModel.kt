@@ -5,8 +5,12 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.settings_contact_us
+import budgetplus.core.common.generated.resources.settings_no_email_app_found
+import budgetplus.core.common.generated.resources.settings_share_app
+import budgetplus.core.common.generated.resources.settings_share_app_message
 import com.kevlina.budgetplus.core.common.ActivityProvider
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
@@ -47,9 +51,9 @@ internal class SettingsNavigationViewModel(
         val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.settings_share_app_message, googlePlayUrl])
+            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.settings_share_app_message, googlePlayUrl])
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.settings_share_app]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.settings_share_app]))
         tracker.logEvent("settings_share_app_click")
     }
 
@@ -68,14 +72,14 @@ internal class SettingsNavigationViewModel(
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
-            putExtra(Intent.EXTRA_SUBJECT, stringProvider[R.string.settings_contact_us])
+            putExtra(Intent.EXTRA_SUBJECT, stringProvider[Res.string.settings_contact_us])
             putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n\n")
         }
         if (intent.resolveActivity(activity.packageManager) != null) {
             activity.startActivity(intent)
             tracker.logEvent("settings_contact_us_click")
         } else {
-            snackbarSender.send(R.string.settings_no_email_app_found)
+            snackbarSender.send(Res.string.settings_no_email_app_found)
         }
     }
 

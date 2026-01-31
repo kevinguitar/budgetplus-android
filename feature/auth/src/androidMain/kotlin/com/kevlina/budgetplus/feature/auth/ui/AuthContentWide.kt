@@ -13,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.auth_google
+import budgetplus.core.common.generated.resources.ic_google
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 
@@ -50,8 +52,8 @@ fun AuthContentWide(
 
             SocialSignInButton(
                 onClick = signInWithGoogle,
-                textRes = R.string.auth_google,
-                iconRes = R.drawable.ic_google
+                textRes = Res.string.auth_google,
+                iconRes = Res.drawable.ic_google
             )
         }
     }

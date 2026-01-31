@@ -9,21 +9,23 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_cancel
+import budgetplus.core.common.generated.resources.cta_confirm
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ConfirmDialog(
     message: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    confirmText: String = stringResource(id = R.string.cta_confirm),
-    cancelText: String = stringResource(id = R.string.cta_cancel),
+    confirmText: String = stringResource(Res.string.cta_confirm),
+    cancelText: String = stringResource(Res.string.cta_cancel),
 ) {
 
     AppDialog(onDismissRequest = onDismiss) {

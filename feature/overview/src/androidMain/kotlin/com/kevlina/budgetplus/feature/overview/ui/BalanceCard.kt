@@ -15,15 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_balance
+import budgetplus.core.common.generated.resources.overview_total_price
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun BalanceCard(
@@ -42,7 +44,7 @@ internal fun BalanceCard(
     ) {
 
         BalanceItem(
-            title = stringResource(id = R.string.overview_total_price),
+            title = stringResource(Res.string.overview_total_price),
             balance = totalPrice,
             modifier = Modifier.weight(1F)
         )
@@ -55,7 +57,7 @@ internal fun BalanceCard(
         )
 
         BalanceItem(
-            title = stringResource(id = R.string.overview_balance),
+            title = stringResource(Res.string.overview_balance),
             balance = balance,
             modifier = Modifier.weight(1F)
         )

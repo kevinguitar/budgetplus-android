@@ -2,9 +2,11 @@ package com.kevlina.budgetplus.feature.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_go
+import budgetplus.core.common.generated.resources.overview_exceed_max_period
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
@@ -46,8 +48,8 @@ class OverviewTimeViewModel(
         val period = if (!authManager.isPremium.value && isAboveOneMonth) {
             tracker.logEvent("overview_exceed_max_period")
             snackbarSender.send(
-                message = R.string.overview_exceed_max_period,
-                actionLabel = R.string.cta_go,
+                message = Res.string.overview_exceed_max_period,
+                actionLabel = Res.string.cta_go,
                 action = {
                     tracker.logEvent("overview_exceed_max_period_unlock")
                     openPremiumEvent.sendEvent()

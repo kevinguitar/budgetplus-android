@@ -17,12 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_preview_title
+import budgetplus.core.common.generated.resources.cta_invite
+import budgetplus.core.common.generated.resources.default_expense_categories
+import budgetplus.core.common.generated.resources.record_note
+import budgetplus.core.common.generated.resources.record_note_placeholder_expense
+import budgetplus.core.common.generated.resources.settings_description
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -39,6 +43,8 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringArrayResource
+import org.jetbrains.compose.resources.stringResource
 import java.util.Currency
 import java.util.Locale
 
@@ -47,7 +53,7 @@ internal fun TonePreview(
     modifier: Modifier = Modifier,
 ) {
 
-    val expenseCategoriesArray = stringArrayResource(id = R.array.default_expense_categories)
+    val expenseCategoriesArray = stringArrayResource(Res.array.default_expense_categories)
     val expenseCategories = remember { expenseCategoriesArray.toList() }
 
     Column(
@@ -62,16 +68,16 @@ internal fun TonePreview(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.color_tone_preview_title),
+            title = stringResource(Res.string.color_tone_preview_title),
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.GroupAdd,
-                    description = stringResource(id = R.string.cta_invite),
+                    description = stringResource(Res.string.cta_invite),
                 )
 
                 MenuAction(
                     imageVector = Icons.Rounded.Settings,
-                    description = stringResource(id = R.string.settings_description),
+                    description = stringResource(Res.string.settings_description),
                 )
             },
             applyStatusBarPadding = false
@@ -99,8 +105,8 @@ internal fun TonePreview(
 
         TextField(
             state = rememberTextFieldState(""),
-            title = stringResource(id = R.string.record_note),
-            placeholder = stringResource(id = R.string.record_note_placeholder_expense),
+            title = stringResource(Res.string.record_note),
+            placeholder = stringResource(Res.string.record_note_placeholder_expense),
             enabled = false,
             modifier = Modifier
                 .fillMaxWidth()

@@ -9,12 +9,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.NotificationAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_add
+import budgetplus.core.common.generated.resources.insider_title
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.insider.ui.InsiderContent
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun InsiderScreen(
@@ -27,11 +29,11 @@ fun InsiderScreen(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.insider_title),
+            title = stringResource(Res.string.insider_title),
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.NotificationAdd,
-                    description = stringResource(id = R.string.cta_add),
+                    description = stringResource(Res.string.cta_add),
                     onClick = openPushNotifications,
                 )
             }

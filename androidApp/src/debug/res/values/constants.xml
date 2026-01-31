@@ -5,6 +5,6 @@
     <string name="admob_banner_id_30sec" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="admob_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
-    <bool name="is_debug">true</bool>
+    <string name="is_debug">true</string>
 
 </resources>

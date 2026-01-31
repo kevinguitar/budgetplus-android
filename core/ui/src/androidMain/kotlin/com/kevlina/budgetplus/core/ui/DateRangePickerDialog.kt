@@ -15,11 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_cancel
+import budgetplus.core.common.generated.resources.cta_confirm
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -27,6 +28,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DateRangePickerDialog(
@@ -88,7 +90,7 @@ fun DateRangePickerDialog(
 
             Row(modifier = Modifier.align(Alignment.End)) {
                 Text(
-                    text = stringResource(id = R.string.cta_cancel),
+                    text = stringResource(Res.string.cta_cancel),
                     color = LocalAppColors.current.dark,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier
@@ -98,7 +100,7 @@ fun DateRangePickerDialog(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.cta_confirm),
+                    text = stringResource(Res.string.cta_confirm),
                     color = LocalAppColors.current.dark,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier

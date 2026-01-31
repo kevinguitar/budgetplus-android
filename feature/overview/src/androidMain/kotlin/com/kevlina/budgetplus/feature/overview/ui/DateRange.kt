@@ -12,10 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.date_to
+import budgetplus.core.common.generated.resources.select_date
 import com.kevlina.budgetplus.core.common.fullFormatted
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -23,6 +24,7 @@ import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.ui.thenIf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun DateRange(
@@ -53,7 +55,7 @@ internal fun DateRange(
 
         Icon(
             imageVector = Icons.Filled.DateRange,
-            contentDescription = stringResource(id = R.string.select_date),
+            contentDescription = stringResource(Res.string.select_date),
             tint = LocalAppColors.current.dark
         )
 
@@ -80,7 +82,7 @@ internal fun DateRange(
                     .rippleClick(borderless = true, onClick = state.nextDay)
             )
         } else {
-            Text(text = stringResource(id = R.string.date_to))
+            Text(text = stringResource(Res.string.date_to))
 
             Text(
                 text = untilDate.mediumFormatted,

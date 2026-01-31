@@ -1,10 +1,12 @@
 package com.kevlina.budgetplus.feature.unlock.premium
 
 import androidx.lifecycle.ViewModel
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.premium_acknowledge_fail
+import budgetplus.core.common.generated.resources.premium_unlocked
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.ActivityProvider
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
@@ -36,13 +38,13 @@ class PremiumViewModel(
         .map { state ->
             when (state) {
                 PurchaseState.PaymentAcknowledgeFailed -> {
-                    snackbarSender.send(R.string.premium_acknowledge_fail)
+                    snackbarSender.send(Res.string.premium_acknowledge_fail)
                     return@map true
                 }
 
                 PurchaseState.Success -> {
                     tracker.logEvent("buy_premium_success")
-                    snackbarSender.send(R.string.premium_unlocked)
+                    snackbarSender.send(Res.string.premium_unlocked)
                     return@map true
                 }
 

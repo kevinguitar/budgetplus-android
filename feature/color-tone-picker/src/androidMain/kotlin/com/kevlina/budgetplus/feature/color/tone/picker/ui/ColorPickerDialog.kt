@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.color.tone.picker.ui
 
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,9 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_color_hex_code
+import budgetplus.core.common.generated.resources.cta_cancel
+import budgetplus.core.common.generated.resources.cta_confirm
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.convertHexToColor
@@ -34,7 +38,7 @@ import com.kevlina.budgetplus.feature.color.tone.picker.R
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.orchestra.colorpicker.BrightnessSlideBar
 import com.skydoves.orchestra.colorpicker.ColorPicker
-import com.kevlina.budgetplus.core.common.R as coreCommonR
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun ColorPickerDialog(
@@ -95,13 +99,13 @@ internal fun ColorPickerDialog(
                 }
             ) {
                 //TODO: Migrate to compose resources
-                val selector = it.context.getDrawable(R.drawable.ic_color_selector)
+                val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
                 it.setSelectorDrawable(selector)
             }
 
             TextField(
                 state = hexCode,
-                title = stringResource(id = coreCommonR.string.color_tone_color_hex_code),
+                title = stringResource(Res.string.color_tone_color_hex_code),
             )
 
             Row(
@@ -110,7 +114,7 @@ internal fun ColorPickerDialog(
 
                 Button(onClick = onDismiss) {
                     Text(
-                        text = stringResource(id = coreCommonR.string.cta_cancel),
+                        text = stringResource(Res.string.cta_cancel),
                         color = LocalAppColors.current.light,
                     )
                 }
@@ -119,7 +123,7 @@ internal fun ColorPickerDialog(
                     onClick = { onColorPicked(selectedColor.hexCode) }
                 ) {
                     Text(
-                        text = stringResource(id = coreCommonR.string.cta_confirm),
+                        text = stringResource(Res.string.cta_confirm),
                         color = LocalAppColors.current.light,
                     )
                 }

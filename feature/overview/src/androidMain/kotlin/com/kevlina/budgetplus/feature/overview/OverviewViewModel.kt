@@ -3,8 +3,10 @@ package com.kevlina.budgetplus.feature.overview
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.export_csv_success
+import budgetplus.core.common.generated.resources.permission_hint
 import com.kevlina.budgetplus.core.common.ActivityProvider
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -205,7 +207,7 @@ class OverviewViewModel private constructor(
                     type = csvWriter.mimeType
                 }
                 activity.startActivity(Intent.createChooser(intent, null))
-                snackbarSender.send(R.string.export_csv_success)
+                snackbarSender.send(Res.string.export_csv_success)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }
@@ -213,7 +215,7 @@ class OverviewViewModel private constructor(
     }
 
     fun showWriteFilePermissionHint() {
-        snackbarSender.send(R.string.permission_hint)
+        snackbarSender.send(Res.string.permission_hint)
     }
 
     private fun setRecordType(newType: RecordType) {

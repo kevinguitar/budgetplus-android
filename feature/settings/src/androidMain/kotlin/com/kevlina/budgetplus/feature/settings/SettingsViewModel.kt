@@ -4,7 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.settings_book_deleted
+import budgetplus.core.common.generated.resources.settings_book_left
+import budgetplus.core.common.generated.resources.settings_rename_book_success
+import budgetplus.core.common.generated.resources.settings_rename_user_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
@@ -60,7 +64,7 @@ class SettingsViewModel private constructor(
         viewModelScope.launch {
             try {
                 authManager.renameUser(newName)
-                snackbarSender.send(stringProvider[R.string.settings_rename_user_success, newName])
+                snackbarSender.send(stringProvider[Res.string.settings_rename_user_success, newName])
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }
@@ -71,7 +75,7 @@ class SettingsViewModel private constructor(
         viewModelScope.launch {
             try {
                 bookRepo.renameBook(newName)
-                snackbarSender.send(stringProvider[R.string.settings_rename_book_success, newName])
+                snackbarSender.send(stringProvider[Res.string.settings_rename_book_success, newName])
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }
@@ -89,9 +93,9 @@ class SettingsViewModel private constructor(
             try {
                 bookRepo.leaveOrDeleteBook()
                 snackbarSender.send(stringProvider[if (isBookOwner) {
-                    R.string.settings_book_deleted
+                    Res.string.settings_book_deleted
                 } else {
-                    R.string.settings_book_left
+                    Res.string.settings_book_left
                 }, bookName.orEmpty()])
             } catch (e: Exception) {
                 snackbarSender.sendError(e)

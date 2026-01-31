@@ -25,13 +25,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import budgetplus.core.common.generated.resources.cta_delete
+import budgetplus.feature.add_record.generated.resources.Res
+import budgetplus.feature.add_record.generated.resources.ic_divide
+import budgetplus.feature.add_record.generated.resources.ic_equal
+import budgetplus.feature.add_record.generated.resources.ic_minus
+import budgetplus.feature.add_record.generated.resources.ic_multiply
+import budgetplus.feature.add_record.generated.resources.ic_plus
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -41,13 +46,14 @@ import com.kevlina.budgetplus.core.ui.Surface
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.thenIf
 import com.kevlina.budgetplus.feature.add.record.CalculatorViewModel
-import com.kevlina.budgetplus.feature.add.record.R
 import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButton
 import com.kevlina.budgetplus.feature.speak.record.ui.SpeakToRecordButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.kevlina.budgetplus.core.common.R as coreCommonR
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import budgetplus.core.common.generated.resources.Res as CommonRes
 
 enum class CalculatorButton(val text: Char) {
     Seven('7'), Four('4'),
@@ -196,30 +202,30 @@ private fun ColumnScope.CalculatorBtn(
         when (button) {
             CalculatorButton.Delete -> Icon(
                 imageVector = Icons.AutoMirrored.Rounded.Backspace,
-                contentDescription = stringResource(id = coreCommonR.string.cta_delete),
+                contentDescription = stringResource(CommonRes.string.cta_delete),
                 tint = LocalAppColors.current.light
             )
 
             CalculatorButton.Plus -> Image(
-                painter = painterResource(id = R.drawable.ic_plus),
+                painter = painterResource(Res.drawable.ic_plus),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalAppColors.current.light)
             )
 
             CalculatorButton.Minus -> Image(
-                painter = painterResource(id = R.drawable.ic_minus),
+                painter = painterResource(Res.drawable.ic_minus),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalAppColors.current.light)
             )
 
             CalculatorButton.Multiply -> Image(
-                painter = painterResource(id = R.drawable.ic_multiply),
+                painter = painterResource(Res.drawable.ic_multiply),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalAppColors.current.light)
             )
 
             CalculatorButton.Divide -> Image(
-                painter = painterResource(id = R.drawable.ic_divide),
+                painter = painterResource(Res.drawable.ic_divide),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalAppColors.current.light)
             )
@@ -270,7 +276,7 @@ private fun RowScope.DoneBtn(
     ) {
         if (needEvaluate) {
             Image(
-                painter = painterResource(id = R.drawable.ic_equal),
+                painter = painterResource(Res.drawable.ic_equal),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalAppColors.current.light)
             )

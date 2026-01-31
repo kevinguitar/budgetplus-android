@@ -5,28 +5,29 @@ import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
+import org.jetbrains.compose.resources.StringResource
 
 @VisibleForTesting
 object FakeSnackbarSender : SnackbarSender {
 
-    var lastSentMessageId: Int? = null
+    var lastSentMessageRes: StringResource? = null
     var lastSentMessage: String? = null
     var lastSentError: Exception? = null
 
     override val snackbarEvent = MutableEventFlow<SnackbarData>()
 
     override fun send(
-        message: Int,
-        actionLabel: Int?,
+        message: StringResource,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
-        lastSentMessageId = message
+        lastSentMessageRes = message
     }
 
     override fun send(
         message: String,
-        actionLabel: Int?,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {

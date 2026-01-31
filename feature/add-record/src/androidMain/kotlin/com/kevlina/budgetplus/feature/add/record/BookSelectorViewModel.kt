@@ -2,7 +2,9 @@ package com.kevlina.budgetplus.feature.add.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_create_success
+import budgetplus.core.common.generated.resources.book_exceed_maximum
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.combineState
@@ -50,7 +52,7 @@ class BookSelectorViewModel(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name = name, source = "selector")
-                snackbarSender.send(stringProvider[R.string.book_create_success, name])
+                snackbarSender.send(stringProvider[Res.string.book_create_success, name])
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }
@@ -58,6 +60,6 @@ class BookSelectorViewModel(
     }
 
     fun showReachedMaxMessage() {
-        snackbarSender.send(R.string.book_exceed_maximum)
+        snackbarSender.send(Res.string.book_exceed_maximum)
     }
 }

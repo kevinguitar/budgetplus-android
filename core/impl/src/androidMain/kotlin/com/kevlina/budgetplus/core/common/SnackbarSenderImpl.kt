@@ -1,10 +1,13 @@
 package com.kevlina.budgetplus.core.common
 
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.fallback_error_message
 import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
+import org.jetbrains.compose.resources.StringResource
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
@@ -16,8 +19,8 @@ class SnackbarSenderImpl(
         field = MutableEventFlow<SnackbarData>()
 
     override fun send(
-        message: Int,
-        actionLabel: Int?,
+        message: StringResource,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) = send(
@@ -29,7 +32,7 @@ class SnackbarSenderImpl(
 
     override fun send(
         message: String,
-        actionLabel: Int?,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
@@ -49,7 +52,7 @@ class SnackbarSenderImpl(
             // Do not toast the cancellation error
             e is CancellationException -> Unit
             error != null -> send(error)
-            else -> send(R.string.fallback_error_message)
+            else -> send(Res.string.fallback_error_message)
         }
     }
 }

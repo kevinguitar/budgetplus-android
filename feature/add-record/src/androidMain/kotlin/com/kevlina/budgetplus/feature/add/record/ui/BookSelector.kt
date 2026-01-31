@@ -16,12 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_name_placeholder
+import budgetplus.core.common.generated.resources.book_name_title
+import budgetplus.core.common.generated.resources.book_selection
+import budgetplus.core.common.generated.resources.cta_create
+import budgetplus.core.common.generated.resources.menu_create_book
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -36,6 +40,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.add.record.BookSelectorViewModel
 import com.kevlina.budgetplus.feature.add.record.CreateBookBtnState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BookSelector(navController: NavController<BookDest>) {
@@ -69,7 +74,7 @@ fun BookSelector(navController: NavController<BookDest>) {
 
             Icon(
                 imageVector = Icons.Rounded.ArrowDropDown,
-                contentDescription = stringResource(id = R.string.book_selection),
+                contentDescription = stringResource(Res.string.book_selection),
                 tint = LocalAppColors.current.light
             )
         }
@@ -111,7 +116,7 @@ fun BookSelector(navController: NavController<BookDest>) {
             DropdownDivider()
 
             DropdownItem(
-                name = stringResource(id = R.string.menu_create_book),
+                name = stringResource(Res.string.menu_create_book),
                 icon = if (createBookBtnState != CreateBookBtnState.Enabled) {
                     Icons.Rounded.Lock
                 } else {
@@ -132,9 +137,9 @@ fun BookSelector(navController: NavController<BookDest>) {
 
     if (isBookCreationDialogShown) {
         InputDialog(
-            buttonText = stringResource(id = R.string.cta_create),
-            title = stringResource(id = R.string.book_name_title),
-            placeholder = stringResource(id = R.string.book_name_placeholder),
+            buttonText = stringResource(Res.string.cta_create),
+            title = stringResource(Res.string.book_name_title),
+            placeholder = stringResource(Res.string.book_name_placeholder),
             onButtonClicked = viewModel::createBook,
             onDismiss = { isBookCreationDialogShown = false }
         )

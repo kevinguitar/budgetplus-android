@@ -14,15 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.search_field_placeholder
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.containerPadding
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SearchContent(
@@ -38,7 +39,7 @@ internal fun SearchContent(
 
         SearchField(
             keyword = state.query,
-            hint = stringResource(R.string.search_field_placeholder),
+            hint = stringResource(Res.string.search_field_placeholder),
             onDone = { focusManager.clearFocus() },
             modifier = Modifier
                 .containerPadding()

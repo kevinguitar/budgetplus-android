@@ -13,11 +13,13 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.record_note
+import budgetplus.core.common.generated.resources.record_note_placeholder_expense
+import budgetplus.core.common.generated.resources.record_note_placeholder_income
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -28,6 +30,7 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGridState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RecordInfo(
@@ -60,11 +63,11 @@ internal fun RecordInfo(
         
         TextField(
             state = state.note,
-            title = stringResource(id = R.string.record_note),
+            title = stringResource(Res.string.record_note),
             placeholder = stringResource(
-                id = when (type) {
-                    RecordType.Expense -> R.string.record_note_placeholder_expense
-                    RecordType.Income -> R.string.record_note_placeholder_income
+                when (type) {
+                    RecordType.Expense -> Res.string.record_note_placeholder_expense
+                    RecordType.Income -> Res.string.record_note_placeholder_income
                 }
             ),
             modifier = Modifier.fillMaxWidth(),

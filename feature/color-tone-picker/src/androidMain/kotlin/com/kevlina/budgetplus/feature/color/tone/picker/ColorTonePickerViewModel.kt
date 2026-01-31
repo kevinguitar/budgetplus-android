@@ -3,8 +3,12 @@ package com.kevlina.budgetplus.feature.color.tone.picker
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_applied_from_link
+import budgetplus.core.common.generated.resources.cta_share
+import budgetplus.core.common.generated.resources.fallback_error_message
+import budgetplus.core.common.generated.resources.menu_share_colors
 import com.kevlina.budgetplus.core.common.ActivityProvider
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
@@ -78,9 +82,9 @@ class ColorTonePickerViewModel(
         val colorsLink = themeManager.generateCustomColorsLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_share_colors, colorsLink])
+            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_share_colors, colorsLink])
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_share]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_share]))
     }
 
     fun trackUnlockPremium() {
@@ -94,9 +98,9 @@ class ColorTonePickerViewModel(
     fun processHexFromLink(hexFromLink: String) {
         previousProcessedLink = hexFromLink
         if (themeManager.processHexFromLink(hexFromLink)) {
-            snackbarSender.send(R.string.color_tone_applied_from_link)
+            snackbarSender.send(Res.string.color_tone_applied_from_link)
         } else {
-            snackbarSender.send(R.string.fallback_error_message)
+            snackbarSender.send(Res.string.fallback_error_message)
         }
     }
 }

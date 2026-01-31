@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.search_title
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.feature.search.ui.SearchContent
 import kotlinx.coroutines.flow.collect
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SearchScreen(
@@ -36,7 +37,7 @@ fun SearchScreen(
             .background(LocalAppColors.current.light)
     ) {
         TopBar(
-            title = stringResource(id = R.string.search_title),
+            title = stringResource(Res.string.search_title),
             navigateUp = navController::navigateUp,
         )
 

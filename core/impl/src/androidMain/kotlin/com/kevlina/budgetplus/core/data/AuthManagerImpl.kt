@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.app_language
 import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -10,7 +12,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
@@ -116,7 +117,7 @@ class AuthManagerImpl(
             premium = currentUser?.premium,
             createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
             lastActiveOn = Clock.System.now().toEpochMilliseconds(),
-            language = stringProvider[R.string.app_language],
+            language = stringProvider[Res.string.app_language],
         )
         userState.value = userWithExclusiveFields
         currentUser = userWithExclusiveFields

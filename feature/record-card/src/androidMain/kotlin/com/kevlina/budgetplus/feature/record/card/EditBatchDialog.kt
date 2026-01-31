@@ -8,18 +8,21 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_all_future_records
+import budgetplus.core.common.generated.resources.batch_record_edit_confirmation
+import budgetplus.core.common.generated.resources.batch_record_only_this
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun EditBatchDialog(
@@ -51,14 +54,14 @@ internal fun EditBatchDialog(
 
                 Button(onClick = onSelectOne) {
                     Text(
-                        text = stringResource(id = R.string.batch_record_only_this),
+                        text = stringResource(Res.string.batch_record_only_this),
                         color = LocalAppColors.current.light,
                     )
                 }
 
                 Button(onClick = onSelectAll) {
                     Text(
-                        text = stringResource(id = R.string.batch_record_all_future_records),
+                        text = stringResource(Res.string.batch_record_all_future_records),
                         color = LocalAppColors.current.light,
                     )
                 }
@@ -72,7 +75,7 @@ internal fun EditBatchDialog(
 private fun EditBatchDialog_Preview() = AppTheme {
     EditBatchDialog(
         onDismiss = { },
-        text = stringResource(id = R.string.batch_record_edit_confirmation),
+        text = stringResource(Res.string.batch_record_edit_confirmation),
         onSelectOne = { },
         onSelectAll = {}
     )

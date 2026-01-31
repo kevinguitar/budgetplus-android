@@ -4,9 +4,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
-import androidx.annotation.StringRes
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.notification_channel_general
+import budgetplus.core.common.generated.resources.notification_channel_general_desc
+import budgetplus.core.common.generated.resources.notification_channel_new_member
+import budgetplus.core.common.generated.resources.notification_channel_new_member_desc
 import com.kevlina.budgetplus.core.common.AppStartAction
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.StringProvider
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
@@ -26,14 +29,14 @@ class NotificationChannelsInitializer(
 
         val generalChannel = createChannel(
             channelId = CHANNEL_GENERAL,
-            nameRes = R.string.notification_channel_general,
-            descriptionRes = R.string.notification_channel_general_desc
+            name = stringProvider[Res.string.notification_channel_general],
+            descriptionText = stringProvider[Res.string.notification_channel_general_desc]
         )
 
         val newMemberChannel = createChannel(
             channelId = CHANNEL_NEW_MEMBER,
-            nameRes = R.string.notification_channel_new_member,
-            descriptionRes = R.string.notification_channel_new_member_desc
+            name = stringProvider[Res.string.notification_channel_new_member],
+            descriptionText = stringProvider[Res.string.notification_channel_new_member_desc]
         )
 
         notificationManager.createNotificationChannel(generalChannel)
@@ -42,13 +45,10 @@ class NotificationChannelsInitializer(
 
     private fun createChannel(
         channelId: String,
-        @StringRes nameRes: Int,
-        @StringRes descriptionRes: Int,
+        name: String,
+        descriptionText: String,
         importance: Int = NotificationManager.IMPORTANCE_DEFAULT,
     ): NotificationChannel {
-        val name = stringProvider[nameRes]
-        val descriptionText = stringProvider[descriptionRes]
-
         return NotificationChannel(channelId, name, importance)
             .apply { description = descriptionText }
     }

@@ -5,7 +5,8 @@ import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.push_notif_sent_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -129,7 +130,7 @@ class PushNotificationsViewModel private constructor(
                     },
                     sentOn = Clock.System.now().toEpochMilliseconds()
                 ))
-                snackbarSender.send(R.string.push_notif_sent_success)
+                snackbarSender.send(Res.string.push_notif_sent_success)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }

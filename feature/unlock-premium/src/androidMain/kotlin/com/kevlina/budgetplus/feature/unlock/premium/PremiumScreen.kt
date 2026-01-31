@@ -10,15 +10,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.premium_unlock
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PremiumScreen(navController: NavController<BookDest>) {
@@ -48,7 +49,7 @@ fun PremiumScreen(navController: NavController<BookDest>) {
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.premium_unlock),
+            title = stringResource(Res.string.premium_unlock),
             navigateUp = navController::navigateUp
         )
 

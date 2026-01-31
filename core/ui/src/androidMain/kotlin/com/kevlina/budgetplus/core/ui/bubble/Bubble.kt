@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -41,8 +40,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.export_cta
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -50,6 +50,7 @@ import com.kevlina.budgetplus.core.ui.MenuAction
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
 import com.kevlina.budgetplus.core.ui.isPreview
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Bubble(
@@ -95,7 +96,7 @@ fun Bubble(
             )
 
             Text(
-                text = stringResource(id = dest.textRes),
+                text = stringResource(dest.textRes),
                 modifier = Modifier
                     .align(
                         when (dest.textDirection) {
@@ -182,7 +183,7 @@ private fun Bubble_Preview(
     Box(modifier = Modifier.fillMaxSize()) {
         MenuAction(
             imageVector = Icons.Rounded.FileDownload,
-            description = stringResource(id = R.string.export_cta),
+            description = stringResource(Res.string.export_cta),
             onClick = {},
             modifier = Modifier
                 .align(Alignment.Center)

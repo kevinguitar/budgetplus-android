@@ -9,8 +9,16 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.export_column_author
+import budgetplus.core.common.generated.resources.export_column_category
+import budgetplus.core.common.generated.resources.export_column_created_on
+import budgetplus.core.common.generated.resources.export_column_name
+import budgetplus.core.common.generated.resources.export_column_price
+import budgetplus.core.common.generated.resources.export_column_type
+import budgetplus.core.common.generated.resources.record_expense
+import budgetplus.core.common.generated.resources.record_income
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -55,8 +63,8 @@ internal class CsvWriter(
 
     private val Record.typeString: String
         get() = when (type) {
-            RecordType.Expense -> stringProvider[R.string.record_expense]
-            RecordType.Income -> stringProvider[R.string.record_income]
+            RecordType.Expense -> stringProvider[Res.string.record_expense]
+            RecordType.Income -> stringProvider[Res.string.record_income]
         }
 
     suspend fun writeRecordsToCsv(name: String): Uri {
@@ -96,12 +104,12 @@ internal class CsvWriter(
         outputStream.use { stream ->
             csvWriter().open(stream) {
                 writeRow(listOf(
-                    stringProvider[R.string.export_column_created_on],
-                    stringProvider[R.string.export_column_name],
-                    stringProvider[R.string.export_column_price, bookRepo.currencySymbol.value],
-                    stringProvider[R.string.export_column_type],
-                    stringProvider[R.string.export_column_category],
-                    stringProvider[R.string.export_column_author],
+                    stringProvider[Res.string.export_column_created_on],
+                    stringProvider[Res.string.export_column_name],
+                    stringProvider[Res.string.export_column_price, bookRepo.currencySymbol.value],
+                    stringProvider[Res.string.export_column_type],
+                    stringProvider[Res.string.export_column_category],
+                    stringProvider[Res.string.export_column_author],
                 ))
                 writeRows(recordRows)
             }

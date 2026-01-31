@@ -17,14 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.insider_language_en
+import budgetplus.core.common.generated.resources.insider_language_ja
+import budgetplus.core.common.generated.resources.insider_language_zh_cn
+import budgetplus.core.common.generated.resources.insider_language_zh_tw
+import budgetplus.core.common.generated.resources.insider_user_created_on
+import budgetplus.core.common.generated.resources.insider_user_last_active_on
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.millisToDateTime
 import com.kevlina.budgetplus.core.common.shortFormat
 import com.kevlina.budgetplus.core.data.remote.User
@@ -32,6 +37,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
+import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
@@ -92,11 +98,11 @@ internal fun UserCard(
                         .background(LocalAppColors.current.dark)
                     )
 
-                    Text(text = stringResource(id = when (language) {
-                        "zh-tw" -> R.string.insider_language_zh_tw
-                        "zh-cn" -> R.string.insider_language_zh_cn
-                        "ja" -> R.string.insider_language_ja
-                        else -> R.string.insider_language_en
+                    Text(text = stringResource(when (language) {
+                        "zh-tw" -> Res.string.insider_language_zh_tw
+                        "zh-cn" -> Res.string.insider_language_zh_cn
+                        "ja" -> Res.string.insider_language_ja
+                        else -> Res.string.insider_language_en
                     }))
                 }
             }
@@ -106,13 +112,13 @@ internal fun UserCard(
 
         if (createOn != null) {
             Text(
-                text = stringResource(id = R.string.insider_user_created_on, createOn)
+                text = stringResource(Res.string.insider_user_created_on, createOn)
             )
         }
 
         if (lastActiveOn != null && lastActiveOn != createOn) {
             Text(
-                text = stringResource(id = R.string.insider_user_last_active_on, lastActiveOn)
+                text = stringResource(Res.string.insider_user_last_active_on, lastActiveOn)
             )
         }
     }

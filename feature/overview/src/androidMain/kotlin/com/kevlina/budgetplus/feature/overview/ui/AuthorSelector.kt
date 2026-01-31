@@ -13,9 +13,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_author_anonymous
+import budgetplus.core.common.generated.resources.overview_author_everyone
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -23,6 +24,7 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.Icon
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun AuthorSelector(
@@ -49,7 +51,7 @@ internal fun AuthorSelector(
 
             Text(
                 text = selectedAuthor?.name
-                    ?: stringResource(id = R.string.overview_author_everyone),
+                    ?: stringResource(Res.string.overview_author_everyone),
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
             )
 
@@ -59,7 +61,7 @@ internal fun AuthorSelector(
             ) {
 
                 DropdownItem(
-                    name = stringResource(id = R.string.overview_author_everyone),
+                    name = stringResource(Res.string.overview_author_everyone),
                 ) {
                     isAuthorPickerShown = false
                     setAuthor(null)
@@ -67,7 +69,7 @@ internal fun AuthorSelector(
 
                 authors.forEach { author ->
                     DropdownItem(
-                        name = author.name ?: stringResource(id = R.string.overview_author_anonymous),
+                        name = author.name ?: stringResource(Res.string.overview_author_anonymous),
                     ) {
                         isAuthorPickerShown = false
                         setAuthor(author)

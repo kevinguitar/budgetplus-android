@@ -4,7 +4,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.currency_picker_edit_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
@@ -77,7 +78,7 @@ class CurrencyPickerViewModel(
 
     fun onCurrencyPicked(currency: CurrencyState) {
         val bookName = bookRepo.bookState.value?.name ?: return
-        snackbarSender.send(stringProvider[R.string.currency_picker_edit_success, bookName, currency.name])
+        snackbarSender.send(stringProvider[Res.string.currency_picker_edit_success, bookName, currency.name])
         bookRepo.updateCurrency(currency.currencyCode)
     }
 }

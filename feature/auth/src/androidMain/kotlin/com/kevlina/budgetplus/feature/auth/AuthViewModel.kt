@@ -9,6 +9,9 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.auth_success
+import budgetplus.core.common.generated.resources.google_cloud_client_id
 import co.touchlab.kermit.Logger
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -20,7 +23,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
@@ -53,7 +55,7 @@ internal class AuthViewModel(
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val credentialManager by lazy { CredentialManager.create(activity) }
-    private val googleClientId get() = stringProvider[R.string.google_cloud_client_id]
+    private val googleClientId get() = stringProvider[Res.string.google_cloud_client_id]
 
     private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
 
@@ -142,7 +144,7 @@ internal class AuthViewModel(
             val isNewUser = task.result.additionalUserInfo?.isNewUser == true
             tracker.logEvent(if (isNewUser) "sign_up" else "login")
 
-            val message = stringProvider[R.string.auth_success, task.result.user?.displayName.orEmpty()]
+            val message = stringProvider[Res.string.auth_success, task.result.user?.displayName.orEmpty()]
             toaster.showMessage(message)
             checkBookAvailability()
         } else {

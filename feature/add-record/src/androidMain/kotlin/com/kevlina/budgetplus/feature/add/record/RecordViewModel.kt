@@ -6,12 +6,17 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_invite
+import budgetplus.core.common.generated.resources.menu_invite_to_book
+import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.record_empty_category
+import budgetplus.core.common.generated.resources.record_empty_price
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.StringProvider
@@ -104,9 +109,9 @@ class RecordViewModel(
         val joinLink = bookRepo.generateJoinLink()
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_invite_to_book, joinLink])
+            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_invite_to_book, joinLink])
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
+        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_invite]))
         requestPermissionEvent.sendEvent()
     }
 
@@ -126,7 +131,7 @@ class RecordViewModel(
     }
 
     fun showNotificationPermissionHint() {
-        snackbarSender.send(R.string.permission_hint)
+        snackbarSender.send(Res.string.permission_hint)
     }
 
     private fun record() {
@@ -134,12 +139,12 @@ class RecordViewModel(
         val price = calculatorVm.price.value
 
         if (category == null) {
-            snackbarSender.send(message = R.string.record_empty_category)
+            snackbarSender.send(message = Res.string.record_empty_category)
             return
         }
 
         if (price == 0.0) {
-            snackbarSender.send(R.string.record_empty_price)
+            snackbarSender.send(Res.string.record_empty_price)
             return
         }
 

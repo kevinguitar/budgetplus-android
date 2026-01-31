@@ -16,11 +16,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_author_anonymous
+import budgetplus.core.common.generated.resources.overview_author_everyone
+import budgetplus.core.common.generated.resources.record_expense
+import budgetplus.core.common.generated.resources.record_income
+import budgetplus.core.common.generated.resources.search_all_categories
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -33,6 +37,7 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.ModalBottomSheet
 import com.kevlina.budgetplus.feature.category.pills.CategoriesGrid
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SearchFilter(
@@ -70,8 +75,8 @@ internal fun SearchFilter(
                     placeholder = null,
                     selection = stringResource(
                         when (type) {
-                            RecordType.Expense -> R.string.record_expense
-                            RecordType.Income -> R.string.record_income
+                            RecordType.Expense -> Res.string.record_expense
+                            RecordType.Income -> Res.string.record_income
                         }
                     ),
                     onClick = { isTypePickerShown = true }
@@ -82,12 +87,12 @@ internal fun SearchFilter(
                 expanded = isTypePickerShown,
                 onDismissRequest = { isTypePickerShown = false }
             ) {
-                DropdownItem(name = stringResource(id = R.string.record_expense)) {
+                DropdownItem(name = stringResource(Res.string.record_expense)) {
                     isTypePickerShown = false
                     state.selectType(RecordType.Expense)
                 }
 
-                DropdownItem(name = stringResource(id = R.string.record_income)) {
+                DropdownItem(name = stringResource(Res.string.record_income)) {
                     isTypePickerShown = false
                     state.selectType(RecordType.Income)
                 }
@@ -96,7 +101,7 @@ internal fun SearchFilter(
 
         FilterPill(
             state = FilterPillState(
-                placeholder = stringResource(R.string.search_all_categories),
+                placeholder = stringResource(Res.string.search_all_categories),
                 selection = category.name,
                 onClick = { isCategoryGridShown = true }
             )
@@ -114,7 +119,7 @@ internal fun SearchFilter(
             Box {
                 FilterPill(
                     state = FilterPillState(
-                        placeholder = stringResource(R.string.overview_author_everyone),
+                        placeholder = stringResource(Res.string.overview_author_everyone),
                         selection = author?.name,
                         onClick = { isAuthorPickerShown = true }
                     )
@@ -124,13 +129,13 @@ internal fun SearchFilter(
                     expanded = isAuthorPickerShown,
                     onDismissRequest = { isAuthorPickerShown = false }
                 ) {
-                    DropdownItem(name = stringResource(id = R.string.overview_author_everyone)) {
+                    DropdownItem(name = stringResource(Res.string.overview_author_everyone)) {
                         isAuthorPickerShown = false
                         state.selectAuthor(null)
                     }
 
                     allAuthors.forEach { author ->
-                        DropdownItem(name = author.name ?: stringResource(id = R.string.overview_author_anonymous)) {
+                        DropdownItem(name = author.name ?: stringResource(Res.string.overview_author_anonymous)) {
                             isAuthorPickerShown = false
                             state.selectAuthor(author)
                         }

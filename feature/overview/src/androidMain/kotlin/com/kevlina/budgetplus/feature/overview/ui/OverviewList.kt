@@ -23,11 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.search_title
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -50,6 +50,7 @@ import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import com.kevlina.budgetplus.feature.record.card.RecordCardZeroCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun OverviewList(
@@ -218,7 +219,7 @@ internal fun OverviewList(
         Fab(
             isVisible = isSearchFabVisible,
             icon = Icons.Rounded.Search,
-            contentDescription = stringResource(id = R.string.search_title),
+            contentDescription = stringResource(Res.string.search_title),
             onClick = { navController.navigate(BookDest.Search(type)) }
         )
     }

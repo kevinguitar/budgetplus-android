@@ -106,13 +106,15 @@ class RecordViewModel(
 
     fun shareJoinLink() {
         val activity = activityProvider.currentActivity ?: return
-        val joinLink = bookRepo.generateJoinLink()
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_invite_to_book, joinLink])
+        viewModelScope.launch {
+            val joinLink = bookRepo.generateJoinLink()
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_invite_to_book, joinLink])
+            }
+            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_invite]))
+            requestPermissionEvent.sendEvent()
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_invite]))
-        requestPermissionEvent.sendEvent()
     }
 
     fun highlightInviteButton(dest: BubbleDest) {

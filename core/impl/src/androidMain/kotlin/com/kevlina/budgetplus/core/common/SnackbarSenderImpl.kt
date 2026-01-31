@@ -7,12 +7,15 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class SnackbarSenderImpl(
-    private val stringProvider: StringProvider,
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : SnackbarSender {
 
     final override val snackbarEvent: EventFlow<SnackbarData>
@@ -23,12 +26,17 @@ class SnackbarSenderImpl(
         actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
-    ) = send(
-        message = stringProvider[message],
-        actionLabel = actionLabel,
-        duration = duration,
-        action = action
-    )
+    ) {
+        appScope.launch {
+            Logger.d { "SnackbarSender: Show snackbar $message" }
+            snackbarEvent.sendEvent(SnackbarData(
+                message = getString(message),
+                actionLabel = actionLabel?.let { getString(it) },
+                duration = duration,
+                action = action
+            ))
+        }
+    }
 
     override fun send(
         message: String,
@@ -36,13 +44,15 @@ class SnackbarSenderImpl(
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
-        Logger.d { "SnackbarSender: Show snackbar $message" }
-        snackbarEvent.sendEvent(SnackbarData(
-            message = message,
-            actionLabel = actionLabel?.let(stringProvider::get),
-            duration = duration,
-            action = action
-        ))
+        appScope.launch {
+            Logger.d { "SnackbarSender: Show snackbar $message" }
+            snackbarEvent.sendEvent(SnackbarData(
+                message = message,
+                actionLabel = actionLabel?.let { getString(it) },
+                duration = duration,
+                action = action
+            ))
+        }
     }
 
     override fun sendError(e: Exception) {

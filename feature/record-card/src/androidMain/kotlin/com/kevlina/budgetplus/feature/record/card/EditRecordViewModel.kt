@@ -69,18 +69,18 @@ class EditRecordViewModel(
     }
 
     fun deleteRecord(record: Record, deleteBatch: Boolean = false) {
-        if (deleteBatch) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (deleteBatch) {
                 try {
                     val count = recordRepo.deleteBatch(record)
                     snackbarSender.send(stringProvider[Res.string.batch_record_deleted, count.toString()])
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
+            } else {
+                recordRepo.deleteRecord(record.id)
+                snackbarSender.send(stringProvider[Res.string.record_deleted, record.name])
             }
-        } else {
-            recordRepo.deleteRecord(record.id)
-            snackbarSender.send(stringProvider[Res.string.record_deleted, record.name])
         }
     }
 

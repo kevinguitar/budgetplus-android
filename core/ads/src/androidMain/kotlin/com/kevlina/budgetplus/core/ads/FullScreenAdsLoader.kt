@@ -1,7 +1,8 @@
 package com.kevlina.budgetplus.core.ads
 
-import android.app.Activity
 import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.admob_interstitial_id
 import co.touchlab.kermit.Logger
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @SingleIn(AppScope::class)
 @Inject
@@ -50,15 +52,17 @@ class FullScreenAdsLoader(
     /**
      *  Show Ad and load the next one immediately.
      */
-    fun showAd(activity: Activity) {
+    fun showAd(activity: ComponentActivity) {
         if (authManager.isPremium.value) return
 
         adState.value?.show(activity)
-        loadAd()
-        tracker.logEvent("show_ad_full_screen")
+        activity.lifecycleScope.launch {
+            loadAd()
+            tracker.logEvent("show_ad_full_screen")
+        }
     }
 
-    private fun loadAd() {
+    private suspend fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
             /* adUnitId = */ stringProvider[Res.string.admob_interstitial_id],

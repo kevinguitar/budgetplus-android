@@ -9,7 +9,7 @@ class FakeStringProvider(
     private val stringMap: Map<StringResource, String> = emptyMap(),
 ) : StringProvider {
 
-    override fun get(res: StringResource): String = stringMap[res].orEmpty()
+    override suspend fun get(res: StringResource): String = stringMap[res].orEmpty()
 
-    override fun get(res: StringResource, vararg formatArgs: Any): String = stringMap[res].orEmpty()
+    override suspend fun get(res: StringResource, vararg formatArgs: Any): String = stringMap[res].orEmpty()
 }

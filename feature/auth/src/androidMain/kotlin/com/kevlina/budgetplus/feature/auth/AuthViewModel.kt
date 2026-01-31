@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
@@ -35,6 +34,7 @@ import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @Inject
 internal class AuthViewModel(
@@ -43,7 +43,6 @@ internal class AuthViewModel(
     private val bookRepo: BookRepo,
     private val toaster: Toaster,
     private val tracker: Tracker,
-    private val stringProvider: StringProvider,
     private val activity: ComponentActivity,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     @Named("book") private val bookNavigationAction: NavigationAction,
@@ -55,7 +54,6 @@ internal class AuthViewModel(
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val credentialManager by lazy { CredentialManager.create(activity) }
-    private val googleClientId get() = stringProvider[Res.string.google_cloud_client_id]
 
     private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
 
@@ -67,12 +65,14 @@ internal class AuthViewModel(
     }
 
     fun signInWithGoogle() {
-        val siwgOption = GetSignInWithGoogleOption.Builder(googleClientId).build()
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(siwgOption)
-            .build()
-
         coroutineScope.launch {
+            val siwgOption = GetSignInWithGoogleOption
+                .Builder(getString(Res.string.google_cloud_client_id))
+                .build()
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(siwgOption)
+                .build()
+
             try {
                 val result = credentialManager.getCredential(activity, request)
                 handleSignIn(result)
@@ -91,17 +91,17 @@ internal class AuthViewModel(
      *  If there are any accounts that were authorized before, launch the sign in dialog.
      */
     fun checkAuthorizedAccounts(enableAutoSignIn: Boolean) {
-        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
-            .setAutoSelectEnabled(enableAutoSignIn)
-            .setServerClientId(googleClientId)
-            .build()
-
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
         coroutineScope.launch {
+            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(true)
+                .setAutoSelectEnabled(enableAutoSignIn)
+                .setServerClientId(getString(Res.string.google_cloud_client_id))
+                .build()
+
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
             try {
                 val result = credentialManager.getCredential(activity, request)
                 handleSignIn(result)
@@ -144,28 +144,28 @@ internal class AuthViewModel(
             val isNewUser = task.result.additionalUserInfo?.isNewUser == true
             tracker.logEvent(if (isNewUser) "sign_up" else "login")
 
-            val message = stringProvider[Res.string.auth_success, task.result.user?.displayName.orEmpty()]
-            toaster.showMessage(message)
-            checkBookAvailability()
+            coroutineScope.launch {
+                val message = getString(Res.string.auth_success, task.result.user?.displayName.orEmpty())
+                toaster.showMessage(message)
+                checkBookAvailability()
+            }
         } else {
             val e = task.exception ?: error("Unable to login")
             snackbarSender.sendError(e)
         }
     }
 
-    private fun checkBookAvailability() {
-        coroutineScope.launch {
-            val action = try {
-                if (bookRepo.checkUserHasBook()) {
-                    bookNavigationAction
-                } else {
-                    welcomeNavigationAction
-                }
-            } catch (e: Exception) {
-                snackbarSender.sendError(e)
+    private suspend fun checkBookAvailability() {
+        val action = try {
+            if (bookRepo.checkUserHasBook()) {
+                bookNavigationAction
+            } else {
                 welcomeNavigationAction
             }
-            navigation.sendEvent(action)
+        } catch (e: Exception) {
+            snackbarSender.sendError(e)
+            welcomeNavigationAction
         }
+        navigation.sendEvent(action)
     }
 }

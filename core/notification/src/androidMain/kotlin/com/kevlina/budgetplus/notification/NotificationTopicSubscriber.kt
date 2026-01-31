@@ -3,32 +3,26 @@ package com.kevlina.budgetplus.notification
 import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
 
 @ContributesIntoSet(AppScope::class)
 class NotificationTopicSubscriber(
-    @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     preferenceHolder: PreferenceHolder,
 ) : AppStartAction {
 
     private var lastInfo by preferenceHolder.bindObjectOptional<SubscribeInfo?>(null)
 
-    override fun onAppStart() {
-        appScope.launch {
-            subscribeToTopics()
-        }
+    override suspend fun onAppStart() {
+        subscribeToTopics()
     }
 
     private suspend fun subscribeToTopics() {

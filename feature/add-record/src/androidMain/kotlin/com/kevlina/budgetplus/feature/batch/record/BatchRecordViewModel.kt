@@ -31,7 +31,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(BatchRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -118,8 +120,11 @@ class BatchRecordViewModel(
             times = times.value
         )
         recordEvent.sendEvent(Unit)
-        snackbarSender.send(stringProvider[Res.string.batch_record_created, times.value.toString(), category])
         resetScreen()
+
+        viewModelScope.launch {
+            snackbarSender.send(getString(Res.string.batch_record_created, times.value.toString(), category))
+        }
     }
 
     private fun resetScreen() {

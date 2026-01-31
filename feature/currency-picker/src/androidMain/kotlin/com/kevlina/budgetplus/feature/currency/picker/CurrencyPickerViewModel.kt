@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import java.util.Currency
 import java.util.Locale
 
@@ -78,7 +80,9 @@ class CurrencyPickerViewModel(
 
     fun onCurrencyPicked(currency: CurrencyState) {
         val bookName = bookRepo.bookState.value?.name ?: return
-        snackbarSender.send(stringProvider[Res.string.currency_picker_edit_success, bookName, currency.name])
-        bookRepo.updateCurrency(currency.currencyCode)
+        viewModelScope.launch {
+            snackbarSender.send(getString(Res.string.currency_picker_edit_success, bookName, currency.name))
+            bookRepo.updateCurrency(currency.currencyCode)
+        }
     }
 }

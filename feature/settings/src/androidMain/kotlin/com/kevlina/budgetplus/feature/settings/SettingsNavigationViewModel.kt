@@ -5,6 +5,8 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.settings_contact_us
 import budgetplus.core.common.generated.resources.settings_no_email_app_found
@@ -20,6 +22,7 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import kotlinx.coroutines.launch
 
 @Inject
 internal class SettingsNavigationViewModel(
@@ -35,7 +38,7 @@ internal class SettingsNavigationViewModel(
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
     @Named("contact_email") private val contactEmail: String,
     @Named("logout") private val logoutNavigationAction: NavigationAction,
-) {
+) : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun openLanguageSettings() {
@@ -49,12 +52,14 @@ internal class SettingsNavigationViewModel(
 
     fun share() {
         val activity = activityProvider.currentActivity ?: return
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.settings_share_app_message, googlePlayUrl])
+        viewModelScope.launch {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.settings_share_app_message, googlePlayUrl])
+            }
+            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.settings_share_app]))
+            tracker.logEvent("settings_share_app_click")
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.settings_share_app]))
-        tracker.logEvent("settings_share_app_click")
     }
 
     fun rateUs() {
@@ -69,17 +74,19 @@ internal class SettingsNavigationViewModel(
 
     fun contactUs() {
         val activity = activityProvider.currentActivity ?: return
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = "mailto:".toUri()
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
-            putExtra(Intent.EXTRA_SUBJECT, stringProvider[Res.string.settings_contact_us])
-            putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n\n")
-        }
-        if (intent.resolveActivity(activity.packageManager) != null) {
-            activity.startActivity(intent)
-            tracker.logEvent("settings_contact_us_click")
-        } else {
-            snackbarSender.send(Res.string.settings_no_email_app_found)
+        viewModelScope.launch {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = "mailto:".toUri()
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
+                putExtra(Intent.EXTRA_SUBJECT, stringProvider[Res.string.settings_contact_us])
+                putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n\n")
+            }
+            if (intent.resolveActivity(activity.packageManager) != null) {
+                activity.startActivity(intent)
+                tracker.logEvent("settings_contact_us_click")
+            } else {
+                snackbarSender.send(Res.string.settings_no_email_app_found)
+            }
         }
     }
 

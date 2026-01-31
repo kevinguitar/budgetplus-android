@@ -18,13 +18,14 @@ import dev.zacsweers.metro.ContributesIntoSet
 class NotificationChannelsInitializer(
     private val context: Context,
     private val stringProvider: StringProvider,
+
 ) : AppStartAction {
 
-    override fun onAppStart() {
+    override suspend fun onAppStart() {
         initNotificationChannels()
     }
 
-    private fun initNotificationChannels() {
+    private suspend fun initNotificationChannels() {
         val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val generalChannel = createChannel(

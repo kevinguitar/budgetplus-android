@@ -32,7 +32,7 @@ class UserRepoImpl(
 
     private val userMapping = hashMapOf<String, User>()
 
-    override fun onAppStart() {
+    override suspend fun onAppStart() {
         combine(
             bookRepo.bookState.filterNotNull(),
             authManager.userState.filterNotNull(),

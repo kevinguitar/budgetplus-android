@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @ViewModelKey(ColorTonePickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -79,12 +80,14 @@ class ColorTonePickerViewModel(
 
     fun shareMyColors() {
         val activity = activityProvider.currentActivity ?: return
-        val colorsLink = themeManager.generateCustomColorsLink()
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_share_colors, colorsLink])
+        viewModelScope.launch {
+            val colorsLink = themeManager.generateCustomColorsLink()
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_share_colors, colorsLink])
+            }
+            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_share]))
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_share]))
     }
 
     fun trackUnlockPremium() {

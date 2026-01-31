@@ -10,14 +10,13 @@ import budgetplus.core.common.generated.resources.notification_channel_general_d
 import budgetplus.core.common.generated.resources.notification_channel_new_member
 import budgetplus.core.common.generated.resources.notification_channel_new_member_desc
 import com.kevlina.budgetplus.core.common.AppStartAction
-import com.kevlina.budgetplus.core.common.StringProvider
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
+import org.jetbrains.compose.resources.getString
 
 @ContributesIntoSet(AppScope::class)
 class NotificationChannelsInitializer(
     private val context: Context,
-    private val stringProvider: StringProvider,
 
 ) : AppStartAction {
 
@@ -30,14 +29,14 @@ class NotificationChannelsInitializer(
 
         val generalChannel = createChannel(
             channelId = CHANNEL_GENERAL,
-            name = stringProvider[Res.string.notification_channel_general],
-            descriptionText = stringProvider[Res.string.notification_channel_general_desc]
+            name = getString(Res.string.notification_channel_general),
+            descriptionText = getString(Res.string.notification_channel_general_desc)
         )
 
         val newMemberChannel = createChannel(
             channelId = CHANNEL_NEW_MEMBER,
-            name = stringProvider[Res.string.notification_channel_new_member],
-            descriptionText = stringProvider[Res.string.notification_channel_new_member_desc]
+            name = getString(Res.string.notification_channel_new_member),
+            descriptionText = getString(Res.string.notification_channel_new_member_desc)
         )
 
         notificationManager.createNotificationChannel(generalChannel)

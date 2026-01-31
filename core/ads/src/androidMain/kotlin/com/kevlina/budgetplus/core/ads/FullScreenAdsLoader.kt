@@ -11,7 +11,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.AppScope
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @SingleIn(AppScope::class)
 @Inject
@@ -31,7 +31,6 @@ class FullScreenAdsLoader(
     private val context: Context,
     @AppCoroutineScope appScope: CoroutineScope,
     private val adMobInitializer: AdMobInitializer,
-    private val stringProvider: StringProvider,
     private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
@@ -65,7 +64,7 @@ class FullScreenAdsLoader(
     private suspend fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
-            /* adUnitId = */ stringProvider[Res.string.admob_interstitial_id],
+            /* adUnitId = */ getString(Res.string.admob_interstitial_id),
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {

@@ -12,7 +12,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -27,13 +26,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class AuthManagerImpl(
     preferenceHolder: PreferenceHolder,
-    private val stringProvider: StringProvider,
     private val tracker: Lazy<Tracker>,
     @Named("allow_update_fcm_token") private val allowUpdateFcmToken: Boolean,
     @AppCoroutineScope private val appScope: CoroutineScope,
@@ -118,7 +117,7 @@ class AuthManagerImpl(
                 premium = currentUser?.premium,
                 createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
                 lastActiveOn = Clock.System.now().toEpochMilliseconds(),
-                language = stringProvider[Res.string.app_language],
+                language = getString(Res.string.app_language),
             )
             userState.value = userWithExclusiveFields
             currentUser = userWithExclusiveFields

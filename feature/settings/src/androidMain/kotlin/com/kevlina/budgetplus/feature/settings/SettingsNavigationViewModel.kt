@@ -14,7 +14,6 @@ import budgetplus.core.common.generated.resources.settings_share_app
 import budgetplus.core.common.generated.resources.settings_share_app_message
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -23,13 +22,13 @@ import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @Inject
 internal class SettingsNavigationViewModel(
     private val authManager: AuthManager,
     private val activityProvider: ActivityProvider,
     private val navigationFlow: NavigationFlow,
-    private val stringProvider: StringProvider,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     @Named("app_package") private val appPackage: String,
@@ -55,9 +54,9 @@ internal class SettingsNavigationViewModel(
         viewModelScope.launch {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.settings_share_app_message, googlePlayUrl])
+                putExtra(Intent.EXTRA_TEXT, getString(Res.string.settings_share_app_message, googlePlayUrl))
             }
-            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.settings_share_app]))
+            activity.startActivity(Intent.createChooser(intent, getString(Res.string.settings_share_app)))
             tracker.logEvent("settings_share_app_click")
         }
     }
@@ -78,7 +77,7 @@ internal class SettingsNavigationViewModel(
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = "mailto:".toUri()
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(contactEmail))
-                putExtra(Intent.EXTRA_SUBJECT, stringProvider[Res.string.settings_contact_us])
+                putExtra(Intent.EXTRA_SUBJECT, getString(Res.string.settings_contact_us))
                 putExtra(Intent.EXTRA_TEXT, "User id: ${authManager.requireUserId()}\n\n")
             }
             if (intent.resolveActivity(activity.packageManager) != null) {

@@ -10,7 +10,6 @@ import budgetplus.core.common.generated.resources.batch_record_created
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.now
@@ -43,7 +42,6 @@ class BatchRecordViewModel(
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     val type: StateFlow<RecordType>

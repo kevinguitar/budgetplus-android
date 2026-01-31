@@ -20,7 +20,6 @@ import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.PurchaseRepo
@@ -31,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ContributesBinding(AppScope::class, binding = binding<BillingController>())
 class BillingControllerImpl(
@@ -38,7 +38,6 @@ class BillingControllerImpl(
     @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     private val purchaseRepo: PurchaseRepo,
-    private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
     private val productDetailsState = MutableStateFlow<ProductDetails?>(null)
@@ -218,7 +217,7 @@ class BillingControllerImpl(
 
                 else -> {
                     Logger.e(BillingException()) { "Cannot process the purchase. Purchase state: ${purchase.purchaseState}" }
-                    purchaseState.value = PurchaseState.Fail(stringProvider[Res.string.premium_payment_pending])
+                    purchaseState.value = PurchaseState.Fail(getString(Res.string.premium_payment_pending))
                 }
             }
         }

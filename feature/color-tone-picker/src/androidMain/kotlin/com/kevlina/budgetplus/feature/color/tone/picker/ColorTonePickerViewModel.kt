@@ -10,7 +10,6 @@ import budgetplus.core.common.generated.resources.fallback_error_message
 import budgetplus.core.common.generated.resources.menu_share_colors
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(ColorTonePickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -35,7 +35,6 @@ class ColorTonePickerViewModel(
     authManager: AuthManager,
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
-    private val stringProvider: StringProvider,
     private val snackbarSender: SnackbarSender,
     private val activityProvider: ActivityProvider,
     private val tracker: Tracker,
@@ -84,9 +83,9 @@ class ColorTonePickerViewModel(
             val colorsLink = themeManager.generateCustomColorsLink()
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_share_colors, colorsLink])
+                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_share_colors, colorsLink))
             }
-            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_share]))
+            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_share)))
         }
     }
 

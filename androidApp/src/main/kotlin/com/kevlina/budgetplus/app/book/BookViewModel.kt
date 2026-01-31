@@ -10,7 +10,6 @@ import budgetplus.core.common.generated.resources.book_join_success
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -38,6 +37,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(BookViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -47,7 +47,6 @@ class BookViewModel(
     val navigation: NavigationFlow,
     val bubbleViewModel: BubbleViewModel,
     private val bookRepo: BookRepo,
-    private val stringProvider: StringProvider,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
@@ -118,7 +117,7 @@ class BookViewModel(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
-                snackbarSender.send(stringProvider[Res.string.book_join_success, bookName])
+                snackbarSender.send(getString(Res.string.book_join_success, bookName))
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 navController.navigate(BookDest.UnlockPremium)
                 snackbarSender.send(e.message)

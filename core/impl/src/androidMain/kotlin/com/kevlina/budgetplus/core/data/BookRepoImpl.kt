@@ -17,7 +17,6 @@ import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
@@ -39,6 +38,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -52,7 +52,6 @@ import kotlin.time.Duration.Companion.days
 class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
-    private val stringProvider: StringProvider,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppCoroutineScope appScope: CoroutineScope,
@@ -163,21 +162,21 @@ class BookRepoImpl(
         val book = getLatestBook(bookId)
 
         when {
-            book.archived -> throw JoinBookException.General(stringProvider[Res.string.book_already_archived])
-            userId in book.authors -> throw JoinBookException.General(stringProvider[Res.string.book_already_joined])
+            book.archived -> throw JoinBookException.General(getString(Res.string.book_already_archived))
+            userId in book.authors -> throw JoinBookException.General(getString(Res.string.book_already_joined))
             isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_max_limit")
-                throw JoinBookException.General(stringProvider[Res.string.book_exceed_maximum])
+                throw JoinBookException.General(getString(Res.string.book_exceed_maximum))
             }
 
             !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_free_limit")
-                throw JoinBookException.ExceedFreeLimit(stringProvider[Res.string.book_join_exceed_free_limit])
+                throw JoinBookException.ExceedFreeLimit(getString(Res.string.book_join_exceed_free_limit))
             }
 
             Clock.System.now().toEpochMilliseconds() > validBefore -> {
                 tracker.logEvent("join_book_link_expired")
-                throw JoinBookException.General(stringProvider[Res.string.book_join_link_expired])
+                throw JoinBookException.General(getString(Res.string.book_join_link_expired))
             }
         }
 
@@ -223,7 +222,7 @@ class BookRepoImpl(
         val exceedFreeLimit = !isPremium && bookCount >= FREE_BOOKS_LIMIT
         val exceedPremiumLimit = isPremium && bookCount >= PREMIUM_BOOKS_LIMIT
         if (exceedFreeLimit || exceedPremiumLimit) {
-            error(stringProvider[Res.string.book_exceed_maximum])
+            error(getString(Res.string.book_exceed_maximum))
         }
 
         val userId = authManager.requireUserId()

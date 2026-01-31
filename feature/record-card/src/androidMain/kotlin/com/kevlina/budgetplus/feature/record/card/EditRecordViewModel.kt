@@ -9,7 +9,6 @@ import budgetplus.core.common.generated.resources.record_deleted
 import budgetplus.core.common.generated.resources.record_edited
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -19,6 +18,7 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(EditRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -27,7 +27,6 @@ class EditRecordViewModel(
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     val canAddCategory: Boolean
@@ -51,7 +50,7 @@ class EditRecordViewModel(
                         newName = newName,
                         newPriceText = newPriceText
                     )
-                    snackbarSender.send(stringProvider[Res.string.batch_record_edited, count.toString()])
+                    snackbarSender.send(getString(Res.string.batch_record_edited, count.toString()))
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
@@ -73,13 +72,13 @@ class EditRecordViewModel(
             if (deleteBatch) {
                 try {
                     val count = recordRepo.deleteBatch(record)
-                    snackbarSender.send(stringProvider[Res.string.batch_record_deleted, count.toString()])
+                    snackbarSender.send(getString(Res.string.batch_record_deleted, count.toString()))
                 } catch (e: Exception) {
                     snackbarSender.sendError(e)
                 }
             } else {
                 recordRepo.deleteRecord(record.id)
-                snackbarSender.send(stringProvider[Res.string.record_deleted, record.name])
+                snackbarSender.send(getString(Res.string.record_deleted, record.name))
             }
         }
     }

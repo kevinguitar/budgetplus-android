@@ -19,7 +19,6 @@ import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -43,6 +42,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(RecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -56,7 +56,6 @@ class RecordViewModel(
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
     private val activityProvider: ActivityProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -110,9 +109,9 @@ class RecordViewModel(
             val joinLink = bookRepo.generateJoinLink()
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, stringProvider[Res.string.menu_invite_to_book, joinLink])
+                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_invite_to_book, joinLink))
             }
-            activity.startActivity(Intent.createChooser(intent, stringProvider[Res.string.cta_invite]))
+            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_invite)))
             requestPermissionEvent.sendEvent()
         }
     }

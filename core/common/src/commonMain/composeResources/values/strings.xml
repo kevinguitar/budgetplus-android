@@ -7,7 +7,7 @@
     <string name="auth_welcome_title">Welcome to Budget+</string>
     <string name="auth_welcome_description">A mighty co-spending tracker\nUse it anywhere with your friends and family</string>
     <string name="auth_google">Continue with Google</string>
-    <string name="auth_success">Welcome, %s!</string>
+    <string name="auth_success">Welcome, %1$s!</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">You can create a new accounting book</string>
@@ -24,7 +24,7 @@
     <string name="record_empty_price">Please input the price</string>
     <string name="record_edit_title">Edit Record</string>
     <string name="record_edited">Record edited</string>
-    <string name="record_deleted">Record %s is deleted</string>
+    <string name="record_deleted">Record %1$s is deleted</string>
     <string name="record_confirm_delete">Are you sure you want to delete the record?</string>
     <string name="record_duplicated">Record duplicated</string>
     <string name="record_speech_recognition_format">Say the note and price</string>
@@ -46,13 +46,13 @@
     <string name="batch_record_delete_confirmation">Do you want to delete all the future records as well?</string>
     <string name="batch_record_only_this">Only this</string>
     <string name="batch_record_all_future_records">All future records</string>
-    <string name="batch_record_edited">%s records were edited</string>
-    <string name="batch_record_deleted">%s records were deleted</string>
+    <string name="batch_record_edited">%1$s records were edited</string>
+    <string name="batch_record_deleted">%1$s records were deleted</string>
 
     <!-- Book -->
     <string name="book_selection">Select book</string>
-    <string name="book_create_success">Your book %s is created!</string>
-    <string name="book_join_success">You have joined %s successfully!</string>
+    <string name="book_create_success">Your book %1$s is created!</string>
+    <string name="book_join_success">You have joined %1$s successfully!</string>
     <string name="book_join_link_expired">The join link is expired…</string>
     <string name="book_already_archived">Oops, the book has been deleted…</string>
     <string name="book_already_joined">You have already joined</string>
@@ -63,7 +63,7 @@
     <string name="category_title">Category</string>
     <string name="category_edit_title">Edit Categories</string>
     <string name="category_edit_successful">Category list has been saved</string>
-    <string name="category_already_exist">Category %s already exist</string>
+    <string name="category_already_exist">Category %1$s already exist</string>
     <string name="category_food">Food</string>
     <string name="category_daily">Daily</string>
     <string name="category_transport">Transport</string>
@@ -87,12 +87,12 @@
     <string name="review_request_no">No</string>
 
     <!-- Menu -->
-    <string name="menu_invite_to_book">Click the link to track expenses with me!\n%s</string>
+    <string name="menu_invite_to_book">Click the link to track expenses with me!\n%1$s</string>
     <string name="menu_create_book">Create a New Book</string>
-    <string name="menu_share_colors">Check out the colors that I picked!\n%s</string>
+    <string name="menu_share_colors">Check out the colors that I picked!\n%1$s</string>
 
     <!-- Overview -->
-    <string name="overview_title">%s\'s Overview</string>
+    <string name="overview_title">%1$s\'s Overview</string>
     <string name="overview_total_price">Total</string>
     <string name="overview_period_day">Today</string>
     <string name="overview_period_week">Week</string>
@@ -112,7 +112,7 @@
     <string name="export_csv_success">Your report has been saved to the Download folder</string>
     <string name="export_column_type">Type</string>
     <string name="export_column_name">Name</string>
-    <string name="export_column_price">Price (%s)</string>
+    <string name="export_column_price">Price (%1$s)</string>
     <string name="export_column_category">Category</string>
     <string name="export_column_created_on">Created On</string>
     <string name="export_column_author">Author</string>
@@ -130,7 +130,7 @@
     <!-- Premium -->
     <string name="premium_unlock">Unlock Premium</string>
     <string name="premium_hide_ads">Hide Ads</string>
-    <string name="premium_pricing">%s one-time payment to unlock these benefits</string>
+    <string name="premium_pricing">%1$s one-time payment to unlock these benefits</string>
     <string name="premium_description">
         ✔ Enjoy Ads-free experience
         \n✔ Create up to 10 accounting books
@@ -144,12 +144,12 @@
     <string name="premium_payment_pending">Your payment is still pending, come back later.</string>
 
     <!-- Settings -->
-    <string name="settings_title">%s\'s Settings</string>
+    <string name="settings_title">%1$s\'s Settings</string>
     <string name="settings_description">Settings</string>
     <string name="settings_rename_user">Rename User</string>
-    <string name="settings_rename_user_success">Renamed to %s</string>
+    <string name="settings_rename_user_success">Renamed to %1$s</string>
     <string name="settings_rename_book">Rename Book</string>
-    <string name="settings_rename_book_success">Renamed the book to %s</string>
+    <string name="settings_rename_book_success">Renamed the book to %1$s</string>
     <string name="settings_edit_book_currency">Edit Book Currency</string>
     <string name="settings_view_members">View Members</string>
     <string name="settings_allow_members_edit">Allow Members to Edit</string>
@@ -157,17 +157,17 @@
     <string name="settings_logout">Logout</string>
     <string name="settings_delete_book">Delete Book</string>
     <string name="settings_leave_book">Leave Book</string>
-    <string name="settings_confirm_delete">Are you sure you want to delete %s?</string>
-    <string name="settings_confirm_leave">Are you sure you want to leave %s?</string>
-    <string name="settings_book_deleted">You have deleted %s</string>
-    <string name="settings_book_left">You have left %s</string>
+    <string name="settings_confirm_delete">Are you sure you want to delete %1$s?</string>
+    <string name="settings_confirm_leave">Are you sure you want to leave %1$s?</string>
+    <string name="settings_book_deleted">You have deleted %1$s</string>
+    <string name="settings_book_left">You have left %1$s</string>
     <string name="settings_language">Language</string>
     <string name="settings_input_vibration">Input Vibration</string>
     <string name="settings_chart_mode">Overview Chart Mode</string>
     <string name="settings_bar_chart">Bar Chart</string>
     <string name="settings_pie_chart">Pie Chart</string>
     <string name="settings_share_app">Share the app with friends</string>
-    <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%s</string>
+    <string name="settings_share_app_message">I found an awesome budget app! Try it out!\n%1$s</string>
     <string name="settings_rate_us">Rate Us on Google Play</string>
     <string name="settings_follow_on_instagram">Follow Us on Instagram</string>
     <string name="settings_contact_us">Contact Us</string>
@@ -260,8 +260,8 @@
     <string name="insider_language_zh_cn" translatable="false">簡體中文</string>
     <string name="insider_language_ja" translatable="false">日文</string>
     <string name="insider_language_en" translatable="false">英文</string>
-    <string name="insider_user_created_on" translatable="false">創建時間：%s</string>
-    <string name="insider_user_last_active_on" translatable="false">最後上線：%s</string>
+    <string name="insider_user_created_on" translatable="false">創建時間：%1$s</string>
+    <string name="insider_user_last_active_on" translatable="false">最後上線：%1$s</string>
 
     <!-- Push Notifications -->
     <string name="push_notif_title" translatable="false">通知推播</string>

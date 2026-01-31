@@ -7,7 +7,7 @@
     <string name="auth_welcome_title">歡迎加入極簡記帳</string>
     <string name="auth_welcome_description">飛快的記帳 App，從開啟到完成記帳只要 5 秒鐘\n快跟你的親朋好友共同記帳吧！</string>
     <string name="auth_google">以 Google 繼續</string>
-    <string name="auth_success">歡迎，%s！</string>
+    <string name="auth_success">歡迎，%1$s！</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">你可以創建帳本</string>
@@ -24,7 +24,7 @@
     <string name="record_empty_price">請輸入金額</string>
     <string name="record_edit_title">編輯帳目</string>
     <string name="record_edited">已儲存</string>
-    <string name="record_deleted">已刪除%s</string>
+    <string name="record_deleted">已刪除%1$s</string>
     <string name="record_confirm_delete">確認刪除此筆帳目嗎？</string>
     <string name="record_duplicated">帳目已複製</string>
     <string name="record_speech_recognition_format">請說出內容＋金額</string>
@@ -46,13 +46,13 @@
     <string name="batch_record_delete_confirmation">您要一併刪除未來的所有帳目嗎？</string>
     <string name="batch_record_only_this">這筆就好</string>
     <string name="batch_record_all_future_records">所有帳目</string>
-    <string name="batch_record_edited">已編輯%s筆帳目</string>
-    <string name="batch_record_deleted">已刪除%s筆帳目</string>
+    <string name="batch_record_edited">已編輯%1$s筆帳目</string>
+    <string name="batch_record_deleted">已刪除%1$s筆帳目</string>
 
     <!-- Book -->
     <string name="book_selection">選擇帳本</string>
-    <string name="book_create_success">「%s」已新增成功</string>
-    <string name="book_join_success">已加入「%s」</string>
+    <string name="book_create_success">「%1$s」已新增成功</string>
+    <string name="book_join_success">已加入「%1$s」</string>
     <string name="book_join_link_expired">連結已失效ＱＱ</string>
     <string name="book_already_archived">糟糕，帳本已經被刪除了</string>
     <string name="book_already_joined">您已加入帳本了</string>
@@ -63,7 +63,7 @@
     <string name="category_title">類別名稱</string>
     <string name="category_edit_title">編輯類別</string>
     <string name="category_edit_successful">類別清單已儲存</string>
-    <string name="category_already_exist">類別%s已存在</string>
+    <string name="category_already_exist">類別%1$s已存在</string>
     <string name="category_food">飲食</string>
     <string name="category_daily">日常</string>
     <string name="category_transport">交通</string>
@@ -87,12 +87,12 @@
     <string name="review_request_no">先不要</string>
 
     <!-- Menu -->
-    <string name="menu_invite_to_book">點擊下面的連結跟我一起記帳吧！\n%s</string>
+    <string name="menu_invite_to_book">點擊下面的連結跟我一起記帳吧！\n%1$s</string>
     <string name="menu_create_book">創建新帳本</string>
-    <string name="menu_share_colors">試試看我調的主題色調！\n%s</string>
+    <string name="menu_share_colors">試試看我調的主題色調！\n%1$s</string>
 
     <!-- Overview -->
-    <string name="overview_title">%s總覽</string>
+    <string name="overview_title">%1$s總覽</string>
     <string name="overview_total_price">合計</string>
     <string name="overview_period_day">本日</string>
     <string name="overview_period_week">本週</string>
@@ -112,7 +112,7 @@
     <string name="export_csv_success">CSV 報表已儲存至下載資料夾</string>
     <string name="export_column_type">項目</string>
     <string name="export_column_name">名稱</string>
-    <string name="export_column_price">金額（%s）</string>
+    <string name="export_column_price">金額（%1$s）</string>
     <string name="export_column_category">類別</string>
     <string name="export_column_created_on">時間</string>
     <string name="export_column_author">記帳人</string>
@@ -130,7 +130,7 @@
     <!-- Premium -->
     <string name="premium_unlock">解鎖進階版</string>
     <string name="premium_hide_ads">隱藏廣告</string>
-    <string name="premium_pricing">%s 一次性付款，解鎖進階功能\n無憂無慮用到天荒地老</string>
+    <string name="premium_pricing">%1$s 一次性付款，解鎖進階功能\n無憂無慮用到天荒地老</string>
     <string name="premium_description">
         ✔ 不受任何廣告打擾
         \n✔ 擴充至十本記帳本
@@ -144,12 +144,12 @@
     <string name="premium_payment_pending">您的款項正在處理中，請稍後再回來</string>
 
     <!-- Settings -->
-    <string name="settings_title">%s設定</string>
+    <string name="settings_title">%1$s設定</string>
     <string name="settings_description">設定</string>
     <string name="settings_rename_user">編輯使用者名稱</string>
-    <string name="settings_rename_user_success">使用者名稱已更改為%s</string>
+    <string name="settings_rename_user_success">使用者名稱已更改為%1$s</string>
     <string name="settings_rename_book">重新命名帳本</string>
-    <string name="settings_rename_book_success">帳本名稱已更改為%s</string>
+    <string name="settings_rename_book_success">帳本名稱已更改為%1$s</string>
     <string name="settings_edit_book_currency">編輯帳本幣別</string>
     <string name="settings_view_members">查看成員</string>
     <string name="settings_allow_members_edit">允許成員編輯</string>
@@ -157,17 +157,17 @@
     <string name="settings_logout">登出</string>
     <string name="settings_delete_book">刪除帳本</string>
     <string name="settings_leave_book">離開帳本</string>
-    <string name="settings_confirm_delete">確定要刪除「%s」嗎？</string>
-    <string name="settings_confirm_leave">確定要離開「%s」嗎？</string>
-    <string name="settings_book_deleted">%s已被刪除</string>
-    <string name="settings_book_left">您已離開%s</string>
+    <string name="settings_confirm_delete">確定要刪除「%1$s」嗎？</string>
+    <string name="settings_confirm_leave">確定要離開「%1$s」嗎？</string>
+    <string name="settings_book_deleted">%1$s已被刪除</string>
+    <string name="settings_book_left">您已離開%1$s</string>
     <string name="settings_language">語言</string>
     <string name="settings_input_vibration">輸入震動反饋</string>
     <string name="settings_chart_mode">總覽圖表模式</string>
     <string name="settings_bar_chart">長條圖</string>
     <string name="settings_pie_chart">圓餅圖</string>
     <string name="settings_share_app">分享 App 給好友</string>
-    <string name="settings_share_app_message">我發現了一款超好用的記帳 App，快下載來試試吧！\n%s</string>
+    <string name="settings_share_app_message">我發現了一款超好用的記帳 App，快下載來試試吧！\n%1$s</string>
     <string name="settings_rate_us">在 Google Play 上評價</string>
     <string name="settings_follow_on_instagram">追蹤我們的 Instagram</string>
     <string name="settings_contact_us">與我們聯繫</string>

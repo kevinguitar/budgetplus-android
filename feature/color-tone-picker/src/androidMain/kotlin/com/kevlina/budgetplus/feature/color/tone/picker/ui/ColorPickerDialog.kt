@@ -99,6 +99,7 @@ internal fun ColorPickerDialog(
                 }
             ) {
                 //TODO: Migrate to compose resources
+                //TODO: Actually let's wait until migrating to color-picker-compose
                 val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
                 it.setSelectorDrawable(selector)
             }

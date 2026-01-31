@@ -117,17 +117,17 @@ class AuthManagerImpl(
         // Associate the crash report with Budget+ user
         Firebase.crashlytics.setUserId(user.id)
 
-        appScope.launch {
-            val userWithExclusiveFields = user.copy(
-                premium = currentUser?.premium,
-                createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
-                lastActiveOn = Clock.System.now().toEpochMilliseconds(),
-                language = getString(Res.string.app_language),
-            )
-            userState.value = userWithExclusiveFields
-            currentUser = userWithExclusiveFields
-            preferenceHolder.setObjectOptional("currentUser", userWithExclusiveFields)
+        val userWithExclusiveFields = user.copy(
+            premium = currentUser?.premium,
+            createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
+            lastActiveOn = Clock.System.now().toEpochMilliseconds(),
+            language = getString(Res.string.app_language),
+        )
+        userState.value = userWithExclusiveFields
+        currentUser = userWithExclusiveFields
+        preferenceHolder.setObjectOptional("currentUser", userWithExclusiveFields)
 
+        appScope.launch {
             val fcmToken = if (allowUpdateFcmToken) {
                 try {
                     Firebase.messaging.token.await()

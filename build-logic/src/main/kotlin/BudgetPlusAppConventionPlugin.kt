@@ -84,12 +84,6 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
                         nativeSymbolUploadEnabled = true
                     }
                 }
-
-                create("benchmark") {
-                    signingConfig = signingConfigs.getByName("debug")
-                    matchingFallbacks.add("release")
-                    isDebuggable = false
-                }
             }
 
             bundle {

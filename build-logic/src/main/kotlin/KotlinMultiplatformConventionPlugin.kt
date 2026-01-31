@@ -76,7 +76,9 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
             sourceSets.apply {
                 commonMain.dependencies {
-                    implementation(project.libs.kotlin.datetime)
+                    implementation(project.libs.bundles.kmp)
+                    api(project.libs.datastore)
+                    api(project.libs.datastore.preferences)
 
                     if (project.path != ":core:common") {
                         implementation(project(":core:common"))
@@ -85,7 +87,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
 
                 androidMain.dependencies {
                     implementation(project.libs.bundles.android)
-                    implementation(project.libs.bundles.kmp)
                 }
 
                 androidUnitTest.dependencies {

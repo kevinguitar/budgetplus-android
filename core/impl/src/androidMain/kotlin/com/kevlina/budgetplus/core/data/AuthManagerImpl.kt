@@ -14,7 +14,7 @@ import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
 import dev.zacsweers.metro.AppScope
@@ -24,7 +24,9 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
@@ -32,17 +34,17 @@ import kotlin.time.Clock
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class AuthManagerImpl(
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
     private val tracker: Lazy<Tracker>,
     @Named("allow_update_fcm_token") private val allowUpdateFcmToken: Boolean,
     @AppCoroutineScope private val appScope: CoroutineScope,
     @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : AuthManager {
 
-    private var currentUser by preferenceHolder.bindObjectOptional<User>()
+    private val currentUserFlow = preferenceHolder.bindObjectOptional<User>()
+    private var currentUser: User? = runBlocking { currentUserFlow.getValue(this, ::currentUserFlow).first() }
 
-    final override val userState: StateFlow<User?>
-        field = MutableStateFlow(currentUser)
+    final override val userState: MutableStateFlow<User?> = MutableStateFlow(currentUser)
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
     override val userId: String? get() = userState.value?.id
@@ -79,6 +81,7 @@ class AuthManagerImpl(
 
         userState.value = premiumUser
         currentUser = premiumUser
+        appScope.launch { preferenceHolder.setObjectOptional("currentUser", premiumUser) }
     }
 
     override fun updateFcmToken(newToken: String) {
@@ -89,6 +92,7 @@ class AuthManagerImpl(
 
         userState.value = userWithNewToken
         currentUser = userWithNewToken
+        appScope.launch { preferenceHolder.setObjectOptional("currentUser", userWithNewToken) }
     }
 
     override fun logout() {
@@ -106,6 +110,7 @@ class AuthManagerImpl(
         if (user == null) {
             userState.value = null
             currentUser = null
+            appScope.launch { preferenceHolder.setObjectOptional<User>("currentUser", null) }
             return
         }
 
@@ -121,6 +126,7 @@ class AuthManagerImpl(
             )
             userState.value = userWithExclusiveFields
             currentUser = userWithExclusiveFields
+            preferenceHolder.setObjectOptional("currentUser", userWithExclusiveFields)
 
             val fcmToken = if (allowUpdateFcmToken) {
                 try {

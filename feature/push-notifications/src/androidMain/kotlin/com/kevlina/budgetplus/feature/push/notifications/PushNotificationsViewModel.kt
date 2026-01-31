@@ -22,12 +22,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.time.Clock
 
 @ViewModelKey(PushNotificationsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class PushNotificationsViewModel private constructor(
-    preferenceHolder: PreferenceHolder,
+    private val preferenceHolder: PreferenceHolder,
     translator: Translator,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("default_deeplink") private val defaultDeeplink: String,
@@ -36,40 +37,40 @@ class PushNotificationsViewModel private constructor(
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {
 
-    private var titleTwCache by preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起編織理財夢！")
-    private var descTwCache by preferenceHolder.bindString(
+    private val titleTwFlow = preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起編織理財夢！")
+    private val descTwFlow = preferenceHolder.bindString(
         "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"
     )
 
-    private var titleJaCache by preferenceHolder.bindString("新しい月ですよ！")
-    private var descJaCache by preferenceHolder.bindString(
+    private val titleJaFlow = preferenceHolder.bindString("新しい月ですよ！")
+    private val descJaFlow = preferenceHolder.bindString(
         "月初めに支出の追跡を始めましょう \uD83D\uDE4C"
     )
 
-    private var titleEnCache by preferenceHolder.bindString("It's a new month!")
-    private var descEnCache by preferenceHolder.bindString(
+    private val titleEnFlow = preferenceHolder.bindString("It's a new month!")
+    private val descEnFlow = preferenceHolder.bindString(
         "Track your expenses starting from the beginning of the month \uD83D\uDE4C"
     )
 
-    private var deeplinkCache by preferenceHolder.bindString("")
+    private val deeplinkFlow = preferenceHolder.bindString("")
 
-    val titleTw = TextFieldState(titleTwCache)
-    val descTw = TextFieldState(descTwCache)
+    val titleTw = TextFieldState(runBlocking { titleTwFlow.getValue(this, ::titleTwFlow).first() })
+    val descTw = TextFieldState(runBlocking { descTwFlow.getValue(this, ::descTwFlow).first() })
 
     val sendToCn = MutableStateFlow(true)
     val titleCn = TextFieldState()
     val descCn = TextFieldState()
 
     val sendToJa = MutableStateFlow(true)
-    val titleJa = TextFieldState(titleJaCache)
-    val descJa = TextFieldState(descJaCache)
+    val titleJa = TextFieldState(runBlocking { titleJaFlow.getValue(this, ::titleJaFlow).first() })
+    val descJa = TextFieldState(runBlocking { descJaFlow.getValue(this, ::descJaFlow).first() })
 
     val sendToEn = MutableStateFlow(true)
-    val titleEn = TextFieldState(titleEnCache)
-    val descEn = TextFieldState(descEnCache)
+    val titleEn = TextFieldState(runBlocking { titleEnFlow.getValue(this, ::titleEnFlow).first() })
+    val descEn = TextFieldState(runBlocking { descEnFlow.getValue(this, ::descEnFlow).first() })
 
     val navigateToGooglePlay = MutableStateFlow(false)
-    val deeplink = TextFieldState(deeplinkCache)
+    val deeplink = TextFieldState(runBlocking { deeplinkFlow.getValue(this, ::deeplinkFlow).first() })
 
     init {
         snapshotFlow { titleTw.text }
@@ -138,16 +139,15 @@ class PushNotificationsViewModel private constructor(
     }
 
     private fun saveToCache() {
-        titleTwCache = titleTw.text.toString()
-        descTwCache = descTw.text.toString()
-
-        titleJaCache = titleJa.text.toString()
-        descJaCache = descJa.text.toString()
-
-        titleEnCache = titleEn.text.toString()
-        descEnCache = descEn.text.toString()
-
-        deeplinkCache = deeplink.text.toString()
+        viewModelScope.launch {
+            preferenceHolder.setString("titleTwCache", titleTw.text.toString())
+            preferenceHolder.setString("descTwCache", descTw.text.toString())
+            preferenceHolder.setString("titleJaCache", titleJa.text.toString())
+            preferenceHolder.setString("descJaCache", descJa.text.toString())
+            preferenceHolder.setString("titleEnCache", titleEn.text.toString())
+            preferenceHolder.setString("descEnCache", descEn.text.toString())
+            preferenceHolder.setString("deeplinkCache", deeplink.text.toString())
+        }
     }
 
     private companion object {

@@ -14,29 +14,38 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @SingleIn(AppScope::class)
 @Inject
 class ThemeManager(
-    preferenceHolder: PreferenceHolder,
+    private val preferenceHolder: PreferenceHolder,
     private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
 
-    private var colorToneCache by preferenceHolder.bindObject(ColorTone.MilkTea)
-    private var customizedColorsCache by preferenceHolder.bindString(ThemeColors.MilkTea.encode())
+    private val colorToneFlow = preferenceHolder.bindObject(ColorTone.MilkTea)
+    private val customizedColorsFlow = preferenceHolder.bindString(ThemeColors.MilkTea.encode())
 
     // It represents the current theme colors in the customized theme.
-    private var currentCustomColors = decodeThemeColors(customizedColorsCache) ?: ThemeColors.MilkTea
+    private var currentCustomColors = ThemeColors.MilkTea
 
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    val colorTone: StateFlow<ColorTone>
-        field = MutableStateFlow(colorToneCache)
+    val colorTone: MutableStateFlow<ColorTone>
+    val themeColors: MutableStateFlow<ThemeColors>
 
-    val themeColors: StateFlow<ThemeColors>
-        field = MutableStateFlow<ThemeColors>(getThemeColors(colorToneCache))
+    init {
+        val initialColorTone = runBlocking { colorToneFlow.getValue(this, ::colorToneFlow).first() }
+        colorTone = MutableStateFlow(initialColorTone)
+        themeColors = MutableStateFlow(getThemeColors(initialColorTone))
+
+        val initialCustomColorsHex = runBlocking { customizedColorsFlow.getValue(this, ::customizedColorsFlow).first() }
+        currentCustomColors = decodeThemeColors(initialCustomColorsHex) ?: ThemeColors.MilkTea
+        editedCustomColors = currentCustomColors
+    }
 
     val previewColors: StateFlow<ThemeColors?>
         field = MutableStateFlow<ThemeColors?>(null)
@@ -64,7 +73,7 @@ class ThemeManager(
             saveCustomColors(editedCustomColors)
         }
 
-        colorToneCache = newColorTone
+        runBlocking { preferenceHolder.setObject("colorToneCache", newColorTone) }
         colorTone.value = newColorTone
         themeColors.value = getThemeColors(newColorTone)
 
@@ -135,7 +144,7 @@ class ThemeManager(
     }
 
     private fun saveCustomColors(newColors: ThemeColors) {
-        customizedColorsCache = newColors.encode()
+        runBlocking { preferenceHolder.setString("customizedColorsCache", newColors.encode()) }
         currentCustomColors = newColors
         editedCustomColors = newColors
         hasEditedCustomTheme.value = false

@@ -1,18 +1,24 @@
 package com.kevlina.budgetplus.core.inapp.review
 
 import android.app.Activity
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import co.touchlab.kermit.Logger
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.now
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.inapp.review.InAppReviewManagerImpl.Companion.INSTALL_DAYS_MIN
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -30,28 +36,36 @@ class InAppReviewManagerImpl(
     private val reviewManager: ReviewManager,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : InAppReviewManager {
 
     private val now get() = LocalDateTime.now()
 
-    private var hasRejectedBefore by preferenceHolder.bindBoolean(false)
-    private var hasRequestedBefore by preferenceHolder.bindBoolean(false)
-    //TODO: Consider refactor to store DateTime directly
-    private var firstInitDatetime by preferenceHolder.bindLong(0L)
+    private val hasRejectedBeforeKey = booleanPreferencesKey("hasRejectedBeforeFlow")
+    private var hasRejectedBefore = preference.of(hasRejectedBeforeKey)
+
+    private val hasRequestedBeforeKey = booleanPreferencesKey("hasRequestedBeforeFlow")
+    private var hasRequestedBefore = preference.of(hasRequestedBeforeKey)
+
+    private val firstInitDatetimeKey = longPreferencesKey("firstInitDatetimeFlow")
+    private val firstInitDatetime = preference.of(firstInitDatetimeKey)
 
     init {
-        if (firstInitDatetime == 0L) {
-            firstInitDatetime = now.toInstant(TimeZone.UTC).epochSeconds
+        appScope.launch {
+            if (firstInitDatetime.first() == null) {
+                val nowSeconds = now.toInstant(TimeZone.UTC).epochSeconds
+                preference.update(firstInitDatetimeKey, nowSeconds)
+            }
         }
     }
 
-    override fun isEligibleForReview(): Boolean {
-        if (hasRejectedBefore || hasRequestedBefore) {
+    override suspend fun isEligibleForReview(): Boolean {
+        if (hasRejectedBefore.first() == true || hasRequestedBefore.first() == true) {
             return false
         }
 
-        val initDateTime = Instant.fromEpochSeconds(firstInitDatetime)
+        val initDateTime = Instant.fromEpochSeconds(firstInitDatetime.first() ?: 0)
         val eligible = initDateTime.plus(INSTALL_DAYS_MIN.days) < now.toInstant(TimeZone.UTC)
         if (eligible) {
             tracker.logEvent("inapp_review_requested")
@@ -64,7 +78,7 @@ class InAppReviewManagerImpl(
             val reviewInfo = reviewManager.requestReview()
             reviewManager.launchReview(activity, reviewInfo)
             tracker.logEvent("inapp_review_accepted")
-            hasRequestedBefore = true
+            preference.update(hasRequestedBeforeKey, true)
         } catch (e: Exception) {
             snackbarSender.sendError(e)
             Logger.e(e) { "Failed to launch the review flow" }
@@ -73,7 +87,7 @@ class InAppReviewManagerImpl(
 
     override fun rejectReviewing() {
         tracker.logEvent("inapp_review_rejected")
-        hasRejectedBefore = true
+        appScope.launch { preference.update(hasRejectedBeforeKey, true) }
     }
 
     companion object {

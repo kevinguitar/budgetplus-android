@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -67,18 +68,18 @@ class OverviewViewModel private constructor(
     val timeModel: OverviewTimeViewModel,
     val chartModeModel: ChartModeViewModel,
     val vibratorManager: VibratorManager,
-    preferenceHolder: PreferenceHolder,
+    private val preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
     private val isSoloAuthor = bookRepo.bookState.mapState { it?.authors?.size == 1 }
 
-    private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
-    private val type = MutableStateFlow(typeCache)
+    private val typeFlow = preferenceHolder.bindObject(RecordType.Expense)
+    private val type = MutableStateFlow(runBlocking { typeFlow.getValue(this, ::typeFlow).first() })
 
-    private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
-    internal val mode: StateFlow<OverviewMode>
-        field = MutableStateFlow(modeCache)
+    private val modeFlow = preferenceHolder.bindObject(OverviewMode.AllRecords)
+    internal val mode: MutableStateFlow<OverviewMode>
+        field = MutableStateFlow(runBlocking { modeFlow.getValue(this, ::modeFlow).first() })
 
     private var modeBubbleJob: Job? = null
     private var exportBubbleJob: Job? = null
@@ -189,7 +190,7 @@ class OverviewViewModel private constructor(
             OverviewMode.GroupByCategories -> OverviewMode.AllRecords
         }
         mode.value = newMode
-        modeCache = newMode
+        viewModelScope.launch { preferenceHolder.setObject("modeCache", newMode) }
         tracker.logEvent("overview_mode_changed")
     }
 

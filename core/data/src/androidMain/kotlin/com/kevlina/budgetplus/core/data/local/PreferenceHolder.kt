@@ -1,12 +1,14 @@
 package com.kevlina.budgetplus.core.data.local
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
+import kotlin.properties.ReadOnlyProperty
 
 @SingleIn(AppScope::class)
 @Inject
@@ -14,98 +16,58 @@ class PreferenceHolder(
     val preference: Preference,
     val formatter: Json,
 ) {
-
-    fun bindInt(default: Int) = object : ReadWriteProperty<Any, Int> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): Int {
-            return preference.pref.getInt(property.name, default)
-        }
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) {
-            preference.editor.putInt(property.name, value).apply()
-        }
+    fun bindString(default: String) = ReadOnlyProperty<Any, Flow<String>> { _, property ->
+        val key = stringPreferencesKey(property.name)
+        preference.data.map { it[key] ?: default }
     }
 
-    fun bindLong(default: Long) = object : ReadWriteProperty<Any, Long> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): Long {
-            return preference.pref.getLong(property.name, default)
-        }
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
-            preference.editor.putLong(property.name, value).apply()
-        }
+    suspend fun setString(name: String, value: String) {
+        preference.update(stringPreferencesKey(name), value)
     }
 
-    fun getBoolean(key: String, default: Boolean): Boolean {
-        return preference.pref.getBoolean(key, default)
-    }
-
-    fun setBoolean(key: String, value: Boolean) {
-        preference.editor.putBoolean(key, value).apply()
-    }
-
-    fun bindBoolean(default: Boolean) = object : ReadWriteProperty<Any, Boolean> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
-            return preference.pref.getBoolean(property.name, default)
-        }
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
-            preference.editor.putBoolean(property.name, value).apply()
-        }
-    }
-
-    fun bindString(default: String) = object : ReadWriteProperty<Any, String> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): String {
-            return preference.pref.getString(property.name, default) ?: default
-        }
-
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: String) {
-            preference.editor.putString(property.name, value).apply()
-        }
-    }
-
-    inline fun <reified T : Any> bindObject(default: T) = object : ReadWriteProperty<Any, T> {
-
-        override operator fun getValue(thisRef: Any, property: KProperty<*>): T {
-            val json = preference.pref.getString(property.name, null) ?: return default
-            return try {
-                formatter.decodeFromString(json)
+    inline fun <reified T : Any> bindObject(default: T) = ReadOnlyProperty<Any, Flow<T>> { _, property ->
+        val key = stringPreferencesKey(property.name)
+        preference.data.map { prefs ->
+            val json = prefs[key] ?: return@map default
+            try {
+                formatter.decodeFromString<T>(json)
             } catch (e: Exception) {
                 Logger.e(e) { "Preference: Decode failed" }
                 default
             }
         }
+    }
 
-        override operator fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-            try {
-                val json = formatter.encodeToString(value)
-                preference.editor.putString(property.name, json).apply()
-            } catch (e: Exception) {
-                Logger.e(e) { "Preference: Encode failed" }
-            }
+    suspend inline fun <reified T : Any> setObject(name: String, value: T) {
+        try {
+            val json = formatter.encodeToString(value)
+            preference.update(stringPreferencesKey(name), json)
+        } catch (e: Exception) {
+            Logger.e(e) { "Preference: Encode failed" }
         }
     }
 
     inline fun <reified T : Any?> bindObjectOptional(
         default: T? = null,
-    ) = object : ReadWriteProperty<Any, T?> {
-
-        override operator fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            val json = preference.pref.getString(property.name, null) ?: return default
-            return try {
-                formatter.decodeFromString(json)
+    ) = ReadOnlyProperty<Any, Flow<T?>> { _, property ->
+        val key = stringPreferencesKey(property.name)
+        preference.data.map { prefs ->
+            val json = prefs[key] ?: return@map default
+            try {
+                formatter.decodeFromString<T>(json)
             } catch (e: Exception) {
                 Logger.e(e) { "Preference: Decode failed" }
                 default
             }
         }
+    }
 
-        override operator fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-            try {
-                val json = value?.let(formatter::encodeToString)
-                preference.editor.putString(property.name, json).apply()
-            } catch (e: Exception) {
-                Logger.e(e) { "Preference: Encode failed" }
-            }
+    suspend inline fun <reified T : Any?> setObjectOptional(name: String, value: T?) {
+        try {
+            val json = value?.let(formatter::encodeToString)
+            preference.update(stringPreferencesKey(name), json)
+        } catch (e: Exception) {
+            Logger.e(e) { "Preference: Encode failed" }
         }
     }
 }

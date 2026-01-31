@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.currency.picker
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -10,35 +11,27 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
-import java.util.Currency
-import java.util.Locale
+import java.util.*
 
 @ViewModelKey(CurrencyPickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class CurrencyPickerViewModel(
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
 ) : ViewModel() {
 
     val keyword = TextFieldState()
 
-    private var hasShownCurrencyDisclaimerCache by preferenceHolder.bindBoolean(false)
-    val hasShownCurrencyDisclaimer: Boolean
-        get() {
-            val current = hasShownCurrencyDisclaimerCache
-            hasShownCurrencyDisclaimerCache = true
-            return current
-        }
-
+    private val hasShownCurrencyDisclaimerKey = booleanPreferencesKey("hasShownCurrencyDisclaimerCache")
     private val currentCurrencyCode = bookRepo.bookState.value?.currencyCode
 
     private val defaultLocale = Locale.getDefault()
@@ -69,6 +62,14 @@ class CurrencyPickerViewModel(
             .launchIn(viewModelScope)
     }
 
+    suspend fun hasShownCurrencyDisclaimer(): Boolean {
+        val hasShown = preference.of(hasShownCurrencyDisclaimerKey).first() == true
+        if (!hasShown) {
+            preference.update(hasShownCurrencyDisclaimerKey, true)
+        }
+        return hasShown
+    }
+
     private fun onSearch(keyword: CharSequence) {
         currencies.value = allCurrencies.filter {
             it.name.contains(keyword, ignoreCase = true) ||
@@ -76,11 +77,9 @@ class CurrencyPickerViewModel(
         }
     }
 
-    fun onCurrencyPicked(currency: CurrencyState) {
+    suspend fun onCurrencyPicked(currency: CurrencyState) {
         val bookName = bookRepo.bookState.value?.name ?: return
-        viewModelScope.launch {
-            snackbarSender.send(getString(Res.string.currency_picker_edit_success, bookName, currency.name))
-            bookRepo.updateCurrency(currency.currencyCode)
-        }
+        snackbarSender.send(getString(Res.string.currency_picker_edit_success, bookName, currency.name))
+        bookRepo.updateCurrency(currency.currencyCode)
     }
 }

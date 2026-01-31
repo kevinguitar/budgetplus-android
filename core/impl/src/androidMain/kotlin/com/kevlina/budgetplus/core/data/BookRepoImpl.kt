@@ -37,13 +37,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
 import java.text.NumberFormat
-import java.util.Currency
-import java.util.Locale
+import java.util.*
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
@@ -53,15 +54,15 @@ class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
     private val tracker: Tracker,
-    preferenceHolder: PreferenceHolder,
-    @AppCoroutineScope appScope: CoroutineScope,
+    private val preferenceHolder: PreferenceHolder,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
 ) : BookRepo {
 
-    private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
+    private val currentBookFlow = preferenceHolder.bindObjectOptional<Book>(null)
+    private var currentBook: Book? = runBlocking { currentBookFlow.getValue(this, ::currentBookFlow).first() }
 
-    final override val bookState: StateFlow<Book?>
-        field = MutableStateFlow(currentBook)
+    final override val bookState: MutableStateFlow<Book?> = MutableStateFlow(currentBook)
 
     final override val booksState: StateFlow<List<Book>?>
         field = MutableStateFlow<List<Book>?>(null)
@@ -316,6 +317,7 @@ class BookRepoImpl(
     private fun setBook(book: Book?) {
         bookState.value = book
         currentBook = book
+        appScope.launch { preferenceHolder.setObjectOptional<Book>("currentBook", book) }
     }
 
     override fun addCategory(type: RecordType, category: String, source: String) {

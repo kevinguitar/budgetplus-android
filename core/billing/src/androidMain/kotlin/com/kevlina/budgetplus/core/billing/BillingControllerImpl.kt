@@ -2,6 +2,8 @@ package com.kevlina.budgetplus.core.billing
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.premium_payment_pending
 import co.touchlab.kermit.Logger
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
@@ -18,8 +20,6 @@ import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.PurchaseRepo
@@ -30,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ContributesBinding(AppScope::class, binding = binding<BillingController>())
 class BillingControllerImpl(
@@ -37,7 +38,6 @@ class BillingControllerImpl(
     @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     private val purchaseRepo: PurchaseRepo,
-    private val stringProvider: StringProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
     private val productDetailsState = MutableStateFlow<ProductDetails?>(null)
@@ -217,7 +217,7 @@ class BillingControllerImpl(
 
                 else -> {
                     Logger.e(BillingException()) { "Cannot process the purchase. Purchase state: ${purchase.purchaseState}" }
-                    purchaseState.value = PurchaseState.Fail(stringProvider[R.string.premium_payment_pending])
+                    purchaseState.value = PurchaseState.Fail(getString(Res.string.premium_payment_pending))
                 }
             }
         }

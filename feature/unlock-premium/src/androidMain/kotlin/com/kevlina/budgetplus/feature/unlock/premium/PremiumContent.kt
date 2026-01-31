@@ -11,12 +11,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.premium_description
+import budgetplus.core.common.generated.resources.premium_pricing
+import budgetplus.core.common.generated.resources.premium_unlock
+import budgetplus.core.common.generated.resources.premium_unlock_cta
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
@@ -24,6 +27,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PremiumContent(
@@ -46,7 +50,7 @@ fun PremiumContent(
         InvestAnimation(modifier = Modifier.size(280.dp, 200.dp))
 
         Text(
-            text = stringResource(id = R.string.premium_unlock),
+            text = stringResource(Res.string.premium_unlock),
             fontSize = FontSize.HeaderLarge,
             fontWeight = FontWeight.SemiBold
         )
@@ -58,7 +62,7 @@ fun PremiumContent(
             )
         } else {
             Text(
-                text = stringResource(id = R.string.premium_pricing, premiumPricing),
+                text = stringResource(Res.string.premium_pricing, premiumPricing),
                 fontSize = FontSize.SemiLarge,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
@@ -68,7 +72,7 @@ fun PremiumContent(
         }
 
         Text(
-            text = stringResource(id = R.string.premium_description),
+            text = stringResource(Res.string.premium_description),
             fontSize = FontSize.SemiLarge,
             lineHeight = 32.sp,
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
@@ -82,7 +86,7 @@ fun PremiumContent(
             onClick = getPremium
         ) {
             Text(
-                text = stringResource(id = R.string.premium_unlock_cta),
+                text = stringResource(Res.string.premium_unlock_cta),
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.Medium,

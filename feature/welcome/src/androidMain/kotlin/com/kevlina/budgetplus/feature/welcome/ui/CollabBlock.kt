@@ -13,11 +13,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.welcome_join_instruction
 import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -27,6 +27,7 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.thenIf
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun CollabBlock(
@@ -45,7 +46,7 @@ internal fun CollabBlock(
     ) {
 
         Text(
-            text = stringResource(id = R.string.welcome_join_instruction),
+            text = stringResource(Res.string.welcome_join_instruction),
             color = LocalAppColors.current.light,
             fontSize = FontSize.SemiLarge,
             lineHeight = 24.sp,

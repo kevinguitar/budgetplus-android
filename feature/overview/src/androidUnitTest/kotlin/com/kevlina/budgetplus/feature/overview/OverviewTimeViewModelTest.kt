@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.overview
 
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_exceed_max_period
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.common.now
@@ -68,7 +69,7 @@ class OverviewTimeViewModelTest {
         ))
 
         verify {
-            FakeSnackbarSender.lastSentMessageId = R.string.overview_exceed_max_period
+            FakeSnackbarSender.lastSentMessageRes = Res.string.overview_exceed_max_period
             recordsObserver.setTimePeriod(bookId, TimePeriod.Custom(
                 from = LocalDate.now(),
                 until = LocalDate.now().plus(1, DateTimeUnit.MONTH)

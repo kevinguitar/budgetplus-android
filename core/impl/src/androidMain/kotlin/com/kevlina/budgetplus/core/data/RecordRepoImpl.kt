@@ -1,11 +1,12 @@
 package com.kevlina.budgetplus.core.data
 
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.record_duplicated
 import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
@@ -31,7 +32,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.UUID
+import java.util.*
 import kotlin.time.Instant
 
 @SingleIn(AppScope::class)
@@ -154,8 +155,8 @@ class RecordRepoImpl(
             batchId = null
         )
         recordsDb().add(duplicatedRecord)
-        snackbarSender.send(R.string.record_duplicated)
         tracker.logEvent("record_duplicated")
+        appScope.launch { snackbarSender.send(Res.string.record_duplicated) }
     }
 
     override fun deleteRecord(recordId: String) {

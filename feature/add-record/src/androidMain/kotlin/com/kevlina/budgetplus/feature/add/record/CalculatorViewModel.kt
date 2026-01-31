@@ -4,6 +4,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
 import java.math.RoundingMode
 
@@ -28,7 +31,7 @@ class CalculatorViewModel(
     val vibrator: VibratorManager,
     val speakToRecordViewModel: SpeakToRecordViewModel,
     private val snackbarSender: SnackbarSender,
-) {
+): ViewModel() {
 
     val priceText = TextFieldState(EMPTY_PRICE)
 
@@ -105,7 +108,7 @@ class CalculatorViewModel(
             val expression = ExpressionBuilder(text).build()
             val validation = expression.validate()
             if (!validation.isValid) {
-                snackbarSender.send(validation.errors.joinToString())
+                viewModelScope.launch { snackbarSender.send(validation.errors.joinToString()) }
                 Logger.e(CalculatorException()) { "Validation error. Raw: $text" }
                 return
             }

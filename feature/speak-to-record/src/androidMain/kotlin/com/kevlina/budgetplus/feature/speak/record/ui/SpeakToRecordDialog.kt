@@ -11,13 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.record_speech_recognition_format
 import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -28,6 +28,7 @@ import io.github.alexzhirkevich.compottie.ExperimentalCompottieApi
 import io.github.alexzhirkevich.compottie.dynamic.rememberLottieDynamicProperties
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalCompottieApi::class)
 @Composable
@@ -69,7 +70,7 @@ internal fun SpeakToRecordDialog() {
             )
 
             Text(
-                text = stringResource(R.string.record_speech_recognition_format),
+                text = stringResource(Res.string.record_speech_recognition_format),
                 textAlign = TextAlign.Center,
                 fontSize = FontSize.Small,
                 fontWeight = FontWeight.SemiBold

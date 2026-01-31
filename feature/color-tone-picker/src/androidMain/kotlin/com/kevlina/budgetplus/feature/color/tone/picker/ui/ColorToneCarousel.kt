@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +29,7 @@ import com.kevlina.budgetplus.core.ui.PagerIndicator
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.darken
 import com.kevlina.budgetplus.core.ui.lerp
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
 val colorTones = ColorTone.entries.toList()
@@ -63,7 +63,7 @@ internal fun ColorToneCarousel(
             }
 
             Text(
-                text = stringResource(id = selectedColorTone.nameRes),
+                text = stringResource(selectedColorTone.nameRes),
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold,
                 color = LocalAppColors.current.primary.darken(CARD_TEXT_DARKEN_FACTOR)

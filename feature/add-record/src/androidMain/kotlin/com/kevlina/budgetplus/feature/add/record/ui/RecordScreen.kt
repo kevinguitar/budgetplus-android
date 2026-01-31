@@ -17,8 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.stringResource
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_invite
+import budgetplus.core.common.generated.resources.review_request_message
+import budgetplus.core.common.generated.resources.review_request_no
+import budgetplus.core.common.generated.resources.review_request_yes
+import budgetplus.core.common.generated.resources.settings_description
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -32,6 +36,7 @@ import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.add.record.RecordViewModel
 import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.flow.collect
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecordScreen(navController: NavController<BookDest>) {
@@ -58,7 +63,7 @@ fun RecordScreen(navController: NavController<BookDest>) {
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.GroupAdd,
-                    description = stringResource(id = R.string.cta_invite),
+                    description = stringResource(Res.string.cta_invite),
                     onClick = vm::shareJoinLink,
                     modifier = Modifier.onPlaced {
                         vm.highlightInviteButton(
@@ -72,7 +77,7 @@ fun RecordScreen(navController: NavController<BookDest>) {
 
                 MenuAction(
                     imageVector = Icons.Rounded.Settings,
-                    description = stringResource(id = R.string.settings_description),
+                    description = stringResource(Res.string.settings_description),
                     onClick = {
                         navController.navigate(BookDest.Settings())
                     }
@@ -112,9 +117,9 @@ fun RecordScreen(navController: NavController<BookDest>) {
 
         if (isRequestingReview) {
             ConfirmDialog(
-                message = stringResource(id = R.string.review_request_message),
-                confirmText = stringResource(id = R.string.review_request_yes),
-                cancelText = stringResource(id = R.string.review_request_no),
+                message = stringResource(Res.string.review_request_message),
+                confirmText = stringResource(Res.string.review_request_yes),
+                cancelText = stringResource(Res.string.review_request_no),
                 onConfirm = {
                     vm.launchReviewFlow()
                     isRequestingReview = false

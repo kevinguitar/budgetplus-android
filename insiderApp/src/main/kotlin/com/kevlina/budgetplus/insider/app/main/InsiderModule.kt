@@ -31,4 +31,8 @@ interface InsiderModule {
     @Provides
     @Named("google_api_key")
     fun provideGoogleApiKey(): String = BuildConfig.GOOGLE_API_KEY
+
+    @Provides
+    @Named("is_debug")
+    fun provideIsDebug(): Boolean = true
 }

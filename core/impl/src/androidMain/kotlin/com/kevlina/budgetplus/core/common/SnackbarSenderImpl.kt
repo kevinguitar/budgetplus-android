@@ -1,42 +1,48 @@
 package com.kevlina.budgetplus.core.common
 
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.fallback_error_message
 import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class SnackbarSenderImpl(
-    private val stringProvider: StringProvider,
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : SnackbarSender {
 
     final override val snackbarEvent: EventFlow<SnackbarData>
         field = MutableEventFlow<SnackbarData>()
 
-    override fun send(
-        message: Int,
-        actionLabel: Int?,
+    override suspend fun send(
+        message: StringResource,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) = send(
-        message = stringProvider[message],
+        message = getString(message),
         actionLabel = actionLabel,
         duration = duration,
         action = action
     )
 
-    override fun send(
+    override suspend fun send(
         message: String,
-        actionLabel: Int?,
+        actionLabel: StringResource?,
         duration: SnackbarDuration,
         action: () -> Unit,
     ) {
         Logger.d { "SnackbarSender: Show snackbar $message" }
         snackbarEvent.sendEvent(SnackbarData(
             message = message,
-            actionLabel = actionLabel?.let(stringProvider::get),
+            actionLabel = actionLabel?.let { getString(it) },
             duration = duration,
             action = action
         ))
@@ -48,8 +54,9 @@ class SnackbarSenderImpl(
         when {
             // Do not toast the cancellation error
             e is CancellationException -> Unit
-            error != null -> send(error)
-            else -> send(R.string.fallback_error_message)
+            // Insignificant error, just launch from appScope
+            error != null -> appScope.launch { send(error) }
+            else -> appScope.launch { send(Res.string.fallback_error_message) }
         }
     }
 }

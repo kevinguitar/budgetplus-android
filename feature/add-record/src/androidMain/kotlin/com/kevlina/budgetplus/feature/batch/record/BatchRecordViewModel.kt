@@ -5,11 +5,11 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_created
 import com.kevlina.budgetplus.core.common.EventTrigger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.now
@@ -30,7 +30,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(BatchRecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -40,7 +42,6 @@ class BatchRecordViewModel(
     private val recordRepo: RecordRepo,
     private val authManager: AuthManager,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     val type: StateFlow<RecordType>
@@ -117,8 +118,11 @@ class BatchRecordViewModel(
             times = times.value
         )
         recordEvent.sendEvent(Unit)
-        snackbarSender.send(stringProvider[R.string.batch_record_created, times.value.toString(), category])
         resetScreen()
+
+        viewModelScope.launch {
+            snackbarSender.send(getString(Res.string.batch_record_created, times.value.toString(), category))
+        }
     }
 
     private fun resetScreen() {

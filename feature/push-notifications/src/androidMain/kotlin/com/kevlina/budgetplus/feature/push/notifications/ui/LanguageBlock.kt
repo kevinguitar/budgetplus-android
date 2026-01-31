@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.push.notifications.ui
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,21 +12,26 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.push_notif_language_ja
+import budgetplus.core.common.generated.resources.push_notif_language_zh_tw
+import budgetplus.core.common.generated.resources.push_notif_push_description
+import budgetplus.core.common.generated.resources.push_notif_push_title
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun LanguageBlock(
-    @StringRes textRes: Int,
+    textRes: StringResource,
     title: TextFieldState,
     description: TextFieldState,
     modifier: Modifier = Modifier,
@@ -44,7 +48,7 @@ internal fun LanguageBlock(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = stringResource(id = textRes),
+                text = stringResource(textRes),
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1F)
@@ -61,14 +65,14 @@ internal fun LanguageBlock(
         if (enabled) {
             TextField(
                 state = title,
-                title = stringResource(id = R.string.push_notif_push_title),
+                title = stringResource(Res.string.push_notif_push_title),
                 singleLine = false,
                 modifier = Modifier.height(80.dp)
             )
 
             TextField(
                 state = description,
-                title = stringResource(id = R.string.push_notif_push_description),
+                title = stringResource(Res.string.push_notif_push_description),
                 singleLine = false,
                 modifier = Modifier.height(80.dp)
             )
@@ -80,7 +84,7 @@ internal fun LanguageBlock(
 @Composable
 private fun LanguageBlock_Preview() = AppTheme {
     LanguageBlock(
-        textRes = R.string.push_notif_language_zh_tw,
+        textRes = Res.string.push_notif_language_zh_tw,
         title = rememberTextFieldState("推播標題\n第二行"),
         description = rememberTextFieldState("記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"),
         isOptional = false,
@@ -94,7 +98,7 @@ private fun LanguageBlock_Preview() = AppTheme {
 @Composable
 private fun LanguageBlockOptional_Preview() = AppTheme {
     LanguageBlock(
-        textRes = R.string.push_notif_language_ja,
+        textRes = Res.string.push_notif_language_ja,
         title = rememberTextFieldState("新しい月ですよ！"),
         description = rememberTextFieldState("月初めに支出の追跡を始めましょう"),
         isOptional = true,

@@ -17,13 +17,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_period_day
+import budgetplus.core.common.generated.resources.overview_period_last_month
+import budgetplus.core.common.generated.resources.overview_period_month
+import budgetplus.core.common.generated.resources.overview_period_week
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -38,6 +41,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun ColumnScope.TimePeriodSelector(
@@ -124,15 +128,15 @@ private fun TimePeriodPill(
     ) {
 
         val titleRes = when (timePeriod) {
-            is TimePeriod.Today -> R.string.overview_period_day
-            is TimePeriod.Week -> R.string.overview_period_week
-            is TimePeriod.Month -> R.string.overview_period_month
-            is TimePeriod.LastMonth -> R.string.overview_period_last_month
+            is TimePeriod.Today -> Res.string.overview_period_day
+            is TimePeriod.Week -> Res.string.overview_period_week
+            is TimePeriod.Month -> Res.string.overview_period_month
+            is TimePeriod.LastMonth -> Res.string.overview_period_last_month
             is TimePeriod.Custom -> error("Custom period doesn't shown in pill.")
         }
 
         Text(
-            text = stringResource(id = titleRes),
+            text = stringResource(titleRes),
             color = LocalAppColors.current.light,
             singleLine = true,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

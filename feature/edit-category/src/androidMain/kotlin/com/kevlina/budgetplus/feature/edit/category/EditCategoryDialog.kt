@@ -11,11 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.category_title
+import budgetplus.core.common.generated.resources.cta_add
+import budgetplus.core.common.generated.resources.cta_delete
+import budgetplus.core.common.generated.resources.cta_rename
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -25,6 +28,7 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EditCategoryDialog(
@@ -46,7 +50,7 @@ fun EditCategoryDialog(
 
             TextField(
                 state = name,
-                title = stringResource(id = R.string.category_title),
+                title = stringResource(Res.string.category_title),
                 modifier = Modifier.focusRequester(focusRequester),
                 onDone = {
                     if (name.text.isNotBlank() && name.text != currentName) {
@@ -67,7 +71,7 @@ fun EditCategoryDialog(
                         onDismiss()
                     }) {
                         Text(
-                            text = stringResource(id = R.string.cta_delete),
+                            text = stringResource(Res.string.cta_delete),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium
                         )
@@ -82,11 +86,11 @@ fun EditCategoryDialog(
                     enabled = name.text.isNotBlank() && name.text != currentName,
                 ) {
                     val textRes = when (mode) {
-                        CategoryEditMode.Add -> R.string.cta_add
-                        is CategoryEditMode.Rename -> R.string.cta_rename
+                        CategoryEditMode.Add -> Res.string.cta_add
+                        is CategoryEditMode.Rename -> Res.string.cta_rename
                     }
                     Text(
-                        text = stringResource(id = textRes),
+                        text = stringResource(textRes),
                         color = LocalAppColors.current.light,
                         fontWeight = FontWeight.Medium
                     )

@@ -5,11 +5,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_join_success
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
-import com.kevlina.budgetplus.core.common.R
+import com.kevlina.budgetplus.core.ads.AdUnitId
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -37,6 +38,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(BookViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -46,8 +48,8 @@ class BookViewModel(
     val navigation: NavigationFlow,
     val bubbleViewModel: BubbleViewModel,
     private val bookRepo: BookRepo,
-    private val stringProvider: StringProvider,
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
+    private val adUnitId: AdUnitId,
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
     savedStateHandle: SavedStateHandle,
@@ -68,6 +70,8 @@ class BookViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val isAdMobInitialized = adMobInitializer.isInitialized
+
+    val bannerAdUnitId get() = adUnitId.banner
 
     init {
         if (bookRepo.currentBookId != null) {
@@ -117,12 +121,12 @@ class BookViewModel(
         viewModelScope.launch {
             try {
                 val bookName = bookRepo.handlePendingJoinRequest() ?: return@launch
-                snackbarSender.send(stringProvider[R.string.book_join_success, bookName])
+                snackbarSender.send(getString(Res.string.book_join_success, bookName))
             } catch (e: JoinBookException.ExceedFreeLimit) {
                 navController.navigate(BookDest.UnlockPremium)
-                snackbarSender.send(e.errorRes)
+                snackbarSender.send(e.message)
             } catch (e: JoinBookException.General) {
-                snackbarSender.send(e.errorRes)
+                snackbarSender.send(e.message)
             } catch (e: JoinBookException.JoinInfoNotFound) {
                 Logger.e(e) { "JoinInfo not found in DB" }
             } catch (e: Exception) {

@@ -2,7 +2,6 @@ package com.kevlina.budgetplus.core.data
 
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
-import com.kevlina.budgetplus.core.common.fixtures.FakeStringProvider
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.fixtures.FakePreferenceHolder
@@ -38,7 +37,6 @@ internal class BookRepoImplTest {
     private fun TestScope.createRepo(book: Book?) = BookRepoImpl(
         authManager = FakeAuthManager(user = User(id = "my_user")),
         joinInfoProcessor = mockk(),
-        stringProvider = FakeStringProvider(),
         tracker = tracker,
         preferenceHolder = FakePreferenceHolder {
             put("currentBook", Json.encodeToString(book))

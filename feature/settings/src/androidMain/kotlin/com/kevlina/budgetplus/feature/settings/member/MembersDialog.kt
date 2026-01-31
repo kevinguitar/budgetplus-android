@@ -24,15 +24,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_delete
+import budgetplus.core.common.generated.resources.members_confirm_remove
+import budgetplus.core.common.generated.resources.members_owner_label
+import budgetplus.core.common.generated.resources.members_title
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.lottie.PremiumCrown
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -45,6 +48,7 @@ import com.kevlina.budgetplus.core.ui.IconButton
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun MembersDialog(
@@ -66,7 +70,7 @@ internal fun MembersDialog(
         ) {
 
             Text(
-                text = stringResource(id = R.string.members_title),
+                text = stringResource(Res.string.members_title),
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold
             )
@@ -97,7 +101,7 @@ internal fun MembersDialog(
 
         ConfirmDialog(
             message = stringResource(
-                id = R.string.members_confirm_remove,
+                Res.string.members_confirm_remove,
                 member.name.orEmpty(),
                 viewModel.bookName.orEmpty()
             ),
@@ -157,7 +161,7 @@ private fun MemberCard(
         when {
             member.id == ownerId -> {
                 Text(
-                    text = stringResource(id = R.string.members_owner_label),
+                    text = stringResource(Res.string.members_owner_label),
                     fontSize = FontSize.Small,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 4.dp)
@@ -172,7 +176,7 @@ private fun MemberCard(
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Delete,
-                        contentDescription = stringResource(id = R.string.cta_delete),
+                        contentDescription = stringResource(Res.string.cta_delete),
                         tint = LocalAppColors.current.dark,
                         modifier = Modifier.size(20.dp)
                     )

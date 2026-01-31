@@ -19,16 +19,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.ads_not_available
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.lottie.loadLottieSpec
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
@@ -40,11 +40,12 @@ import io.github.alexzhirkevich.compottie.ExperimentalCompottieApi
 import io.github.alexzhirkevich.compottie.dynamic.rememberLottieDynamicProperties
 import io.github.alexzhirkevich.compottie.rememberLottieComposition
 import io.github.alexzhirkevich.compottie.rememberLottiePainter
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun AdsBanner(
     isAdMobInitialized: Boolean,
-    bannerId: String = stringResource(id = R.string.admob_banner_id_30sec),
+    bannerId: String,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -128,7 +129,7 @@ private fun AdsBannerNotAvailable() {
         )
 
         Text(
-            text = stringResource(id = R.string.ads_not_available),
+            text = stringResource(Res.string.ads_not_available),
             color = LocalAppColors.current.dark,
         )
     }

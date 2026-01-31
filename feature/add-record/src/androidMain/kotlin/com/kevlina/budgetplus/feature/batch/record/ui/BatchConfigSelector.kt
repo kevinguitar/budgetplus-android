@@ -21,11 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_start_date
+import budgetplus.core.common.generated.resources.batch_record_times
+import budgetplus.core.common.generated.resources.select_date
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.DatePickerDialog
 import com.kevlina.budgetplus.core.ui.DropdownItem
@@ -38,6 +40,7 @@ import com.kevlina.budgetplus.core.ui.rippleClick
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.batch.record.BatchRecordViewModel
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 
 internal val fontSize = FontSize.SemiLarge
 internal val iconModifier = Modifier
@@ -89,13 +92,13 @@ private fun DateSelector(
 
         Icon(
             imageVector = Icons.Rounded.Today,
-            contentDescription = stringResource(id = R.string.select_date),
+            contentDescription = stringResource(Res.string.select_date),
             tint = LocalAppColors.current.dark,
             modifier = iconModifier
         )
 
         Text(
-            text = stringResource(id = R.string.batch_record_start_date),
+            text = stringResource(Res.string.batch_record_start_date),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
         )
@@ -140,7 +143,7 @@ private fun TimesSelector(
         )
 
         Text(
-            text = stringResource(id = R.string.batch_record_times),
+            text = stringResource(Res.string.batch_record_times),
             fontSize = fontSize,
             fontWeight = FontWeight.SemiBold,
         )

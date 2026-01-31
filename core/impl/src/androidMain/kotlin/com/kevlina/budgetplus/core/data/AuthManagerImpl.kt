@@ -1,5 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.app_language
 import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
@@ -10,8 +12,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
@@ -26,13 +26,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class AuthManagerImpl(
     preferenceHolder: PreferenceHolder,
-    private val stringProvider: StringProvider,
     private val tracker: Lazy<Tracker>,
     @Named("allow_update_fcm_token") private val allowUpdateFcmToken: Boolean,
     @AppCoroutineScope private val appScope: CoroutineScope,
@@ -112,16 +112,16 @@ class AuthManagerImpl(
         // Associate the crash report with Budget+ user
         Firebase.crashlytics.setUserId(user.id)
 
-        val userWithExclusiveFields = user.copy(
-            premium = currentUser?.premium,
-            createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
-            lastActiveOn = Clock.System.now().toEpochMilliseconds(),
-            language = stringProvider[R.string.app_language],
-        )
-        userState.value = userWithExclusiveFields
-        currentUser = userWithExclusiveFields
-
         appScope.launch {
+            val userWithExclusiveFields = user.copy(
+                premium = currentUser?.premium,
+                createdOn = currentUser?.createdOn ?: Clock.System.now().toEpochMilliseconds(),
+                lastActiveOn = Clock.System.now().toEpochMilliseconds(),
+                language = getString(Res.string.app_language),
+            )
+            userState.value = userWithExclusiveFields
+            currentUser = userWithExclusiveFields
+
             val fcmToken = if (allowUpdateFcmToken) {
                 try {
                     Firebase.messaging.token.await()

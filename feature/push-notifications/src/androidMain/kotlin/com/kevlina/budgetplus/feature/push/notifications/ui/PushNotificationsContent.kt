@@ -16,11 +16,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.push_notif_deeplink
+import budgetplus.core.common.generated.resources.push_notif_language_en
+import budgetplus.core.common.generated.resources.push_notif_language_ja
+import budgetplus.core.common.generated.resources.push_notif_language_zh_cn
+import budgetplus.core.common.generated.resources.push_notif_language_zh_tw
+import budgetplus.core.common.generated.resources.push_notif_navigate_to_google_play
+import budgetplus.core.common.generated.resources.push_notif_send_to_everyone
+import budgetplus.core.common.generated.resources.push_notif_send_to_everyone_confirmation
+import budgetplus.core.common.generated.resources.push_notif_send_to_internal_topic
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
@@ -30,6 +38,7 @@ import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.push.notifications.PushNotificationsViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun PushNotificationsContent(
@@ -55,14 +64,14 @@ internal fun PushNotificationsContent(
             .imePadding()
     ) {
         LanguageBlock(
-            textRes = R.string.push_notif_language_zh_tw,
+            textRes = Res.string.push_notif_language_zh_tw,
             title = vm.titleTw,
             description = vm.descTw,
             isOptional = false
         )
 
         LanguageBlock(
-            textRes = R.string.push_notif_language_zh_cn,
+            textRes = Res.string.push_notif_language_zh_cn,
             title = vm.titleCn,
             description = vm.descCn,
             enabled = sendToCn,
@@ -70,7 +79,7 @@ internal fun PushNotificationsContent(
         )
 
         LanguageBlock(
-            textRes = R.string.push_notif_language_ja,
+            textRes = Res.string.push_notif_language_ja,
             title = vm.titleJa,
             description = vm.descJa,
             enabled = sendToJa,
@@ -78,7 +87,7 @@ internal fun PushNotificationsContent(
         )
 
         LanguageBlock(
-            textRes = R.string.push_notif_language_en,
+            textRes = Res.string.push_notif_language_en,
             title = vm.titleEn,
             description = vm.descEn,
             enabled = sendToEn,
@@ -86,14 +95,14 @@ internal fun PushNotificationsContent(
         )
 
         SwitchBlock(
-            title = stringResource(id = R.string.push_notif_navigate_to_google_play),
+            title = stringResource(Res.string.push_notif_navigate_to_google_play),
             checked = navigateToGooglePlay,
             onCheckChanged = { vm.navigateToGooglePlay.value = it }
         )
 
         if (!navigateToGooglePlay) {
             Text(
-                text = stringResource(id = R.string.push_notif_deeplink),
+                text = stringResource(Res.string.push_notif_deeplink),
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold
             )
@@ -111,7 +120,7 @@ internal fun PushNotificationsContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.push_notif_send_to_internal_topic),
+                text = stringResource(Res.string.push_notif_send_to_internal_topic),
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.Medium,
@@ -124,7 +133,7 @@ internal fun PushNotificationsContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.push_notif_send_to_everyone),
+                text = stringResource(Res.string.push_notif_send_to_everyone),
                 color = LocalAppColors.current.light,
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.Medium,
@@ -135,7 +144,7 @@ internal fun PushNotificationsContent(
 
     if (isConfirmationDialogShown) {
         ConfirmDialog(
-            message = stringResource(id = R.string.push_notif_send_to_everyone_confirmation),
+            message = stringResource(Res.string.push_notif_send_to_everyone_confirmation),
             onConfirm = {
                 vm.sendToEveryone()
                 isConfirmationDialogShown = false

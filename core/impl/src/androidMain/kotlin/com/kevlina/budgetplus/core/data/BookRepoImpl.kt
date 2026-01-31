@@ -1,6 +1,14 @@
 package com.kevlina.budgetplus.core.data
 
 import androidx.core.net.toUri
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_already_archived
+import budgetplus.core.common.generated.resources.book_already_joined
+import budgetplus.core.common.generated.resources.book_exceed_maximum
+import budgetplus.core.common.generated.resources.book_join_exceed_free_limit
+import budgetplus.core.common.generated.resources.book_join_link_expired
+import budgetplus.core.common.generated.resources.default_expense_categories
+import budgetplus.core.common.generated.resources.default_income_categories
 import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
@@ -8,9 +16,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
@@ -32,6 +38,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.tasks.await
+import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.Currency
@@ -44,7 +52,6 @@ import kotlin.time.Duration.Companion.days
 class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
-    private val stringProvider: StringProvider,
     private val tracker: Tracker,
     preferenceHolder: PreferenceHolder,
     @AppCoroutineScope appScope: CoroutineScope,
@@ -155,21 +162,21 @@ class BookRepoImpl(
         val book = getLatestBook(bookId)
 
         when {
-            book.archived -> throw JoinBookException.General(R.string.book_already_archived)
-            userId in book.authors -> throw JoinBookException.General(R.string.book_already_joined)
+            book.archived -> throw JoinBookException.General(getString(Res.string.book_already_archived))
+            userId in book.authors -> throw JoinBookException.General(getString(Res.string.book_already_joined))
             isPremium && bookCount >= PREMIUM_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_max_limit")
-                throw JoinBookException.General(R.string.book_exceed_maximum)
+                throw JoinBookException.General(getString(Res.string.book_exceed_maximum))
             }
 
             !isPremium && bookCount >= FREE_BOOKS_LIMIT -> {
                 tracker.logEvent("join_book_reach_free_limit")
-                throw JoinBookException.ExceedFreeLimit(R.string.book_join_exceed_free_limit)
+                throw JoinBookException.ExceedFreeLimit(getString(Res.string.book_join_exceed_free_limit))
             }
 
             Clock.System.now().toEpochMilliseconds() > validBefore -> {
                 tracker.logEvent("join_book_link_expired")
-                throw JoinBookException.General(R.string.book_join_link_expired)
+                throw JoinBookException.General(getString(Res.string.book_join_link_expired))
             }
         }
 
@@ -215,12 +222,12 @@ class BookRepoImpl(
         val exceedFreeLimit = !isPremium && bookCount >= FREE_BOOKS_LIMIT
         val exceedPremiumLimit = isPremium && bookCount >= PREMIUM_BOOKS_LIMIT
         if (exceedFreeLimit || exceedPremiumLimit) {
-            error(stringProvider[R.string.book_exceed_maximum])
+            error(getString(Res.string.book_exceed_maximum))
         }
 
         val userId = authManager.requireUserId()
-        val expenses = stringProvider.getArray(R.array.default_expense_categories)
-        val incomes = stringProvider.getArray(R.array.default_income_categories)
+        val expenses = getStringArray(Res.array.default_expense_categories)
+        val incomes = getStringArray(Res.array.default_income_categories)
         val newBook = Book(
             name = name,
             ownerId = userId,

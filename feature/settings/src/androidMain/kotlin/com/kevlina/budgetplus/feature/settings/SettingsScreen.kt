@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.settings_title
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsScreen(
@@ -33,7 +34,7 @@ fun SettingsScreen(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.settings_title, bookName.orEmpty()),
+            title = stringResource(Res.string.settings_title, bookName.orEmpty()),
             navigateUp = navController::navigateUp
         )
 

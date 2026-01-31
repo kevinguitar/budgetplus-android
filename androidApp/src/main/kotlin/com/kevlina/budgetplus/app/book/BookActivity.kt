@@ -11,8 +11,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.app_update_downloaded
+import budgetplus.core.common.generated.resources.cta_complete
 import com.kevlina.budgetplus.app.book.ui.BookBinding
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
@@ -84,8 +86,8 @@ class BookActivity : ComponentActivity() {
                 LaunchedEffect(key1 = appUpdateState) {
                     if (appUpdateState is InAppUpdateState.Downloaded) {
                         snackbarSender.send(
-                            message = R.string.app_update_downloaded,
-                            actionLabel = R.string.cta_complete,
+                            message = Res.string.app_update_downloaded,
+                            actionLabel = Res.string.cta_complete,
                             duration = SnackbarDuration.Indefinite,
                             action = (appUpdateState as InAppUpdateState.Downloaded).complete
                         )

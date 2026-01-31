@@ -3,10 +3,13 @@ package com.kevlina.budgetplus.feature.color.tone.picker
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_applied_from_link
+import budgetplus.core.common.generated.resources.cta_share
+import budgetplus.core.common.generated.resources.fallback_error_message
+import budgetplus.core.common.generated.resources.menu_share_colors
 import com.kevlina.budgetplus.core.common.ActivityProvider
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -23,6 +26,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(ColorTonePickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -30,7 +35,6 @@ class ColorTonePickerViewModel(
     authManager: AuthManager,
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
-    private val stringProvider: StringProvider,
     private val snackbarSender: SnackbarSender,
     private val activityProvider: ActivityProvider,
     private val tracker: Tracker,
@@ -75,12 +79,14 @@ class ColorTonePickerViewModel(
 
     fun shareMyColors() {
         val activity = activityProvider.currentActivity ?: return
-        val colorsLink = themeManager.generateCustomColorsLink()
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_share_colors, colorsLink])
+        viewModelScope.launch {
+            val colorsLink = themeManager.generateCustomColorsLink()
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_share_colors, colorsLink))
+            }
+            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_share)))
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_share]))
     }
 
     fun trackUnlockPremium() {
@@ -93,10 +99,12 @@ class ColorTonePickerViewModel(
 
     fun processHexFromLink(hexFromLink: String) {
         previousProcessedLink = hexFromLink
-        if (themeManager.processHexFromLink(hexFromLink)) {
-            snackbarSender.send(R.string.color_tone_applied_from_link)
-        } else {
-            snackbarSender.send(R.string.fallback_error_message)
+        viewModelScope.launch {
+            if (themeManager.processHexFromLink(hexFromLink)) {
+                snackbarSender.send(Res.string.color_tone_applied_from_link)
+            } else {
+                snackbarSender.send(Res.string.fallback_error_message)
+            }
         }
     }
 }

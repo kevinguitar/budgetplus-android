@@ -9,11 +9,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.select_date
+import budgetplus.core.common.generated.resources.today
+import budgetplus.core.common.generated.resources.tomorrow
+import budgetplus.core.common.generated.resources.yesterday
 import com.kevlina.budgetplus.core.common.mediumFormatted
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -22,6 +25,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SingleDatePicker(
@@ -40,20 +44,20 @@ fun SingleDatePicker(
         if (showIcon) {
             Icon(
                 imageVector = Icons.Rounded.Today,
-                contentDescription = stringResource(id = R.string.select_date),
+                contentDescription = stringResource(Res.string.select_date),
                 tint = LocalAppColors.current.dark
             )
         }
 
         Text(
             text = when {
-                date == LocalDate.now() -> stringResource(id = R.string.today)
+                date == LocalDate.now() -> stringResource(Res.string.today)
                 date.plus(1, DateTimeUnit.DAY) == LocalDate.now() -> {
-                    stringResource(id = R.string.yesterday)
+                    stringResource(Res.string.yesterday)
                 }
 
                 date.minus(1, DateTimeUnit.DAY) == LocalDate.now() -> {
-                    stringResource(id = R.string.tomorrow)
+                    stringResource(Res.string.tomorrow)
                 }
 
                 else -> date.mediumFormatted

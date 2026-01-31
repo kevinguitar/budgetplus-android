@@ -20,12 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.currency_picker_hint
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
@@ -33,6 +33,7 @@ import com.kevlina.budgetplus.core.ui.SearchField
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.rippleClick
+import org.jetbrains.compose.resources.stringResource
 import java.util.Currency
 
 // False positive, it's used in context receiver
@@ -51,7 +52,7 @@ internal fun CurrencyPickerContent(
 
         SearchField(
             keyword = keyword,
-            hint = stringResource(id = R.string.currency_picker_hint),
+            hint = stringResource(Res.string.currency_picker_hint),
             onDone = { focusManager.clearFocus() },
             modifier = Modifier
                 .containerPadding()

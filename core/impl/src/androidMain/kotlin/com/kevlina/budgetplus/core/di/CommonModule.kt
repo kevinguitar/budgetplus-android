@@ -1,8 +1,6 @@
 package com.kevlina.budgetplus.core.di
 
-import android.content.Context
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
@@ -19,12 +17,6 @@ interface CommonModule {
     @Provides
     @SingleIn(AppScope::class)
     fun provideNavigationFlow(): NavigationFlow = MutableEventFlow()
-
-    @Provides
-    @Named("is_debug")
-    fun provideIsDebug(context: Context): Boolean {
-        return context.resources.getBoolean(R.bool.is_debug)
-    }
 
     @Provides
     @Named("app_package")

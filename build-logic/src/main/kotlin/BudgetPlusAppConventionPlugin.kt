@@ -49,6 +49,13 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
                 vectorDrawables {
                     useSupportLibrary = true
                 }
+
+                androidResources {
+                    @Suppress("UnstableApiUsage")
+                    localeFilters.addAll(
+                        listOf("en", "zh-rCN", "zh-rTW", "ja-rJP")
+                    )
+                }
             }
 
             signingConfigs {
@@ -77,21 +84,10 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
                         nativeSymbolUploadEnabled = true
                     }
                 }
-
-                create("benchmark") {
-                    signingConfig = signingConfigs.getByName("debug")
-                    matchingFallbacks.add("release")
-                    isDebuggable = false
-                }
             }
 
             bundle {
                 storeArchive.enable = false
-            }
-
-            androidResources {
-                @Suppress("UnstableApiUsage")
-                generateLocaleConfig = true
             }
         }
     }

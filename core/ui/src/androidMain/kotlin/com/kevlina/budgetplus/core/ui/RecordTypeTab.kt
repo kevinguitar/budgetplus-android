@@ -15,14 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.record_expense
+import budgetplus.core.common.generated.resources.record_income
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecordTypeTab(
@@ -38,7 +40,7 @@ fun RecordTypeTab(
     ) {
 
         TypePill(
-            text = stringResource(id = R.string.record_expense),
+            text = stringResource(Res.string.record_expense),
             isSelected = selected == RecordType.Expense,
             onClick = { onTypeSelected(RecordType.Expense) }
         )
@@ -53,7 +55,7 @@ fun RecordTypeTab(
         )
 
         TypePill(
-            text = stringResource(id = R.string.record_income),
+            text = stringResource(Res.string.record_income),
             isSelected = selected == RecordType.Income,
             onClick = { onTypeSelected(RecordType.Income) }
         )

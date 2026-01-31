@@ -12,6 +12,7 @@ kotlin {
             implementation(projects.core.ui)
 
             implementation(libs.kotlin.serialization)
+            implementation(libs.compose.resources)
         }
         androidMain.dependencies {
             implementation(libs.firebase.auth)

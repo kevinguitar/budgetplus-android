@@ -34,10 +34,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_title
+import budgetplus.core.common.generated.resources.book_name_title
+import budgetplus.core.common.generated.resources.color_tone_picker_title
+import budgetplus.core.common.generated.resources.cta_rename
+import budgetplus.core.common.generated.resources.ic_instagram
+import budgetplus.core.common.generated.resources.premium_hide_ads
+import budgetplus.core.common.generated.resources.settings_allow_members_edit
+import budgetplus.core.common.generated.resources.settings_allow_members_edit_desc
+import budgetplus.core.common.generated.resources.settings_bar_chart
+import budgetplus.core.common.generated.resources.settings_chart_mode
+import budgetplus.core.common.generated.resources.settings_confirm_delete
+import budgetplus.core.common.generated.resources.settings_confirm_leave
+import budgetplus.core.common.generated.resources.settings_contact_us
+import budgetplus.core.common.generated.resources.settings_delete_book
+import budgetplus.core.common.generated.resources.settings_edit_book_currency
+import budgetplus.core.common.generated.resources.settings_follow_on_instagram
+import budgetplus.core.common.generated.resources.settings_input_vibration
+import budgetplus.core.common.generated.resources.settings_language
+import budgetplus.core.common.generated.resources.settings_leave_book
+import budgetplus.core.common.generated.resources.settings_logout
+import budgetplus.core.common.generated.resources.settings_pie_chart
+import budgetplus.core.common.generated.resources.settings_privacy_policy
+import budgetplus.core.common.generated.resources.settings_rate_us
+import budgetplus.core.common.generated.resources.settings_rename_book
+import budgetplus.core.common.generated.resources.settings_rename_user
+import budgetplus.core.common.generated.resources.settings_share_app
+import budgetplus.core.common.generated.resources.settings_view_members
+import budgetplus.core.common.generated.resources.username_title
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.settings.api.ChartMode
@@ -50,6 +77,7 @@ import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun SettingsContent(
@@ -80,7 +108,7 @@ internal fun SettingsContent(
 
         // Content section
         SettingsItem(
-            text = stringResource(id = R.string.batch_record_title),
+            text = stringResource(Res.string.batch_record_title),
             showCrownAnimation = true,
             roundTop = true,
             onClick = {
@@ -95,34 +123,34 @@ internal fun SettingsContent(
 
         if (!isPremium) {
             SettingsItem(
-                text = stringResource(id = R.string.premium_hide_ads),
+                text = stringResource(Res.string.premium_hide_ads),
                 showCrownAnimation = true,
                 onClick = { navController.navigate(BookDest.UnlockPremium) }
             )
         }
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_rename_user),
+            text = stringResource(Res.string.settings_rename_user),
             icon = Icons.Rounded.AccountCircle,
             onClick = { isRenameUserDialogShown = true }
         )
 
         if (vm.canEditBook) {
             SettingsItem(
-                text = stringResource(id = R.string.settings_rename_book),
+                text = stringResource(Res.string.settings_rename_book),
                 icon = Icons.Rounded.EditNote,
                 onClick = { isRenameBookDialogShown = true }
             )
 
             SettingsItem(
-                text = stringResource(id = R.string.settings_edit_book_currency),
+                text = stringResource(Res.string.settings_edit_book_currency),
                 icon = Icons.Rounded.CurrencyExchange,
                 onClick = { navController.navigate(BookDest.CurrencyPicker) }
             )
         }
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_view_members),
+            text = stringResource(Res.string.settings_view_members),
             icon = Icons.Rounded.SupervisedUserCircle,
             roundBottom = !isBookOwner,
             onClick = { isMembersDialogShown = true }
@@ -130,8 +158,8 @@ internal fun SettingsContent(
 
         if (isBookOwner) {
             SettingsItem(
-                text = stringResource(id = R.string.settings_allow_members_edit),
-                description = stringResource(id = R.string.settings_allow_members_edit_desc),
+                text = stringResource(Res.string.settings_allow_members_edit),
+                description = stringResource(Res.string.settings_allow_members_edit_desc),
                 icon = Icons.Rounded.LockPerson,
                 roundBottom = true,
                 action = {
@@ -148,7 +176,7 @@ internal fun SettingsContent(
         // General section
         if (vm.canSelectLanguage) {
             SettingsItem(
-                text = stringResource(id = R.string.settings_language),
+                text = stringResource(Res.string.settings_language),
                 icon = Icons.Rounded.Language,
                 roundTop = true,
                 onClick = vm.navigation::openLanguageSettings
@@ -156,14 +184,14 @@ internal fun SettingsContent(
         }
 
         SettingsItem(
-            text = stringResource(id = R.string.color_tone_picker_title),
+            text = stringResource(Res.string.color_tone_picker_title),
             icon = Icons.Rounded.ColorLens,
             roundTop = !vm.canSelectLanguage,
             onClick = { navController.navigate(BookDest.Colors()) }
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_input_vibration),
+            text = stringResource(Res.string.settings_input_vibration),
             icon = Icons.Rounded.Vibration,
             verticalPadding = 4.dp,
             action = {
@@ -187,7 +215,7 @@ internal fun SettingsContent(
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_chart_mode),
+            text = stringResource(Res.string.settings_chart_mode),
             icon = Icons.AutoMirrored.Rounded.ShowChart,
             onClick = { isChartModeDropdownShown = true },
             action = {
@@ -204,7 +232,7 @@ internal fun SettingsContent(
                         onDismissRequest = { isChartModeDropdownShown = false }
                     ) {
                         DropdownItem(
-                            name = stringResource(id = R.string.settings_bar_chart),
+                            name = stringResource(Res.string.settings_bar_chart),
                             icon = ChartMode.BarChart.icon,
                             onClick = {
                                 vm.chartModel.setChartMode(ChartMode.BarChart)
@@ -213,7 +241,7 @@ internal fun SettingsContent(
                         )
 
                         DropdownItem(
-                            name = stringResource(id = R.string.settings_pie_chart),
+                            name = stringResource(Res.string.settings_pie_chart),
                             icon = ChartMode.PieChart.icon,
                             onClick = {
                                 vm.chartModel.setChartMode(ChartMode.PieChart)
@@ -226,31 +254,31 @@ internal fun SettingsContent(
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_share_app),
+            text = stringResource(Res.string.settings_share_app),
             icon = Icons.Rounded.Share,
             onClick = vm.navigation::share
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_rate_us),
+            text = stringResource(Res.string.settings_rate_us),
             icon = Icons.Rounded.Star,
             onClick = vm.navigation::rateUs
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_follow_on_instagram),
-            iconRes = R.drawable.ic_instagram,
+            text = stringResource(Res.string.settings_follow_on_instagram),
+            drawableRes = Res.drawable.ic_instagram,
             onClick = vm.navigation::followOnInstagram
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_contact_us),
+            text = stringResource(Res.string.settings_contact_us),
             icon = Icons.AutoMirrored.Rounded.ForwardToInbox,
             onClick = vm.navigation::contactUs
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_privacy_policy),
+            text = stringResource(Res.string.settings_privacy_policy),
             icon = Icons.Rounded.PrivacyTip,
             roundBottom = true,
             onClick = vm.navigation::viewPrivacyPolicy
@@ -258,10 +286,10 @@ internal fun SettingsContent(
 
         // Danger section
         SettingsItem(
-            text = stringResource(id = if (isBookOwner) {
-                R.string.settings_delete_book
+            text = stringResource(if (isBookOwner) {
+                Res.string.settings_delete_book
             } else {
-                R.string.settings_leave_book
+                Res.string.settings_leave_book
             }),
             icon = if (isBookOwner) {
                 Icons.Rounded.Delete
@@ -273,7 +301,7 @@ internal fun SettingsContent(
         )
 
         SettingsItem(
-            text = stringResource(id = R.string.settings_logout),
+            text = stringResource(Res.string.settings_logout),
             icon = Icons.AutoMirrored.Rounded.Logout,
             roundBottom = true,
             onClick = vm.navigation::logout
@@ -283,8 +311,8 @@ internal fun SettingsContent(
     if (isRenameUserDialogShown) {
         InputDialog(
             currentInput = vm.currentUsername,
-            title = stringResource(id = R.string.username_title),
-            buttonText = stringResource(id = R.string.cta_rename),
+            title = stringResource(Res.string.username_title),
+            buttonText = stringResource(Res.string.cta_rename),
             onButtonClicked = vm::renameUser,
             onDismiss = { isRenameUserDialogShown = false }
         )
@@ -293,8 +321,8 @@ internal fun SettingsContent(
     if (isRenameBookDialogShown) {
         InputDialog(
             currentInput = vm.currentBookName,
-            title = stringResource(id = R.string.book_name_title),
-            buttonText = stringResource(id = R.string.cta_rename),
+            title = stringResource(Res.string.book_name_title),
+            buttonText = stringResource(Res.string.cta_rename),
             onButtonClicked = vm::renameBook,
             onDismiss = { isRenameBookDialogShown = false }
         )
@@ -309,7 +337,7 @@ internal fun SettingsContent(
     if (isDeleteOrLeaveDialogShown) {
         ConfirmDialog(
             message = stringResource(
-                id = if (isBookOwner) R.string.settings_confirm_delete else R.string.settings_confirm_leave,
+                if (isBookOwner) Res.string.settings_confirm_delete else Res.string.settings_confirm_leave,
                 vm.currentBookName.orEmpty()
             ),
             onConfirm = {

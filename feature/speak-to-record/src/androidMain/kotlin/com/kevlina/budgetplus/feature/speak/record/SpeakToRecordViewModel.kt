@@ -2,9 +2,12 @@ package com.kevlina.budgetplus.feature.speak.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.record_speech_recognition_no_result
+import budgetplus.core.common.generated.resources.record_speech_recognition_not_supported
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
@@ -19,6 +22,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @Inject
 class SpeakToRecordViewModel(
@@ -62,13 +66,13 @@ class SpeakToRecordViewModel(
     }
 
     fun showRecordPermissionHint() {
-        snackbarSender.send(R.string.permission_hint)
+        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
     }
 
-    private fun handleStatus(status: SpeakToRecordStatus) {
+    private suspend fun handleStatus(status: SpeakToRecordStatus) {
         when (status) {
             SpeakToRecordStatus.DeviceNotSupported -> {
-                snackbarSender.send(R.string.record_speech_recognition_not_supported)
+                snackbarSender.send(Res.string.record_speech_recognition_not_supported)
             }
 
             SpeakToRecordStatus.ReadyToSpeak, SpeakToRecordStatus.Recognizing -> Unit
@@ -76,7 +80,7 @@ class SpeakToRecordViewModel(
             is SpeakToRecordStatus.Error -> snackbarSender.send(status.message)
 
             SpeakToRecordStatus.NoResult -> {
-                snackbarSender.send(R.string.record_speech_recognition_no_result)
+                snackbarSender.send(Res.string.record_speech_recognition_no_result)
             }
 
             is SpeakToRecordStatus.Success -> {

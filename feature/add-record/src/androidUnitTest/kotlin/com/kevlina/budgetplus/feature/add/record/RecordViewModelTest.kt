@@ -1,14 +1,15 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.record_empty_category
+import budgetplus.core.common.generated.resources.record_empty_price
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.EventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.fixtures.FakeActivityProvider
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
-import com.kevlina.budgetplus.core.common.fixtures.FakeStringProvider
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
@@ -41,7 +42,7 @@ class RecordViewModelTest {
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
-        assertThat(FakeSnackbarSender.lastSentMessageId).isEqualTo(R.string.record_empty_category)
+        assertThat(FakeSnackbarSender.lastSentMessageRes).isEqualTo(Res.string.record_empty_category)
     }
 
     @Test
@@ -49,7 +50,7 @@ class RecordViewModelTest {
         createModel()
         calculatorVm.evaluate()
 
-        assertThat(FakeSnackbarSender.lastSentMessageId).isEqualTo(R.string.record_empty_price)
+        assertThat(FakeSnackbarSender.lastSentMessageRes).isEqualTo(Res.string.record_empty_price)
     }
 
     @Test
@@ -152,13 +153,6 @@ class RecordViewModelTest {
         setCategory("Test category")
     }
 
-    private val stringProvider = FakeStringProvider(
-        stringMap = mapOf(
-            R.string.record_empty_category to "Category is empty",
-            R.string.record_empty_price to "Price is empty"
-        )
-    )
-
     private val fullScreenAdsLoader = mockk<FullScreenAdsLoader>(relaxed = true)
 
     private fun createModel(
@@ -173,7 +167,6 @@ class RecordViewModelTest {
         fullScreenAdsLoader = fullScreenAdsLoader,
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
-        stringProvider = stringProvider,
         activityProvider = FakeActivityProvider(mockk()),
         preferenceHolder = FakePreferenceHolder {
             put("recordCount", recordCount)

@@ -2,10 +2,11 @@ package com.kevlina.budgetplus.feature.edit.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.category_already_exist
+import budgetplus.core.common.generated.resources.category_edit_successful
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.annotations.VisibleForTesting
+import org.jetbrains.compose.resources.getString
 import kotlin.time.Duration.Companion.seconds
 
 @ViewModelKey(EditCategoryViewModel::class)
@@ -27,7 +29,6 @@ class EditCategoryViewModel(
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     val expenseCategories
@@ -46,7 +47,7 @@ class EditCategoryViewModel(
         if (categoryRenameEvents.isNotEmpty()) {
             recordRepo.renameCategories(categoryRenameEvents)
         }
-        snackbarSender.send(R.string.category_edit_successful)
+        viewModelScope.launch { snackbarSender.send(Res.string.category_edit_successful) }
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {
@@ -63,7 +64,9 @@ class EditCategoryViewModel(
     }
 
     fun showCategoryExistError(category: String) {
-        snackbarSender.send(stringProvider[R.string.category_already_exist, category])
+        viewModelScope.launch {
+            snackbarSender.send(getString(Res.string.category_already_exist, category))
+        }
     }
 
     fun onCategoryRenamed(oldName: String, newName: String) {

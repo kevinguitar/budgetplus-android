@@ -20,9 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.export_csv_confirmation
+import budgetplus.core.common.generated.resources.export_cta
+import budgetplus.core.common.generated.resources.overview_details_title
+import budgetplus.core.common.generated.resources.overview_title
 import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -37,6 +40,7 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun OverviewScreen(navController: NavController<BookDest>) {
@@ -66,14 +70,14 @@ fun OverviewScreen(navController: NavController<BookDest>) {
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.overview_title, bookName.orEmpty()),
+            title = stringResource(Res.string.overview_title, bookName.orEmpty()),
             menuActions = {
                 MenuAction(
                     imageVector = when (mode) {
                         OverviewMode.AllRecords -> Icons.Rounded.FormatListNumbered
                         OverviewMode.GroupByCategories -> chartMode.icon
                     },
-                    description = stringResource(id = R.string.overview_details_title),
+                    description = stringResource(Res.string.overview_details_title),
                     onClick = vm::toggleMode,
                     modifier = Modifier.onPlaced {
                         vm.highlightModeButton(
@@ -87,7 +91,7 @@ fun OverviewScreen(navController: NavController<BookDest>) {
 
                 MenuAction(
                     imageVector = Icons.Rounded.FileDownload,
-                    description = stringResource(id = R.string.export_cta),
+                    description = stringResource(Res.string.export_cta),
                     onClick = { isExportDialogShown = true },
                     modifier = Modifier.onPlaced {
                         vm.highlightExportButton(
@@ -127,7 +131,7 @@ fun OverviewScreen(navController: NavController<BookDest>) {
     if (isExportDialogShown) {
         ConfirmDialog(
             message = stringResource(
-                id = R.string.export_csv_confirmation,
+                Res.string.export_csv_confirmation,
                 fromDate.shortFormatted,
                 untilDate.shortFormatted
             ),

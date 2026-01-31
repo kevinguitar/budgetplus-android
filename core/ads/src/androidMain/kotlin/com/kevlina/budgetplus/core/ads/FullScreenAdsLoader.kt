@@ -1,15 +1,13 @@
 package com.kevlina.budgetplus.core.ads
 
-import android.app.Activity
 import android.content.Context
+import androidx.activity.ComponentActivity
 import co.touchlab.kermit.Logger
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.common.R
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.AppScope
@@ -28,7 +26,7 @@ class FullScreenAdsLoader(
     private val context: Context,
     @AppCoroutineScope appScope: CoroutineScope,
     private val adMobInitializer: AdMobInitializer,
-    private val stringProvider: StringProvider,
+    private val adUnitId: AdUnitId,
     private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
@@ -49,7 +47,7 @@ class FullScreenAdsLoader(
     /**
      *  Show Ad and load the next one immediately.
      */
-    fun showAd(activity: Activity) {
+    fun showAd(activity: ComponentActivity) {
         if (authManager.isPremium.value) return
 
         adState.value?.show(activity)
@@ -60,7 +58,7 @@ class FullScreenAdsLoader(
     private fun loadAd() {
         InterstitialAd.load(
             /* context = */ context,
-            /* adUnitId = */ stringProvider[R.string.admob_interstitial_id],
+            /* adUnitId = */ adUnitId.interstitial,
             /* adRequest = */ AdRequest.Builder().build(),
             /* loadCallback = */ object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {

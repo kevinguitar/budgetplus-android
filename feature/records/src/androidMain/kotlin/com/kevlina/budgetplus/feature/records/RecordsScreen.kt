@@ -23,9 +23,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.overview_details_title
+import budgetplus.core.common.generated.resources.overview_sort_by_date
+import budgetplus.core.common.generated.resources.overview_sort_by_price
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -40,6 +42,7 @@ import com.kevlina.budgetplus.feature.record.card.RecordCard
 import com.kevlina.budgetplus.feature.record.card.RecordCardState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import org.jetbrains.compose.resources.stringResource
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -82,7 +85,7 @@ fun RecordsScreen(
     ) {
 
         TopBar(
-            title = stringResource(id = R.string.overview_details_title, category, totalPrice),
+            title = stringResource(Res.string.overview_details_title, category, totalPrice),
             navigateUp = navController::navigateUp,
             menuActions = {
                 val modifier = Modifier.onPlaced {
@@ -97,14 +100,14 @@ fun RecordsScreen(
                 when (sortMode) {
                     RecordsSortMode.Date -> MenuAction(
                         imageVector = Icons.AutoMirrored.Rounded.EventNote,
-                        description = stringResource(id = R.string.overview_sort_by_price),
+                        description = stringResource(Res.string.overview_sort_by_price),
                         onClick = { vm.setSortMode(RecordsSortMode.Price) },
                         modifier = modifier
                     )
 
                     RecordsSortMode.Price -> MenuAction(
                         imageVector = Icons.Rounded.Paid,
-                        description = stringResource(id = R.string.overview_sort_by_date),
+                        description = stringResource(Res.string.overview_sort_by_date),
                         onClick = { vm.setSortMode(RecordsSortMode.Date) },
                         modifier = modifier
                     )

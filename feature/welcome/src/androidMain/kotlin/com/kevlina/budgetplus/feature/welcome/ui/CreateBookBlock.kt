@@ -23,12 +23,16 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.app_name
+import budgetplus.core.common.generated.resources.book_name_placeholder
+import budgetplus.core.common.generated.resources.book_name_title
+import budgetplus.core.common.generated.resources.cta_go
+import budgetplus.core.common.generated.resources.ic_logo
+import budgetplus.core.common.generated.resources.welcome_create_book_title
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
@@ -37,6 +41,8 @@ import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
 import com.kevlina.budgetplus.core.ui.thenIf
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CreateBookBlock(
@@ -75,13 +81,13 @@ fun CreateBookBlock(
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_logo),
+                    painter = painterResource(Res.drawable.ic_logo),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
 
                 Text(
-                    text = stringResource(id = R.string.app_name),
+                    text = stringResource(Res.string.app_name),
                     color = LocalAppColors.current.primary,
                 )
             }
@@ -113,7 +119,7 @@ fun CreateBookBlock(
         ) {
 
             Text(
-                text = stringResource(id = R.string.welcome_create_book_title),
+                text = stringResource(Res.string.welcome_create_book_title),
                 color = LocalAppColors.current.primary,
                 fontSize = FontSize.Large,
                 fontWeight = FontWeight.SemiBold,
@@ -125,8 +131,8 @@ fun CreateBookBlock(
 
                 TextField(
                     state = bookName,
-                    title = stringResource(id = R.string.book_name_title),
-                    placeholder = stringResource(id = R.string.book_name_placeholder),
+                    title = stringResource(Res.string.book_name_title),
+                    placeholder = stringResource(Res.string.book_name_placeholder),
                     modifier = Modifier.weight(1F),
                     onDone = {
                         if (bookName.text.isNotBlank()) {
@@ -150,7 +156,7 @@ fun CreateBookBlock(
                         )
                     } else {
                         Text(
-                            text = stringResource(id = R.string.cta_go),
+                            text = stringResource(Res.string.cta_go),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium
                         )

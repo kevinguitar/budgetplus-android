@@ -1,6 +1,6 @@
 package com.kevlina.budgetplus.core.common
 
-import androidx.annotation.StringRes
+import org.jetbrains.compose.resources.StringResource
 
 /**
  *  Deliver the snackbar event to let ui show it.
@@ -9,16 +9,16 @@ interface SnackbarSender {
 
     val snackbarEvent: EventFlow<SnackbarData>
 
-    fun send(
-        @StringRes message: Int,
-        @StringRes actionLabel: Int? = null,
+     suspend fun send(
+        message: StringResource,
+        actionLabel: StringResource? = null,
         duration: SnackbarDuration = SnackbarDuration.Short,
         action: () -> Unit = {},
     )
 
-    fun send(
+    suspend fun send(
         message: String,
-        @StringRes actionLabel: Int? = null,
+        actionLabel: StringResource? = null,
         duration: SnackbarDuration = SnackbarDuration.Short,
         action: () -> Unit = {},
     )

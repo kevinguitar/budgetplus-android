@@ -6,15 +6,19 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_invite
+import budgetplus.core.common.generated.resources.menu_invite_to_book
+import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.record_empty_category
+import budgetplus.core.common.generated.resources.record_empty_price
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -38,6 +42,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(RecordViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -51,7 +56,6 @@ class RecordViewModel(
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
     private val activityProvider: ActivityProvider,
     preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
@@ -101,13 +105,15 @@ class RecordViewModel(
 
     fun shareJoinLink() {
         val activity = activityProvider.currentActivity ?: return
-        val joinLink = bookRepo.generateJoinLink()
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, stringProvider[R.string.menu_invite_to_book, joinLink])
+        viewModelScope.launch {
+            val joinLink = bookRepo.generateJoinLink()
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_invite_to_book, joinLink))
+            }
+            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_invite)))
+            requestPermissionEvent.sendEvent()
         }
-        activity.startActivity(Intent.createChooser(intent, stringProvider[R.string.cta_invite]))
-        requestPermissionEvent.sendEvent()
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
@@ -126,7 +132,7 @@ class RecordViewModel(
     }
 
     fun showNotificationPermissionHint() {
-        snackbarSender.send(R.string.permission_hint)
+        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
     }
 
     private fun record() {
@@ -134,12 +140,12 @@ class RecordViewModel(
         val price = calculatorVm.price.value
 
         if (category == null) {
-            snackbarSender.send(message = R.string.record_empty_category)
+            viewModelScope.launch { snackbarSender.send(message = Res.string.record_empty_category) }
             return
         }
 
         if (price == 0.0) {
-            snackbarSender.send(R.string.record_empty_price)
+            viewModelScope.launch { snackbarSender.send(Res.string.record_empty_price) }
             return
         }
 

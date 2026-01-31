@@ -1,23 +1,30 @@
 package com.kevlina.budgetplus.core.theme
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_barbie
+import budgetplus.core.common.generated.resources.color_tone_countryside
+import budgetplus.core.common.generated.resources.color_tone_customized
+import budgetplus.core.common.generated.resources.color_tone_dusk
+import budgetplus.core.common.generated.resources.color_tone_lavender
+import budgetplus.core.common.generated.resources.color_tone_milk_tea
+import budgetplus.core.common.generated.resources.color_tone_nemo_sea
+import org.jetbrains.compose.resources.StringResource
 
 enum class ColorTone {
     MilkTea, Dusk, Countryside, Barbie, Lavender, NemoSea, Customized;
 
-    val nameRes: Int
-        @StringRes get() = when (this) {
-            MilkTea -> R.string.color_tone_milk_tea
-            Dusk -> R.string.color_tone_dusk
-            Countryside -> R.string.color_tone_countryside
-            Barbie -> R.string.color_tone_barbie
-            Lavender -> R.string.color_tone_lavender
-            NemoSea -> R.string.color_tone_nemo_sea
-            Customized -> R.string.color_tone_customized
+    val nameRes: StringResource
+        get() = when (this) {
+            MilkTea -> Res.string.color_tone_milk_tea
+            Dusk -> Res.string.color_tone_dusk
+            Countryside -> Res.string.color_tone_countryside
+            Barbie -> Res.string.color_tone_barbie
+            Lavender -> Res.string.color_tone_lavender
+            NemoSea -> Res.string.color_tone_nemo_sea
+            Customized -> Res.string.color_tone_customized
         }
 
     val requiresPremium: Boolean

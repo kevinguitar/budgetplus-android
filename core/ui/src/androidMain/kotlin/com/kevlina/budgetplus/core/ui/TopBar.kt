@@ -16,12 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.cta_back
 import com.kevlina.budgetplus.core.theme.LocalAppColors
+import org.jetbrains.compose.resources.stringResource
 
 const val TOP_BAR_DARKEN_FACTOR = 0.8F
 
@@ -47,7 +48,7 @@ fun TopBar(
             IconButton(onClick = navigateUp) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = stringResource(id = R.string.cta_back),
+                    contentDescription = stringResource(Res.string.cta_back),
                     tint = LocalAppColors.current.light
                 )
             }

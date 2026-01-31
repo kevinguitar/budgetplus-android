@@ -19,14 +19,20 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component1
 import androidx.compose.ui.focus.FocusRequester.Companion.FocusRequesterFactory.component2
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_edit_confirmation
+import budgetplus.core.common.generated.resources.category_title
+import budgetplus.core.common.generated.resources.cta_add
+import budgetplus.core.common.generated.resources.cta_save
+import budgetplus.core.common.generated.resources.record_edit_title
+import budgetplus.core.common.generated.resources.record_note
+import budgetplus.core.common.generated.resources.record_price
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.core.common.R
 import com.kevlina.budgetplus.core.data.parseToPrice
 import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -49,6 +55,7 @@ import com.kevlina.budgetplus.feature.category.pills.toState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EditRecordDialog(
@@ -97,7 +104,7 @@ fun EditRecordDialog(
                 ) {
 
                     Text(
-                        text = stringResource(id = R.string.record_edit_title),
+                        text = stringResource(Res.string.record_edit_title),
                         fontSize = FontSize.Large,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -124,7 +131,7 @@ fun EditRecordDialog(
                     TextField(
                         state = name,
                         modifier = Modifier.focusRequester(nameFocus),
-                        title = stringResource(id = R.string.record_note),
+                        title = stringResource(Res.string.record_note),
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences,
                             imeAction = ImeAction.Next
@@ -134,7 +141,7 @@ fun EditRecordDialog(
                     TextField(
                         state = priceText,
                         modifier = Modifier.focusRequester(priceFocus),
-                        title = stringResource(id = R.string.record_price),
+                        title = stringResource(Res.string.record_price),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = if (isSaveEnabled) ImeAction.Done else ImeAction.None
@@ -161,7 +168,7 @@ fun EditRecordDialog(
                         }
                     ) {
                         Text(
-                            text = stringResource(id = R.string.cta_save),
+                            text = stringResource(Res.string.cta_save),
                             color = LocalAppColors.current.light,
                             fontWeight = FontWeight.Medium
                         )
@@ -200,8 +207,8 @@ fun EditRecordDialog(
 
         EditRecordDialogState.AddingCategory -> {
             InputDialog(
-                title = stringResource(id = R.string.category_title),
-                buttonText = stringResource(id = R.string.cta_add),
+                title = stringResource(Res.string.category_title),
+                buttonText = stringResource(Res.string.cta_add),
                 onButtonClicked = { newCategory ->
                     vm.addCategory(editRecord.type, newCategory)
                 },
@@ -212,7 +219,7 @@ fun EditRecordDialog(
         EditRecordDialogState.BatchEditing -> {
             EditBatchDialog(
                 onDismiss = { dialogState = EditRecordDialogState.ShowRecord },
-                text = stringResource(id = R.string.batch_record_edit_confirmation),
+                text = stringResource(Res.string.batch_record_edit_confirmation),
                 onSelectOne = {
                     confirmEdit()
                     onDismiss()

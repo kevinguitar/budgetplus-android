@@ -2,8 +2,19 @@ package com.kevlina.budgetplus.core.ui.bubble
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.bubble_colors_sharing
+import budgetplus.core.common.generated.resources.bubble_edit_category
+import budgetplus.core.common.generated.resources.bubble_invite
+import budgetplus.core.common.generated.resources.bubble_overview_export
+import budgetplus.core.common.generated.resources.bubble_overview_mode
+import budgetplus.core.common.generated.resources.bubble_overview_pie_chart
+import budgetplus.core.common.generated.resources.bubble_overview_record_tap_hint
+import budgetplus.core.common.generated.resources.bubble_records_sorting
+import budgetplus.core.common.generated.resources.bubble_save_category
+import budgetplus.core.common.generated.resources.bubble_speak_to_record
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.StringResource
 
 interface BubbleRepo {
     val bubble: StateFlow<BubbleDest?>
@@ -24,7 +35,7 @@ sealed class BubbleDest {
     abstract val offset: () -> Offset
     abstract val shape: BubbleShape
 
-    abstract val textRes: Int
+    abstract val textRes: StringResource
     abstract val textDirection: BubbleTextDirection
 
     data class Invite(
@@ -32,7 +43,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_invite,
+        override val textRes: StringResource = Res.string.bubble_invite,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
@@ -41,7 +52,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_speak_to_record,
+        override val textRes: StringResource = Res.string.bubble_speak_to_record,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.TopEnd,
     ) : BubbleDest()
 
@@ -50,7 +61,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape,
-        override val textRes: Int = R.string.bubble_edit_category,
+        override val textRes: StringResource = Res.string.bubble_edit_category,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
     ) : BubbleDest()
 
@@ -59,7 +70,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_save_category,
+        override val textRes: StringResource = Res.string.bubble_save_category,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
@@ -68,7 +79,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_overview_mode,
+        override val textRes: StringResource = Res.string.bubble_overview_mode,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
@@ -77,7 +88,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_overview_export,
+        override val textRes: StringResource = Res.string.bubble_overview_export,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
@@ -86,7 +97,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape,
-        override val textRes: Int = R.string.bubble_overview_record_tap_hint,
+        override val textRes: StringResource = Res.string.bubble_overview_record_tap_hint,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
     ) : BubbleDest()
 
@@ -95,7 +106,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_overview_pie_chart,
+        override val textRes: StringResource = Res.string.bubble_overview_pie_chart,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.TopCenter,
     ) : BubbleDest()
 
@@ -104,7 +115,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_records_sorting,
+        override val textRes: StringResource = Res.string.bubble_records_sorting,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 
@@ -113,7 +124,7 @@ sealed class BubbleDest {
         override val size: IntSize,
         override val offset: () -> Offset,
         override val shape: BubbleShape = BubbleShape.Circle,
-        override val textRes: Int = R.string.bubble_colors_sharing,
+        override val textRes: StringResource = Res.string.bubble_colors_sharing,
         override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomEnd,
     ) : BubbleDest()
 

@@ -18,11 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.category_edit_title
+import budgetplus.core.common.generated.resources.cta_add
+import budgetplus.core.common.generated.resources.cta_edit
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -31,6 +33,7 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CategoriesGrid(
@@ -73,7 +76,7 @@ fun CategoriesGrid(
         if (state.onEditClicked != null) {
             CategoryActionButton(
                 icon = Icons.Rounded.DriveFileRenameOutline,
-                name = stringResource(id = R.string.cta_edit),
+                name = stringResource(Res.string.cta_edit),
                 onClick = state.onEditClicked
             )
         }
@@ -81,7 +84,7 @@ fun CategoriesGrid(
         if (state.onAddClicked != null) {
             CategoryActionButton(
                 icon = Icons.Rounded.Add,
-                name = stringResource(id = R.string.cta_add),
+                name = stringResource(Res.string.cta_add),
                 onClick = state.onAddClicked
             )
         }
@@ -145,7 +148,7 @@ private fun CategoryActionButton(
 
             Icon(
                 imageVector = icon,
-                contentDescription = stringResource(id = R.string.category_edit_title),
+                contentDescription = stringResource(Res.string.category_edit_title),
                 tint = LocalAppColors.current.light,
                 modifier = Modifier.size(16.dp)
             )

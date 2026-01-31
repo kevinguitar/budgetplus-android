@@ -2,9 +2,10 @@ package com.kevlina.budgetplus.feature.add.record
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.book_create_success
+import budgetplus.core.common.generated.resources.book_exceed_maximum
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.common.StringProvider
 import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -16,13 +17,13 @@ import com.kevlina.budgetplus.core.data.remote.Book
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @ViewModelKey(BookSelectorViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class BookSelectorViewModel(
     private val bookRepo: BookRepo,
     private val snackbarSender: SnackbarSender,
-    private val stringProvider: StringProvider,
     authManager: AuthManager,
 ) : ViewModel() {
 
@@ -50,7 +51,7 @@ class BookSelectorViewModel(
         viewModelScope.launch {
             try {
                 bookRepo.createBook(name = name, source = "selector")
-                snackbarSender.send(stringProvider[R.string.book_create_success, name])
+                snackbarSender.send(getString(Res.string.book_create_success, name))
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }
@@ -58,6 +59,6 @@ class BookSelectorViewModel(
     }
 
     fun showReachedMaxMessage() {
-        snackbarSender.send(R.string.book_exceed_maximum)
+        viewModelScope.launch { snackbarSender.send(Res.string.book_exceed_maximum) }
     }
 }

@@ -19,9 +19,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.color_tone_picker_title
+import budgetplus.core.common.generated.resources.cta_save
+import budgetplus.core.common.generated.resources.cta_share
+import budgetplus.core.common.generated.resources.unsaved_warning_message
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.theme.ColorTone
@@ -41,6 +44,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -131,13 +135,13 @@ fun ColorTonePickerScreen(
         ) {
 
             TopBar(
-                title = stringResource(id = R.string.color_tone_picker_title),
+                title = stringResource(Res.string.color_tone_picker_title),
                 navigateUp = ::navigateUp,
                 menuActions = {
                     if (selectedColorTone == ColorTone.Customized) {
                         MenuAction(
                             imageVector = Icons.Rounded.Share,
-                            description = stringResource(id = R.string.cta_share),
+                            description = stringResource(Res.string.cta_share),
                             onClick = vm::shareMyColors,
                             modifier = Modifier.onPlaced {
                                 vm.highlightShareButton(
@@ -152,7 +156,7 @@ fun ColorTonePickerScreen(
 
                     MenuAction(
                         imageVector = Icons.Rounded.Check,
-                        description = stringResource(id = R.string.cta_save),
+                        description = stringResource(Res.string.cta_save),
                         enabled = isSaveEnabled,
                         onClick = {
                             if (!selectedColorTone.requiresPremium || isPremium) {
@@ -193,7 +197,7 @@ fun ColorTonePickerScreen(
 
         if (isExitDialogShown) {
             ConfirmDialog(
-                message = stringResource(id = R.string.unsaved_warning_message),
+                message = stringResource(Res.string.unsaved_warning_message),
                 onConfirm = {
                     navController.navigateUp()
                     isExitDialogShown = false

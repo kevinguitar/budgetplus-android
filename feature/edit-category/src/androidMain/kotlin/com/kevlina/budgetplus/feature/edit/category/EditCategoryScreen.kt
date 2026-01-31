@@ -17,8 +17,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.res.stringResource
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.category_edit_title
+import budgetplus.core.common.generated.resources.cta_save
+import budgetplus.core.common.generated.resources.unsaved_warning_message
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
@@ -29,6 +31,7 @@ import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
@@ -72,12 +75,12 @@ fun EditCategoryScreen(
             .background(LocalAppColors.current.light)
     ) {
         TopBar(
-            title = stringResource(id = R.string.category_edit_title),
+            title = stringResource(Res.string.category_edit_title),
             navigateUp = ::navigateUp,
             menuActions = {
                 MenuAction(
                     imageVector = Icons.Rounded.Check,
-                    description = stringResource(id = R.string.cta_save),
+                    description = stringResource(Res.string.cta_save),
                     enabled = originalCategories != list,
                     modifier = Modifier.onPlaced {
                         vm.highlightSaveButton(
@@ -146,7 +149,7 @@ fun EditCategoryScreen(
 
     if (isExitDialogShown) {
         ConfirmDialog(
-            message = stringResource(id = R.string.unsaved_warning_message),
+            message = stringResource(Res.string.unsaved_warning_message),
             onConfirm = {
                 navController.navigateUp()
                 isExitDialogShown = false

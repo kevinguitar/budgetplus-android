@@ -7,7 +7,7 @@
     <string name="auth_welcome_title">ミニマリストな帳簿への参加を歓迎します。</string>
     <string name="auth_welcome_description">高速な帳簿アプリ、開始から記帳完了までたった 5 秒、友達や親戚と一緒に記帳しましょう！</string>
     <string name="auth_google">Google で続行</string>
-    <string name="auth_success">ようこそ、%sさん！</string>
+    <string name="auth_success">ようこそ、%1$sさん！</string>
 
     <!-- Welcome -->
     <string name="welcome_create_book_title">帳簿を作成できます</string>
@@ -24,7 +24,7 @@
     <string name="record_empty_price">金額を入力してください</string>
     <string name="record_edit_title">帳面を編集</string>
     <string name="record_edited">保存済み</string>
-    <string name="record_deleted">%sを削除しました" となります</string>
+    <string name="record_deleted">%1$sを削除しました" となります</string>
     <string name="record_confirm_delete">この帳面を削除してもよろしいですか？</string>
     <string name="record_duplicated">帳面がコピーされました</string>
     <string name="record_speech_recognition_format">内容と金額</string>
@@ -46,13 +46,13 @@
     <string name="batch_record_delete_confirmation">将来のすべての帳面を削除しますか？</string>
     <string name="batch_record_only_this">これだけです</string>
     <string name="batch_record_all_future_records">すべての帳面</string>
-    <string name="batch_record_edited">%s件の帳面を編集しました</string>
-    <string name="batch_record_deleted">%s件の帳面を削除しました</string>
+    <string name="batch_record_edited">%1$s件の帳面を編集しました</string>
+    <string name="batch_record_deleted">%1$s件の帳面を削除しました</string>
 
     <!-- Book -->
     <string name="book_selection">帳簿を選択する</string>
-    <string name="book_create_success">「%s」が追加されました</string>
-    <string name="book_join_success">「%s」に参加しました</string>
+    <string name="book_create_success">「%1$s」が追加されました</string>
+    <string name="book_join_success">「%1$s」に参加しました</string>
     <string name="book_join_link_expired">リンクは無効です</string>
     <string name="book_already_archived">しまった、帳簿はすでに削除されました</string>
     <string name="book_already_joined">その帳簿は既に参加しました</string>
@@ -63,7 +63,7 @@
     <string name="category_title">カテゴリ名</string>
     <string name="category_edit_title">カテゴリを編集する</string>
     <string name="category_edit_successful">カテゴリリストが保存されました</string>
-    <string name="category_already_exist">カテゴリ%sは既に存在します</string>
+    <string name="category_already_exist">カテゴリ%1$sは既に存在します</string>
     <string name="category_food">飲食</string>
     <string name="category_daily">日常</string>
     <string name="category_transport">交通</string>
@@ -87,12 +87,12 @@
     <string name="review_request_no">いいえ、結構です</string>
 
     <!-- Menu -->
-    <string name="menu_invite_to_book">以下のリンクをクリックして、一緒に帳簿をつけましょう！\n%s</string>
+    <string name="menu_invite_to_book">以下のリンクをクリックして、一緒に帳簿をつけましょう！\n%1$s</string>
     <string name="menu_create_book">新しい帳簿を作成する</string>
-    <string name="menu_share_colors">私が調整したテーマカラーを試してみてください！\n%s</string>
+    <string name="menu_share_colors">私が調整したテーマカラーを試してみてください！\n%1$s</string>
 
     <!-- Overview -->
-    <string name="overview_title">%sの概要</string>
+    <string name="overview_title">%1$sの概要</string>
     <string name="overview_total_price">総計</string>
     <string name="overview_period_day">今日</string>
     <string name="overview_period_week">今週</string>
@@ -112,7 +112,7 @@
     <string name="export_csv_success">CSVレポートはダウンロードフォルダに保存されました</string>
     <string name="export_column_type">項目</string>
     <string name="export_column_name">内容</string>
-    <string name="export_column_price">金額（%s）</string>
+    <string name="export_column_price">金額（%1$s）</string>
     <string name="export_column_category">カテゴリ</string>
     <string name="export_column_created_on">時刻</string>
     <string name="export_column_author">記帳者</string>
@@ -130,7 +130,7 @@
     <!-- Premium -->
     <string name="premium_unlock">プレミアム版を解除する</string>
     <string name="premium_hide_ads">広告を非表示にする</string>
-    <string name="premium_pricing">%s 一括支払い、高度な機能を解除\n心から安心してご利用いただけます</string>
+    <string name="premium_pricing">%1$s 一括支払い、高度な機能を解除\n心から安心してご利用いただけます</string>
     <string name="premium_description">
         ✔ 広告の干渉を受けません
         \n✔ 10 冊の帳簿に拡張する
@@ -144,12 +144,12 @@
     <string name="premium_payment_pending">お支払いは処理中です。しばらくお待ちください。</string>
 
     <!-- Settings -->
-    <string name="settings_title">%s設定</string>
+    <string name="settings_title">%1$s設定</string>
     <string name="settings_description">設定</string>
     <string name="settings_rename_user">ユーザー名を編集</string>
-    <string name="settings_rename_user_success">ユーザー名が%sに変更されました</string>
+    <string name="settings_rename_user_success">ユーザー名が%1$sに変更されました</string>
     <string name="settings_rename_book">帳簿の名前を変更</string>
-    <string name="settings_rename_book_success">帳簿の名前が%sに変更されました</string>
+    <string name="settings_rename_book_success">帳簿の名前が%1$sに変更されました</string>
     <string name="settings_edit_book_currency">勘定通貨の編集</string>
     <string name="settings_view_members">メンバーを表示</string>
     <string name="settings_allow_members_edit">メンバーに編集を許可</string>
@@ -157,17 +157,17 @@
     <string name="settings_logout">ログアウト</string>
     <string name="settings_delete_book">帳簿を削除</string>
     <string name="settings_leave_book">帳簿を退出する</string>
-    <string name="settings_confirm_delete">「%s」を削除してもよろしいですか？</string>
-    <string name="settings_confirm_leave">「%s」を退出しますか？</string>
-    <string name="settings_book_deleted">%sは削除されました</string>
-    <string name="settings_book_left">あなたは%sから退出しました</string>
+    <string name="settings_confirm_delete">「%1$s」を削除してもよろしいですか？</string>
+    <string name="settings_confirm_leave">「%1$s」を退出しますか？</string>
+    <string name="settings_book_deleted">%1$sは削除されました</string>
+    <string name="settings_book_left">あなたは%1$sから退出しました</string>
     <string name="settings_language">言語</string>
     <string name="settings_input_vibration">入力時の振動フィードバック</string>
     <string name="settings_chart_mode">概要チャートモード</string>
     <string name="settings_bar_chart">棒グラフ</string>
     <string name="settings_pie_chart">円グラフ</string>
     <string name="settings_share_app">友達にアプリを共有する</string>
-    <string name="settings_share_app_message">使いやすい記帳アプリを見つけました、ぜひダウンロードして試してみてください！\n%s</string>
+    <string name="settings_share_app_message">使いやすい記帳アプリを見つけました、ぜひダウンロードして試してみてください！\n%1$s</string>
     <string name="settings_rate_us">Google Play で評価する</string>
     <string name="settings_follow_on_instagram">インスタフォローしてください</string>
     <string name="settings_contact_us">私たちに連絡する</string>

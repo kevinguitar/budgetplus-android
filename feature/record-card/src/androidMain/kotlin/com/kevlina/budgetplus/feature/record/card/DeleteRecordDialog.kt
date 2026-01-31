@@ -1,12 +1,14 @@
 package com.kevlina.budgetplus.feature.record.card
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.kevlina.budgetplus.core.common.R
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.batch_record_delete_confirmation
+import budgetplus.core.common.generated.resources.record_confirm_delete
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DeleteRecordDialog(
@@ -17,7 +19,7 @@ fun DeleteRecordDialog(
     if (editRecord.isBatched) {
         EditBatchDialog(
             onDismiss = onDismiss,
-            text = stringResource(id = R.string.batch_record_delete_confirmation),
+            text = stringResource(Res.string.batch_record_delete_confirmation),
             onSelectOne = {
                 vm.deleteRecord(editRecord)
                 onDismiss()
@@ -29,7 +31,7 @@ fun DeleteRecordDialog(
         )
     } else {
         ConfirmDialog(
-            message = stringResource(id = R.string.record_confirm_delete),
+            message = stringResource(Res.string.record_confirm_delete),
             onConfirm = {
                 vm.deleteRecord(editRecord)
                 onDismiss()

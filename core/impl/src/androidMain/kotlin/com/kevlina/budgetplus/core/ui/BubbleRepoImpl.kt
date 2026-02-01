@@ -1,7 +1,8 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import dev.zacsweers.metro.AppScope
@@ -12,13 +13,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class BubbleRepoImpl(
     @AppCoroutineScope private val appScope: CoroutineScope,
-    private val preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
 ) : BubbleRepo {
 
     private val bubblesQueue = mutableListOf<BubbleDest>()
@@ -30,16 +32,18 @@ class BubbleRepoImpl(
     private var popBubbleJob: Job? = null
 
     override fun addBubbleToQueue(dest: BubbleDest) {
-        val bubbleKey = dest.key
-        if (preferenceHolder.getBoolean(bubbleKey, default = false)) {
-            return
-        }
+        appScope.launch {
+            val bubbleKey = booleanPreferencesKey(dest.key)
+            if (preference.of(bubbleKey).first() == true) {
+                return@launch
+            }
 
-        preferenceHolder.setBoolean(bubbleKey, value = true)
-        if (bubblesQueue.isEmpty()) {
-            showBubble(dest)
+            preference.update(bubbleKey, true)
+            if (bubblesQueue.isEmpty()) {
+                showBubble(dest)
+            }
+            bubblesQueue.add(dest)
         }
-        bubblesQueue.add(dest)
     }
 
     private fun showBubble(dest: BubbleDest) {

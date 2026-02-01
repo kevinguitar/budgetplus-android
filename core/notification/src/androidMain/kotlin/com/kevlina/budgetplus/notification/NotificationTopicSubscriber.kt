@@ -1,11 +1,12 @@
 package com.kevlina.budgetplus.notification
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.flow.filterNotNull
@@ -16,10 +17,11 @@ import kotlinx.serialization.Serializable
 @ContributesIntoSet(AppScope::class)
 class NotificationTopicSubscriber(
     private val authManager: AuthManager,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
 ) : AppStartAction {
 
-    private var lastInfo by preferenceHolder.bindObjectOptional<SubscribeInfo?>(null)
+    private val lastSubscribeInfoKey = stringPreferencesKey("lastInfo")
+    private val lastInfoFlow = preference.of(lastSubscribeInfoKey, SubscribeInfo.serializer())
 
     override suspend fun onAppStart() {
         subscribeToTopics()
@@ -36,6 +38,7 @@ class NotificationTopicSubscriber(
             "ja" -> "general_ja"
             else -> "general_en"
         }
+        val lastInfo = lastInfoFlow.first()
         if (lastInfo == SubscribeInfo(userId = user.id, topic = generalTopic)) {
             // Avoid resubscribing the same topic
             return
@@ -50,9 +53,13 @@ class NotificationTopicSubscriber(
 
             Firebase.messaging.subscribeToTopic(generalTopic).await()
             Logger.d { "Notification: Subscribed to $generalTopic topic" }
-            lastInfo = SubscribeInfo(
-                userId = user.id,
-                topic = generalTopic
+            preference.update(
+                key = lastSubscribeInfoKey,
+                serializer = SubscribeInfo.serializer(),
+                value = SubscribeInfo(
+                    userId = user.id,
+                    topic = generalTopic
+                )
             )
         } catch (e: Exception) {
             Logger.e(e) { "Notification topic subscription failed" }

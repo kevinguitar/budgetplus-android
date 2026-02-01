@@ -11,8 +11,10 @@ import budgetplus.core.common.generated.resources.color_tone_dusk
 import budgetplus.core.common.generated.resources.color_tone_lavender
 import budgetplus.core.common.generated.resources.color_tone_milk_tea
 import budgetplus.core.common.generated.resources.color_tone_nemo_sea
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.StringResource
 
+@Serializable
 enum class ColorTone {
     MilkTea, Dusk, Countryside, Barbie, Lavender, NemoSea, Customized;
 

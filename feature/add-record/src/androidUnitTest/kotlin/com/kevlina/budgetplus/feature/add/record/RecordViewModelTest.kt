@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.datastore.preferences.core.intPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.record_empty_category
 import budgetplus.core.common.generated.resources.record_empty_price
@@ -13,7 +14,7 @@ import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
-import com.kevlina.budgetplus.core.data.fixtures.FakePreferenceHolder
+import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.fixtures.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.fixtures.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -23,6 +24,8 @@ import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
 import com.kevlina.budgetplus.inapp.review.fixtures.FakeInAppReviewManager
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -129,7 +132,7 @@ class RecordViewModelTest {
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
-        model.requestPermissionEvent.assertHasUnconsumedEvent()
+        model.requestPermissionEvent.awaitUnconsumedEvent()
     }
 
     @Test
@@ -138,7 +141,7 @@ class RecordViewModelTest {
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
-        model.requestReviewEvent.assertHasUnconsumedEvent()
+        model.requestReviewEvent.awaitUnconsumedEvent()
     }
 
 
@@ -168,12 +171,12 @@ class RecordViewModelTest {
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
         activityProvider = FakeActivityProvider(mockk()),
-        preferenceHolder = FakePreferenceHolder {
-            put("recordCount", recordCount)
+        preference = FakePreference {
+            set(intPreferencesKey("recordCount"), recordCount)
         },
     )
 }
 
-private fun EventFlow<Unit>.assertHasUnconsumedEvent() {
-    assertThat(value.consume()).isEqualTo(Unit)
+private suspend fun EventFlow<Unit>.awaitUnconsumedEvent() {
+    assertThat(mapNotNull { it.consume() }.first()).isEqualTo(Unit)
 }

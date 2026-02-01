@@ -2,47 +2,70 @@ package com.kevlina.budgetplus.core.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
+import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.data.AuthManager
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @SingleIn(AppScope::class)
 @Inject
 class ThemeManager(
-    preferenceHolder: PreferenceHolder,
+    @AppCoroutineScope private val appScope: CoroutineScope,
+    private val preference: Preference,
     private val authManager: AuthManager,
     private val tracker: Tracker,
 ) {
+    private val colorToneKey = stringPreferencesKey("colorToneCache")
+    private val colorToneFlow = preference.of(colorToneKey, ColorTone.serializer())
 
-    private var colorToneCache by preferenceHolder.bindObject(ColorTone.MilkTea)
-    private var customizedColorsCache by preferenceHolder.bindString(ThemeColors.MilkTea.encode())
+    private val customizedColorsKey = stringPreferencesKey("customizedColorsCache")
 
     // It represents the current theme colors in the customized theme.
-    private var currentCustomColors = decodeThemeColors(customizedColorsCache) ?: ThemeColors.MilkTea
+    private var currentCustomColors = ThemeColors.MilkTea
 
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    val colorTone: StateFlow<ColorTone>
-        field = MutableStateFlow(colorToneCache)
+    //TODO: Let's see if this produces glitches
+    val colorTone: StateFlow<ColorTone> = colorToneFlow
+        .filterNotNull()
+        .stateIn(appScope, SharingStarted.Eagerly, ColorTone.MilkTea)
 
-    val themeColors: StateFlow<ThemeColors>
-        field = MutableStateFlow<ThemeColors>(getThemeColors(colorToneCache))
+    val themeColors: StateFlow<ThemeColors> = colorTone.mapState(::getThemeColors)
 
     val previewColors: StateFlow<ThemeColors?>
         field = MutableStateFlow<ThemeColors?>(null)
 
     val hasEditedCustomTheme: StateFlow<Boolean>
         field = MutableStateFlow(false)
+
+    init {
+        appScope.launch {
+            preference.of(customizedColorsKey).first()?.let { encodedCustomizedColors ->
+                decodeThemeColors(encodedCustomizedColors)?.let {
+                    currentCustomColors = it
+                    editedCustomColors = it
+                }
+            }
+        }
+    }
 
     fun getThemeColors(colorTone: ColorTone): ThemeColors = when (colorTone) {
         ColorTone.MilkTea -> ThemeColors.MilkTea
@@ -64,12 +87,11 @@ class ThemeManager(
             saveCustomColors(editedCustomColors)
         }
 
-        colorToneCache = newColorTone
-        colorTone.value = newColorTone
-        themeColors.value = getThemeColors(newColorTone)
-
+        appScope.launch {
+            preference.update(colorToneKey, ColorTone.serializer(), newColorTone)
+        }
         tracker.logEvent("color_tone_changed", bundle {
-            putString("tone", colorTone.toString())
+            putString("tone", newColorTone.name)
         })
     }
 
@@ -135,7 +157,9 @@ class ThemeManager(
     }
 
     private fun saveCustomColors(newColors: ThemeColors) {
-        customizedColorsCache = newColors.encode()
+        appScope.launch {
+            preference.update(customizedColorsKey, newColors.encode())
+        }
         currentCustomColors = newColors
         editedCustomColors = newColors
         hasEditedCustomTheme.value = false

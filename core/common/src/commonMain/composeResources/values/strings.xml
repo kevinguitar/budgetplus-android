@@ -64,17 +64,24 @@
     <string name="category_edit_title">Edit Categories</string>
     <string name="category_edit_successful">Category list has been saved</string>
     <string name="category_already_exist">Category %1$s already exist</string>
-    <string name="category_food">Food</string>
-    <string name="category_daily">Daily</string>
-    <string name="category_transport">Transport</string>
-    <string name="category_entertainment">Entertainment</string>
-    <string name="category_rent">Rent</string>
-    <string name="category_mobile">Mobile</string>
-    <string name="category_utility">Utility</string>
-    <string name="category_salary">Salary</string>
-    <string name="category_bonus">Bonus</string>
-    <string name="category_rebate">Rebate</string>
-    <string name="category_other">Other</string>
+
+    <string-array name="default_expense_categories">
+        <item>Food</item>
+        <item>Daily</item>
+        <item>Transport</item>
+        <item>Entertainment</item>
+        <item>Rent</item>
+        <item>Mobile</item>
+        <item>Utility</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="default_income_categories">
+        <item>Salary</item>
+        <item>Bonus</item>
+        <item>Rebate</item>
+        <item>Other</item>
+    </string-array>
 
     <!-- Members -->
     <string name="members_title">Members</string>

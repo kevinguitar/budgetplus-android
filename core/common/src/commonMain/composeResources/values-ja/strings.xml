@@ -64,17 +64,24 @@
     <string name="category_edit_title">カテゴリを編集する</string>
     <string name="category_edit_successful">カテゴリリストが保存されました</string>
     <string name="category_already_exist">カテゴリ%1$sは既に存在します</string>
-    <string name="category_food">飲食</string>
-    <string name="category_daily">日常</string>
-    <string name="category_transport">交通</string>
-    <string name="category_entertainment">娯楽</string>
-    <string name="category_rent">家賃</string>
-    <string name="category_mobile">通信</string>
-    <string name="category_utility">電気</string>
-    <string name="category_salary">給与</string>
-    <string name="category_bonus">賞金</string>
-    <string name="category_rebate">現金還元</string>
-    <string name="category_other">その他</string>
+
+    <string-array name="default_expense_categories">
+        <item>飲食</item>
+        <item>日常</item>
+        <item>交通</item>
+        <item>娯楽</item>
+        <item>家賃</item>
+        <item>通信</item>
+        <item>電気</item>
+        <item>その他</item>
+    </string-array>
+
+    <string-array name="default_income_categories">
+        <item>給与</item>
+        <item>賞金</item>
+        <item>現金還元</item>
+        <item>その他</item>
+    </string-array>
 
     <!-- Members -->
     <string name="members_title">メンバー</string>

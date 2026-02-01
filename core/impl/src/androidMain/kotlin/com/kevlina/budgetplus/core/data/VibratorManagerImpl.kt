@@ -1,31 +1,31 @@
 package com.kevlina.budgetplus.core.data
 
-import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.VibratorManager
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class VibratorManagerImpl(
-    context: Context,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
     private val tracker: Tracker,
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : VibratorManager {
 
-    private var vibrateOnInputCache by preferenceHolder.bindBoolean(true)
-    final override val vibrateOnInput: StateFlow<Boolean>
-        field = MutableStateFlow(vibrateOnInputCache)
+    private val vibrateOnInputKey = booleanPreferencesKey("vibrateOnInputFlow")
+
+    final override val vibrateOnInput: StateFlow<Boolean> = preference.of(vibrateOnInputKey, true, appScope)
 
     override fun toggleVibrateOnInput() {
-        val newValue = !vibrateOnInputCache
-        vibrateOnInputCache = newValue
-        vibrateOnInput.value = newValue
+        appScope.launch { preference.update(vibrateOnInputKey, !vibrateOnInput.value) }
         tracker.logEvent("vibrate_on_input_changed")
     }
 }

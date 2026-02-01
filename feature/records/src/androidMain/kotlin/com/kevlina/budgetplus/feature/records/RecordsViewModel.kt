@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.records
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Tracker
@@ -14,7 +15,7 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.createdOn
 import com.kevlina.budgetplus.core.data.resolveAuthor
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @AssistedInject
 class RecordsViewModel(
@@ -39,13 +41,14 @@ class RecordsViewModel(
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
     private val authManager: AuthManager,
+    private val preference: Preference,
     recordsObserver: RecordsObserver,
-    preferenceHolder: PreferenceHolder,
 ) : ViewModel() {
 
-    private var sortModeCache by preferenceHolder.bindObject(RecordsSortMode.Date)
-    val sortMode: StateFlow<RecordsSortMode>
-        field = MutableStateFlow(sortModeCache)
+    private val sortModeKey = stringPreferencesKey("sortModeCache")
+    val sortMode: StateFlow<RecordsSortMode> = preference.of(
+        key = sortModeKey, serializer = RecordsSortMode.serializer(), default = RecordsSortMode.Date, scope = viewModelScope
+    )
 
     private val authorId get() = params.authorId
 
@@ -101,8 +104,9 @@ class RecordsViewModel(
     }
 
     fun setSortMode(newSortMode: RecordsSortMode) {
-        sortMode.value = newSortMode
-        sortModeCache = newSortMode
+        viewModelScope.launch {
+            preference.update(sortModeKey, RecordsSortMode.serializer(), newSortMode)
+        }
         tracker.logEvent("overview_sort_mode_changed")
     }
 

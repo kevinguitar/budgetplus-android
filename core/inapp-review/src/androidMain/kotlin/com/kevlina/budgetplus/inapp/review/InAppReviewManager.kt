@@ -4,7 +4,7 @@ import android.app.Activity
 
 interface InAppReviewManager {
 
-    fun isEligibleForReview(): Boolean
+    suspend fun isEligibleForReview(): Boolean
 
     suspend fun launchReviewFlow(activity: Activity)
 

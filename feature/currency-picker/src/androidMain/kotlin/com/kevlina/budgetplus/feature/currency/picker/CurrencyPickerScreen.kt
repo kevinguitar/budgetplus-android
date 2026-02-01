@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.ConfirmDialog
 import com.kevlina.budgetplus.core.ui.TopBar
 import com.kevlina.budgetplus.core.utils.metroViewModel
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -32,6 +34,7 @@ fun CurrencyPickerScreen(
     val currencies by vm.currencies.collectAsStateWithLifecycle()
 
     var currencyDisclaimerDialogState by remember { mutableStateOf<CurrencyState?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -55,11 +58,13 @@ fun CurrencyPickerScreen(
                 keyword = vm.keyword,
                 currencies = currencies,
                 onCurrencyPicked = { currency ->
-                    if (vm.hasShownCurrencyDisclaimer) {
-                        vm.onCurrencyPicked(currency)
-                        navController.navigateUp()
-                    } else {
-                        currencyDisclaimerDialogState = currency
+                    coroutineScope.launch {
+                        if (vm.hasShownCurrencyDisclaimer()) {
+                            vm.onCurrencyPicked(currency)
+                            navController.navigateUp()
+                        } else {
+                            currencyDisclaimerDialogState = currency
+                        }
                     }
                 }
             )
@@ -69,9 +74,11 @@ fun CurrencyPickerScreen(
             ConfirmDialog(
                 message = stringResource(Res.string.currency_picker_no_conversion_disclaimer),
                 onConfirm = {
-                    vm.onCurrencyPicked(currency)
-                    currencyDisclaimerDialogState = null
-                    navController.navigateUp()
+                    coroutineScope.launch {
+                        vm.onCurrencyPicked(currency)
+                        currencyDisclaimerDialogState = null
+                        navController.navigateUp()
+                    }
                 },
                 onDismiss = { currencyDisclaimerDialogState = null },
             )

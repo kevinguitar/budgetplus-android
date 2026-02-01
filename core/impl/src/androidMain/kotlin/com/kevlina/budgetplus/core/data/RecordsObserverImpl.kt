@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
@@ -8,7 +9,7 @@ import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.tickerFlow
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
@@ -23,13 +24,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -39,9 +44,9 @@ import kotlin.time.Duration.Companion.seconds
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class RecordsObserverImpl(
-    @AppCoroutineScope appScope: CoroutineScope,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
     bookRepo: BookRepo,
 ) : RecordsObserver {
 
@@ -61,11 +66,13 @@ class RecordsObserverImpl(
         field = MutableStateFlow<Sequence<Record>?>(null)
 
     // Cache the time period by book id
-    private var periodCache by preferenceHolder.bindObject<Map<String, TimePeriod>>(emptyMap())
-    private val timePeriodMap = MutableStateFlow(periodCache)
+    //TODO: Check this carefully
+    private val timePeriodMapKey = stringPreferencesKey("periodCache")
+    private val timePeriodMapSerializer = MapSerializer(String.serializer(), TimePeriod.serializer())
+    private val timePeriodMap = preference.of(key = timePeriodMapKey, serializer = timePeriodMapSerializer)
 
     override val timePeriod: Flow<TimePeriod> = combine(
-        timePeriodMap,
+        timePeriodMap.filterNotNull(),
         bookRepo.bookState
     ) { periodMap, book ->
         book?.id?.let(periodMap::get) ?: TimePeriod.Month
@@ -89,7 +96,7 @@ class RecordsObserverImpl(
     }
 
     override fun setTimePeriod(bookId: String, period: TimePeriod) {
-        // Check if the custom period matches the preset period
+        // Leverage custom equal check to verify if the custom period matches the preset period
         val normalizedPeriod = when (period) {
             TimePeriod.Today -> TimePeriod.Today
             TimePeriod.Week -> TimePeriod.Week
@@ -98,11 +105,12 @@ class RecordsObserverImpl(
             is TimePeriod.Custom -> period
         }
 
-        val newMapping = periodCache.toMutableMap()
-            .apply { this[bookId] = normalizedPeriod }
-
-        timePeriodMap.value = newMapping
-        periodCache = newMapping
+        appScope.launch {
+            val newMapping = timePeriodMap.first().orEmpty()
+                .toMutableMap()
+                .apply { put(bookId, normalizedPeriod) }
+            preference.update(timePeriodMapKey, timePeriodMapSerializer, newMapping)
+        }
     }
 
     private fun observeRecords(bookId: String, period: TimePeriod) {

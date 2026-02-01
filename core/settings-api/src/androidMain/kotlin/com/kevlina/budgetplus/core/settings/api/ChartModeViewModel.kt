@@ -4,15 +4,20 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BarChart
 import androidx.compose.material.icons.rounded.PieChart
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.bundle
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class ChartMode {
     BarChart, PieChart
 }
@@ -26,14 +31,15 @@ val ChartMode.icon: ImageVector
 @SingleIn(AppScope::class)
 @Inject
 class ChartModeViewModel(
-    preferenceHolder: PreferenceHolder,
+    @AppCoroutineScope private val appScope: CoroutineScope,
+    private val preference: Preference,
     private val tracker: Tracker,
 ) {
+    private val chartModeKey = stringPreferencesKey("chartModeCache")
 
-    private var chartModeCache by preferenceHolder.bindObject(ChartMode.BarChart)
-
-    val chartMode: StateFlow<ChartMode>
-        field = MutableStateFlow(chartModeCache)
+    val chartMode: StateFlow<ChartMode> = preference.of(
+        key = chartModeKey, serializer = ChartMode.serializer(), default = ChartMode.BarChart, scope = appScope
+    )
 
     val chartModeAnalyticsName: String
         get() = when (chartMode.value) {
@@ -42,8 +48,9 @@ class ChartModeViewModel(
         }
 
     fun setChartMode(mode: ChartMode) {
-        chartModeCache = mode
-        chartMode.value = mode
+        appScope.launch {
+            preference.update(chartModeKey, ChartMode.serializer(), mode)
+        }
         tracker.logEvent(
             event = "chart_mode_changed",
             params = bundle {

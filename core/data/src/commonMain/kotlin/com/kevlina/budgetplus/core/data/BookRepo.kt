@@ -35,7 +35,7 @@ interface BookRepo {
 
     suspend fun leaveOrDeleteBook()
 
-    fun selectBook(book: Book)
+    suspend fun selectBook(book: Book?)
 
     fun addCategory(type: RecordType, category: String, source: String)
 

@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.overview
 
 import android.content.Intent
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -10,7 +11,6 @@ import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -21,7 +21,7 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.createdOn
@@ -66,19 +66,21 @@ class OverviewViewModel private constructor(
     val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
     val chartModeModel: ChartModeViewModel,
-    val vibratorManager: VibratorManager,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
     private val isSoloAuthor = bookRepo.bookState.mapState { it?.authors?.size == 1 }
 
-    private var typeCache by preferenceHolder.bindObject(RecordType.Expense)
-    private val type = MutableStateFlow(typeCache)
+    private val typeKey = stringPreferencesKey("typeCache")
+    private val type = preference.of(
+        typeKey, RecordType.serializer(), default = RecordType.Expense, scope = viewModelScope
+    )
 
-    private var modeCache by preferenceHolder.bindObject(OverviewMode.AllRecords)
-    internal val mode: StateFlow<OverviewMode>
-        field = MutableStateFlow(modeCache)
+    private val modeKey = stringPreferencesKey("modeCache")
+    internal val mode: StateFlow<OverviewMode> = preference.of(
+        modeKey, OverviewMode.serializer(), default = OverviewMode.AllRecords, scope = viewModelScope
+    )
 
     private var modeBubbleJob: Job? = null
     private var exportBubbleJob: Job? = null
@@ -188,8 +190,9 @@ class OverviewViewModel private constructor(
             OverviewMode.AllRecords -> OverviewMode.GroupByCategories
             OverviewMode.GroupByCategories -> OverviewMode.AllRecords
         }
-        mode.value = newMode
-        modeCache = newMode
+        viewModelScope.launch {
+            preference.update(modeKey, OverviewMode.serializer(), newMode)
+        }
         tracker.logEvent("overview_mode_changed")
     }
 
@@ -219,8 +222,9 @@ class OverviewViewModel private constructor(
     }
 
     private fun setRecordType(newType: RecordType) {
-        type.value = newType
-        typeCache = newType
+        viewModelScope.launch {
+            preference.update(typeKey, RecordType.serializer(), newType)
+        }
         tracker.logEvent("overview_type_changed")
     }
 

@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.core.data
 
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.stringPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.book_already_archived
 import budgetplus.core.common.generated.resources.book_already_joined
@@ -22,7 +23,7 @@ import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import dev.zacsweers.metro.AppScope
@@ -30,6 +31,7 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -37,13 +39,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
 import java.text.NumberFormat
-import java.util.Currency
-import java.util.Locale
+import java.util.*
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
@@ -53,15 +57,20 @@ class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
     private val tracker: Tracker,
-    preferenceHolder: PreferenceHolder,
-    @AppCoroutineScope appScope: CoroutineScope,
+    private val preference: Preference,
+    @AppCoroutineScope private val appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
 ) : BookRepo {
 
-    private var currentBook by preferenceHolder.bindObjectOptional<Book>(null)
+    private val currentBookKey = stringPreferencesKey("currentBook")
+    private val currentBookFlow = preference.of(currentBookKey, Book.serializer())
 
-    final override val bookState: StateFlow<Book?>
-        field = MutableStateFlow(currentBook)
+    override val bookState: StateFlow<Book?> = currentBookFlow
+        .stateIn(
+            scope = appScope,
+            started = SharingStarted.Eagerly,
+            initialValue = runBlocking { currentBookFlow.first() }
+        )
 
     final override val booksState: StateFlow<List<Book>?>
         field = MutableStateFlow<List<Book>?>(null)
@@ -100,8 +109,8 @@ class BookRepoImpl(
     }
 
     override val canEdit: Boolean
-        get() = currentBook?.allowMembersEdit != false ||
-            currentBook?.ownerId == authManager.userId
+        get() = bookState.value?.allowMembersEdit != false ||
+            bookState.value?.ownerId == authManager.userId
 
     override val hasPendingJoinRequest: Boolean
         get() = pendingJoinId.value != null
@@ -183,7 +192,7 @@ class BookRepoImpl(
         val newAuthors = book.authors.toMutableList()
         newAuthors.add(userId)
 
-        setBook(book)
+        selectBook(book)
         booksDb.value.document(bookId)
             .update(authorsField, newAuthors)
             .await()
@@ -237,7 +246,7 @@ class BookRepoImpl(
             currencyCode = defaultCurrency.currencyCode
         )
         val doc = booksDb.value.add(newBook).await()
-        setBook(newBook.copy(id = doc.id))
+        selectBook(newBook.copy(id = doc.id))
         tracker.logEvent("book_created_from_$source")
     }
 
@@ -267,8 +276,12 @@ class BookRepoImpl(
         }
     }
 
-    override fun selectBook(book: Book) {
-        setBook(book)
+    override suspend fun selectBook(book: Book?) {
+        if (book == null) {
+            preference.remove(currentBookKey)
+        } else {
+            preference.update(currentBookKey, Book.serializer(), book)
+        }
     }
 
     private fun observeBooks(userId: String?) {
@@ -298,24 +311,21 @@ class BookRepoImpl(
                 val books = snapshot.map { doc -> doc.toObject<Book>().copy(id = doc.id) }
                 booksState.value = books
 
-                if (books.isEmpty()) {
-                    setBook(null)
-                    return@addSnapshotListener
-                }
+                appScope.launch {
+                    if (books.isEmpty()) {
+                        selectBook(null)
+                        return@launch
+                    }
 
-                val bookId = currentBookId
-                val index = books.indexOfFirst { it.id == bookId }
-                if (bookId == null || index == -1) {
-                    setBook(books.last())
-                } else {
-                    setBook(books[index])
+                    val bookId = currentBookId
+                    val index = books.indexOfFirst { it.id == bookId }
+                    if (bookId == null || index == -1) {
+                        selectBook(books.last())
+                    } else {
+                        selectBook(books[index])
+                    }
                 }
             }
-    }
-
-    private fun setBook(book: Book?) {
-        bookState.value = book
-        currentBook = book
     }
 
     override fun addCategory(type: RecordType, category: String, source: String) {

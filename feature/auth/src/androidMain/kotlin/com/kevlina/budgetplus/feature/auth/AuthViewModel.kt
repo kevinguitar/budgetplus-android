@@ -8,6 +8,7 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.auth_success
@@ -29,9 +30,10 @@ import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 
@@ -46,7 +48,7 @@ internal class AuthViewModel(
     @Named("welcome") private val welcomeNavigationAction: NavigationAction,
     @Named("book") private val bookNavigationAction: NavigationAction,
     referrerHandler: ReferrerHandler,
-    preferenceHolder: PreferenceHolder,
+    preference: Preference,
 ) {
 
     private val coroutineScope = activity.lifecycleScope
@@ -55,12 +57,14 @@ internal class AuthViewModel(
     private val credentialManager by lazy { CredentialManager.create(activity) }
     private val googleClientId get() = activity.getString(R.string.google_cloud_client_id)
 
-    private var isFirstLaunchAfterInstall by preferenceHolder.bindBoolean(true)
+    private val isFirstLaunchAfterInstallKey = booleanPreferencesKey("isFirstLaunchAfterInstall")
 
     init {
-        if (isFirstLaunchAfterInstall) {
-            isFirstLaunchAfterInstall = false
-            referrerHandler.retrieveReferrer()
+        coroutineScope.launch {
+            if (preference.of(isFirstLaunchAfterInstallKey).first() == null) {
+                preference.update(isFirstLaunchAfterInstallKey, false)
+                referrerHandler.retrieveReferrer()
+            }
         }
     }
 

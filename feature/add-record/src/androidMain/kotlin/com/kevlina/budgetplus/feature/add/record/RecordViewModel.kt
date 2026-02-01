@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -28,7 +29,7 @@ import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.toAuthor
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
@@ -39,6 +40,7 @@ import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -57,7 +59,7 @@ class RecordViewModel(
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
     private val activityProvider: ActivityProvider,
-    preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
 ) : ViewModel() {
 
     val type: StateFlow<RecordType>
@@ -76,7 +78,8 @@ class RecordViewModel(
     val requestPermissionEvent: EventFlow<Unit>
         field = MutableEventFlow<Unit>()
 
-    private var recordCount by preferenceHolder.bindInt(0)
+    private val recordCountKey = intPreferencesKey("recordCount")
+    private val recordCount = preference.of(recordCountKey)
 
     init {
         calculatorVm.recordFlow
@@ -161,10 +164,12 @@ class RecordViewModel(
 
         recordRepo.createRecord(record)
         recordEvent.sendEvent(Unit)
-        recordCount += 1
-
         resetScreen()
-        onRecordCreated()
+
+        viewModelScope.launch {
+            preference.update(recordCountKey, (recordCount.first() ?: 0) + 1)
+            onRecordCreated()
+        }
     }
 
     private fun resetScreen() {
@@ -177,14 +182,14 @@ class RecordViewModel(
      *  This callback does several things
      *  - Show full screen Ad on every [RECORD_COUNT_CYCLE] records
      *  - Request notification permission after the 2nd record
-     *  - Request in app review after the 4th record
+     *  - Request in-app review after the 4th record
      */
-    private fun onRecordCreated() {
+    private suspend fun onRecordCreated() {
         val activity = activityProvider.currentActivity ?: return
-        when (recordCount % RECORD_COUNT_CYCLE) {
+        when ((recordCount.first() ?: 0) % RECORD_COUNT_CYCLE) {
             RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
             RECORD_REQUEST_PERMISSION -> requestPermissionEvent.sendEvent()
-            // Request the in app review when almost reach the next full screen ad,
+            // Request the in-app review when almost reach the next fullscreen ad,
             // just to have a better UX while user reviewing.
             RECORD_REQUEST_REVIEW -> if (inAppReviewManager.isEligibleForReview()) {
                 requestReviewEvent.sendEvent()

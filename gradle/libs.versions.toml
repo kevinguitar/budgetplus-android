@@ -25,6 +25,8 @@ jetbrains-lifecycle = "2.9.6"
 jetbrains-material3 = "1.9.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
 android-activity = "1.12.3"
+# https://developer.android.com/kotlin/multiplatform/datastore
+datastore = "1.2.0"
 # https://github.com/icerockdev/moko-permissions/releases
 permissions = "0.20.1"
 # https://github.com/alexzhirkevich/compottie/releases
@@ -63,6 +65,8 @@ compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }

@@ -62,7 +62,7 @@ class SpeakToRecordViewModel(
     }
 
     fun highlightRecordButton(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun showRecordPermissionHint() {

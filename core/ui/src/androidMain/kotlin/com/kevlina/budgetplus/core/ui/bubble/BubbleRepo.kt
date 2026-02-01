@@ -19,7 +19,7 @@ import org.jetbrains.compose.resources.StringResource
 interface BubbleRepo {
     val bubble: StateFlow<BubbleDest?>
 
-    fun addBubbleToQueue(dest: BubbleDest)
+    suspend fun addBubbleToQueue(dest: BubbleDest)
     fun popBubble()
 }
 

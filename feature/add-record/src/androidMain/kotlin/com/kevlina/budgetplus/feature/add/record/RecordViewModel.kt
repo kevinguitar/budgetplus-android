@@ -120,7 +120,7 @@ class RecordViewModel(
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun launchReviewFlow() {

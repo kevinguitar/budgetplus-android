@@ -51,7 +51,7 @@ class EditCategoryViewModel(
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun highlightSaveButton(dest: BubbleDest) {

@@ -94,7 +94,7 @@ class ColorTonePickerViewModel(
     }
 
     fun highlightShareButton(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun processHexFromLink(hexFromLink: String) {

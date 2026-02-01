@@ -25,6 +25,7 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
@@ -61,6 +62,8 @@ class AuthManagerImpl(
     override val userId: String? get() = userState.value?.id
 
     init {
+        appScope.launch { userState.collect() }
+
         Firebase.auth.addAuthStateListener { auth ->
             runBlocking { updateUser(auth.currentUser?.toUser()) }
         }

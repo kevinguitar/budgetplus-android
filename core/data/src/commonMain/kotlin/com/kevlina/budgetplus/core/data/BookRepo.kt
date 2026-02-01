@@ -27,6 +27,9 @@ interface BookRepo {
 
     suspend fun removeMember(userId: String)
 
+    /**
+     * @return true if the user has a book, false otherwise.
+     */
     suspend fun checkUserHasBook(): Boolean
 
     suspend fun createBook(name: String, source: String)

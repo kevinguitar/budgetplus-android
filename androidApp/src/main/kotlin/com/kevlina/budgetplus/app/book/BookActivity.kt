@@ -65,7 +65,7 @@ class BookActivity : ComponentActivity() {
 
         val destination = when {
             authManager.userState.value == null -> AuthActivity::class.java
-            bookRepo.currentBookId == null -> WelcomeActivity::class.java
+            bookRepo.booksState.value.isNullOrEmpty() -> WelcomeActivity::class.java
             else -> null
         }
 

@@ -66,7 +66,6 @@ class RecordsObserverImpl(
         field = MutableStateFlow<Sequence<Record>?>(null)
 
     // Cache the time period by book id
-    //TODO: Check this carefully
     private val timePeriodMapKey = stringPreferencesKey("periodCache")
     private val timePeriodMapSerializer = MapSerializer(String.serializer(), TimePeriod.serializer())
     private val timePeriodMap = preference.of(key = timePeriodMapKey, serializer = timePeriodMapSerializer)

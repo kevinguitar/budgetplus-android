@@ -16,7 +16,6 @@ kotlin {
             implementation(libs.permissions.storage)
         }
         androidMain.dependencies {
-            //TODO: Eh this lacks iOS support
             implementation(libs.kotlin.csv)
         }
     }

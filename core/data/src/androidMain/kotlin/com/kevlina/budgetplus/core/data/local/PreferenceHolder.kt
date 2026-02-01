@@ -47,27 +47,4 @@ class PreferenceHolder(
         }
     }
 
-    inline fun <reified T : Any?> bindObjectOptional(
-        default: T? = null,
-    ) = ReadOnlyProperty<Any, Flow<T?>> { _, property ->
-        val key = stringPreferencesKey(property.name)
-        preference.data.map { prefs ->
-            val json = prefs[key] ?: return@map default
-            try {
-                formatter.decodeFromString<T>(json)
-            } catch (e: Exception) {
-                Logger.e(e) { "Preference: Decode failed" }
-                default
-            }
-        }
-    }
-
-    suspend inline fun <reified T : Any?> setObjectOptional(name: String, value: T?) {
-        try {
-            val json = value?.let(formatter::encodeToString)
-            preference.update(stringPreferencesKey(name), json)
-        } catch (e: Exception) {
-            Logger.e(e) { "Preference: Encode failed" }
-        }
-    }
 }

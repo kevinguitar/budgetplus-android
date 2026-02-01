@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.feature.push.notifications
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -12,7 +13,7 @@ import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.PushDbMediator
-import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.PushNotificationData
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Named
@@ -22,13 +23,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.time.Clock
 
 @ViewModelKey(PushNotificationsViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class PushNotificationsViewModel private constructor(
-    private val preferenceHolder: PreferenceHolder,
+    private val preference: Preference,
     translator: Translator,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("default_deeplink") private val defaultDeeplink: String,
@@ -37,42 +37,29 @@ class PushNotificationsViewModel private constructor(
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {
 
-    private val titleTwFlow = preferenceHolder.bindString("\uD83C\uDF1E炎夏八月，一起編織理財夢！")
-    private val descTwFlow = preferenceHolder.bindString(
-        "記得目標，存款不停歇！記帳確實，未來更悠遊！將花費化為理財力！GO~"
-    )
-
-    private val titleJaFlow = preferenceHolder.bindString("新しい月ですよ！")
-    private val descJaFlow = preferenceHolder.bindString(
-        "月初めに支出の追跡を始めましょう \uD83D\uDE4C"
-    )
-
-    private val titleEnFlow = preferenceHolder.bindString("It's a new month!")
-    private val descEnFlow = preferenceHolder.bindString(
-        "Track your expenses starting from the beginning of the month \uD83D\uDE4C"
-    )
-
-    private val deeplinkFlow = preferenceHolder.bindString("")
-
-    val titleTw = TextFieldState(runBlocking { titleTwFlow.getValue(this, ::titleTwFlow).first() })
-    val descTw = TextFieldState(runBlocking { descTwFlow.getValue(this, ::descTwFlow).first() })
+    val titleTw = TextFieldState()
+    val descTw = TextFieldState()
 
     val sendToCn = MutableStateFlow(true)
     val titleCn = TextFieldState()
     val descCn = TextFieldState()
 
     val sendToJa = MutableStateFlow(true)
-    val titleJa = TextFieldState(runBlocking { titleJaFlow.getValue(this, ::titleJaFlow).first() })
-    val descJa = TextFieldState(runBlocking { descJaFlow.getValue(this, ::descJaFlow).first() })
+    val titleJa = TextFieldState()
+    val descJa = TextFieldState()
 
     val sendToEn = MutableStateFlow(true)
-    val titleEn = TextFieldState(runBlocking { titleEnFlow.getValue(this, ::titleEnFlow).first() })
-    val descEn = TextFieldState(runBlocking { descEnFlow.getValue(this, ::descEnFlow).first() })
+    val titleEn = TextFieldState()
+    val descEn = TextFieldState()
 
     val navigateToGooglePlay = MutableStateFlow(false)
-    val deeplink = TextFieldState(runBlocking { deeplinkFlow.getValue(this, ::deeplinkFlow).first() })
+    val deeplink = TextFieldState()
+
+    private val cacheKey = stringPreferencesKey("pushNotificationCache")
 
     init {
+        loadCache()
+
         snapshotFlow { titleTw.text }
             .debounce(INPUT_DEBOUNCE_MS)
             .mapLatest {
@@ -138,15 +125,34 @@ class PushNotificationsViewModel private constructor(
         }
     }
 
+    private fun loadCache() {
+        viewModelScope.launch {
+            val cache = preference
+                .of(cacheKey, PushNotificationCache.serializer()).first()
+                ?: PushNotificationCache()
+
+            titleTw.setTextAndPlaceCursorAtEnd(cache.titleTw)
+            descTw.setTextAndPlaceCursorAtEnd(cache.descriptionTw)
+            titleJa.setTextAndPlaceCursorAtEnd(cache.titleJa)
+            descJa.setTextAndPlaceCursorAtEnd(cache.descriptionJa)
+            titleEn.setTextAndPlaceCursorAtEnd(cache.titleEn)
+            descEn.setTextAndPlaceCursorAtEnd(cache.descriptionEn)
+            deeplink.setTextAndPlaceCursorAtEnd(cache.deeplink)
+        }
+    }
+
     private fun saveToCache() {
         viewModelScope.launch {
-            preferenceHolder.setString("titleTwCache", titleTw.text.toString())
-            preferenceHolder.setString("descTwCache", descTw.text.toString())
-            preferenceHolder.setString("titleJaCache", titleJa.text.toString())
-            preferenceHolder.setString("descJaCache", descJa.text.toString())
-            preferenceHolder.setString("titleEnCache", titleEn.text.toString())
-            preferenceHolder.setString("descEnCache", descEn.text.toString())
-            preferenceHolder.setString("deeplinkCache", deeplink.text.toString())
+            val newCache = PushNotificationCache(
+                titleTw = titleTw.text.toString(),
+                descriptionTw = descTw.text.toString(),
+                titleJa = titleJa.text.toString(),
+                descriptionJa = descJa.text.toString(),
+                titleEn = titleEn.text.toString(),
+                descriptionEn = descEn.text.toString(),
+                deeplink = deeplink.text.toString()
+            )
+            preference.update(cacheKey, PushNotificationCache.serializer(), newCache)
         }
     }
 

@@ -1,9 +1,13 @@
 package com.kevlina.budgetplus.core.data.fixtures
 
-import android.content.SharedPreferences
 import androidx.annotation.VisibleForTesting
+import androidx.datastore.preferences.core.Preferences
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.local.PreferenceHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
 @VisibleForTesting
@@ -16,42 +20,37 @@ private class FakePreference(
     mapBuilder: MutableMap<String, Any?>.() -> Unit,
 ) : Preference {
 
-    val map = mutableMapOf<String, Any?>().apply(mapBuilder)
+    private val map = mutableMapOf<String, Any?>().apply(mapBuilder)
 
-    override val pref: SharedPreferences = object : SharedPreferences {
-        override fun getAll(): MutableMap<String, *> = map
-        override fun getString(key: String?, defValue: String?): String? = map[key] as String?
-        override fun getStringSet(key: String?, defValues: MutableSet<String>?) = error("Not supported")
-        override fun getInt(key: String?, defValue: Int): Int = map[key] as Int
-        override fun getLong(key: String?, defValue: Long): Long = map[key] as Long
-        override fun getFloat(key: String?, defValue: Float): Float = map[key] as Float
-        override fun getBoolean(key: String?, defValue: Boolean): Boolean = map[key] as Boolean
-        override fun contains(key: String?): Boolean = key in map
-        override fun edit(): SharedPreferences.Editor = editor
-        override fun registerOnSharedPreferenceChangeListener(
-            listener: SharedPreferences.OnSharedPreferenceChangeListener?,
-        ) = error("Not supported")
-
-        override fun unregisterOnSharedPreferenceChangeListener(
-            listener: SharedPreferences.OnSharedPreferenceChangeListener?,
-        ) = error("Not supported")
+    override fun <T> of(key: Preferences.Key<T>): Flow<T?> {
+        TODO("Not yet implemented")
     }
 
-
-    override val editor: SharedPreferences.Editor = object : SharedPreferences.Editor {
-        override fun putString(key: String, value: String?): SharedPreferences.Editor = apply { map[key] = value }
-        override fun putStringSet(key: String, values: MutableSet<String>?) = apply { map[key] = values }
-        override fun putInt(key: String, value: Int): SharedPreferences.Editor = apply { map[key] = value }
-        override fun putLong(key: String, value: Long): SharedPreferences.Editor = apply { map[key] = value }
-        override fun putFloat(key: String, value: Float): SharedPreferences.Editor = apply { map[key] = value }
-        override fun putBoolean(key: String, value: Boolean): SharedPreferences.Editor = apply { map[key] = value }
-        override fun remove(key: String): SharedPreferences.Editor = apply { map.remove(key) }
-        override fun clear(): SharedPreferences.Editor = apply { map.clear() }
-        override fun commit(): Boolean = true
-        override fun apply() = Unit
+    override fun <T> of(key: Preferences.Key<T>, default: T, scope: CoroutineScope): StateFlow<T> {
+        TODO("Not yet implemented")
     }
 
-    override fun clearAll() {
-        map.clear()
+    override fun <T> of(key: Preferences.Key<String>, serializer: KSerializer<T>): Flow<T?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun <T> of(key: Preferences.Key<String>, serializer: KSerializer<T>, default: T, scope: CoroutineScope): StateFlow<T> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> update(key: Preferences.Key<T>, value: T) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> update(key: Preferences.Key<String>, serializer: KSerializer<T>, value: T) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun remove(key: Preferences.Key<*>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun clearAll() {
+        TODO("Not yet implemented")
     }
 }

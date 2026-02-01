@@ -44,7 +44,7 @@ class BookSelectorViewModel(
     }
 
     fun selectBook(book: Book) {
-        bookRepo.selectBook(book)
+        viewModelScope.launch { bookRepo.selectBook(book) }
     }
 
     fun createBook(name: String) {

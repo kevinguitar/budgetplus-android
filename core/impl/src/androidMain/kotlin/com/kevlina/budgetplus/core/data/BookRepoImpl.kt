@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
@@ -62,9 +63,14 @@ class BookRepoImpl(
 ) : BookRepo {
 
     private val currentBookKey = stringPreferencesKey("currentBook")
-    final override val bookState: StateFlow<Book?> = preference
-        .of(currentBookKey, Book.serializer())
-        .stateIn(appScope, SharingStarted.Eagerly, null)
+    private val currentBookFlow = preference.of(currentBookKey, Book.serializer())
+
+    override val bookState: StateFlow<Book?> = currentBookFlow
+        .stateIn(
+            scope = appScope,
+            started = SharingStarted.Eagerly,
+            initialValue = runBlocking { currentBookFlow.first() }
+        )
 
     final override val booksState: StateFlow<List<Book>?>
         field = MutableStateFlow<List<Book>?>(null)

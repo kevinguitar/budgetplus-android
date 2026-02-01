@@ -52,7 +52,7 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override fun selectBook(book: Book) {
+    override suspend fun selectBook(book: Book?) {
         error("Not yet implemented")
     }
 

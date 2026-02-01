@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.datastore.preferences.core.intPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.record_empty_category
 import budgetplus.core.common.generated.resources.record_empty_price
@@ -13,7 +14,7 @@ import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
-import com.kevlina.budgetplus.core.data.fixtures.FakePreferenceHolder
+import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.fixtures.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.fixtures.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -168,8 +169,8 @@ class RecordViewModelTest {
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
         activityProvider = FakeActivityProvider(mockk()),
-        preferenceHolder = FakePreferenceHolder {
-            put("recordCount", recordCount)
+        preference = FakePreference {
+            set(intPreferencesKey("recordCount"), recordCount)
         },
     )
 }

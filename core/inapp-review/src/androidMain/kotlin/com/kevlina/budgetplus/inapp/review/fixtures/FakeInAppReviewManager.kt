@@ -12,7 +12,7 @@ class FakeInAppReviewManager(
     var hasLaunchedReviewFlow = false
     var hasRejectedReviewing = false
 
-    override fun isEligibleForReview(): Boolean = isEligibleForReview
+    override suspend fun isEligibleForReview(): Boolean = isEligibleForReview
 
     override suspend fun launchReviewFlow(activity: Activity) {
         hasLaunchedReviewFlow = true

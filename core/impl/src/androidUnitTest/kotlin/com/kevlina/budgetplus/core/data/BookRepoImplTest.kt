@@ -1,10 +1,11 @@
 package com.kevlina.budgetplus.core.data
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.common.truth.Truth.assertThat
 import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
-import com.kevlina.budgetplus.core.data.fixtures.FakePreferenceHolder
+import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import io.mockk.mockk
@@ -38,8 +39,8 @@ internal class BookRepoImplTest {
         authManager = FakeAuthManager(user = User(id = "my_user")),
         joinInfoProcessor = mockk(),
         tracker = tracker,
-        preferenceHolder = FakePreferenceHolder {
-            put("currentBook", Json.encodeToString(book))
+        preference = FakePreference {
+            set(stringPreferencesKey("currentBook"), Json.encodeToString(book))
         },
         appScope = backgroundScope,
         booksDb = lazy { mockk<CollectionReference>(relaxed = true) }

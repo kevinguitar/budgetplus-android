@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
+import androidx.datastore.preferences.core.stringPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.app_language
 import co.touchlab.kermit.Logger
@@ -22,9 +23,11 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -41,17 +44,25 @@ class AuthManagerImpl(
     @UsersDb private val usersDb: Lazy<CollectionReference>,
 ) : AuthManager {
 
-    private val currentUserFlow = preferenceHolder.bindObjectOptional<User>()
-    private var currentUser: User? = runBlocking { currentUserFlow.getValue(this, ::currentUserFlow).first() }
+    private val currentUserKey = stringPreferencesKey("currentUser")
+    private val currentUserFlow = preference.of(currentUserKey, User.serializer())
 
-    final override val userState: MutableStateFlow<User?> = MutableStateFlow(currentUser)
+    final override val userState: StateFlow<User?> = currentUserFlow
+        .filterNotNull()
+        .stateIn(
+            scope = appScope,
+            started = SharingStarted.Eagerly,
+            // Critical default value for app start
+            initialValue = runBlocking { currentUserFlow.first() }
+        )
+    private val currentUser: User? get() = userState.value
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }
     override val userId: String? get() = userState.value?.id
 
     init {
         Firebase.auth.addAuthStateListener { auth ->
-            updateUser(auth.currentUser?.toUser())
+            runBlocking { updateUser(auth.currentUser?.toUser()) }
         }
     }
 
@@ -75,24 +86,18 @@ class AuthManagerImpl(
         tracker.value.logEvent("user_renamed")
     }
 
-    override fun markPremium() {
+    override suspend fun markPremium() {
         val premiumUser = currentUser?.copy(premium = true) ?: return
         usersDb.value.document(premiumUser.id).set(premiumUser)
-
-        userState.value = premiumUser
-        currentUser = premiumUser
-        appScope.launch { preferenceHolder.setObjectOptional("currentUser", premiumUser) }
+        setUserToPreference(premiumUser)
     }
 
-    override fun updateFcmToken(newToken: String) {
+    override suspend fun updateFcmToken(newToken: String) {
         if (!allowUpdateFcmToken) return
 
         val userWithNewToken = currentUser?.copy(fcmToken = newToken) ?: return
         usersDb.value.document(userWithNewToken.id).set(userWithNewToken)
-
-        userState.value = userWithNewToken
-        currentUser = userWithNewToken
-        appScope.launch { preferenceHolder.setObjectOptional("currentUser", userWithNewToken) }
+        setUserToPreference(userWithNewToken)
     }
 
     override fun logout() {
@@ -106,11 +111,9 @@ class AuthManagerImpl(
         photoUrl = photoUrl?.toString(),
     )
 
-    private fun updateUser(user: User?, newName: String? = null) {
+    private suspend fun updateUser(user: User?, newName: String? = null) {
         if (user == null) {
-            userState.value = null
-            currentUser = null
-            appScope.launch { preferenceHolder.setObjectOptional<User>("currentUser", null) }
+            setUserToPreference(null)
             return
         }
 
@@ -123,9 +126,7 @@ class AuthManagerImpl(
             lastActiveOn = Clock.System.now().toEpochMilliseconds(),
             language = getString(Res.string.app_language),
         )
-        userState.value = userWithExclusiveFields
-        currentUser = userWithExclusiveFields
-        preferenceHolder.setObjectOptional("currentUser", userWithExclusiveFields)
+        setUserToPreference(userWithExclusiveFields)
 
         appScope.launch {
             val fcmToken = if (allowUpdateFcmToken) {
@@ -154,9 +155,7 @@ class AuthManagerImpl(
                     createdOn = remoteUser.createdOn,
                     fcmToken = fcmToken ?: remoteUser.fcmToken
                 )
-
-                userState.value = mergedUser
-                currentUser = mergedUser
+                setUserToPreference(mergedUser)
 
                 usersDb.value.document(user.id).set(mergedUser)
             } catch (e: DocNotExistsException) {
@@ -167,6 +166,14 @@ class AuthManagerImpl(
             } catch (e: Exception) {
                 Logger.w(e) { "AuthManager update failed" }
             }
+        }
+    }
+
+    private suspend fun setUserToPreference(user: User?) {
+        if (user == null) {
+            preference.remove(currentUserKey)
+        } else {
+            preference.update(currentUserKey, User.serializer(), user)
         }
     }
 }

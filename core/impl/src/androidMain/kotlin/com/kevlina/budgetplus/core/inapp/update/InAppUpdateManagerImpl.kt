@@ -38,7 +38,7 @@ class InAppUpdateManagerImpl(
     private val scope = activity.lifecycleScope
 
     // The version code when we requested the update last time.
-    private val lastRequestedVersionCodeKey = intPreferencesKey("lastRequestedVersionCodeFlow")
+    private val lastRequestedVersionCodeKey = intPreferencesKey("lastRequestedVersionCode")
     private val lastRequestedVersionCode = preference.of(lastRequestedVersionCodeKey)
 
     init {

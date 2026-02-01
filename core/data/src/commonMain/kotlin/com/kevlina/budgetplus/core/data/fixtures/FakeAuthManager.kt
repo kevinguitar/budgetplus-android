@@ -21,11 +21,11 @@ class FakeAuthManager(
         error("Not yet implemented")
     }
 
-    override fun markPremium() {
+    override suspend fun markPremium() {
         error("Not yet implemented")
     }
 
-    override fun updateFcmToken(newToken: String) {
+    override suspend fun updateFcmToken(newToken: String) {
         error("Not yet implemented")
     }
 

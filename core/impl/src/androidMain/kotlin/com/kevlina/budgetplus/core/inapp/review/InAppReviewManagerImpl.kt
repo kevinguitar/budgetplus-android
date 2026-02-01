@@ -42,13 +42,13 @@ class InAppReviewManagerImpl(
 
     private val now get() = LocalDateTime.now()
 
-    private val hasRejectedBeforeKey = booleanPreferencesKey("hasRejectedBeforeFlow")
+    internal val hasRejectedBeforeKey = booleanPreferencesKey("hasRejectedBefore")
     private var hasRejectedBefore = preference.of(hasRejectedBeforeKey)
 
-    private val hasRequestedBeforeKey = booleanPreferencesKey("hasRequestedBeforeFlow")
+    internal val hasRequestedBeforeKey = booleanPreferencesKey("hasRequestedBefore")
     private var hasRequestedBefore = preference.of(hasRequestedBeforeKey)
 
-    private val firstInitDatetimeKey = longPreferencesKey("firstInitDatetimeFlow")
+    internal val firstInitDatetimeKey = longPreferencesKey("firstInitDatetime")
     private val firstInitDatetime = preference.of(firstInitDatetimeKey)
 
     init {

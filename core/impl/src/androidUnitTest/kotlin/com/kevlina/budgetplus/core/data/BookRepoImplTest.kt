@@ -9,6 +9,8 @@ import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import io.mockk.mockk
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -19,6 +21,7 @@ internal class BookRepoImplTest {
     @Test
     fun `canEdit is true when Book#allowMembersEdit is null`() = runTest {
         val repo = createRepo(book = Book(allowMembersEdit = null))
+        repo.bookState.filterNotNull().first()
         assertThat(repo.canEdit).isTrue()
     }
 
@@ -30,6 +33,7 @@ internal class BookRepoImplTest {
                 allowMembersEdit = false
             )
         )
+        repo.bookState.filterNotNull().first()
         assertThat(repo.canEdit).isFalse()
     }
 

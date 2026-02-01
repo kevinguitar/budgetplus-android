@@ -63,17 +63,24 @@
     <string name="category_edit_title">编辑类别</string>
     <string name="category_edit_successful">类别清单已储存</string>
     <string name="category_already_exist">类别%1$s已存在</string>
-    <string name="category_food">饮食</string>
-    <string name="category_daily">日常</string>
-    <string name="category_transport">交通</string>
-    <string name="category_entertainment">娱乐</string>
-    <string name="category_rent">房租</string>
-    <string name="category_mobile">电信</string>
-    <string name="category_utility">水电</string>
-    <string name="category_salary">薪水</string>
-    <string name="category_bonus">奖金</string>
-    <string name="category_rebate">现金回馈</string>
-    <string name="category_other">其他</string>
+
+    <string-array name="default_expense_categories">
+        <item>饮食</item>
+        <item>日常</item>
+        <item>交通</item>
+        <item>娱乐</item>
+        <item>房租</item>
+        <item>电信</item>
+        <item>水电</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="default_income_categories">
+        <item>薪水</item>
+        <item>奖金</item>
+        <item>现金回饋</item>
+        <item>其他</item>
+    </string-array>
 
     <!-- Members -->
     <string name="members_title">成员</string>

@@ -10,8 +10,7 @@ kotlin {
             implementation(projects.core.data)
             implementation(projects.core.ui)
             implementation(projects.feature.categoryPills)
-        }
-        androidMain.dependencies {
+
             implementation(libs.compottie)
         }
     }

@@ -9,8 +9,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.ui)
             implementation(projects.core.data)
-        }
-        androidMain.dependencies {
+
             implementation(libs.compottie)
         }
     }

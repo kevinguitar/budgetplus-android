@@ -10,8 +10,7 @@ kotlin {
             implementation(projects.core.billing)
             implementation(projects.core.data)
             implementation(projects.core.ui)
-        }
-        androidMain.dependencies {
+
             implementation(libs.compottie)
         }
     }

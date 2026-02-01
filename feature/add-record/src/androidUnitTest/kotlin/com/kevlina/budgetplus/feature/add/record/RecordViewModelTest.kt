@@ -30,7 +30,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.minus
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -127,7 +126,6 @@ class RecordViewModelTest {
         verify(exactly = 1) { fullScreenAdsLoader.showAd(any()) }
     }
 
-    @Ignore("Check this")
     @Test
     fun `request notification permission after the 2nd record`() = runTest {
         val model = createModel(recordCount = 1)
@@ -137,7 +135,6 @@ class RecordViewModelTest {
         model.requestPermissionEvent.awaitUnconsumedEvent()
     }
 
-    @Ignore("Check this")
     @Test
     fun `request in app review after 4th record`() = runTest {
         val model = createModel(recordCount = 3)

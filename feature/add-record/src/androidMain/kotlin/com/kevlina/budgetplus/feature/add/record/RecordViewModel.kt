@@ -79,7 +79,7 @@ class RecordViewModel(
         field = MutableEventFlow<Unit>()
 
     private val recordCountKey = intPreferencesKey("recordCount")
-    private val recordCount = preference.of(recordCountKey, default = 0, scope = viewModelScope)
+    private val recordCount = preference.of(recordCountKey)
 
     init {
         calculatorVm.recordFlow
@@ -167,7 +167,7 @@ class RecordViewModel(
         resetScreen()
 
         viewModelScope.launch {
-            preference.update(recordCountKey, recordCount.first() + 1)
+            preference.update(recordCountKey, (recordCount.first() ?: 0) + 1)
             onRecordCreated()
         }
     }
@@ -186,10 +186,10 @@ class RecordViewModel(
      */
     private suspend fun onRecordCreated() {
         val activity = activityProvider.currentActivity ?: return
-        when (recordCount.value % RECORD_COUNT_CYCLE) {
+        when ((recordCount.first() ?: 0) % RECORD_COUNT_CYCLE) {
             RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
             RECORD_REQUEST_PERMISSION -> requestPermissionEvent.sendEvent()
-            // Request the in app review when almost reach the next full screen ad,
+            // Request the in-app review when almost reach the next fullscreen ad,
             // just to have a better UX while user reviewing.
             RECORD_REQUEST_REVIEW -> if (inAppReviewManager.isEligibleForReview()) {
                 requestReviewEvent.sendEvent()

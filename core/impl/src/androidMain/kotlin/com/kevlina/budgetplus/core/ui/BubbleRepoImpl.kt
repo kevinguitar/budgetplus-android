@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
@@ -31,11 +33,13 @@ class BubbleRepoImpl(
     private var bubbleShownJob: Job? = null
     private var popBubbleJob: Job? = null
 
-    override fun addBubbleToQueue(dest: BubbleDest) {
-        appScope.launch {
+    private val queueMutex = Mutex()
+
+    override suspend fun addBubbleToQueue(dest: BubbleDest) {
+        queueMutex.withLock {
             val bubbleKey = booleanPreferencesKey(dest.key)
             if (preference.of(bubbleKey).first() == true) {
-                return@launch
+                return
             }
 
             preference.update(bubbleKey, true)

@@ -8,7 +8,7 @@ class FakeBubbleRepo : BubbleRepo {
 
     override val bubble = MutableStateFlow<BubbleDest?>(null)
 
-    override fun addBubbleToQueue(dest: BubbleDest) {
+    override suspend fun addBubbleToQueue(dest: BubbleDest) {
         error("Not yet implemented")
     }
 

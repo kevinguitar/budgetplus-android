@@ -120,7 +120,7 @@ class RecordViewModel(
     }
 
     fun highlightInviteButton(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun launchReviewFlow() {
@@ -134,8 +134,8 @@ class RecordViewModel(
         inAppReviewManager.rejectReviewing()
     }
 
-    fun showNotificationPermissionHint() {
-        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
+    suspend fun showNotificationPermissionHint() {
+        snackbarSender.send(Res.string.permission_hint)
     }
 
     private fun record() {

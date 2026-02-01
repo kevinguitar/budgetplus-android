@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @SingleIn(AppScope::class)
 @Inject
@@ -43,10 +44,13 @@ class ThemeManager(
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    //TODO: Let's see if this produces glitches
     val colorTone: StateFlow<ColorTone> = colorToneFlow
         .filterNotNull()
-        .stateIn(appScope, SharingStarted.Eagerly, ColorTone.MilkTea)
+        .stateIn(
+            scope = appScope,
+            started = SharingStarted.Eagerly,
+            initialValue = runBlocking { colorToneFlow.first() ?: ColorTone.MilkTea }
+        )
 
     val themeColors: StateFlow<ThemeColors> = colorTone.mapState(::getThemeColors)
 

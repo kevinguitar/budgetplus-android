@@ -11,9 +11,10 @@ kotlin {
             implementation(projects.core.ui)
             // For displaying the color tone content preview
             implementation(projects.feature.categoryPills)
+
+            implementation(libs.compottie)
         }
         androidMain.dependencies {
-            implementation(libs.compottie)
             implementation(libs.orchestra.colorpicker)
         }
     }

@@ -13,9 +13,12 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.feature.categoryPills)
             implementation(projects.feature.speakToRecord)
+
+            implementation(libs.compottie)
+            implementation(libs.permissions.compose)
+            implementation(libs.permissions.notifications)
         }
         androidMain.dependencies {
-            implementation(libs.compottie)
             implementation(libs.exp4j)
         }
     }

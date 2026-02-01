@@ -33,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -129,6 +130,9 @@ class BookRepoImpl(
     private var bookRegistration: ListenerRegistration? = null
 
     init {
+        // Activate book flow through out the entire app process
+        appScope.launch { bookState.collect() }
+
         authManager.userState
             .map { it?.id }
             .distinctUntilChanged()
@@ -215,7 +219,7 @@ class BookRepoImpl(
     }
 
     override suspend fun checkUserHasBook(): Boolean {
-        val userId = authManager.requireUserId()
+        val userId = authManager.userState.filterNotNull().first().id
         val books = booksDb.value
             .whereArrayContains(authorsField, userId)
             .whereEqualTo(archivedField, false)

@@ -103,8 +103,9 @@ test-uiautomator = "androidx.test.uiautomator:uiautomator:2.3.0"
 truth = "com.google.truth:truth:1.4.5"
 turbine = "app.cash.turbine:turbine:1.2.1"
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
+permissions-microphone = { module = "dev.icerock.moko:permissions-microphone", version.ref = "permissions" }
 permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "permissions" }
-permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
+permissions-storage = { module = "dev.icerock.moko:permissions-storage", version.ref = "permissions" }
 
 [bundles]
 android = [

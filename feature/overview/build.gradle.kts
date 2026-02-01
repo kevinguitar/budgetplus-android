@@ -11,9 +11,11 @@ kotlin {
             implementation(projects.core.settingsApi)
             implementation(projects.core.ui)
             implementation(projects.feature.recordCard)
+
+            implementation(libs.permissions.compose)
+            implementation(libs.permissions.storage)
         }
         androidMain.dependencies {
-            //TODO: Eh this lacks iOS support
             implementation(libs.kotlin.csv)
         }
     }

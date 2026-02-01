@@ -111,7 +111,7 @@ class RecordsViewModel(
     }
 
     fun highlightSortingButton(dest: BubbleDest) {
-        bubbleRepo.addBubbleToQueue(dest)
+        viewModelScope.launch { bubbleRepo.addBubbleToQueue(dest) }
     }
 
     fun canEditRecord(record: Record): Boolean {

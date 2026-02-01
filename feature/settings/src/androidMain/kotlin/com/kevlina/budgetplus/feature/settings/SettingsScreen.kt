@@ -32,7 +32,6 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(LocalAppColors.current.light)
     ) {
-
         TopBar(
             title = stringResource(Res.string.settings_title, bookName.orEmpty()),
             navigateUp = navController::navigateUp

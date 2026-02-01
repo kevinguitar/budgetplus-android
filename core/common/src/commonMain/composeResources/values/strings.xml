@@ -99,7 +99,7 @@
     <string name="menu_share_colors">Check out the colors that I picked!\n%1$s</string>
 
     <!-- Overview -->
-    <string name="overview_title">%1$s\'s Overview</string>
+    <string name="overview_title">%1$s's Overview</string>
     <string name="overview_total_price">Total</string>
     <string name="overview_period_day">Today</string>
     <string name="overview_period_week">Week</string>
@@ -147,11 +147,11 @@
     </string>
     <string name="premium_unlock_cta">Get Premium</string>
     <string name="premium_unlocked">Budget+ Premium unlocked!</string>
-    <string name="premium_acknowledge_fail">Payment can\'t be acknowledged, please come back later.</string>
+    <string name="premium_acknowledge_fail">Payment can't be acknowledged, please come back later.</string>
     <string name="premium_payment_pending">Your payment is still pending, come back later.</string>
 
     <!-- Settings -->
-    <string name="settings_title">%1$s\'s Settings</string>
+    <string name="settings_title">%1$s's Settings</string>
     <string name="settings_description">Settings</string>
     <string name="settings_rename_user">Rename User</string>
     <string name="settings_rename_user_success">Renamed to %1$s</string>
@@ -197,8 +197,8 @@
     <!-- Currency Picker -->
     <string name="currency_picker_title">Currency Picker</string>
     <string name="currency_picker_hint">US Dollar or USD</string>
-    <string name="currency_picker_no_conversion_disclaimer">Please note that we won\'t convert the price, the setting affects only the currency symbol representation.</string>
-    <string name="currency_picker_edit_success">%1$s\'s currency has been changed to %2$s</string>
+    <string name="currency_picker_no_conversion_disclaimer">Please note that we won't convert the price, the setting affects only the currency symbol representation.</string>
+    <string name="currency_picker_edit_success">%1$s's currency has been changed to %2$s</string>
 
     <!-- Bubble -->
     <string name="bubble_invite">Invite fellows to track expenses together!</string>
@@ -216,7 +216,7 @@
     <string name="notification_channel_general">General</string>
     <string name="notification_channel_general_desc">Some reminders and any other updates regarding the app changes</string>
     <string name="notification_channel_new_member">New Member</string>
-    <string name="notification_channel_new_member_desc">We\'ll notify you when a new member joins your accounting book</string>
+    <string name="notification_channel_new_member_desc">We'll notify you when a new member joins your accounting book</string>
 
     <!-- General -->
     <string name="cta_add">Add</string>

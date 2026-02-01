@@ -1,10 +1,5 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
-import android.Manifest
-import android.os.Build
-import androidx.activity.compose.LocalActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +22,6 @@ import budgetplus.core.common.generated.resources.export_csv_confirmation
 import budgetplus.core.common.generated.resources.export_cta
 import budgetplus.core.common.generated.resources.overview_details_title
 import budgetplus.core.common.generated.resources.overview_title
-import com.kevlina.budgetplus.core.common.hasPermission
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.shortFormatted
@@ -40,6 +35,14 @@ import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.utils.metroViewModel
 import com.kevlina.budgetplus.feature.overview.OverviewMode
 import com.kevlina.budgetplus.feature.overview.OverviewViewModel
+import com.kevlina.budgetplus.feature.overview.shouldRequestStoragePermission
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import dev.icerock.moko.permissions.storage.WRITE_STORAGE
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -52,16 +55,11 @@ fun OverviewScreen(navController: NavController<BookDest>) {
     val bookName by vm.bookName.collectAsStateWithLifecycle()
 
     var isExportDialogShown by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
-    val permissionRequester = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            vm.exportToCsv()
-        } else {
-            vm.showWriteFilePermissionHint()
-        }
-    }
+    val factory = rememberPermissionsControllerFactory()
+    val controller = remember(factory) { factory.createPermissionsController() }
+    BindEffect(controller)
 
     Column(
         modifier = Modifier
@@ -126,7 +124,6 @@ fun OverviewScreen(navController: NavController<BookDest>) {
 
     val fromDate by vm.timeModel.fromDate.collectAsStateWithLifecycle()
     val untilDate by vm.timeModel.untilDate.collectAsStateWithLifecycle()
-    val activity = LocalActivity.current!!
 
     if (isExportDialogShown) {
         ConfirmDialog(
@@ -136,9 +133,17 @@ fun OverviewScreen(navController: NavController<BookDest>) {
                 untilDate.shortFormatted
             ),
             onConfirm = {
-                val writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && !activity.hasPermission(writePermission)) {
-                    permissionRequester.launch(writePermission)
+                if (shouldRequestStoragePermission) {
+                    scope.launch {
+                        try {
+                            controller.providePermission(Permission.WRITE_STORAGE)
+                            vm.exportToCsv()
+                        } catch (_: DeniedException) {
+                            vm.showWriteFilePermissionHint()
+                        } catch (_: DeniedAlwaysException) {
+                            vm.showWriteFilePermissionHint()
+                        }
+                    }
                 } else {
                     vm.exportToCsv()
                 }

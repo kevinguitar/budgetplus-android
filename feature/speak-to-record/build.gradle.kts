@@ -11,6 +11,8 @@ kotlin {
             implementation(projects.core.data)
 
             implementation(libs.compottie)
+            implementation(libs.permissions.compose)
+            implementation(libs.permissions.microphone)
         }
     }
 }

@@ -134,8 +134,8 @@ class RecordViewModel(
         inAppReviewManager.rejectReviewing()
     }
 
-    fun showNotificationPermissionHint() {
-        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
+    suspend fun showNotificationPermissionHint() {
+        snackbarSender.send(Res.string.permission_hint)
     }
 
     private fun record() {

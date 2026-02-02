@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.analytics.kmp)
     implementation(libs.firebase.crashlytics.kmp)
 
     implementation(libs.android.activity)

@@ -11,7 +11,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.BooksDb
@@ -112,7 +111,7 @@ class SearchRepo(
                     Logger.d { "Search: result size ${records.size}" }
                     tracker.logEvent(
                         event = "search_queried_from_db",
-                        params = bundle { putInt("db_read_count", records.size) }
+                        params = mapOf("db_read_count" to records.size)
                     )
                     flow.tryEmit(DbResult.Success(records))
                 }

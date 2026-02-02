@@ -71,7 +71,7 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-kmp = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }

@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
@@ -94,9 +93,7 @@ class ThemeManager(
         appScope.launch {
             preference.update(colorToneKey, ColorTone.serializer(), newColorTone)
         }
-        tracker.logEvent("color_tone_changed", bundle {
-            putString("tone", newColorTone.name)
-        })
+        tracker.logEvent("color_tone_changed", mapOf("tone" to newColorTone.name))
     }
 
     fun setPreviewColors(newPreviewColors: ThemeColors) {

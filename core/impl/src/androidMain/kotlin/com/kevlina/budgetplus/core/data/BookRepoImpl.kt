@@ -19,7 +19,6 @@ import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
@@ -372,7 +371,7 @@ class BookRepoImpl(
 
         tracker.logEvent(
             event = "currency_updated",
-            params = bundle { putString("currency_code", currencyCode) }
+            params = mapOf("currency_code" to currencyCode)
         )
     }
 
@@ -383,7 +382,7 @@ class BookRepoImpl(
 
         tracker.logEvent(
             event = "allow_members_edit_updated",
-            params = bundle { putBoolean("allow", allow) }
+            params = mapOf("allow" to allow)
         )
     }
 }

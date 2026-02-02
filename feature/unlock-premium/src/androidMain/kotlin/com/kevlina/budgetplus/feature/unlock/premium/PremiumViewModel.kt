@@ -9,7 +9,6 @@ import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -51,7 +50,7 @@ class PremiumViewModel(
                 is PurchaseState.Fail -> {
                     tracker.logEvent(
                         event = "buy_premium_fail",
-                        params = bundle { putString("reason", state.error) }
+                        params = mapOf("reason" to state.error)
                     )
                     snackbarSender.send(state.error)
                 }

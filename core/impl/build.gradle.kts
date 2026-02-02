@@ -16,7 +16,7 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.firebase.auth)
-            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.analytics.kmp)
             implementation(libs.firebase.crashlytics.kmp)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.messaging)

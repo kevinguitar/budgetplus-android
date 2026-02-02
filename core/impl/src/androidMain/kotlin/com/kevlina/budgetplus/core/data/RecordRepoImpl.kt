@@ -9,7 +9,6 @@ import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
@@ -214,7 +213,7 @@ class RecordRepoImpl(
         if (dbUpdateCount > 0) {
             tracker.logEvent(
                 event = "categories_renamed",
-                params = bundle { putInt("db_update_count", dbUpdateCount) }
+                params = mapOf("db_update_count" to dbUpdateCount)
             )
         }
     }

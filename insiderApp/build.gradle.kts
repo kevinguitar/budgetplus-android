@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
     implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.crashlytics.kmp)
 
     implementation(libs.android.activity)
     implementation(libs.navigation3.ui)

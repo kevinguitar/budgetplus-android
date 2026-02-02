@@ -8,7 +8,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
-import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
 import com.google.firebase.messaging.messaging
@@ -18,6 +17,7 @@ import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
+import dev.gitlive.firebase.crashlytics.crashlytics
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
@@ -121,7 +121,7 @@ class AuthManagerImpl(
         }
 
         // Associate the crash report with Budget+ user
-        Firebase.crashlytics.setUserId(user.id)
+        dev.gitlive.firebase.Firebase.crashlytics.setUserId(user.id)
 
         val userWithExclusiveFields = user.copy(
             premium = currentUser?.premium,

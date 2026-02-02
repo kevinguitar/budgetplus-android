@@ -130,7 +130,7 @@ class BookRepoImpl(
     private var bookRegistration: ListenerRegistration? = null
 
     init {
-        // Activate book flow through out the entire app process
+        // Activate book flow throughout the entire app process
         appScope.launch { bookState.collect() }
 
         authManager.userState

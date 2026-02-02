@@ -48,7 +48,7 @@ class SnackbarSenderImpl(
         ))
     }
 
-    override fun sendError(e: Exception) {
+    override fun sendError(e: Throwable) {
         Logger.e(e) { "SnackbarSender: sendError" }
         val error = e.localizedMessage ?: e.message
         when {

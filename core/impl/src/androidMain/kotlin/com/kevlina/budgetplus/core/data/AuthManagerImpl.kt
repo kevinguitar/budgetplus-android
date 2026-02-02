@@ -4,8 +4,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.app_language
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.Source
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
@@ -16,6 +14,8 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.crashlytics.crashlytics
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.Source
 import dev.gitlive.firebase.messaging.messaging
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -127,25 +127,23 @@ class AuthManagerImpl(
         )
         setUserToPreference(userWithExclusiveFields)
 
-        appScope.launch {
-            val fcmToken = if (allowUpdateFcmToken) {
-                try {
-                    Firebase.messaging.getToken()
-                } catch (e: Exception) {
-                    Logger.w(e) { "Failed to retrieve the fcm token" }
-                    null
-                }
-            } else {
+        val fcmToken = if (allowUpdateFcmToken) {
+            try {
+                Firebase.messaging.getToken()
+            } catch (e: Exception) {
+                Logger.w(e) { "Failed to retrieve the fcm token" }
                 null
             }
-            Logger.d { "Fcm token: $fcmToken" }
+        } else {
+            null
+        }
+        Logger.d { "Fcm token: $fcmToken" }
 
-            try {
-                // Get the latest remote user from the server
-                val remoteUser = usersDb.value.document(user.id)
-                    .get(Source.SERVER)
-                    .requireValue<User>()
-
+        try {
+            // Get the latest remote user from the server
+            val remoteUserSnapshot = usersDb.value.document(user.id).get(Source.SERVER)
+            if (remoteUserSnapshot.exists) {
+                val remoteUser = remoteUserSnapshot.data<User>()
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
                     name = newName ?: remoteUser.name,
@@ -157,14 +155,13 @@ class AuthManagerImpl(
                 setUserToPreference(mergedUser)
 
                 usersDb.value.document(user.id).set(mergedUser)
-            } catch (e: DocNotExistsException) {
-                Logger.i(e) { "DocNotExistsException caught" }
-                // Can't find user in the db yet, set it with the data what we have in place.
+            } else {
+                Logger.i { "Can't find user in the db yet, set it with the data what we have in place." }
                 usersDb.value.document(user.id)
                     .set(userWithExclusiveFields.copy(fcmToken = fcmToken))
-            } catch (e: Exception) {
-                Logger.w(e) { "AuthManager update failed" }
             }
+        } catch (e: Exception) {
+            Logger.w(e) { "AuthManager update failed" }
         }
     }
 

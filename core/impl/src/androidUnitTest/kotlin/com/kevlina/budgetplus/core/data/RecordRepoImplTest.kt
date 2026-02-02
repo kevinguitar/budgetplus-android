@@ -1,8 +1,6 @@
 package com.kevlina.budgetplus.core.data
 
 import com.google.common.truth.Truth.assertThat
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
@@ -12,6 +10,8 @@ import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.remote.Author
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.DocumentReference
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

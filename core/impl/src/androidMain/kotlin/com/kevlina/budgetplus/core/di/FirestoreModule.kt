@@ -1,8 +1,5 @@
 package com.kevlina.budgetplus.core.di
 
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.firestore
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
@@ -10,6 +7,9 @@ import com.kevlina.budgetplus.core.data.remote.PurchasesDb
 import com.kevlina.budgetplus.core.data.remote.PushNotificationsDb
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
 import com.kevlina.budgetplus.core.data.remote.UsersDb
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.firestore
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides

@@ -3,9 +3,6 @@ package com.kevlina.budgetplus.core.data
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.record_duplicated
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -15,6 +12,8 @@ import com.kevlina.budgetplus.core.data.remote.RecordsDb
 import com.kevlina.budgetplus.core.data.remote.createdOn
 import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.data.remote.toAuthor
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.QuerySnapshot
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Provider
@@ -22,7 +21,6 @@ import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -45,7 +43,7 @@ class RecordRepoImpl(
 ) : RecordRepo {
 
     override fun createRecord(record: Record) {
-        recordsDb().add(record)
+        appScope.launch { recordsDb().add(record) }
         tracker.logEvent("record_created")
     }
 
@@ -102,7 +100,7 @@ class RecordRepoImpl(
             return
         }
 
-        recordsDb().document(oldRecord.id).set(newRecord)
+        appScope.launch { recordsDb().document(oldRecord.id).set(newRecord) }
         tracker.logEvent("record_edited")
     }
 
@@ -129,8 +127,8 @@ class RecordRepoImpl(
         val daysDiff = newDate.minus(oldDate).days
 
         val records = getAllTheFutureRecords(oldRecord)
-        records.forEach { doc ->
-            val record = doc.toObject<Record>().copy(id = doc.id)
+        records.documents.forEach { doc ->
+            val record = doc.data<Record>().copy(id = doc.id)
             val date = LocalDate.fromEpochDays(record.date)
             editRecord(
                 oldRecord = record,
@@ -142,7 +140,7 @@ class RecordRepoImpl(
         }
 
         tracker.logEvent("record_batch_edited")
-        return records.size()
+        return records.documents.size
     }
 
     override fun duplicateRecord(record: Record) {
@@ -153,13 +151,13 @@ class RecordRepoImpl(
             // Do not carry the batch info to duplicates
             batchId = null
         )
-        recordsDb().add(duplicatedRecord)
+        appScope.launch { recordsDb().add(duplicatedRecord) }
         tracker.logEvent("record_duplicated")
         appScope.launch { snackbarSender.send(Res.string.record_duplicated) }
     }
 
     override fun deleteRecord(recordId: String) {
-        recordsDb().document(recordId).delete()
+        appScope.launch { recordsDb().document(recordId).delete() }
         tracker.logEvent("record_deleted")
     }
 
@@ -171,20 +169,21 @@ class RecordRepoImpl(
         }
 
         val records = getAllTheFutureRecords(record)
-        records.forEach { snapshot ->
+        records.documents.forEach { snapshot ->
             deleteRecord(snapshot.id)
         }
 
         tracker.logEvent("record_batch_deleted")
-        return records.size()
+        return records.documents.size
     }
 
     private suspend fun getAllTheFutureRecords(record: Record): QuerySnapshot {
         return recordsDb()
-            .whereEqualTo("batchId", record.batchId)
-            .whereGreaterThanOrEqualTo("date", record.date)
+            .where {
+                "batchId" equalTo record.batchId
+                "date" greaterThanOrEqualTo record.date
+            }
             .get()
-            .await()
     }
 
     override fun renameCategories(
@@ -196,15 +195,14 @@ class RecordRepoImpl(
         events.forEach { event ->
             try {
                 val records = db
-                    .whereEqualTo("category", event.from)
+                    .where { "category" equalTo event.from }
                     .get()
-                    .await()
 
-                records.forEach { doc ->
-                    val newRecord = doc.toObject<Record>().copy(category = event.to)
+                records.documents.forEach { doc ->
+                    val newRecord = doc.data<Record>().copy(category = event.to)
                     db.document(doc.id).set(newRecord)
                 }
-                dbUpdateCount += records.size()
+                dbUpdateCount += records.documents.size
             } catch (e: Exception) {
                 Logger.e(e) { "RecordRepo: renameCategories failed" }
             }

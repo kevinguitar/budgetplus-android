@@ -84,6 +84,8 @@ class EditRecordViewModel(
     }
 
     fun addCategory(type: RecordType, newCategory: String) {
-        bookRepo.addCategory(type = type, category = newCategory, source = "edit")
+        viewModelScope.launch {
+            bookRepo.addCategory(type = type, category = newCategory, source = "edit")
+        }
     }
 }

@@ -76,7 +76,7 @@ firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
 firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kmp" }
 firebase-messaging = { module = "dev.gitlive:firebase-messaging", version.ref = "firebase-kmp" }
 firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase-kmp" }
 google-ads = "com.google.android.gms:play-services-ads:24.9.0"

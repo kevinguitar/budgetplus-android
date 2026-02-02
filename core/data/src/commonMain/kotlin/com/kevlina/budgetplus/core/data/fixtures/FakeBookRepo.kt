@@ -20,7 +20,7 @@ class FakeBookRepo(
     override val booksState = MutableStateFlow(books)
     override val currencySymbol = MutableStateFlow(currentCurrencySymbol)
 
-    override fun generateJoinLink(): String {
+    override suspend fun generateJoinLink(): String {
         error("Not yet implemented")
     }
 
@@ -56,7 +56,7 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override fun addCategory(type: RecordType, category: String, source: String) {
+    override suspend fun addCategory(type: RecordType, category: String, source: String) {
         error("Not yet implemented")
     }
 
@@ -64,15 +64,15 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override fun updateCategories(type: RecordType, categories: List<String>) {
+    override suspend fun updateCategories(type: RecordType, categories: List<String>) {
         error("Not yet implemented")
     }
 
-    override fun updateCurrency(currencyCode: String) {
+    override suspend fun updateCurrency(currencyCode: String) {
         error("Not yet implemented")
     }
 
-    override fun setAllowMembersEdit(allow: Boolean) {
+    override suspend fun setAllowMembersEdit(allow: Boolean) {
         error("Not yet implemented")
     }
 }

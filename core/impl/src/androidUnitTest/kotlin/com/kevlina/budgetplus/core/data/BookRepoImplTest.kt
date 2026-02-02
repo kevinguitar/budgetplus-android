@@ -2,12 +2,12 @@ package com.kevlina.budgetplus.core.data
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.common.truth.Truth.assertThat
-import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
+import dev.gitlive.firebase.firestore.CollectionReference
 import io.mockk.mockk
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first

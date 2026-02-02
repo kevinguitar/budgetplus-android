@@ -43,11 +43,13 @@ class EditCategoryViewModel(
     private var saveBubbleJob: Job? = null
 
     fun updateCategories(type: RecordType, newCategories: List<String>) {
-        bookRepo.updateCategories(type, newCategories)
-        if (categoryRenameEvents.isNotEmpty()) {
-            recordRepo.renameCategories(categoryRenameEvents)
+        viewModelScope.launch {
+            bookRepo.updateCategories(type, newCategories)
+            if (categoryRenameEvents.isNotEmpty()) {
+                recordRepo.renameCategories(categoryRenameEvents)
+            }
+            snackbarSender.send(Res.string.category_edit_successful)
         }
-        viewModelScope.launch { snackbarSender.send(Res.string.category_edit_successful) }
     }
 
     fun highlightCategoryHint(dest: BubbleDest) {

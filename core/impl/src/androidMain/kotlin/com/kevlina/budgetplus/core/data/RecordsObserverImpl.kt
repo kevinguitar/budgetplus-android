@@ -2,10 +2,6 @@ package com.kevlina.budgetplus.core.data
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.common.tickerFlow
@@ -13,14 +9,18 @@ import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.BooksDb
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.TimePeriod
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.Direction
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -78,7 +78,7 @@ class RecordsObserverImpl(
     }
 
     private var currentRegistrationConfig: Pair<String, TimePeriod>? = null
-    private var recordsRegistration: ListenerRegistration? = null
+    private var recordsJob: Job? = null
 
     init {
         combine(
@@ -120,24 +120,22 @@ class RecordsObserverImpl(
         }
 
         currentRegistrationConfig = newConfig
-        recordsRegistration?.remove()
-        recordsRegistration = booksDb.value
+        recordsJob?.cancel()
+        recordsJob = booksDb.value
             .document(bookId)
             .collection("records")
-            .orderBy("date", Query.Direction.DESCENDING)
-            .whereGreaterThanOrEqualTo("date", period.from.toEpochDays())
-            .whereLessThanOrEqualTo("date", period.until.toEpochDays())
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Logger.e(e) { "RecordsObserver: Listen failed." }
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null) {
-                    records.value = snapshot.documents
-                        .mapNotNull { doc -> doc.toObject<Record>()?.copy(id = doc.id) }
-                        .asSequence()
-                }
+            .orderBy("date", Direction.DESCENDING)
+            .where {
+                "date" greaterThanOrEqualTo period.from.toEpochDays()
+                "date" lessThanOrEqualTo period.until.toEpochDays()
             }
+            .snapshots
+            .catch { Logger.e(it) { "RecordsObserver: Listen failed." } }
+            .onEach { snapshot ->
+                records.value = snapshot.documents
+                    .map { doc -> doc.data<Record>().copy(id = doc.id) }
+                    .asSequence()
+            }
+            .launchIn(appScope)
     }
 }

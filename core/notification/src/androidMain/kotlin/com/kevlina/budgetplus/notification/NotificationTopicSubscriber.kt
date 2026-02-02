@@ -2,16 +2,15 @@ package com.kevlina.budgetplus.notification
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.Preference
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.messaging.messaging
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
 
 @ContributesIntoSet(AppScope::class)
@@ -44,26 +43,22 @@ class NotificationTopicSubscriber(
             return
         }
 
-        try {
-            lastInfo?.let { info ->
-                if (info.userId == user.id) {
-                    Firebase.messaging.unsubscribeFromTopic(info.topic).await()
-                }
+        lastInfo?.let { info ->
+            if (info.userId == user.id) {
+                Firebase.messaging.unsubscribeFromTopic(info.topic)
             }
-
-            Firebase.messaging.subscribeToTopic(generalTopic).await()
-            Logger.d { "Notification: Subscribed to $generalTopic topic" }
-            preference.update(
-                key = lastSubscribeInfoKey,
-                serializer = SubscribeInfo.serializer(),
-                value = SubscribeInfo(
-                    userId = user.id,
-                    topic = generalTopic
-                )
-            )
-        } catch (e: Exception) {
-            Logger.e(e) { "Notification topic subscription failed" }
         }
+
+        Firebase.messaging.subscribeToTopic(generalTopic)
+        Logger.d { "Notification: Subscribed to $generalTopic topic" }
+        preference.update(
+            key = lastSubscribeInfoKey,
+            serializer = SubscribeInfo.serializer(),
+            value = SubscribeInfo(
+                userId = user.id,
+                topic = generalTopic
+            )
+        )
     }
 }
 

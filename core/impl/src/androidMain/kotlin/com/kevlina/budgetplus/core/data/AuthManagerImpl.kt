@@ -10,7 +10,6 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Source
-import com.google.firebase.messaging.messaging
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
@@ -18,6 +17,7 @@ import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
 import dev.gitlive.firebase.crashlytics.crashlytics
+import dev.gitlive.firebase.messaging.messaging
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
@@ -134,7 +134,7 @@ class AuthManagerImpl(
         appScope.launch {
             val fcmToken = if (allowUpdateFcmToken) {
                 try {
-                    Firebase.messaging.token.await()
+                    dev.gitlive.firebase.Firebase.messaging.getToken()
                 } catch (e: Exception) {
                     Logger.w(e) { "Failed to retrieve the fcm token" }
                     null

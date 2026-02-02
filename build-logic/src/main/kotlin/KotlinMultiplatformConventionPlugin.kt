@@ -1,12 +1,10 @@
 import com.android.build.api.dsl.CommonExtension
-import common.implementation
 import common.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
@@ -113,13 +111,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                     "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
                     "kotlinx.coroutines.FlowPreview"
                 )
-            }
-        }
-
-        project.dependencies {
-            val bomBundle = project.libs.bundles.bom.get()
-            bomBundle.forEach { bom ->
-                implementation(enforcedPlatform(bom))
             }
         }
     }

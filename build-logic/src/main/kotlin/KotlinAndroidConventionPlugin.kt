@@ -68,11 +68,6 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
             implementation(project.libs.bundles.kmp)
             testImplementation(project.libs.bundles.test)
 
-            val bomBundle = project.libs.bundles.bom.get()
-            bomBundle.forEach { bom ->
-                implementation(enforcedPlatform(bom))
-            }
-
             if (project.path != ":core:common") {
                 implementation(project(":core:common"))
             }

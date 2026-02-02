@@ -5,8 +5,6 @@ gradle-plugin = "8.13.2"
 kotlin = "2.3.0"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
-# https://firebase.google.com/support/release-notes/android
-firebase-bom = "34.8.0"
 # https://github.com/coil-kt/coil/releases
 coil = "3.3.0"
 # https://github.com/JetBrains/compose-multiplatform/releases
@@ -73,7 +71,6 @@ espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kmp" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
 firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kmp" }
@@ -119,9 +116,6 @@ android = [
 kmp = [
     "kermit",
     "kotlin-datetime",
-]
-bom = [
-    "firebase-bom",
 ]
 compose = [
     "compose-icons",

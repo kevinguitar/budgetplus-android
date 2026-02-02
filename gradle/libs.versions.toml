@@ -71,14 +71,14 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
-firebase-analytics-kmp = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
+firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
-firebase-crashlytics-kmp = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
+firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-firebase-config = { module = "com.google.firebase:firebase-config" }
+firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase-kmp" }
 google-ads = "com.google.android.gms:play-services-ads:24.9.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.21.0.0"
 google-billing = "com.android.billingclient:billing-ktx:8.3.0"

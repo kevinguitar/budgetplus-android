@@ -19,6 +19,7 @@ class InsiderRepoImpl(
     @UsersDb private val usersDbKmp: Lazy<CollectionReference>,
 ) : InsiderRepo {
 
+    // See https://github.com/GitLiveApp/firebase-kotlin-sdk/issues/657
     private val usersDb get() = usersDbKmp.value.android
 
     override suspend fun getTotalUsers(): Long {

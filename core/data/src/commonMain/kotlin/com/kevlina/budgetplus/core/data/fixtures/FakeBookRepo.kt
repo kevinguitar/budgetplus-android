@@ -36,7 +36,7 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override suspend fun checkUserHasBook(): Boolean {
+    override suspend fun isUserHasBooks(): Boolean {
         error("Not yet implemented")
     }
 

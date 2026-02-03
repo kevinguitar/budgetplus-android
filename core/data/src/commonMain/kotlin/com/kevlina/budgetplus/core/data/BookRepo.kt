@@ -28,9 +28,10 @@ interface BookRepo {
     suspend fun removeMember(userId: String)
 
     /**
+     * Await the auth state to propagate and check if the user has a book.
      * @return true if the user has a book, false otherwise.
      */
-    suspend fun checkUserHasBook(): Boolean
+    suspend fun isUserHasBooks(): Boolean
 
     suspend fun createBook(name: String, source: String)
 

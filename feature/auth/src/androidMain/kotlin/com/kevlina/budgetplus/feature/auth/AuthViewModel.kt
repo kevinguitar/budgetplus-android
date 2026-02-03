@@ -147,29 +147,31 @@ internal class AuthViewModel(
         if (task.isSuccessful) {
             val isNewUser = task.result.additionalUserInfo?.isNewUser == true
             tracker.logEvent(if (isNewUser) "sign_up" else "login")
-
-            coroutineScope.launch {
-                val message = getString(Res.string.auth_success, task.result.user?.displayName.orEmpty())
-                toaster.showMessage(message)
-                checkBookAvailability()
-            }
+            redirectUser(task.result.user?.displayName.orEmpty())
         } else {
             val e = task.exception ?: error("Unable to login")
             snackbarSender.sendError(e)
         }
     }
 
-    private suspend fun checkBookAvailability() {
-        val action = try {
-            if (bookRepo.checkUserHasBook()) {
-                bookNavigationAction
-            } else {
+    private fun redirectUser(name: String) {
+        coroutineScope.launch {
+            //TODO: Show loader
+            val message = getString(Res.string.auth_success, name)
+            toaster.showMessage(message)
+            val action = try {
+                if (bookRepo.isUserHasBooks()) {
+                    bookNavigationAction
+                } else {
+                    welcomeNavigationAction
+                }
+            } catch (e: Exception) {
+                snackbarSender.sendError(e)
                 welcomeNavigationAction
+            } finally {
+                //TODO: Hide loader
             }
-        } catch (e: Exception) {
-            snackbarSender.sendError(e)
-            welcomeNavigationAction
+            navigation.sendEvent(action)
         }
-        navigation.sendEvent(action)
     }
 }

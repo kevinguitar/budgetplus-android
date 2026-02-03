@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.app_update_downloaded
 import budgetplus.core.common.generated.resources.cta_complete
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.app.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -63,6 +64,7 @@ class BookActivity : ComponentActivity() {
 
         viewModel.handleIntent(intent)
 
+        Logger.d { "DEBUGG: BookActivity, bookId=${bookRepo.currentBookId}" }
         val destination = when {
             authManager.userState.value == null -> AuthActivity::class.java
             bookRepo.currentBookId == null -> WelcomeActivity::class.java

@@ -224,17 +224,16 @@ class BookRepoImpl(
         tracker.logEvent("member_removed")
     }
 
-    override suspend fun checkUserHasBook(): Boolean {
-        Logger.d { "DEBUGG: Waiting for user id" }
+    override suspend fun isUserHasBooks(): Boolean {
+        // Await the auth state first.
         val userId = authManager.userState.filterNotNull().first().id
-        Logger.d { "DEBUGG: user id $userId" }
-        val books = booksDb.value
-            .where { authorsField contains userId }
-            .where { archivedField equalTo false }
-            .orderBy(createdOnField, Direction.ASCENDING)
-            .get()
-        Logger.d { "DEBUGG: User has ${books.documents.size} books" }
-        return books.documents.isNotEmpty()
+        // This await relies on the DB subscription from observeBooks.
+        val hasBook = booksState.filterNotNull().first().isNotEmpty()
+        if (hasBook) {
+            // Await the selected book to propagate to the storage before navigating to the Book screen.
+            bookState.filterNotNull().first()
+        }
+        return hasBook
     }
 
     override suspend fun createBook(name: String, source: String) {

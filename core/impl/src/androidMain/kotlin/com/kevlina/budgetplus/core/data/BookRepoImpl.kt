@@ -225,13 +225,15 @@ class BookRepoImpl(
     }
 
     override suspend fun checkUserHasBook(): Boolean {
+        Logger.d { "DEBUGG: Waiting for user id" }
         val userId = authManager.userState.filterNotNull().first().id
+        Logger.d { "DEBUGG: user id $userId" }
         val books = booksDb.value
-            .where {
-                authorsField contains userId
-                archivedField equalTo false
-            }
+            .where { authorsField contains userId }
+            .where { archivedField equalTo false }
+            .orderBy(createdOnField, Direction.ASCENDING)
             .get()
+        Logger.d { "DEBUGG: User has ${books.documents.size} books" }
         return books.documents.isNotEmpty()
     }
 
@@ -305,10 +307,8 @@ class BookRepoImpl(
 
         bookJob?.cancel()
         bookJob = booksDb.value
-            .where {
-                authorsField contains userId
-                archivedField equalTo false
-            }
+            .where { authorsField contains userId }
+            .where { archivedField equalTo false }
             .orderBy(createdOnField, Direction.ASCENDING)
             .snapshots
             .catch { Logger.e(it) { "BookRepo: Listen failed." } }

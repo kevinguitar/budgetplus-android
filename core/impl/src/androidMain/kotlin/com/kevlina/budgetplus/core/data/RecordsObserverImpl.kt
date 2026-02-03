@@ -125,10 +125,8 @@ class RecordsObserverImpl(
             .document(bookId)
             .collection("records")
             .orderBy("date", Direction.DESCENDING)
-            .where {
-                "date" greaterThanOrEqualTo period.from.toEpochDays()
-                "date" lessThanOrEqualTo period.until.toEpochDays()
-            }
+            .where { "date" greaterThanOrEqualTo period.from.toEpochDays() }
+            .where { "date" lessThanOrEqualTo period.until.toEpochDays() }
             .snapshots
             .catch { Logger.e(it) { "RecordsObserver: Listen failed." } }
             .onEach { snapshot ->

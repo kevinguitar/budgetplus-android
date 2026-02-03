@@ -34,10 +34,8 @@ class PurchaseRepo(
         val currentUserId = authManager.userId ?: return false
         return try {
             val purchases = purchasesDb.value
-                .where {
-                    "productId" equalTo productId
-                    "userId" equalTo currentUserId
-                }
+                .where { "productId" equalTo productId }
+                .where { "userId" equalTo currentUserId }
                 .get()
             purchases.documents.isNotEmpty()
         } catch (e: Exception) {

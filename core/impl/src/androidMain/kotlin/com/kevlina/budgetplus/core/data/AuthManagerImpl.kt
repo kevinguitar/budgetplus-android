@@ -46,14 +46,16 @@ class AuthManagerImpl(
     private val currentUserKey = stringPreferencesKey("currentUser")
     private val currentUserFlow = preference.of(currentUserKey, User.serializer())
 
-    final override val userState: StateFlow<User?> = currentUserFlow
-        .filterNotNull()
-        .stateIn(
-            scope = appScope,
-            started = SharingStarted.Eagerly,
-            // Critical default value for app start
-            initialValue = runBlocking { currentUserFlow.first() }
-        )
+    // Critical default value for app start
+    final override val userState: StateFlow<User?> = runBlocking {
+        currentUserFlow
+            .filterNotNull()
+            .stateIn(
+                scope = appScope,
+                started = SharingStarted.Eagerly,
+                initialValue = currentUserFlow.first()
+            )
+    }
     private val currentUser: User? get() = userState.value
 
     override val isPremium: StateFlow<Boolean> = userState.mapState { it?.premium == true }

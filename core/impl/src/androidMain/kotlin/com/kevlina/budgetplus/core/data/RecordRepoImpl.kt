@@ -179,10 +179,8 @@ class RecordRepoImpl(
 
     private suspend fun getAllTheFutureRecords(record: Record): QuerySnapshot {
         return recordsDb()
-            .where {
-                "batchId" equalTo record.batchId
-                "date" greaterThanOrEqualTo record.date
-            }
+            .where { "batchId" equalTo record.batchId }
+            .where { "date" greaterThanOrEqualTo record.date }
             .get()
     }
 

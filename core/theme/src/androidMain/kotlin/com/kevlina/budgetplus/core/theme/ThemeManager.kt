@@ -43,13 +43,15 @@ class ThemeManager(
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    val colorTone: StateFlow<ColorTone> = colorToneFlow
-        .filterNotNull()
-        .stateIn(
-            scope = appScope,
-            started = SharingStarted.Eagerly,
-            initialValue = runBlocking { colorToneFlow.first() ?: ColorTone.MilkTea }
-        )
+    val colorTone: StateFlow<ColorTone> = runBlocking {
+        colorToneFlow
+            .filterNotNull()
+            .stateIn(
+                scope = appScope,
+                started = SharingStarted.Eagerly,
+                initialValue = colorToneFlow.first() ?: ColorTone.MilkTea
+            )
+    }
 
     val themeColors: StateFlow<ThemeColors> = colorTone.mapState(::getThemeColors)
 

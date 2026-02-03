@@ -99,10 +99,8 @@ class SearchRepo(
             .document(bookId)
             .collection("records")
             .orderBy("date", Direction.DESCENDING)
-            .where {
-                "date" greaterThanOrEqualTo period.fromDate().toEpochDays()
-                "date" lessThanOrEqualTo period.untilDate().toEpochDays()
-            }
+            .where { "date" greaterThanOrEqualTo period.fromDate().toEpochDays() }
+            .where { "date" lessThanOrEqualTo period.untilDate().toEpochDays() }
             .snapshots
             .catch { snackbarSender.sendError(it) }
             .onEach { snapshot ->

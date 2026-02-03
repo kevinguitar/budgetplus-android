@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
@@ -53,9 +52,7 @@ class ChartModeViewModel(
         }
         tracker.logEvent(
             event = "chart_mode_changed",
-            params = bundle {
-                putString("chart_mode", chartModeAnalyticsName)
-            }
+            params = mapOf("chart_mode" to chartModeAnalyticsName)
         )
     }
 }

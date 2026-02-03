@@ -12,7 +12,7 @@ object FakeSnackbarSender : SnackbarSender {
 
     var lastSentMessageRes: StringResource? = null
     var lastSentMessage: String? = null
-    var lastSentError: Exception? = null
+    var lastSentError: Throwable? = null
 
     override val snackbarEvent = MutableEventFlow<SnackbarData>()
 
@@ -34,7 +34,7 @@ object FakeSnackbarSender : SnackbarSender {
         lastSentMessage = message
     }
 
-    override fun sendError(e: Exception) {
+    override fun sendError(e: Throwable) {
         lastSentError = e
     }
 }

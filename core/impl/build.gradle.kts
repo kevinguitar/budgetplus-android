@@ -13,15 +13,15 @@ kotlin {
 
             implementation(libs.kotlin.serialization)
             implementation(libs.compose.resources)
-        }
-        androidMain.dependencies {
+
             implementation(libs.firebase.auth)
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.crashlytics)
             implementation(libs.firebase.firestore)
             implementation(libs.firebase.messaging)
             implementation(libs.firebase.config)
-
+        }
+        androidMain.dependencies {
             implementation(libs.google.play.update)
             implementation(libs.google.play.review)
         }

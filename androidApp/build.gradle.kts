@@ -1,3 +1,5 @@
+import common.implementation
+
 plugins {
     alias(budgetplus.plugins.android.app)
     alias(budgetplus.plugins.metro)
@@ -5,6 +7,7 @@ plugins {
 }
 
 dependencies {
+    implementation(enforcedPlatform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
 

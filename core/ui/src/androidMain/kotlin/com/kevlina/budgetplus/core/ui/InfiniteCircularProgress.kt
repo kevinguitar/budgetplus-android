@@ -14,7 +14,6 @@ fun InfiniteCircularProgress(
     color: Color = LocalAppColors.current.dark,
     strokeWidth: Dp = 4.dp,
 ) {
-
     CircularProgressIndicator(
         modifier = modifier,
         color = color,

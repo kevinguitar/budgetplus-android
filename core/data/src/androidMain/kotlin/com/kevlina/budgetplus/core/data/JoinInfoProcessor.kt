@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.core.data
 
-import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.JoinInfo
 import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
+import dev.gitlive.firebase.firestore.CollectionReference
 import dev.zacsweers.metro.Inject
-import java.util.UUID
+import java.util.*
 import kotlin.time.Clock
 
 @Inject
@@ -12,7 +12,7 @@ class JoinInfoProcessor(
     @JoinInfoDb private val joinInfoDb: Lazy<CollectionReference>,
 ) {
 
-    fun generateJoinId(bookId: String): String {
+    suspend fun generateJoinId(bookId: String): String {
         val joinId = UUID.randomUUID().toString()
         joinInfoDb.value.document(joinId).set(
             JoinInfo(
@@ -30,7 +30,7 @@ class JoinInfoProcessor(
         }
 
         return try {
-            joinInfoDb.value.document(joinId).get().requireValue()
+            joinInfoDb.value.document(joinId).get().data()
         } catch (e: Exception) {
             e.toString()
             throw JoinBookException.JoinInfoNotFound("Couldn't resolve the join id. $joinId")

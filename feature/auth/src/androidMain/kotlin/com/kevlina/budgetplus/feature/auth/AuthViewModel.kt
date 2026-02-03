@@ -33,6 +33,8 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -58,6 +60,9 @@ internal class AuthViewModel(
     private val googleClientId get() = activity.getString(R.string.google_cloud_client_id)
 
     private val isFirstLaunchAfterInstallKey = booleanPreferencesKey("isFirstLaunchAfterInstall")
+
+    val isLoading: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
@@ -147,29 +152,31 @@ internal class AuthViewModel(
         if (task.isSuccessful) {
             val isNewUser = task.result.additionalUserInfo?.isNewUser == true
             tracker.logEvent(if (isNewUser) "sign_up" else "login")
-
-            coroutineScope.launch {
-                val message = getString(Res.string.auth_success, task.result.user?.displayName.orEmpty())
-                toaster.showMessage(message)
-                checkBookAvailability()
-            }
+            redirectUser(task.result.user?.displayName.orEmpty())
         } else {
             val e = task.exception ?: error("Unable to login")
             snackbarSender.sendError(e)
         }
     }
 
-    private suspend fun checkBookAvailability() {
-        val action = try {
-            if (bookRepo.checkUserHasBook()) {
-                bookNavigationAction
-            } else {
+    private fun redirectUser(name: String) {
+        coroutineScope.launch {
+            isLoading.value = true
+            val message = getString(Res.string.auth_success, name)
+            toaster.showMessage(message)
+            val action = try {
+                if (bookRepo.isUserHasBooks()) {
+                    bookNavigationAction
+                } else {
+                    welcomeNavigationAction
+                }
+            } catch (e: Exception) {
+                snackbarSender.sendError(e)
                 welcomeNavigationAction
+            } finally {
+                isLoading.value = false
             }
-        } catch (e: Exception) {
-            snackbarSender.sendError(e)
-            welcomeNavigationAction
+            navigation.sendEvent(action)
         }
-        navigation.sendEvent(action)
     }
 }

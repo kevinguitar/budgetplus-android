@@ -23,7 +23,7 @@ interface SnackbarSender {
         action: () -> Unit = {},
     )
 
-    fun sendError(e: Exception)
+    fun sendError(e: Throwable)
 }
 
 class SnackbarData(

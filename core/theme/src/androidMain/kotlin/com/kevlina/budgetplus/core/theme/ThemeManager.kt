@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
@@ -44,13 +43,15 @@ class ThemeManager(
     // This field isn't saved to the preference, it represents the colors that the user is currently mixing.
     private var editedCustomColors = currentCustomColors
 
-    val colorTone: StateFlow<ColorTone> = colorToneFlow
-        .filterNotNull()
-        .stateIn(
-            scope = appScope,
-            started = SharingStarted.Eagerly,
-            initialValue = runBlocking { colorToneFlow.first() ?: ColorTone.MilkTea }
-        )
+    val colorTone: StateFlow<ColorTone> = runBlocking {
+        colorToneFlow
+            .filterNotNull()
+            .stateIn(
+                scope = appScope,
+                started = SharingStarted.Eagerly,
+                initialValue = colorToneFlow.first() ?: ColorTone.MilkTea
+            )
+    }
 
     val themeColors: StateFlow<ThemeColors> = colorTone.mapState(::getThemeColors)
 
@@ -94,9 +95,7 @@ class ThemeManager(
         appScope.launch {
             preference.update(colorToneKey, ColorTone.serializer(), newColorTone)
         }
-        tracker.logEvent("color_tone_changed", bundle {
-            putString("tone", newColorTone.name)
-        })
+        tracker.logEvent("color_tone_changed", mapOf("tone" to newColorTone.name))
     }
 
     fun setPreviewColors(newPreviewColors: ThemeColors) {

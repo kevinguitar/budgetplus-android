@@ -1,11 +1,10 @@
 package com.kevlina.budgetplus.core.data
 
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.data.remote.Purchase
 import com.kevlina.budgetplus.core.data.remote.PurchasesDb
+import dev.gitlive.firebase.firestore.CollectionReference
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.tasks.await
 import kotlin.time.Clock
 
 @Inject
@@ -23,7 +22,7 @@ class PurchaseRepo(
                 productId = productId,
                 userId = authManager.userId,
                 purchasedOn = Clock.System.now().toEpochMilliseconds()
-            )).await()
+            ))
         } catch (e: Exception) {
             Logger.e(e) { "Failed to record purchase for order $orderId" }
         }
@@ -35,11 +34,10 @@ class PurchaseRepo(
         val currentUserId = authManager.userId ?: return false
         return try {
             val purchases = purchasesDb.value
-                .whereEqualTo("productId", productId)
-                .whereEqualTo("userId", currentUserId)
+                .where { "productId" equalTo productId }
+                .where { "userId" equalTo currentUserId }
                 .get()
-                .await()
-            !purchases.isEmpty
+            purchases.documents.isNotEmpty()
         } catch (e: Exception) {
             Logger.e(e) { "Failed to check if user $currentUserId has purchased product $productId" }
             false

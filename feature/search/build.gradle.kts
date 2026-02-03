@@ -11,8 +11,7 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.feature.categoryPills)
             implementation(projects.feature.recordCard)
-        }
-        androidMain.dependencies {
+
             implementation(libs.firebase.firestore)
         }
         androidUnitTest.dependencies {

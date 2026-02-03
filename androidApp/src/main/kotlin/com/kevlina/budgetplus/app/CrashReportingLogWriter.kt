@@ -2,8 +2,8 @@ package com.kevlina.budgetplus.app
 
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Severity
-import com.google.firebase.Firebase
-import com.google.firebase.crashlytics.crashlytics
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.crashlytics.crashlytics
 import kotlinx.coroutines.CancellationException
 
 class CrashReportingLogWriter : LogWriter() {

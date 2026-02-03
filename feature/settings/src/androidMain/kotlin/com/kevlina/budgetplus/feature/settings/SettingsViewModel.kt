@@ -82,7 +82,7 @@ class SettingsViewModel private constructor(
     }
 
     fun setAllowMembersEdit(allow: Boolean) {
-        bookRepo.setAllowMembersEdit(allow)
+        viewModelScope.launch { bookRepo.setAllowMembersEdit(allow) }
     }
 
     fun deleteOrLeave() {

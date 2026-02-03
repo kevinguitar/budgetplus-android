@@ -5,8 +5,6 @@ gradle-plugin = "8.13.2"
 kotlin = "2.3.0"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
-# https://firebase.google.com/support/release-notes/android
-firebase-bom = "34.8.0"
 # https://github.com/coil-kt/coil/releases
 coil = "3.3.0"
 # https://github.com/JetBrains/compose-multiplatform/releases
@@ -15,8 +13,12 @@ compose-multiplatform = "1.10.0"
 metro = "0.10.2"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
 navigation3 = "1.0.0"
+# https://firebase.google.com/support/release-notes/android
+firebase-bom = "34.8.0"
 # https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle
 firebase-crashlytics = "3.0.6"
+# https://github.com/GitLiveApp/firebase-kotlin-sdk/releases
+firebase-kmp = "2.4.0"
 # https://developer.android.com/jetpack/androidx/releases/credentials
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -69,14 +71,14 @@ datastore = { module = "androidx.datastore:datastore", version.ref = "datastore"
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kmp" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-firebase-config = { module = "com.google.firebase:firebase-config" }
+firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kmp" }
+firebase-messaging = { module = "dev.gitlive:firebase-messaging", version.ref = "firebase-kmp" }
+firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "firebase-kmp" }
 google-ads = "com.google.android.gms:play-services-ads:24.9.0"
 google-ads-mediation-meta = "com.google.ads.mediation:facebook:6.21.0.0"
 google-billing = "com.android.billingclient:billing-ktx:8.3.0"
@@ -117,9 +119,6 @@ android = [
 kmp = [
     "kermit",
     "kotlin-datetime",
-]
-bom = [
-    "firebase-bom",
 ]
 compose = [
     "compose-icons",

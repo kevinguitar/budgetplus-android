@@ -7,8 +7,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.data)
-        }
-        androidMain.dependencies {
             api(libs.firebase.messaging)
         }
     }

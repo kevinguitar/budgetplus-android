@@ -2,10 +2,10 @@ package com.kevlina.budgetplus.core.data
 
 import android.os.Bundle
 import co.touchlab.kermit.Logger
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.analytics.analytics
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
@@ -31,7 +31,7 @@ class TrackerImpl(
             .launchIn(appScope)
     }
 
-    override fun logEvent(event: String, params: Bundle?) {
+    override fun logEvent(event: String, params: Map<String, Any>?) {
         Logger.d { "Analytics:: $event" + if (params == null) "" else ", $params" }
         if (!isDebug) {
             analytics.logEvent(event, params)

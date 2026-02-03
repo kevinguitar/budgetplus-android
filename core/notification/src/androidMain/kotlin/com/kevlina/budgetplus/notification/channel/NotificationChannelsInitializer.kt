@@ -9,19 +9,22 @@ import budgetplus.core.common.generated.resources.notification_channel_general
 import budgetplus.core.common.generated.resources.notification_channel_general_desc
 import budgetplus.core.common.generated.resources.notification_channel_new_member
 import budgetplus.core.common.generated.resources.notification_channel_new_member_desc
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 
 @ContributesIntoSet(AppScope::class)
 class NotificationChannelsInitializer(
     private val context: Context,
-
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : AppStartAction {
 
-    override suspend fun onAppStart() {
-        initNotificationChannels()
+    override fun onAppStart() {
+        appScope.launch { initNotificationChannels() }
     }
 
     private suspend fun initNotificationChannels() {

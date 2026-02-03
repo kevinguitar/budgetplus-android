@@ -3,13 +3,13 @@ package com.kevlina.budgetplus.feature.search
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
 import com.kevlina.budgetplus.core.unit.test.SnapshotFlowRule
 import com.kevlina.budgetplus.feature.search.SearchRepo.DbResult
 import com.kevlina.budgetplus.feature.search.ui.SearchCategory
+import dev.gitlive.firebase.firestore.CollectionReference
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

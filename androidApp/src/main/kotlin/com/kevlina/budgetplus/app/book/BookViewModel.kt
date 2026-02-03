@@ -74,7 +74,7 @@ class BookViewModel(
     val bannerAdUnitId get() = adUnitId.banner
 
     init {
-        if (!bookRepo.booksState.value.isNullOrEmpty()) {
+        if (bookRepo.currentBookId != null) {
             bookRepo.bookState
                 .onEach { book ->
                     if (book == null) {

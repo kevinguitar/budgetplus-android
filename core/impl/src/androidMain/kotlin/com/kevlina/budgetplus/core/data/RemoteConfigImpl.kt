@@ -1,12 +1,11 @@
 package com.kevlina.budgetplus.core.data
 
 import co.touchlab.kermit.Logger
-import com.google.firebase.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
-import com.google.firebase.remoteconfig.remoteConfig
-import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.mapState
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.remoteconfig.FirebaseRemoteConfigValue
+import dev.gitlive.firebase.remoteconfig.remoteConfig
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Named
@@ -15,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import kotlin.time.Duration.Companion.milliseconds
 
 private typealias ConfigMap = Map<String, FirebaseRemoteConfigValue>
 
@@ -33,10 +32,12 @@ class RemoteConfigImpl(
     init {
         if (isDebug) {
             // To be able to rapidly fetch config while debugging.
-            remoteConfig.setConfigSettingsAsync(remoteConfigSettings {
-                @Suppress("MagicNumber")
-                minimumFetchIntervalInSeconds = 3600
-            })
+            appScope.launch {
+                remoteConfig.settings {
+                    @Suppress("MagicNumber")
+                    minimumFetchInterval = 3600.milliseconds
+                }
+            }
         }
 
         fetchConfigs()
@@ -48,7 +49,7 @@ class RemoteConfigImpl(
 
         appScope.launch {
             try {
-                remoteConfig.fetchAndActivate().await()
+                remoteConfig.fetchAndActivate()
                 allConfigs.value = remoteConfig.all
                 Logger.d { "RemoteConfig: Configs fetched ${allConfigs.value.keys}" }
             } catch (e: Exception) {

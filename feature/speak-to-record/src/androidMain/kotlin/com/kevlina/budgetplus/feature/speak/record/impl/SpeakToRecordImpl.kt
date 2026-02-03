@@ -7,7 +7,6 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
@@ -68,7 +67,7 @@ class SpeakToRecordImpl(
                 if (status is SpeakToRecordStatus.Error) {
                     tracker.logEvent(
                         event = "speak_to_record_error",
-                        params = bundle { putInt("code", code) }
+                        params = mapOf("code" to code)
                     )
                 }
             }

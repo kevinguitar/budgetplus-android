@@ -11,7 +11,6 @@ import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.mapState
@@ -243,9 +242,7 @@ class OverviewViewModel private constructor(
     private fun onGroupClicked() {
         tracker.logEvent(
             event = "overview_group_clicked",
-            params = bundle {
-                putString("chart_mode", chartModeModel.chartModeAnalyticsName)
-            }
+            params = mapOf("chart_mode" to chartModeModel.chartModeAnalyticsName)
         )
     }
 

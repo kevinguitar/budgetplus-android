@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.core.data
 
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.UsersDb
+import dev.gitlive.firebase.firestore.CollectionReference
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ContributesIntoSet
@@ -32,7 +32,7 @@ class UserRepoImpl(
 
     private val userMapping = hashMapOf<String, User>()
 
-    override suspend fun onAppStart() {
+    override fun onAppStart() {
         combine(
             bookRepo.bookState.filterNotNull(),
             authManager.userState.filterNotNull(),
@@ -66,7 +66,7 @@ class UserRepoImpl(
 
     private suspend fun loadUser(userId: String) {
         try {
-            val user = usersDb.value.document(userId).get().requireValue<User>()
+            val user = usersDb.value.document(userId).get().data<User>()
             userMapping[userId] = user
         } catch (e: Exception) {
             Logger.e(e) { "UserRepo: loadUser failed" }

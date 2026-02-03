@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 internal fun AuthBinding(vm: AuthViewModel) {
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
+    val isLoading by vm.isLoading.collectAsStateWithLifecycle()
 
     LaunchedEffect(vm) {
         vm.snackbarSender.snackbarEvent
@@ -34,17 +36,19 @@ internal fun AuthBinding(vm: AuthViewModel) {
     ) {
         AdaptiveScreen(
             modifier = Modifier
-                    .fillMaxSize()
-                    .background(LocalAppColors.current.primary)
-                    .systemBarsPadding(),
+                .fillMaxSize()
+                .background(LocalAppColors.current.primary)
+                .systemBarsPadding(),
             regularContent = {
                 AuthContent(
                     signInWithGoogle = vm::signInWithGoogle,
+                    isLoading = isLoading
                 )
             },
             wideContent = {
                 AuthContentWide(
                     signInWithGoogle = vm::signInWithGoogle,
+                    isLoading = isLoading
                 )
             }
         )

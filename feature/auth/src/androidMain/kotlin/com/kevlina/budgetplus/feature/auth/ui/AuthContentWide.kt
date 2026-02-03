@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,12 +19,13 @@ import budgetplus.core.common.generated.resources.auth_google
 import budgetplus.core.common.generated.resources.ic_google
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 
 @Composable
 fun AuthContentWide(
     signInWithGoogle: () -> Unit,
+    isLoading: Boolean = false,
 ) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(24.dp),
@@ -48,7 +50,16 @@ fun AuthContentWide(
 
             AuthTitle()
 
-            AuthDescription(modifier = Modifier.padding(all = 16.dp))
+            if (isLoading) {
+                InfiniteCircularProgress(
+                    color = LocalAppColors.current.light,
+                    modifier = Modifier
+                        .padding(all = 16.dp)
+                        .size(44.dp)
+                )
+            } else {
+                AuthDescription(modifier = Modifier.padding(all = 16.dp))
+            }
 
             SocialSignInButton(
                 onClick = signInWithGoogle,

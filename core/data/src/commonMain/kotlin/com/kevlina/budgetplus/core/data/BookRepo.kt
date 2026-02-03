@@ -15,7 +15,7 @@ interface BookRepo {
     val canEdit: Boolean
     val hasPendingJoinRequest: Boolean
 
-    fun generateJoinLink(): String
+    suspend fun generateJoinLink(): String
 
     fun setPendingJoinRequest(joinId: String?)
 
@@ -28,9 +28,10 @@ interface BookRepo {
     suspend fun removeMember(userId: String)
 
     /**
+     * Await the auth state to propagate and check if the user has a book.
      * @return true if the user has a book, false otherwise.
      */
-    suspend fun checkUserHasBook(): Boolean
+    suspend fun isUserHasBooks(): Boolean
 
     suspend fun createBook(name: String, source: String)
 
@@ -40,14 +41,14 @@ interface BookRepo {
 
     suspend fun selectBook(book: Book?)
 
-    fun addCategory(type: RecordType, category: String, source: String)
+    suspend fun addCategory(type: RecordType, category: String, source: String)
 
     fun formatPrice(price: Double, alwaysShowSymbol: Boolean = false): String
 
-    fun updateCategories(type: RecordType, categories: List<String>)
+    suspend fun updateCategories(type: RecordType, categories: List<String>)
 
-    fun updateCurrency(currencyCode: String)
+    suspend fun updateCurrency(currencyCode: String)
 
-    fun setAllowMembersEdit(allow: Boolean)
+    suspend fun setAllowMembersEdit(allow: Boolean)
 
 }

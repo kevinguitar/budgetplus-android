@@ -11,28 +11,30 @@ import budgetplus.core.common.generated.resources.book_join_link_expired
 import budgetplus.core.common.generated.resources.default_expense_categories
 import budgetplus.core.common.generated.resources.default_income_categories
 import co.touchlab.kermit.Logger
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.Source
-import com.google.firebase.firestore.toObject
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.bundle
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
+import dev.gitlive.firebase.firestore.CollectionReference
+import dev.gitlive.firebase.firestore.Direction
+import dev.gitlive.firebase.firestore.Source
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -43,7 +45,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
 import java.math.RoundingMode
@@ -53,7 +54,8 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@ContributesBinding(AppScope::class, binding = binding<BookRepo>())
+@ContributesIntoSet(AppScope::class, binding = binding<AppStartAction>())
 class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
@@ -61,17 +63,18 @@ class BookRepoImpl(
     private val preference: Preference,
     @AppCoroutineScope private val appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
-) : BookRepo {
+) : BookRepo, AppStartAction {
 
     private val currentBookKey = stringPreferencesKey("currentBook")
     private val currentBookFlow = preference.of(currentBookKey, Book.serializer())
 
-    override val bookState: StateFlow<Book?> = currentBookFlow
-        .stateIn(
+    override val bookState: StateFlow<Book?> = runBlocking {
+        currentBookFlow.stateIn(
             scope = appScope,
             started = SharingStarted.Eagerly,
-            initialValue = runBlocking { currentBookFlow.first() }
+            initialValue = currentBookFlow.first()
         )
+    }
 
     final override val booksState: StateFlow<List<Book>?>
         field = MutableStateFlow<List<Book>?>(null)
@@ -127,10 +130,10 @@ class BookRepoImpl(
     // The join link will expire in 1 day
     private val linkExpirationMillis get() = 1.days.inWholeMilliseconds
 
-    private var bookRegistration: ListenerRegistration? = null
+    private var bookJob: Job? = null
 
     init {
-        // Activate book flow through out the entire app process
+        // Activate book flow throughout the entire app process
         appScope.launch { bookState.collect() }
 
         authManager.userState
@@ -140,7 +143,12 @@ class BookRepoImpl(
             .launchIn(appScope)
     }
 
-    override fun generateJoinLink(): String {
+    override fun onAppStart() {
+        // Crucial to load the current book from storage on app start
+        bookState.value
+    }
+
+    override suspend fun generateJoinLink(): String {
         val joinId = joinInfoProcessor.generateJoinId(requireBookId)
         val joinLink = APP_DEEPLINK.toUri()
             .buildUpon()
@@ -157,7 +165,7 @@ class BookRepoImpl(
 
     private suspend fun getLatestBook(bookId: String): Book {
         return booksDb.value.document(bookId).get(Source.SERVER)
-            .requireValue<Book>()
+            .data<Book>()
             .copy(id = bookId)
     }
 
@@ -198,8 +206,7 @@ class BookRepoImpl(
 
         selectBook(book)
         booksDb.value.document(bookId)
-            .update(authorsField, newAuthors)
-            .await()
+            .updateFields { authorsField to newAuthors }
 
         tracker.logEvent("join_book_success")
         return book.name
@@ -213,19 +220,20 @@ class BookRepoImpl(
         }
 
         booksDb.value.document(requireBookId)
-            .update(authorsField, newAuthors)
-            .await()
+            .updateFields { authorsField to newAuthors }
         tracker.logEvent("member_removed")
     }
 
-    override suspend fun checkUserHasBook(): Boolean {
+    override suspend fun isUserHasBooks(): Boolean {
+        // Await the auth state first.
         val userId = authManager.userState.filterNotNull().first().id
-        val books = booksDb.value
-            .whereArrayContains(authorsField, userId)
-            .whereEqualTo(archivedField, false)
-            .get()
-            .await()
-        return !books.isEmpty
+        // This await relies on the DB subscription from observeBooks.
+        val hasBook = booksState.filterNotNull().first().isNotEmpty()
+        if (hasBook) {
+            // Await the selected book to propagate to the storage before navigating to the Book screen.
+            bookState.filterNotNull().first()
+        }
+        return hasBook
     }
 
     override suspend fun createBook(name: String, source: String) {
@@ -249,13 +257,14 @@ class BookRepoImpl(
             incomeCategories = incomes.toList(),
             currencyCode = defaultCurrency.currencyCode
         )
-        val doc = booksDb.value.add(newBook).await()
+        val doc = booksDb.value.add(newBook)
         selectBook(newBook.copy(id = doc.id))
         tracker.logEvent("book_created_from_$source")
     }
 
     override suspend fun renameBook(newName: String) {
-        booksDb.value.document(requireBookId).update("name", newName).await()
+        booksDb.value.document(requireBookId)
+            .updateFields { "name" to newName }
         tracker.logEvent("book_renamed")
     }
 
@@ -263,19 +272,19 @@ class BookRepoImpl(
         val book = bookState.value ?: return
         if (book.ownerId == authManager.requireUserId()) {
             booksDb.value.document(book.id)
-                .update(
-                    archivedField, true,
-                    archivedOnField, Clock.System.now().toEpochMilliseconds()
-                )
-                .await()
+                .updateFields {
+                    archivedField to true
+                    archivedOnField to Clock.System.now().toEpochMilliseconds()
+                }
             tracker.logEvent("book_deleted")
         } else {
             val authorsWithoutMe = book.authors.toMutableList()
             authorsWithoutMe.remove(authManager.requireUserId())
 
             booksDb.value.document(book.id)
-                .update(authorsField, authorsWithoutMe)
-                .await()
+                .updateFields {
+                    authorsField to authorsWithoutMe
+                }
             tracker.logEvent("book_leaved")
         }
     }
@@ -291,48 +300,38 @@ class BookRepoImpl(
     private fun observeBooks(userId: String?) {
         if (userId == null) {
             booksState.value = null
-            bookRegistration?.remove()
+            bookJob?.cancel()
             return
         }
 
-        bookRegistration?.remove()
-        bookRegistration = booksDb.value
-            .whereArrayContains(authorsField, userId)
-            .whereEqualTo(archivedField, false)
-            .whereEqualTo(archivedField, false)
-            .orderBy(createdOnField, Query.Direction.ASCENDING)
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Logger.e(e) { "BookRepo: Listen failed." }
-                    return@addSnapshotListener
-                }
-
-                if (snapshot == null) {
-                    Logger.d { "BookRepo: Snapshot is empty" }
-                    return@addSnapshotListener
-                }
-
-                val books = snapshot.map { doc -> doc.toObject<Book>().copy(id = doc.id) }
+        bookJob?.cancel()
+        bookJob = booksDb.value
+            .where { authorsField contains userId }
+            .where { archivedField equalTo false }
+            .orderBy(createdOnField, Direction.ASCENDING)
+            .snapshots
+            .catch { Logger.e(it) { "BookRepo: Listen failed." } }
+            .onEach { snapshot ->
+                val books = snapshot.documents.map { doc -> doc.data<Book>().copy(id = doc.id) }
                 booksState.value = books
 
-                appScope.launch {
-                    if (books.isEmpty()) {
-                        selectBook(null)
-                        return@launch
-                    }
+                if (books.isEmpty()) {
+                    selectBook(null)
+                    return@onEach
+                }
 
-                    val bookId = currentBookId
-                    val index = books.indexOfFirst { it.id == bookId }
-                    if (bookId == null || index == -1) {
-                        selectBook(books.last())
-                    } else {
-                        selectBook(books[index])
-                    }
+                val bookId = currentBookId
+                val index = books.indexOfFirst { it.id == bookId }
+                if (bookId == null || index == -1) {
+                    selectBook(books.last())
+                } else {
+                    selectBook(books[index])
                 }
             }
+            .launchIn(appScope)
     }
 
-    override fun addCategory(type: RecordType, category: String, source: String) {
+    override suspend fun addCategory(type: RecordType, category: String, source: String) {
         val book = bookState.value ?: return
         val currentCategories = when (type) {
             RecordType.Expense -> book.expenseCategories
@@ -352,38 +351,36 @@ class BookRepoImpl(
         }
     }
 
-    override fun updateCategories(type: RecordType, categories: List<String>) {
+    override suspend fun updateCategories(type: RecordType, categories: List<String>) {
+        val field = when (type) {
+            RecordType.Expense -> "expenseCategories"
+            RecordType.Income -> "incomeCategories"
+        }
         booksDb.value
             .document(requireBookId)
-            .update(
-                when (type) {
-                    RecordType.Expense -> "expenseCategories"
-                    RecordType.Income -> "incomeCategories"
-                },
-                categories
-            )
+            .updateFields { field to categories }
         tracker.logEvent("categories_updated")
     }
 
-    override fun updateCurrency(currencyCode: String) {
+    override suspend fun updateCurrency(currencyCode: String) {
         booksDb.value
             .document(requireBookId)
-            .update("currencyCode", currencyCode)
+            .updateFields { "currencyCode" to currencyCode }
 
         tracker.logEvent(
             event = "currency_updated",
-            params = bundle { putString("currency_code", currencyCode) }
+            params = mapOf("currency_code" to currencyCode)
         )
     }
 
-    override fun setAllowMembersEdit(allow: Boolean) {
+    override suspend fun setAllowMembersEdit(allow: Boolean) {
         booksDb.value
             .document(requireBookId)
-            .update(allowMembersEditField, allow)
+            .updateFields { allowMembersEditField to allow }
 
         tracker.logEvent(
             event = "allow_members_edit_updated",
-            params = bundle { putBoolean("allow", allow) }
+            params = mapOf("allow" to allow)
         )
     }
 }

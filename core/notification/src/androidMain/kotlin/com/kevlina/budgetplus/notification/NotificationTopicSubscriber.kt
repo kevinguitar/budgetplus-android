@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.notification
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
+import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.local.Preference
@@ -9,21 +10,24 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.messaging.messaging
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoSet
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @ContributesIntoSet(AppScope::class)
 class NotificationTopicSubscriber(
     private val authManager: AuthManager,
     private val preference: Preference,
+    @AppCoroutineScope private val appScope: CoroutineScope,
 ) : AppStartAction {
 
     private val lastSubscribeInfoKey = stringPreferencesKey("lastInfo")
     private val lastInfoFlow = preference.of(lastSubscribeInfoKey, SubscribeInfo.serializer())
 
-    override suspend fun onAppStart() {
-        subscribeToTopics()
+    override fun onAppStart() {
+        appScope.launch { subscribeToTopics() }
     }
 
     private suspend fun subscribeToTopics() {

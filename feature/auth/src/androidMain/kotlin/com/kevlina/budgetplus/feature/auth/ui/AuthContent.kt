@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -22,19 +23,19 @@ import budgetplus.core.common.generated.resources.auth_google
 import budgetplus.core.common.generated.resources.ic_google
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
+import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.containerPadding
 
 @Composable
 fun AuthContent(
     signInWithGoogle: () -> Unit,
+    isLoading: Boolean,
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(LocalAppColors.current.primary)
     ) {
-
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,9 +57,16 @@ fun AuthContent(
                     .padding(horizontal = 24.dp)
             )
 
-            AuthDescription(
-                modifier = Modifier.padding(horizontal = 24.dp)
-            )
+            if (isLoading) {
+                InfiniteCircularProgress(
+                    color = LocalAppColors.current.light,
+                    modifier = Modifier.size(44.dp)
+                )
+            } else {
+                AuthDescription(
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+            }
 
             Spacer(Modifier.height(24.dp))
 
@@ -74,5 +82,11 @@ fun AuthContent(
 @Preview
 @Composable
 private fun AuthContent_Preview() = AppTheme {
-    AuthContent(signInWithGoogle = {})
+    AuthContent(signInWithGoogle = {}, isLoading = false)
+}
+
+@Preview
+@Composable
+private fun AuthContentLoading_Preview() = AppTheme {
+    AuthContent(signInWithGoogle = {}, isLoading = true)
 }

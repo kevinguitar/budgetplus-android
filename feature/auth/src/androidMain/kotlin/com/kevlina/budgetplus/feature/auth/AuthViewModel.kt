@@ -33,6 +33,8 @@ import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -58,6 +60,9 @@ internal class AuthViewModel(
     private val googleClientId get() = activity.getString(R.string.google_cloud_client_id)
 
     private val isFirstLaunchAfterInstallKey = booleanPreferencesKey("isFirstLaunchAfterInstall")
+
+    val isLoading: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
@@ -156,7 +161,7 @@ internal class AuthViewModel(
 
     private fun redirectUser(name: String) {
         coroutineScope.launch {
-            //TODO: Show loader
+            isLoading.value = true
             val message = getString(Res.string.auth_success, name)
             toaster.showMessage(message)
             val action = try {
@@ -169,7 +174,7 @@ internal class AuthViewModel(
                 snackbarSender.sendError(e)
                 welcomeNavigationAction
             } finally {
-                //TODO: Hide loader
+                isLoading.value = false
             }
             navigation.sendEvent(action)
         }

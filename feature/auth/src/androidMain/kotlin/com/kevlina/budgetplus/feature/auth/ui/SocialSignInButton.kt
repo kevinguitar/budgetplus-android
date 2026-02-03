@@ -29,7 +29,6 @@ fun SocialSignInButton(
     textRes: StringResource,
     iconRes: DrawableResource,
 ) {
-
     Button(
         modifier = Modifier
             .padding(horizontal = 32.dp)
@@ -38,7 +37,6 @@ fun SocialSignInButton(
         onClick = onClick,
         color = LocalAppColors.current.light
     ) {
-
         Image(
             painter = painterResource(iconRes),
             contentDescription = null,

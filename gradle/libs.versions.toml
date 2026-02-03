@@ -13,6 +13,8 @@ compose-multiplatform = "1.10.0"
 metro = "0.10.2"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
 navigation3 = "1.0.0"
+# https://firebase.google.com/support/release-notes/android
+firebase-bom = "34.8.0"
 # https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle
 firebase-crashlytics = "3.0.6"
 # https://github.com/GitLiveApp/firebase-kotlin-sdk/releases
@@ -71,6 +73,7 @@ espresso = "androidx.test.espresso:espresso-core:3.7.0"
 exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kmp" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics" }
 firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-kmp" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-kmp" }

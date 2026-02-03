@@ -12,6 +12,7 @@ import budgetplus.core.common.generated.resources.default_expense_categories
 import budgetplus.core.common.generated.resources.default_income_categories
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
+import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
@@ -25,7 +26,9 @@ import dev.gitlive.firebase.firestore.Direction
 import dev.gitlive.firebase.firestore.Source
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.ContributesIntoSet
 import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.binding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +54,8 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
 @SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@ContributesBinding(AppScope::class, binding = binding<BookRepo>())
+@ContributesIntoSet(AppScope::class, binding = binding<AppStartAction>())
 class BookRepoImpl(
     private val authManager: AuthManager,
     private val joinInfoProcessor: JoinInfoProcessor,
@@ -59,17 +63,18 @@ class BookRepoImpl(
     private val preference: Preference,
     @AppCoroutineScope private val appScope: CoroutineScope,
     @BooksDb private val booksDb: Lazy<CollectionReference>,
-) : BookRepo {
+) : BookRepo, AppStartAction {
 
     private val currentBookKey = stringPreferencesKey("currentBook")
     private val currentBookFlow = preference.of(currentBookKey, Book.serializer())
 
-    override val bookState: StateFlow<Book?> = currentBookFlow
-        .stateIn(
+    override val bookState: StateFlow<Book?> = runBlocking {
+        currentBookFlow.stateIn(
             scope = appScope,
             started = SharingStarted.Eagerly,
-            initialValue = runBlocking { currentBookFlow.first() }
+            initialValue = currentBookFlow.first()
         )
+    }
 
     final override val booksState: StateFlow<List<Book>?>
         field = MutableStateFlow<List<Book>?>(null)
@@ -136,6 +141,11 @@ class BookRepoImpl(
             .distinctUntilChanged()
             .onEach(::observeBooks)
             .launchIn(appScope)
+    }
+
+    override fun onAppStart() {
+        // Crucial to load the current book from storage on app start
+        bookState.value
     }
 
     override suspend fun generateJoinLink(): String {

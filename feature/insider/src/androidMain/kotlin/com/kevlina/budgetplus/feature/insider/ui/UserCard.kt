@@ -31,7 +31,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kevlina.budgetplus.core.common.millisToDateTime
-import com.kevlina.budgetplus.core.common.shortFormat
+import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -47,11 +47,11 @@ internal fun UserCard(
 ) {
 
     val createOn = remember(user) {
-        user.createdOn?.millisToDateTime?.shortFormat
+        user.createdOn?.millisToDateTime()?.shortFormatted
     }
 
     val lastActiveOn = remember(user) {
-        user.lastActiveOn?.millisToDateTime?.shortFormat
+        user.lastActiveOn?.millisToDateTime()?.shortFormatted
     }
 
     Column(

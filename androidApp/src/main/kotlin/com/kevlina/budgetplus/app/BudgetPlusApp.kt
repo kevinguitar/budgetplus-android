@@ -7,6 +7,7 @@ import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.common.ActivityProviderImpl
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.di.HasServiceProvider
+import com.kevlina.budgetplus.core.utils.CrashReportingLogWriter
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.analytics.analytics
 import dev.gitlive.firebase.crashlytics.crashlytics

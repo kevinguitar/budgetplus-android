@@ -11,8 +11,8 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.VibratorManager
+import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.sendEvent
-import com.kevlina.budgetplus.core.data.plainPriceString
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordViewModel

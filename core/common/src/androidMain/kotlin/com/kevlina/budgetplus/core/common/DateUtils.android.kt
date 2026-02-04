@@ -1,10 +1,12 @@
 package com.kevlina.budgetplus.core.common
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaLocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.Locale
+import java.util.*
 
 actual val LocalDate.shortFormatted: String
     get() = toJavaLocalDate().format(
@@ -19,4 +21,9 @@ actual val LocalDate.mediumFormatted: String
 actual val LocalDate.fullFormatted: String
     get() = toJavaLocalDate().format(
         DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.getDefault())
+    )
+
+actual val LocalDateTime.shortFormatted: String
+    get() = toJavaLocalDateTime().format(
+        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.getDefault())
     )

@@ -14,5 +14,21 @@ private val ratioFormat by lazy {
     }
 }
 
+private val priceFormat by lazy {
+    NSNumberFormatter().apply {
+        minimumFractionDigits = 0u
+        maximumFractionDigits = 2u
+        roundingMode = NSNumberFormatterRoundHalfUp
+        numberStyle = NSNumberFormatterDecimalStyle
+    }
+}
+
 actual val Double.roundUpRatioText: String
     get() = ratioFormat.stringFromNumber(NSNumber(this)) ?: this.toString()
+
+actual fun CharSequence.parseToPrice(): Double {
+    return priceFormat.numberFromString(toString())?.doubleValue ?: 0.0
+}
+
+actual val Double.plainPriceString: String
+    get() = priceFormat.stringFromNumber(NSNumber(this)) ?: this.toString()

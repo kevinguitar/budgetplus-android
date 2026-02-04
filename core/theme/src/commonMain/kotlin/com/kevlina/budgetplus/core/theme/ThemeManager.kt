@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.theme
 
-import androidx.compose.ui.graphics.Color
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -110,7 +109,7 @@ class ThemeManager(
 
     fun onColorPicked(semantic: ThemeColorSemantic, colorHexCode: String) {
         val newColor = try {
-            Color(colorHexCode.convertHexToColor())
+            colorHexCode.convertHexToColor()
         } catch (e: Exception) {
             Logger.e(e) { "Failed to parse the picked color $colorHexCode" }
             return
@@ -136,7 +135,7 @@ class ThemeManager(
     }
 
     fun generateCustomColorsLink(): String {
-        val colorsLink = "$APP_DEEPLINK/$NAV_COLORS_PATH?hex=${editedCustomColors.encode()}"
+        val colorsLink = "${APP_DEEPLINK}/${NAV_COLORS_PATH}?hex=${editedCustomColors.encode()}"
         tracker.logEvent("color_tone_link_generated")
         return colorsLink.lowercase()
     }
@@ -172,10 +171,10 @@ class ThemeManager(
         val hexCodes = value.split(COLOR_HEX_CONCAT_CHAR)
         return try {
             ThemeColors(
-                light = Color(hexCodes[0].convertHexToColor()),
-                lightBg = Color(hexCodes[1].convertHexToColor()),
-                primary = Color(hexCodes[2].convertHexToColor()),
-                dark = Color(hexCodes[3].convertHexToColor()),
+                light = hexCodes[0].convertHexToColor(),
+                lightBg = hexCodes[1].convertHexToColor(),
+                primary = hexCodes[2].convertHexToColor(),
+                dark = hexCodes[3].convertHexToColor(),
             )
         } catch (e: Exception) {
             Logger.e(e) { "Failed to decode the theme colors. raw value=$value" }

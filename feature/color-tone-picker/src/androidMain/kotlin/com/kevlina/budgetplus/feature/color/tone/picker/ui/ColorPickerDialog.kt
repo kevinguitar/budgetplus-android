@@ -28,7 +28,7 @@ import budgetplus.core.common.generated.resources.cta_cancel
 import budgetplus.core.common.generated.resources.cta_confirm
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.theme.LocalAppColors
-import com.kevlina.budgetplus.core.theme.convertHexToColor
+import com.kevlina.budgetplus.core.theme.convertHexToColorInt
 import com.kevlina.budgetplus.core.ui.AppDialog
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
@@ -59,7 +59,7 @@ internal fun ColorPickerDialog(
         }
         hexCode.setTextAndPlaceCursorAtEnd(hexCode.text.toString().trim())
         try {
-            userInputColor = hexCode.text.convertHexToColor()
+            userInputColor = hexCode.text.convertHexToColorInt()
         } catch (e: Exception) {
             Logger.d(e) { "Failed to parse color hex from user input. $newHexCode" }
         }

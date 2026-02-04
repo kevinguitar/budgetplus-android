@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.common.nav
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -121,7 +120,7 @@ class NavController<T : NavKey>(
         val preview = NavController(
             startRoot = BottomNavTab.Add.root,
             serializer = BookDest.serializer(),
-            savedStateHandle = @SuppressLint("VisibleForTests") SavedStateHandle()
+            savedStateHandle = SavedStateHandle()
         )
     }
 }

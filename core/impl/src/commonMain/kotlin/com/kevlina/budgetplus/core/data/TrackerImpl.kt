@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data
 
-import android.os.Bundle
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker

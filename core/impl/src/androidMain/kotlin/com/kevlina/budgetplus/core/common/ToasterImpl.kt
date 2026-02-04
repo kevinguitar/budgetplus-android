@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.common
 
+import android.content.Context
 import android.widget.Toast
 import co.touchlab.kermit.Logger
 import dev.zacsweers.metro.AppScope
@@ -9,7 +10,7 @@ import dev.zacsweers.metro.SingleIn
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class ToasterImpl(
-    private val context: android.content.Context,
+    private val context: Context,
 ) : Toaster {
 
     private var toast: Toast? = null

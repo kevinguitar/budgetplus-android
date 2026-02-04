@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.common.di
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,13 +8,11 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
-import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.MapKey
 import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
-import kotlin.reflect.cast
 
 abstract class ViewModelScope private constructor()
 
@@ -59,17 +56,6 @@ interface ViewModelGraph {
     }
 }
 
-@Inject
-class ViewModelGraphProvider(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-        val viewModelGraph = buildViewModelGraph(extras)
-        val viewModelProvider =
-            requireNotNull(viewModelGraph.viewModelProviders[modelClass]) {
-                "Unknown model class $modelClass"
-            }
-        return modelClass.cast(viewModelProvider())
-    }
-
-    fun buildViewModelGraph(extras: CreationExtras): ViewModelGraph =
-        context.resolveGraphExtensionFactory<ViewModelGraph.Factory>().create(extras)
+fun interface ViewModelGraphProvider : ViewModelProvider.Factory {
+    fun buildViewModelGraph(extras: CreationExtras): ViewModelGraph
 }

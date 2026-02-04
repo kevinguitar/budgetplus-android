@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.core.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.core.net.toUri
 import androidx.datastore.preferences.core.stringPreferencesKey
 import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -137,14 +136,9 @@ class ThemeManager(
     }
 
     fun generateCustomColorsLink(): String {
-        val colorsLink = APP_DEEPLINK.toUri()
-            .buildUpon()
-            .appendPath(NAV_COLORS_PATH)
-            // Should match BookDest.Colors
-            .appendQueryParameter("hex", editedCustomColors.encode())
-            .build()
+        val colorsLink = "$APP_DEEPLINK/$NAV_COLORS_PATH?hex=${editedCustomColors.encode()}"
         tracker.logEvent("color_tone_link_generated")
-        return colorsLink.toString().lowercase()
+        return colorsLink.lowercase()
     }
 
     /**

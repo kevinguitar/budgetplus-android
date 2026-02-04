@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.data
 
-import androidx.core.net.toUri
 import androidx.datastore.preferences.core.stringPreferencesKey
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.book_already_archived
@@ -151,13 +150,9 @@ class BookRepoImpl(
 
     override suspend fun generateJoinLink(): String {
         val joinId = joinInfoProcessor.generateJoinId(requireBookId)
-        val joinLink = APP_DEEPLINK.toUri()
-            .buildUpon()
-            .appendPath(NAV_JOIN_PATH)
-            .appendPath(joinId)
-            .build()
+        val joinLink = "$APP_DEEPLINK/$NAV_JOIN_PATH/$joinId"
         tracker.logEvent("join_book_link_generated")
-        return joinLink.toString()
+        return joinLink
     }
 
     override fun setPendingJoinRequest(joinId: String?) {

@@ -33,8 +33,8 @@ import budgetplus.core.common.generated.resources.record_edit_title
 import budgetplus.core.common.generated.resources.record_note
 import budgetplus.core.common.generated.resources.record_price
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.core.data.parseToPrice
-import com.kevlina.budgetplus.core.data.plainPriceString
+import com.kevlina.budgetplus.core.common.parseToPrice
+import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.isBatched
 import com.kevlina.budgetplus.core.theme.LocalAppColors

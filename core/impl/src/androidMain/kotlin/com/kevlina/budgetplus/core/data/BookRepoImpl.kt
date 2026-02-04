@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
+import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb

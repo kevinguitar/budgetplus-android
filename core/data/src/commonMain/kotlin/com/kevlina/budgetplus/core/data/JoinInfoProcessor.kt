@@ -1,10 +1,10 @@
 package com.kevlina.budgetplus.core.data
 
+import com.kevlina.budgetplus.core.common.randomUUID
 import com.kevlina.budgetplus.core.data.remote.JoinInfo
 import com.kevlina.budgetplus.core.data.remote.JoinInfoDb
 import dev.gitlive.firebase.firestore.CollectionReference
 import dev.zacsweers.metro.Inject
-import java.util.*
 import kotlin.time.Clock
 
 @Inject
@@ -13,7 +13,7 @@ class JoinInfoProcessor(
 ) {
 
     suspend fun generateJoinId(bookId: String): String {
-        val joinId = UUID.randomUUID().toString()
+        val joinId = randomUUID()
         joinInfoDb.value.document(joinId).set(
             JoinInfo(
                 bookId = bookId,

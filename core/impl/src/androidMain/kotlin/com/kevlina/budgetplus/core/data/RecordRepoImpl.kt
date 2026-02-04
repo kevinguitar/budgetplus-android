@@ -6,6 +6,8 @@ import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.parseToPrice
+import com.kevlina.budgetplus.core.common.randomUUID
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.RecordsDb
@@ -29,7 +31,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.util.*
 import kotlin.time.Instant
 
 @SingleIn(AppScope::class)
@@ -53,7 +54,7 @@ class RecordRepoImpl(
         frequency: BatchFrequency,
         times: Int,
     ): String {
-        val batchId = UUID.randomUUID().toString()
+        val batchId = randomUUID()
         var currentDate: LocalDate
 
         repeat(times) { index ->

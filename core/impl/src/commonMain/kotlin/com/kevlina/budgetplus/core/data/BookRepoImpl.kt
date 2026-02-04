@@ -17,7 +17,6 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
-import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.BooksDb
@@ -47,9 +46,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.getStringArray
-import java.math.RoundingMode
-import java.text.NumberFormat
-import java.util.*
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 
@@ -82,34 +78,8 @@ class BookRepoImpl(
     override val currentBookId: String? get() = bookState.value?.id
     private val requireBookId: String get() = requireNotNull(currentBookId) { "Book id is null." }
 
-    private val currency: StateFlow<Currency> = bookState.mapState { book ->
-        val code = book?.currencyCode
-        if (code == null) {
-            defaultCurrency
-        } else {
-            try {
-                Currency.getInstance(code)
-            } catch (e: Exception) {
-                Logger.e(e) { "Failed to parse currency. $code" }
-                defaultCurrency
-            }
-        }
-    }
-
-    override val currencySymbol: StateFlow<String> = currency.mapState {
-        it.getSymbol(Locale.getDefault())
-    }
-
-    private val defaultCurrency: Currency
-        get() = Currency.getInstance(Locale.getDefault())
-
-    private val pricingFormat by lazy {
-        NumberFormat.getCurrencyInstance()
-            .also {
-                it.roundingMode = RoundingMode.HALF_UP
-                it.minimumFractionDigits = 0
-                it.maximumFractionDigits = 2
-            }
+    override val currencySymbol: StateFlow<String> = bookState.mapState { book ->
+        getCurrencySymbol(book?.currencyCode)
     }
 
     override val canEdit: Boolean
@@ -251,7 +221,7 @@ class BookRepoImpl(
             authors = listOf(userId),
             expenseCategories = expenses.toList(),
             incomeCategories = incomes.toList(),
-            currencyCode = defaultCurrency.currencyCode
+            currencyCode = getDefaultCurrencyCode()
         )
         val doc = booksDb.value.add(newBook)
         selectBook(newBook.copy(id = doc.id))
@@ -338,13 +308,11 @@ class BookRepoImpl(
     }
 
     override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
-        val bookCurrency = currency.value
-        return if (alwaysShowSymbol || bookCurrency.getSymbol(Locale.getDefault()).length == 1) {
-            pricingFormat.currency = bookCurrency
-            pricingFormat.format(price)
-        } else {
-            price.plainPriceString
-        }
+        return formatPrice(
+            price = price,
+            currencyCode = bookState.value?.currencyCode,
+            alwaysShowSymbol = alwaysShowSymbol
+        )
     }
 
     override suspend fun updateCategories(type: RecordType, categories: List<String>) {

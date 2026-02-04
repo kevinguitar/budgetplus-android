@@ -8,12 +8,19 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
+import kotlin.time.Instant
 
 expect val LocalDate.shortFormatted: String
 
 expect val LocalDate.mediumFormatted: String
 
 expect val LocalDate.fullFormatted: String
+
+expect val LocalDateTime.shortFormatted: String
+
+fun Long.millisToDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
+    return Instant.fromEpochMilliseconds(this).toLocalDateTime(timeZone)
+}
 
 fun LocalDate.Companion.now(): LocalDate {
     return Clock.System.todayIn(TimeZone.currentSystemDefault())

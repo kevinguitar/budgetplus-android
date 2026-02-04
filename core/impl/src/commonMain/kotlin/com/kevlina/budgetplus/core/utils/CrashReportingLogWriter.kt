@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app
+package com.kevlina.budgetplus.core.utils
 
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Severity

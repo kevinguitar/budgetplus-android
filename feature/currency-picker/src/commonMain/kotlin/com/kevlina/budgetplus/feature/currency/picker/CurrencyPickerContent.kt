@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.currency.picker
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.currency_picker_hint
+import com.kevlina.budgetplus.core.common.getAvailableCurrencies
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
@@ -34,14 +34,11 @@ import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.core.ui.rippleClick
 import org.jetbrains.compose.resources.stringResource
-import java.util.Currency
 
-// False positive, it's used in context receiver
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun CurrencyPickerContent(
     keyword: TextFieldState,
-    currencies: List<CurrencyState>,
+    currencyStates: List<CurrencyState>,
     onCurrencyPicked: (CurrencyState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -69,12 +66,11 @@ internal fun CurrencyPickerContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
-                currencies.forEach { currency ->
-                    item(key = currency.symbol) {
+                currencyStates.forEach { state ->
+                    item(key = state.currency.symbol) {
                         CurrencyCard(
-                            state = currency,
-                            onClick = { onCurrencyPicked(currency) }
+                            state = state,
+                            onClick = { onCurrencyPicked(state) }
                         )
                     }
                 }
@@ -125,7 +121,7 @@ private fun CurrencyCard(
         }
 
         Text(
-            text = state.symbol,
+            text = state.currency.symbol,
             fontSize = FontSize.HeaderXLarge,
             fontWeight = FontWeight.Bold,
             color = textColor,
@@ -133,7 +129,7 @@ private fun CurrencyCard(
         )
 
         Text(
-            text = state.name,
+            text = state.currency.name,
             color = textColor,
             textAlign = TextAlign.Center
         )
@@ -145,11 +141,9 @@ private fun CurrencyCard(
 private fun CurrencyPickerContent_Preview() = AppTheme {
     CurrencyPickerContent(
         keyword = TextFieldState(),
-        currencies = Currency.getAvailableCurrencies().mapIndexed { index, currency ->
+        currencyStates = getAvailableCurrencies().mapIndexed { index, currency ->
             CurrencyState(
-                name = currency.displayName,
-                currencyCode = currency.currencyCode,
-                symbol = currency.symbol,
+                currency = currency,
                 isSelected = index == 0
             )
         },

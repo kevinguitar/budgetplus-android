@@ -1,24 +1,24 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.common
 
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.core.common.plainPriceString
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
+import java.util.Currency as JavaCurrency
 
 actual fun getCurrencySymbol(currencyCode: String?): String {
     val code = currencyCode ?: fallbackCurrencyCode
     return try {
-        Currency.getInstance(code).getSymbol(Locale.getDefault())
+        JavaCurrency.getInstance(code).getSymbol(Locale.getDefault())
     } catch (e: Exception) {
         Logger.e(e) { "Failed to get currency symbol for code: $code" }
         code
     }
 }
 
-actual fun formatPrice(price: Double, currencyCode: String?, alwaysShowSymbol: Boolean): String {
+actual fun formatPriceWithCurrency(price: Double, currencyCode: String?, alwaysShowSymbol: Boolean): String {
     val currency = try {
-        Currency.getInstance(currencyCode ?: fallbackCurrencyCode)
+        JavaCurrency.getInstance(currencyCode ?: fallbackCurrencyCode)
     } catch (_: Exception) {
         null
     }
@@ -37,5 +37,15 @@ actual fun formatPrice(price: Double, currencyCode: String?, alwaysShowSymbol: B
 }
 
 actual fun getDefaultCurrencyCode(): String {
-    return Currency.getInstance(Locale.getDefault()).currencyCode
+    return JavaCurrency.getInstance(Locale.getDefault()).currencyCode
+}
+
+actual fun getAvailableCurrencies(): List<Currency> {
+    return JavaCurrency.getAvailableCurrencies().map {
+        Currency(
+            name = it.displayName,
+            currencyCode = it.currencyCode,
+            symbol = it.getSymbol(Locale.getDefault())
+        )
+    }
 }

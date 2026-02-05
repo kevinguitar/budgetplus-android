@@ -1,11 +1,13 @@
-package com.kevlina.budgetplus.core.data
+package com.kevlina.budgetplus.core.common
 
-import com.kevlina.budgetplus.core.common.plainPriceString
 import platform.Foundation.NSLocale
+import platform.Foundation.NSLocaleCurrencyCode
+import platform.Foundation.NSLocaleCurrencySymbol
 import platform.Foundation.NSNumber
 import platform.Foundation.NSNumberFormatter
 import platform.Foundation.NSNumberFormatterCurrencyStyle
 import platform.Foundation.NSNumberFormatterRoundHalfUp
+import platform.Foundation.commonISOCurrencyCodes
 import platform.Foundation.currentLocale
 
 actual fun getCurrencySymbol(currencyCode: String?): String {
@@ -15,7 +17,7 @@ actual fun getCurrencySymbol(currencyCode: String?): String {
     return formatter.currencySymbol
 }
 
-actual fun formatPrice(price: Double, currencyCode: String?, alwaysShowSymbol: Boolean): String {
+actual fun formatPriceWithCurrency(price: Double, currencyCode: String?, alwaysShowSymbol: Boolean): String {
     val symbol = getCurrencySymbol(currencyCode)
 
     return if (alwaysShowSymbol || symbol.length == 1) {
@@ -33,6 +35,18 @@ actual fun formatPrice(price: Double, currencyCode: String?, alwaysShowSymbol: B
 }
 
 actual fun getDefaultCurrencyCode(): String {
-    return NSLocale.currentLocale.objectForKey(platform.Foundation.NSLocaleCurrencyCode) as? String
+    return NSLocale.currentLocale.objectForKey(NSLocaleCurrencyCode) as? String
         ?: fallbackCurrencyCode
+}
+
+actual fun getAvailableCurrencies(): List<Currency> {
+    val locale = NSLocale.currentLocale
+    return NSLocale.commonISOCurrencyCodes.map { code ->
+        val currencyCode = code as String
+        Currency(
+            name = locale.displayNameForKey(NSLocaleCurrencyCode, currencyCode) ?: currencyCode,
+            currencyCode = currencyCode,
+            symbol = locale.displayNameForKey(NSLocaleCurrencySymbol, currencyCode) ?: currencyCode
+        )
+    }
 }

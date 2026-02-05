@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.edit.category
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -32,8 +31,6 @@ import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.ReorderableLazyListState
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
-// False positive, it's used in context receiver
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun EditCategoryContent(
     modifier: Modifier = Modifier,

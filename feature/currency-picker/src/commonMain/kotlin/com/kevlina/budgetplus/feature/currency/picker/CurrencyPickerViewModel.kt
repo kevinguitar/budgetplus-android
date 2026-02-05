@@ -10,6 +10,8 @@ import budgetplus.core.common.generated.resources.currency_picker_edit_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
+import com.kevlina.budgetplus.core.common.getAvailableCurrencies
+import com.kevlina.budgetplus.core.common.getDefaultCurrencyCode
 import com.kevlina.budgetplus.core.data.BookRepo
 import com.kevlina.budgetplus.core.data.local.Preference
 import dev.zacsweers.metro.ContributesIntoMap
@@ -19,7 +21,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.resources.getString
-import java.util.*
 
 @ViewModelKey(CurrencyPickerViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -34,22 +35,19 @@ class CurrencyPickerViewModel(
     private val hasShownCurrencyDisclaimerKey = booleanPreferencesKey("hasShownCurrencyDisclaimerCache")
     private val currentCurrencyCode = bookRepo.bookState.value?.currencyCode
 
-    private val defaultLocale = Locale.getDefault()
-    private val defaultCurrencyCode = Currency.getInstance(defaultLocale).currencyCode
+    private val defaultCurrencyCode = getDefaultCurrencyCode()
 
-    private val allCurrencies = Currency.getAvailableCurrencies()
+    private val allCurrencies = getAvailableCurrencies()
         .map { currency ->
             CurrencyState(
-                name = currency.getDisplayName(defaultLocale),
-                currencyCode = currency.currencyCode,
-                symbol = currency.getSymbol(defaultLocale),
+                currency = currency,
                 isSelected = currentCurrencyCode == currency.currencyCode
             )
         }
         // Sort by symbol, so it looks nicer from the beginning
-        .sortedByDescending { it.symbol }
+        .sortedByDescending { it.currency.symbol }
         // Then place the default currency at the front
-        .sortedByDescending { it.currencyCode == defaultCurrencyCode }
+        .sortedByDescending { it.currency.currencyCode == defaultCurrencyCode }
         // Then place the selected one (if exists) at the front
         .sortedByDescending { it.isSelected }
 
@@ -72,14 +70,14 @@ class CurrencyPickerViewModel(
 
     private fun onSearch(keyword: CharSequence) {
         currencies.value = allCurrencies.filter {
-            it.name.contains(keyword, ignoreCase = true) ||
-                it.currencyCode.contains(keyword, ignoreCase = true)
+            it.currency.name.contains(keyword, ignoreCase = true) ||
+                it.currency.currencyCode.contains(keyword, ignoreCase = true)
         }
     }
 
-    suspend fun onCurrencyPicked(currency: CurrencyState) {
+    suspend fun onCurrencyPicked(state: CurrencyState) {
         val bookName = bookRepo.bookState.value?.name ?: return
-        snackbarSender.send(getString(Res.string.currency_picker_edit_success, bookName, currency.name))
-        bookRepo.updateCurrency(currency.currencyCode)
+        snackbarSender.send(getString(Res.string.currency_picker_edit_success, bookName, state.currency.name))
+        bookRepo.updateCurrency(state.currency.currencyCode)
     }
 }

@@ -56,7 +56,7 @@ fun CurrencyPickerScreen(
 
             CurrencyPickerContent(
                 keyword = vm.keyword,
-                currencies = currencies,
+                currencyStates = currencies,
                 onCurrencyPicked = { currency ->
                     coroutineScope.launch {
                         if (vm.hasShownCurrencyDisclaimer()) {

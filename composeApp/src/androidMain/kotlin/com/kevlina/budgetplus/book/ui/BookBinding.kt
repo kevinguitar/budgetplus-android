@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book.ui
+package com.kevlina.budgetplus.book.ui
 
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.fadeIn
@@ -21,7 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.kevlina.budgetplus.app.book.BookViewModel
+import com.kevlina.budgetplus.book.BookViewModel
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.theme.LocalAppColors

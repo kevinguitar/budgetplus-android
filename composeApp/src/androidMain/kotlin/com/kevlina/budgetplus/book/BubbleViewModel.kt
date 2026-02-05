@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book
+package com.kevlina.budgetplus.book
 
 import androidx.lifecycle.ViewModel
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo

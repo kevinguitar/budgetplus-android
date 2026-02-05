@@ -28,7 +28,7 @@
             tools:targetApi="29" />
 
         <activity
-            android:name="com.kevlina.budgetplus.app.book.BookActivity"
+            android:name="com.kevlina.budgetplus.book.BookActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
             android:exported="true"
             android:launchMode="singleTask"

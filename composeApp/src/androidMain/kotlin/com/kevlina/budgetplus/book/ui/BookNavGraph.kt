@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book.ui
+package com.kevlina.budgetplus.book.ui
 
 import androidx.navigation3.runtime.NavEntry
 import com.kevlina.budgetplus.core.common.nav.BookDest

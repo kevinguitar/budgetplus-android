@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book
+package com.kevlina.budgetplus.book
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.app_update_downloaded
 import budgetplus.core.common.generated.resources.cta_complete
 import co.touchlab.kermit.Logger
-import com.kevlina.budgetplus.app.book.ui.BookBinding
+import com.kevlina.budgetplus.book.ui.BookBinding
 import com.kevlina.budgetplus.core.common.SnackbarDuration
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
@@ -81,7 +81,6 @@ class BookActivity : ComponentActivity() {
                 val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
                 AppTheme(themeColors) {
                     BookBinding(vm = viewModel)
-//                    App()
                 }
 
                 val appUpdateState by inAppUpdateManager.updateState.collectAsStateWithLifecycle()

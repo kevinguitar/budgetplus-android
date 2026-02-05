@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book
+package com.kevlina.budgetplus.book
 
 import androidx.activity.ComponentActivity
 import dev.zacsweers.metro.AppScope

@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book
+package com.kevlina.budgetplus.book
 
 import android.content.Intent
 import androidx.compose.runtime.snapshotFlow

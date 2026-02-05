@@ -1,4 +1,4 @@
-package com.kevlina.budgetplus.app.book.ui
+package com.kevlina.budgetplus.book.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn

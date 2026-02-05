@@ -62,7 +62,7 @@ class BookActivity : ComponentActivity() {
         setStatusBarColor(isLight = false)
         super.onCreate(savedInstanceState)
 
-        viewModel.handleIntent(intent)
+        viewModel.handleDeeplink(intent.dataString)
 
         Logger.d { "DEBUGG: BookActivity, bookId=${bookRepo.currentBookId}" }
         val destination = when {
@@ -100,7 +100,7 @@ class BookActivity : ComponentActivity() {
         consumeNavigation(viewModel.navigation)
 
         addOnNewIntentListener { newIntent ->
-            viewModel.handleIntent(newIntent)
+            viewModel.handleDeeplink(newIntent.dataString)
         }
     }
 

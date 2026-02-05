@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.launchIn
 internal fun BookBinding(
     vm: BookViewModel,
 ) {
-
     val navController = vm.navController
 
     val showAds by vm.showAds.collectAsStateWithLifecycle()

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.book
 
-import android.content.Intent
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,7 @@ import com.kevlina.budgetplus.core.ads.AdUnitId
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.BottomNavTab
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
@@ -94,24 +94,38 @@ class BookViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun handleIntent(intent: Intent) {
-        val uri = intent.data ?: return
-        return when (val firstSegment = uri.pathSegments.firstOrNull()) {
-            NAV_JOIN_PATH -> bookRepo.setPendingJoinRequest(uri.lastPathSegment)
+    fun handleDeeplink(url: String?) {
+        if (url == null || !url.startsWith(APP_DEEPLINK)) return
+
+        val pathAndQuery = url.removePrefix(APP_DEEPLINK).removePrefix("/")
+        val path = pathAndQuery.substringBefore("?")
+        val query = pathAndQuery.substringAfter("?", "")
+
+        val segments = path.split("/").filter { it.isNotEmpty() }
+        val queries = query.split("&")
+            .filter { it.contains("=") }
+            .associate {
+                val (key, value) = it.split("=")
+                key to value
+            }
+
+        when (val firstSegment = segments.firstOrNull()) {
+            NAV_JOIN_PATH -> bookRepo.setPendingJoinRequest(segments.getOrNull(1))
             NAV_RECORD_PATH -> navController.navigate(BookDest.Record)
             NAV_OVERVIEW_PATH -> navController.navigate(BookDest.Overview)
             NAV_UNLOCK_PREMIUM_PATH -> navController.navigate(BookDest.UnlockPremium)
+
             NAV_SETTINGS_PATH -> {
-                val showMembers = uri.getQueryParameter("showMembers")?.toBoolean() ?: false
+                val showMembers = queries["showMembers"]?.toBoolean() ?: false
                 navController.navigate(BookDest.Settings(showMembers = showMembers))
             }
 
             NAV_COLORS_PATH -> {
-                val hex = uri.getQueryParameter("hex")
+                val hex = queries["hex"]
                 navController.navigate(BookDest.Colors(hex = hex))
             }
 
-            else -> Logger.d { "Deeplink: Unknown segment $firstSegment. Url=$uri" }
+            else -> Logger.d { "Deeplink: Unknown segment $firstSegment. Url=$url" }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.overview.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -58,7 +57,6 @@ internal fun OverviewGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            @SuppressLint("UnusedBoxWithConstraintsScope")
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1F)

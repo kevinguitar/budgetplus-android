@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,7 +24,6 @@ import com.kevlina.budgetplus.core.ui.thenIf
 
 private const val ADAPTIVE_BUTTON_ASPECT_RATIO = 1.5
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun RecordContentRegular(
     state: RecordContentState,

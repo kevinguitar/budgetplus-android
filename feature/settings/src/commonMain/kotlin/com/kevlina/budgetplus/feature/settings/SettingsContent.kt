@@ -186,7 +186,7 @@ internal fun SettingsContent(
         SettingsItem(
             text = stringResource(Res.string.color_tone_picker_title),
             icon = Icons.Rounded.ColorLens,
-            roundTop = !vm.canSelectLanguage,
+            roundTop = !canSelectLanguage,
             onClick = { navController.navigate(BookDest.Colors()) }
         )
 

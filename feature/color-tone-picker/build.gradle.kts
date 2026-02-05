@@ -14,7 +14,6 @@ kotlin {
 
             implementation(libs.compottie)
             implementation(libs.navigation.event)
-
         }
         androidMain.dependencies {
             implementation(libs.orchestra.colorpicker)

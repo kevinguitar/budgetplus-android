@@ -13,6 +13,8 @@ compose-multiplatform = "1.10.0"
 metro = "0.10.2"
 # https://developer.android.com/jetpack/androidx/releases/navigation3
 navigation3 = "1.0.0"
+# https://kotlinlang.org/docs/multiplatform/compose-navigation-3.html#multiplatform-support
+navigation3-jb = "1.0.0-alpha06"
 # https://firebase.google.com/support/release-notes/android
 firebase-bom = "34.8.0"
 # https://mvnrepository.com/artifact/com.google.firebase/firebase-crashlytics-gradle
@@ -22,8 +24,9 @@ firebase-kmp = "2.4.0"
 # https://developer.android.com/jetpack/androidx/releases/credentials
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
-android-lifecycle = "2.10.0"
-jetbrains-lifecycle = "2.9.6"
+lifecycle = "2.10.0"
+# https://kotlinlang.org/docs/multiplatform/compose-navigation-3.html#dependencies-setup
+lifecycle-jb = "2.10.0-alpha05"
 jetbrains-material3 = "1.9.0"
 # https://developer.android.com/jetpack/androidx/releases/activity
 android-activity = "1.12.3"
@@ -45,8 +48,8 @@ android-appcompat = "androidx.appcompat:appcompat:1.7.1"
 android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
-android-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
-android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "android-lifecycle" }
+android-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-jb" }
+android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 build-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 build-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 build-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -96,8 +99,8 @@ kotlin-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
 macro-benchmark = "androidx.benchmark:benchmark-macro-junit4:1.4.1"
 mockk = "io.mockk:mockk:1.14.9"
 navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "navigation3" }
-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
-navigation3-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "android-lifecycle" }
+navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3-jb" }
+navigation3-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle-jb" }
 orchestra-colorpicker = "com.github.skydoves:orchestra-colorpicker:1.2.0"
 profile-installer = "androidx.profileinstaller:profileinstaller:1.4.1"
 reorderable = "sh.calvin.reorderable:reorderable:3.0.0"

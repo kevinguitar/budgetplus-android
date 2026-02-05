@@ -14,6 +14,9 @@ import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
+import com.kevlina.budgetplus.core.common.formatPriceWithCurrency
+import com.kevlina.budgetplus.core.common.getCurrencySymbol
+import com.kevlina.budgetplus.core.common.getDefaultCurrencyCode
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
@@ -308,7 +311,7 @@ class BookRepoImpl(
     }
 
     override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
-        return formatPrice(
+        return formatPriceWithCurrency(
             price = price,
             currencyCode = bookState.value?.currencyCode,
             alwaysShowSymbol = alwaysShowSymbol

@@ -27,43 +27,6 @@
             android:shell="true"
             tools:targetApi="29" />
 
-        <activity
-            android:name="com.kevlina.budgetplus.app.book.BookActivity"
-            android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode|fontWeightAdjustment"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/ComposeActivityStyle"
-            android:windowSoftInputMode="adjustNothing">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-                <data android:host="budgetplus.cchi.tw" />
-                <data android:pathPrefix="/join" />
-                <data android:pathPrefix="/record" />
-                <data android:pathPrefix="/overview" />
-                <data android:pathPrefix="/settings" />
-                <data android:pathPrefix="/unlockPremium" />
-                <data android:pathPrefix="/colors" />
-            </intent-filter>
-        </activity>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_logo" />

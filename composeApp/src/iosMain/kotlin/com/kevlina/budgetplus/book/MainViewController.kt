@@ -1,0 +1,16 @@
+package com.kevlina.budgetplus.book
+
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.window.ComposeUIViewController
+import com.kevlina.budgetplus.book.ui.BookBinding
+import com.kevlina.budgetplus.core.utils.metroViewModel
+import platform.UIKit.UIViewController
+
+fun MainViewController(deeplink: String?): UIViewController = ComposeUIViewController {
+    val vm = metroViewModel<BookViewModel>()
+    LaunchedEffect(deeplink) {
+        vm.handleDeeplink(deeplink)
+    }
+
+    BookBinding(vm)
+}

@@ -34,7 +34,7 @@ import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.rippleClick
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.painterResource as jetbrainsPainterResource
 
 private val cornerRadius = 8.dp
 
@@ -94,7 +94,7 @@ internal fun SettingsItem(
 
             if (drawableRes != null) {
                 Image(
-                    painter = painterResource(drawableRes),
+                    painter = jetbrainsPainterResource(drawableRes),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
                 )

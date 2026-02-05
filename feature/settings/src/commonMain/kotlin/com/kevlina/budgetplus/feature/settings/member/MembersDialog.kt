@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.settings.member
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +33,7 @@ import budgetplus.core.common.generated.resources.members_confirm_remove
 import budgetplus.core.common.generated.resources.members_owner_label
 import budgetplus.core.common.generated.resources.members_title
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.kevlina.budgetplus.core.data.remote.User
@@ -128,9 +128,8 @@ private fun MemberCard(
             .height(56.dp)
             .padding(vertical = 4.dp)
     ) {
-
         AsyncImage(
-            model = ImageRequest.Builder(LocalActivity.current!!)
+            model = ImageRequest.Builder(LocalPlatformContext.current)
                 .data(member.photoUrl)
                 .crossfade(true)
                 .build(),

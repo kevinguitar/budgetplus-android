@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.settings
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -43,7 +41,6 @@ internal fun SettingsItem(
     text: String,
     description: String? = null,
     icon: ImageVector? = null,
-    @DrawableRes iconRes: Int? = null,
     drawableRes: DrawableResource? = null,
     showCrownAnimation: Boolean = false,
     roundTop: Boolean = false,
@@ -79,14 +76,6 @@ internal fun SettingsItem(
             if (icon != null) {
                 Image(
                     imageVector = icon,
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
-                )
-            }
-
-            if (iconRes != null) {
-                Image(
-                    painter = painterResource(iconRes),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(LocalAppColors.current.dark),
                 )

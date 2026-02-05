@@ -9,10 +9,9 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.data)
             implementation(projects.core.ui)
-            implementation(libs.reorderable)
-        }
-        androidMain.dependencies {
 
+            implementation(libs.navigation.event)
+            implementation(libs.reorderable)
         }
     }
 }

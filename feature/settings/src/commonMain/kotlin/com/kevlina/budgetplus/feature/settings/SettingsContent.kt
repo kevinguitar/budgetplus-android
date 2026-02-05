@@ -174,7 +174,7 @@ internal fun SettingsContent(
         }
 
         // General section
-        if (vm.canSelectLanguage) {
+        if (canSelectLanguage) {
             SettingsItem(
                 text = stringResource(Res.string.settings_language),
                 icon = Icons.Rounded.Language,

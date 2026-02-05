@@ -1,7 +1,5 @@
 package com.kevlina.budgetplus.feature.settings
 
-import android.annotation.SuppressLint
-import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -47,10 +45,6 @@ class SettingsViewModel private constructor(
     val allowMembersEdit = bookRepo.bookState.mapState { it?.allowMembersEdit != false }
 
     val isPremium = authManager.isPremium
-
-    @get:SuppressLint("AnnotateVersionCheck")
-    val canSelectLanguage: Boolean
-        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
     val currentUsername get() = authManager.userState.value?.name
     val currentBookName get() = bookRepo.bookState.value?.name

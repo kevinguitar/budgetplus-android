@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.welcome.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
@@ -30,7 +32,10 @@ fun WelcomeBinding(vm: WelcomeViewModel) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarData) }
     ) {
-        BackHandler(onBack = vm::logout)
+        NavigationBackHandler(
+            state = rememberNavigationEventState(NavigationEventInfo.None),
+            onBackCompleted = vm::logout
+        )
 
         AdaptiveScreen(
             modifier = Modifier.fillMaxSize(),

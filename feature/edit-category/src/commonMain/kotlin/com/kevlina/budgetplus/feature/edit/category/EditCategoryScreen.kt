@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.edit.category
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.category_edit_title
 import budgetplus.core.common.generated.resources.cta_save
@@ -66,7 +68,10 @@ fun EditCategoryScreen(
     }
 
     if (originalCategories != list) {
-        BackHandler(onBack = ::navigateUp)
+        NavigationBackHandler(
+            state = rememberNavigationEventState(NavigationEventInfo.None),
+            onBackCompleted = ::navigateUp
+        )
     }
 
     Column(

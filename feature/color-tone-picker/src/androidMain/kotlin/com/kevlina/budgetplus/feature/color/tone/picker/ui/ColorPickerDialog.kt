@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.color.tone.picker.ui
 
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,14 +33,13 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.Button
 import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.TextField
-import com.kevlina.budgetplus.feature.color.tone.picker.R
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.orchestra.colorpicker.BrightnessSlideBar
 import com.skydoves.orchestra.colorpicker.ColorPicker
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-internal fun ColorPickerDialog(
+internal actual fun ColorPickerDialog(
     currentColor: Color,
     onColorPicked: (String) -> Unit,
     onDismiss: () -> Unit,
@@ -85,7 +83,7 @@ internal fun ColorPickerDialog(
                 children = { colorPickerView ->
                     BrightnessSlideBar(
                         colorPickerView = colorPickerView,
-                        selector = R.drawable.ic_color_selector,
+                        // selector = R.drawable.ic_color_selector,
                         modifier = Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth()
@@ -100,8 +98,8 @@ internal fun ColorPickerDialog(
             ) {
                 //TODO: Migrate to compose resources
                 //TODO: Actually let's wait until migrating to color-picker-compose
-                val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
-                it.setSelectorDrawable(selector)
+//                val selector = AppCompatResources.getDrawable(it.context, R.drawable.ic_color_selector)
+//                it.setSelectorDrawable(selector)
             }
 
             TextField(

@@ -1,13 +1,11 @@
 package com.kevlina.budgetplus.feature.overview
 
-import android.content.Intent
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.export_csv_success
 import budgetplus.core.common.generated.resources.permission_hint
-import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -32,7 +30,7 @@ import com.kevlina.budgetplus.feature.overview.ui.OverviewContentState
 import com.kevlina.budgetplus.feature.overview.ui.OverviewHeaderState
 import com.kevlina.budgetplus.feature.overview.ui.OverviewListState
 import com.kevlina.budgetplus.feature.overview.ui.toState
-import com.kevlina.budgetplus.feature.utils.CsvWriter
+import com.kevlina.budgetplus.feature.overview.utils.CsvExporter
 import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,10 +55,9 @@ class OverviewViewModel private constructor(
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
     private val authManager: AuthManager,
-    private val activityProvider: ActivityProvider,
     private val userRepo: UserRepo,
     private val bubbleRepo: BubbleRepo,
-    private val csvWriter: CsvWriter,
+    private val csvExporter: CsvExporter,
     private val snackbarSender: SnackbarSender,
     val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
@@ -196,19 +193,12 @@ class OverviewViewModel private constructor(
     }
 
     fun exportToCsv() {
-        val activity = activityProvider.currentActivity ?: return
         tracker.logEvent("overview_export_to_csv")
         viewModelScope.launch {
             try {
                 val period = recordsObserver.timePeriod.first()
                 val name = "${bookName.value}_${period.from.mediumFormatted}_${period.until.mediumFormatted}"
-                val fileUri = csvWriter.writeRecordsToCsv(name)
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    putExtra(Intent.EXTRA_STREAM, fileUri)
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    type = csvWriter.mimeType
-                }
-                activity.startActivity(Intent.createChooser(intent, null))
+                csvExporter.downloadRecordsToCsv(name)
                 snackbarSender.send(Res.string.export_csv_success)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)

@@ -21,14 +21,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import net.objecthunter.exp4j.ExpressionBuilder
 
 @Inject
 class CalculatorViewModel(
     val vibrator: VibratorManager,
     val speakToRecordViewModel: SpeakToRecordViewModel,
     private val snackbarSender: SnackbarSender,
-): ViewModel() {
+    private val expressionEvaluator: ExpressionEvaluator,
+) : ViewModel() {
 
     val priceText = TextFieldState(EMPTY_PRICE)
 
@@ -98,23 +98,13 @@ class CalculatorViewModel(
             .replace(CalculatorButton.Multiply.text, '*')
             .replace(CalculatorButton.Divide.text, '/')
 
-        val rawResult: Double = try {
-            val expression = ExpressionBuilder(text).build()
-            val validation = expression.validate()
-            if (!validation.isValid) {
-                viewModelScope.launch { snackbarSender.send(validation.errors.joinToString()) }
+        when (val result = expressionEvaluator.evaluate(text)) {
+            is ExpressionEvaluator.Result.Success -> setPrice(result.value)
+            is ExpressionEvaluator.Result.Error -> {
+                viewModelScope.launch { snackbarSender.send(result.message) }
                 Logger.e(CalculatorException()) { "Validation error. Raw: $text" }
-                return
             }
-
-            expression.evaluate()
-        } catch (e: Exception) {
-            snackbarSender.sendError(e)
-            Logger.e(e) { "Validation error. Raw: $text" }
-            return
         }
-
-        setPrice(rawResult)
     }
 
     fun setPrice(priceNumber: Double) {

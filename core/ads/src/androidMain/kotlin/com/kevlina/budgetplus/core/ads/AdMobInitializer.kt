@@ -6,6 +6,7 @@ import com.google.android.gms.ads.MobileAds
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
@@ -18,14 +19,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @SingleIn(AppScope::class)
-@Inject
-class AdMobInitializer(
+@ContributesBinding(AppScope::class)
+class AdMobInitializerImpl(
     private val context: Context,
     @AppCoroutineScope appScope: CoroutineScope,
     private val authManager: AuthManager,
-) {
+) : AdMobInitializer {
 
-    val isInitialized: StateFlow<Boolean>
+    final override val isInitialized: StateFlow<Boolean>
         field = MutableStateFlow(false)
 
     init {
@@ -36,7 +37,7 @@ class AdMobInitializer(
             .launchIn(appScope)
     }
 
-    fun initialize() {
+    override fun initialize() {
         if (authManager.isPremium.value || isInitialized.value) {
             return
         }
@@ -53,7 +54,7 @@ class AdMobInitializer(
         }
     }
 
-    suspend fun ensureInitialized() {
+    override suspend fun ensureInitialized() {
         isInitialized.filter { it }.first()
     }
 }

@@ -7,10 +7,12 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
@@ -21,15 +23,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @SingleIn(AppScope::class)
-@Inject
-class FullScreenAdsLoader(
+@ContributesBinding(AppScope::class)
+class FullScreenAdsLoaderImpl(
     private val context: Context,
+    private val activityProvider: ActivityProvider,
     @AppCoroutineScope appScope: CoroutineScope,
     private val adMobInitializer: AdMobInitializer,
     private val adUnitId: AdUnitId,
     private val authManager: AuthManager,
     private val tracker: Tracker,
-) {
+) : FullScreenAdsLoader {
 
     private val adState = MutableStateFlow<InterstitialAd?>(null)
 
@@ -47,8 +50,9 @@ class FullScreenAdsLoader(
     /**
      *  Show Ad and load the next one immediately.
      */
-    fun showAd(activity: ComponentActivity) {
+    override fun showAd() {
         if (authManager.isPremium.value) return
+        val activity = activityProvider.currentActivity ?: return
 
         adState.value?.show(activity)
         loadAd()

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.inapp.review.fixtures
 
-import android.app.Activity
 import androidx.annotation.VisibleForTesting
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 
@@ -14,7 +13,7 @@ class FakeInAppReviewManager(
 
     override suspend fun isEligibleForReview(): Boolean = isEligibleForReview
 
-    override suspend fun launchReviewFlow(activity: Activity) {
+    override suspend fun launchReviewFlow() {
         hasLaunchedReviewFlow = true
     }
 

@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.add.record
 
-import android.content.Intent
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
@@ -14,11 +13,11 @@ import budgetplus.core.common.generated.resources.permission_hint
 import budgetplus.core.common.generated.resources.record_empty_category
 import budgetplus.core.common.generated.resources.record_empty_price
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
-import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
@@ -58,7 +57,7 @@ class RecordViewModel(
     private val fullScreenAdsLoader: FullScreenAdsLoader,
     private val inAppReviewManager: InAppReviewManager,
     private val snackbarSender: SnackbarSender,
-    private val activityProvider: ActivityProvider,
+    private val shareHelper: ShareHelper,
     private val preference: Preference,
 ) : ViewModel() {
 
@@ -107,14 +106,12 @@ class RecordViewModel(
     }
 
     fun shareJoinLink() {
-        val activity = activityProvider.currentActivity ?: return
         viewModelScope.launch {
             val joinLink = bookRepo.generateJoinLink()
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_invite_to_book, joinLink))
-            }
-            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_invite)))
+            shareHelper.share(
+                title = Res.string.cta_invite,
+                text = getString(Res.string.menu_invite_to_book, joinLink)
+            )
             requestPermissionEvent.sendEvent()
         }
     }
@@ -124,9 +121,8 @@ class RecordViewModel(
     }
 
     fun launchReviewFlow() {
-        val activity = activityProvider.currentActivity ?: return
         viewModelScope.launch {
-            inAppReviewManager.launchReviewFlow(activity)
+            inAppReviewManager.launchReviewFlow()
         }
     }
 
@@ -185,9 +181,8 @@ class RecordViewModel(
      *  - Request in-app review after the 4th record
      */
     private suspend fun onRecordCreated() {
-        val activity = activityProvider.currentActivity ?: return
         when ((recordCount.first() ?: 0) % RECORD_COUNT_CYCLE) {
-            RECORD_SHOW_AD -> fullScreenAdsLoader.showAd(activity)
+            RECORD_SHOW_AD -> fullScreenAdsLoader.showAd()
             RECORD_REQUEST_PERMISSION -> requestPermissionEvent.sendEvent()
             // Request the in-app review when almost reach the next fullscreen ad,
             // just to have a better UX while user reviewing.

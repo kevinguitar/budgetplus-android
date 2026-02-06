@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.edit.category
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -18,7 +19,6 @@ import dev.zacsweers.metro.ContributesIntoMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.VisibleForTesting
 import org.jetbrains.compose.resources.getString
 import kotlin.time.Duration.Companion.seconds
 
@@ -87,7 +87,7 @@ class EditCategoryViewModel(
     }
 
     fun onCategoryDeleted(name: String) {
-        categoryRenameEvents.removeIf { event ->
+        categoryRenameEvents.removeAll { event ->
             event.to == name
         }
     }

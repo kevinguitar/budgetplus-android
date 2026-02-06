@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.color.tone.picker
 
-import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -8,7 +7,7 @@ import budgetplus.core.common.generated.resources.color_tone_applied_from_link
 import budgetplus.core.common.generated.resources.cta_share
 import budgetplus.core.common.generated.resources.fallback_error_message
 import budgetplus.core.common.generated.resources.menu_share_colors
-import com.kevlina.budgetplus.core.common.ActivityProvider
+import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
@@ -36,7 +35,7 @@ class ColorTonePickerViewModel(
     private val themeManager: ThemeManager,
     private val bubbleRepo: BubbleRepo,
     private val snackbarSender: SnackbarSender,
-    private val activityProvider: ActivityProvider,
+    private val shareHelper: ShareHelper,
     private val tracker: Tracker,
 ) : ViewModel() {
 
@@ -78,14 +77,12 @@ class ColorTonePickerViewModel(
     }
 
     fun shareMyColors() {
-        val activity = activityProvider.currentActivity ?: return
         viewModelScope.launch {
             val colorsLink = themeManager.generateCustomColorsLink()
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getString(Res.string.menu_share_colors, colorsLink))
-            }
-            activity.startActivity(Intent.createChooser(intent, getString(Res.string.cta_share)))
+            shareHelper.share(
+                title = Res.string.cta_share,
+                text = getString(Res.string.menu_share_colors, colorsLink)
+            )
         }
     }
 

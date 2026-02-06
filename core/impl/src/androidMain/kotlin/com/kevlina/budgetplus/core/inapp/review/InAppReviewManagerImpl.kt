@@ -1,12 +1,12 @@
 package com.kevlina.budgetplus.core.inapp.review
 
-import android.app.Activity
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import co.touchlab.kermit.Logger
 import com.google.android.play.core.ktx.launchReview
 import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManager
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -37,6 +37,7 @@ class InAppReviewManagerImpl(
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     private val preference: Preference,
+    private val activityProvider: ActivityProvider,
     @AppCoroutineScope private val appScope: CoroutineScope,
 ) : InAppReviewManager {
 
@@ -73,7 +74,8 @@ class InAppReviewManagerImpl(
         return eligible
     }
 
-    override suspend fun launchReviewFlow(activity: Activity) {
+    override suspend fun launchReviewFlow() {
+        val activity = activityProvider.currentActivity ?: return
         try {
             val reviewInfo = reviewManager.requestReview()
             reviewManager.launchReview(activity, reviewInfo)

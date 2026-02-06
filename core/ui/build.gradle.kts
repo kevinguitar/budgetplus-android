@@ -4,12 +4,6 @@ plugins {
     alias(budgetplus.plugins.metro)
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    compilerOptions {
-        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
-    }
-}
-
 kotlin {
     sourceSets {
         commonMain.dependencies {
@@ -22,5 +16,8 @@ kotlin {
             implementation(libs.compottie.dot)
             implementation(libs.compottie.resources)
         }
+    }
+    compilerOptions {
+        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
     }
 }

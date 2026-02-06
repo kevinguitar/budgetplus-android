@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.core.billing
 
-import androidx.activity.ComponentActivity
 import kotlinx.coroutines.flow.StateFlow
 
 interface BillingController {
@@ -9,7 +8,7 @@ interface BillingController {
 
     val purchaseState: StateFlow<PurchaseState>
 
-    fun buyPremium(activity: ComponentActivity)
+    fun buyPremium()
 
     fun endConnection()
 

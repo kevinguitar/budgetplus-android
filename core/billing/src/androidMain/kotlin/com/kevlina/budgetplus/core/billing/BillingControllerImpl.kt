@@ -19,6 +19,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
+import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -38,6 +39,7 @@ class BillingControllerImpl(
     @AppCoroutineScope private val appScope: CoroutineScope,
     private val authManager: AuthManager,
     private val purchaseRepo: PurchaseRepo,
+    private val activityProvider: ActivityProvider,
 ) : BillingController, PurchasesUpdatedListener, BillingClientStateListener {
 
     private val productDetailsState = MutableStateFlow<ProductDetails?>(null)
@@ -73,7 +75,8 @@ class BillingControllerImpl(
         Logger.d { "BillingClient: onBillingServiceDisconnected" }
     }
 
-    override fun buyPremium(activity: ComponentActivity) {
+    override fun buyPremium() {
+        val activity = activityProvider.currentActivity ?: return
         val productDetails = requireNotNull(productDetailsState.value)
         val productParams = BillingFlowParams.ProductDetailsParams.newBuilder()
             .setProductDetails(productDetails)

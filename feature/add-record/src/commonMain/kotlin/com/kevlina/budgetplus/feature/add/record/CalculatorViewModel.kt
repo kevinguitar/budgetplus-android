@@ -18,13 +18,10 @@ import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordViewModel
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.math.RoundingMode
 
 @Inject
 class CalculatorViewModel(
@@ -34,9 +31,6 @@ class CalculatorViewModel(
 ): ViewModel() {
 
     val priceText = TextFieldState(EMPTY_PRICE)
-
-    val price: StateFlow<Double>
-        field = MutableStateFlow(0.0)
 
     val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
         .map { text -> text.any { it in operatorChars } }
@@ -125,13 +119,9 @@ class CalculatorViewModel(
 
     fun setPrice(priceNumber: Double) {
         priceText.setTextAndPlaceCursorAtEnd(priceNumber.plainPriceString)
-        price.value = priceNumber.toBigDecimal()
-            .setScale(2, RoundingMode.HALF_UP)
-            .toDouble()
     }
 
     fun clearPrice() {
-        price.value = 0.0
         priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
     }
 

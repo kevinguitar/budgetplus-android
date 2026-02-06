@@ -1,6 +1,5 @@
 package com.kevlina.budgetplus.feature.records
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -44,13 +43,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import org.jetbrains.compose.resources.stringResource
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RecordsScreen(
     navController: NavController<BookDest>,
     vm: RecordsViewModel,
 ) {
-
     var editRecordDialog by remember { mutableStateOf<Record?>(null) }
     var deleteRecordDialog by remember { mutableStateOf<Record?>(null) }
 

@@ -10,7 +10,6 @@ import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordStatus
-import com.kevlina.budgetplus.feature.speak.record.fromErrorCode
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.channels.BufferOverflow
@@ -95,4 +94,18 @@ class SpeakToRecordImpl(
             }
         )
     }
+}
+
+private fun SpeakToRecordStatus.Companion.fromErrorCode(code: Int): SpeakToRecordStatus {
+    val message = when (code) {
+        SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> "Network timeout error"
+        SpeechRecognizer.ERROR_NETWORK -> "Network error"
+        SpeechRecognizer.ERROR_CLIENT -> "Client error"
+        SpeechRecognizer.ERROR_NO_MATCH -> return SpeakToRecordStatus.NoResult
+        SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> "Recognizer busy"
+        SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> "Insufficient permissions"
+        SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> "The requested language is not supported"
+        else -> "Unknown error"
+    }
+    return SpeakToRecordStatus.Error(message)
 }

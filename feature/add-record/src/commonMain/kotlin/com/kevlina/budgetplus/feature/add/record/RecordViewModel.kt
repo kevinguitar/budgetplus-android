@@ -23,6 +23,7 @@ import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.now
+import com.kevlina.budgetplus.core.common.parseToPrice
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -136,7 +137,7 @@ class RecordViewModel(
 
     private fun record() {
         val category = categoriesVm.category.value
-        val price = calculatorVm.price.value
+        val price = calculatorVm.priceText.text.parseToPrice()
 
         if (category == null) {
             viewModelScope.launch { snackbarSender.send(message = Res.string.record_empty_category) }
@@ -154,7 +155,7 @@ class RecordViewModel(
             timestamp = recordDate.value.date.withCurrentTime,
             category = category,
             name = note.text.trim().ifEmpty { category }.toString(),
-            price = calculatorVm.price.value,
+            price = price,
             author = authManager.userState.value?.toAuthor()
         )
 

@@ -2,10 +2,11 @@
 
 package com.kevlina.budgetplus.feature.overview.ui
 
-import android.view.MotionEvent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,7 +17,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -25,8 +25,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
-import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInRoot
@@ -46,9 +45,6 @@ import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.FontSize
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.isPreview
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -108,17 +104,9 @@ internal fun PieChart(
         )
     }
 
-    val disallowInterceptTouchEventRequest = remember { RequestDisallowInterceptTouchEvent() }
-
-    val coroutineScope = rememberCoroutineScope()
-    var pointerJob by remember { mutableStateOf<Job?>(null) }
-
     fun resetTouchHandle() {
-        disallowInterceptTouchEventRequest.invoke(false)
         pressPosition = null
         pressCategory = null
-        pointerJob?.cancel()
-        pointerJob = null
     }
 
     SideEffect { isDrawn = true }
@@ -142,37 +130,18 @@ internal fun PieChart(
                 ))
             }
             .onGloballyPositioned { canvasPositionInWindow = it.positionInWindow() }
-            .pointerInteropFilter(
-                requestDisallowInterceptTouchEvent = disallowInterceptTouchEventRequest
-            ) { event ->
-                when (event.actionMasked) {
-                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
-                        pointerJob?.cancel()
-                        pointerJob = coroutineScope.launch {
-                            delay(200L)
-                            disallowInterceptTouchEventRequest.invoke(true)
-                            // MotionEvent offset is absolute in this case
-                            pressPosition = Offset(
-                                x = event.rawX - canvasPositionInWindow.x,
-                                y = event.rawY - canvasPositionInWindow.y
-                            )
-                        }
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        if (pointerJob?.isCompleted == true) {
-                            pressPosition = Offset(event.x, event.y)
-                        }
-                    }
-
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP -> {
-                        tapPosition = Offset(event.x, event.y)
-                        resetTouchHandle()
-                    }
-
-                    else -> resetTouchHandle()
+            .pointerInput(Unit) {
+                detectTapGestures { offset ->
+                    tapPosition = offset
                 }
-                true
+            }
+            .pointerInput(Unit) {
+                detectDragGesturesAfterLongPress(
+                    onDragStart = { offset -> pressPosition = offset },
+                    onDrag = { change, _ -> pressPosition = change.position },
+                    onDragEnd = { resetTouchHandle() },
+                    onDragCancel = { resetTouchHandle() }
+                )
             }
     ) {
         var startAngle = 270f
@@ -277,7 +246,6 @@ internal fun PieChart(
 }
 
 context(scope: DrawScope)
-@Suppress("CONTEXT_RECEIVERS_DEPRECATED")
 private fun Offset.isWithIn(
     startAngle: Float,
     sweepAngle: Float,
@@ -289,7 +257,7 @@ private fun Offset.isWithIn(
         return false
     }
 
-    // Calculate angle of tap relative to center
+    // Calculate the angle of a tap related to center
     val angle = atan2(y - center, x - center) * 180f / PI
     val normalizedAngle = (angle + 360) % 360
     val normalizedStartAngle = (startAngle + 360) % 360

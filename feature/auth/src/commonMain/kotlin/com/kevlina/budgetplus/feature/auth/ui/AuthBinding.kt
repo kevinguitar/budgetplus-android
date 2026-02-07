@@ -21,7 +21,7 @@ import com.kevlina.budgetplus.feature.auth.CommonAuthViewModel
 import kotlinx.coroutines.flow.collect
 
 @Composable
-internal fun AuthBinding(
+fun AuthBinding(
     vm: CommonAuthViewModel,
     signInWithGoogle: () -> Unit,
     signInWithApple: (() -> Unit)? = null,

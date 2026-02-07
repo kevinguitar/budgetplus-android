@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.getString
 
 @Inject
-internal class CommonAuthViewModel(
+class CommonAuthViewModel(
     val navigation: NavigationFlow,
     val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,

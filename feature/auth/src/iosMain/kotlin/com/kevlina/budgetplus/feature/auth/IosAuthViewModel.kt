@@ -36,7 +36,7 @@ import platform.darwin.NSObject
 
 @ViewModelKey(IosAuthViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-internal class IosAuthViewModel(
+class IosAuthViewModel(
     val commonAuth: CommonAuthViewModel,
     private val iosGoogleSignInProvider: IosGoogleSignInProvider,
     private val snackbarSender: SnackbarSender,

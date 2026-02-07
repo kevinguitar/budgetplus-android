@@ -1,6 +1,7 @@
 package com.kevlina.budgetplus.book.di
 
-import co.touchlab.kermit.Logger
+import androidx.compose.runtime.MutableState
+import com.kevlina.budgetplus.book.Destination
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -12,19 +13,16 @@ interface NavigationProvider {
 
     @Provides
     @Named("welcome")
-    fun provideWelcomeNavigation(): NavigationAction = NavigationAction {
-        Logger.d { "Navigating to Welcome screen" }
-    }
+    fun provideWelcomeNavigation(destination: MutableState<Destination>): NavigationAction =
+        NavigationAction { destination.value = Destination.Welcome }
 
     @Provides
     @Named("book")
-    fun provideBookNavigation(): NavigationAction = NavigationAction {
-        Logger.d { "Navigating to Book screen" }
-    }
+    fun provideBookNavigation(destination: MutableState<Destination>): NavigationAction =
+        NavigationAction { destination.value = Destination.Book }
 
     @Provides
     @Named("auth")
-    fun provideAuthNavigation(): NavigationAction = NavigationAction {
-        Logger.d { "Navigating to Auth screen" }
-    }
+    fun provideAuthNavigation(destination: MutableState<Destination>): NavigationAction =
+        NavigationAction { destination.value = Destination.Auth }
 }

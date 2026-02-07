@@ -12,6 +12,5 @@ dependencies {
     implementation(libs.profile.installer)
     implementation(libs.coil.okhttp)
 
-    implementation(projects.core.impl)
     implementation(projects.composeApp)
 }

@@ -26,7 +26,7 @@ internal class SettingsNavigationViewModel(
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("instagram_url") private val instagramUrl: String,
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
-    @Named("logout") private val logoutNavigationAction: NavigationAction,
+    @Named("auth") private val authNavigationAction: NavigationAction,
 ) : ViewModel() {
 
     fun openLanguageSettings() {
@@ -68,6 +68,6 @@ internal class SettingsNavigationViewModel(
 
     fun logout() {
         authManager.logout()
-        navigationFlow.sendEvent(logoutNavigationAction)
+        navigationFlow.sendEvent(authNavigationAction)
     }
 }

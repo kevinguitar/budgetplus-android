@@ -13,6 +13,7 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.GoogleAuthProvider
+import dev.gitlive.firebase.auth.OAuthProvider
 import dev.gitlive.firebase.auth.auth
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
@@ -44,6 +45,21 @@ internal class CommonAuthViewModel(
             onLoginCompleted(result)
         } catch (e: Exception) {
             snackbarSender.sendError(e)
+        }
+    }
+
+    suspend fun proceedAppleSignIn(idToken: String, rawNonce: String) {
+        tracker.logEvent("sign_in_with_apple")
+
+        val credential = OAuthProvider.credential("apple.com", idToken, rawNonce, null)
+        try {
+            isLoading.value = true
+            val result = auth.signInWithCredential(credential)
+            onLoginCompleted(result)
+        } catch (e: Exception) {
+            snackbarSender.sendError(e)
+        } finally {
+            isLoading.value = false
         }
     }
 

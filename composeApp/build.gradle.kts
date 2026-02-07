@@ -85,6 +85,13 @@ swiftPackageConfig {
                 // Package version
                 version = libs.versions.firebase.ios.get(),
             )
+            remotePackageVersion(
+                url = uri("https://github.com/google/GoogleSignIn-iOS.git"),
+                products = {
+                    add("GoogleSignIn", exportToKotlin = true)
+                },
+                version = libs.versions.google.signin.ios.get()
+            )
         }
     }
 }

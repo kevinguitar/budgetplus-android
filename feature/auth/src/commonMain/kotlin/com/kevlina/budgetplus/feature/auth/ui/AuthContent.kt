@@ -18,9 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.auth_google
-import budgetplus.core.common.generated.resources.ic_google
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
@@ -29,6 +26,7 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 @Composable
 fun AuthContent(
     signInWithGoogle: () -> Unit,
+    signInWithApple: (() -> Unit)? = null,
     isLoading: Boolean,
 ) {
     Box(
@@ -71,10 +69,16 @@ fun AuthContent(
             Spacer(Modifier.height(24.dp))
 
             SocialSignInButton(
+                provider = SocialSignInProvider.Google,
                 onClick = signInWithGoogle,
-                textRes = Res.string.auth_google,
-                iconRes = Res.drawable.ic_google
             )
+
+            if (signInWithApple != null) {
+                SocialSignInButton(
+                    provider = SocialSignInProvider.Apple,
+                    onClick = signInWithApple,
+                )
+            }
         }
     }
 }
@@ -83,6 +87,12 @@ fun AuthContent(
 @Composable
 private fun AuthContent_Preview() = AppTheme {
     AuthContent(signInWithGoogle = {}, isLoading = false)
+}
+
+@Preview
+@Composable
+private fun AuthContentApple_Preview() = AppTheme {
+    AuthContent(signInWithGoogle = {}, signInWithApple = {}, isLoading = false)
 }
 
 @Preview

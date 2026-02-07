@@ -74,6 +74,7 @@ class BookViewModel(
     val bannerAdUnitId get() = adUnitId.banner
 
     init {
+        //TODO: Looks like this doesn't work on iOS, investigate this.
         if (bookRepo.currentBookId != null) {
             bookRepo.bookState
                 .onEach { book ->

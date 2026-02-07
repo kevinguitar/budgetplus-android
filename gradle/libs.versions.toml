@@ -23,6 +23,8 @@ firebase-crashlytics = "3.0.6"
 firebase-kmp = "2.4.0"
 # https://github.com/firebase/firebase-ios-sdk/releases
 firebase-ios = "12.9.0"
+# https://github.com/google/GoogleSignIn-iOS/releases
+google-signin-ios = "9.1.0"
 # https://developer.android.com/jetpack/androidx/releases/credentials
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -69,6 +71,7 @@ compose-material3-windowsizeclass = { module = "org.jetbrains.compose.material3:
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
 compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
 compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+compose-android-uiTooling = "androidx.compose.ui:ui-tooling:1.10.2"
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }

@@ -101,9 +101,9 @@ class AuthManagerImpl(
         setUserToPreference(userWithNewToken)
     }
 
-    override fun logout() {
+    override suspend fun logout() {
         tracker.value.logEvent("logout")
-        appScope.launch { Firebase.auth.signOut() }
+        Firebase.auth.signOut()
     }
 
     private fun FirebaseUser.toUser() = User(

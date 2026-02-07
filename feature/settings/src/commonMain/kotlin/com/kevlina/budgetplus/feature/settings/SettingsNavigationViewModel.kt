@@ -67,7 +67,9 @@ internal class SettingsNavigationViewModel(
     }
 
     fun logout() {
-        authManager.logout()
-        navigationFlow.sendEvent(authNavigationAction)
+        viewModelScope.launch {
+            authManager.logout()
+            navigationFlow.sendEvent(authNavigationAction)
+        }
     }
 }

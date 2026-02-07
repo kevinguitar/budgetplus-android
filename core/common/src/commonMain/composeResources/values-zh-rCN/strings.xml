@@ -7,6 +7,7 @@
     <string name="auth_welcome_title">欢迎加入极简记帐</string>
     <string name="auth_welcome_description">飞快的记帐 App，从开启到完成记帐只要 5 秒钟\n快跟你的亲朋好友共同记帐吧！</string>
     <string name="auth_google">以 Google 继续</string>
+    <string name="auth_apple">以 Apple 继续</string>
     <string name="auth_success">欢迎，%1$s！</string>
 
     <!-- Welcome -->

@@ -29,7 +29,7 @@ class FakeAuthManager(
         error("Not yet implemented")
     }
 
-    override fun logout() {
+    override suspend fun logout() {
         error("Not yet implemented")
     }
 }

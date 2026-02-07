@@ -49,8 +49,8 @@ class SnackbarSenderImpl(
     }
 
     override fun sendError(e: Throwable) {
-        Logger.e(e) { "SnackbarSender: sendError" }
         val error = e.message
+        Logger.e(e) { "SnackbarSender: sendError $error" }
         when {
             // Do not toast the cancellation error
             e is CancellationException -> Unit

@@ -23,6 +23,7 @@ class ComposeMultiplatformConventionPlugin : Plugin<Project> {
                 }
                 androidMain.dependencies {
                     implementation(project.libs.android.activity.compose)
+                    implementation(project.libs.compose.android.uiTooling)
                 }
             }
         }

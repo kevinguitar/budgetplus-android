@@ -14,9 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.auth_google
-import budgetplus.core.common.generated.resources.ic_google
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
@@ -24,6 +21,7 @@ import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 @Composable
 fun AuthContentWide(
     signInWithGoogle: () -> Unit,
+    signInWithApple: (() -> Unit)? = null,
     isLoading: Boolean = false,
 ) {
     Row(
@@ -62,10 +60,16 @@ fun AuthContentWide(
             }
 
             SocialSignInButton(
+                provider = SocialSignInProvider.Google,
                 onClick = signInWithGoogle,
-                textRes = Res.string.auth_google,
-                iconRes = Res.drawable.ic_google
             )
+
+            if (signInWithApple != null) {
+                SocialSignInButton(
+                    provider = SocialSignInProvider.Apple,
+                    onClick = signInWithApple,
+                )
+            }
         }
     }
 }
@@ -74,4 +78,10 @@ fun AuthContentWide(
 @Composable
 private fun AuthContentWide_Preview() = AppTheme {
     AuthContentWide(signInWithGoogle = {})
+}
+
+@Preview(widthDp = 800, heightDp = 600)
+@Composable
+private fun AuthContentWideApple_Preview() = AppTheme {
+    AuthContentWide(signInWithGoogle = {}, signInWithApple = {}, isLoading = true)
 }

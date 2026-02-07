@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldDecorator
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -97,17 +98,21 @@ fun TextField(
                 TextFieldLineLimits.MultiLine()
             },
             cursorBrush = SolidColor(LocalAppColors.current.dark),
-            decorator = @Composable { innerTextField ->
-                if (state.text.isEmpty() && placeholder != null) {
-                    Text(
-                        text = placeholder,
-                        textAlign = TextAlign.End,
-                        fontSize = fontSize,
-                        modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
-                    )
-                }
+            // Cannot use lambda because of https://youtrack.jetbrains.com/issue/KT-84055/Reference-to-lambda-in-lambda-in-function-TextField-can-not-be-evaluated
+            decorator = object : TextFieldDecorator {
+                @Composable
+                override fun Decoration(innerTextField: @Composable () -> Unit) {
+                    if (state.text.isEmpty() && placeholder != null) {
+                        Text(
+                            text = placeholder,
+                            textAlign = TextAlign.End,
+                            fontSize = fontSize,
+                            modifier = Modifier.alpha(PLACEHOLDER_ALPHA)
+                        )
+                    }
 
-                innerTextField()
+                    innerTextField()
+                }
             }
         )
     }

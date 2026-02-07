@@ -9,7 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.fixtures.FakeActivityProvider
+import com.kevlina.budgetplus.core.common.fixtures.FakeShareHelper
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthManager
@@ -123,7 +123,7 @@ class RecordViewModelTest {
         calculatorVm.input("1")
         calculatorVm.evaluate()
 
-        verify(exactly = 1) { fullScreenAdsLoader.showAd(any()) }
+        verify(exactly = 1) { fullScreenAdsLoader.showAd() }
     }
 
     @Test
@@ -148,7 +148,8 @@ class RecordViewModelTest {
     private val calculatorVm = CalculatorViewModel(
         vibrator = FakeVibratorManager(),
         snackbarSender = FakeSnackbarSender,
-        speakToRecordViewModel = mockk(relaxed = true)
+        speakToRecordViewModel = mockk(relaxed = true),
+        expressionEvaluator = ExpressionEvaluatorImpl(),
     )
 
     private val bookRepo = FakeBookRepo()
@@ -170,7 +171,7 @@ class RecordViewModelTest {
         fullScreenAdsLoader = fullScreenAdsLoader,
         inAppReviewManager = FakeInAppReviewManager(),
         snackbarSender = FakeSnackbarSender,
-        activityProvider = FakeActivityProvider(mockk()),
+        shareHelper = FakeShareHelper,
         preference = FakePreference {
             set(intPreferencesKey("recordCount"), recordCount)
         },

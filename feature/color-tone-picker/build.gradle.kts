@@ -13,6 +13,7 @@ kotlin {
             implementation(projects.feature.categoryPills)
 
             implementation(libs.compottie)
+            implementation(libs.navigation.event)
         }
         androidMain.dependencies {
             implementation(libs.orchestra.colorpicker)

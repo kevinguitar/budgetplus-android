@@ -28,6 +28,8 @@ import budgetplus.core.common.generated.resources.record_note
 import budgetplus.core.common.generated.resources.record_note_placeholder_expense
 import budgetplus.core.common.generated.resources.settings_description
 import com.kevlina.budgetplus.core.common.RecordType
+import com.kevlina.budgetplus.core.common.getCurrencySymbol
+import com.kevlina.budgetplus.core.common.getDefaultCurrencyCode
 import com.kevlina.budgetplus.core.common.now
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AppTheme
@@ -45,8 +47,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
-import java.util.Currency
-import java.util.Locale
 
 @Composable
 internal fun TonePreview(
@@ -129,7 +129,7 @@ internal fun TonePreview(
                 fontSize = FontSize.Header,
                 letterSpacing = 0.5.sp,
                 enabled = false,
-                title = Currency.getInstance(Locale.getDefault()).getSymbol(Locale.getDefault()),
+                title = getCurrencySymbol(getDefaultCurrencyCode()),
                 modifier = Modifier.weight(1F)
             )
         }

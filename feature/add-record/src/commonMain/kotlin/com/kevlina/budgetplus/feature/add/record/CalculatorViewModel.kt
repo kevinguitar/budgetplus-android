@@ -18,25 +18,19 @@ import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecordViewModel
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import net.objecthunter.exp4j.ExpressionBuilder
-import java.math.RoundingMode
 
 @Inject
 class CalculatorViewModel(
     val vibrator: VibratorManager,
     val speakToRecordViewModel: SpeakToRecordViewModel,
     private val snackbarSender: SnackbarSender,
-): ViewModel() {
+    private val expressionEvaluator: ExpressionEvaluator,
+) : ViewModel() {
 
     val priceText = TextFieldState(EMPTY_PRICE)
-
-    val price: StateFlow<Double>
-        field = MutableStateFlow(0.0)
 
     val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
         .map { text -> text.any { it in operatorChars } }
@@ -104,34 +98,20 @@ class CalculatorViewModel(
             .replace(CalculatorButton.Multiply.text, '*')
             .replace(CalculatorButton.Divide.text, '/')
 
-        val rawResult: Double = try {
-            val expression = ExpressionBuilder(text).build()
-            val validation = expression.validate()
-            if (!validation.isValid) {
-                viewModelScope.launch { snackbarSender.send(validation.errors.joinToString()) }
+        when (val result = expressionEvaluator.evaluate(text)) {
+            is ExpressionEvaluator.Result.Success -> setPrice(result.value)
+            is ExpressionEvaluator.Result.Error -> {
+                viewModelScope.launch { snackbarSender.send(result.message) }
                 Logger.e(CalculatorException()) { "Validation error. Raw: $text" }
-                return
             }
-
-            expression.evaluate()
-        } catch (e: Exception) {
-            snackbarSender.sendError(e)
-            Logger.e(e) { "Validation error. Raw: $text" }
-            return
         }
-
-        setPrice(rawResult)
     }
 
     fun setPrice(priceNumber: Double) {
         priceText.setTextAndPlaceCursorAtEnd(priceNumber.plainPriceString)
-        price.value = priceNumber.toBigDecimal()
-            .setScale(2, RoundingMode.HALF_UP)
-            .toDouble()
     }
 
     fun clearPrice() {
-        price.value = 0.0
         priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
     }
 

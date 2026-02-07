@@ -169,7 +169,6 @@ class ThemeManager(
     @Suppress("MagicNumber")
     private fun decodeThemeColors(value: String): ThemeColors? {
         val hexCodes = value.split(COLOR_HEX_CONCAT_CHAR, COLOR_HEX_CONCAT_CHAR_URL_ENCODED)
-        Logger.d("HexCodes: $hexCodes")
         return try {
             ThemeColors(
                 light = hexCodes[0].convertHexToColor(),

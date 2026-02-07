@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -71,10 +70,14 @@ class RecordsObserverImpl(
     private val timePeriodMap = preference.of(key = timePeriodMapKey, serializer = timePeriodMapSerializer)
 
     override val timePeriod: Flow<TimePeriod> = combine(
-        timePeriodMap.filterNotNull(),
+        timePeriodMap,
         bookRepo.bookState
     ) { periodMap, book ->
-        book?.id?.let(periodMap::get) ?: TimePeriod.Month
+        if (periodMap == null || book?.id == null) {
+            TimePeriod.Month
+        } else {
+            periodMap[book.id] ?: TimePeriod.Month
+        }
     }
 
     private var currentRegistrationConfig: Pair<String, TimePeriod>? = null
@@ -119,6 +122,7 @@ class RecordsObserverImpl(
             return
         }
 
+        Logger.d("RecordsObserver: Starting observation for bookId=$bookId, period=$period")
         currentRegistrationConfig = newConfig
         recordsJob?.cancel()
         recordsJob = booksDb.value

@@ -11,6 +11,7 @@ kotlin {
             implementation(projects.core.ui)
 
             implementation(libs.compottie)
+            implementation(libs.navigation.event)
         }
     }
 }

@@ -6,7 +6,6 @@ import budgetplus.core.common.generated.resources.premium_acknowledge_fail
 import budgetplus.core.common.generated.resources.premium_unlocked
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
-import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.map
 @ContributesIntoMap(ViewModelScope::class)
 class PremiumViewModel(
     private val billingController: BillingController,
-    private val activityProvider: ActivityProvider,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     authManager: AuthManager,
@@ -62,9 +60,8 @@ class PremiumViewModel(
         }
 
     fun getPremium() {
-        val activity = activityProvider.currentActivity ?: return
+        billingController.buyPremium()
         tracker.logEvent("buy_premium_attempt")
-        billingController.buyPremium(activity)
     }
 
     override fun onCleared() {

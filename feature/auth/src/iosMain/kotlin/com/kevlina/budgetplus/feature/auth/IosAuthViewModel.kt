@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.feature.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
@@ -33,6 +34,7 @@ import platform.Security.kSecRandomDefault
 import platform.UIKit.UIApplication
 import platform.UIKit.UIWindow
 import platform.darwin.NSObject
+import kotlin.coroutines.cancellation.CancellationException
 
 @ViewModelKey(IosAuthViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
@@ -46,7 +48,12 @@ class IosAuthViewModel(
         viewModelScope.launch {
             try {
                 val result = iosGoogleSignInProvider.signInWithGoogle()
-                commonAuth.proceedGoogleSignInWithIdToken(result.idToken)
+                commonAuth.proceedGoogleSignInWithIdToken(
+                    idToken = result.idToken,
+                    accessToken = result.accessToken
+                )
+            } catch (e: CancellationException) {
+                Logger.d(e) { "Google sign in canceled" }
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }

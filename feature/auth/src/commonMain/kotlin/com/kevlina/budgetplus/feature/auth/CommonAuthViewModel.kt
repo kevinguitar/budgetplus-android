@@ -36,10 +36,10 @@ class CommonAuthViewModel(
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
 
-    suspend fun proceedGoogleSignInWithIdToken(idToken: String) {
+    suspend fun proceedGoogleSignInWithIdToken(idToken: String, accessToken: String?) {
         tracker.logEvent("sign_in_with_google")
 
-        val credential = GoogleAuthProvider.credential(idToken, null)
+        val credential = GoogleAuthProvider.credential(idToken, accessToken)
         try {
             val result = auth.signInWithCredential(credential)
             onLoginCompleted(result)

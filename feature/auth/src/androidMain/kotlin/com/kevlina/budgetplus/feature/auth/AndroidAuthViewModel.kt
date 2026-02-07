@@ -114,7 +114,7 @@ internal class AndroidAuthViewModel(
         }
 
         coroutineScope.launch {
-            commonAuth.proceedGoogleSignInWithIdToken(googleIdToken)
+            commonAuth.proceedGoogleSignInWithIdToken(googleIdToken, accessToken = null)
         }
     }
 }

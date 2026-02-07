@@ -20,14 +20,23 @@ class IosGoogleSignInProviderImpl : IosGoogleSignInProvider {
         return suspendCancellableCoroutine { cont ->
             GIDSignIn.sharedInstance.signInWithPresentingViewController(rootViewController) { result, error ->
                 if (error != null) {
-                    cont.resumeWithException(RuntimeException(error.localizedDescription))
+                    // Eh cannot find a way to access the constant, -5 is user-cancelled.
+                    if (error.code.toInt() == -5) {
+                        cont.cancel()
+                    } else {
+                        cont.resumeWithException(RuntimeException(error.localizedDescription))
+                    }
                 }
 
                 val idToken = result?.user?.idToken?.tokenString
+                val accessToken = result?.user?.accessToken?.tokenString
                 if (idToken == null) {
-                    cont.resumeWithException(RuntimeException("No ID token"))
+                    cont.cancel()
                 } else {
-                    cont.resume(IosGoogleSignInProvider.Result(idToken))
+                    cont.resume(IosGoogleSignInProvider.Result(
+                        idToken = idToken,
+                        accessToken = accessToken
+                    ))
                 }
             }
         }

@@ -4,6 +4,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
+import com.kevlina.budgetplus.core.common.fixtures.FakeActivityProvider
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
@@ -59,6 +60,7 @@ class InAppReviewManagerImplTest {
             set(booleanPreferencesKey("hasRejectedBefore"), hasRejectedBefore)
             set(booleanPreferencesKey("hasRequestedBefore"), hasRequestedBefore)
         },
-        appScope = backgroundScope
+        appScope = backgroundScope,
+        activityProvider = FakeActivityProvider(mockk())
     )
 }

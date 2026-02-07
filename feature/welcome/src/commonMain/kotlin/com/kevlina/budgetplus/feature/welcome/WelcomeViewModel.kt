@@ -34,7 +34,7 @@ class WelcomeViewModel(
     private val authManager: AuthManager,
     private val toaster: Toaster,
     @Named("book") private val bookNavigationAction: NavigationAction,
-    @Named("logout") private val logoutNavigationAction: NavigationAction,
+    @Named("auth") private val authNavigationAction: NavigationAction,
 ) : ViewModel() {
 
     private var createBookJob: Job? = null
@@ -86,6 +86,6 @@ class WelcomeViewModel(
 
     fun logout() {
         authManager.logout()
-        navigation.sendEvent(logoutNavigationAction)
+        navigation.sendEvent(authNavigationAction)
     }
 }

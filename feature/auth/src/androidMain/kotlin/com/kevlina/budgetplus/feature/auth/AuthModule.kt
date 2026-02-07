@@ -14,8 +14,8 @@ import dev.zacsweers.metro.Provides
 interface AuthModule {
 
     @Provides
-    @Named("logout")
-    fun provideLogoutNavigationAction(context: Context): NavigationAction {
+    @Named("auth")
+    fun provideAuthNavigationAction(context: Context): NavigationAction {
         return AndroidNavigationAction(
             intent = Intent(context, AuthActivity::class.java)
                 .putExtra(ARG_ENABLE_AUTO_SIGN_IN, false)

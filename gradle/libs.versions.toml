@@ -21,6 +21,8 @@ firebase-bom = "34.9.0"
 firebase-crashlytics = "3.0.6"
 # https://github.com/GitLiveApp/firebase-kotlin-sdk/releases
 firebase-kmp = "2.4.0"
+# https://github.com/firebase/firebase-ios-sdk/releases
+firebase-ios = "12.9.0"
 # https://developer.android.com/jetpack/androidx/releases/credentials
 android-credentials = "1.5.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -154,3 +156,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "gradle-plugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+spm-kmp = "io.github.frankois944.spmForKmp:1.4.7"

@@ -17,3 +17,7 @@ BudgetKey
 xcuserdata
 bin
 .vscode
+iosApp/Pods
+*.xcuserdatad
+composeApp/exportedNativeExample/.build
+composeApp/src/swift/nativeExample/StartYourBridgeHere.swift

@@ -50,6 +50,7 @@ android-appcompat = "androidx.appcompat:appcompat:1.7.1"
 android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
+android-lifecycle-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-jb" }
 android-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-jb" }
 android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
 android-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
@@ -129,6 +130,8 @@ kmp = [
     "kotlin-datetime",
 ]
 compose = [
+    "android-lifecycle-compose",
+    "android-viewmodel-compose",
     "compose-icons",
     "compose-resources",
     "compose-ui",

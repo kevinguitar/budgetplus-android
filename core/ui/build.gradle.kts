@@ -8,7 +8,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.theme)
-            implementation(libs.android.viewmodel.compose)
             implementation(libs.compose.material3)
             implementation(libs.compose.material3.windowsizeclass)
 

@@ -17,11 +17,15 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
-import com.kevlina.budgetplus.feature.auth.AuthViewModel
+import com.kevlina.budgetplus.feature.auth.CommonAuthViewModel
 import kotlinx.coroutines.flow.collect
 
 @Composable
-internal fun AuthBinding(vm: AuthViewModel) {
+internal fun AuthBinding(
+    vm: CommonAuthViewModel,
+    signInWithGoogle: () -> Unit,
+    signInWithApple: (() -> Unit)? = null,
+) {
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
     val isLoading by vm.isLoading.collectAsStateWithLifecycle()
 
@@ -41,13 +45,15 @@ internal fun AuthBinding(vm: AuthViewModel) {
                 .systemBarsPadding(),
             regularContent = {
                 AuthContent(
-                    signInWithGoogle = vm::signInWithGoogle,
+                    signInWithGoogle = signInWithGoogle,
+                    signInWithApple = signInWithApple,
                     isLoading = isLoading
                 )
             },
             wideContent = {
                 AuthContentWide(
-                    signInWithGoogle = vm::signInWithGoogle,
+                    signInWithGoogle = signInWithGoogle,
+                    signInWithApple = signInWithApple,
                     isLoading = isLoading
                 )
             }

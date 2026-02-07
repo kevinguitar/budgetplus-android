@@ -7,6 +7,7 @@
     <string name="auth_welcome_title">ミニマリストな帳簿への参加を歓迎します。</string>
     <string name="auth_welcome_description">高速な帳簿アプリ、開始から記帳完了までたった 5 秒、友達や親戚と一緒に記帳しましょう！</string>
     <string name="auth_google">Google で続行</string>
+    <string name="auth_apple">Apple で続行</string>
     <string name="auth_success">ようこそ、%1$sさん！</string>
 
     <!-- Welcome -->

@@ -85,7 +85,9 @@ class WelcomeViewModel(
     }
 
     fun logout() {
-        authManager.logout()
-        navigation.sendEvent(authNavigationAction)
+        viewModelScope.launch {
+            authManager.logout()
+            navigation.sendEvent(authNavigationAction)
+        }
     }
 }

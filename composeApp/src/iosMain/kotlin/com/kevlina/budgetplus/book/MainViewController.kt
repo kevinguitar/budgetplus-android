@@ -1,5 +1,9 @@
 package com.kevlina.budgetplus.book
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,28 +44,33 @@ fun MainViewController(deeplink: String?): UIViewController = ComposeUIViewContr
         LocalViewModelGraphProvider provides graph.viewModelGraphProvider
     ) {
         AppTheme(themeColors) {
-            when (graph.destinationState.value) {
-                Destination.Auth -> {
-                    val vm = metroViewModel<IosAuthViewModel>()
-                    AuthBinding(
-                        vm = vm.commonAuth,
-                        signInWithGoogle = vm::signInWithGoogle,
-                        signInWithApple = vm::signInWithApple
-                    )
-                }
-
-                Destination.Welcome -> {
-                    val vm = metroViewModel<WelcomeViewModel>()
-                    WelcomeBinding(vm = vm)
-                }
-
-                Destination.Book -> {
-                    val vm = metroViewModel<BookViewModel>()
-                    LaunchedEffect(deeplink) {
-                        vm.handleDeeplink(deeplink)
+            AnimatedContent(
+                targetState = graph.destinationState.value,
+                transitionSpec = { fadeIn() togetherWith fadeOut() }
+            ) { destination ->
+                when (destination) {
+                    Destination.Auth -> {
+                        val vm = metroViewModel<IosAuthViewModel>()
+                        AuthBinding(
+                            vm = vm.commonAuth,
+                            signInWithGoogle = vm::signInWithGoogle,
+                            signInWithApple = vm::signInWithApple
+                        )
                     }
 
-                    BookBinding(vm = vm)
+                    Destination.Welcome -> {
+                        val vm = metroViewModel<WelcomeViewModel>()
+                        WelcomeBinding(vm = vm)
+                    }
+
+                    Destination.Book -> {
+                        val vm = metroViewModel<BookViewModel>()
+                        LaunchedEffect(deeplink) {
+                            vm.handleDeeplink(deeplink)
+                        }
+
+                        BookBinding(vm = vm)
+                    }
                 }
             }
         }

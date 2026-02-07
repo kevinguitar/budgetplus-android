@@ -17,6 +17,6 @@ interface AuthManager {
 
     suspend fun updateFcmToken(newToken: String)
 
-    fun logout()
+    suspend fun logout()
 
 }

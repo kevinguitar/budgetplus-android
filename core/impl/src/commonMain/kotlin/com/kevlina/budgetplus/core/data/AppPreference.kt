@@ -92,4 +92,4 @@ class AppPreference(
     }
 }
 
-internal const val dataStoreFileName = "app_preference_v2"
+internal const val dataStoreFileName = "app.preferences_pb"

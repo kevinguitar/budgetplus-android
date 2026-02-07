@@ -2,7 +2,7 @@
 # https://developer.android.com/reference/tools/gradle-api
 gradle-plugin = "8.13.2"
 # https://kotlinlang.org/docs/releases.html#release-details
-kotlin = "2.3.10"
+kotlin = "2.3.20-Beta2"
 # https://github.com/Kotlin/kotlinx.coroutines/releases
 coroutines = "1.10.2"
 # https://github.com/coil-kt/coil/releases
@@ -51,7 +51,8 @@ android-core = "androidx.core:core-ktx:1.17.0"
 android-credentials = { module = "androidx.credentials:credentials", version.ref = "android-credentials" }
 android-credentials-play-services = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "android-credentials" }
 android-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-jb" }
-android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+android-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
+android-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
 build-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
 build-compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 build-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -70,7 +71,7 @@ compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling-preview", ve
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
 compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
@@ -119,10 +120,11 @@ permissions-storage = { module = "dev.icerock.moko:permissions-storage", version
 android = [
     "android-appcompat",
     "android-core",
-    "android-viewmodel",
-    "coroutines-android",
 ]
 kmp = [
+    "android-viewmodel",
+    "android-viewmodel-savedstate",
+    "coroutines-core",
     "kermit",
     "kotlin-datetime",
 ]

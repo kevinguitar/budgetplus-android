@@ -68,6 +68,7 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew :androidApp:assemble --continue --quiet
+          ./gradlew :composeApp:compileKotlinIosSimulatorArm64 --continue --quiet
           ./gradlew test detekt lint --continue --quiet
         # Disable temporarily
         # run: ./gradlew build --continue --quiet

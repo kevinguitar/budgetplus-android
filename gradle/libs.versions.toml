@@ -80,7 +80,6 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 espresso = "androidx.test.espresso:espresso-core:3.7.0"
-exp4j = "net.objecthunter:exp4j:0.4.8"
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-kmp" }
 firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-kmp" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }

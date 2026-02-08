@@ -7,7 +7,6 @@ import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.feature.add.record.ExpressionEvaluator
 import com.kevlina.budgetplus.feature.overview.utils.CsvSaver
 import com.kevlina.budgetplus.feature.settings.SettingsNavigation
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
@@ -29,13 +28,6 @@ class AdMobInitializerImpl : AdMobInitializer {
 
     override suspend fun ensureInitialized() {
 
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class ExpressionEvaluatorImpl : ExpressionEvaluator {
-    override fun evaluate(expression: String): ExpressionEvaluator.Result {
-        return ExpressionEvaluator.Result.Error("Not implemented")
     }
 }
 

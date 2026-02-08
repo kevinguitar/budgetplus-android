@@ -18,8 +18,5 @@ kotlin {
             implementation(libs.permissions.compose)
             implementation(libs.permissions.notifications)
         }
-        androidMain.dependencies {
-            implementation(libs.exp4j)
-        }
     }
 }

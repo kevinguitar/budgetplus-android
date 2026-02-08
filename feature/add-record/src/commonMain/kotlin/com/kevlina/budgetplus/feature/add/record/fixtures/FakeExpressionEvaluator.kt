@@ -1,8 +1,8 @@
 package com.kevlina.budgetplus.feature.add.record.fixtures
 
 import androidx.annotation.VisibleForTesting
-import com.kevlina.budgetplus.feature.add.record.ExpressionEvaluator
-import com.kevlina.budgetplus.feature.add.record.ExpressionEvaluator.Result
+import com.kevlina.budgetplus.core.common.ExpressionEvaluator
+import com.kevlina.budgetplus.core.common.ExpressionEvaluator.Result
 
 @VisibleForTesting
 class FakeExpressionEvaluator(

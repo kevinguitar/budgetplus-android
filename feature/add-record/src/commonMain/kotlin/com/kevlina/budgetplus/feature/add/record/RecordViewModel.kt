@@ -108,12 +108,16 @@ class RecordViewModel(
 
     fun shareJoinLink() {
         viewModelScope.launch {
-            val joinLink = bookRepo.generateJoinLink()
-            shareHelper.share(
-                title = Res.string.cta_invite,
-                text = getString(Res.string.menu_invite_to_book, joinLink)
-            )
-            requestPermissionEvent.sendEvent()
+            try {
+                val joinLink = bookRepo.generateJoinLink()
+                shareHelper.share(
+                    title = Res.string.cta_invite,
+                    text = getString(Res.string.menu_invite_to_book, joinLink)
+                )
+                requestPermissionEvent.sendEvent()
+            } catch (e: Exception) {
+                snackbarSender.sendError(e)
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
-import com.kevlina.budgetplus.inapp.review.InAppReviewManager
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,19 +36,6 @@ class ToasterImpl : Toaster {
 @ContributesBinding(AppScope::class)
 class FullScreenAdsLoaderImpl : FullScreenAdsLoader {
     override fun showAd() {
-        TODO("Not yet implemented")
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class InAppReviewManagerImpl : InAppReviewManager {
-    override suspend fun isEligibleForReview(): Boolean = false
-
-    override suspend fun launchReviewFlow() {
-        TODO("Not yet implemented")
-    }
-
-    override fun rejectReviewing() {
         TODO("Not yet implemented")
     }
 }

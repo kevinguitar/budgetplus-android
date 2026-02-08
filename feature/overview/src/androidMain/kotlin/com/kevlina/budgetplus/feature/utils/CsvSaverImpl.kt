@@ -10,8 +10,10 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
+import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.export_csv_success
 import com.kevlina.budgetplus.core.common.ActivityProvider
+import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.feature.overview.utils.CsvSaver
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -28,15 +30,12 @@ class CsvSaverImpl(
     @Named("app_package") private val appPackage: String,
     @Named("share_cache") private val shareCacheDir: Provider<File>,
     private val activityProvider: ActivityProvider,
+    private val snackbarSender: SnackbarSender,
 ) : CsvSaver {
 
     private val contentResolver get() = context.contentResolver
 
-    override suspend fun saveToDownload(
-        fileName: String,
-        columns: List<String>,
-        recordRows: Sequence<List<String?>>,
-    ) = IO {
+    override suspend fun saveToDownload(fileName: String, csvText: String) = IO {
         val activity = activityProvider.currentActivity ?: error("Cannot find current activity")
 
         val cacheFile = File(shareCacheDir(), "$fileName.csv")
@@ -44,10 +43,7 @@ class CsvSaverImpl(
             ?: throw IOException("Cannot open output stream from $cacheFile")
 
         outputStream.use { stream ->
-            csvWriter().open(stream) {
-                writeRow(columns)
-                writeRows(recordRows)
-            }
+            stream.write(csvText.toByteArray())
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -55,6 +51,7 @@ class CsvSaverImpl(
         } else {
             saveToDownloadPreQ(cacheFile)
         }
+        snackbarSender.send(Res.string.export_csv_success)
 
         val fileUri = FileProvider.getUriForFile(context, "$appPackage.provider", cacheFile)
         val intent = Intent(Intent.ACTION_SEND).apply {

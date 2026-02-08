@@ -15,5 +15,7 @@
             </array>
         </dict>
     </array>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
 </dict>
 </plist>

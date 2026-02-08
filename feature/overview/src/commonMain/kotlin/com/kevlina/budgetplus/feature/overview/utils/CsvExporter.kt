@@ -18,6 +18,7 @@ import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.createdOn
 import com.kevlina.budgetplus.core.data.resolveAuthor
+import de.halfbit.csv.buildCsv
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterNotNull
@@ -46,7 +47,19 @@ internal class CsvExporter(
             getString(Res.string.export_column_author),
         )
 
-        csvSaver.saveToDownload(fileName, columns, recordRows)
+        val csv = buildCsv {
+            header {
+                columns.forEach(::column)
+            }
+            recordRows.forEach { row ->
+                data {
+                    row.forEach { cell ->
+                        value(cell.orEmpty())
+                    }
+                }
+            }
+        }
+        csvSaver.saveToDownload(fileName, csv.toCsvText())
     }
 
     private suspend fun generateRecordRows(): Sequence<List<String?>> = Dispatchers.Default {

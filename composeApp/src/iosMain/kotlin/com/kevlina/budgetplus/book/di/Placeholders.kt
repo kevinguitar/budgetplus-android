@@ -7,8 +7,6 @@ import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.feature.add.record.ExpressionEvaluator
-import com.kevlina.budgetplus.feature.overview.utils.CsvSaver
 import com.kevlina.budgetplus.feature.settings.SettingsNavigation
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
@@ -33,13 +31,6 @@ class AdMobInitializerImpl : AdMobInitializer {
 }
 
 @ContributesBinding(AppScope::class)
-class ExpressionEvaluatorImpl : ExpressionEvaluator {
-    override fun evaluate(expression: String): ExpressionEvaluator.Result {
-        return ExpressionEvaluator.Result.Error("Not implemented")
-    }
-}
-
-@ContributesBinding(AppScope::class)
 class ToasterImpl : Toaster {
     override fun showMessage(message: CharSequence) {
         Logger.d { "Showing toast: $message" }
@@ -57,13 +48,6 @@ class SettingsNavigationImpl : SettingsNavigation {
     }
 
     override fun visitUrl(url: String) {
-        TODO("Not yet implemented")
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class CsvSaverImpl : CsvSaver {
-    override suspend fun saveToDownload(fileName: String, columns: List<String>, recordRows: Sequence<List<String?>>) {
         TODO("Not yet implemented")
     }
 }

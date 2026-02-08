@@ -4,7 +4,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.export_csv_success
 import budgetplus.core.common.generated.resources.permission_hint
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -199,7 +198,6 @@ class OverviewViewModel private constructor(
                 val period = recordsObserver.timePeriod.first()
                 val name = "${bookName.value}_${period.from.mediumFormatted}_${period.until.mediumFormatted}"
                 csvExporter.downloadRecordsToCsv(name)
-                snackbarSender.send(Res.string.export_csv_success)
             } catch (e: Exception) {
                 snackbarSender.sendError(e)
             }

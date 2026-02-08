@@ -8,6 +8,7 @@ import budgetplus.core.common.generated.resources.record_empty_price
 import com.google.common.truth.Truth.assertThat
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.common.EventFlow
+import com.kevlina.budgetplus.core.common.ExpressionEvaluator
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.fixtures.FakeShareHelper
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
@@ -149,7 +150,7 @@ class RecordViewModelTest {
         vibrator = FakeVibratorManager(),
         snackbarSender = FakeSnackbarSender,
         speakToRecordViewModel = mockk(relaxed = true),
-        expressionEvaluator = ExpressionEvaluatorImpl(),
+        expressionEvaluator = ExpressionEvaluator(),
     )
 
     private val bookRepo = FakeBookRepo()

@@ -34,7 +34,6 @@ fun TopBar(
     menuActions: @Composable (() -> Unit)? = null,
     applyStatusBarPadding: Boolean = true,
 ) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

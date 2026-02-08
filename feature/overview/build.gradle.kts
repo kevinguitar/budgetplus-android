@@ -12,11 +12,9 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.feature.recordCard)
 
+            implementation(libs.csv)
             implementation(libs.permissions.compose)
             implementation(libs.permissions.storage)
-        }
-        androidMain.dependencies {
-            implementation(libs.kotlin.csv)
         }
     }
 }

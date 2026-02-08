@@ -163,12 +163,12 @@ class ThemeManager(
 
     private fun ThemeColors.encode(): String {
         return listOf(light, lightBg, primary, dark)
-            .joinToString(COLOR_HEX_CONCAT_CHAR) { it.toHexCode() }
+            .joinToString(COLOR_HEX_CONCAT_CHAR_URL_ENCODED) { it.toHexCode() }
     }
 
     @Suppress("MagicNumber")
     private fun decodeThemeColors(value: String): ThemeColors? {
-        val hexCodes = value.split(COLOR_HEX_CONCAT_CHAR, COLOR_HEX_CONCAT_CHAR_URL_ENCODED)
+        val hexCodes = value.split(COLOR_HEX_CONCAT_CHAR_URL_ENCODED)
         return try {
             ThemeColors(
                 light = hexCodes[0].convertHexToColor(),
@@ -183,7 +183,6 @@ class ThemeManager(
     }
 
     companion object {
-        private const val COLOR_HEX_CONCAT_CHAR = ";"
         private const val COLOR_HEX_CONCAT_CHAR_URL_ENCODED = "%3b"
     }
 }

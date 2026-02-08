@@ -29,8 +29,10 @@ internal class SettingsNavigationViewModel(
     @Named("auth") private val authNavigationAction: NavigationAction,
 ) : ViewModel() {
 
-    fun openLanguageSettings() {
-        navigation.openLanguageSettings()
+    fun openLanguageSettings(
+        onLanguageChanged: (String) -> Unit
+    ) {
+        navigation.openLanguageSettings(onLanguageChanged)
         tracker.logEvent("settings_language_click")
     }
 

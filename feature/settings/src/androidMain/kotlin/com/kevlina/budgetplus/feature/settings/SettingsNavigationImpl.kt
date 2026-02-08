@@ -23,7 +23,7 @@ class SettingsNavigationImpl(
     @Named("contact_email") private val contactEmail: String,
 ) : SettingsNavigation {
 
-    override fun openLanguageSettings() {
+    override fun openLanguageSettings(onLanguageChanged: (String) -> Unit) {
         val activity = activityProvider.currentActivity ?: return
         val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
             data = "package:$appPackage".toUri()

@@ -6,7 +6,6 @@ import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
 import com.kevlina.budgetplus.core.common.Toaster
-import com.kevlina.budgetplus.feature.settings.SettingsNavigation
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
 import com.kevlina.budgetplus.inapp.review.InAppReviewManager
@@ -32,21 +31,6 @@ class AdMobInitializerImpl : AdMobInitializer {
 class ToasterImpl : Toaster {
     override fun showMessage(message: CharSequence) {
         Logger.d { "Showing toast: $message" }
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class SettingsNavigationImpl : SettingsNavigation {
-    override fun openLanguageSettings() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun contactUs() {
-        TODO("Not yet implemented")
-    }
-
-    override fun visitUrl(url: String) {
-        TODO("Not yet implemented")
     }
 }
 

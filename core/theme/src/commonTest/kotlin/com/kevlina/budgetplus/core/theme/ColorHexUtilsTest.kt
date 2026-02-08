@@ -7,11 +7,11 @@ import kotlin.test.assertEquals
 class ColorHexUtilsTest {
 
     @Test
-    fun convertHexToColorInt_works() {
-        assertEquals(0xFFFF0000.toInt(), "FF0000".convertHexToColorInt())
-        assertEquals(0xFFFF0000.toInt(), "#FF0000".convertHexToColorInt())
-        assertEquals(0x7FFF0000, "7FFF0000".convertHexToColorInt())
-        assertEquals(0x7FFF0000, "#7FFF0000".convertHexToColorInt())
+    fun convertHexToColor_works() {
+        assertEquals(Color(0xFFFF0000), "FF0000".convertHexToColor())
+        assertEquals(Color(0xFFFF0000), "#FF0000".convertHexToColor())
+        assertEquals(Color(0x7FFF0000), "7FFF0000".convertHexToColor())
+        assertEquals(Color(0x7FFF0000), "#7FFF0000".convertHexToColor())
     }
 
     @Test

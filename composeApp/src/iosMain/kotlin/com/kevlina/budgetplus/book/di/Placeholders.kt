@@ -5,7 +5,6 @@ import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
-import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.feature.settings.SettingsNavigation
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
@@ -15,7 +14,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.jetbrains.compose.resources.StringResource
 
 @ContributesBinding(AppScope::class)
 class AdMobInitializerImpl : AdMobInitializer {
@@ -94,13 +92,6 @@ class BillingControllerImpl : BillingController {
     }
 
     override fun endConnection() {
-        TODO("Not yet implemented")
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class ShareHelperImpl: ShareHelper {
-    override suspend fun share(title: StringResource, text: String) {
         TODO("Not yet implemented")
     }
 }

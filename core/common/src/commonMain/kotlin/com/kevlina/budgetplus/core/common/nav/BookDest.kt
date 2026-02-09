@@ -7,6 +7,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface BookDest : NavKey {
 
+    @Serializable
+    data object Auth : BookDest
+
+    @Serializable
+    data object Welcome : BookDest
+
     /**
      * Destinations of Add tab
      */

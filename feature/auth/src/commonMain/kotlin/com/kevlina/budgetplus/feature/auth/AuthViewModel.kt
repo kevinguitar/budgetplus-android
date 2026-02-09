@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.feature.auth
 
+import androidx.lifecycle.ViewModel
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.auth_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -20,6 +21,13 @@ import dev.zacsweers.metro.Named
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.getString
+
+expect class AuthViewModel: ViewModel {
+    val commonAuthViewModel: CommonAuthViewModel
+
+    fun signInWithGoogle()
+    fun signInWithApple()
+}
 
 @Inject
 class CommonAuthViewModel(

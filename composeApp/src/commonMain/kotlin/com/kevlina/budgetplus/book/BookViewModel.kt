@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.book
 
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
@@ -14,7 +13,6 @@ import com.kevlina.budgetplus.core.common.di.ViewModelKey
 import com.kevlina.budgetplus.core.common.di.ViewModelScope
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
 import com.kevlina.budgetplus.core.common.nav.BookDest
-import com.kevlina.budgetplus.core.common.nav.BottomNavTab
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_OVERVIEW_PATH
@@ -35,6 +33,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -43,6 +42,7 @@ import org.jetbrains.compose.resources.getString
 @ViewModelKey(BookViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
 class BookViewModel(
+    val navController: NavController<BookDest>,
     val snackbarSender: SnackbarSender,
     val themeManager: ThemeManager,
     val navigation: NavigationFlow,
@@ -52,21 +52,22 @@ class BookViewModel(
     private val adUnitId: AdUnitId,
     adMobInitializer: AdMobInitializer,
     authManager: AuthManager,
-    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    val navController = NavController(
-        startRoot = BottomNavTab.Add.root,
-        serializer = BookDest.serializer(),
-        savedStateHandle = savedStateHandle
-    )
     private val currentNavKeyFlow = snapshotFlow { navController.backStack.lastOrNull() }.filterNotNull()
+
+    private val hideBottomNavDestinations = setOf(BookDest.Auth, BookDest.Welcome)
+    private val hideAdsDestinations = hideBottomNavDestinations + BookDest.UnlockPremium
+
+    val showBottomNav = currentNavKeyFlow
+        .map { it !in hideBottomNavDestinations }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
 
     val showAds = combine(
         authManager.isPremium,
         currentNavKeyFlow
     ) { isPremium, currentNavKey ->
-        !isPremium && currentNavKey != BookDest.UnlockPremium
+        !isPremium && currentNavKey !in hideAdsDestinations
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val isAdMobInitialized = adMobInitializer.isInitialized

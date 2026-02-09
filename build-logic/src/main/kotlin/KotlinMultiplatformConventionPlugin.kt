@@ -102,7 +102,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 freeCompilerArgs.addAll(
                     "-Xcontext-parameters",
                     "-Xexplicit-backing-fields",
-                    "-Xannotation-default-target=param-property"
+                    "-Xannotation-default-target=param-property",
+                    "-Xexpect-actual-classes"
                 )
                 optIn.addAll(
                     "kotlin.contracts.ExperimentalContracts",

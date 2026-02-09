@@ -36,19 +36,19 @@ import platform.UIKit.UIWindow
 import platform.darwin.NSObject
 import kotlin.coroutines.cancellation.CancellationException
 
-@ViewModelKey(IosAuthViewModel::class)
+@ViewModelKey(AuthViewModel::class)
 @ContributesIntoMap(ViewModelScope::class)
-class IosAuthViewModel(
-    val commonAuth: CommonAuthViewModel,
+actual class AuthViewModel(
+    actual val commonAuthViewModel: CommonAuthViewModel,
     private val iosGoogleSignInProvider: IosGoogleSignInProvider,
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {
 
-    fun signInWithGoogle() {
+    actual fun signInWithGoogle() {
         viewModelScope.launch {
             try {
                 val result = iosGoogleSignInProvider.signInWithGoogle()
-                commonAuth.proceedGoogleSignInWithIdToken(
+                commonAuthViewModel.proceedGoogleSignInWithIdToken(
                     idToken = result.idToken,
                     accessToken = result.accessToken
                 )
@@ -61,7 +61,7 @@ class IosAuthViewModel(
     }
 
     @OptIn(BetaInteropApi::class)
-    fun signInWithApple() {
+    actual fun signInWithApple() {
         val rawNonce = generateNonce()
         val hashedNonce = sha256(rawNonce)
 
@@ -83,7 +83,7 @@ class IosAuthViewModel(
                     val idToken = NSString.create(data = idTokenData, encoding = NSUTF8StringEncoding) ?: return
 
                     viewModelScope.launch {
-                        commonAuth.proceedAppleSignIn(idToken.toString(), rawNonce)
+                        commonAuthViewModel.proceedAppleSignIn(idToken.toString(), rawNonce)
                     }
                 }
 

@@ -30,6 +30,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -69,12 +71,20 @@ class AuthManagerImpl(
     init {
         appScope.launch { userState.collect() }
 
-        appScope.launch {
-            Firebase.auth
-                .authStateChanged
-                //TODO: runBlocking?
-                .collect { updateUser(it?.toUser()) }
-        }
+        // Quite terrible code but this is to skip the first null coming from Firebase Auth, we don't want to clear
+        // the user preference (it is already null) and perform the navigation while the user already on auth screen.
+        var hasSkippedFirstNull = false
+        Firebase.auth
+            .authStateChanged
+            .onEach { firebaseUser ->
+                when {
+                    firebaseUser != null -> updateUser(firebaseUser.toUser())
+                    !hasSkippedFirstNull -> Unit
+                    else -> updateUser(null)
+                }
+                hasSkippedFirstNull = true
+            }
+            .launchIn(scope = appScope)
     }
 
     override fun requireUserId(): String {
@@ -175,7 +185,6 @@ class AuthManagerImpl(
     private suspend fun setUserToPreference(user: User?) {
         if (user == null) {
             preference.remove(currentUserKey)
-            logout()
             navigationFlow.sendEvent(authNavigationAction)
         } else {
             preference.update(currentUserKey, User.serializer(), user)

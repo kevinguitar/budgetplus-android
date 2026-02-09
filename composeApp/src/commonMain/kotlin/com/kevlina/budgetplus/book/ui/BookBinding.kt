@@ -28,6 +28,7 @@ import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
 import com.kevlina.budgetplus.core.ui.bubble.Bubble
+import com.kevlina.budgetplus.core.ui.thenIf
 import kotlinx.coroutines.flow.launchIn
 
 @Composable
@@ -36,6 +37,7 @@ internal fun BookBinding(
 ) {
     val navController = vm.navController
 
+    val showBottomNav by vm.showBottomNav.collectAsStateWithLifecycle()
     val showAds by vm.showAds.collectAsStateWithLifecycle()
     val isAdMobInitialized by vm.isAdMobInitialized.collectAsStateWithLifecycle()
     val previewColors by vm.themeManager.previewColors.collectAsStateWithLifecycle()
@@ -50,17 +52,22 @@ internal fun BookBinding(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         Scaffold(
-            bottomBar = { BottomNav(navController, previewColors) },
+            bottomBar = {
+                if (showBottomNav) {
+                    BottomNav(navController, previewColors)
+                }
+            },
             snackbarHost = { SnackbarHost(snackbarData) },
         ) { innerPadding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-                    // Do not consider the top padding, and let TopBar handle it.
-                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    .thenIf(showBottomNav) {
+                        // Do not consider the top padding, and let TopBar handle it.
+                        Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                    }
                     .background(color = previewColors?.light ?: LocalAppColors.current.light)
             ) {
                 NavDisplay(

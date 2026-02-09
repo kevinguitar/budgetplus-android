@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <component name="JavaProjectCodeInsightSettings">
+        <excluded-names>
+            <name>coil3.util.Logger</name>
+            <name>java.lang.reflect.Modifier</name>
+            <name>java.nio.file.WatchEvent.Modifier</name>
+            <name>java.security.Provider</name>
+            <name>java.time.format.TextStyle</name>
+            <name>java.util.ServiceLoader.Provider</name>
+            <name>java.util.concurrent.Flow</name>
+            <name>javax.inject.Inject</name>
+            <name>javax.inject.Named</name>
+            <name>javax.inject.Provider</name>
+            <name>javax.inject.Qualifier</name>
+            <name>javax.inject.Scope</name>
+            <name>javax.inject.Singleton</name>
+            <name>org.jetbrains.skia.skottie.Logger</name>
+            <name>org.w3c.dom.Text</name>
+        </excluded-names>
+    </component>
+</project>

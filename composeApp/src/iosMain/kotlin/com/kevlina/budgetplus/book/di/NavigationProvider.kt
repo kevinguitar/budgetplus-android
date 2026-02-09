@@ -1,7 +1,7 @@
 package com.kevlina.budgetplus.book.di
 
-import androidx.compose.runtime.MutableState
-import com.kevlina.budgetplus.book.Destination
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.nav.NavigationAction
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
@@ -13,16 +13,16 @@ interface NavigationProvider {
 
     @Provides
     @Named("welcome")
-    fun provideWelcomeNavigation(destination: MutableState<Destination>): NavigationAction =
-        NavigationAction { destination.value = Destination.Welcome }
+    fun provideWelcomeNavigation(navController: NavController<BookDest>): NavigationAction =
+        NavigationAction { navController.selectRootAndClearAll(BookDest.Welcome) }
 
     @Provides
     @Named("book")
-    fun provideBookNavigation(destination: MutableState<Destination>): NavigationAction =
-        NavigationAction { destination.value = Destination.Book }
+    fun provideBookNavigation(navController: NavController<BookDest>): NavigationAction =
+        NavigationAction { navController.selectRootAndClearAll(BookDest.Record) }
 
     @Provides
     @Named("auth")
-    fun provideAuthNavigation(destination: MutableState<Destination>): NavigationAction =
-        NavigationAction { destination.value = Destination.Auth }
+    fun provideAuthNavigation(navController: NavController<BookDest>): NavigationAction =
+        NavigationAction { navController.selectRootAndClearAll(BookDest.Auth) }
 }

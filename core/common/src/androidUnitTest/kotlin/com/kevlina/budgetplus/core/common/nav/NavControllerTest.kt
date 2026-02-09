@@ -154,6 +154,18 @@ class NavControllerTest {
     }
 
     @Test
+    fun `selectRootAndClearAll  Selecting the new root`() {
+        val r1 = TestKey.RootA
+        val r2 = TestKey.RootB
+        val navController = createNavController(r1)
+
+        navController.navigate(TestKey.Screen1)
+        navController.selectRootAndClearAll(r2)
+        assertThat(navController.rootStack).containsExactly(r2)
+        assertThat(navController.backStack).containsExactly(r2)
+    }
+
+    @Test
     fun `Complex scenario  Navigation within a non start root`() {
         val startRoot = TestKey.RootA
         val newRoot = TestKey.RootB

@@ -1,11 +1,9 @@
 package com.kevlina.budgetplus.book.di
 
-import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.ads.AdMobInitializer
 import com.kevlina.budgetplus.core.ads.FullScreenAdsLoader
 import com.kevlina.budgetplus.core.billing.BillingController
 import com.kevlina.budgetplus.core.billing.PurchaseState
-import com.kevlina.budgetplus.core.common.Toaster
 import com.kevlina.budgetplus.feature.speak.record.RecordActor
 import com.kevlina.budgetplus.feature.speak.record.SpeakToRecord
 import dev.zacsweers.metro.AppScope
@@ -23,13 +21,6 @@ class AdMobInitializerImpl : AdMobInitializer {
 
     override suspend fun ensureInitialized() {
 
-    }
-}
-
-@ContributesBinding(AppScope::class)
-class ToasterImpl : Toaster {
-    override fun showMessage(message: CharSequence) {
-        Logger.d { "Showing toast: $message" }
     }
 }
 

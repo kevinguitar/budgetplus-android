@@ -1,5 +1,5 @@
 package com.kevlina.budgetplus.core.inapp.review
 
-interface InAppReviewLauncher {
+fun interface InAppReviewLauncher {
     suspend fun launchReviewFlow()
 }

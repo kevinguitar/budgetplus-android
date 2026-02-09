@@ -2,13 +2,10 @@ package com.kevlina.budgetplus.core.inapp.review
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
-import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.common.truth.Truth.assertThat
-import com.kevlina.budgetplus.core.common.fixtures.FakeActivityProvider
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
 import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
-import io.mockk.mockk
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -52,7 +49,7 @@ class InAppReviewManagerImplTest {
         hasRejectedBefore: Boolean = false,
         hasRequestedBefore: Boolean = false,
     ) = InAppReviewManagerImpl(
-        reviewManager = FakeReviewManager(mockk()),
+        inAppReviewLauncher = { },
         snackbarSender = FakeSnackbarSender,
         tracker = tracker,
         preference = FakePreference {
@@ -61,6 +58,5 @@ class InAppReviewManagerImplTest {
             set(booleanPreferencesKey("hasRequestedBefore"), hasRequestedBefore)
         },
         appScope = backgroundScope,
-        activityProvider = FakeActivityProvider(mockk())
     )
 }

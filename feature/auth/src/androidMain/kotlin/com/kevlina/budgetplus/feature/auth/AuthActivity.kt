@@ -20,7 +20,7 @@ import dev.zacsweers.metro.Inject
 class AuthActivity : ComponentActivity() {
 
     @Inject private lateinit var themeManager: ThemeManager
-    @Inject private lateinit var viewModel: AndroidAuthViewModel
+    @Inject private lateinit var viewModel: AuthViewModel
     @Inject private lateinit var viewModelGraphProvider: ViewModelGraphProvider
 
     private val enableAutoSignIn by lazy { intent.extras?.getBoolean(ARG_ENABLE_AUTO_SIGN_IN) ?: true }
@@ -39,7 +39,7 @@ class AuthActivity : ComponentActivity() {
                 val themeColors by themeManager.themeColors.collectAsStateWithLifecycle()
                 AppTheme(themeColors) {
                     AuthBinding(
-                        vm = viewModel.commonAuth,
+                        vm = viewModel.commonAuthViewModel,
                         signInWithGoogle = viewModel::signInWithGoogle,
                     )
                 }
@@ -48,7 +48,7 @@ class AuthActivity : ComponentActivity() {
 
         viewModel.checkAuthorizedAccounts(enableAutoSignIn)
 
-        consumeNavigation(viewModel.commonAuth.navigation)
+        consumeNavigation(viewModel.commonAuthViewModel.navigation)
     }
 
     companion object {

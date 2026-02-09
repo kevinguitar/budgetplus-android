@@ -9,6 +9,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import co.touchlab.kermit.Logger
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -21,14 +22,15 @@ import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+//TODO: Migrate to Activity-agnostic approach
 @Inject
-internal class AndroidAuthViewModel(
-    val commonAuth: CommonAuthViewModel,
+actual class AuthViewModel(
+    actual val commonAuthViewModel: CommonAuthViewModel,
     private val activity: ComponentActivity,
     private val snackbarSender: SnackbarSender,
     referrerHandler: ReferrerHandler,
     preference: Preference,
-) {
+) : ViewModel() {
     private val coroutineScope = activity.lifecycleScope
 
     private val credentialManager by lazy { CredentialManager.create(activity) }
@@ -45,7 +47,7 @@ internal class AndroidAuthViewModel(
         }
     }
 
-    fun signInWithGoogle() {
+    actual fun signInWithGoogle() {
         val siwgOption = GetSignInWithGoogleOption
             .Builder(googleClientId)
             .build()
@@ -65,6 +67,9 @@ internal class AndroidAuthViewModel(
             }
         }
     }
+
+    // Not supported yet
+    actual fun signInWithApple() = Unit
 
     /**
      *  If there are any accounts that were authorized before, launch the sign in dialog.
@@ -114,7 +119,7 @@ internal class AndroidAuthViewModel(
         }
 
         coroutineScope.launch {
-            commonAuth.proceedGoogleSignInWithIdToken(googleIdToken, accessToken = null)
+            commonAuthViewModel.proceedGoogleSignInWithIdToken(googleIdToken, accessToken = null)
         }
     }
 }

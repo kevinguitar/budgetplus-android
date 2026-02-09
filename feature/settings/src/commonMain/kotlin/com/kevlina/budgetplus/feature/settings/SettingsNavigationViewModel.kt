@@ -7,9 +7,6 @@ import budgetplus.core.common.generated.resources.settings_share_app
 import budgetplus.core.common.generated.resources.settings_share_app_message
 import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.nav.NavigationAction
-import com.kevlina.budgetplus.core.common.nav.NavigationFlow
-import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Named
@@ -21,12 +18,10 @@ internal class SettingsNavigationViewModel(
     private val authManager: AuthManager,
     private val navigation: SettingsNavigation,
     private val shareHelper: ShareHelper,
-    private val navigationFlow: NavigationFlow,
     private val tracker: Tracker,
     @Named("google_play_url") private val googlePlayUrl: String,
     @Named("instagram_url") private val instagramUrl: String,
     @Named("privacy_policy_url") private val privacyPolicyUrl: String,
-    @Named("auth") private val authNavigationAction: NavigationAction,
 ) : ViewModel() {
 
     fun openLanguageSettings(
@@ -73,7 +68,6 @@ internal class SettingsNavigationViewModel(
     fun logout() {
         viewModelScope.launch {
             authManager.logout()
-            navigationFlow.sendEvent(authNavigationAction)
         }
     }
 }

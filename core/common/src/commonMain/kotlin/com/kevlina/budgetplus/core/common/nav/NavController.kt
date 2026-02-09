@@ -86,6 +86,17 @@ class NavController<T : NavKey>(
         updateBackStack()
     }
 
+    fun selectRootAndClearAll(rootKey: T) {
+        if (rootKey == currentRoot) return
+
+        rootStack.clear()
+        rootStack.add(rootKey)
+
+        rootBackStacks.clear()
+        rootBackStacks[rootKey] = mutableStateListOf(rootKey)
+        updateBackStack()
+    }
+
     fun navigate(key: T) {
         rootBackStacks[currentRoot]?.add(key)
         updateBackStack()

@@ -1,8 +1,10 @@
 package com.kevlina.budgetplus.book
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import com.kevlina.budgetplus.core.common.di.ViewModelGraphProvider
+import com.kevlina.budgetplus.core.common.nav.BookDest
+import com.kevlina.budgetplus.core.common.nav.BottomNavTab
+import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.nav.NavigationFlow
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
@@ -20,12 +22,18 @@ interface BudgetPlusIosAppGraph {
     val authManager: AuthManager
     val bookRepo: BookRepo
 
-    val destinationState: MutableState<Destination>
+    val navController: NavController<BookDest>
     val navigation: NavigationFlow
 
     @SingleIn(AppScope::class)
     @Provides
-    fun provideDestinationState(): MutableState<Destination> = mutableStateOf(Destination.Book)
+    fun provideNavController(): NavController<BookDest> {
+        return NavController(
+            startRoot = BottomNavTab.Add.root,
+            serializer = BookDest.serializer(),
+            savedStateHandle = SavedStateHandle()
+        )
+    }
 }
 
 object BudgetPlusIosAppGraphHolder {

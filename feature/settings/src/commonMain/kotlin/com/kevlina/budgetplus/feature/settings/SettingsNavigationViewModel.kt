@@ -29,8 +29,10 @@ internal class SettingsNavigationViewModel(
     @Named("auth") private val authNavigationAction: NavigationAction,
 ) : ViewModel() {
 
-    fun openLanguageSettings() {
-        navigation.openLanguageSettings()
+    fun openLanguageSettings(
+        onLanguageChanged: (String) -> Unit
+    ) {
+        navigation.openLanguageSettings(onLanguageChanged)
         tracker.logEvent("settings_language_click")
     }
 
@@ -38,6 +40,7 @@ internal class SettingsNavigationViewModel(
         viewModelScope.launch {
             shareHelper.share(
                 title = Res.string.settings_share_app,
+                //TODO: Use a generic URL to redirect user to AppStore/ GooglePlay
                 text = getString(Res.string.settings_share_app_message, googlePlayUrl)
             )
             tracker.logEvent("settings_share_app_click")
@@ -45,6 +48,7 @@ internal class SettingsNavigationViewModel(
     }
 
     fun rateUs() {
+        //TODO: Provide an URL for app store
         navigation.visitUrl(googlePlayUrl)
         tracker.logEvent("settings_rate_us_click")
     }

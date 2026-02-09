@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import budgetplus.core.common.generated.resources.Res
@@ -32,18 +34,23 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(LocalAppColors.current.light)
     ) {
-        TopBar(
-            title = stringResource(Res.string.settings_title, bookName.orEmpty()),
-            navigateUp = navController::navigateUp
-        )
+        val scrollState = rememberScrollState()
 
-        SettingsContent(
-            navController = navController,
-            vm = vm,
-            showMembers = showMembers,
-            modifier = Modifier
-                .weight(1F)
-                .fillMaxWidth()
-        )
+        key(languageSelectionState.value) {
+            TopBar(
+                title = stringResource(Res.string.settings_title, bookName.orEmpty()),
+                navigateUp = navController::navigateUp
+            )
+
+            SettingsContent(
+                navController = navController,
+                vm = vm,
+                scrollState = scrollState,
+                showMembers = showMembers,
+                modifier = Modifier
+                    .weight(1F)
+                    .fillMaxWidth()
+            )
+        }
     }
 }

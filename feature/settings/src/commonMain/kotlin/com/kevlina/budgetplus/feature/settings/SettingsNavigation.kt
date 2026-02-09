@@ -2,7 +2,7 @@ package com.kevlina.budgetplus.feature.settings
 
 interface SettingsNavigation {
 
-    fun openLanguageSettings()
+    fun openLanguageSettings(onLanguageChanged: (String) -> Unit)
 
     suspend fun contactUs()
 

@@ -3,10 +3,6 @@ package com.kevlina.budgetplus.core.inapp.review
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import co.touchlab.kermit.Logger
-import com.google.android.play.core.ktx.launchReview
-import com.google.android.play.core.ktx.requestReview
-import com.google.android.play.core.review.ReviewManager
-import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -33,11 +29,10 @@ import kotlin.time.Instant
  */
 @ContributesBinding(AppScope::class)
 class InAppReviewManagerImpl(
-    private val reviewManager: ReviewManager,
+    private val inAppReviewLauncher: InAppReviewLauncher,
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     private val preference: Preference,
-    private val activityProvider: ActivityProvider,
     @AppCoroutineScope private val appScope: CoroutineScope,
 ) : InAppReviewManager {
 
@@ -75,10 +70,8 @@ class InAppReviewManagerImpl(
     }
 
     override suspend fun launchReviewFlow() {
-        val activity = activityProvider.currentActivity ?: return
         try {
-            val reviewInfo = reviewManager.requestReview()
-            reviewManager.launchReview(activity, reviewInfo)
+            inAppReviewLauncher.launchReviewFlow()
             tracker.logEvent("inapp_review_accepted")
             preference.update(hasRequestedBeforeKey, true)
         } catch (e: Exception) {

@@ -1,11 +1,11 @@
 package com.kevlina.budgetplus.feature.settings
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.DirectionsRun
@@ -65,6 +65,7 @@ import budgetplus.core.common.generated.resources.settings_rename_user
 import budgetplus.core.common.generated.resources.settings_share_app
 import budgetplus.core.common.generated.resources.settings_view_members
 import budgetplus.core.common.generated.resources.username_title
+import co.touchlab.kermit.Logger
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.settings.api.ChartMode
@@ -79,10 +80,14 @@ import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 import org.jetbrains.compose.resources.stringResource
 
+// A hack to recompose iOS UI when the language is changed
+internal val languageSelectionState = mutableStateOf<String?>(null)
+
 @Composable
 internal fun SettingsContent(
     navController: NavController<BookDest>,
     vm: SettingsViewModel,
+    scrollState: ScrollState,
     showMembers: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -101,7 +106,7 @@ internal fun SettingsContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
             .containerPadding()
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -179,7 +184,12 @@ internal fun SettingsContent(
                 text = stringResource(Res.string.settings_language),
                 icon = Icons.Rounded.Language,
                 roundTop = true,
-                onClick = vm.navigation::openLanguageSettings
+                onClick = {
+                    vm.navigation.openLanguageSettings { languageCode ->
+                        Logger.i("SettingsScreen provides: $languageCode")
+                        languageSelectionState.value = languageCode
+                    }
+                }
             )
         }
 

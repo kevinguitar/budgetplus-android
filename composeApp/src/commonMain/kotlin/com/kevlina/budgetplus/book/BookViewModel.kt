@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -54,7 +55,13 @@ class BookViewModel(
 ) : ViewModel() {
 
     private val currentNavKeyFlow = snapshotFlow { navController.backStack.lastOrNull() }.filterNotNull()
-    private val hideAdsDestinations = setOf(BookDest.Auth, BookDest.Welcome, BookDest.UnlockPremium)
+
+    private val hideBottomNavDestinations = setOf(BookDest.Auth, BookDest.Welcome)
+    private val hideAdsDestinations = hideBottomNavDestinations + BookDest.UnlockPremium
+
+    val showBottomNav = currentNavKeyFlow
+        .map { it !in hideBottomNavDestinations }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), true)
 
     val showAds = combine(
         authManager.isPremium,

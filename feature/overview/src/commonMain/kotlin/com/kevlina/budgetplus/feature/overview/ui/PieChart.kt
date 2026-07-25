@@ -59,6 +59,7 @@ internal fun PieChart(
     modifier: Modifier = Modifier,
     totalPrice: Double,
     recordGroups: Map<String, List<Record>>,
+    getDisplayPrice: (Record) -> Double,
     formatPrice: (Double) -> String,
     highlightPieChart: (BubbleDest) -> Unit,
     onClick: (category: String) -> Unit,
@@ -66,7 +67,7 @@ internal fun PieChart(
 
     val recordGroupSums = remember(recordGroups) {
         recordGroups.mapValues { (_, group) ->
-            group.sumOf { it.price }
+            group.sumOf(getDisplayPrice)
         }
     }
 
@@ -274,6 +275,7 @@ private fun PieChart_Preview() = AppTheme {
         modifier = Modifier.size(300.dp),
         totalPrice = OverviewListState.totalPricePreview,
         recordGroups = OverviewListState.recordGroupsPreview,
+        getDisplayPrice = { it.price },
         formatPrice = { it.toString() },
         highlightPieChart = {},
         onClick = {}

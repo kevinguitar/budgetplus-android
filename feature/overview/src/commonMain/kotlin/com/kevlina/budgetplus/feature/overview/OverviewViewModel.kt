@@ -54,7 +54,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class OverviewViewModel private constructor(
+class OverviewViewModel internal constructor(
     private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,
@@ -65,7 +65,7 @@ class OverviewViewModel private constructor(
     private val snackbarSender: SnackbarSender,
     private val interstitialAdsHandler: InterstitialAdsHandler,
     val navController: NavController<BookDest>,
-    val bookRepo: BookRepo,
+    private val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
     val chartModeModel: ChartModeViewModel,
     private val preference: Preference,
@@ -113,15 +113,18 @@ class OverviewViewModel private constructor(
         }
     }
 
-    private val totalPrice = records.map { records ->
-        records.orEmpty().sumOf { it.price }
+    private val totalPrice = combine(
+        records,
+        currencyExchangeRepo.displayInPreferredCurrency
+    ) { records, _ ->
+        records.orEmpty().sumOf(currencyExchangeRepo::getDisplayPrice)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0.0)
 
     private val totalFormattedPrice = combine(
         totalPrice,
         currencyExchangeRepo.displayInPreferredCurrency
     ) { price, _ ->
-        bookRepo.formatPrice(price, alwaysShowSymbol = true)
+        currencyExchangeRepo.formatDisplayPrice(price, alwaysShowSymbol = true)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
     private val formattedBalance = combine(
@@ -134,13 +137,14 @@ class OverviewViewModel private constructor(
             records
                 .filter { authorId == null || it.author?.id == authorId }
                 .sumOf { record ->
+                    val displayPrice = currencyExchangeRepo.getDisplayPrice(record)
                     when (record.type) {
-                        RecordType.Expense -> -record.price
-                        RecordType.Income -> record.price
+                        RecordType.Expense -> -displayPrice
+                        RecordType.Income -> displayPrice
                     }
                 }
         }
-        bookRepo.formatPrice(sum, alwaysShowSymbol = true)
+        currencyExchangeRepo.formatDisplayPrice(sum, alwaysShowSymbol = true)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
 
     private val recordList: StateFlow<List<Record>?> = records.map { records ->
@@ -204,7 +208,8 @@ class OverviewViewModel private constructor(
             currencyToggleState = currencyToggleState.mapState { it?.toggleState ?: false },
             highlightTapHint = ::highlightTapHint,
             highlightPieChart = ::highlightPieChart,
-            formatPrice = bookRepo::formatPrice,
+            getDisplayPrice = currencyExchangeRepo::getDisplayPrice,
+            formatPrice = { price -> currencyExchangeRepo.formatDisplayPrice(price) },
             canEditRecord = ::canEditRecord,
             duplicateRecord = ::duplicateRecord,
             onGroupClicked = ::onGroupClicked

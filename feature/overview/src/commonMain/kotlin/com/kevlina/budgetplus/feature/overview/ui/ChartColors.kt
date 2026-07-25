@@ -61,6 +61,7 @@ private fun ChartColors_PieChart_Preview() = AppTheme {
     PieChart(
         totalPrice = total,
         recordGroups = recordGroups,
+        getDisplayPrice = { it.price },
         formatPrice = { it.toString() },
         highlightPieChart = {},
         onClick = {},

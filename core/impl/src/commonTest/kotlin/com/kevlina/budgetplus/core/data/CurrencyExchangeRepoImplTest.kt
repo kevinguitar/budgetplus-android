@@ -6,9 +6,11 @@ import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.Record
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.respond
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -56,30 +58,62 @@ class CurrencyExchangeRepoImplTest {
     }
 
     @Test
-    fun `formatPreferredCurrency returns null when currencies match`() = runTest {
+    fun `formatCurrency in preferred currency returns null when currencies match`() = runTest {
         val repo = createRepo(bookCurrency = "USD")
         // Preferred is USD by default (from getDefaultCurrencyCode mock or fallback)
-        
-        val result = repo.formatPreferredCurrency(100.0, false)
+
+        val result = repo.formatCurrency(100.0, CurrencyDisplay.Preferred, false)
 
         assertNull(result)
     }
 
     @Test
-    fun `formatPreferredCurrency converts price when rates are available`() = runTest {
+    fun `formatCurrency in preferred currency converts price when rates are available`() = runTest {
         val mockEngine = createMockEngine(
             "usd" to """{"usd": {"eur": 0.5}}"""
         )
         val repo = createRepo(mockEngine = mockEngine, bookCurrency = "EUR")
-        
+
         repo.onAppStart()
         repo.exchangeRateChange.first()
 
         // book is EUR, preferred is USD. rate from USD to EUR is 0.5.
         // price in EUR is 100.0. converted to USD: 100.0 / 0.5 = 200.0
-        val result = repo.formatPreferredCurrency(100.0, false)
+        val result = repo.formatCurrency(100.0, CurrencyDisplay.Preferred, false)
 
         assertContains(result!!, "200")
+    }
+
+    @Test
+    fun `formatCurrency in book currency returns null when currencies match`() = runTest {
+        val repo = createRepo(bookCurrency = "USD")
+
+        val result = repo.formatCurrency(100.0, CurrencyDisplay.Book, false)
+
+        assertNull(result)
+    }
+
+    @Test
+    fun `formatCurrency in book currency formats the price when currencies differ`() = runTest {
+        val repo = createRepo(bookCurrency = "EUR")
+
+        val result = repo.formatCurrency(100.0, CurrencyDisplay.Book, false)
+
+        assertContains(result!!, "100")
+    }
+
+    @Test
+    fun `formatCurrency with selected display follows the toggle`() = runTest {
+        val repo = createRepoWithRate()
+
+        // Toggle off -> book currency (EUR). 100 EUR formatted in book currency.
+        val bookFormat = repo.formatCurrency(100.0, CurrencyDisplay.Selected, false)
+        repo.toggleDisplayInPreferredCurrency()
+        // Toggle on -> preferred currency (USD). 100 EUR / 0.5 = 200 USD.
+        val preferredFormat = repo.formatCurrency(100.0, CurrencyDisplay.Selected, false)
+
+        assertContains(bookFormat!!, "100")
+        assertContains(preferredFormat!!, "200")
     }
 
     @Test
@@ -116,7 +150,7 @@ class CurrencyExchangeRepoImplTest {
         
         assertEquals(2, callCount)
         // Verify it actually worked by checking conversion
-        val result = repo.formatPreferredCurrency(1.0, false)
+        val result = repo.formatCurrency(1.0, CurrencyDisplay.Preferred, false)
 
         assertNotNull(result)
     }
@@ -185,6 +219,19 @@ class CurrencyExchangeRepoImplTest {
         assertContains(preferredFormat, "100")
         // EUR for the book currency, USD for the preferred currency.
         assertNotEquals(bookFormat, preferredFormat)
+    }
+
+    @Test
+    fun `getDisplayPrice honors an explicit display regardless of the toggle`() = runTest {
+        val repo = createRepoWithRate()
+        // Toggle is off, but an explicit Preferred display should still convert.
+
+        val record = Record(price = 50.0)
+
+        // 50 EUR converted with the 0.5 rate -> 100 USD.
+        assertEquals(100.0, repo.getDisplayPrice(record, CurrencyDisplay.Preferred))
+        // Explicit Book display returns the raw book price.
+        assertEquals(50.0, repo.getDisplayPrice(record, CurrencyDisplay.Book))
     }
 
     /**

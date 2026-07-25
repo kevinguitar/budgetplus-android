@@ -6,15 +6,15 @@ import budgetplus.core.common.generated.resources.export_column_category
 import budgetplus.core.common.generated.resources.export_column_created_on
 import budgetplus.core.common.generated.resources.export_column_name
 import budgetplus.core.common.generated.resources.export_column_price
-import budgetplus.core.common.generated.resources.export_column_recorded_price
 import budgetplus.core.common.generated.resources.export_column_type
 import budgetplus.core.common.generated.resources.record_expense
 import budgetplus.core.common.generated.resources.record_income
 import com.kevlina.budgetplus.core.common.RecordType
-import com.kevlina.budgetplus.core.common.getCurrencySymbol
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.shortFormatted
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.CurrencyDisplay
+import com.kevlina.budgetplus.core.data.CurrencyExchangeRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -37,14 +37,24 @@ internal class CsvExporter(
     private val recordsObserver: RecordsObserver,
     private val userRepo: UserRepo,
     private val bookRepo: BookRepo,
+    private val currencyExchangeRepo: CurrencyExchangeRepo,
 ) {
     suspend fun downloadRecordsToCsv(fileName: String) {
-        val recordRows = generateRecordRows()
-        val columns = listOf(
+        val bookCurrencySymbol = bookRepo.currencySymbol.value
+        val preferredCurrencySymbol = currencyExchangeRepo.preferredCurrencySymbol.first()
+        val shouldExportInPreferredCurrency = preferredCurrencySymbol != null &&
+            bookCurrencySymbol != preferredCurrencySymbol
+
+        val recordRows = generateRecordRows(shouldExportInPreferredCurrency)
+        val columns = listOfNotNull(
             getString(Res.string.export_column_created_on),
             getString(Res.string.export_column_name),
-            getString(Res.string.export_column_price, bookRepo.currencySymbol.value),
-            getString(Res.string.export_column_recorded_price),
+            getString(Res.string.export_column_price, bookCurrencySymbol),
+            if (shouldExportInPreferredCurrency) {
+                getString(Res.string.export_column_price, preferredCurrencySymbol)
+            } else {
+                null
+            },
             getString(Res.string.export_column_type),
             getString(Res.string.export_column_category),
             getString(Res.string.export_column_author),
@@ -56,16 +66,16 @@ internal class CsvExporter(
             }
             recordRows.forEach { row ->
                 data {
-                    row.forEach { cell ->
-                        value(cell.orEmpty())
-                    }
+                    row.forEach(::value)
                 }
             }
         }
         csvSaver.saveToDownload(fileName, csv.toCsvText())
     }
 
-    private suspend fun generateRecordRows(): Sequence<List<String?>> = Dispatchers.Default {
+    private suspend fun generateRecordRows(
+        shouldExportInPreferredCurrency: Boolean,
+    ): Sequence<List<String>> = Dispatchers.Default {
         val rawRecords = recordsObserver.records.filterNotNull().first()
 
         val recordExpenseString = getString(Res.string.record_expense)
@@ -74,17 +84,24 @@ internal class CsvExporter(
         rawRecords
             .sortedBy { it.createdOn }
             .map { record ->
-                listOf(
+                listOfNotNull(
                     record.parseDatetime(),
                     record.name,
                     record.price.plainPriceString,
-                    record.recordedPriceOrEmpty(),
+                    if (shouldExportInPreferredCurrency) {
+                        currencyExchangeRepo.getDisplayPrice(
+                            record = record,
+                            display = CurrencyDisplay.Preferred
+                        ).plainPriceString
+                    } else {
+                        null
+                    },
                     when (record.type) {
                         RecordType.Expense -> recordExpenseString
                         RecordType.Income -> recordIncomeString
                     },
                     record.category,
-                    userRepo.resolveAuthor(record).author?.name
+                    userRepo.resolveAuthor(record).author?.name.orEmpty()
                 )
             }
     }
@@ -94,14 +111,4 @@ internal class CsvExporter(
             .toLocalDateTime(TimeZone.UTC)
             .shortFormatted
     }
-}
-
-/**
- * The recorded price presented as "$preferredPrice $currencySymbol", or an empty string
- * when the record has no [Record.preferredPrice].
- */
-internal fun Record.recordedPriceOrEmpty(): String {
-    return preferredPrice?.let { preferredPrice ->
-        "${preferredPrice.plainPriceString} ${getCurrencySymbol(preferredCurrencyCode)}"
-    }.orEmpty()
 }

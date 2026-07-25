@@ -313,7 +313,11 @@ internal class BookRepoImpl(
     override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
         val currencyExchangeRepo = currencyExchangeRepo.value
         val preferredPrice = if (currencyExchangeRepo.displayInPreferredCurrency.value) {
-            currencyExchangeRepo.formatPreferredCurrency(price, alwaysShowSymbol)
+            currencyExchangeRepo.formatCurrency(
+                bookPrice = price,
+                display = CurrencyDisplay.Preferred,
+                alwaysShowSymbol = alwaysShowSymbol,
+            )
         } else {
             null
         }

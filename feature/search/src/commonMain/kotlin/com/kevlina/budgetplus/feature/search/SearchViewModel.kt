@@ -11,6 +11,7 @@ import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.CurrencyExchangeRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.UserRepo
 import com.kevlina.budgetplus.core.data.remote.Record
@@ -46,6 +47,7 @@ class SearchViewModel(
     private val searchRepo: SearchRepo,
     private val authManager: AuthManager,
     private val bookRepo: BookRepo,
+    private val currencyExchangeRepo: CurrencyExchangeRepo,
     private val recordRepo: RecordRepo,
     private val userRepo: UserRepo,
     private val tracker: Tracker,
@@ -163,7 +165,7 @@ class SearchViewModel(
         mapIndexed { i, record ->
             RecordCardState(
                 item = record,
-                formattedPrice = bookRepo.formatPrice(record.price),
+                formattedPrice = currencyExchangeRepo.formatRecordPrice(record),
                 isLast = i == lastIndex,
                 canEdit = canEditRecord(record),
                 showCategory = true,

@@ -5,6 +5,7 @@ import com.kevlina.budgetplus.core.common.Currency
 import com.kevlina.budgetplus.core.data.fixtures.FakeBookRepo
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.remote.Book
+import com.kevlina.budgetplus.core.data.remote.Record
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
@@ -16,6 +17,7 @@ import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -117,6 +119,86 @@ class CurrencyExchangeRepoImplTest {
         val result = repo.formatPreferredCurrency(1.0, false)
 
         assertNotNull(result)
+    }
+
+    @Test
+    fun `getDisplayPrice returns the book price when displaying in book currency`() = runTest {
+        val repo = createRepoWithRate()
+
+        val record = Record(price = 50.0, preferredPrice = 100.0, preferredCurrencyCode = "USD")
+
+        assertEquals(50.0, repo.getDisplayPrice(record))
+    }
+
+    @Test
+    fun `getDisplayPrice uses the recorded preferred price to avoid a doubled conversion`() = runTest {
+        val repo = createRepoWithRate()
+        repo.toggleDisplayInPreferredCurrency()
+
+        // The record was created with 100 USD when the rate was 0.55, so a naive conversion
+        // of the book price with the current rate (0.5) would incorrectly yield 110 USD.
+        val record = Record(price = 55.0, preferredPrice = 100.0, preferredCurrencyCode = "USD")
+
+        assertEquals(100.0, repo.getDisplayPrice(record))
+    }
+
+    @Test
+    fun `getDisplayPrice converts the book price for records created in the book currency`() = runTest {
+        val repo = createRepoWithRate()
+        repo.toggleDisplayInPreferredCurrency()
+
+        val record = Record(price = 50.0)
+
+        // book is EUR, preferred is USD. rate from USD to EUR is 0.5. 50 EUR = 100 USD.
+        assertEquals(100.0, repo.getDisplayPrice(record))
+    }
+
+    @Test
+    fun `getDisplayPrice converts the book price when the record currency differs from the preferred one`() = runTest {
+        val repo = createRepoWithRate()
+        repo.toggleDisplayInPreferredCurrency()
+
+        val record = Record(price = 50.0, preferredPrice = 80.0, preferredCurrencyCode = "GBP")
+
+        assertEquals(100.0, repo.getDisplayPrice(record))
+    }
+
+    @Test
+    fun `getDisplayPrice falls back to the book price when the rate is unresolved`() = runTest {
+        val repo = createRepo(bookCurrency = "EUR")
+        repo.toggleDisplayInPreferredCurrency()
+
+        val record = Record(price = 50.0)
+
+        assertEquals(50.0, repo.getDisplayPrice(record))
+    }
+
+    @Test
+    fun `formatDisplayPrice formats with the preferred currency only when the toggle is on`() = runTest {
+        val repo = createRepoWithRate()
+
+        val bookFormat = repo.formatDisplayPrice(100.0)
+        repo.toggleDisplayInPreferredCurrency()
+        val preferredFormat = repo.formatDisplayPrice(100.0)
+
+        assertContains(bookFormat, "100")
+        assertContains(preferredFormat, "100")
+        // EUR for the book currency, USD for the preferred currency.
+        assertNotEquals(bookFormat, preferredFormat)
+    }
+
+    /**
+     * @return A repo where the book currency is EUR, the preferred currency is USD, and the
+     *  rate from USD to EUR is 0.5.
+     */
+    private suspend fun TestScope.createRepoWithRate(): CurrencyExchangeRepoImpl {
+        val mockEngine = createMockEngine(
+            "usd" to """{"usd": {"eur": 0.5}}"""
+        )
+        val repo = createRepo(mockEngine = mockEngine, bookCurrency = "EUR")
+        repo.onAppStart()
+        repo.exchangeRateChange.first()
+        return repo
     }
 
     private fun createMockEngine(vararg rates: Pair<String, String>): MockEngine {

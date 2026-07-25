@@ -134,7 +134,7 @@ internal fun OverviewList(
                             RecordCard(
                                 state = RecordCardState(
                                     item = record,
-                                    formattedPrice = state.formatPrice(record.price),
+                                    formattedPrice = state.formatPrice(state.getDisplayPrice(record)),
                                     isLast = index == recordList.lastIndex,
                                     canEdit = state.canEditRecord(record),
                                     showCategory = true,
@@ -170,7 +170,7 @@ internal fun OverviewList(
                         ) { index, key ->
 
                             val groupRecords = recordGroups.orEmpty()[key].orEmpty()
-                            val sum = groupRecords.sumOf { it.price }
+                            val sum = groupRecords.sumOf(state.getDisplayPrice)
 
                             key(currencyToggleState) {
                                 OverviewGroup(
@@ -199,6 +199,7 @@ internal fun OverviewList(
                                         modifier = Modifier.fillMaxSize(),
                                         totalPrice = totalPrice,
                                         recordGroups = recordGroups.orEmpty(),
+                                        getDisplayPrice = state.getDisplayPrice,
                                         formatPrice = state.formatPrice,
                                         highlightPieChart = state.highlightPieChart,
                                         onClick = ::navigateToRecords
@@ -247,6 +248,7 @@ internal data class OverviewListState(
     val currencyToggleState: StateFlow<Boolean>,
     val highlightTapHint: (BubbleDest) -> Unit,
     val highlightPieChart: (BubbleDest) -> Unit,
+    val getDisplayPrice: (Record) -> Double,
     val formatPrice: (Double) -> String,
     val canEditRecord: (Record) -> Boolean,
     val duplicateRecord: (Record) -> Unit,
@@ -283,6 +285,7 @@ internal data class OverviewListState(
             currencyToggleState = MutableStateFlow(false),
             highlightTapHint = {},
             highlightPieChart = {},
+            getDisplayPrice = { it.price },
             formatPrice = { "$$it" },
             canEditRecord = { true },
             duplicateRecord = {},

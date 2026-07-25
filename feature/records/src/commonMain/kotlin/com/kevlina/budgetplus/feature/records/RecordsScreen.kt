@@ -123,7 +123,7 @@ fun RecordsScreen(vm: RecordsViewModel) {
                     itemsIndexed(records) { index, item ->
                         RecordCard(state = RecordCardState(
                             item = item,
-                            formattedPrice = vm.bookRepo.formatPrice(item.price),
+                            formattedPrice = vm.formatRecordPrice(item),
                             isLast = index == records.lastIndex,
                             canEdit = vm.canEditRecord(item),
                             showCategory = false,

@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.common.formatPriceWithCurrency
 import com.kevlina.budgetplus.core.common.getAvailableCurrencies
 import com.kevlina.budgetplus.core.common.getDefaultCurrencyCode
 import com.kevlina.budgetplus.core.data.local.Preference
+import com.kevlina.budgetplus.core.data.remote.Record
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.ContributesIntoSet
@@ -101,18 +102,8 @@ internal class CurrencyExchangeRepoImpl(
     }
 
     override fun formatPreferredCurrency(price: Double, alwaysShowSymbol: Boolean): String? {
-        val bookCurrencyCode = bookRepo.bookState.value?.currencyCode ?: return null
-        val preferred = preferredCurrencyState.value
-
-        // No conversion needed if currencies match.
-        if (bookCurrencyCode.equals(preferred, ignoreCase = true)) return null
-
-        val rate = getRateFor(preferred, bookCurrencyCode) ?: return null
-        return if (rate == 0.0) {
-            null
-        } else {
-            formatPriceWithCurrency(price / rate, preferred, alwaysShowSymbol)
-        }
+        val rate = preferredCurrencyRate() ?: return null
+        return formatPriceWithCurrency(price / rate, preferredCurrencyState.value, alwaysShowSymbol)
     }
 
     override fun formatBookCurrency(price: Double, alwaysShowSymbol: Boolean): String? {
@@ -135,8 +126,49 @@ internal class CurrencyExchangeRepoImpl(
         return if (rate == 0.0) null else price * rate
     }
 
+    override fun getDisplayPrice(record: Record): Double {
+        if (!displayInPreferredCurrency.value) return record.price
+        val rate = preferredCurrencyRate() ?: return record.price
+
+        val preferredPrice = record.preferredPrice
+        return if (
+            preferredPrice != null &&
+            preferredCurrencyState.value.equals(record.preferredCurrencyCode, ignoreCase = true)
+        ) {
+            // The record was created in the preferred currency, use the recorded price
+            // directly to avoid a doubled conversion.
+            preferredPrice
+        } else {
+            record.price / rate
+        }
+    }
+
+    override fun formatDisplayPrice(price: Double, alwaysShowSymbol: Boolean): String {
+        val currencyCode = if (displayInPreferredCurrency.value && preferredCurrencyRate() != null) {
+            preferredCurrencyState.value
+        } else {
+            bookRepo.bookState.value?.currencyCode
+        }
+        return formatPriceWithCurrency(price, currencyCode, alwaysShowSymbol)
+    }
+
     override fun toggleDisplayInPreferredCurrency() {
         displayInPreferredCurrency.value = !displayInPreferredCurrency.value
+    }
+
+    /**
+     * @return The rate converting from the preferred currency into the book's currency, or null
+     *  when the currencies match or the rate is not resolved.
+     */
+    private fun preferredCurrencyRate(): Double? {
+        val bookCurrencyCode = bookRepo.bookState.value?.currencyCode ?: return null
+        val preferred = preferredCurrencyState.value
+
+        // No conversion needed if currencies match.
+        if (bookCurrencyCode.equals(preferred, ignoreCase = true)) return null
+
+        val rate = getRateFor(preferred, bookCurrencyCode) ?: return null
+        return if (rate == 0.0) null else rate
     }
 
     private suspend fun refreshRate() {

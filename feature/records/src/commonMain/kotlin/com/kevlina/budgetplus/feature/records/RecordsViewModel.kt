@@ -4,12 +4,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.combineState
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.CurrencyExchangeRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.RecordsObserver
 import com.kevlina.budgetplus.core.data.UserRepo
@@ -37,13 +37,14 @@ import kotlinx.coroutines.launch
 class RecordsViewModel(
     @Assisted private val params: BookDest.Records,
     val navController: NavController<BookDest>,
-    val bookRepo: BookRepo,
+    private val bookRepo: BookRepo,
     private val userRepo: UserRepo,
     private val recordRepo: RecordRepo,
     private val bubbleRepo: BubbleRepo,
     private val tracker: Tracker,
     private val authManager: AuthManager,
     private val preference: Preference,
+    private val currencyExchangeRepo: CurrencyExchangeRepo,
     recordsObserver: RecordsObserver,
 ) : ViewModel() {
 
@@ -100,9 +101,19 @@ class RecordsViewModel(
     }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val totalPrice = recordsList.combineState(pageIndex, viewModelScope) { recordsList, pageIndex ->
-        val total = recordsList?.getOrNull(pageIndex).orEmpty().sumOf { it.price }
-        bookRepo.formatPrice(total, alwaysShowSymbol = true)
+    val totalPrice = combine(
+        recordsList,
+        pageIndex,
+        currencyExchangeRepo.displayInPreferredCurrency
+    ) { recordsList, pageIndex, _ ->
+        val total = recordsList?.getOrNull(pageIndex).orEmpty()
+            .sumOf(currencyExchangeRepo::getDisplayPrice)
+        currencyExchangeRepo.formatDisplayPrice(total, alwaysShowSymbol = true)
+    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "")
+
+    fun formatRecordPrice(record: Record): String {
+        return currencyExchangeRepo.formatRecordPrice(record)
     }
 
     fun setSortMode(newSortMode: RecordsSortMode) {

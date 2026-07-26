@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.data.fixtures
 
 import androidx.annotation.RestrictTo
 import com.kevlina.budgetplus.core.common.Currency
+import com.kevlina.budgetplus.core.data.CurrencyDisplay
 import com.kevlina.budgetplus.core.data.CurrencyExchangeRepo
 import com.kevlina.budgetplus.core.data.remote.Record
 import kotlinx.coroutines.flow.Flow
@@ -32,20 +33,30 @@ class FakeCurrencyExchangeRepo(
         preferredCurrencyCode = currency.currencyCode
     }
 
-    override fun formatPreferredCurrency(price: Double, alwaysShowSymbol: Boolean): String {
-        return "$price $preferredCurrencyCode"
-    }
-
-    override fun formatBookCurrency(price: Double, alwaysShowSymbol: Boolean): String {
-        return "$price"
+    override fun formatCurrency(
+        bookPrice: Double,
+        display: CurrencyDisplay,
+        alwaysShowSymbol: Boolean,
+    ): String {
+        val inPreferredCurrency = when (display) {
+            CurrencyDisplay.Book -> false
+            CurrencyDisplay.Preferred -> true
+            CurrencyDisplay.Selected -> displayInPreferredCurrency.value
+        }
+        return if (inPreferredCurrency) "$bookPrice $preferredCurrencyCode" else "$bookPrice"
     }
 
     override fun convertToBookCurrency(price: Double, fromCurrencyCode: String): Double? {
         return bookCurrencyRate?.let { price * it }
     }
 
-    override fun getDisplayPrice(record: Record): Double {
-        if (!displayInPreferredCurrency.value) return record.price
+    override fun getDisplayPrice(record: Record, display: CurrencyDisplay): Double {
+        val inPreferredCurrency = when (display) {
+            CurrencyDisplay.Book -> false
+            CurrencyDisplay.Preferred -> true
+            CurrencyDisplay.Selected -> displayInPreferredCurrency.value
+        }
+        if (!inPreferredCurrency) return record.price
         val rate = bookCurrencyRate ?: return record.price
 
         val preferredPrice = record.preferredPrice

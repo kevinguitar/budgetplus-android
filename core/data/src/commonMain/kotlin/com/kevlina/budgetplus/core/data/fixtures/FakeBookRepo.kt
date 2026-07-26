@@ -60,10 +60,6 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
-        error("Not yet implemented")
-    }
-
     override suspend fun updateCategories(type: RecordType, categories: List<String>) {
         error("Not yet implemented")
     }

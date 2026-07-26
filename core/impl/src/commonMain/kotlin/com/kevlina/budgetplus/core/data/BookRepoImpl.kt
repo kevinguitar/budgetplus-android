@@ -14,7 +14,6 @@ import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.Tracker
-import com.kevlina.budgetplus.core.common.formatPriceWithCurrency
 import com.kevlina.budgetplus.core.common.getCurrencySymbol
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
@@ -308,21 +307,6 @@ internal class BookRepoImpl(
         }
         updateCategories(type, currentCategories + category)
         tracker.logEvent("categories_added_from_$source")
-    }
-
-    override fun formatPrice(price: Double, alwaysShowSymbol: Boolean): String {
-        val currencyExchangeRepo = currencyExchangeRepo.value
-        val preferredPrice = if (currencyExchangeRepo.displayInPreferredCurrency.value) {
-            currencyExchangeRepo.formatPreferredCurrency(price, alwaysShowSymbol)
-        } else {
-            null
-        }
-
-        return preferredPrice ?: formatPriceWithCurrency(
-            price = price,
-            currencyCode = bookState.value?.currencyCode,
-            alwaysShowSymbol = alwaysShowSymbol
-        )
     }
 
     override suspend fun updateCategories(type: RecordType, categories: List<String>) {

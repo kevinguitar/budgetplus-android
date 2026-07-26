@@ -34,6 +34,7 @@ import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.common.withCurrentTime
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.core.data.CurrencyDisplay
 import com.kevlina.budgetplus.core.data.CurrencyExchangeRepo
 import com.kevlina.budgetplus.core.data.RecordRepo
 import com.kevlina.budgetplus.core.data.local.Preference
@@ -156,12 +157,20 @@ class RecordViewModel(
         }
         when (selected) {
             SelectedCurrency.Book -> {
-                currencyExchangeRepo.formatPreferredCurrency(price, alwaysShowSymbol = true)
+                currencyExchangeRepo.formatCurrency(
+                    bookPrice = price,
+                    display = CurrencyDisplay.Preferred,
+                    alwaysShowSymbol = true,
+                )
             }
 
             SelectedCurrency.Preferred -> {
                 val bookPrice = currencyExchangeRepo.convertToBookCurrency(price) ?: return@combine null
-                currencyExchangeRepo.formatBookCurrency(bookPrice, alwaysShowSymbol = true)
+                currencyExchangeRepo.formatCurrency(
+                    bookPrice = bookPrice,
+                    display = CurrencyDisplay.Book,
+                    alwaysShowSymbol = true,
+                )
             }
         }
     }

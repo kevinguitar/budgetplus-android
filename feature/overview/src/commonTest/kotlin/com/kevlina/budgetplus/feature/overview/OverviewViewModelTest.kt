@@ -146,6 +146,7 @@ class OverviewViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
                 recordsObserver = recordsObserver,
                 userRepo = userRepo,
                 bookRepo = bookRepo,
+                currencyExchangeRepo = currencyExchangeRepo,
             ),
             snackbarSender = FakeSnackbarSender,
             interstitialAdsHandler = FakeInterstitialAdsHandler(),

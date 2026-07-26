@@ -101,19 +101,33 @@ internal class CurrencyExchangeRepoImpl(
         }
     }
 
-    override fun formatPreferredCurrency(price: Double, alwaysShowSymbol: Boolean): String? {
-        val rate = preferredCurrencyRate() ?: return null
-        return formatPriceWithCurrency(price / rate, preferredCurrencyState.value, alwaysShowSymbol)
+    override fun formatCurrency(
+        bookPrice: Double,
+        display: CurrencyDisplay,
+        alwaysShowSymbol: Boolean,
+    ): String? = when (display) {
+        CurrencyDisplay.Book -> formatInBookCurrency(bookPrice, alwaysShowSymbol)
+        CurrencyDisplay.Preferred -> formatInPreferredCurrency(bookPrice, alwaysShowSymbol)
+        CurrencyDisplay.Selected -> if (displayInPreferredCurrency.value) {
+            formatInPreferredCurrency(bookPrice, alwaysShowSymbol)
+        } else {
+            formatInBookCurrency(bookPrice, alwaysShowSymbol)
+        }
     }
 
-    override fun formatBookCurrency(price: Double, alwaysShowSymbol: Boolean): String? {
+    private fun formatInPreferredCurrency(bookPrice: Double, alwaysShowSymbol: Boolean): String? {
+        val rate = preferredCurrencyRate() ?: return null
+        return formatPriceWithCurrency(bookPrice / rate, preferredCurrencyState.value, alwaysShowSymbol)
+    }
+
+    private fun formatInBookCurrency(bookPrice: Double, alwaysShowSymbol: Boolean): String? {
         val bookCurrencyCode = bookRepo.bookState.value?.currencyCode ?: return null
         val preferred = preferredCurrencyState.value
 
         // No conversion needed if currencies match.
         if (bookCurrencyCode.equals(preferred, ignoreCase = true)) return null
 
-        return formatPriceWithCurrency(price, bookCurrencyCode, alwaysShowSymbol)
+        return formatPriceWithCurrency(bookPrice, bookCurrencyCode, alwaysShowSymbol)
     }
 
     override fun convertToBookCurrency(price: Double, fromCurrencyCode: String): Double? {
@@ -126,8 +140,13 @@ internal class CurrencyExchangeRepoImpl(
         return if (rate == 0.0) null else price * rate
     }
 
-    override fun getDisplayPrice(record: Record): Double {
-        if (!displayInPreferredCurrency.value) return record.price
+    override fun getDisplayPrice(record: Record, display: CurrencyDisplay): Double {
+        val inPreferredCurrency = when (display) {
+            CurrencyDisplay.Book -> false
+            CurrencyDisplay.Preferred -> true
+            CurrencyDisplay.Selected -> displayInPreferredCurrency.value
+        }
+        if (!inPreferredCurrency) return record.price
         val rate = preferredCurrencyRate() ?: return record.price
 
         val preferredPrice = record.preferredPrice

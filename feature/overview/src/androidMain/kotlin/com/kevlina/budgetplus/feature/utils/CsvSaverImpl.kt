@@ -34,17 +34,12 @@ internal class CsvSaverImpl(
     private val snackbarSender: SnackbarSender,
 ) : CsvSaver {
 
-    private val contentResolver get() = context.contentResolver
-
     override suspend fun saveToDownload(fileName: String, csvText: String) = IO {
         val activity = activityProvider.activityFlow.filterNotNull().first()
         val cacheFile = File(shareCacheDir(), "$fileName.csv")
-        val outputStream = contentResolver.openOutputStream(cacheFile.toUri())
-            ?: throw IOException("Cannot open output stream from $cacheFile")
-
-        outputStream.use { stream ->
-            stream.write(csvText.toByteArray())
-        }
+        // Write the bytes directly to the cache file (which truncates it) instead of going
+        // through the ContentResolver output stream, whose default mode does not truncate.
+        cacheFile.writeText(csvText)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             saveToDownload(cacheFile)

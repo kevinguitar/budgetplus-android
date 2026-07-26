@@ -1,6 +1,8 @@
 import com.android.build.api.dsl.ApplicationExtension
+import common.applyCommonCompilerOptions
 import common.implementation
 import common.libs
+import common.suppressStaleEmbeddedKotlinCompilerWarnings
 import common.testImplementation
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -48,13 +50,9 @@ class KotlinAndroidConventionPlugin : Plugin<Project> {
                 compilerOptions {
                     // Due to https://youtrack.jetbrains.com/issue/CMP-8498/KLIB-name-conflict-with-AndroidX-libraries
                     allWarningsAsErrors.set(false)
-                    optIn.addAll(
-                        "kotlin.contracts.ExperimentalContracts",
-                        "kotlinx.coroutines.ExperimentalCoroutinesApi",
-                        "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
-                        "kotlinx.coroutines.FlowPreview"
-                    )
                     jvmTarget.set(project.libs.versions.jvmTarget.map(JvmTarget::fromTarget))
+                    applyCommonCompilerOptions()
+                    suppressStaleEmbeddedKotlinCompilerWarnings()
                 }
             }
         }

@@ -17,11 +17,10 @@ kotlin {
             baseName = "Shared"
             isStatic = true
 
+            binaryOption("bundleId", "Shared")
+
             if (buildType == NativeBuildType.RELEASE) {
-                freeCompilerArgs += listOf(
-                    "-Xbinary=stripDebugSymbols=true",
-                    "-Xbinary=sourceInfoType=none",
-                )
+                binaryOption("sourceInfoType", "noop")
             }
         }
 

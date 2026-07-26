@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class EditRecordViewModel(
+internal class EditRecordViewModel(
     val categoriesVm: CategoriesViewModel,
     private val recordRepo: RecordRepo,
     private val bookRepo: BookRepo,

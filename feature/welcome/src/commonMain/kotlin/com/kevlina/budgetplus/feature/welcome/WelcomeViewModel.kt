@@ -21,7 +21,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class WelcomeViewModel(
+internal class WelcomeViewModel(
     private val snackbarSender: SnackbarSender,
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,

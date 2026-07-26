@@ -27,7 +27,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class SettingsViewModel private constructor(
+internal class SettingsViewModel(
     private val bookRepo: BookRepo,
     private val authManager: AuthManager,
     private val snackbarSender: SnackbarSender,

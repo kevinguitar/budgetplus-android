@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.days
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class InsiderViewModel(
+internal class InsiderViewModel(
     private val insiderRepo: InsiderRepo,
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {

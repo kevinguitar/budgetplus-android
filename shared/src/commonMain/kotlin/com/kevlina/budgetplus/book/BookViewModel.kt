@@ -38,7 +38,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class BookViewModel(
+internal class BookViewModel(
     val navController: NavController<BookDest>,
     val snackbarSender: SnackbarSender,
     val themeManager: ThemeManager,

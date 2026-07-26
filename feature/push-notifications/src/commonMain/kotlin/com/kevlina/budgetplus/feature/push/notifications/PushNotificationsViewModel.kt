@@ -27,7 +27,7 @@ import kotlin.time.Clock
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class PushNotificationsViewModel private constructor(
+internal class PushNotificationsViewModel(
     private val preference: Preference,
     translator: Translator,
     @Named("default_deeplink") private val defaultDeeplink: String,

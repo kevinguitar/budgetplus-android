@@ -37,7 +37,7 @@ internal fun bookNavGraph(bookDest: BookDest): NavEntry<BookDest> {
         }
 
         BookDest.Welcome -> NavEntry(bookDest) {
-            WelcomeBinding(vm = metroViewModel())
+            WelcomeBinding()
         }
 
         BookDest.Record -> NavEntry(bookDest) {

@@ -14,8 +14,9 @@ import org.jetbrains.compose.resources.stringResource
 fun DeleteRecordDialog(
     editRecord: Record,
     onDismiss: () -> Unit,
-    vm: EditRecordViewModel = metroViewModel(),
 ) {
+    val vm = metroViewModel<EditRecordViewModel>()
+
     if (editRecord.isBatched) {
         EditBatchDialog(
             onDismiss = onDismiss,

@@ -105,13 +105,21 @@ internal fun DateAndPricing(
                 scrollState = priceTextScrollState,
                 modifier = Modifier.weight(1F),
                 leadingContent = {
+                    // When the content scrolls, the currency toggle sits at the very bottom and is
+                    // only visible once scrolled all the way down. Gate the bubble highlight on that
+                    // so it never points to an off-screen element hidden below the list.
+                    val isToggleVisible = !scrollState.canScrollForward
                     CurrencySelector(
                         bookCurrencySymbol = currencySymbol,
                         preferredCurrencySymbol = preferredCurrencySymbol,
                         selectedCurrency = selectedCurrency,
                         onBookCurrencyClick = state.onBookCurrencyClick,
                         onPreferredCurrencyClick = state.onPreferredCurrencyClick,
-                        highlightCurrencyToggle = state.highlightCurrencyToggle,
+                        highlightCurrencyToggle = {
+                            if (isToggleVisible) {
+                                state.highlightCurrencyToggle(it)
+                            }
+                        }
                     )
                 }
             )

@@ -1,5 +1,7 @@
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
+import common.applyCommonCompilerOptions
 import common.libs
+import common.suppressStaleEmbeddedKotlinCompilerWarnings
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -88,12 +90,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 freeCompilerArgs.addAll(
                     "-Xexpect-actual-classes"
                 )
-                optIn.addAll(
-                    "kotlin.contracts.ExperimentalContracts",
-                    "kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi",
-                    "kotlinx.coroutines.FlowPreview"
-                )
+                applyCommonCompilerOptions()
+                suppressStaleEmbeddedKotlinCompilerWarnings()
             }
         }
     }

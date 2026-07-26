@@ -32,7 +32,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class ColorTonePickerViewModel(
+internal class ColorTonePickerViewModel(
     val navController: NavController<BookDest>,
     authManager: AuthManager,
     private val themeManager: ThemeManager,

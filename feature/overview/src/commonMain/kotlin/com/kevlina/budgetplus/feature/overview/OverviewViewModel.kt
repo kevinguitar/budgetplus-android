@@ -54,7 +54,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class OverviewViewModel internal constructor(
+internal class OverviewViewModel(
     private val recordRepo: RecordRepo,
     private val recordsObserver: RecordsObserver,
     private val tracker: Tracker,

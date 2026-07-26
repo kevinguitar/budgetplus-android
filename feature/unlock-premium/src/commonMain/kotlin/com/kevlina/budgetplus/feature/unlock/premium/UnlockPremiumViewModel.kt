@@ -11,7 +11,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class UnlockPremiumViewModel(
+internal class UnlockPremiumViewModel(
     val navController: NavController<BookDest>,
     authManager: AuthManager,
     billingController: BillingController,

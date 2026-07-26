@@ -62,9 +62,9 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun EditRecordDialog(
     editRecord: Record,
-    vm: EditRecordViewModel = metroViewModel(),
     onDismiss: () -> Unit,
 ) {
+    val vm = metroViewModel<EditRecordViewModel>()
     val currencySymbol by vm.currencySymbol.collectAsStateWithLifecycle()
 
     // If the record was created in the preferred currency, edit its preferred price and show the

@@ -26,7 +26,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class EditCategoryViewModel(
+internal class EditCategoryViewModel(
     val navController: NavController<BookDest>,
     private val bookRepo: BookRepo,
     private val recordRepo: RecordRepo,

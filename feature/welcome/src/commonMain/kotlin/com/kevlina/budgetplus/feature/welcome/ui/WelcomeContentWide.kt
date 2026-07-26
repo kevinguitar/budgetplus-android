@@ -6,20 +6,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kevlina.budgetplus.feature.welcome.WelcomeViewModel
+import com.kevlina.budgetplus.core.ui.AppTheme
 
 @Composable
-fun WelcomeContentWide(viewModel: WelcomeViewModel) {
-    val isCreatingBook by viewModel.isCreatingBook.collectAsStateWithLifecycle()
+fun WelcomeContentWide(state: WelcomeState) {
+    val isCreatingBook by state.isCreatingBook.collectAsStateWithLifecycle()
 
     Row(
         modifier = Modifier.fillMaxSize()
     ) {
         CreateBookBlock(
-            bookName = viewModel.bookName,
+            bookName = state.bookName,
             isCreatingBook = isCreatingBook,
-            createBook = viewModel::createBook,
+            createBook = state.createBook,
             isWideMode = true,
             applyStatusBarPadding = true,
             applyNavBarPadding = true,
@@ -36,4 +37,10 @@ fun WelcomeContentWide(viewModel: WelcomeViewModel) {
                 .weight(1F)
         )
     }
+}
+
+@Preview(showBackground = true, widthDp = 720, heightDp = 400)
+@Composable
+private fun WelcomeContentWide_Preview() = AppTheme {
+    WelcomeContentWide(WelcomeState.preview)
 }

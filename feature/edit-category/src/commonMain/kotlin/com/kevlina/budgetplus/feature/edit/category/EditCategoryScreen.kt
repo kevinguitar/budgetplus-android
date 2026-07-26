@@ -36,10 +36,9 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun EditCategoryScreen(
-    vm: EditCategoryViewModel = metroViewModel(),
     type: RecordType,
 ) {
-
+    val vm = metroViewModel<EditCategoryViewModel>()
     val originalCategories = when (type) {
         RecordType.Expense -> vm.expenseCategories
         RecordType.Income -> vm.incomeCategories

@@ -38,7 +38,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class BatchRecordViewModel(
+internal class BatchRecordViewModel(
     val categoriesVm: CategoriesViewModel,
     val bookRepo: BookRepo,
     val navController: NavController<BookDest>,

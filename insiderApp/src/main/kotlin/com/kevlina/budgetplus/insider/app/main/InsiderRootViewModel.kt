@@ -10,7 +10,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class InsiderRootViewModel(
+internal class InsiderRootViewModel(
     val navController: NavController<InsiderDest>,
     val snackbarSender: SnackbarSender,
 ) : ViewModel()

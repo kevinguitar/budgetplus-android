@@ -68,7 +68,7 @@ import org.jetbrains.compose.resources.getString
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
-class RecordViewModel(
+internal class RecordViewModel(
     val calculatorVm: CalculatorViewModel,
     val categoriesVm: CategoriesViewModel,
     val freezeBookVm: FreezeBookViewModel,

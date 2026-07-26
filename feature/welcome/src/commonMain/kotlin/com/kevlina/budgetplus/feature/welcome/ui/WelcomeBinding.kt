@@ -8,9 +8,11 @@ import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.kevlina.budgetplus.core.ui.AdaptiveScreen
 import com.kevlina.budgetplus.feature.welcome.WelcomeViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 @Composable
-fun WelcomeBinding(vm: WelcomeViewModel) {
+fun WelcomeBinding() {
+    val vm = metroViewModel<WelcomeViewModel>()
     NavigationBackHandler(
         state = rememberNavigationEventState(NavigationEventInfo.None),
         onBackCompleted = vm::logout
@@ -19,13 +21,13 @@ fun WelcomeBinding(vm: WelcomeViewModel) {
     AdaptiveScreen(
         modifier = Modifier.fillMaxSize(),
         regularContent = {
-            WelcomeContentRegular(vm)
+            WelcomeContentRegular(vm.state)
         },
         wideContent = {
-            WelcomeContentWide(vm)
+            WelcomeContentWide(vm.state)
         },
         packedContent = {
-            WelcomeContentPacked(vm)
+            WelcomeContentPacked(vm.state)
         }
     )
 }

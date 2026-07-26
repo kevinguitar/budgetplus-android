@@ -10,7 +10,6 @@ kotlin {
             implementation(projects.core.data)
             implementation(projects.core.ui)
 
-            implementation(libs.compottie)
             implementation(libs.navigation.event)
         }
     }

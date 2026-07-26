@@ -19,7 +19,7 @@ class WelcomeViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
     @Test
     fun `isCreatingBook is initially false`() = runTest {
         val model = createModel()
-        assertFalse(model.isCreatingBook.value)
+        assertFalse(model.state.isCreatingBook.value)
     }
 
     @Test

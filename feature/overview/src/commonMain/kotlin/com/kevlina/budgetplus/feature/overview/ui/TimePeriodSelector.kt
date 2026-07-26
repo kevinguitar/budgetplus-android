@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import budgetplus.core.common.generated.resources.Res
@@ -105,11 +105,9 @@ fun TimePeriodPreset(
                 )
             }
 
-        @OptIn(ExperimentalLayoutApi::class)
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxRowHeight()
                 .clip(AppTheme.cardShape)
                 .background(
                     color = if (customPeriod == timePeriod) {
@@ -126,6 +124,13 @@ fun TimePeriodPreset(
                     }
                 }
         ) {
+            // Invisible text to keep the pill height consistent with the text pills,
+            // even when this pill wraps to a new line on its own.
+            Text(
+                text = "",
+                singleLine = true,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
             Icon(
                 imageVector = vectorResource(Res.drawable.ic_drive_file_rename_outline),
                 tint = LocalAppColors.current.light,
@@ -211,11 +216,13 @@ internal fun OverviewTimeViewModel.toState() = TimePeriodSelectorState(
     setDateRange = ::setDateRange,
 )
 
-@Preview
+@PreviewFontScale
 @Composable
 private fun TimePeriodSelector_Preview() = AppTheme {
     Column(
-        modifier = Modifier.background(LocalAppColors.current.lightBg),
+        modifier = Modifier
+            .width(300.dp)
+            .background(LocalAppColors.current.lightBg),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TimePeriodSelector(

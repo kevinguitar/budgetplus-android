@@ -10,12 +10,12 @@ import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
+import com.kevlina.budgetplus.feature.welcome.ui.WelcomeState
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 
@@ -30,10 +30,14 @@ class WelcomeViewModel(
 
     private var createBookJob: Job? = null
 
-    val bookName = TextFieldState()
+    private val bookName = TextFieldState()
+    private val isCreatingBook = MutableStateFlow(false)
 
-    val isCreatingBook: StateFlow<Boolean>
-        field = MutableStateFlow(false)
+    val state = WelcomeState(
+        bookName = bookName,
+        isCreatingBook = isCreatingBook,
+        createBook = ::createBook,
+    )
 
     init {
         viewModelScope.launch {
@@ -45,7 +49,7 @@ class WelcomeViewModel(
         }
     }
 
-    fun createBook() {
+    private fun createBook() {
         if (createBookJob?.isActive == true) {
             return
         }

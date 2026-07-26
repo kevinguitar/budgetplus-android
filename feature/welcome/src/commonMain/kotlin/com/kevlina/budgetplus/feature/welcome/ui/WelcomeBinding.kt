@@ -19,13 +19,13 @@ fun WelcomeBinding(vm: WelcomeViewModel) {
     AdaptiveScreen(
         modifier = Modifier.fillMaxSize(),
         regularContent = {
-            WelcomeContentRegular(vm)
+            WelcomeContentRegular(vm.state)
         },
         wideContent = {
-            WelcomeContentWide(vm)
+            WelcomeContentWide(vm.state)
         },
         packedContent = {
-            WelcomeContentPacked(vm)
+            WelcomeContentPacked(vm.state)
         }
     )
 }

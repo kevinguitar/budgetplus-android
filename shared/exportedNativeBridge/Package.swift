@@ -12,7 +12,7 @@ let package = Package(
             targets: ["exportedNativeBridge"])
     ],
     dependencies: [
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", exact: "12.16.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", exact: "12.17.0")
     ],
     targets: [
         .target(

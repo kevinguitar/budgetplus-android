@@ -26,8 +26,13 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
         application.registerForRemoteNotifications()
 
-        // This must be called before initializing Admob SDK.
-        FBAdSettings.setAdvertiserTrackingEnabled(true)
+        // Meta Audience Network's advertiser tracking flag must reflect the real ATT
+        // authorization result, and must be set before AdMob starts. The Kotlin ads
+        // layer owns the ATT flow, so we register a configurator that it invokes with
+        // the actual result right before initializing AdMob.
+        MetaAdvertiserTracking.shared.configurator = { enabled in
+            FBAdSettings.setAdvertiserTrackingEnabled(enabled as! Bool)
+        }
 
         #if !DEBUG
         CrashlyticsInitializer.initialize()

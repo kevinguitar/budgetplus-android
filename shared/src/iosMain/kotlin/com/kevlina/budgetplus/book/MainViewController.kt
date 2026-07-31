@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.book
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kevlina.budgetplus.book.ui.BookBinding
@@ -13,7 +14,9 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.coroutines.flow.collect
 import platform.UIKit.UIViewController
 
-fun MainViewController(): UIViewController = ComposeUIViewController {
+fun MainViewController(): UIViewController = ComposeUIViewController(
+    configure = { onFocusBehavior = OnFocusBehavior.DoNothing }
+) {
     val graph = BudgetPlusIosAppGraphHolder.graph
     val themeColors by graph.themeManager.themeColors.collectAsStateWithLifecycle()
 

@@ -1,6 +1,7 @@
-package com.kevlina.budgetplus.core.ads
+package com.kevlina.budgetplus.ads
 
 import GoogleMobileAds.GADMobileAds
+import com.kevlina.budgetplus.core.ads.AdmobInitializer
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.Tracker
 import dev.zacsweers.metro.AppScope
@@ -19,6 +20,17 @@ internal class AdmobInitializerImpl(
 
     private val isTrackingDetermined
         get() = ATTrackingManager.trackingAuthorizationStatus != ATTrackingManagerAuthorizationStatusNotDetermined
+
+    private val isTrackingAuthorized
+        get() = ATTrackingManager.trackingAuthorizationStatus == ATTrackingManagerAuthorizationStatusAuthorized
+
+    private fun initAdmob() {
+        // Meta requires the advertiser tracking flag to reflect the real ATT result,
+        // and it must be set before AdMob (and therefore the Meta adapter) starts.
+        // Otherwise Meta drops bidding requests.
+        MetaAdvertiserTracking.setAdvertiserTrackingEnabled(isTrackingAuthorized)
+        GADMobileAds.sharedInstance().startWithCompletionHandler(null)
+    }
 
     override fun onAppStart() {
         if (isTrackingDetermined) {
@@ -42,9 +54,5 @@ internal class AdmobInitializerImpl(
             }
             initAdmob()
         }
-    }
-
-    private fun initAdmob() {
-        GADMobileAds.sharedInstance().startWithCompletionHandler(null)
     }
 }

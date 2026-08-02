@@ -10,7 +10,7 @@ import com.kevlina.budgetplus.core.ads.InterstitialAdsHandler
 import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.mapState
-import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK
+import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK_PREFIXES
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NAV_COLORS_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
@@ -94,10 +94,11 @@ internal class BookViewModel(
     }
 
     fun handleDeeplink(url: String?): DeeplinkType? {
-        if (url == null || !url.startsWith(APP_DEEPLINK)) return null
+        if (url == null) return null
+        val prefix = APP_DEEPLINK_PREFIXES.firstOrNull { url.startsWith(it) } ?: return null
         Logger.i("Handle Deeplink: $url")
 
-        val pathAndQuery = url.removePrefix(APP_DEEPLINK).removePrefix("/")
+        val pathAndQuery = url.removePrefix(prefix).removePrefix("/")
         val path = pathAndQuery.substringBefore("?")
         val query = pathAndQuery.substringAfter("?", "")
 
@@ -105,7 +106,8 @@ internal class BookViewModel(
         val queries = query.split("&")
             .filter { it.contains("=") }
             .associate {
-                val (key, value) = it.split("=")
+                val key = it.substringBefore("=")
+                val value = it.substringAfter("=", "")
                 key to value
             }
 

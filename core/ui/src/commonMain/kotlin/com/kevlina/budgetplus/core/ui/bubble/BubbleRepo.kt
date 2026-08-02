@@ -63,7 +63,7 @@ sealed class BubbleDest {
         override val offset: () -> Offset,
         override val shape: BubbleShape,
         override val textRes: StringResource = Res.string.bubble_scroll_to_select_currency,
-        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomCenter,
+        override val textDirection: BubbleTextDirection = BubbleTextDirection.BottomStart,
     ) : BubbleDest()
 
     data class EditCategoriesHint(

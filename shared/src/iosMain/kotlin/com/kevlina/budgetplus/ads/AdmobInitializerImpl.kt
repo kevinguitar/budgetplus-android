@@ -1,8 +1,10 @@
 package com.kevlina.budgetplus.ads
 
+import GoogleMobileAds.GADAdapterStatus
 import GoogleMobileAds.GADMobileAds
 import com.kevlina.budgetplus.core.ads.AdmobInitializer
 import com.kevlina.budgetplus.core.common.AppStartAction
+import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.Tracker
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
@@ -29,7 +31,19 @@ internal class AdmobInitializerImpl(
         // and it must be set before AdMob (and therefore the Meta adapter) starts.
         // Otherwise Meta drops bidding requests.
         MetaAdvertiserTracking.setAdvertiserTrackingEnabled(isTrackingAuthorized)
-        GADMobileAds.sharedInstance().startWithCompletionHandler(null)
+        GADMobileAds.sharedInstance().startWithCompletionHandler { status ->
+            val adapterStatuses = status?.adapterStatusesByClassName.orEmpty()
+            adapterStatuses.forEach { (className, adapterStatus) ->
+                if (adapterStatus is GADAdapterStatus) {
+                    Logger.d(
+                        "AdMob adapter: $className, " +
+                            "state=${adapterStatus.state}, " +
+                            "description=${adapterStatus.description}, " +
+                            "latency=${adapterStatus.latency}"
+                    )
+                }
+            }
+        }
     }
 
     override fun onAppStart() {

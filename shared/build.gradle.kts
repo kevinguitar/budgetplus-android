@@ -46,7 +46,7 @@ kotlin {
                             "FirebaseRemoteConfig",
                         ).forEach { add(it, exportToKotlin = false) }
                     },
-                    version = "12.16.0",
+                    version = "12.17.0",
                 )
                 remotePackageVersion(
                     url = uri("https://github.com/google/GoogleSignIn-iOS.git"),

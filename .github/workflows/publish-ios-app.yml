@@ -101,15 +101,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
-      - name: Cache SPM packages
+      # Cache only the source checkouts, NOT the binary artifacts.
+      - name: Cache SPM source checkouts
         uses: actions/cache@v6
         with:
           path: |
-            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+            .spm-cache/checkouts
+            .spm-cache/repositories
             ~/Library/Caches/org.swift.swiftpm
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
 
       - name: Set version in Config.xcconfig and Extension
         run: |
@@ -133,6 +133,19 @@ jobs:
           printf '%s' "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode > "$API_KEY_PATH"
           echo "API_KEY_PATH=$API_KEY_PATH" >> $GITHUB_ENV
 
+      # Resolve SPM dependencies into a stable, known directory and force a fresh download of binary target artifacts
+      - name: Resolve Swift Package dependencies
+        run: |
+          SPM_DIR="$(pwd)/.spm-cache"
+          # Remove any previously extracted binary artifacts so they are
+          # re-downloaded and re-extracted cleanly for this build.
+          rm -rf "$SPM_DIR/artifacts"
+          xcodebuild -resolvePackageDependencies \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -clonedSourcePackagesDirPath "$SPM_DIR"
+          echo "SPM_DIR=$SPM_DIR" >> "$GITHUB_ENV"
+
       - name: Archive iOS App
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
@@ -145,6 +158,8 @@ jobs:
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
             -archivePath ./build/iosApp.xcarchive \
+            -clonedSourcePackagesDirPath "$SPM_DIR" \
+            -disableAutomaticPackageResolution \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$API_KEY_PATH" \
             -authenticationKeyID "$APP_STORE_CONNECT_API_KEY_ID" \

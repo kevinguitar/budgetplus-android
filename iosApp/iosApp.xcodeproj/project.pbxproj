@@ -677,8 +677,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/googleads-mobile-ios-mediation-meta.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 6.21.101;
 			};
 		};
 		0A3F61752F3DDC18008A7161 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {

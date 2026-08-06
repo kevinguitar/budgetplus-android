@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/googleads/googleads-mobile-ios-mediation-meta.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "8c868e740c2ada75d8d581675f2a28fa30bee9a9"
+        "revision" : "1a09c48f80071b51b6f72c3c8a00662bd07818d4",
+        "version" : "6.21.101"
       }
     },
     {

@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.core.utils
 
-import co.touchlab.crashkios.crashlytics.CrashlyticsCalls
-import co.touchlab.crashkios.crashlytics.CrashlyticsCallsActual
+import co.touchlab.crashkios.crashlytics.CrashlyticsKotlin
 import co.touchlab.kermit.DefaultFormatter
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Message
@@ -11,14 +10,14 @@ import kotlinx.coroutines.CancellationException
 
 class CrashReportingLogWriter : LogWriter() {
 
-    private val crashlyticsCalls: CrashlyticsCalls = CrashlyticsCallsActual()
-
     override fun log(severity: Severity, message: String, tag: String, throwable: Throwable?) {
-        crashlyticsCalls.logMessage(DefaultFormatter.formatMessage(null, Tag(tag), Message(message)))
+        CrashlyticsKotlin.implementation.logMessage(
+            DefaultFormatter.formatMessage(null, Tag(tag), Message(message))
+        )
 
         if (severity >= Severity.Error && throwable !is CancellationException) {
             // If throwable is null, wrap the message with an exception
-            crashlyticsCalls.sendHandledException(throwable ?: Exception(message))
+            CrashlyticsKotlin.implementation.sendHandledException(throwable ?: Exception(message))
         }
     }
 }

@@ -133,11 +133,8 @@ jobs:
           printf '%s' "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode > "$API_KEY_PATH"
           echo "API_KEY_PATH=$API_KEY_PATH" >> $GITHUB_ENV
 
-      # Resolve SPM dependencies into a FIXED DerivedData path so the archive's
-      # SourcePackages/artifacts location is deterministic (not the random
-      # "iosApp-<hash>" folder). We resolve twice into the two locations the
-      # archive actually reads from: the top-level SourcePackages and the
-      # ArchiveIntermediates/SourcePackages that xcodebuild archive uses.
+      # Set a fixed DerivedData path (shared by the archive step below) and
+      # pre-resolve SPM dependencies to warm the package cache.
       - name: Resolve Swift Package dependencies
         run: |
           DERIVED_DATA="$(pwd)/build/DerivedData"
@@ -147,72 +144,11 @@ jobs:
             -scheme iosApp \
             -derivedDataPath "$DERIVED_DATA"
 
-      # Xcode's `archive` action re-resolves packages into a SEPARATE
-      # ArchiveIntermediates/SourcePackages tree and intermittently fails to
-      # download the MetaAdapter .binaryTarget zip, producing:
-      #   "Build input file cannot be found ... MetaAdapter.framework/MetaAdapter"
-      # To make this robust, we download+extract the exact pinned xcframework
-      # ourselves and pre-populate BOTH artifact locations. If Xcode downloads
-      # it fine, this is a harmless no-op overwrite; if Xcode skips the download,
-      # the required input file is already present.
-      - name: Pre-populate MetaAdapter binary artifact
-        run: |
-          set -euo pipefail
-          META_VERSION="6.21.1.0"
-          META_URL="https://dl.google.com/googleadmobadssdk/mediation/ios/meta/MetaAdapter-${META_VERSION}.zip"
-
-          WORK="$(mktemp -d)"
-          curl -fsSL "$META_URL" -o "$WORK/meta.zip"
-          unzip -q "$WORK/meta.zip" -d "$WORK"
-          SRC_XCF="$WORK/MetaAdapter-${META_VERSION}/MetaAdapter.xcframework"
-          test -f "$SRC_XCF/ios-arm64/MetaAdapter.framework/MetaAdapter" \
-            || { echo "ERROR: extracted xcframework is missing the arm64 binary"; exit 1; }
-
-          # Every SourcePackages/artifacts/.../MetaAdapter dir Xcode may use.
-          # Covers the fixed DerivedData resolve AND the archive intermediates.
-          find "$DERIVED_DATA" -type d \
-            -path '*/SourcePackages/artifacts/googleads-mobile-ios-mediation-meta/MetaAdapter' \
-            -print0 2>/dev/null | while IFS= read -r -d '' dest; do
-              echo "Populating: $dest"
-              rm -rf "$dest/MetaAdapter.xcframework"
-              cp -R "$SRC_XCF" "$dest/MetaAdapter.xcframework"
-          done
-
-          # Stash the extracted xcframework so a post-resolve step (inside the
-          # archive DerivedData) can reuse it without re-downloading.
-          STASH="$(pwd)/build/MetaAdapter.xcframework"
-          rm -rf "$STASH"
-          cp -R "$SRC_XCF" "$STASH"
-          echo "META_XCF=$STASH" >> "$GITHUB_ENV"
-
       - name: Archive iOS App
         env:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
-          set -euo pipefail
-
-          ARTIFACT_REL="SourcePackages/artifacts/googleads-mobile-ios-mediation-meta/MetaAdapter"
-
-          # xcodebuild archive copies resolved packages into a separate
-          # ArchiveIntermediates/<scheme>/SourcePackages tree and may not
-          # re-download the MetaAdapter .binaryTarget there. Pre-create and
-          # populate that exact path so the input file is guaranteed present.
-          ARCHIVE_SP="$DERIVED_DATA/Build/Intermediates.noindex/ArchiveIntermediates/iosApp/$ARTIFACT_REL"
-          mkdir -p "$ARCHIVE_SP"
-          rm -rf "$ARCHIVE_SP/MetaAdapter.xcframework"
-          cp -R "$META_XCF" "$ARCHIVE_SP/MetaAdapter.xcframework"
-
-          # Also (re)assert the top-level resolve location.
-          TOP_SP="$DERIVED_DATA/$ARTIFACT_REL"
-          mkdir -p "$TOP_SP"
-          rm -rf "$TOP_SP/MetaAdapter.xcframework"
-          cp -R "$META_XCF" "$TOP_SP/MetaAdapter.xcframework"
-
-          echo "Pre-populated artifact locations:"
-          find "$DERIVED_DATA" -type f \
-            -path '*MetaAdapter.xcframework/ios-arm64/MetaAdapter.framework/MetaAdapter'
-
           xcodebuild archive \
             -project iosApp/iosApp.xcodeproj \
             -scheme iosApp \
@@ -221,7 +157,6 @@ jobs:
             -destination 'generic/platform=iOS' \
             -archivePath ./build/iosApp.xcarchive \
             -derivedDataPath "$DERIVED_DATA" \
-            -disableAutomaticPackageResolution \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$API_KEY_PATH" \
             -authenticationKeyID "$APP_STORE_CONNECT_API_KEY_ID" \

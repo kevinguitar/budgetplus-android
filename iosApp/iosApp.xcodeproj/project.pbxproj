@@ -192,7 +192,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23D49A887E0170659F166AE9 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				0AB4D0012F5C000000000001 /* Ensure MetaAdapter Artifact */,
 				606A3F78A1DF210FF623988B /* Compile Kotlin Framework */,
 				1863F0F2EB00B17E5A9BE78C /* Sources */,
 				403AF2F1C76CD538513AA497 /* Frameworks */,
@@ -293,25 +292,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0AB4D0012F5C000000000001 /* Ensure MetaAdapter Artifact */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Ensure MetaAdapter Artifact";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\n# The MetaAdapter Google mediation package ships its framework as a remote\n# .binaryTarget (a zip on dl.google.com). xcodebuild archive intermittently\n# fails to download/extract it into its private ArchiveIntermediates\n# SourcePackages tree, causing:\n#   \"Build input file cannot be found ... MetaAdapter.framework/MetaAdapter\"\n# This phase runs FIRST, inside the build, after Xcode has set up the\n# SourcePackages tree, and guarantees the artifact is present before the\n# link phase consumes it.\n\nMETA_VERSION=\"6.21.1.0\"\nMETA_URL=\"https://dl.google.com/googleadmobadssdk/mediation/ios/meta/MetaAdapter-${META_VERSION}.zip\"\n\n# Resolve the SourcePackages root for THIS build (works for both normal and\n# archive builds). Mirrors the pattern used by the Crashlytics run phase.\nSP_ROOT=\"${BUILD_DIR%/Build/*}/SourcePackages\"\nDEST_DIR=\"${SP_ROOT}/artifacts/googleads-mobile-ios-mediation-meta/MetaAdapter\"\nDEST_XCF=\"${DEST_DIR}/MetaAdapter.xcframework\"\nBIN_PATH=\"${DEST_XCF}/ios-arm64/MetaAdapter.framework/MetaAdapter\"\n\nif [ -f \"$BIN_PATH\" ]; then\n  echo \"MetaAdapter.xcframework already present: $BIN_PATH\"\n  exit 0\nfi\n\necho \"MetaAdapter.xcframework missing; downloading $META_URL\"\nTMP=\"$(mktemp -d)\"\ncurl -fsSL \"$META_URL\" -o \"$TMP/meta.zip\"\nunzip -q \"$TMP/meta.zip\" -d \"$TMP\"\nSRC_XCF=\"$TMP/MetaAdapter-${META_VERSION}/MetaAdapter.xcframework\"\n\nif [ ! -f \"$SRC_XCF/ios-arm64/MetaAdapter.framework/MetaAdapter\" ]; then\n  echo \"error: downloaded MetaAdapter xcframework is missing the arm64 binary\" >&2\n  exit 1\nfi\n\nmkdir -p \"$DEST_DIR\"\nrm -rf \"$DEST_XCF\"\ncp -R \"$SRC_XCF\" \"$DEST_XCF\"\nrm -rf \"$TMP\"\necho \"Populated MetaAdapter.xcframework at $DEST_XCF\"\n";
-		};
 		0AEA3C6E2F55B93B00481525 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

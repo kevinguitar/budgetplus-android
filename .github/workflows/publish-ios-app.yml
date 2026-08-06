@@ -101,9 +101,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
-      # Cache only the SwiftPM download cache, NOT the resolved binary artifacts.
-      # The MetaAdapter .binaryTarget is force-populated deterministically below,
-      # so a stale/partial cached artifact must never be restored.
+      # Cache the SwiftPM download cache to speed up dependency resolution.
       - name: Cache SPM download cache
         uses: actions/cache@v6
         with:
@@ -133,8 +131,21 @@ jobs:
           printf '%s' "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode > "$API_KEY_PATH"
           echo "API_KEY_PATH=$API_KEY_PATH" >> $GITHUB_ENV
 
-      # Set a fixed DerivedData path (shared by the archive step below) and
-      # pre-resolve SPM dependencies to warm the package cache.
+      # The MetaAdapter Google mediation dependency ships its framework as a
+      # remote .binaryTarget (an xcframework). During `xcodebuild archive`, the
+      # linker references it via a relative path
+      #   ArchiveIntermediates/<scheme>/BuildProductsPath/../../SourcePackages/...
+      # which resolves to ArchiveIntermediates/SourcePackages (NO scheme folder)
+      # -- a location Xcode never actually populates. The resolved artifact only
+      # lives at <DerivedData>/SourcePackages. This is an Xcode bug and it fails
+      # with:
+      #   "Build input file cannot be found ... MetaAdapter.framework/MetaAdapter"
+      #
+      # Fix: resolve packages into a fixed DerivedData (this downloads the binary
+      # artifact to <DerivedData>/SourcePackages), then create the symlink
+      #   ArchiveIntermediates/SourcePackages -> <DerivedData>/SourcePackages
+      # so the path the linker computes resolves to the real artifact. Verified
+      # to make `xcodebuild archive` succeed.
       - name: Resolve Swift Package dependencies
         run: |
           DERIVED_DATA="$(pwd)/build/DerivedData"
@@ -149,6 +160,17 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
+          set -euo pipefail
+
+          # Work around the Xcode bug described above: the archive linker looks
+          # for the MetaAdapter xcframework at ArchiveIntermediates/SourcePackages
+          # (which Xcode never populates), so point it at the real, populated
+          # <DerivedData>/SourcePackages via a symlink.
+          ARCHIVE_INT="$DERIVED_DATA/Build/Intermediates.noindex/ArchiveIntermediates"
+          mkdir -p "$ARCHIVE_INT"
+          rm -rf "$ARCHIVE_INT/SourcePackages"
+          ln -s "$DERIVED_DATA/SourcePackages" "$ARCHIVE_INT/SourcePackages"
+
           xcodebuild archive \
             -project iosApp/iosApp.xcodeproj \
             -scheme iosApp \
@@ -157,6 +179,7 @@ jobs:
             -destination 'generic/platform=iOS' \
             -archivePath ./build/iosApp.xcarchive \
             -derivedDataPath "$DERIVED_DATA" \
+            -disableAutomaticPackageResolution \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$API_KEY_PATH" \
             -authenticationKeyID "$APP_STORE_CONNECT_API_KEY_ID" \

@@ -66,6 +66,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
 
+      - name: Cache Xcode DerivedData
+        uses: actions/cache@v6
+        with:
+          path: ./build
+          key: ${{ runner.os }}-ddata-${{ hashFiles('**/Package.resolved', 'gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-ddata-
+
       - name: Build iOS App (simulator)
         run: |
           xcodebuild build \
@@ -80,5 +88,7 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             ARCHS=arm64 \
             ONLY_ACTIVE_ARCH=YES \
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            DEBUG_INFORMATION_FORMAT=dwarf \
             -skipPackagePluginValidation \
             -quiet

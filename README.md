@@ -13,9 +13,9 @@ Budget+ is an easy-to-use co-spending tracker to track expenses together with yo
 
 ## Feature Overview
 
-![overview_1](https://github.com/user-attachments/assets/66d5835d-f81f-456a-920c-43c6542977ee)
+![overview_1](https://github.com/user-attachments/assets/29101061-de8c-4007-954a-f9eb03419d53)
 
-![overview_2](https://github.com/user-attachments/assets/a480d869-a814-41f1-a258-e24e61e38f2e)
+![overview_2](https://github.com/user-attachments/assets/782a20cc-8460-416a-b0be-7a9afdbdb5d7)
 
 ### Some cool animated features!! ✨
 |                                                      Pie Chart                                                       |                                                  Color Tone Picker                                                   |                                                 Customize Color Tone                                                 |

@@ -2,7 +2,7 @@
 
 [![Android CI](https://github.com/kevinguitar/budgetplus/actions/workflows/android-ci.yml/badge.svg?event=pull_request)](https://github.com/kevinguitar/budgetplus/actions/workflows/android-ci.yml)
 [![iOS CI](https://github.com/kevinguitar/budgetplus/actions/workflows/ios-ci.yml/badge.svg?event=pull_request)](https://github.com/kevinguitar/budgetplus/actions/workflows/ios-ci.yml)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![License](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](https://polyformproject.org/licenses/noncommercial/1.0.0)
 
 Budget+ is an easy-to-use co-spending tracker to track expenses together with your friends and family.
 
@@ -13,9 +13,9 @@ Budget+ is an easy-to-use co-spending tracker to track expenses together with yo
 
 ## Feature Overview
 
-![overview_1](https://github.com/user-attachments/assets/66d5835d-f81f-456a-920c-43c6542977ee)
+![overview_1](https://github.com/user-attachments/assets/29101061-de8c-4007-954a-f9eb03419d53)
 
-![overview_2](https://github.com/user-attachments/assets/a480d869-a814-41f1-a258-e24e61e38f2e)
+![overview_2](https://github.com/user-attachments/assets/782a20cc-8460-416a-b0be-7a9afdbdb5d7)
 
 ### Some cool animated features!! ✨
 |                                                      Pie Chart                                                       |                                                  Color Tone Picker                                                   |                                                 Customize Color Tone                                                 |
@@ -140,14 +140,13 @@ License
 
     Copyright (c) 2024 Kevin Chiu
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the PolyForm Noncommercial License 1.0.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-    
-    http://www.apache.org/licenses/LICENSE-2.0
-    
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
+
+    https://polyformproject.org/licenses/noncommercial/1.0.0
+
+    This software may be used for any noncommercial purpose only.
+    Commercial use, including monetization, is not permitted.
+    See the License for the specific terms governing permissions and
     limitations under the License.

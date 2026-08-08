@@ -8,7 +8,6 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -18,7 +17,7 @@ class AppBenchmarkConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.apply(plugin = project.libs.plugins.android.test.get().pluginId)
 
-        val appId: String by project
+        val appId = project.property("appId").toString()
 
         project.extensions.configure<TestExtension> {
 

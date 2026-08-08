@@ -9,7 +9,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -17,7 +16,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 class KotlinAndroidConventionPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val appId: String by project
+        val appId = project.property("appId").toString()
 
         project.extensions.configure<ApplicationExtension> {
             val modulePath = project.path

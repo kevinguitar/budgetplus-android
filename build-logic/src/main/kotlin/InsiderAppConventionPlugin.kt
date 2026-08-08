@@ -7,8 +7,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.provideDelegate
-import java.util.*
+import java.util.Properties
 
 class InsiderAppConventionPlugin : Plugin<Project> {
 
@@ -19,7 +18,7 @@ class InsiderAppConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
         project.apply<KotlinAndroidConventionPlugin>()
 
-        val appId: String by project
+        val appId = project.property("appId").toString()
 
         val localProperties = Properties()
         val localPropertiesFile = project.rootProject.file("local.properties")

@@ -6,7 +6,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.provideDelegate
 import kotlin.math.pow
 
 class BudgetPlusAppConventionPlugin : Plugin<Project> {
@@ -18,8 +17,8 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
         project.apply(plugin = project.libs.plugins.kotlin.serialization.get().pluginId)
         project.apply<KotlinAndroidConventionPlugin>()
 
-        val appId: String by project
-        val appVersion: String by project
+        val appId = project.property("appId").toString()
+        val appVersion = project.property("appVersion").toString()
 
         /**
          *  Major version * 10^6

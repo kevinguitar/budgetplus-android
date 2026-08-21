@@ -3,12 +3,10 @@ package com.kevlina.budgetplus.insider.app.main.ui
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,7 +22,6 @@ import androidx.navigation3.ui.NavDisplay
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.InsiderDest
-import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.ui.Scaffold
 import com.kevlina.budgetplus.core.ui.SnackbarHost
 import com.kevlina.budgetplus.feature.auth.AuthViewModel
@@ -38,6 +35,7 @@ import kotlinx.coroutines.flow.launchIn
 @Composable
 internal fun InsiderBinding(vm: InsiderRootViewModel = metroViewModel()) {
 
+    val navController = vm.navController
     var snackbarData: SnackbarData? by remember { mutableStateOf(null) }
 
     LaunchedEffect(vm) {
@@ -47,25 +45,20 @@ internal fun InsiderBinding(vm: InsiderRootViewModel = metroViewModel()) {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarData) },
-        ) { innerPadding ->
+        ) { _ ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = LocalAppColors.current.light)
-                    // Do not consider the top padding, and let TopBar handle it.
-                    .padding(bottom = innerPadding.calculateBottomPadding())
+                modifier = Modifier.fillMaxSize()
             ) {
                 NavDisplay(
-                    backStack = vm.navController.backStack,
+                    backStack = navController.backStack,
                     entryProvider = entryProvider {
                         entry<InsiderDest.Auth> {
                             val vm = metroViewModel<AuthViewModel>()
                             LaunchedEffect(vm) {
-                                vm.checkAuthorizedAccounts(enableAutoSignIn = true)
+                                vm.checkAuthorizedAccounts(enableAutoSignIn = false)
                             }
                             AuthBinding(
                                 vm = vm.commonAuthViewModel,
@@ -76,12 +69,12 @@ internal fun InsiderBinding(vm: InsiderRootViewModel = metroViewModel()) {
 
                         entry<InsiderDest.Insider> {
                             InsiderScreen(openPushNotifications = {
-                                vm.navController.navigate(InsiderDest.PushNotifications)
+                                navController.navigate(InsiderDest.PushNotifications)
                             })
                         }
 
                         entry<InsiderDest.PushNotifications> {
-                            PushNotificationsScreen(navigateUp = vm.navController::navigateUp)
+                            PushNotificationsScreen(navigateUp = navController::navigateUp)
                         }
                     },
                     entryDecorators = listOf(
@@ -94,7 +87,6 @@ internal fun InsiderBinding(vm: InsiderRootViewModel = metroViewModel()) {
                     modifier = Modifier
                         .weight(1F)
                         .fillMaxWidth()
-                        .background(color = LocalAppColors.current.light)
                 )
             }
         }

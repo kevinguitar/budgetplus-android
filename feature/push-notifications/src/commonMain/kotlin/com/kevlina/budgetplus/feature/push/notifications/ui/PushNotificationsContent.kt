@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -81,6 +82,7 @@ internal fun PushNotificationsContent(
             .containerPadding()
             .padding(16.dp)
             .imePadding()
+            .navigationBarsPadding()
     ) {
         LanguageBlock(
             textRes = Res.string.push_notif_language_zh_tw,

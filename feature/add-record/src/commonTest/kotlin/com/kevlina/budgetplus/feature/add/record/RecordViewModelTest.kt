@@ -136,8 +136,8 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
     }
 
     @Test
-    fun `request notification permission after the 2nd record`() = runTest {
-        val model = createModel(recordCount = 1)
+    fun `request notification permission after the 1st record`() = runTest {
+        val model = createModel(recordCount = 0)
         model.calculatorVm.input("1")
         model.calculatorVm.evaluate()
 
@@ -145,8 +145,8 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
     }
 
     @Test
-    fun `request in app review after 4th record`() = runTest {
-        val model = createModel(recordCount = 3)
+    fun `request in app review after 5th record`() = runTest {
+        val model = createModel(recordCount = 4)
         model.calculatorVm.input("1")
         model.calculatorVm.evaluate()
 

@@ -239,6 +239,7 @@
     <string name="cta_complete">Complete</string>
     <string name="cta_duplicate">Duplicate</string>
     <string name="cta_pin">Pin</string>
+    <string name="cta_open_settings">Open settings</string>
     <string name="select_date">Select Date</string>
     <string name="date_to">to</string>
     <string name="today">Today</string>
@@ -249,7 +250,9 @@
     <string name="book_name_placeholder">My accounting book</string>
     <string name="ads_not_available">No ads available</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
-    <string name="permission_hint">Turn on the permission in the settings if you change your mind</string>
+    <string name="notification_permission_hint">Turn on the notification permission in the settings if you change your mind</string>
+    <string name="write_storage_permission_hint">Turn on the storage permission in the settings if you change your mind</string>
+    <string name="microphone_permission_hint">Turn on the microphone permission in the settings if you change your mind</string>
     <string name="app_update_downloaded">The update is ready!</string>
     <string name="unsaved_warning_message">Do you want to leave without saving the changes?</string>
 </resources>

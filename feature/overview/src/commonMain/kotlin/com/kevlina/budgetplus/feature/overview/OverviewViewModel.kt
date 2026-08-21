@@ -4,8 +4,10 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.cta_open_settings
+import budgetplus.core.common.generated.resources.write_storage_permission_hint
 import com.kevlina.budgetplus.core.ads.InterstitialAdsHandler
+import com.kevlina.budgetplus.core.common.OpenAppSettingsAction
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.Tracker
@@ -70,6 +72,7 @@ internal class OverviewViewModel(
     val chartModeModel: ChartModeViewModel,
     private val preference: Preference,
     private val currencyExchangeRepo: CurrencyExchangeRepo,
+    private val openAppSettingsAction: OpenAppSettingsAction,
 ) : ViewModel() {
 
     val bookName = bookRepo.bookState.mapState { it?.name }
@@ -249,7 +252,11 @@ internal class OverviewViewModel(
     }
 
     suspend fun showWriteFilePermissionHint() {
-        snackbarSender.send(Res.string.permission_hint)
+        snackbarSender.send(
+            message = Res.string.write_storage_permission_hint,
+            actionLabel = Res.string.cta_open_settings,
+            action = openAppSettingsAction
+        )
     }
 
     private fun setRecordType(newType: RecordType) {

@@ -17,6 +17,7 @@ kotlin {
             implementation(libs.kotlin.serialization)
             implementation(libs.ktor.core)
             implementation(libs.compose.resources)
+            implementation(libs.permissions.compose)
 
             implementation(libs.firebase.auth)
             implementation(libs.firebase.analytics)

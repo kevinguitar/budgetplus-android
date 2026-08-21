@@ -10,8 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.cta_invite
+import budgetplus.core.common.generated.resources.cta_open_settings
 import budgetplus.core.common.generated.resources.menu_invite_to_book
-import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.notification_permission_hint
 import budgetplus.core.common.generated.resources.record_currency_rate_unavailable
 import budgetplus.core.common.generated.resources.record_empty_category
 import budgetplus.core.common.generated.resources.record_empty_price
@@ -20,6 +21,7 @@ import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.EventTrigger
 import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.OpenAppSettingsAction
 import com.kevlina.budgetplus.core.common.RecordType
 import com.kevlina.budgetplus.core.common.ShareHelper
 import com.kevlina.budgetplus.core.common.SnackbarSender
@@ -79,6 +81,7 @@ internal class RecordViewModel(
     private val authManager: AuthManager,
     private val interstitialAdsHandler: InterstitialAdsHandler,
     private val inAppReviewManager: InAppReviewManager,
+    private val openAppSettingsAction: OpenAppSettingsAction,
     private val currencyExchangeRepo: CurrencyExchangeRepo,
     private val snackbarSender: SnackbarSender,
     private val shareHelper: ShareHelper,
@@ -253,7 +256,11 @@ internal class RecordViewModel(
     }
 
     suspend fun showNotificationPermissionHint() {
-        snackbarSender.send(Res.string.permission_hint)
+        snackbarSender.send(
+            message = Res.string.notification_permission_hint,
+            actionLabel = Res.string.cta_open_settings,
+            action = openAppSettingsAction
+        )
     }
 
     fun editCurrency() {
@@ -365,8 +372,8 @@ internal class RecordViewModel(
     /**
      *  This callback does several things
      *  - Show full screen Ad on every [RECORD_COUNT_CYCLE] records
-     *  - Request notification permission after the 2nd record
-     *  - Request in-app review after the 4th record
+     *  - Request notification permission after the 1st record
+     *  - Request in-app review after the 5th record
      */
     private suspend fun onRecordCreated() {
         when ((recordCount.first() ?: 0) % RECORD_COUNT_CYCLE) {
@@ -386,8 +393,8 @@ internal class RecordViewModel(
          */
         const val RECORD_COUNT_CYCLE = 7
         const val RECORD_SHOW_AD = 0
-        const val RECORD_REQUEST_PERMISSION = 2
-        const val RECORD_REQUEST_REVIEW = 4
+        const val RECORD_REQUEST_PERMISSION = 1
+        const val RECORD_REQUEST_REVIEW = 5
     }
 }
 

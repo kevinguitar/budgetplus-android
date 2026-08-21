@@ -239,6 +239,7 @@
     <string name="cta_complete">完了する</string>
     <string name="cta_duplicate">コピー</string>
     <string name="cta_pin">トップに固定</string>
+    <string name="cta_open_settings">設定を開く</string>
     <string name="select_date">日付を選択</string>
     <string name="date_to">～</string>
     <string name="today">今日</string>
@@ -249,7 +250,9 @@
     <string name="book_name_placeholder">私の帳簿</string>
     <string name="ads_not_available">広告なし</string>
     <string name="fallback_error_message">エラーが発生しました、後でもう一度お試しください</string>
-    <string name="permission_hint">もし、気が変わったら、設定で権限を有効にしてください</string>
+    <string name="notification_permission_hint">もし、気が変わったら、設定で通知の権限を有効にしてください</string>
+    <string name="write_storage_permission_hint">もし、気が変わったら、設定でストレージの権限を有効にしてください</string>
+    <string name="microphone_permission_hint">もし、気が変わったら、設定でマイクの権限を有効にしてください</string>
     <string name="app_update_downloaded">ミニマリストな帳簿を更新できます！</string>
     <string name="unsaved_warning_message">未保存の変更があります、終了しますか？</string>
 </resources>

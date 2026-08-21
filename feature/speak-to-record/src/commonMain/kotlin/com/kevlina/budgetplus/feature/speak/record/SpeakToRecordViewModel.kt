@@ -3,11 +3,13 @@ package com.kevlina.budgetplus.feature.speak.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.permission_hint
+import budgetplus.core.common.generated.resources.cta_open_settings
+import budgetplus.core.common.generated.resources.microphone_permission_hint
 import budgetplus.core.common.generated.resources.record_speech_recognition_no_result
 import budgetplus.core.common.generated.resources.record_speech_recognition_not_supported
 import com.kevlina.budgetplus.core.common.EventFlow
 import com.kevlina.budgetplus.core.common.MutableEventFlow
+import com.kevlina.budgetplus.core.common.OpenAppSettingsAction
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
@@ -33,6 +35,7 @@ class SpeakToRecordViewModel(
     private val speakToRecord: SpeakToRecord,
     private val snackbarSender: SnackbarSender,
     private val bubbleRepo: BubbleRepo,
+    private val openAppSettingsAction: OpenAppSettingsAction,
 ) : ViewModel() {
 
     val speakResultFlow: EventFlow<SpeakToRecordStatus.Success>
@@ -87,7 +90,13 @@ class SpeakToRecordViewModel(
     }
 
     fun showRecordPermissionHint() {
-        viewModelScope.launch { snackbarSender.send(Res.string.permission_hint) }
+        viewModelScope.launch {
+            snackbarSender.send(
+                message = Res.string.microphone_permission_hint,
+                actionLabel = Res.string.cta_open_settings,
+                action = openAppSettingsAction
+            )
+        }
     }
 
     private suspend fun handleStatus(status: SpeakToRecordStatus) {

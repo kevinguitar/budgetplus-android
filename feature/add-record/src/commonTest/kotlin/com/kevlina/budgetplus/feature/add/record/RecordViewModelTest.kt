@@ -445,6 +445,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         authManager = FakeAuthManager(isPremium = isPremium),
         interstitialAdsHandler = interstitialAdsHandler,
         inAppReviewManager = FakeInAppReviewManager(),
+        openAppSettingsAction = {},
         currencyExchangeRepo = currencyExchangeRepo,
         snackbarSender = FakeSnackbarSender,
         shareHelper = FakeShareHelper,
@@ -465,5 +466,6 @@ val fakeSpeakToRecordVm = SpeakToRecordViewModel(
             stopRecording = {}
         )
     },
-    bubbleRepo = FakeBubbleRepo()
+    bubbleRepo = FakeBubbleRepo(),
+    openAppSettingsAction = {}
 )

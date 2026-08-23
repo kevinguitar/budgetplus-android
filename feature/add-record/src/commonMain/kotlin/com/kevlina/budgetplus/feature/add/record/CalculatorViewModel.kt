@@ -13,6 +13,8 @@ import com.kevlina.budgetplus.core.common.VibratorManager
 import com.kevlina.budgetplus.core.common.formatGroupedInteger
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.sendEvent
+import com.kevlina.budgetplus.core.settings.api.CalculatorButtonType
+import com.kevlina.budgetplus.core.settings.api.CalculatorSettings
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
 import com.kevlina.budgetplus.feature.freeze.FreezeBookViewModel
@@ -27,6 +29,7 @@ import kotlinx.coroutines.launch
 @Inject
 class CalculatorViewModel(
     val vibrator: VibratorManager,
+    val calculatorSettings: CalculatorSettings,
     val speakToRecordVm: SpeakToRecordViewModel,
     val freezeBookVm: FreezeBookViewModel,
     private val snackbarSender: SnackbarSender,
@@ -77,6 +80,13 @@ class CalculatorViewModel(
 
             // Do not allow multiple dots in the same number
             CalculatorButton.Dot -> when {
+                // The '.' button acts as a "00" quick-input when double-zero mode is enabled.
+                calculatorSettings.buttonType.value == CalculatorButtonType.DoubleZero -> when {
+                    currentText == EMPTY_PRICE -> Unit
+                    currentText.last() in operatorChars -> Unit
+                    else -> setRawText(currentText + CalculatorButtonType.DoubleZero.text)
+                }
+
                 currentText.any { it in operatorChars } -> {
                     val indexOfLastOp = currentText.indexOfLast { it in operatorChars }
                     val lastNumber = currentText.takeLast(currentText.length - indexOfLastOp - 1)

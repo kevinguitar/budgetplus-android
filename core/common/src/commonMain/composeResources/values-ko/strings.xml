@@ -172,6 +172,8 @@
     <string name="settings_chart_mode">개요 차트 모드</string>
     <string name="settings_bar_chart">막대 차트</string>
     <string name="settings_pie_chart">파이 차트</string>
+    <string name="settings_calculator_button">계산기 소수점 버튼</string>
+    <string name="settings_calculator_dot">점</string>
     <string name="settings_share_app">앱을 친구에게 공유</string>
     <string name="settings_share_app_message">정말 좋은 가계부 앱을 발견했어요. 한번 사용해 보세요!\n%1$s</string>
     <string name="settings_rate_us">%1$s에서 평가하기</string>

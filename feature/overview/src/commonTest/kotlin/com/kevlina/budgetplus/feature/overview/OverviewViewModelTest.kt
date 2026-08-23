@@ -14,7 +14,7 @@ import com.kevlina.budgetplus.core.data.fixtures.FakeRecordsObserver
 import com.kevlina.budgetplus.core.data.fixtures.FakeUserRepo
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.Record
-import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
+import com.kevlina.budgetplus.core.settings.api.ChartModeSettings
 import com.kevlina.budgetplus.core.ui.bubble.FakeBubbleRepo
 import com.kevlina.budgetplus.core.unit.test.BaseTest
 import com.kevlina.budgetplus.feature.overview.utils.CsvExporter
@@ -161,7 +161,7 @@ class OverviewViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
                 tracker = tracker,
                 preference = preference,
             ),
-            chartModeModel = ChartModeViewModel(
+            chartModeSettings = ChartModeSettings(
                 appScope = backgroundScope,
                 preference = preference,
                 tracker = tracker,

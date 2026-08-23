@@ -49,6 +49,7 @@ import budgetplus.feature.add_record.generated.resources.ic_minus
 import budgetplus.feature.add_record.generated.resources.ic_multiply
 import budgetplus.feature.add_record.generated.resources.ic_plus
 import com.kevlina.budgetplus.core.common.EventTrigger
+import com.kevlina.budgetplus.core.settings.api.CalculatorButtonType
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColors
 import com.kevlina.budgetplus.core.theme.typographyScale
@@ -99,6 +100,7 @@ internal fun Calculator(
 ) {
     val needEvaluate by state.needEvaluate.collectAsStateWithLifecycle(initialValue = false)
     val vibrateOnInput by state.vibrateOnInput.collectAsStateWithLifecycle()
+    val calculatorButtonType by state.calculatorButtonType.collectAsStateWithLifecycle()
     val isBookFrozen by state.isBookFrozen.collectAsStateWithLifecycle()
     val hapticFeedback = LocalHapticFeedback.current
     val focusRequester = remember { FocusRequester() }
@@ -198,9 +200,18 @@ internal fun Calculator(
                             CalculatorBtn(
                                 button = btn,
                                 isAdaptive = adaptiveButton,
+                                calculatorButtonType = calculatorButtonType,
                                 onClick = {
                                     onButtonClick()
                                     state.onInput(btn)
+                                },
+                                onLongClick = if (btn == CalculatorButton.Dot) {
+                                    {
+                                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        state.onToggleCalculatorButtonType()
+                                    }
+                                } else {
+                                    null
                                 }
                             )
                         }
@@ -275,11 +286,13 @@ private fun ColumnScope.CalculatorBtnContainer(
     isAdaptive: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClick: (() -> Unit)? = null,
     color: Color = LocalAppColors.current.primary,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Surface(
         onClick = onClick,
+        onLongClick = onLongClick,
         modifier = modifier
             .weight(1F)
             .focusProperties { canFocus = false }
@@ -295,11 +308,14 @@ private fun ColumnScope.CalculatorBtnContainer(
 private fun ColumnScope.CalculatorBtn(
     button: CalculatorButton,
     isAdaptive: Boolean,
+    calculatorButtonType: CalculatorButtonType,
     onClick: () -> Unit,
+    onLongClick: (() -> Unit)?,
 ) {
     CalculatorBtnContainer(
         isAdaptive = isAdaptive,
-        onClick = onClick
+        onClick = onClick,
+        onLongClick = onLongClick
     ) {
         when (button) {
             CalculatorButton.Delete -> Icon(
@@ -337,7 +353,11 @@ private fun ColumnScope.CalculatorBtn(
             )
 
             else -> Text(
-                text = button.text.toString(),
+                text = if (button == CalculatorButton.Dot) {
+                    calculatorButtonType.text
+                } else {
+                    button.text.toString()
+                },
                 textAlign = TextAlign.Center,
                 fontSize = FontSize.HeaderLarge,
                 fontWeight = FontWeight.Bold,
@@ -386,20 +406,24 @@ private fun RowScope.DoneBtn(
 internal data class CalculatorState(
     val needEvaluate: Flow<Boolean>,
     val vibrateOnInput: StateFlow<Boolean>,
+    val calculatorButtonType: StateFlow<CalculatorButtonType>,
     val isBookFrozen: StateFlow<Boolean>,
     val recordEvent: EventTrigger<Unit>,
     val speakToRecordButtonState: SpeakToRecordButtonState,
     val onInput: (CalculatorButton) -> Unit,
+    val onToggleCalculatorButtonType: () -> Unit,
     val onCalculatorAction: (CalculatorAction) -> Unit,
 ) {
     companion object {
         val preview = CalculatorState(
             needEvaluate = MutableStateFlow(false),
             vibrateOnInput = MutableStateFlow(true),
+            calculatorButtonType = MutableStateFlow(CalculatorButtonType.Dot),
             isBookFrozen = MutableStateFlow(false),
             recordEvent = EventTrigger(),
             speakToRecordButtonState = SpeakToRecordButtonState.preview,
             onInput = {},
+            onToggleCalculatorButtonType = {},
             onCalculatorAction = {}
         )
     }
@@ -408,6 +432,7 @@ internal data class CalculatorState(
 internal fun CalculatorViewModel.toState(recordEvent: EventTrigger<Unit>) = CalculatorState(
     needEvaluate = needEvaluate,
     vibrateOnInput = vibrator.vibrateOnInput,
+    calculatorButtonType = calculatorSettings.buttonType,
     isBookFrozen = freezeBookVm.isBookFrozen,
     recordEvent = recordEvent,
     speakToRecordButtonState = SpeakToRecordButtonState(
@@ -420,6 +445,7 @@ internal fun CalculatorViewModel.toState(recordEvent: EventTrigger<Unit>) = Calc
         showRecordPermissionHint = speakToRecordVm::showRecordPermissionHint,
     ),
     onInput = ::onInput,
+    onToggleCalculatorButtonType = calculatorSettings::toggleButtonType,
     onCalculatorAction = ::onCalculatorAction
 )
 

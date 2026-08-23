@@ -172,6 +172,8 @@
     <string name="settings_chart_mode">概要チャートモード</string>
     <string name="settings_bar_chart">棒グラフ</string>
     <string name="settings_pie_chart">円グラフ</string>
+    <string name="settings_calculator_button">電卓の小数点ボタン</string>
+    <string name="settings_calculator_dot">ドット</string>
     <string name="settings_share_app">友達にアプリを共有する</string>
     <string name="settings_share_app_message">使いやすい記帳アプリを見つけました、ぜひダウンロードして試してみてください！\n%1$s</string>
     <string name="settings_rate_us">%1$s で評価する</string>

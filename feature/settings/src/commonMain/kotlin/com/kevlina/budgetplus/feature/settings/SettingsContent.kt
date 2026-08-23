@@ -26,6 +26,7 @@ import budgetplus.core.common.generated.resources.book_name_title
 import budgetplus.core.common.generated.resources.color_tone_picker_title
 import budgetplus.core.common.generated.resources.cta_rename
 import budgetplus.core.common.generated.resources.ic_account_circle
+import budgetplus.core.common.generated.resources.ic_calculate
 import budgetplus.core.common.generated.resources.ic_color_lens
 import budgetplus.core.common.generated.resources.ic_currency_exchange
 import budgetplus.core.common.generated.resources.ic_delete
@@ -48,6 +49,8 @@ import budgetplus.core.common.generated.resources.premium_hide_ads
 import budgetplus.core.common.generated.resources.settings_allow_members_edit
 import budgetplus.core.common.generated.resources.settings_allow_members_edit_desc
 import budgetplus.core.common.generated.resources.settings_bar_chart
+import budgetplus.core.common.generated.resources.settings_calculator_button
+import budgetplus.core.common.generated.resources.settings_calculator_dot
 import budgetplus.core.common.generated.resources.settings_chart_mode
 import budgetplus.core.common.generated.resources.settings_confirm_delete
 import budgetplus.core.common.generated.resources.settings_confirm_leave
@@ -76,6 +79,7 @@ import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.BookDest.CurrencyPicker.Purpose
 import com.kevlina.budgetplus.core.common.nav.NavController
+import com.kevlina.budgetplus.core.settings.api.CalculatorButtonType
 import com.kevlina.budgetplus.core.settings.api.ChartMode
 import com.kevlina.budgetplus.core.settings.api.icon
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -86,6 +90,7 @@ import com.kevlina.budgetplus.core.ui.DropdownMenu
 import com.kevlina.budgetplus.core.ui.InfiniteCircularProgress
 import com.kevlina.budgetplus.core.ui.InputDialog
 import com.kevlina.budgetplus.core.ui.Switch
+import com.kevlina.budgetplus.core.ui.Text
 import com.kevlina.budgetplus.core.ui.containerPadding
 import com.kevlina.budgetplus.feature.settings.member.MembersDialog
 import org.jetbrains.compose.resources.stringResource
@@ -106,12 +111,14 @@ internal fun SettingsContent(
     val allowMembersEdit by vm.allowMembersEdit.collectAsStateWithLifecycle()
     val isPremium by vm.isPremium.collectAsStateWithLifecycle()
     val vibrateOnInput by vm.vibrator.vibrateOnInput.collectAsStateWithLifecycle()
-    val chartMode by vm.chartModel.chartMode.collectAsStateWithLifecycle()
+    val chartMode by vm.chartModeSettings.chartMode.collectAsStateWithLifecycle()
+    val calculatorButtonType by vm.calculatorSettings.buttonType.collectAsStateWithLifecycle()
 
     var isRenameUserDialogShown by remember { mutableStateOf(false) }
     var isRenameBookDialogShown by remember { mutableStateOf(false) }
     var isMembersDialogShown by rememberSaveable { mutableStateOf(showMembers) }
     var isChartModeDropdownShown by remember { mutableStateOf(false) }
+    var isCalculatorButtonDropdownShown by remember { mutableStateOf(false) }
 
     var isDeleteOrLeaveDialogShown by remember { mutableStateOf(false) }
     var isDeleteAccountDialogShown by remember { mutableStateOf(false) }
@@ -246,6 +253,45 @@ internal fun SettingsContent(
         )
 
         SettingsItem(
+            text = stringResource(Res.string.settings_calculator_button),
+            icon = vectorResource(Res.drawable.ic_calculate),
+            onClick = { isCalculatorButtonDropdownShown = true },
+            action = {
+                Box {
+                    Text(
+                        text = when (calculatorButtonType) {
+                            CalculatorButtonType.Dot -> stringResource(Res.string.settings_calculator_dot)
+                            CalculatorButtonType.DoubleZero -> CalculatorButtonType.DoubleZero.text
+                        },
+                        color = LocalAppColors.current.dark,
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+
+                    DropdownMenu(
+                        expanded = isCalculatorButtonDropdownShown,
+                        onDismissRequest = { isCalculatorButtonDropdownShown = false }
+                    ) {
+                        DropdownItem(
+                            name = stringResource(Res.string.settings_calculator_dot),
+                            onClick = {
+                                vm.calculatorSettings.setButtonType(CalculatorButtonType.Dot)
+                                isCalculatorButtonDropdownShown = false
+                            }
+                        )
+
+                        DropdownItem(
+                            name = CalculatorButtonType.DoubleZero.text,
+                            onClick = {
+                                vm.calculatorSettings.setButtonType(CalculatorButtonType.DoubleZero)
+                                isCalculatorButtonDropdownShown = false
+                            }
+                        )
+                    }
+                }
+            }
+        )
+
+        SettingsItem(
             text = stringResource(Res.string.settings_chart_mode),
             icon = vectorResource(Res.drawable.ic_show_chart),
             onClick = { isChartModeDropdownShown = true },
@@ -266,7 +312,7 @@ internal fun SettingsContent(
                             name = stringResource(Res.string.settings_bar_chart),
                             icon = ChartMode.BarChart.icon,
                             onClick = {
-                                vm.chartModel.setChartMode(ChartMode.BarChart)
+                                vm.chartModeSettings.setChartMode(ChartMode.BarChart)
                                 isChartModeDropdownShown = false
                             }
                         )
@@ -275,7 +321,7 @@ internal fun SettingsContent(
                             name = stringResource(Res.string.settings_pie_chart),
                             icon = ChartMode.PieChart.icon,
                             onClick = {
-                                vm.chartModel.setChartMode(ChartMode.PieChart)
+                                vm.chartModeSettings.setChartMode(ChartMode.PieChart)
                                 isChartModeDropdownShown = false
                             }
                         )

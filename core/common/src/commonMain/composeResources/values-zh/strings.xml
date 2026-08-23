@@ -172,6 +172,8 @@
     <string name="settings_chart_mode">总览图表模式</string>
     <string name="settings_bar_chart">柱状图</string>
     <string name="settings_pie_chart">饼图</string>
+    <string name="settings_calculator_button">计算器小数点按钮</string>
+    <string name="settings_calculator_dot">小数点</string>
     <string name="settings_share_app">分享 App 给好友</string>
     <string name="settings_share_app_message">我发现了一款超好用的记账 App，快下载来试试吧！\n%1$s</string>
     <string name="settings_rate_us">在 %1$s 上评价</string>

@@ -32,7 +32,7 @@ val ChartMode.icon: ImageVector
 
 @SingleIn(AppScope::class)
 @Inject
-class ChartModeViewModel(
+class ChartModeSettings(
     @AppCoroutineScope private val appScope: CoroutineScope,
     private val preference: Preference,
     private val tracker: Tracker,

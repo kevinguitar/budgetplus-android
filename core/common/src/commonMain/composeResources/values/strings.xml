@@ -118,7 +118,6 @@
     <string name="overview_balance">Balance</string>
     <string name="overview_details_title">%1$s: %2$s</string>
     <string name="overview_author_everyone">Everyone</string>
-    <string name="overview_author_anonymous">Anonymous</string>
 
     <!-- Export -->
     <string name="export_cta">Export csv</string>
@@ -248,6 +247,7 @@
     <string name="username_title">User Name</string>
     <string name="book_name_title">Book Name</string>
     <string name="book_name_placeholder">My accounting book</string>
+    <string name="anonymous_user">Anonymous</string>
     <string name="ads_not_available">No ads available</string>
     <string name="fallback_error_message">Something went wrong, please try again later.</string>
     <string name="notification_permission_hint">Turn on the notification permission in the settings if you change your mind</string>

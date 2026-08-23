@@ -8,7 +8,7 @@ import com.kevlina.budgetplus.core.common.SnackbarSender
 import org.jetbrains.compose.resources.StringResource
 
 @RestrictTo(RestrictTo.Scope.TESTS)
-object FakeSnackbarSender : SnackbarSender {
+class FakeSnackbarSender : SnackbarSender {
 
     var lastSentMessageRes: StringResource? = null
     var lastSentMessage: String? = null

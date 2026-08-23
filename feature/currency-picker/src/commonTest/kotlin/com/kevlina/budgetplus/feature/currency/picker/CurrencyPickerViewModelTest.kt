@@ -33,12 +33,13 @@ class CurrencyPickerViewModelTest {
     @Test
     fun `WHEN currency is picked for Book and update fails THEN error is sent`() = runTest {
         val bookRepo = FakeBookRepo(book = Book(name = "Test Book", currencyCode = "USD"))
-        val vm = createModel(purpose = Purpose.Book, bookRepo = bookRepo)
+        val snackbarSender = FakeSnackbarSender()
+        val vm = createModel(purpose = Purpose.Book, bookRepo = bookRepo, snackbarSender = snackbarSender)
         val currency = Currency(name = "Japanese Yen", currencyCode = "JPY", symbol = "¥")
 
         vm.onCurrencyPicked(currency)
 
-        assertNotNull(FakeSnackbarSender.lastSentError)
+        assertNotNull(snackbarSender.lastSentError)
     }
 
     @Test
@@ -98,6 +99,7 @@ class CurrencyPickerViewModelTest {
         currencyExchangeRepo: FakeCurrencyExchangeRepo = FakeCurrencyExchangeRepo(),
         preference: FakePreference = FakePreference(),
         navController: NavController<BookDest> = NavController(startRoot = BookDest.Record),
+        snackbarSender: FakeSnackbarSender = FakeSnackbarSender(),
     ): CurrencyPickerViewModel {
         return CurrencyPickerViewModel(
             params = BookDest.CurrencyPicker(purpose),
@@ -105,7 +107,7 @@ class CurrencyPickerViewModelTest {
             bookRepo = bookRepo,
             currencyExchangeRepo = currencyExchangeRepo,
             preference = preference,
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = snackbarSender,
         )
     }
 }

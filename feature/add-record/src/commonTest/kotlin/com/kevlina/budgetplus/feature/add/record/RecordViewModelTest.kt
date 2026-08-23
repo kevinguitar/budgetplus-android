@@ -57,7 +57,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         model.calculatorVm.input("1")
         model.calculatorVm.evaluate()
 
-        assertEquals(Res.string.record_empty_category, FakeSnackbarSender.lastSentMessageRes)
+        assertEquals(Res.string.record_empty_category, snackbarSender.lastSentMessageRes)
     }
 
     @Test
@@ -65,7 +65,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         val model = createModel()
         model.calculatorVm.evaluate()
 
-        assertEquals(Res.string.record_empty_price, FakeSnackbarSender.lastSentMessageRes)
+        assertEquals(Res.string.record_empty_price, snackbarSender.lastSentMessageRes)
     }
 
     @Test
@@ -351,7 +351,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
 
         assertEquals(
             Res.string.record_currency_rate_unavailable,
-            FakeSnackbarSender.lastSentMessageRes
+            snackbarSender.lastSentMessageRes
         )
         assertNull(FakeRecordRepo.lastCreatedRecord)
     }
@@ -405,7 +405,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
             preference = FakePreference(),
             tracker = tracker,
         ),
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = snackbarSender,
         speakToRecordVm = fakeSpeakToRecordVm,
         freezeBookVm = createFreezeBookVm(),
         expressionEvaluator = ExpressionEvaluator(),
@@ -419,6 +419,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
 
     private val interstitialAdsHandler = FakeInterstitialAdsHandler()
     private val tracker = FakeTracker()
+    private val snackbarSender = FakeSnackbarSender()
 
     private fun TestScope.createModel(
         recordCount: Int = 0,
@@ -447,7 +448,7 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         inAppReviewManager = FakeInAppReviewManager(),
         openAppSettingsAction = {},
         currencyExchangeRepo = currencyExchangeRepo,
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = snackbarSender,
         shareHelper = FakeShareHelper,
         preference = preference,
         tracker = tracker,
@@ -459,7 +460,7 @@ private suspend fun EventFlow<Unit>.awaitUnconsumedEvent() {
 }
 
 val fakeSpeakToRecordVm = SpeakToRecordViewModel(
-    snackbarSender = FakeSnackbarSender,
+    snackbarSender = FakeSnackbarSender(),
     speakToRecord = object : SpeakToRecord {
         override fun startRecording(): RecordActor = RecordActor(
             statusFlow = emptyFlow(),

@@ -58,7 +58,7 @@ class BookSelectorViewModelTest {
         val books = (0 until bookCount).map { Book(id = "book_$it") }
         return BookSelectorViewModel(
             bookRepo = FakeBookRepo(books = books),
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = FakeSnackbarSender(),
             navController = navController,
             authManager = FakeAuthManager(
                 user = User(id = "user", premium = isPremium),

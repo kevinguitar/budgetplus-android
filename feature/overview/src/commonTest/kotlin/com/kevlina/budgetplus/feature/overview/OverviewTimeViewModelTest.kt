@@ -58,7 +58,8 @@ class OverviewTimeViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
     @Test
     fun `WHEN the period is more than one month THEN make it one month`() = runTest {
         val recordsObserver = FakeRecordsObserver(timePeriodFlow = flowOf(oneDayPeriod))
-        val model = createModel(recordsObserver = recordsObserver)
+        val snackbarSender = FakeSnackbarSender()
+        val model = createModel(recordsObserver = recordsObserver, snackbarSender = snackbarSender)
         model.setTimePeriod(
             TimePeriod.Custom(
                 from = LocalDate.now(),
@@ -66,7 +67,7 @@ class OverviewTimeViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
             )
         )
 
-        assertEquals(Res.string.overview_exceed_max_period, FakeSnackbarSender.lastSentMessageRes)
+        assertEquals(Res.string.overview_exceed_max_period, snackbarSender.lastSentMessageRes)
         assertEquals(
             listOf<Pair<String, TimePeriod>>(
                 bookId to TimePeriod.Custom(
@@ -174,13 +175,14 @@ class OverviewTimeViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         recordsObserver: FakeRecordsObserver = FakeRecordsObserver(timePeriodFlow = flowOf(oneDayPeriod)),
         bookRepo: BookRepo = FakeBookRepo(currentBookId = bookId, book = Book(id = bookId)),
         preference: FakePreference = FakePreference(),
+        snackbarSender: FakeSnackbarSender = FakeSnackbarSender(),
     ): OverviewTimeViewModel {
         val model = OverviewTimeViewModel(
             navController = NavController.preview,
             recordsObserver = recordsObserver,
             bookRepo = bookRepo,
             authManager = FakeAuthManager(),
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = snackbarSender,
             tracker = FakeTracker(),
             preference = preference
         )

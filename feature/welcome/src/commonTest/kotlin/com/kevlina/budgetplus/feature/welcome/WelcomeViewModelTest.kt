@@ -55,7 +55,7 @@ class WelcomeViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
         navController: NavController<BookDest> = NavController(startRoot = BookDest.Welcome),
     ): WelcomeViewModel {
         return WelcomeViewModel(
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = FakeSnackbarSender(),
             bookRepo = bookRepo,
             authManager = FakeAuthManager(),
             navController = navController,

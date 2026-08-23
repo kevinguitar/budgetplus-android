@@ -48,7 +48,7 @@ fun OverviewScreen() {
     val vm = metroViewModel<OverviewViewModel>()
 
     val mode by vm.mode.collectAsStateWithLifecycle()
-    val chartMode by vm.chartModeModel.chartMode.collectAsStateWithLifecycle()
+    val chartMode by vm.chartModeSettings.chartMode.collectAsStateWithLifecycle()
     val bookName by vm.bookName.collectAsStateWithLifecycle()
 
     var isExportDialogShown by remember { mutableStateOf(false) }

@@ -26,6 +26,7 @@ import com.kevlina.budgetplus.core.data.fixtures.FakeRecordRepo
 import com.kevlina.budgetplus.core.data.fixtures.FakeVibratorManager
 import com.kevlina.budgetplus.core.data.remote.Book
 import com.kevlina.budgetplus.core.data.remote.Record
+import com.kevlina.budgetplus.core.settings.api.CalculatorSettings
 import com.kevlina.budgetplus.core.ui.bubble.FakeBubbleRepo
 import com.kevlina.budgetplus.core.unit.test.BaseTest
 import com.kevlina.budgetplus.feature.category.pills.CategoriesViewModel
@@ -399,6 +400,11 @@ class RecordViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
 
     private fun TestScope.createCalculatorVm() = CalculatorViewModel(
         vibrator = FakeVibratorManager(),
+        calculatorSettings = CalculatorSettings(
+            appScope = backgroundScope,
+            preference = FakePreference(),
+            tracker = tracker,
+        ),
         snackbarSender = FakeSnackbarSender,
         speakToRecordVm = fakeSpeakToRecordVm,
         freezeBookVm = createFreezeBookVm(),

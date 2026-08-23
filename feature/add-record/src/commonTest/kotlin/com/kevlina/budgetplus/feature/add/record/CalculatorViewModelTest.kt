@@ -3,7 +3,10 @@ package com.kevlina.budgetplus.feature.add.record
 import app.cash.turbine.test
 import com.kevlina.budgetplus.core.common.ExpressionEvaluator
 import com.kevlina.budgetplus.core.common.fixtures.FakeSnackbarSender
+import com.kevlina.budgetplus.core.common.fixtures.FakeTracker
+import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.fixtures.FakeVibratorManager
+import com.kevlina.budgetplus.core.settings.api.CalculatorSettings
 import com.kevlina.budgetplus.core.unit.test.BaseTest
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorButton
@@ -90,6 +93,11 @@ class CalculatorViewModelTest: BaseTest(observeComposeSnapshots = true) {
 
     private fun TestScope.createCalculator() = CalculatorViewModel(
         vibrator = FakeVibratorManager(),
+        calculatorSettings = CalculatorSettings(
+            appScope = backgroundScope,
+            preference = FakePreference(),
+            tracker = FakeTracker(),
+        ),
         snackbarSender = FakeSnackbarSender,
         speakToRecordVm = fakeSpeakToRecordVm,
         freezeBookVm = createFreezeBookVm(),

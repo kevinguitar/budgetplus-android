@@ -16,7 +16,8 @@ import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.BookRepo
-import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
+import com.kevlina.budgetplus.core.settings.api.CalculatorSettings
+import com.kevlina.budgetplus.core.settings.api.ChartModeSettings
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
@@ -33,7 +34,8 @@ internal class SettingsViewModel(
     private val snackbarSender: SnackbarSender,
     private val tracker: Tracker,
     val vibrator: VibratorManager,
-    val chartModel: ChartModeViewModel,
+    val chartModeSettings: ChartModeSettings,
+    val calculatorSettings: CalculatorSettings,
     val navController: NavController<BookDest>,
     internal val navigation: SettingsNavigationViewModel,
 ) : ViewModel() {

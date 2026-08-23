@@ -26,7 +26,7 @@ import com.kevlina.budgetplus.core.data.remote.Record
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.data.remote.createdOn
 import com.kevlina.budgetplus.core.data.resolveAuthor
-import com.kevlina.budgetplus.core.settings.api.ChartModeViewModel
+import com.kevlina.budgetplus.core.settings.api.ChartModeSettings
 import com.kevlina.budgetplus.core.ui.bubble.BubbleDest
 import com.kevlina.budgetplus.core.ui.bubble.BubbleRepo
 import com.kevlina.budgetplus.feature.overview.ui.CurrencyToggleState
@@ -69,7 +69,7 @@ internal class OverviewViewModel(
     val navController: NavController<BookDest>,
     private val bookRepo: BookRepo,
     val timeModel: OverviewTimeViewModel,
-    val chartModeModel: ChartModeViewModel,
+    val chartModeSettings: ChartModeSettings,
     private val preference: Preference,
     private val currencyExchangeRepo: CurrencyExchangeRepo,
     private val openAppSettingsAction: OpenAppSettingsAction,
@@ -201,7 +201,7 @@ internal class OverviewViewModel(
         ),
         listState = OverviewListState(
             mode = mode,
-            chartMode = chartModeModel.chartMode,
+            chartMode = chartModeSettings.chartMode,
             type = type,
             selectedAuthor = selectedAuthor,
             totalPrice = totalPrice,
@@ -281,7 +281,7 @@ internal class OverviewViewModel(
     private fun onGroupClicked() {
         tracker.logEvent(
             event = "overview_group_clicked",
-            params = mapOf("chart_mode" to chartModeModel.chartModeAnalyticsName)
+            params = mapOf("chart_mode" to chartModeSettings.chartModeAnalyticsName)
         )
     }
 

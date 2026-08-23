@@ -10,6 +10,7 @@ kotlin {
             implementation(projects.core.ads)
             implementation(projects.core.data)
             implementation(projects.core.inappReview)
+            implementation(projects.core.settingsApi)
             implementation(projects.core.ui)
             implementation(projects.feature.categoryPills)
             implementation(projects.feature.speakToRecord)

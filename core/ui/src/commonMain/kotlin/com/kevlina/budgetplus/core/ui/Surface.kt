@@ -2,6 +2,8 @@ package com.kevlina.budgetplus.core.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
@@ -26,6 +29,7 @@ import androidx.compose.material3.Surface as MaterialSurface
 fun Surface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClick: (() -> Unit)? = null,
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
     color: Color = LocalAppColors.current.dark,
@@ -39,22 +43,43 @@ fun Surface(
         label = "surface_color"
     )
 
-    MaterialSurface(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        shape = shape,
-        color = surfaceColor,
-        border = border,
-        shadowElevation = elevation,
-        interactionSource = interactionSource,
-        content = {
-            Box(
-                contentAlignment = Alignment.Center,
-                content = content
-            )
-        }
-    )
+    val box = @Composable {
+        Box(
+            contentAlignment = Alignment.Center,
+            content = content
+        )
+    }
+
+    if (onLongClick != null) {
+        MaterialSurface(
+            modifier = modifier
+                .clip(shape)
+                .combinedClickable(
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ),
+            shape = shape,
+            color = surfaceColor,
+            border = border,
+            shadowElevation = elevation,
+            content = box
+        )
+    } else {
+        MaterialSurface(
+            onClick = onClick,
+            modifier = modifier,
+            enabled = enabled,
+            shape = shape,
+            color = surfaceColor,
+            border = border,
+            shadowElevation = elevation,
+            interactionSource = interactionSource,
+            content = box
+        )
+    }
 }
 
 @Preview

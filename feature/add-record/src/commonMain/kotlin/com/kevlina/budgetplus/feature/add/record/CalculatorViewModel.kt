@@ -1,7 +1,6 @@
 package com.kevlina.budgetplus.feature.add.record
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.snapshotFlow
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
@@ -11,6 +10,7 @@ import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import com.kevlina.budgetplus.core.common.SnackbarSender
 import com.kevlina.budgetplus.core.common.VibratorManager
+import com.kevlina.budgetplus.core.common.formatGroupedInteger
 import com.kevlina.budgetplus.core.common.plainPriceString
 import com.kevlina.budgetplus.core.common.sendEvent
 import com.kevlina.budgetplus.feature.add.record.ui.CalculatorAction
@@ -35,6 +35,13 @@ class CalculatorViewModel(
 ) {
     val priceText = TextFieldState(EMPTY_PRICE)
 
+    /**
+     * The un-formatted expression that backs [priceText]. Numbers here never contain the
+     * grouping separator and always use '.' as the decimal point, so it can be parsed and
+     * evaluated safely. [priceText] only holds its locale-formatted rendering for display.
+     */
+    private var rawText: String = EMPTY_PRICE
+
     val needEvaluate: Flow<Boolean> = snapshotFlow { priceText.text }
         .map { text -> text.any { it in operatorChars } }
         .distinctUntilChanged()
@@ -52,7 +59,7 @@ class CalculatorViewModel(
         .toCharArray()
 
     fun onInput(btn: CalculatorButton) {
-        val currentText = priceText.text
+        val currentText = rawText
         when (btn) {
             CalculatorButton.Delete -> delete()
 
@@ -62,9 +69,7 @@ class CalculatorViewModel(
                 -> when {
                 currentText == EMPTY_PRICE -> Unit
                 currentText.last() in operatorChars -> {
-                    priceText.edit {
-                        replace(length - 1, length, btn.text.toString())
-                    }
+                    setRawText(currentText.dropLast(1) + btn.text)
                 }
 
                 else -> appendText(btn)
@@ -85,7 +90,7 @@ class CalculatorViewModel(
             }
 
             else -> if (currentText == EMPTY_PRICE) {
-                priceText.setTextAndPlaceCursorAtEnd(btn.text.toString())
+                setRawText(btn.text.toString())
             } else {
                 appendText(btn)
             }
@@ -93,11 +98,60 @@ class CalculatorViewModel(
     }
 
     private fun appendText(btn: CalculatorButton) {
-        priceText.edit { append(btn.text) }
+        setRawText(rawText + btn.text)
+    }
+
+    /**
+     * Updates the raw backing expression and renders its locale-formatted counterpart into
+     * [priceText] for display.
+     */
+    private fun setRawText(raw: String) {
+        rawText = raw
+        priceText.setTextAndPlaceCursorAtEnd(getPriceText(raw))
+    }
+
+    /**
+     * Renders [raw] expression into a locale-formatted, display-ready string. Each number segment
+     * gets grouping separators applied to its integer part (e.g. "1000+2000" -> "1,000+2,000"),
+     * while operators and in-progress decimals are preserved as typed.
+     */
+    private fun getPriceText(raw: String): String {
+        val builder = StringBuilder()
+        val number = StringBuilder()
+
+        fun flushNumber() {
+            if (number.isEmpty()) return
+            builder.append(formatNumberSegment(number.toString()))
+            number.clear()
+        }
+
+        for (char in raw) {
+            if (char in operatorChars) {
+                flushNumber()
+                builder.append(char)
+            } else {
+                number.append(char)
+            }
+        }
+        flushNumber()
+        return builder.toString()
+    }
+
+    /** Applies grouping separators to the integer part of a single number segment. */
+    private fun formatNumberSegment(segment: String): String {
+        val dotIndex = segment.indexOf(CalculatorButton.Dot.text)
+        val integerPart = if (dotIndex == -1) segment else segment.substring(0, dotIndex)
+        // Keep the fractional part (and a trailing dot) verbatim so mid-typing input isn't altered.
+        val fractionPart = if (dotIndex == -1) "" else segment.substring(dotIndex)
+
+        val groupedInteger = integerPart.toLongOrNull()
+            ?.let { formatGroupedInteger(it) }
+            ?: integerPart
+        return groupedInteger + fractionPart
     }
 
     private fun evaluate() {
-        val text = priceText.text.toString()
+        val text = rawText
             .replace(CalculatorButton.Multiply.text, '*')
             .replace(CalculatorButton.Divide.text, '/')
 
@@ -111,11 +165,11 @@ class CalculatorViewModel(
     }
 
     fun setPrice(priceNumber: Double) {
-        priceText.setTextAndPlaceCursorAtEnd(priceNumber.plainPriceString)
+        setRawText(priceNumber.plainPriceString)
     }
 
     fun clearPrice() {
-        priceText.setTextAndPlaceCursorAtEnd(EMPTY_PRICE)
+        setRawText(EMPTY_PRICE)
     }
 
     fun onCalculatorAction(action: CalculatorAction) {
@@ -130,12 +184,7 @@ class CalculatorViewModel(
     }
 
     private fun delete() {
-        priceText.edit {
-            when {
-                length == 1 -> replace(0, length, EMPTY_PRICE)
-                length > 1 -> delete(length - 1, length)
-            }
-        }
+        setRawText(if (rawText.length <= 1) EMPTY_PRICE else rawText.dropLast(1))
     }
 
     companion object {

@@ -37,6 +37,14 @@ private val priceFormatWithoutSeparator by lazy {
     }
 }
 
+private val integerFormat by lazy {
+    NSNumberFormatter().apply {
+        locale = NSLocale.appLocale
+        maximumFractionDigits = 0u
+        numberStyle = NSNumberFormatterDecimalStyle
+    }
+}
+
 actual val Double.roundUpRatioText: String
     get() = ratioFormat.stringFromNumber(NSNumber(this)) ?: this.toString()
 
@@ -46,3 +54,6 @@ actual fun CharSequence.parseToPrice(): Double {
 
 actual val Double.plainPriceString: String
     get() = priceFormatWithoutSeparator.stringFromNumber(NSNumber(this)) ?: this.toString()
+
+actual fun formatGroupedInteger(value: Long): String =
+    integerFormat.stringFromNumber(NSNumber(long = value)) ?: value.toString()

@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
@@ -277,6 +278,9 @@ class CurrencyExchangeRepoImplTest {
             json = json,
             appScope = backgroundScope,
             httpClient = httpClient
-        )
+        ).also {
+            // Let the eagerly-started preferredCurrency collection read "USD" from the preference,
+            runCurrent()
+        }
     }
 }

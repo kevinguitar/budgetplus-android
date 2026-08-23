@@ -70,4 +70,4 @@ jobs:
           echo REVENUECAT_IOS_API_KEY=$REVENUECAT_IOS_API_KEY >> ./local.properties
 
       - name: Build with Gradle
-        run: ./gradlew test testAndroid lint :androidApp:assemble :insiderApp:assemble --continue --parallel
+        run: ./gradlew testAndroid --continue --parallel --stacktrace

@@ -34,3 +34,6 @@ actual val Double.plainPriceString: String
         .setScale(2, RoundingMode.HALF_UP)
         .stripTrailingZeros()
         .toPlainString()
+
+actual fun formatGroupedInteger(value: Long): String =
+    NumberFormat.getIntegerInstance().format(value)

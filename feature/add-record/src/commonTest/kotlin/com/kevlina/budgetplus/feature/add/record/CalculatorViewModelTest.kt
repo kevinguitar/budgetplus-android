@@ -64,6 +64,20 @@ class CalculatorViewModelTest: BaseTest(observeComposeSnapshots = true) {
     }
 
     @Test
+    fun `numbers are rendered with grouping separators while typing`() = runTest {
+        val calculator = createCalculator()
+        calculator.input("1000+2000")
+        assertEquals("1,000+2,000", calculator.priceText.text)
+    }
+
+    @Test
+    fun `grouping separators are applied to the integer part only`() = runTest {
+        val calculator = createCalculator()
+        calculator.input("1234567.89")
+        assertEquals("1,234,567.89", calculator.priceText.text)
+    }
+
+    @Test
     fun `delete button should work correctly`() = runTest {
         val calculator = createCalculator()
         calculator.input("123")

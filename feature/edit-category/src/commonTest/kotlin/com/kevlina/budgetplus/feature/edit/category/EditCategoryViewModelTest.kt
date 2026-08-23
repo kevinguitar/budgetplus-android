@@ -45,6 +45,6 @@ class EditCategoryViewModelTest {
         bookRepo = FakeBookRepo(),
         recordRepo = FakeRecordRepo,
         bubbleRepo = FakeBubbleRepo(),
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = FakeSnackbarSender(),
     )
 }

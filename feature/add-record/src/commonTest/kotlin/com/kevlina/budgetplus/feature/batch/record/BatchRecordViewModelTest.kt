@@ -87,7 +87,7 @@ class BatchRecordViewModelTest {
             navController = NavController(startRoot = BookDest.Record),
             recordRepo = FakeRecordRepo,
             authManager = FakeAuthManager(user = User(id = "user")),
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = FakeSnackbarSender(),
         )
     }
 }

@@ -98,7 +98,7 @@ class CalculatorViewModelTest: BaseTest(observeComposeSnapshots = true) {
             preference = FakePreference(),
             tracker = FakeTracker(),
         ),
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = FakeSnackbarSender(),
         speakToRecordVm = fakeSpeakToRecordVm,
         freezeBookVm = createFreezeBookVm(),
         expressionEvaluator = ExpressionEvaluator(),

@@ -52,7 +52,7 @@ class InAppReviewManagerImplTest {
         hasRequestedBefore: Boolean = false,
     ) = InAppReviewManagerImpl(
         inAppReviewLauncher = { },
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = FakeSnackbarSender(),
         tracker = tracker,
         preference = FakePreference {
             set(longPreferencesKey("firstInitDatetime"), firstInitDatetime)

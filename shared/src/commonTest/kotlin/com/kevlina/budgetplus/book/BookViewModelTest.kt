@@ -250,7 +250,7 @@ class BookViewModelTest : BaseTest() {
         )
         return BookViewModel(
             navController = navController,
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = FakeSnackbarSender(),
             themeManager = themeManager,
             bubbleViewModel = BubbleViewModel(FakeBubbleRepo()),
             adUnitId = AdUnitId(banner = "", interstitial = ""),

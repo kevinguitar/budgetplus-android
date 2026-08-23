@@ -82,8 +82,7 @@ class AuthManagerImplTest {
     fun `markPremium updates user to premium in DB and preference`() = runTest {
         val preference = FakePreference()
         val userDbClient = FakeUserDbClient()
-        val snackbarSender = FakeSnackbarSender
-        snackbarSender.lastSentMessageRes = null
+        val snackbarSender = FakeSnackbarSender()
 
         val manager = createAuthManager(
             preference = preference,
@@ -107,8 +106,7 @@ class AuthManagerImplTest {
     fun `markPremium to false does not send snackbar`() = runTest {
         val preference = FakePreference()
         val userDbClient = FakeUserDbClient()
-        val snackbarSender = FakeSnackbarSender
-        snackbarSender.lastSentMessageRes = null
+        val snackbarSender = FakeSnackbarSender()
 
         val manager = createAuthManager(
             preference = preference,
@@ -130,8 +128,7 @@ class AuthManagerImplTest {
         val userDbClient = FakeUserDbClient()
         val testError = RuntimeException("DB error")
         userDbClient.setUserError = testError
-        val snackbarSender = FakeSnackbarSender
-        snackbarSender.lastSentError = null
+        val snackbarSender = FakeSnackbarSender()
 
         val manager = createAuthManager(
             preference = preference,
@@ -262,8 +259,7 @@ class AuthManagerImplTest {
         val cloudFunctionsCaller = FakeCloudFunctionsCaller()
         val testError = RuntimeException("Function error")
         cloudFunctionsCaller.callError = testError
-        val snackbarSender = FakeSnackbarSender
-        snackbarSender.lastSentError = null
+        val snackbarSender = FakeSnackbarSender()
 
         val manager = createAuthManager(
             preference = preference,
@@ -506,7 +502,7 @@ class AuthManagerImplTest {
         crashlyticsProvider: FakeCrashlyticsProvider = FakeCrashlyticsProvider(),
         cloudFunctionsCaller: FakeCloudFunctionsCaller = FakeCloudFunctionsCaller(),
         logoutNavigation: FakeLogoutNavigation = FakeLogoutNavigation(),
-        snackbarSender: FakeSnackbarSender = FakeSnackbarSender,
+        snackbarSender: FakeSnackbarSender = FakeSnackbarSender(),
         allowUpdateFcmToken: Boolean = true,
     ) = AuthManagerImpl(
         preference = preference,

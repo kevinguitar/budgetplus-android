@@ -137,6 +137,6 @@ class RecordRepoImplTest : BaseTest(useUnconfinedDispatcher = true) {
         authManager = authManager,
         currencyExchangeRepo = FakeCurrencyExchangeRepo(),
         tracker = tracker,
-        snackbarSender = FakeSnackbarSender
+        snackbarSender = FakeSnackbarSender()
     )
 }

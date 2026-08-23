@@ -84,7 +84,7 @@ class MembersViewModelTest {
             bookRepo = FakeBookRepo(book = book),
             authManager = FakeAuthManager(user = User(id = "current_user")),
             userRepo = userRepo,
-            snackbarSender = FakeSnackbarSender,
+            snackbarSender = FakeSnackbarSender(),
         )
     }
 }

@@ -79,7 +79,7 @@ class SearchRepoTest : BaseTest(observeComposeSnapshots = true) {
     private val repo = SearchRepo(
         searchQueryClient = searchQueryClient,
         bookRepo = FakeBookRepo(currentBookId = "book_id"),
-        snackbarSender = FakeSnackbarSender,
+        snackbarSender = FakeSnackbarSender(),
         tracker = FakeTracker()
     )
 }

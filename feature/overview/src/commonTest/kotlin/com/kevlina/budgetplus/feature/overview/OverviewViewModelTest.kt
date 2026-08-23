@@ -168,6 +168,7 @@ class OverviewViewModelTest : BaseTest(useUnconfinedDispatcher = true) {
             ),
             preference = preference,
             currencyExchangeRepo = currencyExchangeRepo,
+            openAppSettingsAction = {},
         )
     }
 }

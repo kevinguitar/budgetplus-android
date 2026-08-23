@@ -258,6 +258,7 @@ class AuthManagerImplTest {
 
     @Test
     fun `deleteUserAccount sends error on failure`() = runTest {
+        val preference = FakePreference()
         val cloudFunctionsCaller = FakeCloudFunctionsCaller()
         val testError = RuntimeException("Function error")
         cloudFunctionsCaller.callError = testError
@@ -265,9 +266,12 @@ class AuthManagerImplTest {
         snackbarSender.lastSentError = null
 
         val manager = createAuthManager(
+            preference = preference,
             cloudFunctionsCaller = cloudFunctionsCaller,
             snackbarSender = snackbarSender,
         )
+        preference.setUser(User(id = "user1", name = "Alice"))
+        manager.userState.first { it != null }
 
         manager.deleteUserAccount()
         testScheduler.advanceUntilIdle()

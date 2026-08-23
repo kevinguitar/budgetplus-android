@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.core.data
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import budgetplus.core.common.generated.resources.Res
+import budgetplus.core.common.generated.resources.anonymous_user
 import budgetplus.core.common.generated.resources.premium_unlocked
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.Logger
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 
 @SingleIn(AppScope::class)
@@ -165,7 +167,7 @@ internal class AuthManagerImpl(
             if (remoteUser != null) {
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
-                    name = newName ?: remoteUser.name,
+                    name = newName ?: remoteUser.name ?: stringResource(Res.string.anonymous_user),
                     premium = remoteUser.premium,
                     internal = remoteUser.internal ?: false,
                     createdOn = remoteUser.createdOn,

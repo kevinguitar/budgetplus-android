@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import budgetplus.core.common.generated.resources.Res
-import budgetplus.core.common.generated.resources.overview_author_anonymous
 import budgetplus.core.common.generated.resources.overview_author_everyone
 import budgetplus.core.common.generated.resources.record_expense
 import budgetplus.core.common.generated.resources.record_income
@@ -133,7 +132,7 @@ internal fun SearchFilter(
                     }
 
                     allAuthors.forEach { author ->
-                        DropdownItem(name = author.name ?: stringResource(Res.string.overview_author_anonymous)) {
+                        DropdownItem(name = author.name.orEmpty()) {
                             isAuthorPickerShown = false
                             state.selectAuthor(author)
                         }

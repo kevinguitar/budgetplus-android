@@ -118,7 +118,6 @@
     <string name="overview_balance">結餘</string>
     <string name="overview_details_title">%1$s：%2$s</string>
     <string name="overview_author_everyone">所有人</string>
-    <string name="overview_author_anonymous">匿名</string>
 
     <!-- Export -->
     <string name="export_cta">匯出報表</string>
@@ -248,6 +247,7 @@
     <string name="username_title">使用者名稱</string>
     <string name="book_name_title">帳本名稱</string>
     <string name="book_name_placeholder">我的記帳本</string>
+    <string name="anonymous_user">匿名用戶</string>
     <string name="ads_not_available">暫無廣告</string>
     <string name="fallback_error_message">出錯了，請稍後再試</string>
     <string name="notification_permission_hint">如果您改變主意，請在設定中打開通知權限</string>

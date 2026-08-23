@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import budgetplus.core.common.generated.resources.Res
 import budgetplus.core.common.generated.resources.ic_arrow_drop_down
 import budgetplus.core.common.generated.resources.ic_person_search
-import budgetplus.core.common.generated.resources.overview_author_anonymous
 import budgetplus.core.common.generated.resources.overview_author_everyone
 import com.kevlina.budgetplus.core.data.remote.User
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -64,9 +63,7 @@ internal fun AuthorSelector(
                 }
 
                 authors.forEach { author ->
-                    DropdownItem(
-                        name = author.name ?: stringResource(Res.string.overview_author_anonymous),
-                    ) {
+                    DropdownItem(name = author.name.orEmpty()) {
                         isAuthorPickerShown = false
                         setAuthor(author)
                     }

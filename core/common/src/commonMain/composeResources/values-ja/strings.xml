@@ -118,7 +118,6 @@
     <string name="overview_balance">残高</string>
     <string name="overview_details_title">%1$s：%2$s</string>
     <string name="overview_author_everyone">みんな</string>
-    <string name="overview_author_anonymous">匿名</string>
 
     <!-- Export -->
     <string name="export_cta">報告書を出力する</string>
@@ -248,6 +247,7 @@
     <string name="username_title">ユーザー名</string>
     <string name="book_name_title">帳簿の名前</string>
     <string name="book_name_placeholder">私の帳簿</string>
+    <string name="anonymous_user">匿名ユーザー</string>
     <string name="ads_not_available">広告なし</string>
     <string name="fallback_error_message">エラーが発生しました、後でもう一度お試しください</string>
     <string name="notification_permission_hint">もし、気が変わったら、設定で通知の権限を有効にしてください</string>

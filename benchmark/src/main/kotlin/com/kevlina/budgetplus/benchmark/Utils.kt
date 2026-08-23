@@ -11,6 +11,7 @@ internal fun MacrobenchmarkScope.authorize() {
     // Dismiss bubbles
     waitForTextAndClick("Invite fellows to track expenses together!")
     waitForTextAndClick("Long tap to record your expenses by voice")
+    waitForTextAndClick("Scroll to switch the record currency")
 
     waitForText("Expense")
 }

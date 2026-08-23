@@ -21,7 +21,7 @@ kotlin {
                     products = {
                         add("GoogleMobileAds", exportToKotlin = true)
                     },
-                    version = "13.7.0"
+                    version = "13.8.0"
                 )
             }
         }

@@ -225,6 +225,33 @@ jobs:
             -allowProvisioningUpdates \
             -quiet
 
+      # The in-build Crashlytics "run" phase uploads the app dSYM during the
+      # archive, but that path is fragile on CI (silent no-ops, and App Store
+      # processing can regenerate dSYMs). Explicitly upload every dSYM from the
+      # archive here so Crashlytics can symbolicate both Swift and the embedded
+      # Kotlin/Native (static framework) symbols.
+      - name: Upload dSYMs to Crashlytics
+        run: |
+          set -euo pipefail
+
+          UPLOAD_SYMBOLS="$DERIVED_DATA/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+          GSP="iosApp/iosApp/GoogleService-Info.plist"
+          DSYMS_DIR="./build/iosApp.xcarchive/dSYMs"
+
+          if [ ! -x "$UPLOAD_SYMBOLS" ]; then
+            echo "❌ upload-symbols not found at $UPLOAD_SYMBOLS"
+            exit 1
+          fi
+          if [ ! -d "$DSYMS_DIR" ]; then
+            echo "❌ No dSYMs directory found at $DSYMS_DIR"
+            exit 1
+          fi
+
+          echo "Uploading dSYMs from $DSYMS_DIR"
+          find "$DSYMS_DIR" -name "*.dSYM" -print
+          "$UPLOAD_SYMBOLS" -gsp "$GSP" -p ios "$DSYMS_DIR"
+          echo "✅ dSYM upload complete"
+
       - name: Fastlane Upload (No Waiting)
         env:
           APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}

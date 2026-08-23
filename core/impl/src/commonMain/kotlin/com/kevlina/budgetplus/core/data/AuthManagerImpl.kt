@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 
 @SingleIn(AppScope::class)
@@ -167,7 +167,7 @@ internal class AuthManagerImpl(
             if (remoteUser != null) {
                 // Merge exclusive fields to the Firebase auth user
                 val mergedUser = userWithExclusiveFields.copy(
-                    name = newName ?: remoteUser.name ?: stringResource(Res.string.anonymous_user),
+                    name = newName ?: remoteUser.name ?: getString(Res.string.anonymous_user),
                     premium = remoteUser.premium,
                     internal = remoteUser.internal ?: false,
                     createdOn = remoteUser.createdOn,

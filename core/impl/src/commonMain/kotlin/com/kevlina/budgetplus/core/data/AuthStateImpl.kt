@@ -9,7 +9,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.getString
 
 @ContributesBinding(AppScope::class)
 internal class AuthStateImpl : AuthState {
@@ -19,7 +19,7 @@ internal class AuthStateImpl : AuthState {
             firebaseUser?.let {
                 User(
                     id = it.uid,
-                    name = it.displayName ?: stringResource(Res.string.anonymous_user),
+                    name = it.displayName ?: getString(Res.string.anonymous_user),
                     photoUrl = it.photoURL,
                 )
             }

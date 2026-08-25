@@ -34,7 +34,7 @@ jobs:
           echo "Parsed version: $VERSION ($BUILD_NUMBER)"
 
       - name: Configure JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version-file: .github/workflows/.java-version
           distribution: 'zulu'

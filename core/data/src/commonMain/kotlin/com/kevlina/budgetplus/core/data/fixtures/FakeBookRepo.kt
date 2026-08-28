@@ -60,7 +60,7 @@ class FakeBookRepo(
         error("Not yet implemented")
     }
 
-    override suspend fun updateCategories(type: RecordType, categories: List<String>) {
+    override suspend fun updateCategories(type: RecordType, categories: Set<String>) {
         error("Not yet implemented")
     }
 

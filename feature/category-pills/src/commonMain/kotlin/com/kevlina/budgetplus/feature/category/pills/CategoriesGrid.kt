@@ -159,8 +159,8 @@ private fun CategoryActionButton(
 
 @Stable
 class CategoriesGridState(
-    val expenseCategories: StateFlow<List<String>>,
-    val incomeCategories: StateFlow<List<String>>,
+    val expenseCategories: StateFlow<Set<String>>,
+    val incomeCategories: StateFlow<Set<String>>,
     val type: StateFlow<RecordType>,
     val selectedCategory: StateFlow<String?>,
     val onCategorySelected: (String) -> Unit,
@@ -171,10 +171,10 @@ class CategoriesGridState(
     companion object {
         val preview = CategoriesGridState(
             type = MutableStateFlow(RecordType.Expense),
-            expenseCategories = MutableStateFlow(listOf(
+            expenseCategories = MutableStateFlow(setOf(
                 "Food", "Daily", "Transport", "Entertainment", "Rent", "Mobile", "Utility", "Other"
             )),
-            incomeCategories = MutableStateFlow(emptyList()),
+            incomeCategories = MutableStateFlow(emptySet()),
             onCategorySelected = {},
             onEditClicked = {},
             selectedCategory = MutableStateFlow("Daily")

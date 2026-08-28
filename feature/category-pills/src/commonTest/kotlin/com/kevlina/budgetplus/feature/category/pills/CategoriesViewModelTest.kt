@@ -31,28 +31,28 @@ class CategoriesViewModelTest {
 
     @Test
     fun `expenseCategories reflects book expense categories`() {
-        val book = Book(expenseCategories = listOf("Food", "Transport", "Shopping"))
+        val book = Book(expenseCategories = setOf("Food", "Transport", "Shopping"))
         val model = createModel(book = book)
-        assertEquals(listOf("Food", "Transport", "Shopping"), model.expenseCategories.value)
+        assertEquals(setOf("Food", "Transport", "Shopping"), model.expenseCategories.value)
     }
 
     @Test
     fun `incomeCategories reflects book income categories`() {
-        val book = Book(incomeCategories = listOf("Salary", "Bonus"))
+        val book = Book(incomeCategories = setOf("Salary", "Bonus"))
         val model = createModel(book = book)
-        assertEquals(listOf("Salary", "Bonus"), model.incomeCategories.value)
+        assertEquals(setOf("Salary", "Bonus"), model.incomeCategories.value)
     }
 
     @Test
     fun `expenseCategories is empty when book is null`() {
         val model = createModel(book = null)
-        assertEquals(emptyList(), model.expenseCategories.value)
+        assertEquals(emptySet(), model.expenseCategories.value)
     }
 
     @Test
     fun `incomeCategories is empty when book is null`() {
         val model = createModel(book = null)
-        assertEquals(emptyList(), model.incomeCategories.value)
+        assertEquals(emptySet(), model.incomeCategories.value)
     }
 
     private fun createModel(

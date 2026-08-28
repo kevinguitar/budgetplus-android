@@ -30,15 +30,19 @@ internal fun bookNavGraph(bookDest: BookDest): NavEntry<BookDest> {
             LaunchedEffect(bookDest) {
                 vm.checkAuthorizedAccounts(enableAutoSignIn = bookDest.enableAutoSignIn)
             }
-            AuthBinding(
-                vm = vm.commonAuthViewModel,
-                signInWithGoogle = if (UiTestEnvironment.enabled) {
-                    vm::signInAnonymouslyForUiTest
-                } else {
-                    vm::signInWithGoogle
-                },
-                signInWithApple = vm::signInWithApple,
-            )
+            if (!UiTestEnvironment.enabled) {
+                AuthBinding(
+                    vm = vm.commonAuthViewModel,
+                    signInWithGoogle = vm::signInWithGoogle,
+                    signInWithApple = vm::signInWithApple,
+                )
+            } else {
+                AuthBinding(
+                    vm = vm.commonAuthViewModel,
+                    signInWithGoogle = vm::signInAnonymouslyForUiTest,
+                    signInWithApple = vm::signInAnonymouslyForUiTest,
+                )
+            }
         }
 
         BookDest.Welcome -> NavEntry(bookDest) {

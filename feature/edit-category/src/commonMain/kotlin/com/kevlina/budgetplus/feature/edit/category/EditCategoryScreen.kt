@@ -46,7 +46,7 @@ fun EditCategoryScreen(
 
     var editDialogMode by remember { mutableStateOf<CategoryEditMode?>(null) }
     var isExitDialogShown by remember { mutableStateOf(false) }
-    var list by rememberSaveable { mutableStateOf(originalCategories) }
+    var list by rememberSaveable { mutableStateOf(originalCategories.toList()) }
 
     val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
@@ -92,7 +92,7 @@ fun EditCategoryScreen(
                         )
                     },
                     onClick = {
-                        vm.updateCategories(type, list)
+                        vm.updateCategories(type, list.toSet())
                     }
                 )
             }

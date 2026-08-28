@@ -221,8 +221,8 @@ internal class BookRepoImpl(
             name = name,
             ownerId = userId,
             authors = listOf(userId),
-            expenseCategories = expenses,
-            incomeCategories = incomes,
+            expenseCategories = expenses.toSet(),
+            incomeCategories = incomes.toSet(),
             currencyCode = currencyExchangeRepo.value.preferredCurrencyCode
         )
         val doc = booksDb.value.add(newBook)
@@ -309,7 +309,7 @@ internal class BookRepoImpl(
         tracker.logEvent("categories_added_from_$source")
     }
 
-    override suspend fun updateCategories(type: RecordType, categories: List<String>) {
+    override suspend fun updateCategories(type: RecordType, categories: Set<String>) {
         val field = when (type) {
             RecordType.Expense -> "expenseCategories"
             RecordType.Income -> "incomeCategories"

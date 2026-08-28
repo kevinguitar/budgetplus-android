@@ -45,7 +45,7 @@ internal class EditCategoryViewModel(
 
     private var saveBubbleJob: Job? = null
 
-    fun updateCategories(type: RecordType, newCategories: List<String>) {
+    fun updateCategories(type: RecordType, newCategories: Set<String>) {
         viewModelScope.launch {
             try {
                 bookRepo.updateCategories(type, newCategories)

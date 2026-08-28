@@ -55,7 +55,7 @@ internal fun TonePreview(
 ) {
 
     val expenseCategoriesArray = stringArrayResource(Res.array.default_expense_categories)
-    val expenseCategories = remember { expenseCategoriesArray.toList() }
+    val expenseCategories = remember { expenseCategoriesArray.toSet() }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -93,7 +93,7 @@ internal fun TonePreview(
         CategoriesGrid(
             state = CategoriesGridState(
                 expenseCategories = MutableStateFlow(expenseCategories),
-                incomeCategories = MutableStateFlow(emptyList()),
+                incomeCategories = MutableStateFlow(emptySet()),
                 type = MutableStateFlow(RecordType.Expense),
                 selectedCategory = MutableStateFlow(expenseCategories.first()),
                 onCategorySelected = {},

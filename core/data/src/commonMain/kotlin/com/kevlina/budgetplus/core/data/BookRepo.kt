@@ -47,7 +47,7 @@ interface BookRepo {
 
     suspend fun addCategory(type: RecordType, category: String, source: String)
 
-    suspend fun updateCategories(type: RecordType, categories: List<String>)
+    suspend fun updateCategories(type: RecordType, categories: Set<String>)
 
     suspend fun updateCurrency(currencyCode: String)
 

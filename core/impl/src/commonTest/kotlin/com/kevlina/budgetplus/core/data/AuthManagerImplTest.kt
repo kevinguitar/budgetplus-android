@@ -7,7 +7,7 @@ import com.kevlina.budgetplus.core.data.fixtures.FakeAppLanguageProvider
 import com.kevlina.budgetplus.core.data.fixtures.FakeAuthState
 import com.kevlina.budgetplus.core.data.fixtures.FakeCloudFunctionsCaller
 import com.kevlina.budgetplus.core.data.fixtures.FakeCrashlyticsProvider
-import com.kevlina.budgetplus.core.data.fixtures.FakeFcmTokenProvider
+import com.kevlina.budgetplus.core.data.fixtures.FakeFcmTokenRequester
 import com.kevlina.budgetplus.core.data.fixtures.FakeLogoutNavigation
 import com.kevlina.budgetplus.core.data.fixtures.FakePreference
 import com.kevlina.budgetplus.core.data.fixtures.FakeUserDbClient
@@ -354,15 +354,14 @@ class AuthManagerImplTest {
             id = "user1",
             name = "RemoteName",
             premium = true,
-            internal = true,
             createdOn = 1000L,
             fcmToken = "remote_token"
         )
-        val fcmTokenProvider = FakeFcmTokenProvider(token = null)
+        val fcmTokenRequester = FakeFcmTokenRequester(token = null)
         val manager = createAuthManager(
             authState = authState,
             userDbClient = userDbClient,
-            fcmTokenProvider = fcmTokenProvider,
+            fcmTokenRequester = fcmTokenRequester,
         )
 
         // Emit auth state
@@ -376,7 +375,6 @@ class AuthManagerImplTest {
         assertNotNull(storedUser)
         assertEquals("RemoteName", storedUser.name)
         assertEquals(true, storedUser.premium)
-        assertEquals(true, storedUser.internal)
         assertEquals(1000L, storedUser.createdOn)
         assertEquals("remote_token", storedUser.fcmToken)
     }
@@ -390,11 +388,11 @@ class AuthManagerImplTest {
             name = "Alice",
             fcmToken = "old_remote_token"
         )
-        val fcmTokenProvider = FakeFcmTokenProvider(token = "new_local_token")
-        val manager = createAuthManager(
+        val fcmTokenRequester = FakeFcmTokenRequester(token = "new_local_token")
+        createAuthManager(
             authState = authState,
             userDbClient = userDbClient,
-            fcmTokenProvider = fcmTokenProvider,
+            fcmTokenRequester = fcmTokenRequester,
         )
 
         authState.authStateFlow.emit(
@@ -412,11 +410,11 @@ class AuthManagerImplTest {
     fun `auth state change creates new user in DB when not found remotely`() = runTest {
         val authState = FakeAuthState()
         val userDbClient = FakeUserDbClient()
-        val fcmTokenProvider = FakeFcmTokenProvider(token = "my_token")
+        val fcmTokenRequester = FakeFcmTokenRequester(token = "my_token")
         createAuthManager(
             authState = authState,
             userDbClient = userDbClient,
-            fcmTokenProvider = fcmTokenProvider,
+            fcmTokenRequester = fcmTokenRequester,
         )
 
         authState.authStateFlow.emit(
@@ -435,11 +433,11 @@ class AuthManagerImplTest {
     fun `auth state change skips fcm token when allowUpdateFcmToken is false`() = runTest {
         val authState = FakeAuthState()
         val userDbClient = FakeUserDbClient()
-        val fcmTokenProvider = FakeFcmTokenProvider(token = "should_not_be_used")
+        val fcmTokenRequester = FakeFcmTokenRequester(token = "should_not_be_used")
         createAuthManager(
             authState = authState,
             userDbClient = userDbClient,
-            fcmTokenProvider = fcmTokenProvider,
+            fcmTokenRequester = fcmTokenRequester,
             allowUpdateFcmToken = false,
         )
 
@@ -498,7 +496,7 @@ class AuthManagerImplTest {
         authState: FakeAuthState = FakeAuthState(),
         tracker: FakeTracker = FakeTracker(),
         userDbClient: FakeUserDbClient = FakeUserDbClient(),
-        fcmTokenProvider: FakeFcmTokenProvider = FakeFcmTokenProvider(),
+        fcmTokenRequester: FakeFcmTokenRequester = FakeFcmTokenRequester(),
         crashlyticsProvider: FakeCrashlyticsProvider = FakeCrashlyticsProvider(),
         cloudFunctionsCaller: FakeCloudFunctionsCaller = FakeCloudFunctionsCaller(),
         logoutNavigation: FakeLogoutNavigation = FakeLogoutNavigation(),
@@ -513,7 +511,7 @@ class AuthManagerImplTest {
         appScope = backgroundScope + UnconfinedTestDispatcher(testScheduler),
         authState = authState,
         userDbClient = userDbClient,
-        fcmTokenProvider = fcmTokenProvider,
+        fcmTokenRequester = fcmTokenRequester,
         crashlyticsProvider = crashlyticsProvider,
         cloudFunctionsCaller = cloudFunctionsCaller,
         appLanguageProvider = FakeAppLanguageProvider(),

@@ -39,7 +39,7 @@ internal class AuthManagerImpl(
     @AppCoroutineScope private val appScope: CoroutineScope,
     private val authState: AuthState,
     private val userDbClient: UserDbClient,
-    private val fcmTokenProvider: FcmTokenProvider,
+    private val fcmTokenRequester: FcmTokenRequester,
     private val crashlyticsProvider: CrashlyticsProvider,
     private val cloudFunctionsCaller: CloudFunctionsCaller,
     private val appLanguageProvider: AppLanguageProvider,
@@ -155,11 +155,10 @@ internal class AuthManagerImpl(
         setUserToPreference(userWithExclusiveFields)
 
         val fcmToken = if (allowUpdateFcmToken) {
-            fcmTokenProvider.getToken()
+            fcmTokenRequester.getToken()
         } else {
             null
         }
-        Logger.d("Fcm token: $fcmToken")
 
         try {
             // Get the latest remote user from the server
@@ -169,7 +168,6 @@ internal class AuthManagerImpl(
                 val mergedUser = userWithExclusiveFields.copy(
                     name = newName ?: remoteUser.name ?: getString(Res.string.anonymous_user),
                     premium = remoteUser.premium,
-                    internal = remoteUser.internal ?: false,
                     createdOn = remoteUser.createdOn,
                     fcmToken = fcmToken ?: remoteUser.fcmToken
                 )

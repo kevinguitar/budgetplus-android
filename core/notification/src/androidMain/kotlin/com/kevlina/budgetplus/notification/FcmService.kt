@@ -43,6 +43,7 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onRegistered(installationId: String) {
         super.onRegistered(installationId)
+        Logger.d("FcmService onRegistered: $installationId")
         authManager.value.updateFcmToken(newToken = installationId)
     }
 

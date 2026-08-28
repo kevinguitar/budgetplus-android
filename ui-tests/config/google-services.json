@@ -1,0 +1,21 @@
+{
+  "project_info": {
+    "project_number": "1234567890",
+    "project_id": "budgetplus-ui-tests",
+    "storage_bucket": "budgetplus-ui-tests.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1234567890:android:uitests",
+        "android_client_info": {
+          "package_name": "com.kevlina.budgetplus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [{ "current_key": "fake-api-key" }],
+      "services": {}
+    }
+  ],
+  "configuration_version": "1"
+}

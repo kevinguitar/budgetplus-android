@@ -1,0 +1,19 @@
+appId: com.kevlina.budgetplus
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+- tapOn:
+    text: auth-google
+- tapOn:
+    text: book-name
+- inputText: UI Test Book
+- hideKeyboard
+- tapOn:
+    text: create-book
+- extendedWaitUntil:
+    visible:
+      text: calculator
+    timeout: 20000
+- assertVisible:
+    text: calculator

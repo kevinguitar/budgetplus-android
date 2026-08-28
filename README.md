@@ -127,6 +127,45 @@ If you want to build the project locally, follow these steps:
 
 ---
 
+## UI Tests
+
+UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android or iOS application. Both platforms run the same flows from `ui-tests/` against local Firebase Auth and Firestore emulators, so production data is never used.
+
+### Adding a Test
+
+1. Add a Maestro YAML flow under `ui-tests/`. CI automatically runs every flow in this directory.
+2. Prefer visible text for selectors. When an element has no stable text, add a shared Compose accessibility identifier with `Modifier.semantics { contentDescription = "identifier" }` and select it with `text: identifier` in Maestro.
+3. Keep platform-specific commands out of flows where possible so the same test runs on Android and iOS.
+
+### Running Locally
+
+Install the [Firebase CLI](https://firebase.google.com/docs/cli) and [Maestro CLI](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli), then start an Android emulator or iOS Simulator.
+
+Android:
+
+```bash
+cp ui-tests/config/google-services.json androidApp/google-services.json
+./gradlew :androidApp:assembleUiTest
+adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
+firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
+```
+
+iOS, using an installed `iPhone 16 Pro` simulator:
+
+```bash
+cp ui-tests/config/GoogleService-Info.plist iosApp/iosApp/GoogleService-Info.plist
+xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug \
+  -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+  -derivedDataPath build/ui-tests CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
+  SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
+xcrun simctl install booted build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
+firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
+```
+
+These commands replace the local Firebase service files with test fixtures. Restore your development Firebase files afterward if you use a real Firebase project locally.
+
+---
+
 ## Backend: Firebase Cloud Functions
 
 Database interactions and push notifications are implemented using [Firebase Cloud Functions](https://firebase.google.com/docs/functions). 

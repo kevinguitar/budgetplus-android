@@ -10,5 +10,5 @@ interface BookModule {
 
     @Provides
     @Named("allow_update_fcm_token")
-    fun provideAllowUpdateFcmToken(): Boolean = true
+    fun provideAllowUpdateFcmToken(): Boolean = !UiTestEnvironment.enabled
 }

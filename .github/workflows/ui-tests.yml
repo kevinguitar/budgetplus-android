@@ -1,0 +1,127 @@
+name: UI Tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ui-tests-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-ui-tests:
+    name: Android UI tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version-file: .github/workflows/.java-version
+          distribution: zulu
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          gradle-home-cache-strict-match: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Install Firebase CLI
+        run: npm install --global firebase-tools
+
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Configure fake Firebase app
+        run: cp ui-tests/config/google-services.json androidApp/google-services.json
+
+      - name: Run Android UI tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          disable-animations: true
+          script: |
+            ./gradlew :androidApp:assembleUiTest
+            adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
+            firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test ui-tests"
+
+  ios-ui-tests:
+    name: iOS UI tests
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Latest Stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Configure JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version-file: .github/workflows/.java-version
+          distribution: zulu
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          gradle-home-cache-strict-match: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Cache Kotlin/Native compiler and platform libs
+        uses: actions/cache@v6
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-konan-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-konan-
+
+      - name: Install Firebase CLI
+        run: npm install --global firebase-tools
+
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Configure fake Firebase app
+        run: cp ui-tests/config/GoogleService-Info.plist iosApp/iosApp/GoogleService-Info.plist
+
+      - name: Run iOS UI tests
+        run: |
+          SIMULATOR_ID=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0].udid')
+          xcrun simctl boot "$SIMULATOR_ID"
+          xcrun simctl bootstatus "$SIMULATOR_ID" -b
+          xcodebuild build \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -derivedDataPath ./build/ui-tests \
+            CODE_SIGNING_ALLOWED=NO \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=YES \
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
+          xcrun simctl install "$SIMULATOR_ID" build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
+          firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test ui-tests"
+
+  ui-tests:
+    name: UI tests result
+    if: always()
+    needs:
+      - android-ui-tests
+      - ios-ui-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require both platforms to pass
+        env:
+          ANDROID_RESULT: ${{ needs.android-ui-tests.result }}
+          IOS_RESULT: ${{ needs.ios-ui-tests.result }}
+        run: test "$ANDROID_RESULT" = success && test "$IOS_RESULT" = success

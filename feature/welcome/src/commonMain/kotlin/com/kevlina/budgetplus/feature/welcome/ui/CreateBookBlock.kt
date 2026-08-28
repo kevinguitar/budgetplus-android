@@ -23,6 +23,8 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -134,7 +136,9 @@ fun CreateBookBlock(
                     state = bookName,
                     title = stringResource(Res.string.book_name_title),
                     placeholder = stringResource(Res.string.book_name_placeholder),
-                    modifier = Modifier.weight(1F),
+                    modifier = Modifier
+                        .weight(1F)
+                        .semantics { contentDescription = "book-name" },
                     onDone = {
                         if (bookName.text.isNotBlank()) {
                             createBook()
@@ -147,7 +151,9 @@ fun CreateBookBlock(
                     enabled = bookName.text.isNotBlank(),
                     shape = CircleShape,
                     contentPadding = PaddingValues(),
-                    modifier = Modifier.size(56.dp.withTypographyScale())
+                    modifier = Modifier
+                        .size(56.dp.withTypographyScale())
+                        .semantics { contentDescription = "create-book" }
                 ) {
                     if (isCreatingBook) {
                         InfiniteCircularProgress(

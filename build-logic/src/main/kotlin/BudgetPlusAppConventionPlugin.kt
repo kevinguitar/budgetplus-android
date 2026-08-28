@@ -70,6 +70,10 @@ class BudgetPlusAppConventionPlugin : Plugin<Project> {
             }
 
             buildTypes {
+                create("uiTest") {
+                    initWith(getByName("debug"))
+                    matchingFallbacks += listOf("debug")
+                }
                 getByName("release") {
                     isMinifyEnabled = true
                     isShrinkResources = true

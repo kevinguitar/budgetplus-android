@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import budgetplus.feature.push_notifications.generated.resources.Res
 import budgetplus.feature.push_notifications.generated.resources.push_notif_sent_success
 import com.kevlina.budgetplus.core.common.SnackbarSender
-import com.kevlina.budgetplus.core.data.AuthManager
 import com.kevlina.budgetplus.core.data.PushDbMediator
 import com.kevlina.budgetplus.core.data.local.Preference
 import com.kevlina.budgetplus.core.data.remote.PushNotificationData
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
@@ -32,7 +32,6 @@ internal class PushNotificationsViewModel(
     translator: Translator,
     @Named("default_deeplink") private val defaultDeeplink: String,
     private val pushDbMediator: PushDbMediator,
-    private val authManager: AuthManager,
     private val snackbarSender: SnackbarSender,
 ) : ViewModel() {
 
@@ -65,7 +64,7 @@ internal class PushNotificationsViewModel(
         loadCache()
 
         snapshotFlow { titleTw.text }
-            .debounce(INPUT_DEBOUNCE_MS)
+            .debounce(inputDebounce)
             .mapLatest {
                 val title = translator.translate(
                     text = it.toString(),
@@ -77,7 +76,7 @@ internal class PushNotificationsViewModel(
             .launchIn(viewModelScope)
 
         snapshotFlow { descTw.text }
-            .debounce(INPUT_DEBOUNCE_MS)
+            .debounce(inputDebounce)
             .mapLatest {
                 val desc = translator.translate(
                     text = it.toString(),
@@ -101,10 +100,6 @@ internal class PushNotificationsViewModel(
         saveToCache()
         viewModelScope.launch {
             try {
-                val user = authManager.userState.first()
-                if (user?.internal != true) {
-                    error("An external user is trying to send notification!!!")
-                }
                 pushDbMediator.recordPushNotification(PushNotificationData(
                     internal = isInternal,
                     audienceTarget = audienceTarget.value.name,
@@ -167,7 +162,7 @@ internal class PushNotificationsViewModel(
     }
 
     private companion object {
-        const val INPUT_DEBOUNCE_MS = 200L
+        val inputDebounce = 200.milliseconds
         const val LAN_CODE_TW = "zh-TW"
         const val LAN_CODE_CN = "zh-CN"
     }

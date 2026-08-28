@@ -20,3 +20,4 @@ shared/exportedNativeExample/.build
 StartYourBridgeHere.swift
 DummySPMFile.swift
 GoogleService-Info.plist
+/misc/release/

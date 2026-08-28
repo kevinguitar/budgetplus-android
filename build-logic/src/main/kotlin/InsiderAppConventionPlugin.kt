@@ -2,7 +2,6 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import common.libs
 import common.localProperty
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -24,8 +23,6 @@ class InsiderAppConventionPlugin : Plugin<Project> {
         val localPropertiesFile = project.rootProject.file("local.properties")
         if (localPropertiesFile.exists()) {
             localProperties.load(localPropertiesFile.inputStream())
-        } else {
-            throw GradleException("local.properties file not found in root project.")
         }
 
         project.extensions.configure<ApplicationExtension> {

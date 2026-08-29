@@ -1,12 +1,7 @@
 name: iOS CI
 
 on:
-  pull_request:
-
-# Cancel any current or previous job from the same PR
-concurrency:
-  group: ios-ci-${{ github.head_ref }}
-  cancel-in-progress: true
+  workflow_call:
 
 jobs:
   build:

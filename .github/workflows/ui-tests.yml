@@ -13,6 +13,11 @@ jobs:
     name: Android UI tests
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      MAESTRO_CLI_NO_ANALYTICS: true
+      MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
+      MAESTRO_DISABLE_UPDATE_CHECK: true
+      MAESTRO_DRIVER_STARTUP_TIMEOUT: 120000
 
     steps:
       - uses: actions/checkout@v7
@@ -33,6 +38,12 @@ jobs:
       - name: Install Firebase CLI
         run: npm install --global firebase-tools
 
+      - name: Cache Firebase emulators
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-v1.22.0
+
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
@@ -45,7 +56,10 @@ jobs:
           api-level: 35
           arch: x86_64
           disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
           script: |
+            adb wait-for-device
+            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
             ./gradlew :androidApp:assembleUiTest
             adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
             firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test ui-tests"
@@ -54,6 +68,10 @@ jobs:
     name: iOS UI tests
     runs-on: macos-latest
     timeout-minutes: 45
+    env:
+      MAESTRO_CLI_NO_ANALYTICS: true
+      MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
+      MAESTRO_DISABLE_UPDATE_CHECK: true
 
     steps:
       - uses: actions/checkout@v7
@@ -86,6 +104,12 @@ jobs:
 
       - name: Install Firebase CLI
         run: npm install --global firebase-tools
+
+      - name: Cache Firebase emulators
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-v1.22.0
 
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash

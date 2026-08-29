@@ -134,7 +134,7 @@ UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android o
 ### Adding a Test
 
 1. Add a Maestro YAML flow under `ui-tests/`. CI automatically runs every flow in this directory.
-2. Prefer visible text for selectors. When an element has no stable text, add a shared Compose accessibility identifier with `Modifier.semantics { contentDescription = "identifier" }` and select it with `text: identifier` in Maestro.
+2. Prefer stable visible text for selectors because Maestro reads it consistently from both Android and iOS accessibility trees. Add custom semantics only when no stable visible text exists, and verify the selector on both platforms.
 3. Keep platform-specific commands out of flows where possible so the same test runs on Android and iOS.
 
 ### Running Locally

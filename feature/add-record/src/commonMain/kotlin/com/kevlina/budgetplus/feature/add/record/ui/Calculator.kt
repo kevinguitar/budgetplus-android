@@ -35,8 +35,6 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,7 +115,6 @@ internal fun Calculator(
     Column(
         verticalArrangement = Arrangement.spacedBy(verticalSpacing),
         modifier = modifier
-            .semantics { contentDescription = "calculator" }
             .focusRequester(focusRequester)
             .focusable()
             .onKeyEvent { event ->

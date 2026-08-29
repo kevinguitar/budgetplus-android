@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -36,7 +34,6 @@ fun SocialSignInButton(
 ) {
     Button(
         modifier = Modifier
-            .semantics { contentDescription = "auth-${provider.name.lowercase()}" }
             .padding(horizontal = 32.dp)
             .fillMaxWidth()
             .height(56.dp.withTypographyScale()),

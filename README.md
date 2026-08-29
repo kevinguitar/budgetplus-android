@@ -141,12 +141,15 @@ UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android o
 
 Install the [Firebase CLI](https://firebase.google.com/docs/cli) and [Maestro CLI](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli), then start an Android emulator or iOS Simulator.
 
+Run Maestro with Java 17 or 21. Newer Java versions are not currently supported reliably by Maestro's Android driver.
+
 Android:
 
 ```bash
 cp ui-tests/config/google-services.json androidApp/google-services.json
 ./gradlew :androidApp:assembleUiTest
 adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
+adb shell pm clear com.kevlina.budgetplus
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
 ```
 
@@ -158,6 +161,7 @@ xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration 
   -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
   -derivedDataPath build/ui-tests CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
   SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
+xcrun simctl uninstall booted com.kevlina.budgetplus || true
 xcrun simctl install booted build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
 ```

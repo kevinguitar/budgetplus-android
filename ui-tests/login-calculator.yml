@@ -1,8 +1,6 @@
 appId: com.kevlina.budgetplus
 ---
-- launchApp:
-    clearState: true
-    clearKeychain: true
+- launchApp
 - tapOn: Continue with Google
 - tapOn: Book Name
 - inputText: UI Test Book

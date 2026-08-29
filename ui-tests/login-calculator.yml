@@ -8,7 +8,7 @@ appId: com.kevlina.budgetplus
 - extendedWaitUntil:
     visible: Book Name
     timeout: 10000
-- tapOn: Book Name
+- tapOn: My accounting book
 - inputText: UI Test Book
 - tapOn: Go
 - extendedWaitUntil:

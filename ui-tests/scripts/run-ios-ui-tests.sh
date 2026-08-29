@@ -48,6 +48,7 @@ xcodebuild build \
   ONLY_ACTIVE_ARCH=YES \
   SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
 xcrun simctl uninstall "$SIMULATOR_ID" com.kevlina.budgetplus || true
+xcrun simctl keychain "$SIMULATOR_ID" reset
 xcrun simctl install "$SIMULATOR_ID" build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests \
   emulators:exec --only auth,firestore "maestro test --udid $SIMULATOR_ID ui-tests"

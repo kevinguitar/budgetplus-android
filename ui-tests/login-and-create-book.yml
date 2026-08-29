@@ -5,10 +5,6 @@ appId: com.kevlina.budgetplus
     visible: Continue with Google
     timeout: 30000
 - tapOn: Continue with Google
-# Anonymous sign-in runs against the Firebase auth emulator and then bootstraps
-# the user's first book in the Firestore emulator before navigating to the
-# create-book screen. On a cold CI simulator these emulator round-trips can take
-# well over 10s, so give the post-login screen a generous budget to avoid flakes.
 - extendedWaitUntil:
     visible: Book Name
     timeout: 60000

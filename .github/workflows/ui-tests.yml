@@ -61,6 +61,7 @@ jobs:
             adb wait-for-device
             until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
             adb shell input keyevent 82
+            adb shell settings put global hide_error_dialogs 1
             ./gradlew :androidApp:assembleUiTest
             adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
             adb shell pm clear com.kevlina.budgetplus

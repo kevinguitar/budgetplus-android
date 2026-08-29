@@ -1,6 +1,9 @@
 appId: com.kevlina.budgetplus
 ---
 - launchApp
+- extendedWaitUntil:
+    visible: Continue with Google
+    timeout: 30000
 - tapOn: Continue with Google
 - tapOn: Book Name
 - inputText: UI Test Book
@@ -9,5 +12,5 @@ appId: com.kevlina.budgetplus
 - extendedWaitUntil:
     visible:
       text: AC
-    timeout: 20000
+    timeout: 5000
 - assertVisible: AC

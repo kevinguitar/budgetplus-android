@@ -21,3 +21,4 @@ StartYourBridgeHere.swift
 DummySPMFile.swift
 GoogleService-Info.plist
 /misc/release/
+firestore-debug.log

@@ -141,32 +141,19 @@ UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android o
 
 Install the [Firebase CLI](https://firebase.google.com/docs/cli) and [Maestro CLI](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli), then start an Android emulator or iOS Simulator.
 
-Run Maestro with Java 17 or 21. Newer Java versions are not currently supported reliably by Maestro's Android driver.
-
-Android:
+Run the Android tests:
 
 ```bash
-cp ui-tests/config/google-services.json androidApp/google-services.json
-./gradlew :androidApp:assembleUiTest
-adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
-adb shell pm clear com.kevlina.budgetplus
-firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
+./ui-tests/scripts/run-android-ui-tests.sh
 ```
 
-iOS, using an installed `iPhone 16 Pro` simulator:
+Run the iOS tests using an installed `iPhone 16 Pro` simulator:
 
 ```bash
-cp ui-tests/config/GoogleService-Info.plist iosApp/iosApp/GoogleService-Info.plist
-xcodebuild build -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Debug \
-  -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-  -derivedDataPath build/ui-tests CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES \
-  SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
-xcrun simctl uninstall booted com.kevlina.budgetplus || true
-xcrun simctl install booted build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
-firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "maestro test ui-tests"
+./ui-tests/scripts/run-ios-ui-tests.sh
 ```
 
-These commands replace the local Firebase service files with test fixtures. Restore your development Firebase files afterward if you use a real Firebase project locally.
+Pass a different simulator name as the first argument if needed. Both scripts temporarily install the test Firebase configuration and restore the production `google-services.json` or `GoogleService-Info.plist` from `misc/release` when they exit, including after a test failure.
 
 ---
 

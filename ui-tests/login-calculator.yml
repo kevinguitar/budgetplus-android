@@ -3,11 +3,10 @@ appId: com.kevlina.budgetplus
 - launchApp
 - extendedWaitUntil:
     visible: Continue with Google
-    timeout: 30000
+    timeout: 10000
 - tapOn: Continue with Google
 - tapOn: My accounting book
 - inputText: UI Test Book
-- hideKeyboard
 - tapOn: Go
 - extendedWaitUntil:
     visible:

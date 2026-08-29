@@ -6,9 +6,9 @@ appId: com.kevlina.budgetplus
     timeout: 30000
 - tapOn: Continue with Google
 - extendedWaitUntil:
-    visible: My accounting book
+    visible: Book Name
     timeout: 10000
-- tapOn: My accounting book
+- tapOn: Book Name
 - inputText: UI Test Book
 - tapOn: Go
 - extendedWaitUntil:

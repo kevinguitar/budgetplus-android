@@ -5,7 +5,7 @@ appId: com.kevlina.budgetplus
     visible: Continue with Google
     timeout: 30000
 - tapOn: Continue with Google
-- tapOn: Book Name
+- tapOn: My accounting book
 - inputText: UI Test Book
 - hideKeyboard
 - tapOn: Go

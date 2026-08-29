@@ -53,7 +53,8 @@ jobs:
       - name: Run Android UI tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 36
+          target: google_apis
           arch: x86_64
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
@@ -65,6 +66,7 @@ jobs:
             ./gradlew :androidApp:assembleUiTest
             adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
             adb shell pm clear com.kevlina.budgetplus
+            adb shell cmd package compile -m speed -f com.kevlina.budgetplus
             mkdir -p build/maestro/android
             set +e
             firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/android --debug-output=build/maestro/android --format=html --output=build/maestro/android/report.html ui-tests"
@@ -150,7 +152,7 @@ jobs:
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
             -derivedDataPath ./build/ui-tests \
-            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY=- \
             ARCHS=arm64 \
             ONLY_ACTIVE_ARCH=YES \
             SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'

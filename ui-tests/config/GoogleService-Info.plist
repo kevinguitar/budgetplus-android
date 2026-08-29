@@ -25,6 +25,6 @@
     <key>IS_SIGNIN_ENABLED</key>
     <true/>
     <key>GOOGLE_APP_ID</key>
-    <string>1:1234567890:ios:uitests</string>
+    <string>1:1234567890:ios:0000000000000000000000</string>
 </dict>
 </plist>

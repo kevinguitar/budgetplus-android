@@ -59,7 +59,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
           script: |
             adb wait-for-device
-            until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
+            until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
+            adb shell input keyevent 82
             ./gradlew :androidApp:assembleUiTest
             adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
             adb shell pm clear com.kevlina.budgetplus

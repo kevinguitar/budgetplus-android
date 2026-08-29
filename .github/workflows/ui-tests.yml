@@ -62,7 +62,25 @@ jobs:
             until adb shell pm path android >/dev/null 2>&1; do sleep 2; done
             ./gradlew :androidApp:assembleUiTest
             adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
-            firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test ui-tests"
+            mkdir -p build/maestro/android
+            set +e
+            firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/android --debug-output=build/maestro/android --format=html --output=build/maestro/android/report.html ui-tests"
+            result=$?
+            adb exec-out screencap -p > build/maestro/android/final-screen.png || true
+            adb logcat -d > build/maestro/android/logcat.txt || true
+            exit $result
+
+      - name: Upload Android UI test artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-ui-test-artifacts
+          path: |
+            build/maestro/android
+            firebase-debug.log
+            firestore-debug.log
+          if-no-files-found: warn
+          retention-days: 7
 
   ios-ui-tests:
     name: iOS UI tests
@@ -134,7 +152,24 @@ jobs:
             ONLY_ACTIVE_ARCH=YES \
             SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
           xcrun simctl install "$SIMULATOR_ID" build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
-          firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test ui-tests"
+          mkdir -p build/maestro/ios
+          set +e
+          firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/ios --debug-output=build/maestro/ios --format=html --output=build/maestro/ios/report.html ui-tests"
+          result=$?
+          xcrun simctl io "$SIMULATOR_ID" screenshot build/maestro/ios/final-screen.png || true
+          exit $result
+
+      - name: Upload iOS UI test artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ios-ui-test-artifacts
+          path: |
+            build/maestro/ios
+            firebase-debug.log
+            firestore-debug.log
+          if-no-files-found: warn
+          retention-days: 7
 
   ui-tests:
     name: UI tests result

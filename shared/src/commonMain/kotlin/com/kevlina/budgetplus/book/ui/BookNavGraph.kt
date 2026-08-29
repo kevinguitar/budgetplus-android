@@ -2,6 +2,7 @@ package com.kevlina.budgetplus.book.ui
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation3.runtime.NavEntry
+import com.kevlina.budgetplus.book.UiTestEnvironment
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.feature.add.record.ui.RecordScreen
 import com.kevlina.budgetplus.feature.auth.AuthViewModel
@@ -29,11 +30,19 @@ internal fun bookNavGraph(bookDest: BookDest): NavEntry<BookDest> {
             LaunchedEffect(bookDest) {
                 vm.checkAuthorizedAccounts(enableAutoSignIn = bookDest.enableAutoSignIn)
             }
-            AuthBinding(
-                vm = vm.commonAuthViewModel,
-                signInWithGoogle = vm::signInWithGoogle,
-                signInWithApple = vm::signInWithApple,
-            )
+            if (!UiTestEnvironment.enabled) {
+                AuthBinding(
+                    vm = vm.commonAuthViewModel,
+                    signInWithGoogle = vm::signInWithGoogle,
+                    signInWithApple = vm::signInWithApple,
+                )
+            } else {
+                AuthBinding(
+                    vm = vm.commonAuthViewModel,
+                    signInWithGoogle = vm::signInAnonymouslyForUiTest,
+                    signInWithApple = vm::signInAnonymouslyForUiTest,
+                )
+            }
         }
 
         BookDest.Welcome -> NavEntry(bookDest) {

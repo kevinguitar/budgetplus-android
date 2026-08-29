@@ -1,0 +1,89 @@
+name: Android UI Tests
+
+on:
+  workflow_call:
+
+jobs:
+  android-ui-tests:
+    name: Android UI tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MAESTRO_CLI_NO_ANALYTICS: true
+      MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
+      MAESTRO_DISABLE_UPDATE_CHECK: true
+      MAESTRO_DRIVER_STARTUP_TIMEOUT: 120000
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version-file: .github/workflows/.java-version
+          distribution: zulu
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          gradle-home-cache-strict-match: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Install Firebase CLI
+        run: npm install --global firebase-tools
+
+      - name: Cache Firebase emulators
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-v1.22.0
+
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Configure fake Firebase app
+        run: cp ui-tests/config/google-services.json androidApp/google-services.json
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Android UI tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          script: |
+            adb wait-for-device
+            until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
+            adb shell input keyevent 82
+            adb shell settings put global hide_error_dialogs 1
+            ./gradlew :androidApp:assembleUiTest
+            adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
+            adb shell pm clear com.kevlina.budgetplus
+            adb shell cmd package compile -m speed -f com.kevlina.budgetplus
+            mkdir -p build/maestro/android
+            set +e
+            firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/android --debug-output=build/maestro/android --format=html --output=build/maestro/android/report.html ui-tests"
+            result=$?
+            adb exec-out screencap -p > build/maestro/android/final-screen.png || true
+            adb logcat -d > build/maestro/android/logcat.txt || true
+            exit $result
+
+      - name: Upload Android UI test artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-ui-test-artifacts
+          path: |
+            build/maestro/android
+            firebase-debug.log
+            firestore-debug.log
+          if-no-files-found: warn
+          retention-days: 7

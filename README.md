@@ -127,6 +127,36 @@ If you want to build the project locally, follow these steps:
 
 ---
 
+## UI Tests
+
+UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android or iOS application. Both platforms run the same flows from `ui-tests/` against local Firebase Auth and Firestore emulators, so production data is never used.
+
+### Adding a Test
+
+1. Add a Maestro YAML flow under `ui-tests/`. CI automatically runs every flow in this directory.
+2. Prefer stable visible text for selectors because Maestro reads it consistently from both Android and iOS accessibility trees. Add custom semantics only when no stable visible text exists, and verify the selector on both platforms.
+3. Keep platform-specific commands out of flows where possible so the same test runs on Android and iOS.
+
+### Running Locally
+
+Install the [Firebase CLI](https://firebase.google.com/docs/cli) and [Maestro CLI](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli), then start an Android emulator or iOS Simulator.
+
+Run the Android tests:
+
+```bash
+./ui-tests/scripts/run-android-ui-tests.sh
+```
+
+Run the iOS tests using an installed `iPhone 16 Pro` simulator:
+
+```bash
+./ui-tests/scripts/run-ios-ui-tests.sh
+```
+
+Pass a different simulator name as the first argument if needed. Both scripts temporarily install the test Firebase configuration and restore the production `google-services.json` or `GoogleService-Info.plist` from `misc/release` when they exit, including after a test failure.
+
+---
+
 ## Backend: Firebase Cloud Functions
 
 Database interactions and push notifications are implemented using [Firebase Cloud Functions](https://firebase.google.com/docs/functions). 

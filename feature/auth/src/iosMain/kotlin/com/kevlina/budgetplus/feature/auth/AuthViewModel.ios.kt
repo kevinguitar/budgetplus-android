@@ -90,6 +90,12 @@ actual class AuthViewModel(
         authorizationController.performRequests()
     }
 
+    actual fun signInAnonymouslyForUiTest() {
+        viewModelScope.launch {
+            commonAuthViewModel.signInAnonymouslyForUiTest()
+        }
+    }
+
     private class AppleSignInSession(
         private val rawNonce: String,
         private val coroutineScope: CoroutineScope,

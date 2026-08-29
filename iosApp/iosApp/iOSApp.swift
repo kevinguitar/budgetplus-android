@@ -14,6 +14,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
+        #if UI_TEST
+            UiTestEnvironment.shared.configure(emulatorHost: "127.0.0.1")
+        #endif
         Messaging.messaging().delegate = self
 
         UNUserNotificationCenter.current().delegate = self

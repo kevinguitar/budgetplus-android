@@ -77,6 +77,12 @@ actual class AuthViewModel(
     // Not supported yet
     actual fun signInWithApple() = Unit
 
+    actual fun signInAnonymouslyForUiTest() {
+        viewModelScope.launch {
+            commonAuthViewModel.signInAnonymouslyForUiTest()
+        }
+    }
+
     /**
      *  If there are any accounts that were authorized before, launch the sign in dialog.
      */

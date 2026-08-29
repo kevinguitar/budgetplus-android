@@ -3,6 +3,8 @@ package com.kevlina.budgetplus.app
 import android.app.Application
 import co.touchlab.kermit.LogcatWriter
 import co.touchlab.kermit.Logger
+import com.kevlina.budgetplus.androidApp.R
+import com.kevlina.budgetplus.book.UiTestEnvironment
 import com.kevlina.budgetplus.core.common.ActivityProvider
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.di.HasDependencyGraph
@@ -25,6 +27,9 @@ class BudgetPlusApp : Application(), HasDependencyGraph {
     }
 
     override fun onCreate() {
+        if (resources.getBoolean(R.bool.is_ui_test)) {
+            UiTestEnvironment.configure(emulatorHost = "10.0.2.2")
+        }
         appGraph.inject(this)
         super.onCreate()
 

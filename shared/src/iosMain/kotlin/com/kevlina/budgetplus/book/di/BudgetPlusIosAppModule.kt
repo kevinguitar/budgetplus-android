@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.book.di
 
+import com.kevlina.budgetplus.book.UiTestEnvironment
 import com.kevlina.budgetplus.core.ads.AdUnitId
 import com.kevlina.budgetplus.core.common.MutableEventFlow
 import dev.zacsweers.metro.AppScope
@@ -25,7 +26,7 @@ interface BudgetPlusIosAppModule {
 
     @Provides
     @Named("allow_update_fcm_token")
-    fun provideAllowUpdateFcmToken(): Boolean = true
+    fun provideAllowUpdateFcmToken(): Boolean = !UiTestEnvironment.enabled
 
     @Provides
     @SingleIn(AppScope::class)

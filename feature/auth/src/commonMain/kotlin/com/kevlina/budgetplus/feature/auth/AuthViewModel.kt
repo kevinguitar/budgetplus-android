@@ -24,6 +24,7 @@ expect class AuthViewModel : ViewModel {
     fun checkAuthorizedAccounts(enableAutoSignIn: Boolean)
     fun signInWithGoogle()
     fun signInWithApple()
+    fun signInAnonymouslyForUiTest()
 }
 
 @Inject
@@ -46,6 +47,17 @@ class CommonAuthViewModel(
             onLoginCompleted(result)
         } catch (e: Exception) {
             snackbarSender.sendError(e)
+        }
+    }
+
+    suspend fun signInAnonymouslyForUiTest() {
+        isLoading.value = true
+        try {
+            onLoginCompleted(auth.signInAnonymously())
+        } catch (e: Exception) {
+            snackbarSender.sendError(e)
+        } finally {
+            isLoading.value = false
         }
     }
 

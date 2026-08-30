@@ -41,6 +41,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-konan-
 
+      - name: Cache SPM packages
+        uses: actions/cache@v6
+        with:
+          path: |
+            build/SourcePackages
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Cache Xcode DerivedData
+        uses: actions/cache@v6
+        with:
+          path: ./build
+          key: ${{ runner.os }}-ddata-${{ hashFiles('**/Package.resolved', 'gradle/libs.versions.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-ddata-
+
       - name: Install Firebase CLI
         run: npm install --global firebase-tools
 

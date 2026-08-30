@@ -23,30 +23,33 @@ appId: com.kevlina.budgetplus
     timeout: 15000
 # Swipe to a premium tone (Barbie and Ken is the 4th tone). Swipe one page at a
 # time with a settle wait between flings so pages don't get skipped/overshot.
-# Use explicit start/end coordinates across the pager: swiping "from" the pager's
-# merged accessibility node only covers a small region on iOS and doesn't produce
-# a real fling, leaving the pager on the first page. A wide horizontal drag at the
-# pager's vertical center reliably advances exactly one page on both platforms.
+#
+# Coordinates matter here. The tone pager sits near the BOTTOM of the screen
+# (measured bounds put its vertical center at ~78% of screen height, not the
+# middle), so a mid-screen swipe lands on the Color Preview card above it and
+# never touches the pager. A Compose HorizontalPager also only changes page when
+# the drag clears ~50% of a page width or flings fast enough, so we drag nearly
+# full width (90% -> 10%) at a brisk 200ms to guarantee the page advances.
 - swipe:
-    start: "85%, 55%"
-    end: "15%, 55%"
-    duration: 400
+    start: "90%, 78%"
+    end: "10%, 78%"
+    duration: 200
 - extendedWaitUntil:
     visible:
       text: "Warm Tones of Dusk"
     timeout: 10000
 - swipe:
-    start: "85%, 55%"
-    end: "15%, 55%"
-    duration: 400
+    start: "90%, 78%"
+    end: "10%, 78%"
+    duration: 200
 - extendedWaitUntil:
     visible:
       text: "Countryside"
     timeout: 10000
 - swipe:
-    start: "85%, 55%"
-    end: "15%, 55%"
-    duration: 400
+    start: "90%, 78%"
+    end: "10%, 78%"
+    duration: 200
 - extendedWaitUntil:
     visible:
       text: "Barbie and Ken"

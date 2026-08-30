@@ -26,13 +26,12 @@ appId: com.kevlina.budgetplus
 - assertNotVisible:
     text: "Test Ad|No ads available"
 # Dismiss the (persistent, UI-test) "unlocked" snackbar so it doesn't block later
-# bottom-screen interactions (e.g. the Overview Search FAB).
+# bottom-screen interactions (e.g. the Overview Search FAB). UI-test builds make the
+# snackbar tap-to-dismiss (swipe gestures are unreliable on the iOS automation driver).
 - runFlow:
     when:
       visible:
         text: "Budget+ Premium unlocked!"
     commands:
-      - swipe:
-          from:
-            text: "Budget+ Premium unlocked!"
-          direction: RIGHT
+      - tapOn:
+          text: "Budget+ Premium unlocked!"

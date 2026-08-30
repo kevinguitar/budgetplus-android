@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Snackbar
@@ -83,8 +84,11 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
                     .thenIf(UiTestFlags.enabled) {
                         // Expose the message text to the accessibility tree so Maestro can
                         // reliably assert on it (the raw Snackbar text is not always visible
-                        // to the automation driver).
-                        Modifier.semantics { contentDescription = data.visuals.message }
+                        // to the automation driver), and allow tap-to-dismiss: swipe-to-dismiss
+                        // gestures are unreliable to drive from the iOS automation driver.
+                        Modifier
+                            .semantics { contentDescription = data.visuals.message }
+                            .clickable { data.dismiss() }
                     },
                 contentAlignment = Alignment.Center
             ) {

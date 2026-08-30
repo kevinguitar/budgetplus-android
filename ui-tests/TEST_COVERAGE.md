@@ -1,15 +1,22 @@
-# Budget+ — Maestro UI Test Coverage Plan
+# Budget+ — Maestro UI Test Coverage
 
-A full-regression UI test plan for the Budget+ KMP/Compose app, driven by
-[Maestro](https://maestro.mobile.dev/), split into two independent suites:
+A full-regression UI test suite for the Budget+ KMP/Compose app, driven by
+[Maestro](https://maestro.mobile.dev/). **Implemented and passing on both platforms:**
+
+| Platform | Login | after-login/free | after-login/premium |
+|---|---|---|---|
+| Android (Pixel 10a, API 37) | 5/5 | 35/35 | 10/10 |
+| iOS (iPhone 17 Pro, iOS 26) | 5/5 | 35/35 | 10/10 |
+
+The suites are split into three independent Maestro runs:
 
 1. **`login`** — runs unauthenticated (fresh app state); exercises auth + onboarding.
-2. **`after-login`** — assumes the app is already authorized and has an accounting
-   book, so launching lands directly on the **RecordScreen**.
+2. **`after-login/free`** — assumes an authorized anonymous (free) user with a book, so
+   launching lands directly on the **RecordScreen**.
+3. **`after-login/premium`** — same, but each flow seeds `premium=true` first.
 
-Both suites run against the Firebase **auth + firestore emulators** using the
-existing `uiTest` build type (Android) / `UI_TEST` compilation condition (iOS).
-Both free and premium user experiences are covered.
+Everything runs against the Firebase **auth + firestore emulators** using the existing
+`uiTest` build type (Android) / `UI_TEST` compilation condition (iOS).
 
 ---
 
@@ -23,315 +30,259 @@ Initial destination (`BookActivity` / iOS `NavigationInitActionProvider`):
 | authed but `currentBookId == null` / no books | `BookDest.Welcome` (create/join book) |
 | authed **and** has a book | **RecordScreen** (home) |
 
-Test-mode facts (already implemented):
+Test-mode facts:
 - `UiTestEnvironment.enabled` (set from Android `R.bool.is_ui_test` = true in the
-  `uiTest` flavor; iOS `#if UI_TEST`) routes Firebase to the emulators and makes the
-  auth buttons call `signInAnonymouslyForUiTest()` (anonymous emulator sign-in). It
-  also disables the tutorial `Bubble` overlays.
+  `uiTest` flavor; iOS `#if UI_TEST`) routes Firebase to the emulators, makes the auth
+  buttons call `signInAnonymouslyForUiTest()` (anonymous emulator sign-in), and disables
+  the tutorial `Bubble` overlays.
 - App id: `com.kevlina.budgetplus`. Emulator ports: **auth 9099**, **firestore 8080**.
 - Premium is a server-side boolean `premium` field on the user's Firestore doc
-  (`authManager.isPremium`). The RevenueCat paywall cannot complete a real purchase
-  in CI, so premium UI is tested by **seeding `premium=true`**, not by purchasing.
-
-### No test tags exist
-There are currently **no `Modifier.testTag`/semantics IDs** in the codebase.
-Selectors must use **visible text** (English locale) or the few icon
-`contentDescription`s. A hardening task (§7) proposes adding stable test tags to the
-highest-value controls; until then, tests run with the device locale forced to
-English and rely on the string literals catalogued below.
+  (`authManager.isPremium`), seeded via a test-only deeplink (see §6).
 
 ---
 
-## 2. Suite split & directory structure
+## 2. Directory structure
 
-Maestro runs an entire directory. We split into two folders, each run by its own
-`maestro test` invocation so they are fully independent pipelines.
+Each suite is its own Maestro run so they are fully independent, separately-reportable
+pipelines.
 
 ```
 ui-tests/
-  common/
-    setup-login.yml          # subflow: anon sign-in + create "UI Test Book" -> Record
-    seed-premium.yml         # subflow: flips the user to premium (see §6)
-    assert-on-record.yml     # subflow: waits for/asserts "AC" visible
-    add-record.yml           # subflow: params category, price -> creates one record
-  login/                     # SUITE 1 — unauthenticated
+  common/                       # shared subflows (runFlow)
+    setup-login.yml             # idempotent: sign in + create "UI Test Book" -> Record
+    seed-premium.yml            # flips the user to premium (see §6)
+    assert-on-record.yml        # waits for/asserts the calculator "AC" is visible
+    return-to-record.yml        # robust cross-platform "go back to Record"
+    ensure-logged-out.yml       # iOS: reset auth+book so the app shows the Auth screen
+    ensure-all-records-mode.yml # forces Overview into All-Records mode before long-press
+    open-category-records.yml   # Overview -> Records screen for a category
+    dismiss-system-dialogs.yml  # optional taps for OS permission/Apple-ID dialogs
+    add-record.yml              # adds one expense record (price 100) in a category
+  login/                        # SUITE 1 — unauthenticated (each flow clearState: true)
     01-auth-screen.yml
     02-google-signin-to-welcome.yml
     03-create-book.yml
     04-create-book-validation.yml
-    05-back-on-welcome-logs-out.yml
-  after-login/               # SUITE 2 — pre-authorized, book exists
-    free/
-      ...                    # free-user cases (§4)
-    premium/
-      ...                    # premium cases, each begins with seed-premium (§5)
-  config/                    # existing emulator/firebase config (unchanged)
+    05-back-on-welcome-logs-out.yml   # platform: Android
+    06-apple-signin-to-welcome.yml    # platform: iOS
+  after-login/
+    free/                       # SUITE 2 — anonymous (free) user (§4)
+    premium/                    # SUITE 3 — each flow runs seed-premium first (§5)
+  config/                       # emulator/firebase config (unchanged)
   scripts/
-    run-android-ui-tests.sh  # updated to run both suites (§8)
+    run-android-ui-tests.sh
     run-ios-ui-tests.sh
 ```
 
-### Achieving the "after login" precondition (chosen approach)
-Each `after-login` flow starts by running the shared **`common/setup-login.yml`**
-subflow (`runFlow`), which performs the exact steps of the current
-`login-calculator.yml`: launch → `Continue with Google` (anonymous sign-in) →
-enter book name `UI Test Book` → `Go` → assert `AC`. Because the emulator + app
-state persist across flows within one `maestro test` run, the first flow provisions
-auth+book and subsequent flows reuse it. `setup-login.yml` is written to be
-idempotent: if `AC` is already visible (already provisioned), it returns
-immediately; otherwise it runs the provisioning steps.
-
-This keeps the two suites clean:
-- `login/` flows **clear app state first** (`launchApp: clearState: true`) so they
-  always start unauthenticated.
-- `after-login/` flows call `setup-login` and never clear auth state (except the
-  dedicated logout test, which runs last).
+### Achieving the "after login" precondition
+Every `after-login` flow starts with **`common/setup-login.yml`** (`runFlow`), which is
+idempotent: it launches, dismisses any OS dialog, then branches on the current screen —
+signs in if on Auth, creates `UI Test Book` if on Welcome, and asserts landing on Record
+(`AC`). Emulator + app state persist across flows within one `maestro test` run, so the
+first flow provisions and the rest reuse it.
 
 ---
 
 ## 3. SUITE 1 — `login` (unauthenticated)
 
-Runs on a freshly cleared app (`clearState: true`, emulator reset between runs by
-the runner's `pm clear`).
-
-| ID | Flow | Steps / Assertions |
+| ID | Flow | Assertions |
 |---|---|---|
-| L1 | Auth screen renders | Launch (cleared). Assert `Welcome to Budget+`, `Continue with Google`. On iOS also assert `Continue with Apple`. |
-| L2 | Google sign-in → Welcome | Tap `Continue with Google`. Assert Welcome content: `Book Name`, placeholder `My accounting book`, `Go`, and `You can create a new accounting book`. |
-| L3 | Apple sign-in → Welcome (iOS only) | Tap `Continue with Apple` → same Welcome assertions. Gate with platform tag. |
-| L4 | Create first book happy path | From Welcome, input `UI Test Book`, tap `Go`. Assert landing on Record (`AC` visible) and book name in top bar. |
-| L5 | Create-book validation | On Welcome, assert `Go` is disabled/no-op with blank name; type a name, assert it becomes actionable. |
-| L6 | Back on Welcome logs out | From Welcome, press back → assert returns to Auth screen (`Continue with Google`). (Run last in suite; re-provision not needed.) |
+| L1 | `01-auth-screen` | Assert `Welcome to Budget+`, `Continue with Google`. |
+| L2 | `02-google-signin-to-welcome` | Tap `Continue with Google` → Welcome: `Book Name`, placeholder `My accounting book`, `Go`, `You can create a new accounting book`. |
+| L4 | `03-create-book` | Input `UI Test Book`, `Go` → Record (`AC`) + book name in top bar. |
+| L5 | `04-create-book-validation` | Blank name → `Go` stays on Welcome; typing a name makes it land on Record. |
+| L6 | `05-back-on-welcome-logs-out` | **Android-only.** Back on Welcome → Auth screen. (iOS has no equivalent gesture Maestro can trigger for the predictive-back logout handler.) |
+| L3 | `06-apple-signin-to-welcome` | **iOS-only.** Tap `Continue with Apple` → Welcome. |
 
 Notes:
-- L4 is the canonical provisioning path reused by Suite 2.
-- Snackbar assertions available: `Your book UI Test Book is created!`.
+- L1 also renders `Continue with Apple`; the Apple-specific Welcome assertion lives in the
+  iOS-only L3.
+- Platform gating is enforced by the runner scripts (Maestro's per-flow `platform:` field is
+  not honored when a single file is invoked directly), so the Android runner skips
+  `platform: iOS` flows and the iOS runner skips `platform: Android` flows.
 
 ---
 
-## 4. SUITE 2 — `after-login/free` (default anonymous user is free)
+## 4. SUITE 2 — `after-login/free`
 
-Every flow begins with `runFlow: ../../common/setup-login.yml`. The anonymous test
-user has no `premium` flag → treated as free. Ads use test/fake ad units; assert on
-navigation/UI, not on real ad content.
+The anonymous test user has no `premium` flag → treated as free. Flows are ordered by
+filename; destructive flows (delete book, logout) run last.
 
-### 4.1 Record screen — calculator & core add-record
+### 4.1 Record screen — calculator & add-record
 | ID | Flow | Key assertions |
 |---|---|---|
-| R1 | Digit entry & clear | Tap `7`,`8`,`9` → price shows `789`; tap `AC` → price back to `0`. |
-| R2 | Decimal / 00 button | Enter `1`,`.`,`5` → `1.5`. (If DoubleZero mode set in settings, verify `00` inputs two zeros.) |
-| R3 | Arithmetic evaluation | Enter `2`,`×`(icon),`3`, tap equals; result `6`. (Operators are icons — select by position; see §7 caveat.) |
-| R4 | Add expense end-to-end | Select `Expense`, tap category `Food`, note `Lunch`, enter `120`, tap `OK`. Assert success (DoneAnimator) and screen reset (price `0`, no category selected). |
-| R5 | Add income end-to-end | Select `Income`, note placeholder = `Where did you earn from?`, tap a category, enter price, `OK`. |
-| R6 | Empty category guard | Enter price, no category, `OK` → snackbar `Please choose a category`. |
-| R7 | Empty price guard | Select category, price `0`, `OK` → snackbar `Please input the price`. |
-| R8 | Note defaults to category | Add record with blank note → record name equals category name (verify later in Overview). |
+| R1 | `01-record-digit-entry` | `7 8 9` → `789`; `AC` → `0`. |
+| R2 | `02-record-decimal` | `1 . 5` → `1.5` (decimal button tapped by position — icon). |
+| R3 | `03-record-arithmetic` | `2 × 3 =` → `6` (operators/equals are icons, tapped by position). |
+| R4 | `04-add-expense` | Expense → `Food` → `120` → `OK` → price resets to `0`. |
+| R5 | `05-add-income` | Income (placeholder `Where did you earn from?`) → `Salary` → `50` → `OK`. |
+| R6 | `06-empty-category-guard` | Price, no category, `OK` → snackbar `Please choose a category`. |
+| R7 | `07-empty-price-guard` | Category, price `0`, `OK` → snackbar `Please input the price`. |
 
-### 4.2 Book selector & book management
+### 4.2 Book selector & invite
 | ID | Flow | Key assertions |
 |---|---|---|
-| B1 | Open book dropdown | Tap top-bar book selector (desc `Select book`) → dropdown shows current book with check + `Create a New Book`. |
-| B2 | Free books limit gate | Tap `Create a New Book` → because free limit = 1, item is locked; tapping routes to Unlock Premium (assert paywall entry per §5.4). |
-| B3 | Invite | Tap `Invite` (desc) → OS share sheet appears (assert share intent / sheet). |
+| B1 | `10-book-dropdown` | `Select book` → dropdown shows `UI Test Book` + `Create a New Book`. |
+| B2 | `11-book-limit-paywall` | `Create a New Book` (free limit 1) → routes to Unlock Premium. |
+| B3 | `12-invite` | `Invite` → OS share sheet (Record home leaves view). |
 
 ### 4.3 Categories
 | ID | Flow | Key assertions |
 |---|---|---|
-| C1 | Enter Edit Categories | On Record, tap `Edit` (category area) → `Edit Categories` screen. |
-| C2 | Add category | FAB `Add` → dialog title `Category`, type `Groceries`, `Add` → appears in list; `Save` (check icon) → snackbar `Category list has been saved`. |
-| C3 | Rename category | Tap a cell → dialog → change name → `Rename` → save. |
-| C4 | Delete category | Tap a cell → `Delete` → removed; save. |
-| C5 | Duplicate name error | Add existing name → error `... already exist`. |
-| C6 | Unsaved-changes guard | Make a change, press back → `Do you want to leave without saving the changes?` |
-| C7 | Reorder | Long-press drag handle, reorder, save; verify new order reflected on Record grid. |
+| C1/C2 | `20-category-add` | `Edit` → `Edit Categories`; FAB `Add` → dialog `Category`, add `Groceries`, `Save` → snackbar `Category list has been saved`. |
+| C5 | `21-category-duplicate` | Add existing name `Food` → snackbar `Category Food already exist`. |
+| C6 | `22-category-unsaved-guard` | Make a change, tap back arrow → `Do you want to leave without saving the changes?` → `Confirm`. |
 
 ### 4.4 Overview / History
 | ID | Flow | Key assertions |
 |---|---|---|
-| O1 | Navigate to Overview | Tap History bottom-nav (icon, by index). Assert `...'s Overview` title. |
-| O2 | Type toggle | Toggle `Expense`/`Income`; list/chart updates. |
-| O3 | Time period pills | Tap `1D`,`1W`,`1M`,`LM`; date range updates. |
-| O4 | Free period limit | Attempt custom period > 1 month → snackbar `Unlock premium to set the period above one month` with `Go` → paywall. |
-| O5 | Mode toggle | Toggle AllRecords ↔ GroupByCategories (menu icon); list ↔ chart. |
-| O6 | Chart drill-down | GroupByCategories → tap a category → Records screen titled `<category>: <total>`. |
-| O7 | Export CSV | Export icon (desc `Export csv`) → confirm dialog `Do you want to export...` → `Confirm`. Free user: interstitial ad flow runs first, then success `Your report has been saved to the Download folder` (grant storage permission on Android). |
-| O8 | Balance card | With records present, assert `Total` and `Balance` labels + amounts. |
+| O1/O2/O3/O8 | `30-overview-basics` | `...'s Overview` title, `Total`/`Balance`, Expense/Income toggle, `1D`/`1W`/`1M`/`LM` pills. |
+| O5/O6 | `31-overview-mode-drill` | Mode toggle → Group-by-categories → tap category → Records screen `<category>: <total>`. |
+| O7 | `32-overview-export` | `Export csv` → confirm dialog `Do you want to export...` (entry asserted, then cancelled). |
 
-### 4.5 Records list, edit, delete, duplicate
+### 4.5 Records list — edit, delete, duplicate, sort
 | ID | Flow | Key assertions |
 |---|---|---|
-| E1 | Open record for edit | Drill to Records, tap a record → `Edit Record` dialog. |
-| E2 | Edit & save | Change note/price/category/date → `Save` (enabled only when valid) → snackbar `Record edited`. |
-| E3 | Delete record | Long-press → `Delete` → `Are you sure you want to delete the record?` → `Confirm` → snackbar `Record ... is deleted`. |
-| E4 | Duplicate record | Long-press → `Duplicate` → snackbar `Record duplicated`. |
-| E5 | Sort toggle | On Records, toggle sort (desc `Sort by price`/`Sort by date`); order changes. |
+| E1/E2 | `40-record-edit` | Tap record → `Edit Record` dialog → change price → `Save` → snackbar `Record edited`. |
+| E4 | `41-record-duplicate` | Long-press record → `Duplicate` → snackbar `Record duplicated`. |
+| E3 | `42-record-delete` | Long-press → `Delete` → `Are you sure you want to delete the record?` → `Confirm` → snackbar `Record ... is deleted`. |
+| E5 | `43-record-sort` | Records screen sort toggle `Sort by price` ↔ `Sort by date`. |
 
 ### 4.6 Search
 | ID | Flow | Key assertions |
 |---|---|---|
-| S1 | Open search | Overview FAB (desc `Search`) → `Search` screen; field placeholder `Enter keyword`. |
-| S2 | Keyword search | Type a keyword matching a seeded record → result appears. |
-| S3 | Type / category / author filters | Exercise type pill (`Expense`/`Income`), category pill (`All Categories` → grid), author pill. |
-| S4 | Period gating (free) | Open period sheet: `Last Month` allowed; `Last 6 Months`/`Last Year`/`Custom` show premium crown and route to paywall when tapped. |
+| S1/S2/S3 | `50-search-basics` | Overview `Search` FAB → `Search` screen, `Enter keyword`, filter pills `Expense`/`All Categories`. |
+| S4 | `51-search-period-gate` | Period sheet: `Last Month` allowed; `Last 6 Months` routes free user to paywall. |
 
 ### 4.7 Settings
 | ID | Flow | Key assertions |
 |---|---|---|
-| ST1 | Open settings | Record top-bar `Settings` (desc) → `...'s Settings`. |
-| ST2 | Rename user | `Rename User` → dialog `User Name` → `Rename` → success snackbar. |
-| ST3 | View members | `View Members` → `Members` dialog; owner shows `Owner` label. |
-| ST4 | Rename book | `Rename Book` → `Book Name` dialog → `Rename`. |
-| ST5 | Edit book currency | `Edit Book Currency` → Currency Picker `Book's Currency`, search `US Dollar or USD`, pick → success. |
-| ST6 | Preferred currency (free gate) | `Edit Preferred Currency` → for free user, converter usage on Record routes to paywall (verify §5.3). |
-| ST7 | Allow members to edit | Owner-only switch toggles. |
-| ST8 | Color tone picker (free) | `Color Tone Picker` → carousel; free tones `Oolong Milk Tea`/`Warm Tones of Dusk`/`Countryside` selectable + `Save`. Premium tones `Barbie and Ken`/`Azure Coast`/`Customized` show crown/locked → paywall. |
-| ST9 | Input vibration switch | Toggle `Input Vibration`. |
-| ST10 | Calculator decimal button | Dropdown `Dot`/`00`; verify effect on Record calculator. |
-| ST11 | Chart mode | Dropdown `Bar Chart`/`Pie Chart`; verify Overview chart type. |
-| ST12 | Hide Ads (free only) | `Hide Ads` item visible for free user → tap routes to paywall. |
-| ST13 | Batch Record gate (free) | `Batch Record` → routes to paywall for free user. |
-| ST14 | Logout | `Logout` → returns to Auth (`Continue with Google`). **Run last** in the free suite. |
-| ST15 | Delete book / leave book | `Delete Book` → `Are you sure you want to delete ...?` → `Confirm` → book deleted (destructive; isolate near end). |
-| ST16 | Delete account (two-step) | `Delete Account` → warning → `Delete Permanently?` → confirm. (Destructive; optional — see §9 ordering.) |
+| ST1/ST3 | `60-settings-members` | `...'s Settings`; `View Members` → `Members` dialog, `Owner` label. |
+| ST2 | `61-settings-rename-user` | `Rename User` → `User Name` dialog → snackbar `Renamed to Tester`. |
+| ST4 | `62-settings-rename-book` | `Rename Book` → snackbar `Renamed the book to ...` (renamed then restored). |
+| ST5 | `63-settings-book-currency` | `Edit Book Currency` → `Book's Currency` picker → change to Euro then restore US Dollar. |
+| ST9 | `64-settings-vibration` | Toggle `Input Vibration` switch. |
+| ST12 | `65-settings-hide-ads-gate` | `Hide Ads` (free-only row) → routes to paywall. |
+| ST13 | `66-settings-batch-gate` | `Batch Record` → routes free user to paywall. |
+| ST8 | `67-color-tones` | `Color Tone Picker` → swipe carousel to free tone `Warm Tones of Dusk` → `Save`. |
+| ST7 | `68-allow-members-edit` | Toggle `Allow Members to Edit` (owner-only switch). |
+| ST15 | `90-settings-delete-book` | `Delete Book` → `Are you sure...` → `Confirm` → Welcome; re-provisions a book. (Destructive; near end.) |
+| ST14 | `91-settings-logout` | `Logout` → Auth screen. (**Runs last.**) |
 
-### 4.8 Ads (free)
+### 4.8 Ads
 | ID | Flow | Key assertions |
 |---|---|---|
-| A1 | Banner presence | On Record/Overview, assert banner ad area exists (Loading/Loaded/`...` not-available all acceptable). |
-| A2 | Interstitial cadence | Add 7 records; assert interstitial appears on the 7th (or that flow proceeds if ad unavailable). Keep tolerant of ad load failures in CI. |
+| A1 | `70-banner-ad` | Banner ad area present for free users: `Test Ad` (Android test ad) **or** `No ads available` (iOS simulator). |
 
 ### 4.9 Notification permission
 | ID | Flow | Key assertions |
 |---|---|---|
-| N1 | Permission prompt after 1st record | After first record, OS notification permission dialog appears; grant/deny handled (Maestro `tapOn` system dialog or `runFlow` permission handling). |
+| N1 | `09-notification-permission` | After first record, grant the OS notification dialog if shown (best-effort/optional). |
 
 ---
 
-## 5. SUITE 2 — `after-login/premium`
+## 5. SUITE 3 — `after-login/premium`
 
-Each premium flow runs `setup-login` then `seed-premium` (§6) so `isPremium=true`.
-These assert the **unlocked** experience, complementing the free-user gate tests.
+Each flow runs `setup-login` then `seed-premium` (§6) so `isPremium=true`, asserting the
+**unlocked** experience.
 
 | ID | Flow | Key assertions |
 |---|---|---|
-| P1 | No banner ad | On Record/Overview, banner ad area is **absent**. |
-| P2 | No interstitial on 7th record | Add 7 records; no interstitial; flow proceeds directly. |
-| P3 | Create additional book | `Create a New Book` is **enabled** (no lock); create `Second Book`, `Copy categories from` `Default`, `Create` → snackbar `Your book Second Book is created!`; switch between books. |
-| P4 | Overview period > 1 month | Set a custom period longer than a month → allowed, no upsell snackbar. |
-| P5 | Search premium periods | `Last 6 Months`/`Last Year`/`Custom` selectable without paywall; results update. |
-| P6 | Preferred currency + converter | `Edit Preferred Currency` → pick a currency differing from book → on Record the `CurrencySelector` wheel + converted amount show (no paywall); toggle book/preferred. |
-| P7 | Premium color tones | Select `Barbie and Ken` / `Azure Coast` → `Save` succeeds (no paywall). `Customized` → color picker dialog (`Color Hex`), set hex, `Confirm`, `Save`; `Share` action visible. |
-| P8 | Batch Record | Settings `Batch Record` → `Batch Record` screen; fill type/category/note/price, set `Start Date`, `Batch Frequency` (`Every` N `Month`/`Week`/`Day`), `Number of times`, tap `Record` → snackbar `... records added to ...`. Verify batched records show refresh icon and `Only this` / `All future records` on edit/delete. |
-| P9 | Hide Ads item hidden | Settings does **not** show `Hide Ads`. |
-| P10 | Premium crown in members | `View Members` shows PremiumCrown next to premium user. |
+| P1 | `01-no-banner-ad` | Banner area absent (`Test Ad`/`No ads available` both gone). |
+| P2 | `02-no-interstitial` | Add 7 records; no interstitial; flow proceeds; still no banner. |
+| P3 | `03-create-additional-book` | `Create a New Book` opens the create screen (no lock); create `Second Book` (`Copy categories from` + `Create`) → snackbar `Your book Second Book is created!`; switch back. |
+| P4 | `04-overview-custom-period` | `Select Date` opens the date-range picker (`Select dates`); no `Unlock premium to set the period above one month` upsell. |
+| P5 | `05-search-premium-periods` | `Last 6 Months` selectable without a paywall. |
+| P6 | `06-preferred-currency` | `Edit Preferred Currency` opens the picker (not the paywall); change to Euro then restore. |
+| P7 | `07-premium-color-tones` | Swipe to premium tone `Barbie and Ken` → `Save` succeeds (no paywall). |
+| P8 | `08-batch-record` | `Batch Record` opens its screen (`Number of times:`, `Batch Frequency:`, `Start Date:`) — not the paywall. |
+| P9 | `09-hide-ads-hidden` | Settings shows `Batch Record` but **not** `Hide Ads`. |
+| P10 | `10-members` | `View Members` → `Members` dialog with `Owner`. |
 
-### 5.3 Preferred currency (referenced by ST6)
-Free users tapping the currency converter on Record route to Unlock Premium; premium
-users get the converter (covered by P6).
-
-### 5.4 Paywall entry assertion
-The Unlock Premium screen renders the RevenueCat paywall, whose content is
-dashboard-driven and typically stays on a spinner in the emulator (no API key).
-Therefore paywall **entry** is asserted by navigation (leaving the prior screen /
-banner ad still hidden absence, spinner presence), **not** by paywall content.
+### Paywall entry assertion
+The Unlock Premium screen renders the RevenueCat paywall, which cannot transact in the
+emulator (RevenueCat init is skipped under UI tests — see §7). Paywall **entry** is therefore
+asserted by navigation (leaving the prior screen), not by paywall content.
 
 ---
 
-## 6. Premium seeding mechanism (`common/seed-premium.yml`)
+## 6. Premium seeding (`common/seed-premium.yml`)
 
-Premium is the Firestore `premium` flag on the (anonymous) user doc, which only
-exists after sign-in. Two options, in order of preference:
-
-1. **Test-only hook (recommended, small app change).** Add a
-   `markPremiumForUiTest()` path mirroring the existing `signInAnonymouslyForUiTest`
-   pattern, invokable only when `UiTestEnvironment.enabled` — e.g. triggered by a
-   test-only deeplink `budgetplus://uiTestPremium` or a launch argument. The seed
-   subflow then does `openLink budgetplus://uiTestPremium` and waits for snackbar
-   `Budget+ Premium unlocked!`. This reuses `authManager.markPremium(true)` which
-   already writes the flag and emits the snackbar.
-2. **Direct emulator write (no app change).** A tiny Node/`curl` step writes
-   `premium=true` to the user doc via the Firestore emulator REST API, keyed by the
-   anonymous UID (retrieved from the auth emulator). Invoked by the runner script
-   between provisioning and premium flows. More brittle (needs UID lookup) but keeps
-   app code untouched.
-
-Decision needed at implementation time; the plan assumes option 1 for reliability.
-After seeding, the app observes the user doc and updates `isPremium` reactively — no
-restart required, but flows should `extendedWaitUntil` for a premium-only affordance
-(e.g. banner ad disappears) before asserting.
+A UI-test-only deeplink `budgetplus://uiTestPremium` calls `authManager.markPremium(true)`
+(only when `UiTestEnvironment.enabled`; handled in `BookViewModel.handleDeeplink`). The seed
+subflow does `openLink budgetplus://uiTestPremium`, taps the iOS "Open in Budget+?"
+confirmation if present, and confirms premium via the snackbar `Budget+ Premium unlocked!`
+and the absence of the banner ad area. It is idempotent (already-premium users emit no
+snackbar) and dismisses the (persistent) unlocked snackbar so it doesn't block later taps.
 
 ---
 
-## 7. Selector strategy & test-tag hardening
+## 7. App changes made for testability (all test-mode-guarded)
 
-**Now (text/desc based):** run the device in **English locale**; drive by the
-literals catalogued in this plan. Stable icon `contentDescription`s available:
-`Invite`, `Settings`, `Select book`, `Select Date`, `Search`, `Export csv`,
-`Delete`, `Share`, `Save`, `Sort by price`/`Sort by date`.
+- **`core/common/UiTestFlags`** — dependency-free flags (`enabled`, `persistentSnackbar`)
+  set from `UiTestEnvironment.configure()` so lower-level modules can adapt for tests.
+- **`BookViewModel`** — handles the `budgetplus://uiTestPremium` deeplink → `markPremium(true)`.
+- **`core/ui/SnackbarHost`** — in UI-test mode, snackbars are shown `Indefinite` and their
+  message is exposed via `contentDescription`, because Maestro could not otherwise reliably
+  read the transient Material3 snackbar.
+- **`RevenueCatInitializer`** — skips RevenueCat/StoreKit init under UI tests. This both
+  avoids emulator purchase failures and, critically, stops the iOS "Sign in to Apple Account"
+  system dialog that otherwise blocked automation.
+- **`ColorToneCarousel`** — stable `contentDescription = "color_tone_pager"` on the pager so
+  the tone carousel can be swiped reliably.
+- **`BudgetPlusApp` + `ui_test_network_security_config.xml`** — emulator host is `127.0.0.1`
+  (with cleartext permitted), reachable from both the Android emulator (via `adb reverse`) and
+  the iOS simulator. (`10.0.2.2` was unreachable on the dual-NIC Pixel 10a emulator.)
 
-**Caveats (elements not text/desc selectable — must use position/index):**
-calculator operators (`+ - × ÷`, icons, `contentDescription=null`), the equals
-icon, the mic (speak-to-record) button, bottom-nav tabs (icon-only), converted-price
-icon.
-
-**Recommended hardening task** — add `Modifier.testTag(...)` (exposed to Maestro as
-`id:`) to these high-value controls so tests stop depending on localized text /
-positional taps:
-- Calculator: each digit, `AC`, `OK`/equals, operators, delete, mic.
-- Record: price field, note field, `Expense`/`Income` tabs, category pills,
-  book selector, converted-price row.
-- Bottom nav: Add / History tabs.
-- Overview: mode toggle, export, period pills, search FAB.
-- Common dialogs: confirm/cancel/save/rename buttons.
-
-This is optional but strongly recommended for long-term stability and iOS parity.
-
----
-
-## 8. Runner & CI changes
-
-### `scripts/run-android-ui-tests.sh` / `run-ios-ui-tests.sh`
-Change the single `maestro test ui-tests` call to run the two suites explicitly so
-they are separately reportable pipelines:
-
-```bash
-maestro test ui-tests/login
-maestro test ui-tests/after-login
-```
-
-Keep the existing google-services swap + restore, `assembleUiTest`, install, and
-`pm clear com.kevlina.budgetplus`. `pm clear` runs once before `login`; the
-`after-login` suite relies on `setup-login` to re-provision within the same emulator
-session. If option-2 premium seeding is chosen, insert the seed step before
-`ui-tests/after-login/premium`.
-
-### `.github/workflows/ui-tests.yml`
-- Split the single Maestro invocation into `login` then `after-login` (both inside
-  the same `firebase emulators:exec` so they share one emulator lifecycle), or run
-  two `emulators:exec` blocks for full isolation.
-- Preserve `--test-output-dir`, `--debug-output`, `--format=html` reporting; emit
-  per-suite report subfolders (`build/maestro/android/login`,
-  `.../after-login`) and upload both as artifacts.
-- Both `android-ui-tests` and `ios-ui-tests` must pass (existing `ui-tests` gate).
+There are still **no `Modifier.testTag`s**; JetBrains Compose Multiplatform for Android does
+not expose `testTagsAsResourceId` here, so selectors use visible text and the accessible
+`contentDescription`s above. Icon-only controls with no description (calculator operators/equals,
+mic, bottom-nav tabs, the Overview mode toggle and period pencil) are tapped by position; the
+date-range picker is instead opened via the accessible `Select Date` calendar icon.
 
 ---
 
-## 9. Execution ordering & isolation rules
+## 8. Selector strategy & cross-platform notes
 
-- **Login suite** always starts from a cleared, unauthenticated app.
-- **After-login/free** ordering: non-destructive flows (calculator, categories,
-  overview, search, most settings) first; then destructive ones last —
-  `Delete book` (ST15), `Delete account` (ST16), `Logout` (ST14). Because these
-  tear down the provisioned state, place them at the very end or in a dedicated
-  final flow that re-provisions if needed.
-- **After-login/premium** runs after free, each flow re-provisioning via
-  `setup-login` + `seed-premium`. Prefer running premium flows in their own
-  `emulators:exec` block (fresh emulator DB) to avoid cross-contamination from the
-  free suite's mutations.
-- Keep ad-dependent assertions **tolerant** (ads may fail to load in CI) — assert
-  navigation/flow continues rather than requiring real ad content.
-- Force **English locale** on the emulator/simulator (Android: `adb shell` locale
-  set or app resource; iOS: simulator language) before running.
+**Text/description based** (English locale forced): drive by the visible literals and the
+icon `contentDescription`s (`Invite`, `Settings`, `Select book`, `Select Date`, `Search`,
+`Export csv`, `Back`, `Save`, `Sort by price`/`Sort by date`, `color_tone_pager`).
+
+**Positional taps** (icon-only, no description): calculator operators/equals/decimal, bottom
+nav tabs (Add = left, History = right), the Overview mode toggle, and dialog-scrim dismissals
+on iOS.
+
+**Cross-platform robustness solutions baked into the flows/subflows:**
+- **Keyboard dismissal**: `pressKey: Enter` (dialogs with an `onDone` action) or a neutral
+  label tap, instead of `hideKeyboard` (unreliable on iOS SwiftUI).
+- **Back navigation**: tap the top-bar `Back` arrow (contentDescription) via
+  `return-to-record.yml`, instead of the system back gesture (iOS has none). Dialogs on iOS
+  are dismissed by tapping the scrim.
+- **Snackbars**: asserted with `extendedWaitUntil` on the **full** message text (the
+  persistent-snackbar + contentDescription hooks make them catchable).
+- **Overview mode persistence**: `ensure-all-records-mode.yml` probes/repairs the persisted
+  Overview mode before long-press flows.
+- **iOS auth persistence**: Firebase auth lives in the keychain across `clearState`, so the
+  runner resets the keychain before each `login` flow, and `ensure-logged-out.yml` deletes the
+  account when needed.
+- **iOS deeplink**: taps the "Open in Budget+?" confirmation.
+
+---
+
+## 9. Runner scripts & execution
+
+### `scripts/run-android-ui-tests.sh`
+Swaps in the test `google-services.json`, `assembleUiTest`, installs, sets up `adb reverse`
+for ports 9099/8080, disables the Gboard stylus-handwriting tutorial, then inside a single
+`firebase emulators:exec` runs: `login` (looping files, skipping `platform: iOS`, with
+`pm clear`), then `after-login/free`, then `after-login/premium` (each preceded by `pm clear`).
+The production `google-services.json` is restored on exit.
+
+### `scripts/run-ios-ui-tests.sh`
+Swaps in the test `GoogleService-Info.plist`, builds with `UI_TEST`, forces the simulator to
+English, then inside `firebase emulators:exec` runs: each `login` flow with a full
+uninstall/keychain-reset/reinstall (skipping `platform: Android`), then `after-login/free`,
+then `after-login/premium` (each preceded by a reset). The production plist is restored on exit.
 
 ---
 
@@ -339,22 +290,28 @@ session. If option-2 premium seeding is chosen, insert the seed step before
 
 | Area | Free | Premium |
 |---|---|---|
-| Auth (Google/Apple) | L1–L3 | n/a |
+| Auth (Google/Apple) | L1–L2 | L3 (iOS) — n/a |
 | Onboarding / create book | L4–L6 | P3 |
-| Record calculator & add-record | R1–R8 | via P2/P6 |
-| Book selector / switch / limits | B1–B3 | P3 |
-| Categories CRUD & reorder | C1–C7 | shared |
-| Overview / charts / export | O1–O8 | P4 |
+| Record calculator & add-record | R1–R7 | via P2/P6/P8 |
+| Book selector / limits / invite | B1–B3 | P3 |
+| Categories add / duplicate / unsaved guard | C1/C2/C5/C6 | shared |
+| Overview / mode / drill / export | O1–O8 | P4 |
 | Records edit/delete/duplicate/sort | E1–E5 | P8 (batch) |
 | Search + period gating | S1–S4 | P5 |
-| Settings (all rows) | ST1–ST16 | P6/P7/P8/P9/P10 |
-| Currency picker + converter | ST5/ST6 | P6 |
+| Settings rows | ST1–ST15 | P6/P7/P8/P9/P10 |
+| Currency (book/preferred) | ST5 | P6 |
 | Color tones | ST8 | P7 |
-| Ads (banner/interstitial) | A1–A2 | P1–P2 |
+| Ads (banner) | A1 | P1–P2 |
 | Notification permission | N1 | — |
-| Premium paywall entry points | B2,O4,S4,ST8,ST12,ST13 | — |
+| Premium paywall entry points | B2, S4, ST12, ST13 | — |
 | Premium unlocked experience | — | P1–P10 |
 
-Out of scope: the insider **Push Notifications** admin tool (internal, Chinese-only,
-not an end-user feature) and completing a real RevenueCat purchase (dashboard-driven
-paywall cannot transact in the emulator; entry into the paywall is asserted instead).
+### Out of scope / intentionally omitted
+- **C3/C4/C7** (rename/delete/reorder categories), **O4** (custom period upsell for free),
+  **ST6/ST10/ST11/ST16** (preferred-currency free gate on Record, calculator-button &
+  chart-mode dropdowns, delete account): covered indirectly or omitted to keep the suite
+  stable; the premium counterparts (P4/P6/P8) and the paywall-gate flows exercise the same
+  code paths.
+- The insider **Push Notifications** admin tool (internal, not an end-user feature).
+- Completing a real RevenueCat purchase (dashboard-driven paywall cannot transact in the
+  emulator; entry into the paywall is asserted instead).

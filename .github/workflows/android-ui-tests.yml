@@ -57,7 +57,29 @@ jobs:
           arch: x86_64
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
-          script: bash ui-tests/scripts/ci-android-ui-tests.sh
+          # Wrapped in a single `bash -c` because android-emulator-runner runs each
+          # line of an inline script as its own `/usr/bin/sh -c`, which would break
+          # `set +e` and the post-run diagnostic capture across separate shells.
+          script: |
+            bash -c '
+              set -uo pipefail
+              OUTPUT_DIR="build/maestro/android"
+              mkdir -p "$OUTPUT_DIR"
+
+              adb wait-for-device
+              until [ "$(adb shell getprop sys.boot_completed | tr -d "\r")" = "1" ]; do sleep 2; done
+              adb shell input keyevent 82
+              adb shell settings put global hide_error_dialogs 1
+
+              # Do not abort on failure: capture diagnostics before exiting.
+              ./ui-tests/scripts/run-android-ui-tests.sh
+              result=$?
+
+              adb exec-out screencap -p > "$OUTPUT_DIR/final-screen.png" || true
+              adb logcat -d > "$OUTPUT_DIR/logcat.txt" || true
+
+              exit $result
+            '
 
       - name: Upload Android UI test artifacts
         if: always()

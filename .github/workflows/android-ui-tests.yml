@@ -57,20 +57,7 @@ jobs:
           arch: x86_64
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
-          script: |
-            adb wait-for-device
-            until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
-            adb shell input keyevent 82
-            adb shell settings put global hide_error_dialogs 1
-            set +e
-            # The runner script swaps in the test Firebase config, builds + installs the
-            # uiTest APK, sets up adb reverse, and runs the login/free/premium suites inside
-            # the Firebase emulators. It restores the production google-services.json on exit.
-            ./ui-tests/scripts/run-android-ui-tests.sh
-            result=$?
-            adb exec-out screencap -p > build/maestro/android/final-screen.png || true
-            adb logcat -d > build/maestro/android/logcat.txt || true
-            exit $result
+          script: bash ui-tests/scripts/ci-android-ui-tests.sh
 
       - name: Upload Android UI test artifacts
         if: always()

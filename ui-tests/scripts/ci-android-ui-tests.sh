@@ -5,6 +5,8 @@
 # `set +e` and any post-run capture logic. Running a single script file avoids
 # that: everything below shares one shell process.
 
+set -x
+
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$ROOT_DIR"
 

@@ -51,7 +51,9 @@ maestro_test() {
   fi
 }
 
-./gradlew :androidApp:assembleUiTest
+echo "::group::assembleUiTest"
+./gradlew :androidApp:assembleUiTest --stacktrace || { echo "::error::assembleUiTest failed"; exit 1; }
+echo "::endgroup::"
 adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
 
 # The app routes Firebase to the emulators via 127.0.0.1; forward those ports from the

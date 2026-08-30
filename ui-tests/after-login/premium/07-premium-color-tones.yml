@@ -21,17 +21,26 @@ appId: com.kevlina.budgetplus
     visible:
       text: "Color Tone Picker"
     timeout: 15000
-# Swipe to a premium tone (Barbie and Ken is the 4th tone).
+# Swipe to a premium tone (Barbie and Ken is the 4th tone). Swipe one page at a
+# time with a settle wait between flings so pages don't get skipped/overshot on iOS.
 - swipe:
     from:
       text: "color_tone_pager"
     direction: LEFT
     duration: 150
+- extendedWaitUntil:
+    visible:
+      text: "Warm Tones of Dusk"
+    timeout: 10000
 - swipe:
     from:
       text: "color_tone_pager"
     direction: LEFT
     duration: 150
+- extendedWaitUntil:
+    visible:
+      text: "Countryside"
+    timeout: 10000
 - swipe:
     from:
       text: "color_tone_pager"

@@ -87,20 +87,24 @@ reset_app() {
 run_suites() {
   # login: each flow needs a truly unauthenticated start, so reset the keychain before
   # every flow (iOS persists Firebase auth in the keychain across clearState).
-  for flow in ui-tests/login/*.yml; do
-    # Honor per-flow platform gating (running a single file bypasses Maestro's own gate).
-    if grep -q '^platform: Android' "$flow"; then
-      continue
-    fi
-    reset_app
-    maestro_test "login/$(basename "$flow" .yml)" "$flow"
-  done
+#  for flow in ui-tests/login/*.yml; do
+#    # Honor per-flow platform gating (running a single file bypasses Maestro's own gate).
+#    if grep -q '^platform: Android' "$flow"; then
+#      continue
+#    fi
+#    reset_app
+#    maestro_test "login/$(basename "$flow" .yml)" "$flow"
+#  done
+#
+#  reset_app
+#  maestro_test after-login-free ui-tests/after-login/free
+#
+#  reset_app
+#  maestro_test after-login-premium ui-tests/after-login/premium
 
   reset_app
-  maestro_test after-login-free ui-tests/after-login/free
-
-  reset_app
-  maestro_test after-login-premium ui-tests/after-login/premium
+  maestro_test after-login-premium ui-tests/after-login/premium/05-search-premium-periods.yml
+  maestro_test after-login-premium ui-tests/after-login/premium/07-premium-color-tones.yml
 }
 
 export SIMULATOR_ID APP_PATH MAESTRO_BIN

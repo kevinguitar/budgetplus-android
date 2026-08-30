@@ -10,6 +10,12 @@ appId: com.kevlina.budgetplus
     visible:
       text: ".*'s Overview"
     timeout: 15000
+# The "Premium unlocked!" snackbar can linger over the bottom Search FAB on iOS;
+# wait for it to auto-dismiss before tapping so the tap isn't intercepted.
+- extendedWaitUntil:
+    notVisible:
+      text: "Budget+ Premium unlocked!"
+    timeout: 15000
 - tapOn:
     text: "Search"
 - extendedWaitUntil:

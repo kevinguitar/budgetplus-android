@@ -22,30 +22,31 @@ appId: com.kevlina.budgetplus
       text: "Color Tone Picker"
     timeout: 15000
 # Swipe to a premium tone (Barbie and Ken is the 4th tone). Swipe one page at a
-# time with a settle wait between flings so pages don't get skipped/overshot on iOS.
+# time with a settle wait between flings so pages don't get skipped/overshot.
+# Use explicit start/end coordinates across the pager: swiping "from" the pager's
+# merged accessibility node only covers a small region on iOS and doesn't produce
+# a real fling, leaving the pager on the first page. A wide horizontal drag at the
+# pager's vertical center reliably advances exactly one page on both platforms.
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 150
+    start: "85%, 55%"
+    end: "15%, 55%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Warm Tones of Dusk"
     timeout: 10000
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 150
+    start: "85%, 55%"
+    end: "15%, 55%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Countryside"
     timeout: 10000
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 150
+    start: "85%, 55%"
+    end: "15%, 55%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Barbie and Ken"

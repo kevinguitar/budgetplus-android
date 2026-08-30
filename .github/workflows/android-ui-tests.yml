@@ -7,6 +7,9 @@ jobs:
   android-ui-tests:
     name: Android UI tests
     runs-on: ubuntu-latest
+    # Cap the whole job so a crashed/offline emulator (which leaves adb spinning on
+    # `- waiting for device -`) can't hang the run indefinitely.
+    timeout-minutes: 90
     env:
       MAESTRO_CLI_NO_ANALYTICS: true
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
@@ -56,7 +59,13 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          # The emulator was going `offline` partway through the suite (device
+          # crash), which cascaded into every later flow failing with
+          # `device offline` / `device 'emulator-5554' not found`. Give it more
+          # RAM + cores so it survives the full run.
+          cores: 4
+          ram-size: 6144M
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -memory 6144 -no-metrics
           # android-emulator-runner runs each line of an inline script as its own
           # `/usr/bin/sh -c` (dash), which cannot express `set -o pipefail` or a
           # heredoc. Invoke a committed script once with bash so everything shares

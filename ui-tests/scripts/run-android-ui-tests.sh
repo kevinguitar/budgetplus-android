@@ -36,23 +36,49 @@ maestro_test() {
 }
 
 run_suites() {
+  suites_failed=0
+
   # login runs first on freshly cleared state (its flows also clearState per-flow).
   adb shell pm clear com.kevlina.budgetplus
-  for flow in ui-tests/login/*.yml; do
+  run_suite_dir login ui-tests/login
+
+  # after-login/free re-provisions via setup-login on a fresh anonymous user.
+  adb shell pm clear com.kevlina.budgetplus
+  run_suite_dir after-login-free ui-tests/after-login/free
+
+  # after-login/premium seeds premium via the uiTestPremium deeplink.
+  adb shell pm clear com.kevlina.budgetplus
+  run_suite_dir after-login-premium ui-tests/after-login/premium
+
+  return "$suites_failed"
+}
+
+# Run every flow in a suite directory ONE AT A TIME.
+#
+# Passing a directory to `maestro test` makes recent Maestro versions run all
+# flows in that directory concurrently (each spins up its own Maestro session +
+# instrumentation against the emulator). On the CI emulator that concurrency
+# exhausts the device and it goes `offline` mid-run, cascading into
+# `device 'emulator-5554' not found` for every remaining flow. Iterating files
+# and invoking maestro per-flow keeps execution strictly sequential. Each flow is
+# self-contained (it runs setup-login itself), so per-file execution is
+# equivalent to the previous directory run, minus the crashing parallelism.
+#
+# A single failing flow must not abort the rest of the suite (the previous
+# directory run reported every flow), so failures are captured and surfaced via
+# `suites_failed` instead of tripping `set -e`.
+run_suite_dir() {
+  local suite_prefix="$1"
+  local dir="$2"
+  for flow in "$dir"/*.yml; do
     # Skip iOS-only flows (per-flow platform gating).
     if grep -q '^platform: iOS' "$flow"; then
       continue
     fi
-    maestro_test "login/$(basename "$flow" .yml)" "$flow"
+    if ! maestro_test "$suite_prefix/$(basename "$flow" .yml)" "$flow"; then
+      suites_failed=1
+    fi
   done
-
-  # after-login/free re-provisions via setup-login on a fresh anonymous user.
-  adb shell pm clear com.kevlina.budgetplus
-  maestro_test after-login-free ui-tests/after-login/free
-
-  # after-login/premium seeds premium via the uiTestPremium deeplink.
-  adb shell pm clear com.kevlina.budgetplus
-  maestro_test after-login-premium ui-tests/after-login/premium
 }
 
 # --suites: invoked by emulators:exec (see below) to run just the flows.

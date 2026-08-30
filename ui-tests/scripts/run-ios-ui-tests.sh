@@ -43,6 +43,7 @@ xcodebuild build \
   -sdk iphonesimulator \
   -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
   -derivedDataPath build/ui-tests \
+  -quiet \
   CODE_SIGN_IDENTITY=- \
   ARCHS=arm64 \
   ONLY_ACTIVE_ARCH=YES \

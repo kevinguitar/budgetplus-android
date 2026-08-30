@@ -25,7 +25,7 @@ appId: com.kevlina.budgetplus
     from:
       text: "color_tone_pager"
     direction: LEFT
-    duration: 150
+    duration: 100
 - extendedWaitUntil:
     visible:
       text: "Warm Tones of Dusk"

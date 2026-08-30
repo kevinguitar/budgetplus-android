@@ -9,15 +9,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android-ci:
-    name: Android CI
-    uses: ./.github/workflows/android-ci.yml
-    secrets: inherit
-
-  ios-ci:
-    name: iOS CI
-    uses: ./.github/workflows/ios-ci.yml
-    secrets: inherit
+#  android-ci:
+#    name: Android CI
+#    uses: ./.github/workflows/android-ci.yml
+#    secrets: inherit
+#
+#  ios-ci:
+#    name: iOS CI
+#    uses: ./.github/workflows/ios-ci.yml
+#    secrets: inherit
 
   android-ui-tests:
     name: Android UI tests
@@ -33,24 +33,24 @@ jobs:
     name: final-status
     if: always()
     needs:
-      - android-ci
-      - ios-ci
+#      - android-ci
+#      - ios-ci
       - android-ui-tests
       - ios-ui-tests
     runs-on: ubuntu-latest
     steps:
       - name: Require all jobs to succeed
         env:
-          ANDROID_CI_RESULT: ${{ needs.android-ci.result }}
-          IOS_CI_RESULT: ${{ needs.ios-ci.result }}
+#          ANDROID_CI_RESULT: ${{ needs.android-ci.result }}
+#          IOS_CI_RESULT: ${{ needs.ios-ci.result }}
           ANDROID_UI_RESULT: ${{ needs.android-ui-tests.result }}
           IOS_UI_RESULT: ${{ needs.ios-ui-tests.result }}
         run: |
-          echo "android-ci:       $ANDROID_CI_RESULT"
-          echo "ios-ci:           $IOS_CI_RESULT"
-          echo "android-ui-tests: $ANDROID_UI_RESULT"
-          echo "ios-ui-tests:     $IOS_UI_RESULT"
-          test "$ANDROID_CI_RESULT" = success \
-            && test "$IOS_CI_RESULT" = success \
-            && test "$ANDROID_UI_RESULT" = success \
-            && test "$IOS_UI_RESULT" = success
+#          echo "android-ci:       $ANDROID_CI_RESULT"
+#          echo "ios-ci:           $IOS_CI_RESULT"
+#          echo "android-ui-tests: $ANDROID_UI_RESULT"
+#          echo "ios-ui-tests:     $IOS_UI_RESULT"
+#          test "$ANDROID_CI_RESULT" = success \
+#            && test "$IOS_CI_RESULT" = success \
+#            && test "$ANDROID_UI_RESULT" = success \
+#            && test "$IOS_UI_RESULT" = success

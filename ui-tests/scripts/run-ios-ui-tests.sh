@@ -50,6 +50,27 @@ xcodebuild build \
 
 APP_PATH="build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app"
 
+# Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
+MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
+
+# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit per-suite HTML reports + debug output.
+maestro_test() {
+  local suite_name="$1"
+  shift
+  if [[ -n "${MAESTRO_OUTPUT_DIR:-}" ]]; then
+    local out="$MAESTRO_OUTPUT_DIR/$suite_name"
+    mkdir -p "$out"
+    "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" \
+      --test-output-dir="$out" \
+      --debug-output="$out" \
+      --format=html \
+      --output="$out/report.html" \
+      "$@"
+  else
+    "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" "$@"
+  fi
+}
+
 # Force the simulator UI (and the app) to English so tests can match English strings.
 xcrun simctl spawn "$SIMULATOR_ID" defaults write -g AppleLanguages '("en-US")'
 xcrun simctl spawn "$SIMULATOR_ID" defaults write -g AppleLocale "en_US"
@@ -72,18 +93,18 @@ run_suites() {
       continue
     fi
     reset_app
-    maestro test --udid "$SIMULATOR_ID" "$flow"
+    maestro_test "login/$(basename "$flow" .yml)" "$flow"
   done
 
   reset_app
-  maestro test --udid "$SIMULATOR_ID" ui-tests/after-login/free
+  maestro_test after-login-free ui-tests/after-login/free
 
   reset_app
-  maestro test --udid "$SIMULATOR_ID" ui-tests/after-login/premium
+  maestro_test after-login-premium ui-tests/after-login/premium
 }
 
-export SIMULATOR_ID APP_PATH
-export -f reset_app run_suites
+export SIMULATOR_ID APP_PATH MAESTRO_BIN
+export -f maestro_test reset_app run_suites
 
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests \
-  emulators:exec --only auth,firestore "run_suites"
+  emulators:exec --only auth,firestore run_suites

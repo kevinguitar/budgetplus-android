@@ -54,30 +54,22 @@ jobs:
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
-      - name: Configure fake Firebase app
-        run: cp ui-tests/config/GoogleService-Info.plist iosApp/iosApp/GoogleService-Info.plist
-
       - name: Run iOS UI tests
+        env:
+          MAESTRO_OUTPUT_DIR: build/maestro/ios
         run: |
-          SIMULATOR_ID=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0].udid')
+          # Boot the first available iPhone simulator and pass its name to the runner script.
+          SIMULATOR=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0]')
+          SIMULATOR_ID=$(echo "$SIMULATOR" | jq -r '.udid')
+          SIMULATOR_NAME=$(echo "$SIMULATOR" | jq -r '.name')
           xcrun simctl boot "$SIMULATOR_ID"
           xcrun simctl bootstatus "$SIMULATOR_ID" -b
-          xcodebuild build \
-            -project iosApp/iosApp.xcodeproj \
-            -scheme iosApp \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
-            -derivedDataPath ./build/ui-tests \
-            CODE_SIGN_IDENTITY=- \
-            ARCHS=arm64 \
-            ONLY_ACTIVE_ARCH=YES \
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
-          xcrun simctl uninstall "$SIMULATOR_ID" com.kevlina.budgetplus || true
-          xcrun simctl install "$SIMULATOR_ID" build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
           mkdir -p build/maestro/ios
           set +e
-          firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/ios --debug-output=build/maestro/ios --format=html --output=build/maestro/ios/report.html ui-tests"
+          # The runner script swaps in the test Firebase config, builds the app, forces the
+          # simulator to English, and runs the login/free/premium suites inside the Firebase
+          # emulators. It restores the production GoogleService-Info.plist on exit.
+          ./ui-tests/scripts/run-ios-ui-tests.sh "$SIMULATOR_NAME"
           result=$?
           xcrun simctl io "$SIMULATOR_ID" screenshot build/maestro/ios/final-screen.png || true
           exit $result

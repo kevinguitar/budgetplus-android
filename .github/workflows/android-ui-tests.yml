@@ -42,9 +42,6 @@ jobs:
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
-      - name: Configure fake Firebase app
-        run: cp ui-tests/config/google-services.json androidApp/google-services.json
-
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -53,6 +50,8 @@ jobs:
 
       - name: Run Android UI tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          MAESTRO_OUTPUT_DIR: build/maestro/android
         with:
           api-level: 36
           target: google_apis
@@ -64,13 +63,11 @@ jobs:
             until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
             adb shell input keyevent 82
             adb shell settings put global hide_error_dialogs 1
-            ./gradlew :androidApp:assembleUiTest
-            adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
-            adb shell pm clear com.kevlina.budgetplus
-            adb shell cmd package compile -m speed -f com.kevlina.budgetplus
-            mkdir -p build/maestro/android
             set +e
-            firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests emulators:exec --only auth,firestore "$HOME/.maestro/bin/maestro test --test-output-dir=build/maestro/android --debug-output=build/maestro/android --format=html --output=build/maestro/android/report.html ui-tests"
+            # The runner script swaps in the test Firebase config, builds + installs the
+            # uiTest APK, sets up adb reverse, and runs the login/free/premium suites inside
+            # the Firebase emulators. It restores the production google-services.json on exit.
+            ./ui-tests/scripts/run-android-ui-tests.sh
             result=$?
             adb exec-out screencap -p > build/maestro/android/final-screen.png || true
             adb logcat -d > build/maestro/android/logcat.txt || true

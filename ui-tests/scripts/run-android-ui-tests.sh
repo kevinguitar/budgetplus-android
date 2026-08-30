@@ -29,6 +29,28 @@ trap restore_service_file EXIT
 cp "$TEST_SERVICE_FILE" "$SERVICE_FILE"
 
 cd "$ROOT_DIR"
+
+# Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
+MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
+
+# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit per-suite HTML reports + debug output.
+maestro_test() {
+  local suite_name="$1"
+  shift
+  if [[ -n "${MAESTRO_OUTPUT_DIR:-}" ]]; then
+    local out="$MAESTRO_OUTPUT_DIR/$suite_name"
+    mkdir -p "$out"
+    "$MAESTRO_BIN" test \
+      --test-output-dir="$out" \
+      --debug-output="$out" \
+      --format=html \
+      --output="$out/report.html" \
+      "$@"
+  else
+    "$MAESTRO_BIN" test "$@"
+  fi
+}
+
 ./gradlew :androidApp:assembleUiTest
 adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
 
@@ -50,17 +72,20 @@ run_suites() {
     if grep -q '^platform: iOS' "$flow"; then
       continue
     fi
-    maestro test "$flow"
+    maestro_test "login/$(basename "$flow" .yml)" "$flow"
   done
 
   # after-login/free re-provisions via setup-login on a fresh anonymous user.
   adb shell pm clear com.kevlina.budgetplus
-  maestro test ui-tests/after-login/free
+  maestro_test after-login-free ui-tests/after-login/free
 
   # after-login/premium seeds premium via the uiTestPremium deeplink.
   adb shell pm clear com.kevlina.budgetplus
-  maestro test ui-tests/after-login/premium
+  maestro_test after-login-premium ui-tests/after-login/premium
 }
 
+export MAESTRO_BIN
+export -f maestro_test run_suites
+
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests \
-  emulators:exec --only auth,firestore "$(declare -f run_suites); run_suites"
+  emulators:exec --only auth,firestore run_suites

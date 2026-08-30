@@ -1,0 +1,22 @@
+# R3 — Arithmetic evaluation (2 x 3 = 6)
+# Operators and the equals button are icon-only (no text/contentDescription),
+# so they are tapped by relative screen position on the calculator grid.
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "2"
+# multiply (row 2, col 4 of the calculator)
+- tapOn:
+    point: "68%,68%"
+- tapOn:
+    text: "3"
+# equals (the OK button becomes an equals icon while an operation is pending)
+- tapOn:
+    point: "86%,79%"
+- assertVisible:
+    text: "6"
+- tapOn:
+    text: "AC"

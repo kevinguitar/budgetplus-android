@@ -1,0 +1,42 @@
+# Ensures the Overview is in All-Records mode so long-pressing a record opens the context
+# menu. Probes by tapping a record row: in All-Records mode this opens the "Edit Record"
+# dialog; in Group-by-categories it drills into the Records screen.
+# Param: CATEGORY — a category name that has at least one record.
+appId: com.kevlina.budgetplus
+---
+- tapOn:
+    text: "${CATEGORY}"
+- extendedWaitUntil:
+    visible:
+      text: "Edit Record|${CATEGORY}: .*"
+    timeout: 15000
+# Case A: All-Records mode -> dismiss the probe edit dialog by tapping the scrim above it.
+- runFlow:
+    when:
+      visible:
+        text: "Edit Record"
+    commands:
+      - tapOn:
+          point: "50%,12%"
+      - extendedWaitUntil:
+          notVisible:
+            text: "Edit Record"
+          timeout: 10000
+# Case B: Group-by-categories -> we're on the Records screen; go back and toggle mode.
+- runFlow:
+    when:
+      visible:
+        text: "${CATEGORY}: "
+    commands:
+      - tapOn:
+          text: "Back"
+      - extendedWaitUntil:
+          visible:
+            text: ".*'s Overview"
+          timeout: 15000
+      - tapOn:
+          point: "83%,10%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000

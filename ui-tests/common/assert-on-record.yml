@@ -1,0 +1,9 @@
+# Asserts the app is on the RecordScreen home (calculator "AC" visible).
+appId: com.kevlina.budgetplus
+---
+- extendedWaitUntil:
+    visible:
+      text: "AC"
+    timeout: 30000
+- assertVisible:
+    text: "AC"

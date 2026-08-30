@@ -1,0 +1,25 @@
+# C1/C2 — Enter Edit Categories, add a category, save
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Edit"
+- assertVisible:
+    text: "Edit Categories"
+# Add a new category via the FAB.
+- tapOn:
+    text: "Add"
+- assertVisible:
+    text: "Category"
+- inputText: "Groceries"
+# Submit via the keyboard's done action (works cross-platform; the dialog's onDone
+# confirms the entry). Avoids hideKeyboard which is unreliable on iOS.
+- pressKey: Enter
+- assertVisible:
+    text: "Groceries"
+# Save the list.
+- tapOn:
+    text: "Save"
+- assertVisible:
+    text: "Category list has been saved"
+- runFlow: ../../common/assert-on-record.yml

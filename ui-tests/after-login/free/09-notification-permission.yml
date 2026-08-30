@@ -1,0 +1,18 @@
+# N1 — Notification permission prompt after the first record
+# The OS permission dialog is best-effort: grant it if present, otherwise pass.
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Food"
+# If the OS notification permission dialog shows, grant it.
+- runFlow:
+    when:
+      visible:
+        text: "Allow"
+    commands:
+      - tapOn:
+          text: "Allow"
+- runFlow: ../../common/assert-on-record.yml

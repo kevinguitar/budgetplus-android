@@ -1,0 +1,48 @@
+# ST5 — Edit book currency (change to Euro, then restore US Dollar)
+# Note: committing a currency change triggers app navigation that can land on either
+# Settings or Record, so we assert the picker closed (change accepted) and recover.
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "Edit Book Currency"
+- extendedWaitUntil:
+    visible:
+      text: "Book's Currency"
+    timeout: 15000
+- tapOn:
+    text: "Euro"
+# The picker closes once the change is committed.
+- extendedWaitUntil:
+    notVisible:
+      text: "Book's Currency"
+    timeout: 15000
+- assertNotVisible:
+    text: "Book's Currency"
+- runFlow: ../../common/return-to-record.yml
+# Restore US Dollar so later flows keep the default currency.
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "Edit Book Currency"
+- extendedWaitUntil:
+    visible:
+      text: "Book's Currency"
+    timeout: 15000
+- tapOn:
+    text: "US Dollar"
+- extendedWaitUntil:
+    notVisible:
+      text: "Book's Currency"
+    timeout: 15000
+- runFlow: ../../common/return-to-record.yml

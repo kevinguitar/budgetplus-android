@@ -1,0 +1,12 @@
+# B1 — Open book dropdown
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Select book"
+- assertVisible:
+    text: "Create a New Book"
+- assertVisible:
+    text: "UI Test Book"
+# dismiss the dropdown
+- back

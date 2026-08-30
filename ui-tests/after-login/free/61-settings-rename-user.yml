@@ -1,0 +1,26 @@
+# ST2 — Rename user
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "Rename User"
+- extendedWaitUntil:
+    visible:
+      text: "User Name"
+    timeout: 15000
+- tapOn:
+    text: "User Name"
+- eraseText
+- inputText: "Tester"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      text: "Renamed to Tester"
+    timeout: 10000
+- runFlow: ../../common/return-to-record.yml

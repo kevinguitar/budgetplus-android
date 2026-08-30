@@ -9,6 +9,7 @@ import com.kevlina.budgetplus.core.ads.AdmobInitializer
 import com.kevlina.budgetplus.core.ads.InterstitialAdsHandler
 import com.kevlina.budgetplus.core.common.Logger
 import com.kevlina.budgetplus.core.common.SnackbarSender
+import com.kevlina.budgetplus.core.common.UiTestFlags
 import com.kevlina.budgetplus.core.common.mapState
 import com.kevlina.budgetplus.core.common.nav.APP_DEEPLINK_PREFIXES
 import com.kevlina.budgetplus.core.common.nav.BookDest
@@ -17,6 +18,7 @@ import com.kevlina.budgetplus.core.common.nav.NAV_JOIN_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_OVERVIEW_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_RECORD_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_SETTINGS_PATH
+import com.kevlina.budgetplus.core.common.nav.NAV_UI_TEST_PREMIUM_PATH
 import com.kevlina.budgetplus.core.common.nav.NAV_UNLOCK_PREMIUM_PATH
 import com.kevlina.budgetplus.core.common.nav.NavController
 import com.kevlina.budgetplus.core.data.AuthManager
@@ -47,7 +49,7 @@ internal class BookViewModel(
     val interstitialAdsHandler: InterstitialAdsHandler,
     val admobInitializer: AdmobInitializer,
     private val bookRepo: BookRepo,
-    authManager: AuthManager,
+    private val authManager: AuthManager,
 ) : ViewModel() {
 
     private val hideBottomNavDestinations =
@@ -112,6 +114,10 @@ internal class BookViewModel(
             }
 
         when (val firstSegment = segments.firstOrNull()) {
+            NAV_UI_TEST_PREMIUM_PATH -> if (UiTestFlags.enabled) {
+                viewModelScope.launch { authManager.markPremium(true) }
+            }
+
             NAV_JOIN_PATH -> {
                 bookRepo.setPendingJoinRequest(segments.getOrNull(1))
                 return DeeplinkType.JoinRequest

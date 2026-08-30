@@ -1,0 +1,61 @@
+# Ensures the app is on the Auth screen (unauthenticated) with NO residual account, so
+# the next sign-in creates a fresh user that lands on the Welcome screen. Needed on iOS
+# where Firebase auth persists in the keychain across launchApp:clearState.
+#  - on Record (signed in, has book): Settings -> Delete Account -> Auth
+#  - on Welcome (signed in, no book): back -> Auth
+appId: com.kevlina.budgetplus
+---
+- runFlow: dismiss-system-dialogs.yml
+# If on the Record screen, delete the account (removes the user + all books).
+- runFlow:
+    when:
+      visible:
+        text: "AC"
+    commands:
+      - tapOn:
+          text: "Settings"
+      - extendedWaitUntil:
+          visible:
+            text: ".*'s Settings"
+          timeout: 15000
+      - scrollUntilVisible:
+          element:
+            text: "Delete Account"
+          direction: DOWN
+      - tapOn:
+          text: "Delete Account"
+      - extendedWaitUntil:
+          visible:
+            text: "Delete Permanently?|Delete your account.*"
+          timeout: 15000
+      # First confirmation (warning).
+      - tapOn:
+          text: "Confirm"
+      # Second confirmation ("Delete Permanently?").
+      - extendedWaitUntil:
+          visible:
+            text: "Delete Permanently?"
+          timeout: 15000
+      - tapOn:
+          text: "Confirm"
+      - extendedWaitUntil:
+          visible:
+            text: "Continue with Google"
+          timeout: 30000
+# If on the Welcome screen (signed in, no book), back logs out to the Auth screen.
+- runFlow:
+    when:
+      visible:
+        text: "Book Name"
+    commands:
+      - back
+      - extendedWaitUntil:
+          visible:
+            text: "Continue with Google"
+          timeout: 20000
+- extendedWaitUntil:
+    visible:
+      text: "Continue with Google"
+    timeout: 30000
+- assertVisible:
+    text: "Continue with Google"

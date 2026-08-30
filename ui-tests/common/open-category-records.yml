@@ -1,0 +1,25 @@
+# From the Overview screen, opens the Records screen for a given CATEGORY.
+# Handles the persisted overview mode: works whether Overview is in
+# Group-by-categories (tap group -> Records) or All-Records (tapping a row opens
+# the edit dialog, so we toggle the mode first).
+appId: com.kevlina.budgetplus
+---
+- tapOn:
+    text: "${CATEGORY}"
+- runFlow:
+    when:
+      visible:
+        text: "Edit Record"
+    commands:
+      # We were in All-Records mode; close the dialog and switch to Group-by-categories.
+      - back
+      - tapOn:
+          point: "83%,10%"
+      - tapOn:
+          text: "${CATEGORY}"
+- extendedWaitUntil:
+    visible:
+      text: "${CATEGORY}: .*"
+    timeout: 15000
+- assertVisible:
+    text: "${CATEGORY}: .*"

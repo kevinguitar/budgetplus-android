@@ -1,0 +1,16 @@
+# R6 — Empty category guard
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "0"
+- tapOn:
+    text: "OK"
+- assertVisible:
+    text: "Please choose a category"
+- tapOn:
+    text: "AC"

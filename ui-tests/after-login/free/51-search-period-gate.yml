@@ -1,0 +1,37 @@
+# S4 — Search period gating for free users
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+- tapOn:
+    text: "Search"
+- extendedWaitUntil:
+    visible:
+      text: "Enter keyword"
+    timeout: 15000
+# Open the period selector (pill initially shows "Last Month").
+- tapOn:
+    text: "Last Month"
+# The bottom sheet lists all periods.
+- assertVisible:
+    text: "Last 6 Months"
+- assertVisible:
+    text: "Last Year"
+- assertVisible:
+    text: "Custom"
+# Selecting a premium period routes a free user to the paywall (leaves Search).
+- tapOn:
+    text: "Last 6 Months"
+- extendedWaitUntil:
+    notVisible:
+      text: "Enter keyword"
+    timeout: 15000
+- assertNotVisible:
+    text: "Enter keyword"
+# Leave the paywall and return to the Record screen.
+- runFlow: ../../common/return-to-record.yml

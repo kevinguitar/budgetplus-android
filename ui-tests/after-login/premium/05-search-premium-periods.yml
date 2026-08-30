@@ -1,0 +1,32 @@
+# P5 — Premium user can select premium search periods without a paywall
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+- tapOn:
+    text: "Search"
+- extendedWaitUntil:
+    visible:
+      text: "Enter keyword"
+    timeout: 15000
+- tapOn:
+    text: "Last Month"
+- assertVisible:
+    text: "Last 6 Months"
+# Premium: selecting a premium period stays in Search (no paywall).
+- tapOn:
+    text: "Last 6 Months"
+- extendedWaitUntil:
+    visible:
+      text: "Enter keyword"
+    timeout: 15000
+- assertVisible:
+    text: "Enter keyword"
+- runFlow: ../../common/return-to-record.yml

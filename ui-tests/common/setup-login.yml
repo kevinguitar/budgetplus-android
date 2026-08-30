@@ -1,0 +1,50 @@
+# Idempotent provisioning subflow: ensures the app is authorized with a book and
+# lands on the RecordScreen (identified by the "AC" calculator button).
+# Handles three initial states: already on Record, on the Auth screen (not signed in),
+# or on the Welcome screen (signed in but no book).
+appId: com.kevlina.budgetplus
+---
+- launchApp
+- runFlow: dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "Continue with Google|Book Name|AC"
+    timeout: 45000
+# Sign in if we're on the Auth screen.
+- runFlow:
+    when:
+      visible:
+        text: "Continue with Google"
+    commands:
+      - tapOn:
+          text: "Continue with Google"
+      - runFlow: dismiss-system-dialogs.yml
+      - extendedWaitUntil:
+          visible:
+            text: "Book Name"
+          timeout: 60000
+# Create the book if we're on the Welcome screen.
+- runFlow:
+    when:
+      visible:
+        text: "Book Name"
+    commands:
+      - tapOn:
+          text: "My accounting book"
+      - inputText: "UI Test Book"
+      # Dismiss the keyboard by tapping the neutral heading (cross-platform; iOS
+      # SwiftUI does not always support hideKeyboard).
+      - tapOn:
+          text: "You can create a new accounting book"
+      - tapOn:
+          text: "Go"
+      - extendedWaitUntil:
+          visible:
+            text: "AC"
+          timeout: 30000
+- extendedWaitUntil:
+    visible:
+      text: "AC"
+    timeout: 30000
+- assertVisible:
+    text: "AC"

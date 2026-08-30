@@ -24,10 +24,10 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import coil3.compose.LocalPlatformContext
 import com.kevlina.budgetplus.book.BookViewModel
-import com.kevlina.budgetplus.book.UiTestEnvironment
 import com.kevlina.budgetplus.core.ads.BannerAd
 import com.kevlina.budgetplus.core.ads.HandleInterstitialAd
 import com.kevlina.budgetplus.core.common.SnackbarData
+import com.kevlina.budgetplus.core.common.UiTestFlags
 import com.kevlina.budgetplus.core.common.consumeEach
 import com.kevlina.budgetplus.core.common.nav.BookDest
 import com.kevlina.budgetplus.core.theme.LocalAppColors
@@ -115,7 +115,7 @@ internal fun BookBinding(
             }
         }
 
-        if (!UiTestEnvironment.enabled) {
+        if (!UiTestFlags.enabled) {
             Bubble(
                 dest = bubbleDest,
                 dismissBubble = vm.bubbleViewModel::dismissBubble

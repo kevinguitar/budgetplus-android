@@ -1,0 +1,23 @@
+# ST12 — Hide Ads routes free user to the paywall
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Hide Ads"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "Hide Ads"
+# Free user is routed to Unlock Premium (settings title no longer visible).
+- extendedWaitUntil:
+    notVisible:
+      text: "Hide Ads"
+    timeout: 15000
+- runFlow: ../../common/return-to-record.yml

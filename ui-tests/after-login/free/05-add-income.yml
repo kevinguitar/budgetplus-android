@@ -1,0 +1,27 @@
+# R5 — Add income end-to-end
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "Income"
+- assertVisible:
+    text: "Where did you earn from?"
+- tapOn:
+    text: "Salary"
+- tapOn:
+    text: "5"
+- tapOn:
+    text: "0"
+- assertVisible:
+    text: "50"
+- tapOn:
+    text: "OK"
+- extendedWaitUntil:
+    visible:
+      text: "0"
+    timeout: 10000
+# restore to Expense for subsequent flows
+- tapOn:
+    text: "Expense"

@@ -1,0 +1,27 @@
+# R4 — Add expense end-to-end
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "Expense"
+- tapOn:
+    text: "Food"
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "2"
+- tapOn:
+    text: "0"
+- assertVisible:
+    text: "120"
+- tapOn:
+    text: "OK"
+# After a successful record the price resets to 0.
+- extendedWaitUntil:
+    visible:
+      text: "0"
+    timeout: 10000
+- assertVisible:
+    text: "AC"

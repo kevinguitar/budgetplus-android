@@ -1,0 +1,39 @@
+# P3 — Premium user can create an additional book
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    text: "Select book"
+- tapOn:
+    text: "Create a New Book"
+# Premium: the create-book screen opens (not the paywall).
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 15000
+- tapOn:
+    text: "My accounting book"
+- inputText: "Second Book"
+# Dismiss the keyboard by tapping a neutral label (cross-platform).
+- tapOn:
+    text: "Copy categories from"
+# The additional-book screen offers "Copy categories from" + "Create".
+- extendedWaitUntil:
+    visible:
+      text: "Create"
+    timeout: 15000
+- tapOn:
+    text: "Create"
+- extendedWaitUntil:
+    visible:
+      text: "Your book Second Book is created!"
+    timeout: 20000
+- runFlow: ../../common/assert-on-record.yml
+# Switch back to the original book.
+- tapOn:
+    text: "Select book"
+- tapOn:
+    text: "UI Test Book"
+- runFlow: ../../common/assert-on-record.yml

@@ -1,0 +1,13 @@
+# B3 — Invite opens the OS share sheet
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Invite"
+# The OS share sheet appears; assert we left the Record screen (calculator hidden),
+# then dismiss it and return.
+- extendedWaitUntil:
+    notVisible:
+      text: "AC"
+    timeout: 15000
+- runFlow: ../../common/return-to-record.yml

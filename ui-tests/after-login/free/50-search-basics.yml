@@ -1,0 +1,37 @@
+# S1/S2/S3 — Search: open, keyword, and filters
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Food"
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Open Search via the FAB.
+- tapOn:
+    text: "Search"
+- extendedWaitUntil:
+    visible:
+      text: "Enter keyword"
+    timeout: 15000
+- assertVisible:
+    text: "Search"
+# S3 — filter pills present.
+- assertVisible:
+    text: "Expense"
+- assertVisible:
+    text: "All Categories"
+# S2 — keyword search.
+- tapOn:
+    text: "Enter keyword"
+- inputText: "Food"
+- pressKey: Enter
+- assertVisible:
+    text: "Food"
+# Back to Record.
+- runFlow: ../../common/return-to-record.yml

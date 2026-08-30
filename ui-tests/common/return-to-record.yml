@@ -1,0 +1,72 @@
+# Returns to the Record screen from a nested screen. Prefers the top-bar "Back" arrow
+# (contentDescription "Back") which works on both Android and iOS; falls back to the
+# system back gesture for dialogs/paywalls without a top bar. If that leaves the app on
+# Auth/Welcome (rare iOS navigation races), re-provisions via setup-login.
+appId: com.kevlina.budgetplus
+---
+- runFlow:
+    when:
+      notVisible:
+        text: "AC"
+    commands:
+      - runFlow:
+          when:
+            visible:
+              text: "Back"
+          commands:
+            - tapOn:
+                text: "Back"
+      - runFlow:
+          when:
+            notVisible:
+              text: "Back"
+          commands:
+            - back
+- runFlow:
+    when:
+      notVisible:
+        text: "AC"
+    commands:
+      - runFlow:
+          when:
+            visible:
+              text: "Back"
+          commands:
+            - tapOn:
+                text: "Back"
+      - runFlow:
+          when:
+            notVisible:
+              text: "Back"
+          commands:
+            - back
+- runFlow:
+    when:
+      notVisible:
+        text: "AC"
+    commands:
+      - runFlow:
+          when:
+            visible:
+              text: "Back"
+          commands:
+            - tapOn:
+                text: "Back"
+      - runFlow:
+          when:
+            notVisible:
+              text: "Back"
+          commands:
+            - back
+- runFlow:
+    when:
+      notVisible:
+        text: "AC"
+    commands:
+      - runFlow: setup-login.yml
+- extendedWaitUntil:
+    visible:
+      text: "AC"
+    timeout: 15000
+- assertVisible:
+    text: "AC"

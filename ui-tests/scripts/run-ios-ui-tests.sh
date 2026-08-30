@@ -47,8 +47,43 @@ xcodebuild build \
   ARCHS=arm64 \
   ONLY_ACTIVE_ARCH=YES \
   SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UI_TEST'
-xcrun simctl uninstall "$SIMULATOR_ID" com.kevlina.budgetplus || true
-xcrun simctl keychain "$SIMULATOR_ID" reset
-xcrun simctl install "$SIMULATOR_ID" build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app
+
+APP_PATH="build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app"
+
+# Force the simulator UI (and the app) to English so tests can match English strings.
+xcrun simctl spawn "$SIMULATOR_ID" defaults write -g AppleLanguages '("en-US")'
+xcrun simctl spawn "$SIMULATOR_ID" defaults write -g AppleLocale "en_US"
+
+# Reinstalls the app from a fully reset state (fresh keychain wipes the persisted
+# Firebase auth session, which launchApp:clearState does not clear on iOS).
+reset_app() {
+  xcrun simctl terminate "$SIMULATOR_ID" com.kevlina.budgetplus >/dev/null 2>&1 || true
+  xcrun simctl uninstall "$SIMULATOR_ID" com.kevlina.budgetplus >/dev/null 2>&1 || true
+  xcrun simctl keychain "$SIMULATOR_ID" reset >/dev/null 2>&1 || true
+  xcrun simctl install "$SIMULATOR_ID" "$APP_PATH"
+}
+
+run_suites() {
+  # login: each flow needs a truly unauthenticated start, so reset the keychain before
+  # every flow (iOS persists Firebase auth in the keychain across clearState).
+  for flow in ui-tests/login/*.yml; do
+    # Honor per-flow platform gating (running a single file bypasses Maestro's own gate).
+    if grep -q '^platform: Android' "$flow"; then
+      continue
+    fi
+    reset_app
+    maestro test --udid "$SIMULATOR_ID" "$flow"
+  done
+
+  reset_app
+  maestro test --udid "$SIMULATOR_ID" ui-tests/after-login/free
+
+  reset_app
+  maestro test --udid "$SIMULATOR_ID" ui-tests/after-login/premium
+}
+
+export SIMULATOR_ID APP_PATH
+export -f reset_app run_suites
+
 firebase --config ui-tests/config/firebase.json --project budgetplus-ui-tests \
-  emulators:exec --only auth,firestore "maestro test --udid $SIMULATOR_ID ui-tests"
+  emulators:exec --only auth,firestore "run_suites"

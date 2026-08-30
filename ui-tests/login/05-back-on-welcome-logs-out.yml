@@ -1,0 +1,23 @@
+# L6 — Pressing back on the Welcome screen returns to the Auth screen (logs out)
+# Android-only: relies on the system back button; iOS has no equivalent gesture that
+# Maestro can reliably trigger for the predictive-back logout handler.
+appId: com.kevlina.budgetplus
+platform: Android
+---
+- launchApp:
+    clearState: true
+- runFlow: ../common/ensure-logged-out.yml
+- tapOn:
+    text: "Continue with Google"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 60000
+- back
+- extendedWaitUntil:
+    visible:
+      text: "Continue with Google"
+    timeout: 30000
+- assertVisible:
+    text: "Continue with Google"

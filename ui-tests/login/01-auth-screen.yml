@@ -1,0 +1,10 @@
+# L1 — Auth screen renders
+appId: com.kevlina.budgetplus
+---
+- launchApp:
+    clearState: true
+- runFlow: ../common/ensure-logged-out.yml
+- assertVisible:
+    text: "Welcome to Budget+"
+- assertVisible:
+    text: "Continue with Google"

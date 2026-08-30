@@ -1,0 +1,26 @@
+# P4 — Premium user can open a custom overview period without the upsell
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Open the custom date-range picker via the date-range row's calendar icon ("Select Date").
+- tapOn:
+    text: "Select Date"
+- extendedWaitUntil:
+    visible:
+      text: "Select dates"
+    timeout: 15000
+# Premium: no "above one month" upsell is shown.
+- assertNotVisible:
+    text: "Unlock premium to set the period above one month"
+# Dismiss the date-range picker and return to Record.
+- tapOn:
+    text: "Cancel"
+- runFlow: ../../common/return-to-record.yml

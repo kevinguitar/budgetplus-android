@@ -1,0 +1,35 @@
+# L5 — Create-book validation: Go is a no-op while name is blank, actionable after typing
+appId: com.kevlina.budgetplus
+---
+- launchApp:
+    clearState: true
+- runFlow: ../common/ensure-logged-out.yml
+- tapOn:
+    text: "Continue with Google"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 60000
+# Blank name: tapping Go must NOT leave the Welcome screen.
+- tapOn:
+    text: "Go"
+- assertVisible:
+    text: "Book Name"
+- assertVisible:
+    text: "You can create a new accounting book"
+# Now provide a name -> Go becomes actionable and lands on Record.
+- tapOn:
+    text: "My accounting book"
+- inputText: "UI Test Book"
+- tapOn:
+    text: "You can create a new accounting book"
+- tapOn:
+    text: "Go"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "AC"
+    timeout: 30000
+- assertVisible:
+    text: "AC"

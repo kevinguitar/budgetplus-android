@@ -1,0 +1,17 @@
+# B2 — Free books limit gate: "Create a New Book" routes a free user to Unlock Premium
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Select book"
+- tapOn:
+    text: "Create a New Book"
+# Free users are gated: entering the paywall hides the calculator/record home.
+- extendedWaitUntil:
+    notVisible:
+      text: "AC"
+    timeout: 15000
+- assertNotVisible:
+    text: "AC"
+# Return to the record screen for subsequent flows.
+- runFlow: ../../common/return-to-record.yml

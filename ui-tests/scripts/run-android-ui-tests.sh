@@ -12,18 +12,24 @@ restore_service_file() {
   trap - EXIT
   set +e
 
-  cp -p "$RELEASE_SERVICE_FILE" "$SERVICE_FILE"
-  local restore_result=$?
-
-  if ((restore_result != 0)); then
-    printf 'Failed to restore %s from %s\n' "$SERVICE_FILE" "$RELEASE_SERVICE_FILE" >&2
-    result=$restore_result
+  # Only restore the production config when we actually have one to restore
+  # (locally). In CI the production file is absent (gitignored), so there is
+  # nothing to put back and we leave the test config in place.
+  if [[ -f "$RELEASE_SERVICE_FILE" ]]; then
+    cp -p "$RELEASE_SERVICE_FILE" "$SERVICE_FILE"
+    local restore_result=$?
+    if ((restore_result != 0)); then
+      printf 'Failed to restore %s from %s\n' "$SERVICE_FILE" "$RELEASE_SERVICE_FILE" >&2
+      result=$restore_result
+    fi
   fi
 
   exit "$result"
 }
 
-[[ -f "$RELEASE_SERVICE_FILE" ]]
+# The test Firebase config must exist; the production one is optional (present
+# locally, absent in CI where google-services.json files are gitignored).
+[[ -f "$TEST_SERVICE_FILE" ]]
 
 trap restore_service_file EXIT
 cp "$TEST_SERVICE_FILE" "$SERVICE_FILE"
@@ -51,9 +57,7 @@ maestro_test() {
   fi
 }
 
-echo "::group::assembleUiTest"
-./gradlew :androidApp:assembleUiTest --stacktrace || { echo "::error::assembleUiTest failed"; exit 1; }
-echo "::endgroup::"
+./gradlew :androidApp:assembleUiTest
 adb install -r androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk
 
 # The app routes Firebase to the emulators via 127.0.0.1; forward those ports from the

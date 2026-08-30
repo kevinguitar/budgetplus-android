@@ -39,18 +39,48 @@ run_suites() {
   suites_failed=0
 
   # login runs first on freshly cleared state (its flows also clearState per-flow).
-  adb shell pm clear com.kevlina.budgetplus
+  wait_for_device || true
+  adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
   run_suite_dir login ui-tests/login
 
   # after-login/free re-provisions via setup-login on a fresh anonymous user.
-  adb shell pm clear com.kevlina.budgetplus
+  wait_for_device || true
+  adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
   run_suite_dir after-login-free ui-tests/after-login/free
 
   # after-login/premium seeds premium via the uiTestPremium deeplink.
-  adb shell pm clear com.kevlina.budgetplus
+  wait_for_device || true
+  adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
   run_suite_dir after-login-premium ui-tests/after-login/premium
 
   return "$suites_failed"
+}
+
+# The emulator serial CI uses. android-emulator-runner always boots emulator-5554.
+ADB_SERIAL="${ANDROID_SERIAL:-emulator-5554}"
+
+# Block until the emulator is booted and responsive, or fail after a timeout.
+#
+# Each `maestro test` invocation installs/uninstalls its instrumentation driver.
+# Over a long sequential suite that churn can briefly push the device `offline`,
+# which surfaces downstream as `device 'emulator-5554' not found`. Waiting for the
+# device to settle *between* flows turns a fatal cascade into a short pause: if the
+# device recovers we continue; if it is genuinely gone we report and bail early
+# instead of hammering a dead emulator for the remaining flows.
+wait_for_device() {
+  local deadline=$((SECONDS + 180))
+  while ((SECONDS < deadline)); do
+    if adb -s "$ADB_SERIAL" wait-for-device >/dev/null 2>&1 &&
+      [[ "$(adb -s "$ADB_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '[:space:]')" == "1" ]]; then
+      # Re-establish the Firebase emulator port forwards; a device that dropped and
+      # came back loses its reverse tunnels.
+      adb -s "$ADB_SERIAL" reverse tcp:9099 tcp:9099 >/dev/null 2>&1 || true
+      adb -s "$ADB_SERIAL" reverse tcp:8080 tcp:8080 >/dev/null 2>&1 || true
+      return 0
+    fi
+    sleep 3
+  done
+  return 1
 }
 
 # Run every flow in a suite directory ONE AT A TIME.
@@ -67,6 +97,12 @@ run_suites() {
 # A single failing flow must not abort the rest of the suite (the previous
 # directory run reported every flow), so failures are captured and surfaced via
 # `suites_failed` instead of tripping `set -e`.
+#
+# Before each flow we confirm the device is alive. When a flow fails we re-check:
+# a flow that failed *because the device dropped* (offline / `device not found`)
+# is retried once after the emulator recovers, so a transient blip does not count
+# as a real failure. A flow that failed on a genuine assertion is left as a
+# failure — no retry, since re-running would not change the outcome.
 run_suite_dir() {
   local suite_prefix="$1"
   local dir="$2"
@@ -75,7 +111,34 @@ run_suite_dir() {
     if grep -q '^platform: iOS' "$flow"; then
       continue
     fi
-    if ! maestro_test "$suite_prefix/$(basename "$flow" .yml)" "$flow"; then
+
+    local name
+    name="$suite_prefix/$(basename "$flow" .yml)"
+
+    if ! wait_for_device; then
+      echo "::error::Emulator $ADB_SERIAL is unreachable before $name; aborting suite." >&2
+      suites_failed=1
+      return 1
+    fi
+
+    if maestro_test "$name" "$flow"; then
+      continue
+    fi
+
+    # The flow failed. If the device is still healthy this is a real failure.
+    if adb -s "$ADB_SERIAL" get-state 2>/dev/null | grep -q '^device$'; then
+      suites_failed=1
+      continue
+    fi
+
+    # Device dropped mid-flow: wait for it to come back and retry the flow once.
+    echo "::warning::$name failed with the device offline; recovering emulator and retrying." >&2
+    if ! wait_for_device; then
+      echo "::error::Emulator $ADB_SERIAL did not recover after $name; aborting suite." >&2
+      suites_failed=1
+      return 1
+    fi
+    if ! maestro_test "$name" "$flow"; then
       suites_failed=1
     fi
   done

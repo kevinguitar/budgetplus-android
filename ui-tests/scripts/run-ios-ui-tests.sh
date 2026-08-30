@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 SERVICE_FILE="$ROOT_DIR/iosApp/iosApp/GoogleService-Info.plist"
 TEST_SERVICE_FILE="$ROOT_DIR/ui-tests/config/GoogleService-Info.plist"
-RELEASE_SERVICE_FILE="$ROOT_DIR/misc/release/GoogleService-Info.plist"
+BACKUP_SERVICE_FILE="$ROOT_DIR/iosApp/iosApp/GoogleService-Info.plist.bak"
 SIMULATOR_NAME=${1:-iPhone 17}
 SIMULATOR_ID=$(xcrun simctl list devices available | awk -v name="$SIMULATOR_NAME" 'index($0, name " (") && /\(Booted\)/ { id = $(NF - 1); gsub(/[()]/, "", id); print id; exit }')
 
@@ -19,18 +19,26 @@ restore_service_file() {
   trap - EXIT
   set +e
 
-  cp -p "$RELEASE_SERVICE_FILE" "$SERVICE_FILE"
-  local restore_result=$?
+  if [[ -f "$BACKUP_SERVICE_FILE" ]]; then
+    cp -p "$BACKUP_SERVICE_FILE" "$SERVICE_FILE"
+    local restore_result=$?
+    rm -f "$BACKUP_SERVICE_FILE"
 
-  if ((restore_result != 0)); then
-    printf 'Failed to restore %s from %s\n' "$SERVICE_FILE" "$RELEASE_SERVICE_FILE" >&2
-    result=$restore_result
+    if ((restore_result != 0)); then
+      printf 'Failed to restore %s from %s\n' "$SERVICE_FILE" "$BACKUP_SERVICE_FILE" >&2
+      result=$restore_result
+    fi
+  else
+    # No original config was present (e.g. CI), so just remove the swapped-in test config.
+    rm -f "$SERVICE_FILE"
   fi
 
   exit "$result"
 }
 
-[[ -f "$RELEASE_SERVICE_FILE" ]]
+if [[ -f "$SERVICE_FILE" ]]; then
+  cp -p "$SERVICE_FILE" "$BACKUP_SERVICE_FILE"
+fi
 
 trap restore_service_file EXIT
 cp "$TEST_SERVICE_FILE" "$SERVICE_FILE"

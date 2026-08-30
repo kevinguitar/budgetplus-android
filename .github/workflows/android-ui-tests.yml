@@ -59,7 +59,15 @@ jobs:
           target: google_apis
           arch: x86_64
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          # The suite runs 30+ sequential `maestro test` invocations, each of which
+          # installs/uninstalls its instrumentation driver. On a resource-starved
+          # emulator that slow leak eventually pushes the device `offline`, which
+          # surfaces as `device 'emulator-5554' not found`. Give the emulator a
+          # generous RAM/heap/core budget so it survives the whole run.
+          ram-size: 4096M
+          heap-size: 1024M
+          cores: 4
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -memory 4096 -cores 3
           # android-emulator-runner runs each line of an inline script as its own
           # `/usr/bin/sh -c` (dash), which cannot express `set -o pipefail` or a
           # heredoc. Invoke a committed script once with bash so everything shares

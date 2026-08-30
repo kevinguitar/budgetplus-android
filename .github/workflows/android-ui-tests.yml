@@ -7,7 +7,6 @@ jobs:
   android-ui-tests:
     name: Android UI tests
     runs-on: ubuntu-latest
-    timeout-minutes: 45
     env:
       MAESTRO_CLI_NO_ANALYTICS: true
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true

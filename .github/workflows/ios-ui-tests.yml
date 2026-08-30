@@ -7,7 +7,6 @@ jobs:
   ios-ui-tests:
     name: iOS UI tests
     runs-on: macos-latest
-    timeout-minutes: 45
     env:
       MAESTRO_CLI_NO_ANALYTICS: true
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true

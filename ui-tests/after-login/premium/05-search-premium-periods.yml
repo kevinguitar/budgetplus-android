@@ -10,6 +10,22 @@ appId: com.kevlina.budgetplus
     visible:
       text: ".*'s Overview"
     timeout: 15000
+# The persistent "Premium unlocked!" snackbar overlaps the bottom-right Search FAB
+# on iOS. Swipe it away by coordinate (swipe-on-text doesn't dismiss it on iOS) so
+# the FAB is fully exposed, then tap Search.
+- runFlow:
+    when:
+      visible:
+        text: "Budget+ Premium unlocked!"
+    commands:
+      - swipe:
+          start: "15%,92%"
+          end: "95%,92%"
+          duration: 400
+      - extendedWaitUntil:
+          notVisible:
+            text: "Budget+ Premium unlocked!"
+          timeout: 8000
 - tapOn:
     text: "Search"
 - extendedWaitUntil:

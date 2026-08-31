@@ -6,6 +6,20 @@
 appId: com.kevlina.budgetplus
 ---
 - runFlow: dismiss-system-dialogs.yml
+# Cold launches after clearState occasionally render a blank frame on the CI emulator, so
+# none of the known anchors (Auth / Welcome / Record) appear. Relaunch once if that
+# happens so the flow starts from a known screen instead of failing on the blank frame.
+- runFlow:
+    when:
+      notVisible:
+        text: "Continue with Google|Book Name|AC"
+    commands:
+      - launchApp
+      - runFlow: dismiss-system-dialogs.yml
+      - extendedWaitUntil:
+          visible:
+            text: "Continue with Google|Book Name|AC"
+          timeout: 30000
 # If on the Record screen, delete the account (removes the user + all books).
 - runFlow:
     when:

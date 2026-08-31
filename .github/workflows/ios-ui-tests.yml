@@ -34,6 +34,9 @@ jobs:
           # Kotlin/Native framework cold (~15 min). Cache entries are keyed by content, so
           # PRs sharing the same Gradle inputs converge on the same immutable entry.
           cache-read-only: false
+          # Keep entries isolated per job: cross-job reuse restores incompatible native
+          # build state (e.g. SPM checkouts for the KMP native bridge).
+          gradle-home-cache-strict-match: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Cache Kotlin/Native compiler and platform libs

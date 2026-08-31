@@ -84,6 +84,11 @@ jobs:
       - name: Run iOS UI tests
         env:
           MAESTRO_OUTPUT_DIR: build/maestro/ios
+          # Disable the Gradle build cache for the iOS build. Kotlin/Native cinterop tasks
+          # (e.g. :shared:cinteropGoogleSignIn) cache outputs that embed absolute paths to
+          # the SPM checkout under shared/build/spmKmpPlugin, so a restored entry breaks a
+          # fresh workspace ('umbrella header GoogleSignIn.h not found').
+          GRADLE_OPTS: -Dorg.gradle.caching=false
         run: |
           # Boot the first available iPhone simulator and pass its name to the runner script.
           SIMULATOR=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0]')

@@ -26,8 +26,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          gradle-home-cache-strict-match: true
+          # CI only runs on pull_request (there is no push-to-main trigger), so the
+          # Gradle cache must be written from PR runs; otherwise every run recompiles the
+          # Kotlin/Native framework cold. Cache entries are keyed by content, so PRs
+          # sharing the same Gradle inputs converge on the same immutable entry.
+          cache-read-only: false
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Setup Secrets

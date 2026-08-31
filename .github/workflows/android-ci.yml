@@ -21,11 +21,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
-          # Only save Gradle User Home state for builds on the 'main' branch.
-          # Builds on other branches will only read existing entries from the cache.
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          # Don't reuse cache entries from any other Job.
-          gradle-home-cache-strict-match: true
+          # CI only runs on pull_request (there is no push-to-main trigger), so the
+          # Gradle cache must be written from PR runs; otherwise every run recompiles
+          # cold. Cache entries are keyed by content, so PRs sharing the same Gradle
+          # inputs converge on the same immutable entry.
+          cache-read-only: false
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       # https://github.com/orgs/community/discussions/26351#discussioncomment-3251595

@@ -94,6 +94,11 @@ reset_app() {
 }
 
 run_suites() {
+  # Track failures explicitly instead of relying on set -e propagating out of this
+  # function (it runs as a firebase emulators:exec child, where a non-final maestro
+  # failure would otherwise be swallowed and the suite reported as green).
+  local suite_result=0
+
   # login: each flow needs a truly unauthenticated start, so reset the keychain before
   # every flow (iOS persists Firebase auth in the keychain across clearState).
   for flow in ui-tests/login/*.yml; do
@@ -102,14 +107,16 @@ run_suites() {
       continue
     fi
     reset_app
-    maestro_test "login/$(basename "$flow" .yml)" "$flow"
+    maestro_test "login/$(basename "$flow" .yml)" "$flow" || suite_result=1
   done
 
   reset_app
-  maestro_test after-login-free ui-tests/after-login/free
+  maestro_test after-login-free ui-tests/after-login/free || suite_result=1
 
   reset_app
-  maestro_test after-login-premium ui-tests/after-login/premium
+  maestro_test after-login-premium ui-tests/after-login/premium || suite_result=1
+
+  return "$suite_result"
 }
 
 export SIMULATOR_ID APP_PATH MAESTRO_BIN

@@ -69,8 +69,26 @@ ADB_SERIAL="${ANDROID_SERIAL:-emulator-5554}"
 # instead of hammering a dead emulator for the remaining flows.
 wait_for_device() {
   local deadline=$((SECONDS + 180))
+  local kicked_server=0
   while ((SECONDS < deadline)); do
+    local state
+    state="$(adb -s "$ADB_SERIAL" get-state 2>/dev/null | tr -d '[:space:]')"
+
+    # An `offline` device is listed but unresponsive: `adb wait-for-device` returns
+    # immediately for it, so it never truly "settles". The reliable recovery is to
+    # bounce the adb server once, which forces a reconnect and usually flips the
+    # device back to `device`. Only do this once per wait to avoid thrashing.
+    if [[ "$state" == "offline" && "$kicked_server" -eq 0 ]]; then
+      echo "Device $ADB_SERIAL is offline; restarting adb server to force reconnect." >&2
+      adb kill-server >/dev/null 2>&1 || true
+      adb start-server >/dev/null 2>&1 || true
+      kicked_server=1
+      sleep 3
+      continue
+    fi
+
     if adb -s "$ADB_SERIAL" wait-for-device >/dev/null 2>&1 &&
+      [[ "$(adb -s "$ADB_SERIAL" get-state 2>/dev/null | tr -d '[:space:]')" == "device" ]] &&
       [[ "$(adb -s "$ADB_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '[:space:]')" == "1" ]]; then
       # Re-establish the Firebase emulator port forwards; a device that dropped and
       # came back loses its reverse tunnels.

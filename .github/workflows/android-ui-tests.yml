@@ -50,24 +50,51 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      # Warm the AVD once (create + cold boot + snapshot) so the test run below starts
+      # from a saved snapshot instead of a cold boot. A snapshot-restored emulator is
+      # measurably more stable across a long sequential suite than a freshly cold-booted
+      # one, and shaves boot time off the timed run.
+      - name: AVD cache
+        uses: actions/cache@v6
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-34-google_apis-x86_64
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: false
+          ram-size: 4096M
+          heap-size: 1024M
+          cores: 4
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot-load
+          script: echo "Generated AVD snapshot for caching."
+
       - name: Run Android UI tests
         uses: reactivecircus/android-emulator-runner@v2
         env:
           MAESTRO_OUTPUT_DIR: build/maestro/android
         with:
-          api-level: 36
+          api-level: 34
           target: google_apis
           arch: x86_64
           disable-animations: true
-          # The suite runs 30+ sequential `maestro test` invocations, each of which
-          # installs/uninstalls its instrumentation driver. On a resource-starved
-          # emulator that slow leak eventually pushes the device `offline`, which
-          # surfaces as `device 'emulator-5554' not found`. Give the emulator a
-          # generous RAM/heap/core budget so it survives the whole run.
           ram-size: 4096M
           heap-size: 1024M
           cores: 4
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -memory 4096 -cores 3
+          force-avd-creation: false
+          # Restore from the cached snapshot; write it back on exit so subsequent runs
+          # keep a warm state. Drop the redundant -memory/-cores here (they conflicted
+          # with ram-size/cores above) and let swiftshader render headless.
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           # android-emulator-runner runs each line of an inline script as its own
           # `/usr/bin/sh -c` (dash), which cannot express `set -o pipefail` or a
           # heredoc. Invoke a committed script once with bash so everything shares

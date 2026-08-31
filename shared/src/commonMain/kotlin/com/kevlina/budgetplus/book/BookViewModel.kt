@@ -68,7 +68,9 @@ internal class BookViewModel(
         !isPremium && currentNavKey::class !in hideAdsDestinations
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
-    val isEligibleForInterstitialAds = authManager.isPremium.mapState { !it }
+    // Interstitial ads are shown on a record-count cycle, which makes count-dependent UI
+    // test flows flaky (an ad can pop over the screen mid-flow). Disable them in UI tests.
+    val isEligibleForInterstitialAds = authManager.isPremium.mapState { !it && !UiTestFlags.enabled }
 
     init {
         // If the user has no active book, navigate them to the welcome screen to create or join a book.

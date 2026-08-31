@@ -10,14 +10,17 @@ appId: com.kevlina.budgetplus
     visible:
       text: "Edit Record|${CATEGORY}: .*"
     timeout: 15000
-# Case A: All-Records mode -> dismiss the probe edit dialog by tapping the scrim above it.
+# Case A: All-Records mode -> dismiss the probe edit dialog. The dialog auto-focuses the
+# Note field and opens the keyboard, so hide it first, then tap the scrim strip at the very
+# top (above the dialog) to dismiss it.
 - runFlow:
     when:
       visible:
         text: "Edit Record"
     commands:
+      - hideKeyboard
       - tapOn:
-          point: "50%,12%"
+          point: "50%,4%"
       - extendedWaitUntil:
           notVisible:
             text: "Edit Record"

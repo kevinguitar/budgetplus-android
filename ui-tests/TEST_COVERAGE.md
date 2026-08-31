@@ -232,7 +232,7 @@ snackbar) and dismisses the (persistent) unlocked snackbar so it doesn't block l
   the tone carousel can be swiped reliably.
 - **`BudgetPlusApp` + `ui_test_network_security_config.xml`** — emulator host is `127.0.0.1`
   (with cleartext permitted), reachable from both the Android emulator (via `adb reverse`) and
-  the iOS simulator. (`10.0.2.2` was unreachable on the dual-NIC Pixel 10a emulator.)
+  the iOS simulator.
 
 There are still **no `Modifier.testTag`s**; JetBrains Compose Multiplatform for Android does
 not expose `testTagsAsResourceId` here, so selectors use visible text and the accessible

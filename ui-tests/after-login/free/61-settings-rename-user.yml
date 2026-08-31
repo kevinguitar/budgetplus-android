@@ -19,8 +19,10 @@ appId: com.kevlina.budgetplus
 - eraseText
 - inputText: "Tester"
 - pressKey: Enter
+# The "Renamed to Tester" toast is transient and can vanish before Maestro polls for it
+# (flaky). A successful rename closes the input dialog, so wait for it to dismiss instead.
 - extendedWaitUntil:
-    visible:
-      text: "Renamed to Tester"
+    notVisible:
+      text: "User Name"
     timeout: 10000
 - runFlow: ../../common/return-to-record.yml

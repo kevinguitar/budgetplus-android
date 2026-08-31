@@ -32,9 +32,11 @@ jobs:
           # Gradle cache must be written from PR runs; otherwise every run recompiles
           # cold. Cache entries are keyed by content, so PRs sharing the same Gradle
           # inputs converge on the same immutable entry.
-          cache-read-only: false
-          # Keep entries isolated per job: cross-job reuse restores incompatible native
-          # build state (e.g. SPM checkouts for the KMP native bridge).
+          # Read-only off main, mirroring the iOS jobs. Keeping the cache policy uniform
+          # across jobs avoids surprising cross-job differences; the Gradle build cache is
+          # only written from main.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          # Keep entries isolated per job.
           gradle-home-cache-strict-match: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 

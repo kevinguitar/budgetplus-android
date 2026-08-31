@@ -30,9 +30,13 @@ jobs:
           # Gradle cache must be written from PR runs; otherwise every run recompiles the
           # Kotlin/Native framework cold. Cache entries are keyed by content, so PRs
           # sharing the same Gradle inputs converge on the same immutable entry.
-          cache-read-only: false
-          # Keep entries isolated per job: cross-job reuse restores incompatible native
-          # build state (e.g. SPM checkouts for the KMP native bridge).
+          # Read-only off main. Writing the Gradle build cache from PR runs is unsafe for
+          # the iOS build: Kotlin/Native cinterop tasks (e.g. :shared:cinteropGoogleSignIn)
+          # cache outputs that embed absolute paths to the SPM checkout under
+          # shared/build/spmKmpPlugin, so a restored entry breaks a fresh workspace whose
+          # checkout wasn't re-fetched.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          # Keep entries isolated per job.
           gradle-home-cache-strict-match: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 

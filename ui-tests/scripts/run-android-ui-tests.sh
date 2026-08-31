@@ -130,6 +130,20 @@ run_suite_dir() {
       continue
     fi
 
+    # Honor the workspace's excludeTags: disabled. We run flows per-file (see the
+    # block comment above), which bypasses Maestro's workspace config.yaml, so the
+    # `disabled` tag must be enforced here explicitly. A flow is considered disabled
+    # when it declares a top-level `tags:` list that includes `disabled`.
+    if awk '
+      /^tags:/ { intags = 1; next }
+      intags && /^[[:space:]]*-[[:space:]]*disabled[[:space:]]*$/ { found = 1 }
+      intags && /^[^[:space:]-]/ { intags = 0 }
+      END { exit(found ? 0 : 1) }
+    ' "$flow"; then
+      echo "::notice::Skipping $(basename "$flow" .yml): tagged disabled." >&2
+      continue
+    fi
+
     local name
     name="$suite_prefix/$(basename "$flow" .yml)"
 

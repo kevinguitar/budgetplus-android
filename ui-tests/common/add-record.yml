@@ -5,6 +5,13 @@ appId: com.kevlina.budgetplus
 ---
 - tapOn:
     text: "AC"
+# On short screens the category grid can be scrolled such that the target pill is above
+# the fold after prior records; scroll it back into view before tapping.
+- scrollUntilVisible:
+    element:
+      text: "${CATEGORY}"
+    direction: UP
+    timeout: 10000
 - tapOn:
     text: "${CATEGORY}"
 - tapOn:

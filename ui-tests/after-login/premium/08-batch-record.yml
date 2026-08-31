@@ -13,10 +13,19 @@ appId: com.kevlina.budgetplus
 # Premium: Batch Record opens its dedicated screen (not the Unlock Premium paywall).
 - tapOn:
     text: "Batch Record"
+# "Number of times:" is the last field and sits below the fold on short screens;
+# scroll it into view before asserting.
 - extendedWaitUntil:
     visible:
-      text: "Number of times:"
+      text: "Start Date:"
     timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Number of times:"
+    direction: DOWN
+    timeout: 10000
+- assertVisible:
+    text: "Number of times:"
 - assertVisible:
     text: "Batch Frequency:"
 - assertVisible:

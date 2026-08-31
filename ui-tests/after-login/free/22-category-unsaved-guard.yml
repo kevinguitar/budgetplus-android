@@ -13,6 +13,13 @@ appId: com.kevlina.budgetplus
     text: "Category"
 - inputText: "TempCat"
 - pressKey: Enter
+# The new category is appended to the end of the list, which sits below the fold on
+# short screens; scroll it into view before asserting.
+- scrollUntilVisible:
+    element:
+      text: "TempCat"
+    direction: DOWN
+    timeout: 10000
 - assertVisible:
     text: "TempCat"
 # Attempt to leave (top-bar back) -> unsaved warning appears.

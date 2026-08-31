@@ -21,31 +21,36 @@ appId: com.kevlina.budgetplus
     visible:
       text: "Color Tone Picker"
     timeout: 15000
-# Swipe to a premium tone (Barbie and Ken is the 4th tone). Swipe one page at a
-# time with a settle wait between flings so pages don't get skipped/overshot.
+# On short screens the tone carousel sits below the preview fold. Scroll the picker
+# content up so the carousel band is fully on screen, then swipe it horizontally. We
+# scroll by a vertical swipe (the pager's contentDescription is not reliably exposed in
+# the view hierarchy, so element-anchored scrolling/swiping is flaky).
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 100
+    start: "50%,80%"
+    end: "50%,35%"
+    duration: 400
+# Swipe to a premium tone (Barbie and Ken is the 4th tone). Swipe by fixed coordinates
+# inside the carousel band; settle between flings so pages aren't skipped/overshot.
+- swipe:
+    start: "85%,70%"
+    end: "15%,70%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Warm Tones of Dusk"
     timeout: 10000
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 100
+    start: "85%,70%"
+    end: "15%,70%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Countryside"
     timeout: 10000
 - swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 100
+    start: "85%,70%"
+    end: "15%,70%"
+    duration: 400
 - extendedWaitUntil:
     visible:
       text: "Barbie and Ken"

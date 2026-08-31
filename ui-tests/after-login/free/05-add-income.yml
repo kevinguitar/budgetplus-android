@@ -6,6 +6,13 @@ appId: com.kevlina.budgetplus
     text: "AC"
 - tapOn:
     text: "Income"
+# The income note placeholder lives below the calculator fold on short screens, so
+# scroll it into view before asserting (proves the record type switched to Income).
+- scrollUntilVisible:
+    element:
+      text: "Where did you earn from?"
+    direction: DOWN
+    timeout: 10000
 - assertVisible:
     text: "Where did you earn from?"
 - tapOn:

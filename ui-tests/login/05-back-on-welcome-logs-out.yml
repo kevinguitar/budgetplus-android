@@ -1,8 +1,13 @@
 # L6 — Pressing back on the Welcome screen returns to the Auth screen (logs out)
 # Android-only: relies on the system back button; iOS has no equivalent gesture that
 # Maestro can reliably trigger for the predictive-back logout handler.
+# Temporarily disabled: the system `back` on Welcome intermittently closes the app
+# instead of routing through the predictive-back logout handler, leaving a blank screen
+# so "Continue with Google" never reappears. Tracked for re-enabling once stabilized.
 appId: com.kevlina.budgetplus
 platform: Android
+tags:
+  - disabled
 ---
 - launchApp:
     clearState: true

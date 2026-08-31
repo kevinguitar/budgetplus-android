@@ -11,16 +11,17 @@ appId: com.kevlina.budgetplus
       text: "Edit Record|${CATEGORY}: .*"
     timeout: 15000
 # Case A: All-Records mode -> dismiss the probe edit dialog. The dialog auto-focuses the
-# Note field and opens the keyboard. hideKeyboard is unreliable on iOS (Compose custom
-# input surfaces no standard dismiss action), so instead tap the scrim strip at the very
-# top (above the dialog) which both dismisses the keyboard and closes the dialog.
+# Note field and opens the keyboard, so hideKeyboard is unreliable on iOS (Compose custom
+# input surfaces no standard dismiss action) and tapping the top scrim can land on the OS
+# status bar. Instead tap the scrim on the far left, vertically centered: it is reliably
+# outside the dialog, above the keyboard, and dismisses the dialog via dismissOnClickOutside.
 - runFlow:
     when:
       visible:
         text: "Edit Record"
     commands:
       - tapOn:
-          point: "50%,4%"
+          point: "3%,45%"
       - extendedWaitUntil:
           notVisible:
             text: "Edit Record"

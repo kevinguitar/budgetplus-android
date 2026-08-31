@@ -6,13 +6,14 @@ appId: com.kevlina.budgetplus
     text: "AC"
 - tapOn:
     text: "Income"
-# The income note placeholder lives below the calculator fold on short screens, so
-# scroll it into view before asserting (proves the record type switched to Income).
-- scrollUntilVisible:
-    element:
-      text: "Where did you earn from?"
-    direction: DOWN
-    timeout: 10000
+# The income note placeholder lives just below the category grid, above the fixed
+# calculator. Its scroll region is small, so scrollUntilVisible (which targets the
+# largest scrollable) doesn't reliably move it. Swipe up within the info band instead,
+# then assert (proves the record type switched to Income).
+- swipe:
+    start: "50%,40%"
+    end: "50%,20%"
+    duration: 400
 - assertVisible:
     text: "Where did you earn from?"
 - tapOn:

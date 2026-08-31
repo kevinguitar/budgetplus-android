@@ -2,10 +2,7 @@
 appId: com.kevlina.budgetplus
 ---
 - runFlow: ../../common/setup-login.yml
-- tapOn:
-    text: "Edit"
-- assertVisible:
-    text: "Edit Categories"
+- runFlow: ../../common/open-category-editor.yml
 # Add a new category via the FAB.
 - tapOn:
     text: "Add"

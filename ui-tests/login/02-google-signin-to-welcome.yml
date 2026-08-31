@@ -7,6 +7,16 @@ appId: com.kevlina.budgetplus
 - tapOn:
     text: "Continue with Google"
 - runFlow: ../common/dismiss-system-dialogs.yml
+# The auth emulator occasionally drops the first sign-in; if the Welcome screen hasn't
+# appeared shortly after, tap sign-in once more before the long wait below.
+- runFlow:
+    when:
+      visible:
+        text: "Continue with Google"
+    commands:
+      - tapOn:
+          text: "Continue with Google"
+      - runFlow: ../common/dismiss-system-dialogs.yml
 - extendedWaitUntil:
     visible:
       text: "Book Name"

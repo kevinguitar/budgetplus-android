@@ -8,8 +8,11 @@ jobs:
     name: Android UI tests
     runs-on: ubuntu-latest
     # Cap the whole job so a crashed/offline emulator (which leaves adb spinning on
-    # `- waiting for device -`) can't hang the run indefinitely.
-    timeout-minutes: 90
+    # `- waiting for device -`) can't hang the run indefinitely. Allow headroom over the
+    # ~55 min happy-path so a slow patch (emulator going briefly offline and recovering
+    # between flows) can still finish the full free+premium suites instead of tripping the
+    # cap mid-run.
+    timeout-minutes: 120
     env:
       MAESTRO_CLI_NO_ANALYTICS: true
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true

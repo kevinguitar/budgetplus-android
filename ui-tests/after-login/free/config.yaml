@@ -1,0 +1,4 @@
+# Maestro workspace config for the after-login/free suite.
+# Skip any flow tagged "disabled" (e.g. flows that are too flaky in CI).
+excludeTags:
+  - disabled

@@ -4,8 +4,22 @@
 # Param: CATEGORY — a category name that has at least one record.
 appId: com.kevlina.budgetplus
 ---
+# Wait for the Overview (and the probed category row) to settle before tapping. On a still
+# animating/loading chart the first tap can miss, so re-tap once if neither the Edit Record
+# dialog nor the category drill has appeared yet.
+- extendedWaitUntil:
+    visible:
+      text: "${CATEGORY}"
+    timeout: 15000
 - tapOn:
     text: "${CATEGORY}"
+- runFlow:
+    when:
+      notVisible:
+        text: "Edit Record|${CATEGORY}: .*"
+    commands:
+      - tapOn:
+          text: "${CATEGORY}"
 - extendedWaitUntil:
     visible:
       text: "Edit Record|${CATEGORY}: .*"

@@ -73,13 +73,13 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-36-google_apis-x86_64
+          key: avd-34-google_apis-x86_64
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 36
+          api-level: 34
           target: google_apis
           arch: x86_64
           disable-animations: false
@@ -95,7 +95,7 @@ jobs:
         env:
           MAESTRO_OUTPUT_DIR: build/maestro/android
         with:
-          api-level: 36
+          api-level: 34
           target: google_apis
           arch: x86_64
           disable-animations: true

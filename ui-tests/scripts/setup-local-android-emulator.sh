@@ -4,7 +4,7 @@
 # local UI-test runs reproduce CI as closely as possible.
 #
 # CI (.github/workflows/android-ui-tests.yml) runs:
-#   api-level 36, target google_apis, arch x86_64 (or arm64-v8a on Apple Silicon locally).
+#   api-level 34, target google_apis, arch x86_64 (or arm64-v8a on Apple Silicon locally).
 #
 # After this script prints "Emulator ready", run the suite with:
 #   ./ui-tests/scripts/run-android-ui-tests.sh
@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-API_LEVEL=36
+API_LEVEL=34
 TARGET=google_apis
 # Match the host arch: CI uses x86_64; Apple Silicon dev machines need arm64-v8a.
 case "$(uname -m)" in

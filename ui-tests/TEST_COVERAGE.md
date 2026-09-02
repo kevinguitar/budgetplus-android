@@ -5,7 +5,7 @@ A full-regression UI test suite for the Budget+ KMP/Compose app, driven by
 
 | Platform | Login | after-login/free | after-login/premium |
 |---|---|---|---|
-| Android (API 36, google_apis) | 5/5 | 35/35 | 10/10 |
+| Android (API 34, google_apis) | 5/5 | 35/35 | 10/10 |
 | iOS (iPhone 17 Pro, iOS 26) | 5/5 | 35/35 | 10/10 |
 
 All flows are enabled and run on every CI PR — there are no `disabled`/excluded flows.
@@ -293,9 +293,10 @@ uninstall/keychain-reset/reinstall (skipping `platform: Android`), then `after-l
 then `after-login/premium` (each preceded by a reset). The production plist is restored on exit.
 
 ### CI devices & failure reporting
-- **Devices mirror the table in §0:** Android **API 36 / `google_apis` / x86_64** (the latest
-  API level with a stable, KVM-accelerated `google_apis` x86_64 image installable on the
-  Ubuntu runners — API 37 only ships as an arm64 `ps16k` image, unusable on x86 CI); iOS
+- **Devices mirror the table in §0:** Android **API 34 / `google_apis` / x86_64** (API 35/36
+  emulators proved unstable under swiftshader on the Ubuntu runners — the device went
+  `offline` mid-flow; API 37 only ships as an arm64 `ps16k` image, unusable on x86 CI — so
+  API 34 is the newest level with a stable, KVM-accelerated `google_apis` x86_64 image); iOS
   **iPhone 17 Pro** (falling back to the first available iPhone if that model isn't installed).
 - **Failures surface in the Actions report.** Both runners emit a per-suite **JUnit XML**
   (`--format=junit --output report.xml`). The workflows publish it via `dorny/test-reporter`

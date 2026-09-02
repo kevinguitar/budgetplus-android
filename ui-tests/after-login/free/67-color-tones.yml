@@ -15,9 +15,20 @@ appId: com.kevlina.budgetplus
     centerElement: true
 - tapOn:
     text: "Color Tone Picker"
+# Wait for the picker screen to actually open. Do NOT wait on "Color Tone Picker" text — it
+# also labels the Settings row we just tapped, so it is already visible and the wait would
+# pass while still on Settings. Wait on the pager's UI-test "next" control instead, which
+# only exists on the picker screen. If the row tap didn't navigate (emulator mis-tap), retry.
+- runFlow:
+    when:
+      notVisible:
+        text: "color_tone_next"
+    commands:
+      - tapOn:
+          text: "Color Tone Picker"
 - extendedWaitUntil:
     visible:
-      text: "Color Tone Picker"
+      text: "color_tone_next"
     timeout: 15000
 # Advance to the next free tone ("Warm Tones of Dusk", the 2nd tone). We tap the
 # UI-test-only "next" control (contentDescription color_tone_next) which advances the

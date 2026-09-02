@@ -5,8 +5,10 @@ A full-regression UI test suite for the Budget+ KMP/Compose app, driven by
 
 | Platform | Login | after-login/free | after-login/premium |
 |---|---|---|---|
-| Android (Pixel 10a, API 37) | 5/5 | 35/35 | 10/10 |
+| Android (API 36, google_apis) | 5/5 | 35/35 | 10/10 |
 | iOS (iPhone 17 Pro, iOS 26) | 5/5 | 35/35 | 10/10 |
+
+All flows are enabled and run on every CI PR — there are no `disabled`/excluded flows.
 
 The suites are split into three independent Maestro runs:
 
@@ -229,7 +231,11 @@ snackbar) and dismisses the (persistent) unlocked snackbar so it doesn't block l
   avoids emulator purchase failures and, critically, stops the iOS "Sign in to Apple Account"
   system dialog that otherwise blocked automation.
 - **`ColorToneCarousel`** — stable `contentDescription = "color_tone_pager"` on the pager so
-  the tone carousel can be swiped reliably.
+  the tone carousel can be swiped reliably. It also exposes a **UI-test-only** deterministic
+  "next" control (`contentDescription = "color_tone_next"`, only when `UiTestFlags.enabled`)
+  that advances the pager one page via `animateScrollToPage`. The tone flows tap this instead
+  of a fling `swipe`, which was too flaky in CI (the fling intermittently failed to advance a
+  page).
 - **`BudgetPlusApp` + `ui_test_network_security_config.xml`** — emulator host is `127.0.0.1`
   (with cleartext permitted), reachable from both the Android emulator (via `adb reverse`) and
   the iOS simulator.
@@ -276,13 +282,33 @@ Swaps in the test `google-services.json`, `assembleUiTest`, installs, sets up `a
 for ports 9099/8080, disables the Gboard stylus-handwriting tutorial, then inside a single
 `firebase emulators:exec` runs: `login` (looping files, skipping `platform: iOS`, with
 `pm clear`), then `after-login/free`, then `after-login/premium` (each preceded by `pm clear`).
-The production `google-services.json` is restored on exit.
+The production `google-services.json` is restored on exit. The `--suites` entry point
+**propagates the real pass/fail exit code** (`exit $?`) so a failing flow fails the job — a
+previous `exit 0` here silently reported the whole suite green.
 
 ### `scripts/run-ios-ui-tests.sh`
 Swaps in the test `GoogleService-Info.plist`, builds with `UI_TEST`, forces the simulator to
 English, then inside `firebase emulators:exec` runs: each `login` flow with a full
 uninstall/keychain-reset/reinstall (skipping `platform: Android`), then `after-login/free`,
 then `after-login/premium` (each preceded by a reset). The production plist is restored on exit.
+
+### CI devices & failure reporting
+- **Devices mirror the table in §0:** Android **API 36 / `google_apis` / x86_64** (the latest
+  API level with a stable, KVM-accelerated `google_apis` x86_64 image installable on the
+  Ubuntu runners — API 37 only ships as an arm64 `ps16k` image, unusable on x86 CI); iOS
+  **iPhone 17 Pro** (falling back to the first available iPhone if that model isn't installed).
+- **Failures surface in the Actions report.** Both runners emit a per-suite **JUnit XML**
+  (`--format=junit --output report.xml`). The workflows publish it via `dorny/test-reporter`
+  (a check listing failing flows) and `scripts/junit-summary.sh` writes a pass/fail table to
+  `$GITHUB_STEP_SUMMARY`. HTML/debug output + screenshots are still uploaded as artifacts.
+
+### Local emulator setup (reproduce CI locally)
+- `scripts/setup-local-android-emulator.sh` — creates/boots an AVD matching CI (API 37,
+  `google_apis`, `pixel_9`; `arm64-v8a` on Apple Silicon, `x86_64` otherwise), disables
+  animations + the stylus tutorial. Then run `scripts/run-android-ui-tests.sh`.
+- `scripts/setup-local-ios-simulator.sh [device]` — creates/boots the `iPhone 17 Pro`
+  simulator (or the given device) on the newest installed iOS runtime, forces English. Then
+  run `scripts/run-ios-ui-tests.sh "iPhone 17 Pro"`.
 
 ---
 

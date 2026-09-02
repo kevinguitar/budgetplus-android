@@ -101,17 +101,6 @@ run_suites() {
   # failure would otherwise be swallowed and the suite reported as green).
   local suite_result=0
 
-  # TEMPORARY (stabilization): when UI_TEST_FLAKY_ONLY=1, run only the previously-flaky
-  # color-tone flows (the back-on-welcome flow is Android-only). Remove this branch (and the
-  # env var in the workflow) once they pass and the full suite is restored.
-  if [[ "${UI_TEST_FLAKY_ONLY:-}" == "1" ]]; then
-    reset_app
-    maestro_test "after-login-free/67-color-tones" ui-tests/after-login/free/67-color-tones.yml || suite_result=1
-    reset_app
-    maestro_test "after-login-premium/07-premium-color-tones" ui-tests/after-login/premium/07-premium-color-tones.yml || suite_result=1
-    return "$suite_result"
-  fi
-
   # login: each flow needs a truly unauthenticated start, so reset the keychain before
   # every flow (iOS persists Firebase auth in the keychain across clearState).
   for flow in ui-tests/login/*.yml; do

@@ -16,9 +16,6 @@ jobs:
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
       MAESTRO_DISABLE_UPDATE_CHECK: true
       MAESTRO_DRIVER_STARTUP_TIMEOUT: 120000
-      # TEMPORARY (stabilization): run only the previously-flaky flows to validate their fix
-      # fast. Remove this line to restore the full suite.
-      UI_TEST_FLAKY_ONLY: "1"
 
     steps:
       - uses: actions/checkout@v7

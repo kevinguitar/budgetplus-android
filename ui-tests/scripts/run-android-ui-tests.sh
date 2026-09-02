@@ -40,26 +40,6 @@ maestro_test() {
 run_suites() {
   suites_failed=0
 
-  # TEMPORARY (stabilization): when UI_TEST_FLAKY_ONLY=1, run only the three flows that
-  # were previously tagged `disabled` for flakiness, so CI validates their fix fast. Remove
-  # this branch (and the env var in the workflow) once they pass and the full suite is
-  # restored.
-  if [[ "${UI_TEST_FLAKY_ONLY:-}" == "1" ]]; then
-    wait_for_device || true
-    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
-    run_suite_dir login ui-tests/login/05-back-on-welcome-logs-out.yml
-
-    wait_for_device || true
-    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
-    run_suite_dir after-login-free ui-tests/after-login/free/67-color-tones.yml
-
-    wait_for_device || true
-    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
-    run_suite_dir after-login-premium ui-tests/after-login/premium/07-premium-color-tones.yml
-
-    return "$suites_failed"
-  fi
-
   # login runs first on freshly cleared state (its flows also clearState per-flow).
   wait_for_device || true
   adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus

@@ -271,7 +271,15 @@ on iOS.
 - **iOS auth persistence**: Firebase auth lives in the keychain across `clearState`, so the
   runner resets the keychain before each `login` flow, and `ensure-logged-out.yml` deletes the
   account when needed.
-- **iOS deeplink**: taps the "Open in Budget+?" confirmation.
+- **iOS deeplink**: taps the "Open in Budget+?" confirmation. `return-to-record.yml` also
+  dismisses a late-reappearing "Open in Budget+?" dialog (from the premium seed) that could
+  otherwise block the final Record assertion.
+- **Color Tone Picker**: the picker's large "Color Preview" card can push the tone carousel
+  below the fold, so the tone flows `scrollUntilVisible` the `color_tone_next` control, then
+  advance the pager by tapping it (deterministic) rather than a fling `swipe`.
+- **Deterministic taps with retry**: taps that occasionally don't register on iOS (the
+  currency tiles in `63-settings-book-currency`, the Color-Tone-Picker settings row) are
+  guarded by a `when: visible`/`notVisible` retry so a single missed tap doesn't fail the flow.
 
 ---
 

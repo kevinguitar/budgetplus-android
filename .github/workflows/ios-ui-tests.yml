@@ -7,6 +7,7 @@ jobs:
   ios-ui-tests:
     name: iOS UI tests
     runs-on: macos-latest
+    timeout-minutes: 120
     permissions:
       contents: read
       checks: write

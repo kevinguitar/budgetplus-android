@@ -18,7 +18,16 @@ appId: com.kevlina.budgetplus
     timeout: 15000
 - tapOn:
     text: "Euro"
-# The picker closes once the change is committed.
+# The picker closes once the change is committed. The first tap on a currency tile
+# occasionally does not register on iOS (the picker stays open), so retry once if it is
+# still showing before asserting it closed.
+- runFlow:
+    when:
+      visible:
+        text: "Book's Currency"
+    commands:
+      - tapOn:
+          text: "Euro"
 - extendedWaitUntil:
     notVisible:
       text: "Book's Currency"
@@ -41,6 +50,13 @@ appId: com.kevlina.budgetplus
     timeout: 15000
 - tapOn:
     text: "US Dollar"
+- runFlow:
+    when:
+      visible:
+        text: "Book's Currency"
+    commands:
+      - tapOn:
+          text: "US Dollar"
 - extendedWaitUntil:
     notVisible:
       text: "Book's Currency"

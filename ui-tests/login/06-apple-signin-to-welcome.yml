@@ -1,0 +1,20 @@
+# L3 — Apple sign-in leads to Welcome screen (iOS only)
+appId: com.kevlina.budgetplus
+platform: iOS
+---
+- launchApp:
+    clearState: true
+- runFlow: ../common/ensure-logged-out.yml
+- assertVisible:
+    text: "Continue with Apple"
+- tapOn:
+    text: "Continue with Apple"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 60000
+- assertVisible:
+    text: "Book Name"
+- assertVisible:
+    text: "Go"

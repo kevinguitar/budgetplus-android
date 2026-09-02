@@ -1,0 +1,18 @@
+# P9 — Settings does not show "Hide Ads" for premium users
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+# "Batch Record" is present but "Hide Ads" is hidden for premium users.
+- assertVisible:
+    text: "Batch Record"
+- assertNotVisible:
+    text: "Hide Ads"
+- runFlow: ../../common/return-to-record.yml

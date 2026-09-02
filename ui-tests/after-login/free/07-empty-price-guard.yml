@@ -1,0 +1,14 @@
+# R7 — Empty price guard
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "Food"
+- tapOn:
+    text: "OK"
+- assertVisible:
+    text: "Please input the price"
+- tapOn:
+    text: "AC"

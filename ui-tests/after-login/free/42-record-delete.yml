@@ -1,0 +1,41 @@
+# E3 — Delete a record via the long-press menu (Overview, All-Records mode)
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Transport"
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+- runFlow:
+    file: ../../common/ensure-all-records-mode.yml
+    env:
+      CATEGORY: "Transport"
+- extendedWaitUntil:
+    visible:
+      text: "Transport"
+    timeout: 15000
+- longPressOn:
+    text: "Transport"
+- extendedWaitUntil:
+    visible:
+      text: "Delete"
+    timeout: 10000
+- tapOn:
+    text: "Delete"
+- assertVisible:
+    text: "Are you sure you want to delete the record?"
+- tapOn:
+    text: "Confirm"
+- extendedWaitUntil:
+    visible:
+      text: "Record.*is deleted"
+    timeout: 10000
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

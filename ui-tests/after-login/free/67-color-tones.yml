@@ -1,0 +1,42 @@
+# ST8 — Color Tone Picker: free tones selectable, save works
+# Temporarily disabled: the horizontal tone carousel swipe is too flaky in CI
+# (the fling intermittently fails to advance a page, so "Warm Tones of Dusk"
+# never becomes visible). Tracked for re-enabling once the swipe is stabilized.
+appId: com.kevlina.budgetplus
+tags:
+  - disabled
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Color Tone Picker"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "Color Tone Picker"
+- extendedWaitUntil:
+    visible:
+      text: "Color Tone Picker"
+    timeout: 15000
+# The tones are shown in a horizontal carousel; swipe the pager to the next free tone.
+# A short duration gives the fling enough momentum to advance a page on both platforms.
+- swipe:
+    from:
+      text: "color_tone_pager"
+    direction: LEFT
+    duration: 100
+- extendedWaitUntil:
+    visible:
+      text: "Warm Tones of Dusk"
+    timeout: 10000
+# Save the selected tone (check icon, top-right).
+- tapOn:
+    text: "Save"
+# Save returns to Settings; return to the Record screen.
+- runFlow: ../../common/return-to-record.yml

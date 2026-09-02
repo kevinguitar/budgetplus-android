@@ -1,0 +1,44 @@
+# ST4 — Rename book
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "Rename Book"
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 15000
+- tapOn:
+    text: "Book Name"
+- eraseText
+- inputText: "Renamed Book"
+- pressKey: Enter
+# Assert on the persistent Settings header rather than the transient rename toast, which
+# can vanish before Maestro polls for it (flaky).
+- extendedWaitUntil:
+    visible:
+      text: "Renamed Book's Settings"
+    timeout: 10000
+# Rename back so later flows still find "UI Test Book".
+- tapOn:
+    text: "Rename Book"
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 15000
+- tapOn:
+    text: "Book Name"
+- eraseText
+- inputText: "UI Test Book"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      text: "UI Test Book's Settings"
+    timeout: 10000
+- runFlow: ../../common/return-to-record.yml

@@ -1,0 +1,22 @@
+# P10 — View Members shows the members dialog for a premium user
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "View Members"
+- extendedWaitUntil:
+    visible:
+      text: "Members"
+    timeout: 15000
+- assertVisible:
+    text: "Owner"
+- back
+- runFlow: ../../common/return-to-record.yml

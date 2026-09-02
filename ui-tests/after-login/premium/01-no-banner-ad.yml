@@ -1,0 +1,13 @@
+# P1 — Premium user has no banner ad on Record/Overview
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+# The banner ad area should be absent for premium users.
+- extendedWaitUntil:
+    notVisible:
+      text: "Test Ad|No ads available"
+    timeout: 20000
+- assertNotVisible:
+    text: "Test Ad|No ads available"

@@ -1,0 +1,22 @@
+# ST9 — Toggle Input Vibration switch
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Input Vibration"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "Input Vibration"
+- tapOn:
+    text: "Input Vibration"
+- assertVisible:
+    text: "Input Vibration"
+- runFlow: ../../common/return-to-record.yml

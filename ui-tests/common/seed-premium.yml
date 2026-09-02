@@ -1,0 +1,37 @@
+# Flips the current (anonymous) user to premium via the UI-test-only deeplink, which
+# calls authManager.markPremium(true). Idempotent: if the user is already premium
+# (no "unlocked" snackbar), we still confirm the premium state via the absence of the
+# banner ad on the Record screen.
+appId: com.kevlina.budgetplus
+---
+- openLink: "budgetplus://uiTestPremium"
+# iOS shows an "Open in Budget+?" confirmation for custom-scheme deeplinks.
+- tapOn:
+    text: "Open"
+    optional: true
+- runFlow:
+    when:
+      visible:
+        text: "Budget+ Premium unlocked!"
+    commands:
+      - assertVisible:
+          text: "Budget+ Premium unlocked!"
+# Confirm premium took effect: the banner ad area is gone on the Record screen
+# (neither a test ad nor the "No ads available" placeholder shown to free users).
+- runFlow: assert-on-record.yml
+- extendedWaitUntil:
+    notVisible:
+      text: "Test Ad|No ads available"
+    timeout: 20000
+- assertNotVisible:
+    text: "Test Ad|No ads available"
+# Dismiss the (persistent, UI-test) "unlocked" snackbar so it doesn't block later
+# bottom-screen interactions (e.g. the Overview Search FAB). UI-test builds make the
+# snackbar tap-to-dismiss (swipe gestures are unreliable on the iOS automation driver).
+- runFlow:
+    when:
+      visible:
+        text: "Budget+ Premium unlocked!"
+    commands:
+      - tapOn:
+          text: "Budget+ Premium unlocked!"

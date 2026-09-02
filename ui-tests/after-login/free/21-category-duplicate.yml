@@ -1,0 +1,28 @@
+# C5 — Duplicate category name shows an error
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/open-category-editor.yml
+- tapOn:
+    text: "Add"
+- assertVisible:
+    text: "Category"
+- inputText: "Food"
+# Submit via the keyboard done action (cross-platform; avoids keyboard covering the
+# dialog button on iOS). The dialog's onDone triggers the duplicate-name error.
+- pressKey: Enter
+- extendedWaitUntil:
+    visible:
+      text: "Category Food already exist"
+    timeout: 10000
+# No category was added, but the editor may be marked dirty — handle the exit guard.
+- tapOn:
+    text: "Back"
+- runFlow:
+    when:
+      visible:
+        text: "Do you want to leave without saving the changes?"
+    commands:
+      - tapOn:
+          text: "Confirm"
+- runFlow: ../../common/return-to-record.yml

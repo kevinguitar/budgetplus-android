@@ -1,0 +1,12 @@
+# A1 — Banner ad area present for free users on the Record screen
+# Tolerant of ad-load variance: the banner area shows a test ad ("Test Ad") when loaded
+# or "No ads available" when the ad unit can't fill (e.g. iOS simulator).
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- extendedWaitUntil:
+    visible:
+      text: "Test Ad|No ads available"
+    timeout: 20000
+- assertVisible:
+    text: "Test Ad|No ads available"

@@ -131,11 +131,13 @@ If you want to build the project locally, follow these steps:
 
 UI tests use [Maestro](https://maestro.mobile.dev/) to launch the real Android or iOS application. Both platforms run the same flows from `ui-tests/` against local Firebase Auth and Firestore emulators, so production data is never used.
 
+The flows are split into three independent suites — `login/` (auth + onboarding), `after-login/free/`, and `after-login/premium/` — with shared subflows in `common/`. See [`ui-tests/TEST_COVERAGE.md`](ui-tests/TEST_COVERAGE.md) for the full coverage map, the test-mode hooks, and the cross-platform selector strategy.
+
 ### Adding a Test
 
-1. Add a Maestro YAML flow under `ui-tests/`. CI automatically runs every flow in this directory.
+1. Add a Maestro YAML flow under the relevant suite in `ui-tests/`. The runner scripts execute every flow in each suite.
 2. Prefer stable visible text for selectors because Maestro reads it consistently from both Android and iOS accessibility trees. Add custom semantics only when no stable visible text exists, and verify the selector on both platforms.
-3. Keep platform-specific commands out of flows where possible so the same test runs on Android and iOS.
+3. Keep platform-specific commands out of flows where possible so the same test runs on Android and iOS. Gate a genuinely platform-specific flow with `platform: Android`/`platform: iOS`.
 
 ### Running Locally
 
@@ -147,13 +149,13 @@ Run the Android tests:
 ./ui-tests/scripts/run-android-ui-tests.sh
 ```
 
-Run the iOS tests using an installed `iPhone 16 Pro` simulator:
+Run the iOS tests using an installed `iPhone 17 Pro` simulator:
 
 ```bash
-./ui-tests/scripts/run-ios-ui-tests.sh
+./ui-tests/scripts/run-ios-ui-tests.sh "iPhone 17 Pro"
 ```
 
-Pass a different simulator name as the first argument if needed. Both scripts temporarily install the test Firebase configuration and restore the production `google-services.json` or `GoogleService-Info.plist` from `misc/release` when they exit, including after a test failure.
+Pass a different simulator name as the first argument if needed (it defaults to `iPhone 17`). Both scripts temporarily install the test Firebase configuration and restore the production `google-services.json` or `GoogleService-Info.plist` from `misc/release` when they exit, including after a test failure.
 
 ---
 

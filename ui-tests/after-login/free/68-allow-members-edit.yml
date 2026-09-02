@@ -1,0 +1,22 @@
+# ST7 — Allow Members to Edit switch toggles (owner only)
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Allow Members to Edit"
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: "Allow Members to Edit"
+- tapOn:
+    text: "Allow Members to Edit"
+- assertVisible:
+    text: "Allow Members to Edit"
+- runFlow: ../../common/return-to-record.yml

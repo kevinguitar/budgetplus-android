@@ -26,7 +26,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
+          # CI only runs on pull_request (there is no push-to-main trigger), so the
+          # Gradle cache must be written from PR runs; otherwise every run recompiles the
+          # Kotlin/Native framework cold. Cache entries are keyed by content, so PRs
+          # sharing the same Gradle inputs converge on the same immutable entry.
+          # Read-only off main. Writing the Gradle build cache from PR runs is unsafe for
+          # the iOS build: Kotlin/Native cinterop tasks (e.g. :shared:cinteropGoogleSignIn)
+          # cache outputs that embed absolute paths to the SPM checkout under
+          # shared/build/spmKmpPlugin, so a restored entry breaks a fresh workspace whose
+          # checkout wasn't re-fetched.
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          # Keep entries isolated per job.
           gradle-home-cache-strict-match: true
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
@@ -47,9 +57,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('gradle/libs.versions.toml') }}
+          key: ${{ runner.os }}-konan-v2-${{ hashFiles('gradle/libs.versions.toml') }}
           restore-keys: |
-            ${{ runner.os }}-konan-
+            ${{ runner.os }}-konan-v2-
 
       - name: Cache SPM packages
         uses: actions/cache@v6
@@ -57,19 +67,26 @@ jobs:
           path: |
             build/SourcePackages
             ~/Library/Caches/org.swift.swiftpm
-          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          key: ${{ runner.os }}-spm-v2-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
-            ${{ runner.os }}-spm-
+            ${{ runner.os }}-spm-v2-
 
       - name: Cache Xcode DerivedData
         uses: actions/cache@v6
         with:
           path: ./build
-          key: ${{ runner.os }}-ddata-${{ hashFiles('**/Package.resolved', 'gradle/libs.versions.toml') }}
+          key: ${{ runner.os }}-ddata-v2-${{ hashFiles('**/Package.resolved', 'gradle/libs.versions.toml') }}
           restore-keys: |
-            ${{ runner.os }}-ddata-
+            ${{ runner.os }}-ddata-v2-
 
       - name: Build iOS App (simulator)
+        env:
+          # Disable the Gradle build cache for the iOS build. Kotlin/Native cinterop tasks
+          # (e.g. :shared:cinteropGoogleSignIn) cache outputs that embed absolute paths to
+          # the SPM checkout under shared/build/spmKmpPlugin, so a restored entry breaks a
+          # fresh workspace ('umbrella header GoogleSignIn.h not found'). Recomputing these
+          # tasks avoids reusing a poisoned/relocated entry.
+          GRADLE_OPTS: -Dorg.gradle.caching=false
         run: |
           xcodebuild build \
             -project iosApp/iosApp.xcodeproj \

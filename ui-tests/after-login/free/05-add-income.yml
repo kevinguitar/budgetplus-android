@@ -1,0 +1,40 @@
+# R5 — Add income end-to-end
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "Income"
+# "Salary" is an income-only category, so its visibility confirms the record type
+# switched to Income (the note placeholder sits below the fold on short screens, so we
+# assert on the category grid instead, which is always on screen).
+- assertVisible:
+    text: "Salary"
+- tapOn:
+    text: "Salary"
+- tapOn:
+    text: "5"
+- tapOn:
+    text: "0"
+- assertVisible:
+    text: "50"
+- tapOn:
+    text: "OK"
+- extendedWaitUntil:
+    visible:
+      text: "0"
+    timeout: 10000
+# restore to Expense for subsequent flows. The info band may be scrolled down after
+# adding the record, so reveal the record-type tabs before tapping.
+- runFlow:
+    when:
+      notVisible:
+        text: "Expense"
+    commands:
+      - swipe:
+          start: "50%,25%"
+          end: "50%,45%"
+          duration: 400
+- tapOn:
+    text: "Expense"

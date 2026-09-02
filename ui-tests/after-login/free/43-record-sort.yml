@@ -1,0 +1,54 @@
+# E5 — Sort toggle on the Records screen
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Rent"
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Switch Overview to Group-by-categories (mode toggle, top-right menu icon).
+- tapOn:
+    point: "83%,10%"
+# Tap the category group to open the Records screen (title "<category>: <total>").
+- tapOn:
+    text: "Rent"
+- extendedWaitUntil:
+    visible:
+      text: "Rent: .*"
+    timeout: 15000
+# Sort toggle (top-bar icon). Description depends on current sort mode.
+- runFlow:
+    when:
+      visible:
+        text: "Sort by price"
+    commands:
+      - tapOn:
+          text: "Sort by price"
+- assertVisible:
+    text: "Sort by date"
+- tapOn:
+    text: "Sort by date"
+- assertVisible:
+    text: "Sort by price"
+# Back to Overview, restore All-Records mode, then Record.
+- tapOn:
+    text: "Back"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+- tapOn:
+    point: "83%,10%"
+- runFlow:
+    file: ../../common/ensure-all-records-mode.yml
+    env:
+      CATEGORY: "Rent"
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

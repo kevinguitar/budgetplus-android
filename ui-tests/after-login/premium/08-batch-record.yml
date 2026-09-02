@@ -1,0 +1,33 @@
+# P8 — Batch Record screen is accessible to premium users (free users are paywalled)
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/seed-premium.yml
+- runFlow: ../../common/assert-on-record.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+# Premium: Batch Record opens its dedicated screen (not the Unlock Premium paywall).
+- tapOn:
+    text: "Batch Record"
+# "Number of times:" is the last field and sits below the fold on short screens;
+# scroll it into view before asserting.
+- extendedWaitUntil:
+    visible:
+      text: "Start Date:"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Number of times:"
+    direction: DOWN
+    timeout: 10000
+- assertVisible:
+    text: "Number of times:"
+- assertVisible:
+    text: "Batch Frequency:"
+- assertVisible:
+    text: "Start Date:"
+- runFlow: ../../common/return-to-record.yml

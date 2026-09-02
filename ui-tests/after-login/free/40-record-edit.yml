@@ -1,0 +1,37 @@
+# E1/E2 — Open a record from Overview and edit it
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+# Create a record to edit.
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Food"
+# Go to Overview (History tab, bottom-right).
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Tap the record row to open the Edit Record dialog.
+- tapOn:
+    text: "Food"
+- assertVisible:
+    text: "Edit Record"
+# Change the price via the Price field, then save.
+- tapOn:
+    text: "Price.*"
+- eraseText
+- inputText: "150"
+- pressKey: Enter
+- tapOn:
+    text: "Save"
+- extendedWaitUntil:
+    visible:
+      text: "Record edited"
+    timeout: 10000
+# Back to Record.
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

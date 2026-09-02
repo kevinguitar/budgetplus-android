@@ -1,0 +1,29 @@
+# L4 — Create first book happy path (lands on Record)
+appId: com.kevlina.budgetplus
+---
+- launchApp:
+    clearState: true
+- runFlow: ../common/ensure-logged-out.yml
+- tapOn:
+    text: "Continue with Google"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 60000
+- tapOn:
+    text: "My accounting book"
+- inputText: "UI Test Book"
+- tapOn:
+    text: "You can create a new accounting book"
+- tapOn:
+    text: "Go"
+- runFlow: ../common/dismiss-system-dialogs.yml
+- extendedWaitUntil:
+    visible:
+      text: "AC"
+    timeout: 30000
+- assertVisible:
+    text: "AC"
+- assertVisible:
+    text: "UI Test Book"

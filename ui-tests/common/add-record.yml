@@ -1,0 +1,28 @@
+# Adds a single expense record of price 100 in the given category.
+# Params: CATEGORY — the category pill text to tap.
+# Used by flows that need to add several records (e.g. interstitial cadence).
+appId: com.kevlina.budgetplus
+---
+- tapOn:
+    text: "AC"
+# On short screens the category grid can be scrolled such that the target pill is above
+# the fold after prior records; scroll it back into view before tapping.
+- scrollUntilVisible:
+    element:
+      text: "${CATEGORY}"
+    direction: UP
+    timeout: 10000
+- tapOn:
+    text: "${CATEGORY}"
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "0"
+- tapOn:
+    text: "0"
+- tapOn:
+    text: "OK"
+- extendedWaitUntil:
+    visible:
+      text: "0"
+    timeout: 10000

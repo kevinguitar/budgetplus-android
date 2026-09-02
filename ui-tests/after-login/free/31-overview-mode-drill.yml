@@ -1,0 +1,42 @@
+# O5/O6 — Overview mode toggle and chart drill-down to Records
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Food"
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# O5 — toggle to Group-by-categories (mode toggle icon, top-right).
+- tapOn:
+    point: "83%,10%"
+# O6 — drill into the category to open the Records screen.
+- tapOn:
+    text: "Food"
+- extendedWaitUntil:
+    visible:
+      text: "Food: .*"
+    timeout: 15000
+- assertVisible:
+    text: "Food: .*"
+- tapOn:
+    text: "Back"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Toggle back to All Records so the persisted mode is restored for later flows.
+- tapOn:
+    point: "83%,10%"
+- runFlow:
+    file: ../../common/ensure-all-records-mode.yml
+    env:
+      CATEGORY: "Food"
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

@@ -28,7 +28,7 @@ class BudgetPlusApp : Application(), HasDependencyGraph {
 
     override fun onCreate() {
         if (resources.getBoolean(R.bool.is_ui_test)) {
-            UiTestEnvironment.configure(emulatorHost = "10.0.2.2")
+            UiTestEnvironment.configure(emulatorHost = "127.0.0.1")
         }
         appGraph.inject(this)
         super.onCreate()

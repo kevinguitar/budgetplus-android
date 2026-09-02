@@ -1,5 +1,6 @@
 package com.kevlina.budgetplus.core.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Snackbar
@@ -13,9 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.kevlina.budgetplus.core.common.SnackbarData
 import com.kevlina.budgetplus.core.common.SnackbarDuration
+import com.kevlina.budgetplus.core.common.UiTestFlags
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,10 +43,15 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
                     actionLabel = snackbarData.actionLabel,
                     // We support swipe to dismiss, don't want to pollute ui
                     withDismissAction = false,
-                    duration = when (snackbarData.duration) {
-                        SnackbarDuration.Short -> MaterialSnackbarDuration.Short
-                        SnackbarDuration.Long -> MaterialSnackbarDuration.Long
-                        SnackbarDuration.Indefinite -> MaterialSnackbarDuration.Indefinite
+                    duration = if (UiTestFlags.enabled) {
+                        // In UI-test mode keep snackbars on screen so Maestro can assert them reliably.
+                        MaterialSnackbarDuration.Indefinite
+                    } else {
+                        when (snackbarData.duration) {
+                            SnackbarDuration.Short -> MaterialSnackbarDuration.Short
+                            SnackbarDuration.Long -> MaterialSnackbarDuration.Long
+                            SnackbarDuration.Indefinite -> MaterialSnackbarDuration.Indefinite
+                        }
                     }
                 )
                 if (result == SnackbarResult.ActionPerformed) {
@@ -70,7 +79,17 @@ fun SnackbarHost(snackbarData: SnackbarData?) {
             hostState = hostState,
         ) { data ->
             Box(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .thenIf(UiTestFlags.enabled) {
+                        // Expose the message text to the accessibility tree so Maestro can
+                        // reliably assert on it (the raw Snackbar text is not always visible
+                        // to the automation driver), and allow tap-to-dismiss: swipe-to-dismiss
+                        // gestures are unreliable to drive from the iOS automation driver.
+                        Modifier
+                            .semantics { contentDescription = data.visuals.message }
+                            .clickable { data.dismiss() }
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Snackbar(

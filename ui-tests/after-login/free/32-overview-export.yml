@@ -1,0 +1,30 @@
+# O7 — Export CSV (free user): confirm dialog and export flow
+# Kept tolerant of the interstitial ad / storage permission that free users hit.
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow:
+    file: ../../common/add-record.yml
+    env:
+      CATEGORY: "Food"
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+# Export icon (top-right, contentDescription "Export csv").
+- tapOn:
+    text: "Export csv"
+- extendedWaitUntil:
+    visible:
+      text: "Do you want to export.*"
+    timeout: 15000
+- assertVisible:
+    text: "Do you want to export.*"
+# Cancel to avoid the ad/permission/file-write side effects (entry is what we assert).
+- tapOn:
+    text: "Cancel"
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

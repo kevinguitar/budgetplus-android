@@ -1,0 +1,30 @@
+# C6 — Unsaved-changes guard when leaving Edit Categories
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- runFlow: ../../common/open-category-editor.yml
+# Make a change.
+- tapOn:
+    text: "Add"
+- assertVisible:
+    text: "Category"
+- inputText: "TempCat"
+- pressKey: Enter
+# The new category is appended to the end of the list, which sits below the fold on
+# short screens; scroll it into view before asserting.
+- scrollUntilVisible:
+    element:
+      text: "TempCat"
+    direction: DOWN
+    timeout: 10000
+- assertVisible:
+    text: "TempCat"
+# Attempt to leave (top-bar back) -> unsaved warning appears.
+- tapOn:
+    text: "Back"
+- assertVisible:
+    text: "Do you want to leave without saving the changes?"
+# Confirm leaving.
+- tapOn:
+    text: "Confirm"
+- runFlow: ../../common/return-to-record.yml

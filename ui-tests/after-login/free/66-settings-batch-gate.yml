@@ -1,0 +1,18 @@
+# ST13 — Batch Record routes free user to the paywall
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- tapOn:
+    text: "Batch Record"
+# Free user is routed to Unlock Premium rather than the Batch Record screen.
+- extendedWaitUntil:
+    notVisible:
+      text: "Batch Record"
+    timeout: 15000
+- runFlow: ../../common/return-to-record.yml

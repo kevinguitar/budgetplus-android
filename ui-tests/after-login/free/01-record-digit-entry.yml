@@ -1,0 +1,18 @@
+# R1 — Digit entry & clear
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "7"
+- tapOn:
+    text: "8"
+- tapOn:
+    text: "9"
+- assertVisible:
+    text: "789"
+- tapOn:
+    text: "AC"
+- assertVisible:
+    text: "0"

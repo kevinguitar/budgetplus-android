@@ -1,0 +1,38 @@
+# ST15 — Delete book (destructive; runs near the end of the free suite)
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: "Delete Book"
+    direction: DOWN
+- tapOn:
+    text: "Delete Book"
+- extendedWaitUntil:
+    visible:
+      text: "Are you sure you want to delete.*"
+    timeout: 15000
+- tapOn:
+    text: "Confirm"
+# After deleting the only book, the user is taken to the Welcome screen to create a new one.
+- extendedWaitUntil:
+    visible:
+      text: "Book Name"
+    timeout: 20000
+- assertVisible:
+    text: "Book Name"
+# Re-provision a book so later flows (and re-runs) have a clean starting point.
+- tapOn:
+    text: "My accounting book"
+- inputText: "UI Test Book"
+- tapOn:
+    text: "You can create a new accounting book"
+- tapOn:
+    text: "Go"
+- runFlow: ../../common/assert-on-record.yml

@@ -1,0 +1,20 @@
+# Opens the Edit Categories editor from the Record screen.
+# The "Edit" pill is the last item in the category grid; once extra categories have been
+# added (e.g. by earlier flows) it can be pushed below the fold, behind the fixed
+# calculator. Swipe up within the category/info band to reveal it, then tap. The swipe is
+# a no-op when "Edit" is already visible.
+appId: com.kevlina.budgetplus
+---
+- runFlow:
+    when:
+      notVisible:
+        text: "Edit"
+    commands:
+      - swipe:
+          start: "50%,45%"
+          end: "50%,15%"
+          duration: 400
+- tapOn:
+    text: "Edit"
+- assertVisible:
+    text: "Edit Categories"

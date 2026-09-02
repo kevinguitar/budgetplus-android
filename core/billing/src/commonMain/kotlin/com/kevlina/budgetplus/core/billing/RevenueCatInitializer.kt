@@ -3,6 +3,7 @@ package com.kevlina.budgetplus.core.billing
 import com.kevlina.budgetplus.core.common.AppCoroutineScope
 import com.kevlina.budgetplus.core.common.AppStartAction
 import com.kevlina.budgetplus.core.common.Logger
+import com.kevlina.budgetplus.core.common.UiTestFlags
 import com.kevlina.budgetplus.core.data.AuthManager
 import com.revenuecat.purchases.kmp.LogLevel
 import com.revenuecat.purchases.kmp.Purchases
@@ -28,6 +29,14 @@ internal class RevenueCatInitializer(
 ) : AppStartAction {
 
     override fun onAppStart() {
+        // Skip RevenueCat/StoreKit initialization under UI tests: it cannot transact in
+        // the emulator and, on iOS, StoreKit triggers an "Sign in to Apple Account" system
+        // dialog that blocks the automation.
+        if (UiTestFlags.enabled) {
+            Logger.d("UI test environment, skipping RevenueCat initialization.")
+            return
+        }
+
         val apiKey = BuildKonfig.revenuecatApiKey
         if (apiKey.isNullOrEmpty()) {
             Logger.e("RevenueCat API key is not set, skipping initialization.")

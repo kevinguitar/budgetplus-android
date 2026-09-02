@@ -1,0 +1,17 @@
+# R2 — Decimal input
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "1"
+# decimal "." button (icon; tapped by position to avoid ambiguous text matches)
+- tapOn:
+    point: "13%,79%"
+- tapOn:
+    text: "5"
+- assertVisible:
+    text: "1.5"
+- tapOn:
+    text: "AC"

@@ -1,0 +1,60 @@
+# O1/O2/O3/O8 — Overview navigation, type toggle, period pills, balance card
+# The History bottom-nav tab is icon-only, tapped by position (bottom-right).
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+# Ensure there is at least one record to populate the overview.
+- tapOn:
+    text: "AC"
+- tapOn:
+    text: "Food"
+- tapOn:
+    text: "1"
+- tapOn:
+    text: "2"
+- tapOn:
+    text: "0"
+- tapOn:
+    text: "OK"
+- extendedWaitUntil:
+    visible:
+      text: "0"
+    timeout: 10000
+# Navigate to History / Overview.
+- tapOn:
+    point: "74%,96%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Overview"
+    timeout: 15000
+- assertVisible:
+    text: ".*'s Overview"
+# O8 — Balance card labels.
+- assertVisible:
+    text: "Total"
+- assertVisible:
+    text: "Balance"
+# O2 — Type toggle.
+- assertVisible:
+    text: "Expense"
+- tapOn:
+    text: "Income"
+- tapOn:
+    text: "Expense"
+# O3 — Period pills.
+- assertVisible:
+    text: "1D"
+- assertVisible:
+    text: "1W"
+- assertVisible:
+    text: "1M"
+- assertVisible:
+    text: "LM"
+- tapOn:
+    text: "1W"
+- tapOn:
+    text: "1M"
+# Return to Record.
+- tapOn:
+    point: "18%,96%"
+- runFlow: ../../common/assert-on-record.yml

@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,9 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
 val colorTones = ColorTone.entries.toList()
+
+// Stable accessibility id for the tone carousel so UI tests can swipe it reliably.
+const val COLOR_TONE_PAGER_DESC = "color_tone_pager"
 
 private const val CARD_TEXT_DARKEN_FACTOR = 0.7F
 
@@ -74,7 +79,9 @@ internal fun ColorToneCarousel(
             state = pagerState,
             pageSpacing = 16.dp,
             contentPadding = PaddingValues(horizontal = 16.dp),
-            modifier = Modifier.weight(1F)
+            modifier = Modifier
+                .weight(1F)
+                .semantics { contentDescription = COLOR_TONE_PAGER_DESC }
         ) { page ->
 
             val colorTone = colorTones[page]

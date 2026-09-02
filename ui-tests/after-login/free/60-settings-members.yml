@@ -1,0 +1,31 @@
+# ST1/ST3 — Open Settings and view members
+appId: com.kevlina.budgetplus
+---
+- runFlow: ../../common/setup-login.yml
+- tapOn:
+    text: "Settings"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- assertVisible:
+    text: ".*'s Settings"
+# ST3 — View Members.
+- tapOn:
+    text: "View Members"
+- extendedWaitUntil:
+    visible:
+      text: "Members"
+    timeout: 15000
+- assertVisible:
+    text: "Owner"
+# Dismiss the members dialog by tapping the scrim above it.
+- tapOn:
+    point: "50%,12%"
+- extendedWaitUntil:
+    visible:
+      text: ".*'s Settings"
+    timeout: 15000
+- assertVisible:
+    text: ".*'s Settings"
+- runFlow: ../../common/return-to-record.yml

@@ -4,6 +4,11 @@
 # Auth/Welcome (rare iOS navigation races), re-provisions via setup-login.
 appId: com.kevlina.budgetplus
 ---
+# A late iOS "Open in Budget+?" deeplink confirmation (from the premium seed deeplink) can
+# reappear over the Record screen and block the AC assertion below. Dismiss it if present.
+- tapOn:
+    text: "Cancel"
+    optional: true
 - runFlow:
     when:
       notVisible:

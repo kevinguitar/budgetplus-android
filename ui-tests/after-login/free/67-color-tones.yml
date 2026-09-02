@@ -17,18 +17,27 @@ appId: com.kevlina.budgetplus
     text: "Color Tone Picker"
 # Wait for the picker screen to actually open. Do NOT wait on "Color Tone Picker" text — it
 # also labels the Settings row we just tapped, so it is already visible and the wait would
-# pass while still on Settings. Wait on the pager's UI-test "next" control instead, which
-# only exists on the picker screen. If the row tap didn't navigate (emulator mis-tap), retry.
+# pass while still on Settings. "Color Preview" only shows on the opened picker screen. If
+# the row tap didn't navigate (emulator mis-tap), retry it.
 - runFlow:
     when:
       notVisible:
-        text: "color_tone_next"
+        text: "Color Preview"
     commands:
       - tapOn:
           text: "Color Tone Picker"
 - extendedWaitUntil:
     visible:
+      text: "Color Preview"
+    timeout: 15000
+# The picker puts a large "Color Preview" card above the tone carousel, pushing the pager
+# (and its color_tone_next control) below the fold on some screens. Scroll the picker content
+# down until the next control is on screen before tapping it.
+- scrollUntilVisible:
+    element:
       text: "color_tone_next"
+    direction: DOWN
+    centerElement: true
     timeout: 15000
 # Advance to the next free tone ("Warm Tones of Dusk", the 2nd tone). We tap the
 # UI-test-only "next" control (contentDescription color_tone_next) which advances the

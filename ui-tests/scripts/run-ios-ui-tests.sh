@@ -62,7 +62,9 @@ APP_PATH="build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app"
 # Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
 MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
 
-# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit per-suite HTML reports + debug output.
+# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit a per-suite JUnit XML report (so
+# failures surface in the GitHub Actions run summary / PR checks via a test reporter) plus
+# the debug output/screenshots for artifacts.
 maestro_test() {
   local suite_name="$1"
   shift
@@ -72,8 +74,8 @@ maestro_test() {
     "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" \
       --test-output-dir="$out" \
       --debug-output="$out" \
-      --format=html \
-      --output="$out/report.html" \
+      --format=junit \
+      --output="$out/report.xml" \
       "$@"
   else
     "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" "$@"
@@ -98,6 +100,17 @@ run_suites() {
   # function (it runs as a firebase emulators:exec child, where a non-final maestro
   # failure would otherwise be swallowed and the suite reported as green).
   local suite_result=0
+
+  # TEMPORARY (stabilization): when UI_TEST_FLAKY_ONLY=1, run only the previously-flaky
+  # color-tone flows (the back-on-welcome flow is Android-only). Remove this branch (and the
+  # env var in the workflow) once they pass and the full suite is restored.
+  if [[ "${UI_TEST_FLAKY_ONLY:-}" == "1" ]]; then
+    reset_app
+    maestro_test "after-login-free/67-color-tones" ui-tests/after-login/free/67-color-tones.yml || suite_result=1
+    reset_app
+    maestro_test "after-login-premium/07-premium-color-tones" ui-tests/after-login/premium/07-premium-color-tones.yml || suite_result=1
+    return "$suite_result"
+  fi
 
   # login: each flow needs a truly unauthenticated start, so reset the keychain before
   # every flow (iOS persists Firebase auth in the keychain across clearState).

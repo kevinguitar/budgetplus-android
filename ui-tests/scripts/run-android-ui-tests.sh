@@ -17,7 +17,9 @@ cd "$ROOT_DIR"
 # Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
 MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
 
-# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit per-suite HTML reports + debug output.
+# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit a per-suite JUnit XML report (so
+# failures surface in the GitHub Actions run summary / PR checks via a test reporter) plus
+# the debug output/screenshots for artifacts.
 maestro_test() {
   local suite_name="$1"
   shift
@@ -27,8 +29,8 @@ maestro_test() {
     "$MAESTRO_BIN" test \
       --test-output-dir="$out" \
       --debug-output="$out" \
-      --format=html \
-      --output="$out/report.html" \
+      --format=junit \
+      --output="$out/report.xml" \
       "$@"
   else
     "$MAESTRO_BIN" test "$@"
@@ -37,6 +39,26 @@ maestro_test() {
 
 run_suites() {
   suites_failed=0
+
+  # TEMPORARY (stabilization): when UI_TEST_FLAKY_ONLY=1, run only the three flows that
+  # were previously tagged `disabled` for flakiness, so CI validates their fix fast. Remove
+  # this branch (and the env var in the workflow) once they pass and the full suite is
+  # restored.
+  if [[ "${UI_TEST_FLAKY_ONLY:-}" == "1" ]]; then
+    wait_for_device || true
+    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
+    run_suite_dir login ui-tests/login/05-back-on-welcome-logs-out.yml
+
+    wait_for_device || true
+    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
+    run_suite_dir after-login-free ui-tests/after-login/free/67-color-tones.yml
+
+    wait_for_device || true
+    adb -s "$ADB_SERIAL" shell pm clear com.kevlina.budgetplus
+    run_suite_dir after-login-premium ui-tests/after-login/premium/07-premium-color-tones.yml
+
+    return "$suites_failed"
+  fi
 
   # login runs first on freshly cleared state (its flows also clearState per-flow).
   wait_for_device || true
@@ -124,23 +146,16 @@ wait_for_device() {
 run_suite_dir() {
   local suite_prefix="$1"
   local dir="$2"
-  for flow in "$dir"/*.yml; do
+  # Accept either a directory (run all its flows) or a single .yml file path.
+  local flows
+  if [[ -f "$dir" ]]; then
+    flows=("$dir")
+  else
+    flows=("$dir"/*.yml)
+  fi
+  for flow in "${flows[@]}"; do
     # Skip iOS-only flows (per-flow platform gating).
     if grep -q '^platform: iOS' "$flow"; then
-      continue
-    fi
-
-    # Honor the workspace's excludeTags: disabled. We run flows per-file (see the
-    # block comment above), which bypasses Maestro's workspace config.yaml, so the
-    # `disabled` tag must be enforced here explicitly. A flow is considered disabled
-    # when it declares a top-level `tags:` list that includes `disabled`.
-    if awk '
-      /^tags:/ { intags = 1; next }
-      intags && /^[[:space:]]*-[[:space:]]*disabled[[:space:]]*$/ { found = 1 }
-      intags && /^[^[:space:]-]/ { intags = 0 }
-      END { exit(found ? 0 : 1) }
-    ' "$flow"; then
-      echo "::notice::Skipping $(basename "$flow" .yml): tagged disabled." >&2
       continue
     fi
 
@@ -176,10 +191,12 @@ run_suite_dir() {
   done
 }
 
-# --suites: invoked by emulators:exec (see below) to run just the flows.
+# --suites: invoked by emulators:exec (see below) to run just the flows. Propagate the
+# real pass/fail result: `exit 0` here would swallow every flow failure and report the
+# whole suite green, which is why CI failures were previously invisible.
 if [[ "${1:-}" == "--suites" ]]; then
   run_suites
-  exit 0
+  exit $?
 fi
 
 SERVICE_FILE="$ROOT_DIR/androidApp/google-services.json"

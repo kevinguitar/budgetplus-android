@@ -12,6 +12,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -20,7 +21,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kevlina.budgetplus.core.common.UiTestFlags
 import com.kevlina.budgetplus.core.lottie.PremiumCrown
+import com.kevlina.budgetplus.core.ui.clickableWithoutRipple
+import kotlinx.coroutines.launch
 import com.kevlina.budgetplus.core.theme.ColorTone
 import com.kevlina.budgetplus.core.theme.LocalAppColors
 import com.kevlina.budgetplus.core.theme.ThemeColorSemantic
@@ -38,6 +42,11 @@ val colorTones = ColorTone.entries.toList()
 
 // Stable accessibility id for the tone carousel so UI tests can swipe it reliably.
 const val COLOR_TONE_PAGER_DESC = "color_tone_pager"
+
+// Stable accessibility id for a UI-test-only control that deterministically advances the
+// pager by one page. Fling-based swipes are too flaky in CI (they intermittently fail to
+// advance a page), so tests tap this instead. Only present when UiTestFlags.enabled.
+const val COLOR_TONE_NEXT_DESC = "color_tone_next"
 
 private const val CARD_TEXT_DARKEN_FACTOR = 0.7F
 
@@ -58,6 +67,8 @@ internal fun ColorToneCarousel(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
+        val coroutineScope = rememberCoroutineScope()
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -73,6 +84,26 @@ internal fun ColorToneCarousel(
                 fontWeight = FontWeight.SemiBold,
                 color = LocalAppColors.current.primary.darken(CARD_TEXT_DARKEN_FACTOR)
             )
+
+            // UI-test-only: a stable, tappable control that advances the pager one page at a
+            // time via animateScrollToPage. This is deterministic (unlike a fling swipe), which
+            // eliminates the color-tone carousel flakiness in CI. It carries no visible label so
+            // it does not alter the production layout meaningfully.
+            if (UiTestFlags.enabled) {
+                Text(
+                    text = ">",
+                    fontSize = FontSize.Large,
+                    fontWeight = FontWeight.SemiBold,
+                    color = LocalAppColors.current.primary.darken(CARD_TEXT_DARKEN_FACTOR),
+                    modifier = Modifier
+                        .semantics { contentDescription = COLOR_TONE_NEXT_DESC }
+                        .clickableWithoutRipple {
+                            val next = (pagerState.currentPage + 1)
+                                .coerceAtMost(colorTones.lastIndex)
+                            coroutineScope.launch { pagerState.animateScrollToPage(next) }
+                        }
+                )
+            }
         }
 
         HorizontalPager(

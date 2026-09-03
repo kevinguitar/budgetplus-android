@@ -20,7 +20,8 @@ appId: com.kevlina.budgetplus
     text: "Euro"
 # The picker closes once the change is committed. The first tap on a currency tile
 # occasionally does not register on iOS (the picker stays open), so retry once if it is
-# still showing before asserting it closed.
+# still showing. The retry tap is optional: the picker may be mid-close when the retry
+# fires, in which case the tile is already gone and no tap is needed.
 - runFlow:
     when:
       visible:
@@ -28,6 +29,7 @@ appId: com.kevlina.budgetplus
     commands:
       - tapOn:
           text: "Euro"
+          optional: true
 - extendedWaitUntil:
     notVisible:
       text: "Book's Currency"
@@ -57,6 +59,7 @@ appId: com.kevlina.budgetplus
     commands:
       - tapOn:
           text: "US Dollar"
+          optional: true
 - extendedWaitUntil:
     notVisible:
       text: "Book's Currency"

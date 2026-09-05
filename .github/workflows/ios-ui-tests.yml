@@ -118,7 +118,7 @@ jobs:
 
       - name: Publish iOS UI test results
         if: always()
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         with:
           name: iOS UI test results
           path: build/maestro/ios/**/report.xml

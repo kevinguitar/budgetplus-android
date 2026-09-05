@@ -112,7 +112,7 @@ jobs:
 
       - name: Publish Android UI test results
         if: always()
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         with:
           name: Android UI test results
           path: build/maestro/android/**/report.xml

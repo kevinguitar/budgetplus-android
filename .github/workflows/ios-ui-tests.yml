@@ -7,6 +7,10 @@ jobs:
   ios-ui-tests:
     name: iOS UI tests
     runs-on: macos-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      checks: write
     env:
       MAESTRO_CLI_NO_ANALYTICS: true
       MAESTRO_CLI_ANALYSIS_NOTIFICATION_DISABLED: true
@@ -90,8 +94,14 @@ jobs:
           # fresh workspace ('umbrella header GoogleSignIn.h not found').
           GRADLE_OPTS: -Dorg.gradle.caching=false
         run: |
-          # Boot the first available iPhone simulator and pass its name to the runner script.
-          SIMULATOR=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0]')
+          # Boot the iPhone 17 Pro simulator (matching the documented test device). Fall
+          # back to the first available iPhone if that exact model isn't present on the
+          # runner image, so the job still runs on older/newer macOS images.
+          SIMULATOR=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and .name == "iPhone 17 Pro")][0] // empty')
+          if [ -z "$SIMULATOR" ]; then
+            echo "iPhone 17 Pro not found; falling back to first available iPhone." >&2
+            SIMULATOR=$(xcrun simctl list devices available -j | jq -r '[.devices[][] | select(.isAvailable == true and (.name | test("iPhone")))][0]')
+          fi
           SIMULATOR_ID=$(echo "$SIMULATOR" | jq -r '.udid')
           SIMULATOR_NAME=$(echo "$SIMULATOR" | jq -r '.name')
           xcrun simctl boot "$SIMULATOR_ID"
@@ -105,6 +115,20 @@ jobs:
           result=$?
           xcrun simctl io "$SIMULATOR_ID" screenshot build/maestro/ios/final-screen.png || true
           exit $result
+
+      - name: Publish iOS UI test results
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: iOS UI test results
+          path: build/maestro/ios/**/report.xml
+          reporter: java-junit
+          fail-on-error: false
+          fail-on-empty: false
+
+      - name: iOS UI test summary
+        if: always()
+        run: bash ui-tests/scripts/junit-summary.sh "iOS" build/maestro/ios
 
       - name: Upload iOS UI test artifacts
         if: always()

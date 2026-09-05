@@ -1,13 +1,8 @@
 # L6 — Pressing back on the Welcome screen returns to the Auth screen (logs out)
 # Android-only: relies on the system back button; iOS has no equivalent gesture that
 # Maestro can reliably trigger for the predictive-back logout handler.
-# Temporarily disabled: the system `back` on Welcome intermittently closes the app
-# instead of routing through the predictive-back logout handler, leaving a blank screen
-# so "Continue with Google" never reappears. Tracked for re-enabling once stabilized.
 appId: com.kevlina.budgetplus
 platform: Android
-tags:
-  - disabled
 ---
 - launchApp:
     clearState: true
@@ -19,7 +14,39 @@ tags:
     visible:
       text: "Book Name"
     timeout: 60000
+# Welcome is reached via an async navigation reset, so the predictive-back logout handler
+# (NavigationBackHandler in WelcomeBinding) is registered a beat after the screen renders.
+# Pressing back before it is registered lets the event fall through to the platform default,
+# which finishes the Activity (blank screen) instead of logging out. Assert a second stable
+# Welcome anchor and settle briefly so the handler is guaranteed registered before back.
+- assertVisible:
+    text: "My accounting book"
+- waitForAnimationToEnd:
+    timeout: 5000
 - back
+# If the first back fell through and closed the app (handler not yet registered), the Auth
+# screen won't appear. Relaunch and retry back once from a fully-settled Welcome screen.
+- runFlow:
+    when:
+      notVisible:
+        text: "Continue with Google"
+    commands:
+      - launchApp
+      - runFlow: ../common/dismiss-system-dialogs.yml
+      - extendedWaitUntil:
+          visible:
+            text: "Book Name|Continue with Google"
+          timeout: 30000
+      - runFlow:
+          when:
+            visible:
+              text: "Book Name"
+          commands:
+            - assertVisible:
+                text: "My accounting book"
+            - waitForAnimationToEnd:
+                timeout: 5000
+            - back
 - extendedWaitUntil:
     visible:
       text: "Continue with Google"

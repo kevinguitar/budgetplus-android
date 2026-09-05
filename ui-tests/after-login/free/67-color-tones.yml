@@ -1,10 +1,5 @@
 # ST8 — Color Tone Picker: free tones selectable, save works
-# Temporarily disabled: the horizontal tone carousel swipe is too flaky in CI
-# (the fling intermittently fails to advance a page, so "Warm Tones of Dusk"
-# never becomes visible). Tracked for re-enabling once the swipe is stabilized.
 appId: com.kevlina.budgetplus
-tags:
-  - disabled
 ---
 - runFlow: ../../common/setup-login.yml
 - tapOn:
@@ -20,17 +15,35 @@ tags:
     centerElement: true
 - tapOn:
     text: "Color Tone Picker"
+# Wait for the picker screen to actually open. Do NOT wait on "Color Tone Picker" text — it
+# also labels the Settings row we just tapped, so it is already visible and the wait would
+# pass while still on Settings. "Color Preview" only shows on the opened picker screen. If
+# the row tap didn't navigate (emulator mis-tap), retry it.
+- runFlow:
+    when:
+      notVisible:
+        text: "Color Preview"
+    commands:
+      - tapOn:
+          text: "Color Tone Picker"
 - extendedWaitUntil:
     visible:
-      text: "Color Tone Picker"
+      text: "Color Preview"
     timeout: 15000
-# The tones are shown in a horizontal carousel; swipe the pager to the next free tone.
-# A short duration gives the fling enough momentum to advance a page on both platforms.
-- swipe:
-    from:
-      text: "color_tone_pager"
-    direction: LEFT
-    duration: 100
+# The picker puts a large "Color Preview" card above the tone carousel, pushing the pager
+# (and its color_tone_next control) below the fold on some screens. Scroll the picker content
+# down until the next control is on screen before tapping it.
+- scrollUntilVisible:
+    element:
+      text: "color_tone_next"
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+# Advance to the next free tone ("Warm Tones of Dusk", the 2nd tone). We tap the
+# UI-test-only "next" control (contentDescription color_tone_next) which advances the
+# pager deterministically via animateScrollToPage, instead of a flaky fling swipe.
+- tapOn:
+    text: "color_tone_next"
 - extendedWaitUntil:
     visible:
       text: "Warm Tones of Dusk"

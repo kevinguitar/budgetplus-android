@@ -62,7 +62,9 @@ APP_PATH="build/ui-tests/Build/Products/Debug-iphonesimulator/BudgetPlus.app"
 # Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
 MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
 
-# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit per-suite HTML reports + debug output.
+# When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit a per-suite JUnit XML report (so
+# failures surface in the GitHub Actions run summary / PR checks via a test reporter) plus
+# the debug output/screenshots for artifacts.
 maestro_test() {
   local suite_name="$1"
   shift
@@ -72,8 +74,8 @@ maestro_test() {
     "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" \
       --test-output-dir="$out" \
       --debug-output="$out" \
-      --format=html \
-      --output="$out/report.html" \
+      --format=junit \
+      --output="$out/report.xml" \
       "$@"
   else
     "$MAESTRO_BIN" test --udid "$SIMULATOR_ID" "$@"

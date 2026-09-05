@@ -17,23 +17,43 @@ cd "$ROOT_DIR"
 # Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
 MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
 
+# Hard ceiling for a single flow. Maestro installs/uninstalls its instrumentation
+# driver over adb around every flow; if the emulator dies mid-flow those adb calls
+# block on the transport forever (there is no internal timeout), and the whole job
+# then hangs until the 120-minute workflow limit cancels it. Bounding each flow with
+# `timeout` turns that indefinite hang into a fast, recoverable failure so the
+# offline-recovery/abort logic below can actually run. The longest healthy flow
+# observed is ~2m, so 8m leaves generous headroom while still catching a wedge.
+MAESTRO_FLOW_TIMEOUT="${MAESTRO_FLOW_TIMEOUT:-8m}"
+
+# Resolve a `timeout` command (GNU coreutils on CI ships `timeout`; macOS/Homebrew
+# ships `gtimeout`). If neither exists, fall back to running maestro directly.
+TIMEOUT_BIN=$(command -v timeout || command -v gtimeout || true)
+
 # When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit a per-suite JUnit XML report (so
 # failures surface in the GitHub Actions run summary / PR checks via a test reporter) plus
 # the debug output/screenshots for artifacts.
 maestro_test() {
   local suite_name="$1"
   shift
+  # Wrap maestro in `timeout` (when available) so a hung adb transport can never
+  # stall a flow past MAESTRO_FLOW_TIMEOUT. `timeout` exits 124 on timeout, which
+  # surfaces as a normal non-zero flow failure the recovery logic handles.
+  local runner=("$MAESTRO_BIN")
+  if [[ -n "$TIMEOUT_BIN" ]]; then
+    runner=("$TIMEOUT_BIN" --signal=KILL "$MAESTRO_FLOW_TIMEOUT" "$MAESTRO_BIN")
+  fi
   if [[ -n "${MAESTRO_OUTPUT_DIR:-}" ]]; then
     local out="$MAESTRO_OUTPUT_DIR/$suite_name"
     mkdir -p "$out"
-    "$MAESTRO_BIN" test \
+    "${runner[@]}" test \
       --test-output-dir="$out" \
       --debug-output="$out" \
       --format=junit \
       --output="$out/report.xml" \
       "$@"
   else
-    "$MAESTRO_BIN" test "$@"
+    "${runner[@]}" test "$@"
   fi
 }
 
@@ -78,20 +98,27 @@ wait_for_device() {
 
     # An `offline` device is listed but unresponsive: `adb wait-for-device` returns
     # immediately for it, so it never truly "settles". The reliable recovery is to
-    # bounce the adb server once, which forces a reconnect and usually flips the
-    # device back to `device`. Only do this once per wait to avoid thrashing.
-    if [[ "$state" == "offline" && "$kicked_server" -eq 0 ]]; then
-      echo "Device $ADB_SERIAL is offline; restarting adb server to force reconnect." >&2
+    # bounce the adb server, which forces a reconnect and usually flips the device
+    # back to `device`. Retry the bounce up to a few times (spaced out) rather than
+    # once: a full emulator wedge sometimes needs more than a single reconnect
+    # before the transport comes back.
+    if [[ "$state" == "offline" && "$kicked_server" -lt 3 ]]; then
+      echo "Device $ADB_SERIAL is offline; restarting adb server to force reconnect (attempt $((kicked_server + 1)))." >&2
       adb kill-server >/dev/null 2>&1 || true
       adb start-server >/dev/null 2>&1 || true
-      kicked_server=1
-      sleep 3
+      kicked_server=$((kicked_server + 1))
+      sleep 5
       continue
     fi
 
+    # `wait-for-device` + `get-state == device` can lie: a zombie/wedged emulator
+    # stays listed as `device` while adb transport commands hang. Actively probe it
+    # with a trivial shell command under its own short `timeout` so a wedged device
+    # is treated as not-ready instead of "healthy". `boot_completed` doubles as the
+    # readiness signal, and the timeout guarantees this probe itself can't hang.
     if adb -s "$ADB_SERIAL" wait-for-device >/dev/null 2>&1 &&
       [[ "$(adb -s "$ADB_SERIAL" get-state 2>/dev/null | tr -d '[:space:]')" == "device" ]] &&
-      [[ "$(adb -s "$ADB_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '[:space:]')" == "1" ]]; then
+      [[ "$(probe_boot_completed)" == "1" ]]; then
       # Re-establish the Firebase emulator port forwards; a device that dropped and
       # came back loses its reverse tunnels.
       adb -s "$ADB_SERIAL" reverse tcp:9099 tcp:9099 >/dev/null 2>&1 || true
@@ -101,6 +128,17 @@ wait_for_device() {
     sleep 3
   done
   return 1
+}
+
+# Run `getprop sys.boot_completed` under a short timeout (when available) so a
+# wedged device that never answers the shell can't stall wait_for_device. Prints
+# the trimmed value (empty on hang/failure).
+probe_boot_completed() {
+  local cmd=(adb -s "$ADB_SERIAL" shell getprop sys.boot_completed)
+  if [[ -n "$TIMEOUT_BIN" ]]; then
+    cmd=("$TIMEOUT_BIN" --signal=KILL 15 "${cmd[@]}")
+  fi
+  "${cmd[@]}" 2>/dev/null | tr -d '[:space:]'
 }
 
 # Run every flow in a suite directory ONE AT A TIME.

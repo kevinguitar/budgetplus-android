@@ -17,23 +17,43 @@ cd "$ROOT_DIR"
 # Prefer the maestro on PATH; fall back to the default install location (CI installs it there).
 MAESTRO_BIN=$(command -v maestro || echo "$HOME/.maestro/bin/maestro")
 
+# Hard ceiling for a single flow. Maestro installs/uninstalls its instrumentation
+# driver over adb around every flow; if the emulator dies mid-flow those adb calls
+# block on the transport forever (there is no internal timeout), and the whole job
+# then hangs until the 120-minute workflow limit cancels it. Bounding each flow with
+# `timeout` turns that indefinite hang into a fast, recoverable failure so the
+# offline-recovery/abort logic below can actually run. The longest healthy flow
+# observed is ~2m, so 8m leaves generous headroom while still catching a wedge.
+MAESTRO_FLOW_TIMEOUT="${MAESTRO_FLOW_TIMEOUT:-8m}"
+
+# Resolve a `timeout` command (GNU coreutils on CI ships `timeout`; macOS/Homebrew
+# ships `gtimeout`). If neither exists, fall back to running maestro directly.
+TIMEOUT_BIN=$(command -v timeout || command -v gtimeout || true)
+
 # When MAESTRO_OUTPUT_DIR is set (e.g. in CI), emit a per-suite JUnit XML report (so
 # failures surface in the GitHub Actions run summary / PR checks via a test reporter) plus
 # the debug output/screenshots for artifacts.
 maestro_test() {
   local suite_name="$1"
   shift
+  # Wrap maestro in `timeout` (when available) so a hung adb transport can never
+  # stall a flow past MAESTRO_FLOW_TIMEOUT. `timeout` exits 124 on timeout, which
+  # surfaces as a normal non-zero flow failure the recovery logic handles.
+  local runner=("$MAESTRO_BIN")
+  if [[ -n "$TIMEOUT_BIN" ]]; then
+    runner=("$TIMEOUT_BIN" --signal=KILL "$MAESTRO_FLOW_TIMEOUT" "$MAESTRO_BIN")
+  fi
   if [[ -n "${MAESTRO_OUTPUT_DIR:-}" ]]; then
     local out="$MAESTRO_OUTPUT_DIR/$suite_name"
     mkdir -p "$out"
-    "$MAESTRO_BIN" test \
+    "${runner[@]}" test \
       --test-output-dir="$out" \
       --debug-output="$out" \
       --format=junit \
       --output="$out/report.xml" \
       "$@"
   else
-    "$MAESTRO_BIN" test "$@"
+    "${runner[@]}" test "$@"
   fi
 }
 
@@ -78,20 +98,34 @@ wait_for_device() {
 
     # An `offline` device is listed but unresponsive: `adb wait-for-device` returns
     # immediately for it, so it never truly "settles". The reliable recovery is to
-    # bounce the adb server once, which forces a reconnect and usually flips the
-    # device back to `device`. Only do this once per wait to avoid thrashing.
-    if [[ "$state" == "offline" && "$kicked_server" -eq 0 ]]; then
-      echo "Device $ADB_SERIAL is offline; restarting adb server to force reconnect." >&2
+    # bounce the adb server, which forces a reconnect and usually flips the device
+    # back to `device`. Retry the bounce up to a few times (spaced out) rather than
+    # once: a full emulator wedge sometimes needs more than a single reconnect
+    # before the transport comes back.
+    if [[ "$state" == "offline" && "$kicked_server" -lt 3 ]]; then
+      echo "Device $ADB_SERIAL is offline; restarting adb server to force reconnect (attempt $((kicked_server + 1)))." >&2
       adb kill-server >/dev/null 2>&1 || true
       adb start-server >/dev/null 2>&1 || true
-      kicked_server=1
-      sleep 3
+      kicked_server=$((kicked_server + 1))
+      sleep 5
       continue
     fi
 
-    if adb -s "$ADB_SERIAL" wait-for-device >/dev/null 2>&1 &&
-      [[ "$(adb -s "$ADB_SERIAL" get-state 2>/dev/null | tr -d '[:space:]')" == "device" ]] &&
-      [[ "$(adb -s "$ADB_SERIAL" shell getprop sys.boot_completed 2>/dev/null | tr -d '[:space:]')" == "1" ]]; then
+    # `wait-for-device` + `get-state == device` can lie: a zombie/wedged emulator
+    # stays listed as `device` while adb transport commands hang. Actively probe it
+    # with a trivial shell command under its own short `timeout` so a wedged device
+    # is treated as not-ready instead of "healthy". `boot_completed` doubles as the
+    # readiness signal, and the timeout guarantees this probe itself can't hang.
+    #
+    # CRITICAL: `adb wait-for-device` blocks *forever* when the emulator process is
+    # dead (a crashed QEMU never re-registers the transport). A bare call here would
+    # hang the whole loop past its own SECONDS deadline — the deadline can't preempt a
+    # blocked syscall — which is exactly how a dead emulator wedged the job for over an
+    # hour until the workflow timeout. Bound it with `adb_bounded` so the loop stays
+    # responsive and can actually give up and abort the suite.
+    if adb_bounded 20 -s "$ADB_SERIAL" wait-for-device &&
+      [[ "$(adb_bounded 15 -s "$ADB_SERIAL" get-state | tr -d '[:space:]')" == "device" ]] &&
+      [[ "$(probe_boot_completed)" == "1" ]]; then
       # Re-establish the Firebase emulator port forwards; a device that dropped and
       # came back loses its reverse tunnels.
       adb -s "$ADB_SERIAL" reverse tcp:9099 tcp:9099 >/dev/null 2>&1 || true
@@ -102,6 +136,115 @@ wait_for_device() {
   done
   return 1
 }
+
+# Run `getprop sys.boot_completed` under a short timeout (when available) so a
+# wedged device that never answers the shell can't stall wait_for_device. Prints
+# the trimmed value (empty on hang/failure).
+probe_boot_completed() {
+  adb_bounded 15 -s "$ADB_SERIAL" shell getprop sys.boot_completed | tr -d '[:space:]'
+}
+
+# Run an adb command under a hard timeout so no single adb call (notably the
+# forever-blocking `wait-for-device` against a dead emulator) can hang the caller.
+# Usage: adb_bounded <seconds> <adb-args...>. Returns adb's exit status; on timeout
+# `timeout` returns 124 (treated as failure). stderr/stdout are quieted for callers
+# that only care about the value/status. Falls back to a bare adb call when no
+# `timeout` binary is available (e.g. local macOS without coreutils).
+adb_bounded() {
+  local secs="$1"
+  shift
+  if [[ -n "$TIMEOUT_BIN" ]]; then
+    "$TIMEOUT_BIN" --signal=KILL "$secs" adb "$@" 2>/dev/null
+  else
+    adb "$@" 2>/dev/null
+  fi
+}
+
+# Path to the already-built uiTest APK. In --suites mode the default-mode section
+# below has already assembled + installed it once; a relaunched emulator boots
+# empty, so we reinstall from this same artifact.
+UI_TEST_APK="androidApp/build/outputs/apk/uiTest/androidApp-uiTest.apk"
+
+# The AVD android-emulator-runner creates is always named `test` on port 5554.
+EMULATOR_AVD="${EMULATOR_AVD:-test}"
+EMULATOR_PORT="${EMULATOR_PORT:-5554}"
+
+# Bring a freshly-booted emulator into the state the suite expects: reinstall the
+# uiTest APK, re-establish the Firebase emulator reverse tunnels, and re-apply the
+# input-related settings. Mirrors the one-time setup in the default-mode section so
+# a relaunched emulator is indistinguishable from the original.
+provision_device() {
+  if [[ -f "$UI_TEST_APK" ]]; then
+    adb -s "$ADB_SERIAL" install -r "$UI_TEST_APK" >/dev/null 2>&1 || true
+  fi
+  adb -s "$ADB_SERIAL" reverse tcp:9099 tcp:9099 >/dev/null 2>&1 || true
+  adb -s "$ADB_SERIAL" reverse tcp:8080 tcp:8080 >/dev/null 2>&1 || true
+  adb -s "$ADB_SERIAL" shell settings put secure stylus_handwriting_enabled 0 >/dev/null 2>&1 || true
+  adb -s "$ADB_SERIAL" shell settings put secure stylus_handwriting_default_value 0 >/dev/null 2>&1 || true
+}
+
+# The gfxstream/swiftshader software renderer leaks graphics buffers over a long
+# sequential suite (watch the climbing "Failed to find ColorBuffer" handle ids in
+# the emulator log); eventually QEMU crashes and the device is lost for good. A
+# reconnect can't help a dead process, so when we detect the emulator is truly gone
+# we cold-boot a fresh one on the same port and re-provision it, letting the suite
+# continue instead of failing every remaining flow. Guarded so we don't relaunch
+# endlessly if boots keep dying.
+EMULATOR_RELAUNCHES=0
+EMULATOR_MAX_RELAUNCHES="${EMULATOR_MAX_RELAUNCHES:-3}"
+
+relaunch_emulator() {
+  if ((EMULATOR_RELAUNCHES >= EMULATOR_MAX_RELAUNCHES)); then
+    echo "::error::Emulator relaunch limit ($EMULATOR_MAX_RELAUNCHES) reached; giving up." >&2
+    return 1
+  fi
+  EMULATOR_RELAUNCHES=$((EMULATOR_RELAUNCHES + 1))
+  echo "::warning::Cold-booting a fresh emulator (relaunch $EMULATOR_RELAUNCHES/$EMULATOR_MAX_RELAUNCHES)." >&2
+
+  local emulator_bin
+  emulator_bin=$(command -v emulator || echo "${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}/emulator/emulator")
+  if [[ ! -x "$emulator_bin" ]]; then
+    echo "::error::Cannot find the emulator binary to relaunch ($emulator_bin)." >&2
+    return 1
+  fi
+
+  # Kill any lingering (wedged/zombie) emulator process and reset adb so the new
+  # instance registers cleanly on the expected serial.
+  adb -s "$ADB_SERIAL" emu kill >/dev/null 2>&1 || true
+  pkill -9 -f "qemu-system.*-port ${EMULATOR_PORT}" >/dev/null 2>&1 || true
+  pkill -9 -f "emulator.*-port ${EMULATOR_PORT}" >/dev/null 2>&1 || true
+  sleep 3
+  adb kill-server >/dev/null 2>&1 || true
+  adb start-server >/dev/null 2>&1 || true
+
+  # Cold boot (no snapshot) to avoid restoring the already-leaked graphics state.
+  # Detach fully so the emulator outlives this function.
+  echo "Launching: $emulator_bin -avd $EMULATOR_AVD -port $EMULATOR_PORT" >&2
+  nohup "$emulator_bin" \
+    -avd "$EMULATOR_AVD" \
+    -port "$EMULATOR_PORT" \
+    -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot \
+    >/dev/null 2>&1 &
+  disown || true
+
+  # Wait for the fresh instance to finish booting, then reprovision it.
+  if wait_for_device; then
+    provision_device
+    return 0
+  fi
+  echo "::error::Relaunched emulator did not come up." >&2
+  return 1
+}
+
+# Return 0 only when the emulator process appears genuinely dead (no transport at
+# all), as opposed to merely offline/wedged (which wait_for_device can still nurse
+# back). Used to decide between "wait and reconnect" and "cold-boot a fresh one".
+emulator_is_dead() {
+  local state
+  state="$(adb_bounded 15 -s "$ADB_SERIAL" get-state | tr -d '[:space:]')"
+  [[ -z "$state" || "$state" == *"notfound"* || "$state" == *"error"* ]]
+}
+
 
 # Run every flow in a suite directory ONE AT A TIME.
 #
@@ -143,9 +286,18 @@ run_suite_dir() {
     name="$suite_prefix/$(basename "$flow" .yml)"
 
     if ! wait_for_device; then
-      echo "::error::Emulator $ADB_SERIAL is unreachable before $name; aborting suite." >&2
-      suites_failed=1
-      return 1
+      # Device unreachable before the flow even starts. Try a cold-boot relaunch if
+      # the emulator process is dead; only abort if that fails too. Avoid a subshell
+      # so relaunch_emulator's counter persists across flows.
+      local relaunched=0
+      if emulator_is_dead && relaunch_emulator; then
+        relaunched=1
+      fi
+      if ((relaunched == 0)); then
+        echo "::error::Emulator $ADB_SERIAL is unreachable before $name; aborting suite." >&2
+        suites_failed=1
+        return 1
+      fi
     fi
 
     if maestro_test "$name" "$flow"; then
@@ -161,9 +313,17 @@ run_suite_dir() {
     # Device dropped mid-flow: wait for it to come back and retry the flow once.
     echo "::warning::$name failed with the device offline; recovering emulator and retrying." >&2
     if ! wait_for_device; then
-      echo "::error::Emulator $ADB_SERIAL did not recover after $name; aborting suite." >&2
-      suites_failed=1
-      return 1
+      # The device never settled. If the emulator process is genuinely dead (a
+      # crashed QEMU from the graphics-buffer leak), cold-boot a fresh one and
+      # continue; a reconnect can't revive a dead process. Only give up if the
+      # relaunch also fails or we've hit the relaunch cap.
+      if emulator_is_dead && relaunch_emulator; then
+        echo "::warning::Emulator relaunched after $name; retrying the flow." >&2
+      else
+        echo "::error::Emulator $ADB_SERIAL did not recover after $name; aborting suite." >&2
+        suites_failed=1
+        return 1
+      fi
     fi
     if ! maestro_test "$name" "$flow"; then
       suites_failed=1

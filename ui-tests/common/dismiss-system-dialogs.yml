@@ -1,7 +1,7 @@
 # Dismisses transient OS dialogs that can appear on launch or mid-flow (notification
-# permission, iOS "Sign in to Apple Account"/Apple Account verification, etc.). All taps
-# are optional so this is a no-op when the dialogs aren't present and on platforms where
-# they don't appear.
+# permission, iOS "Sign in to Apple Account"/Apple Account verification, App Tracking
+# Transparency, etc.). All taps are optional so this is a no-op when the dialogs aren't
+# present and on platforms where they don't appear.
 appId: com.kevlina.budgetplus
 ---
 - tapOn:
@@ -9,6 +9,10 @@ appId: com.kevlina.budgetplus
     optional: true
 - tapOn:
     text: "Not Now"
+    optional: true
+# iOS App Tracking Transparency prompt — decline tracking to dismiss it deterministically.
+- tapOn:
+    text: "Ask App Not to Track"
     optional: true
 - tapOn:
     text: "Allow"

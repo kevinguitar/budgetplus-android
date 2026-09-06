@@ -1,7 +1,6 @@
 # Budget+ Multiplatform App（極簡記帳）
 
-[![Android CI](https://github.com/kevinguitar/budgetplus/actions/workflows/android-ci.yml/badge.svg?event=pull_request)](https://github.com/kevinguitar/budgetplus/actions/workflows/android-ci.yml)
-[![iOS CI](https://github.com/kevinguitar/budgetplus/actions/workflows/ios-ci.yml/badge.svg?event=pull_request)](https://github.com/kevinguitar/budgetplus/actions/workflows/ios-ci.yml)
+[![CI](https://github.com/kevinguitar/budgetplus/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinguitar/budgetplus/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](https://polyformproject.org/licenses/noncommercial/1.0.0)
 
 Budget+ is an easy-to-use co-spending tracker to track expenses together with your friends and family.

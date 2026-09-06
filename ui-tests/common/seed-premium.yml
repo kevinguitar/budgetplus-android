@@ -26,8 +26,15 @@ appId: com.kevlina.budgetplus
 - assertNotVisible:
     text: "Test Ad|No ads available"
 # Dismiss the (persistent, UI-test) "unlocked" snackbar so it doesn't block later
-# bottom-screen interactions (e.g. the Overview Search FAB). UI-test builds make the
-# snackbar tap-to-dismiss (swipe gestures are unreliable on the iOS automation driver).
+# bottom-screen interactions (e.g. the Overview Search FAB, or the lower rows of the
+# Settings list like "Color Tone Picker"). UI-test builds make the snackbar
+# tap-to-dismiss (swipe gestures are unreliable on the iOS automation driver).
+#
+# Wait for the snackbar to actually disappear before returning: on iOS the snackbar
+# lingers and its bottom overlay intermittently covers whatever a caller scrolls to
+# next, which surfaced as a flaky "Element not found" (e.g. Color Tone Picker). A
+# single tap without waiting was racy; block until it's gone so callers get a clean
+# screen every time.
 - runFlow:
     when:
       visible:
@@ -35,3 +42,7 @@ appId: com.kevlina.budgetplus
     commands:
       - tapOn:
           text: "Budget+ Premium unlocked!"
+      - extendedWaitUntil:
+          notVisible:
+            text: "Budget+ Premium unlocked!"
+          timeout: 8000
